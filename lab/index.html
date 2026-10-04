@@ -1,0 +1,1346 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>无线与移动网络实验室</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="styles.css">
+<style>.backlink{display:inline-block;margin-top:9px;font-size:.75rem;color:var(--text-muted);text-decoration:none}.backlink:hover{color:var(--accent-strong)}</style>
+</head>
+<body>
+<div class="app">
+<nav class="nav">
+  <div class="brand"><span class="name">无线与移动网络实验室</span><span class="sub">EE6129 · A / B / C</span><a class="backlink" href="../index.html">← 学习站目录</a></div>
+  <button class="navbtn" data-target="overview"><span class="idx">◈</span><span class="lbl">总览</span></button>
+
+  <div class="navgroup part-a">Part A · 蜂窝通信</div>
+  <button class="navbtn" data-target="fundamentals"><span class="idx">A1</span><span class="lbl">蜂窝基础与演进</span></button>
+  <button class="navbtn" data-target="access"><span class="idx">A2</span><span class="lbl">多址与双工技术</span></button>
+  <button class="navbtn" data-target="spectral"><span class="idx">A3</span><span class="lbl">频谱效率</span></button>
+  <button class="navbtn" data-target="propagation"><span class="idx">A4</span><span class="lbl">电波传播与路径损耗</span></button>
+  <button class="navbtn" data-target="geometry"><span class="idx">A5</span><span class="lbl">蜂窝几何与同频干扰</span></button>
+  <button class="navbtn" data-target="capacity"><span class="idx">A6</span><span class="lbl">信道分配与容量提升</span></button>
+  <button class="navbtn" data-target="traffic"><span class="idx">A7</span><span class="lbl">话务理论与 Erlang</span></button>
+  <button class="navbtn" data-target="handover"><span class="idx">A8</span><span class="lbl">切换与功率控制</span></button>
+  <button class="navbtn" data-target="examples"><span class="idx">A9</span><span class="lbl">考题精讲</span></button>
+
+  <div class="navgroup part-b">Part B · 无线系统</div>
+  <button class="navbtn" data-target="wlan"><span class="idx">B1</span><span class="lbl">无线局域网 802.11</span></button>
+  <button class="navbtn" data-target="adhoc"><span class="idx">B2</span><span class="lbl">Ad Hoc 与传感器网络</span></button>
+  <button class="navbtn" data-target="lte"><span class="idx">B3</span><span class="lbl">4G LTE 网络</span></button>
+  <button class="navbtn" data-target="iot"><span class="idx">B4</span><span class="lbl">物联网 IoT</span></button>
+
+  <div class="navgroup part-c">Part C · 卫星通信</div>
+  <button class="navbtn" data-target="satintro"><span class="idx">C1</span><span class="lbl">卫星系统与轨道</span></button>
+  <button class="navbtn" data-target="satlink"><span class="idx">C2</span><span class="lbl">几何与链路性能</span></button>
+  <button class="navbtn" data-target="satnet"><span class="idx">C3</span><span class="lbl">容量分配与卫星网络</span></button>
+
+  <div class="navgroup">自测与复习</div>
+  <button class="navbtn" data-target="quiz"><span class="idx">Q</span><span class="lbl">自测题</span></button>
+  <button class="navbtn" data-target="flashcards"><span class="idx">F</span><span class="lbl">记忆卡片</span></button>
+</nav>
+
+<main class="main">
+
+<!-- ============ 总览 ============ -->
+<section class="section part-a" id="sec-overview">
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="eyebrow">EE6129 Wireless &amp; Mobile Networks</div>
+      <h1>无线与移动网络实验室</h1>
+      <p>把三部分讲义拆成 16 个可操作模块：蜂窝通信的几何与话务理论、无线系统的 MAC 协议与网络架构、卫星通信的轨道与容量分配。
+         每个模块配有 <b>Canvas 动画</b>、<b>示意图</b>与<b>公式计算器</b>，最后用 59 道自测题和 63 张记忆卡巩固。</p>
+      <div class="progwrap">
+        <div class="bar"><div id="progFill"></div></div>
+        <div class="txt" id="progTxt">0 / 16 节已掌握</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tilegroup part-a">
+    <h3>Part A · 蜂窝通信系统</h3>
+    <div class="tilegrid">
+      <button class="tile" data-go="fundamentals"><div class="t-idx">A1</div><div class="t-title">蜂窝基础与演进</div><div class="t-desc">小区概念、系统组成、1G–4G 主线</div></button>
+      <button class="tile" data-go="access"><div class="t-idx">A2</div><div class="t-title">多址与双工技术</div><div class="t-desc">FDMA/TDMA/CDMA/OFDMA 动画对比</div></button>
+      <button class="tile" data-go="spectral"><div class="t-idx">A3</div><div class="t-title">频谱效率</div><div class="t-desc">η_m × η_a 互动计算</div></button>
+      <button class="tile" data-go="propagation"><div class="t-idx">A4</div><div class="t-title">电波传播与路径损耗</div><div class="t-desc">自由空间 / Okumura–Hata + 曲线图</div></button>
+      <button class="tile" data-go="geometry"><div class="t-idx">A5</div><div class="t-title">蜂窝几何与同频干扰</div><div class="t-desc">频率复用网格动画 + SIR 计算</div></button>
+      <button class="tile" data-go="capacity"><div class="t-idx">A6</div><div class="t-title">信道分配与容量提升</div><div class="t-desc">小区分裂动画、扇区化干扰可视化</div></button>
+      <button class="tile" data-go="traffic"><div class="t-idx">A7</div><div class="t-title">话务理论与 Erlang</div><div class="t-desc">Erlang B/C 计算器 + 曲线族</div></button>
+      <button class="tile" data-go="handover"><div class="t-idx">A8</div><div class="t-title">切换与功率控制</div><div class="t-desc">切换门限动画，可调 Δ 观察掉话</div></button>
+      <button class="tile" data-go="examples"><div class="t-idx">A9</div><div class="t-title">考题精讲</div><div class="t-desc">真题分步解法与易错点</div></button>
+    </div>
+  </div>
+
+  <div class="tilegroup part-b">
+    <h3>Part B · 无线系统</h3>
+    <div class="tilegrid">
+      <button class="tile" data-go="wlan"><div class="t-idx">B1</div><div class="t-title">无线局域网 802.11</div><div class="t-desc">CSMA/CA 时序动画、隐藏节点、超帧</div></button>
+      <button class="tile" data-go="adhoc"><div class="t-idx">B2</div><div class="t-title">Ad Hoc 与传感器网络</div><div class="t-desc">多跳路由动画、路由协议分类、WSN</div></button>
+      <button class="tile" data-go="lte"><div class="t-idx">B3</div><div class="t-title">4G LTE 网络</div><div class="t-desc">EPS 架构、资源网格、QoS 承载</div></button>
+      <button class="tile" data-go="iot"><div class="t-idx">B4</div><div class="t-title">物联网 IoT</div><div class="t-desc">双栈架构、通信范围谱、边缘/雾/云</div></button>
+    </div>
+  </div>
+
+  <div class="tilegroup part-c">
+    <h3>Part C · 卫星通信</h3>
+    <div class="tilegrid">
+      <button class="tile" data-go="satintro"><div class="t-idx">C1</div><div class="t-title">卫星系统与轨道</div><div class="t-desc">LEO/MEO/GEO 轨道运行动画</div></button>
+      <button class="tile" data-go="satlink"><div class="t-idx">C2</div><div class="t-title">几何与链路性能</div><div class="t-desc">仰角/覆盖/斜距/时延计算器</div></button>
+      <button class="tile" data-go="satnet"><div class="t-idx">C3</div><div class="t-title">容量分配与卫星网络</div><div class="t-desc">FAMA/DAMA、SS-TDMA 动画、切换</div></button>
+    </div>
+  </div>
+
+  <div class="tilegroup">
+    <h3>自测与复习</h3>
+    <div class="tilegrid">
+      <button class="tile" data-go="quiz"><div class="t-idx">Q</div><div class="t-title">自测题</div><div class="t-desc">59 道选择题，可按分区筛选、只重做错题</div></button>
+      <button class="tile" data-go="flashcards"><div class="t-idx">F</div><div class="t-title">记忆卡片</div><div class="t-desc">63 张术语卡，空格翻面、方向键翻页</div></button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ A1 ============ -->
+<section class="section part-a" id="sec-fundamentals">
+  <div class="eyebrow">Part A · 01 · Introduction</div>
+  <h1>蜂窝基础与技术演进</h1>
+  <p class="lede">为什么要把一大片服务区切成很多小区？这一节梳理蜂窝概念的核心动机、系统的六大组件、一次呼叫的完整流程，以及 1G 到 4G 的演进主线。</p>
+
+  <div class="card">
+    <h2>为什么需要蜂窝概念</h2>
+    <p>传统做法是用一个大功率发射机覆盖整个区域，但频谱有限而用户不断增长。蜂窝的核心思路是<b>用大量低功率发射机各自覆盖一小块区域（小区，cell）</b>，让相隔足够远的小区重复使用同一组频率——这就是<b>频率复用</b>。</p>
+    <div class="tip"><b>四个关键要素：</b>① 低功率发射机 + 小覆盖区；② 频率复用；③ 切换（handoff）与集中控制；④ 小区分裂扩容。后面所有章节都是围绕这四点展开。</div>
+    <p class="small">小区画成正六边形，是因为它是唯一能无缝铺满平面、且中心到六个顶点距离都相等的正多边形；若小区半径为 R，则相邻小区中心间距 d = √3·R。实际部署会因地形、传播条件和天线设置而偏离理想六边形。</p>
+  </div>
+
+  <div class="card">
+    <h2>系统组成：六大基本组件</h2>
+    <p class="small">除 <b>移动台 MS</b> 与 <b>基站 BS</b> 外，还有四个基本组件，全部通过移动交换局 MTSO 串联成系统。</p>
+    <svg class="diagram" viewBox="0 0 700 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="蜂窝网络系统框图">
+      <rect class="bx" x="10" y="20" width="120" height="70" rx="8"/>
+      <text class="lbl" x="70" y="48" text-anchor="middle">PSTN / Internet</text>
+      <text class="lbl-s" x="70" y="66" text-anchor="middle">① 有线网关</text>
+      <text class="lbl-s" x="70" y="80" text-anchor="middle">Gateway</text>
+
+      <rect class="bx-a" x="190" y="10" width="330" height="120" rx="10"/>
+      <text class="lbl" x="355" y="30" text-anchor="middle" style="font-weight:600">MTSO / MSC 交换与控制中心</text>
+      <rect class="bx" x="210" y="42" width="130" height="70" rx="6"/>
+      <text class="lbl" x="275" y="66" text-anchor="middle">② 数据库</text>
+      <text class="lbl-s" x="275" y="84" text-anchor="middle">HLR / VLR / EIR</text>
+      <text class="lbl-s" x="275" y="100" text-anchor="middle">位置 · 签约 · 设备</text>
+      <rect class="bx" x="370" y="42" width="130" height="70" rx="6"/>
+      <text class="lbl" x="435" y="66" text-anchor="middle">③ 安全机制</text>
+      <text class="lbl-s" x="435" y="84" text-anchor="middle">AuC 鉴权 / 加密</text>
+      <text class="lbl-s" x="435" y="100" text-anchor="middle">身份保密</text>
+      <path class="ln" d="M130 55 H190"/><path class="ln" d="M190 62 H130"/>
+
+      <rect class="bx" x="180" y="180" width="140" height="48" rx="8"/>
+      <text class="lbl" x="250" y="209" text-anchor="middle">基站 BS 1</text>
+      <rect class="bx" x="400" y="180" width="140" height="48" rx="8"/>
+      <text class="lbl" x="470" y="209" text-anchor="middle">基站 BS 2</text>
+      <path class="ln" d="M250 180 V130"/><path class="ln" d="M470 180 V130"/>
+      <text class="lbl-s" x="258" y="158">有线/微波中继</text>
+
+      <rect class="bx" x="195" y="280" width="110" height="40" rx="8"/>
+      <text class="lbl" x="250" y="305" text-anchor="middle">移动台 MS</text>
+      <rect class="bx" x="415" y="280" width="110" height="40" rx="8"/>
+      <text class="lbl" x="470" y="305" text-anchor="middle">移动台 MS</text>
+      <path class="ln-a" d="M240 280 V228"/><path class="ln-a dash" d="M262 228 V280"/>
+      <path class="ln-a" d="M460 280 V228"/><path class="ln-a dash" d="M482 228 V280"/>
+      <text class="lbl-s" x="120" y="250">④ 空中接口标准</text>
+      <text class="lbl-s" x="120" y="264">Air Interface</text>
+      <text class="lbl-s" x="556" y="250">实线 ↑ 上行 Uplink</text>
+      <text class="lbl-s" x="556" y="264">虚线 ↓ 下行 Downlink</text>
+      <path class="ln dash" d="M320 204 H400"/>
+      <text class="lbl-s" x="360" y="198" text-anchor="middle">切换</text>
+    </svg>
+    <div class="grid2">
+      <div>
+        <h4>① 有线网关</h4><p class="small">与 PSTN / Internet / 其他 PLMN 互通：信令转换、语音编码转换、路由与计费接口。</p>
+        <h4>② 数据库</h4><p class="small">HLR 签约与归属信息、VLR 漫游临时记录、EIR 设备识别；寻呼、漫游、切换、计费都依赖它。</p>
+      </div>
+      <div>
+        <h4>③ 安全机制</h4><p class="small">鉴权（防号码盗用）、空口加密（防窃听）、临时标识（身份保密）。</p>
+        <h4>④ 空中接口标准</h4><p class="small">规定频段、信道间隔、多址与双工方式、调制编码、帧结构、功控与切换信令，是互通与国际漫游的前提。</p>
+      </div>
+    </div>
+    <div class="grid2">
+      <div><h4>两类逻辑信道</h4><p class="small"><b>控制信道</b>：呼叫建立、维持、位置更新等信令。<br><b>业务信道</b>：承载语音或数据本身。</p></div>
+      <div><h4>MTSO 的职责</h4><p class="small">连接移动用户之间及与固网之间的呼叫；寻呼被叫；分配业务信道；协调切换。</p></div>
+    </div>
+    <details><summary>展开：一次呼叫建立的完整流程（五步）</summary><div class="dbody">
+      <p><b>1. 移动台初始化：</b>开机后扫描并锁定信号最强的建立控制信道，与 MTSO 通过 BS 握手确认身份和位置；随移动周期性重复，离开该小区后由新 BS 接管。</p>
+      <p><b>2. 主叫发起：</b>在选定的建立信道上（先侦听是否空闲）发送被叫号码，BS 转发请求给 MTSO。</p>
+      <p><b>3. 寻呼：</b>MTSO 依据被叫号码向相关 BS 群发寻呼消息，各 BS 在其建立信道上发出寻呼信号。</p>
+      <p><b>4. 被叫应答：</b>被叫识别自己的号码并应答；MTSO 在两侧小区各选一条空闲业务信道，通知双方调谐过去。</p>
+      <p><b>5. 切换：</b>通话中移动台离开当前小区时，业务信道无缝切换到新小区分配的信道，通信不中断。</p>
+    </div></details>
+  </div>
+
+  <div class="card">
+    <h2>四代蜂窝系统演进</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>世代</th><th>代表制式</th><th>接入 / 双工</th><th>关键特征</th></tr></thead>
+      <tbody>
+        <tr><td><b>1G</b></td><td>AMPS（美/澳）、ETACS（欧）、NTT（日）</td><td>模拟 FM + FDMA</td><td>800–900MHz UHF；信道间隔 AMPS 30kHz、其余 25kHz；收发频率间隔 ≥45MHz</td></tr>
+        <tr><td><b>2G</b></td><td>IS-54、GSM、PDC；过渡制式 N-Amps</td><td>数字 TDMA 或 CDMA</td><td>目标是更高容量（比小区分裂更省成本）与全球漫游；N-Amps 把 30kHz 三分为 10kHz，容量 3 倍以上，用抗干扰方案补偿语音质量，100bps 连续信令信道支持切换、功控、呼叫转移与会议</td></tr>
+        <tr><td><b>3G</b></td><td>WCDMA / MC-CDMA</td><td>宽带 CDMA，FDD 或 TDD</td><td>电路 + 分组交换并存；语音用卷积码、数据用 Turbo 码；快速功控与反向导频；宏蜂窝到室内微微蜂窝；用伞状/覆盖宏蜂窝处理微蜂窝间的高效切换</td></tr>
+        <tr><td><b>4G</b></td><td>LTE / E-UTRA</td><td>下行 OFDMA，上行 SC-FDMA</td><td>全 IP；带宽 1.4–20MHz 可伸缩；4×4 MIMO 下行峰值 &gt;300Mbps、上行 86Mbps；支持 350–500km/h；Turbo 码 + HARQ；覆盖从家庭femtocell 到 100km 大区</td></tr>
+      </tbody>
+    </table></div>
+    <div class="tip"><b>记忆线索：</b>1G 解决"能不能打通"，2G 解决"容量与漫游"，3G 解决"多媒体与分组数据"，4G 解决"全 IP 与高速移动宽带"。</div>
+  </div>
+</section>
+
+<!-- ============ A2 ============ -->
+<section class="section part-a" id="sec-access">
+  <div class="eyebrow">Part A · 02 · Access Technologies</div>
+  <h1>多址接入与双工技术</h1>
+  <p class="lede">多个用户如何共享同一段有限频谱，是"多址"要回答的问题；上下行如何分开，是"双工"要回答的问题。</p>
+
+  <div class="vizbox">
+    <h3>互动动画 · 四种多址方式如何瓜分时频资源</h3>
+    <p class="lede">切换按钮观察同一块"时间 × 频率"资源被不同方式分割的方式。</p>
+    <div class="viz" data-viz="accessAnim"></div>
+  </div>
+
+  <div class="card">
+    <h2>三种基本多址方式</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>技术</th><th>共享维度</th><th>原理</th><th>代价</th></tr></thead>
+      <tbody>
+        <tr><td><b>FDMA</b></td><td>频率</td><td>频段切成等宽信道，每次通话独占一个频率，不限时间</td><td>需要保护频带；信道数受带宽限制</td></tr>
+        <tr><td><b>TDMA</b></td><td>时间</td><td>一个频率按周期切成时隙，多用户轮流使用（宽带 TDMA 用整个频段，窄带 TDMA 只用部分）</td><td>需要保护时间与同步序列；瞬时速率高易受 ISI</td></tr>
+        <tr><td><b>CDMA</b></td><td>码字</td><td>所有用户同时同频，用正交码区分，不限时间也不限频率</td><td>严格功率控制（远近效应）；码字非完全正交</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small">TDMA 中上行（MS→BS）是<b>突发发送</b>，下行（BS→MS）<b>连续发送</b>而移动台只在分配时隙中接收。TDMA 复用 M 个用户的比特流，瞬时比特率更高，多径时延扩展会造成<b>符号间干扰（ISI）</b>，因此接收端必须做<b>信道均衡</b>；好处是每用户的基站设备成本下降为 1/M，并且可以为新的语音编码引入更多时隙。</p>
+    <details><summary>三种 TDMA 制式与 GSM 参数</summary><div class="dbody">
+      <p><b>IS-54</b> 北美数字蜂窝　<b>GSM</b> 全球移动通信系统　<b>PDC</b> 日本个人数字蜂窝</p>
+      <p><b>GSM：</b>最初频谱 25MHz + 25MHz（基站发 935–960MHz，移动台发 890–915MHz）；<b>FDMA + TDMA 混合</b>；每个射频载波 <b>200kHz</b>，共 <b>125</b> 个全双工信道。</p>
+    </div></details>
+  </div>
+
+  <div class="card">
+    <h2>CDMA 与扩频</h2>
+    <p>扩频（SS）把信号带宽扩展到远大于传输信息所需的最小带宽。<b>直接序列扩频（DS）</b>用宽带伪噪声码（PN code）调制窄带信号，每个信号分配不同的码；接收端用同一 PN 序列做互相关，其它码字的信号与噪声相关结果近似为零。</p>
+    <p>CDMA 的容量优势来自两点：① 采用 <b>Walsh 正交函数</b>（经过真实射频/中频滤波后并非严格正交）；② 所有发射机处于精确的扩频功率控制之下，<b>每 1ms 更新一次</b>。CDMA 还带来更少的基站数、更强的抗多径能力、更好的话音质量与定位能力。</p>
+  </div>
+
+  <div class="card">
+    <h2>双工方式与 4G 关键技术</h2>
+    <div class="grid2">
+      <div><h4>FDD 频分双工</h4><p class="small">上下行各占一段独立频率，可同时收发，两段之间有明确间隔。</p></div>
+      <div><h4>TDD 时分双工</h4><p class="small">上下行共用同一频率、在不同时隙交替；优势是可灵活支持<b>非对称</b>的上下行流量。</p></div>
+    </div>
+    <h3>LTE 的四项关键技术</h3>
+    <p class="small"><b>OFDMA（下行）</b>抗多径衰落能力强；<b>SC-FDMA（上行）</b>单载波降低峰均比、省电；<b>MIMO</b> 多天线显著提升频谱效率与可靠性；<b>Turbo 码 + HARQ</b>——Turbo 码逼近容量极限并配合 OFDM 利用频率分集，HARQ 把前向纠错与重传结合起来。</p>
+  </div>
+</section>
+
+<!-- ============ A3 ============ -->
+<section class="section part-a" id="sec-spectral">
+  <div class="eyebrow">Part A · 03 · Spectral Efficiency</div>
+  <h1>频谱效率</h1>
+  <p class="lede">频谱效率衡量"同一段频谱、同一块面积能承载多少话务"。它被拆成两个独立部分：<b>调制频谱效率 η<sub>m</sub></b>（与小区几何、复用因子有关）和<b>多址频谱效率 η<sub>a</sub></b>（与接入方式有关），总效率 η = η<sub>m</sub>·η<sub>a</sub>。</p>
+
+  <div class="card">
+    <h2>调制频谱效率 η<sub>m</sub></h2>
+    <div class="formula"><span class="fname">信道数形式</span>η<sub>m</sub> = (B<sub>w</sub>/B<sub>c</sub>) / (B<sub>w</sub>·A<sub>c</sub>·N) = 1 / (B<sub>c</sub>·A<sub>c</sub>·N)　[信道/MHz/km²]</div>
+    <div class="formula"><span class="fname">话务量形式</span>η<sub>m</sub> = 系统承载总话务 / (B<sub>w</sub>·总覆盖面积)　[Erlang/MHz/km²]</div>
+    <p class="small">B<sub>c</sub> 信道间隔(MHz)、A<sub>c</sub> 小区面积(km²)、N 簇尺寸。注意 B<sub>w</sub> 被约掉——<b>η<sub>m</sub> 与系统总带宽无关</b>，只取决于信道间隔、小区面积与复用因子。与干线效率 η<sub>t</sub>（= 特定 GoS 下承载话务 / 总信道数）结合即可在两种形式之间换算。</p>
+  </div>
+
+  <div class="card">
+    <h2>多址频谱效率 η<sub>a</sub></h2>
+    <div class="formula"><span class="fname">FDMA</span>η<sub>a</sub> = B<sub>e</sub>·N<sub>t</sub> / B<sub>w</sub> ≤ 1</div>
+    <div class="formula"><span class="fname">宽带 TDMA</span>η<sub>a</sub> = T<sub>s</sub>·M<sub>t</sub> / T<sub>f</sub></div>
+    <div class="formula"><span class="fname">窄带 TDMA</span>η<sub>a</sub> = (T<sub>s</sub>·M<sub>t</sub>/T<sub>f</sub>) · (B<sub>u</sub>·N<sub>u</sub>/B<sub>w</sub>)</div>
+    <p class="small">定义为"用于语音/数据的时频域"与"系统可用总时频域"之比。T<sub>s</sub> 为承载纯信息的时隙时长，T<sub>f</sub> 为帧长，M<sub>t</sub> 为每帧时隙数；窄带 TDMA 把总带宽再分成若干子带、每个子带内做 TDMA，故多一个频域因子。</p>
+  </div>
+
+  <div class="calc" id="calc-spectral">
+    <h3>互动计算器 · η<sub>m</sub> × η<sub>a</sub></h3>
+    <p class="lede">默认值取自讲义 AMPS / 北美 TDMA 例题，可直接复算。</p>
+    <h4>调制效率 η<sub>m</sub></h4>
+    <div class="grid3">
+      <div class="field"><label>信道间隔 B_c（MHz）</label><input type="number" id="sp_bc" value="0.03" step="0.001"></div>
+      <div class="field"><label>单小区面积 A_c（km²）</label><input type="number" id="sp_ac" value="4" step="0.1"></div>
+      <div class="field"><label>簇尺寸 N</label><input type="number" id="sp_n" value="7" step="1"></div>
+    </div>
+    <h4>多址效率 η<sub>a</sub></h4>
+    <div class="segrow" id="sp_mode">
+      <button class="seg active" data-v="fdma">FDMA</button>
+      <button class="seg" data-v="wtdma">宽带 TDMA</button>
+      <button class="seg" data-v="ntdma">窄带 TDMA</button>
+    </div>
+    <div id="sp_fields_fdma" class="grid3">
+      <div class="field"><label>每信道带宽 B_e（kHz）</label><input type="number" id="sp_be" value="30" step="1"></div>
+      <div class="field"><label>信道总数 N_t</label><input type="number" id="sp_nt" value="395" step="1"></div>
+      <div class="field"><label>系统带宽 B_w（MHz）</label><input type="number" id="sp_bw" value="12.5" step="0.1"></div>
+    </div>
+    <div id="sp_fields_wtdma" class="grid3" style="display:none">
+      <div class="field"><label>时隙有效时长 T_s（ms）</label><input type="number" id="sp_ts" value="5.35" step="0.01"></div>
+      <div class="field"><label>每帧时隙数 M_t</label><input type="number" id="sp_mt" value="6" step="1"></div>
+      <div class="field"><label>帧时长 T_f（ms）</label><input type="number" id="sp_tf" value="40" step="1"></div>
+    </div>
+    <div id="sp_fields_ntdma" class="grid3" style="display:none">
+      <div class="field"><label>T_s（ms）</label><input type="number" id="sp_ts2" value="5.35" step="0.01"></div>
+      <div class="field"><label>M_t</label><input type="number" id="sp_mt2" value="6" step="1"></div>
+      <div class="field"><label>T_f（ms）</label><input type="number" id="sp_tf2" value="40" step="1"></div>
+      <div class="field"><label>用户带宽 B_u（kHz）</label><input type="number" id="sp_bu" value="30" step="1"></div>
+      <div class="field"><label>同时隙用户数 N_u</label><input type="number" id="sp_nu" value="395" step="1"></div>
+      <div class="field"><label>系统带宽 B_w（MHz）</label><input type="number" id="sp_bw2" value="12.5" step="0.1"></div>
+    </div>
+    <div class="resultbox" id="sp_result"></div>
+  </div>
+
+  <div class="card">
+    <h3>讲义例题回顾</h3>
+    <p class="small"><b>例 1（AMPS）：</b>两运营商共享 25MHz，每小区 3 条控制信道，小区面积 4km²，总覆盖 2000km²，人均 1.2 次/小时、平均 100 秒，GoS=2%，N=7。<br>
+      每运营商 12.5MHz/30kHz = 416 信道 → 减去 3×7 控制信道 = 395 条业务信道 → 每小区 395/7 ≈ 56 条；GoS 2% 下 56 条承载 <b>45.9 Erlang/小区</b> = 11.5 Er/km²；
+      η<sub>m</sub> = 45.9/(12.5×4) ≈ <b>0.92 Er/MHz/km²</b>；每小时呼叫数 45.9×36 = 1652 次/小时/小区；用户数 1652/1.2 ≈ <b>1377</b>。</p>
+    <p class="small"><b>例 2（北美 TDMA）：</b>12.5MHz、30kHz 间隔、395 条数据信道、帧长 40ms、每帧 6 时隙、语音 13kbps / 总速率 16.2kbps。
+      T<sub>s</sub> = (13/16.2)×(40/6) = 5.35ms；η<sub>a</sub> = (13/16.2)×(30×395/12500) = <b>0.76</b>。（FDMA 对照：395×30k/12.5M = 0.948）</p>
+  </div>
+</section>
+
+<!-- ============ A4 ============ -->
+<section class="section part-a" id="sec-propagation">
+  <div class="eyebrow">Part A · 04 · Radio Propagation</div>
+  <h1>电波传播与路径损耗</h1>
+  <p class="lede">信号从基站到移动台经历自由空间扩散、地面反射、遮挡与散射。工程上用一组经验公式估计路径损耗 L 与接收功率 P<sub>R</sub>。</p>
+
+  <div class="card">
+    <h2>自由空间模型</h2>
+    <div class="formula"><span class="fname">Friis</span>P<sub>R</sub> = P<sub>T</sub>G<sub>T</sub>G<sub>R</sub> / L，　L = (4πd/λ)²，　λ = c/f</div>
+    <div class="formula"><span class="fname">分贝形式（本课程）</span>L(dB) = 32 + 20 log f(MHz) + 20 log d(km)</div>
+    <p class="small">标准教材常数通常写作 32.44，讲义取整为 32。注意远场假设：蜂窝系统中接收机基本都处于远场。</p>
+    <h3>两径（平面地球）模型与通用经验形式</h3>
+    <div class="formula">L(dB) = A + B·log f + C·log h<sub>T</sub> + D·log h<sub>R</sub> + E·log d</div>
+    <p class="small">真实环境难以纯理论建模，因此用大量实测拟合 A~E（可以是 h<sub>T</sub>, h<sub>R</sub>, f 的函数）。大距离下平面地球两径模型给出 <b>40dB/decade</b> 的衰减，比自由空间的 20dB/decade 陡得多。</p>
+    <div class="formula"><span class="fname">接收功率的直线形式</span>P<sub>R</sub> = P<sub>0</sub> + γ·log d　（P<sub>0</sub> 为 d = 1km 处的截距，γ 为每十倍距离的衰减）</div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>环境</th><th class="num">P₀（dBm）</th><th class="num">γ（dB/decade）</th></tr></thead>
+      <tbody>
+        <tr><td>自由空间</td><td class="num">−41</td><td class="num">−20</td></tr>
+        <tr><td>平面地球（两径）</td><td class="num">−30.64</td><td class="num">−40</td></tr>
+        <tr><td>CCIR 城区（h_T=30m）</td><td class="num">−71.04</td><td class="num">−35.4</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">标准条件：P<sub>T</sub>=10W，G<sub>T</sub>=6dBd(=8.14dBi)，G<sub>R</sub>=0dBd(=2.14dBi)，f=900MHz，h<sub>T</sub>=30m，h<sub>R</sub>=3m。P<sub>R,dB</sub> = P<sub>T</sub>+G<sub>T</sub>+G<sub>R</sub>−L。</p>
+  </div>
+
+  <div class="vizbox">
+    <h3>接收功率随距离的变化</h3>
+    <div class="viz" data-viz="pathLossChart"></div>
+  </div>
+
+  <div class="card">
+    <h2>经验路径损耗模型</h2>
+    <h3>CCIR 城区模型</h3>
+    <div class="formula">L = 69 + 26 log f(MHz) − 14 log h<sub>T</sub>(m) + (45 − 6.5 log h<sub>T</sub>) log d(km) − A(h<sub>R</sub>)<br>
+      A(h<sub>R</sub>) = (log f − 0.7)·h<sub>R</sub> − (1.6 log f − 0.8)</div>
+    <p class="note">40dB/decade 恰好成立于 h<sub>T</sub> = 5.9m。</p>
+    <h3>Okumura–Hata 模型</h3>
+    <div class="formula"><span class="fname">城区中值</span>L = 69.55 + 26.16 log f − 13.82 log h<sub>T</sub> + (44.9 − 6.55 log h<sub>T</sub>) log d − A(h<sub>R</sub>)</div>
+    <p class="small">适用范围：150 ≤ f ≤ 1500MHz，30 ≤ h<sub>T</sub> ≤ 200m，1 ≤ d ≤ 20km，1 ≤ h<sub>R</sub> ≤ 10m。</p>
+    <ul class="small">
+      <li>中等城市：A(h<sub>R</sub>) = (1.1 log f − 0.7)h<sub>R</sub> − (1.56 log f − 0.8)</li>
+      <li>大城市 f &lt; 300MHz：A(h<sub>R</sub>) = 8.29[log(1.54h<sub>R</sub>)]² − 1.1</li>
+      <li>大城市 f ≥ 300MHz：A(h<sub>R</sub>) = 3.2[log(11.75h<sub>R</sub>)]² − 4.97</li>
+      <li>郊区：L = L<sub>城区</sub> − 2[log(f/28)]² − 5.4</li>
+      <li>开阔地：L = L<sub>城区</sub> − 4.78(log f)² + 18.33 log f − 40.94</li>
+    </ul>
+  </div>
+
+  <div class="calc" id="calc-prop">
+    <h3>互动计算器 · 路径损耗与接收功率</h3>
+    <div class="field"><label>传播模型</label>
+      <select id="pl_model">
+        <option value="fs">自由空间 Free Space</option>
+        <option value="hata_med" selected>Okumura–Hata · 城区（中等城市）</option>
+        <option value="hata_lgL">Okumura–Hata · 城区（大城市，f&lt;300MHz）</option>
+        <option value="hata_lgH">Okumura–Hata · 城区（大城市，f≥300MHz）</option>
+        <option value="hata_sub">Okumura–Hata · 郊区</option>
+        <option value="hata_open">Okumura–Hata · 开阔地</option>
+      </select></div>
+    <div class="grid2">
+      <div class="field"><label>频率 f（MHz）</label><input type="number" id="pl_f" value="900" step="1"></div>
+      <div class="field"><label>距离 d（km）</label><input type="number" id="pl_d" value="5" step="0.1"></div>
+      <div class="field"><label>基站高度 h_T（m）</label><input type="number" id="pl_ht" value="30" step="1"></div>
+      <div class="field"><label>终端高度 h_R（m）</label><input type="number" id="pl_hr" value="3" step="0.1"></div>
+    </div>
+    <div class="grid3">
+      <div class="field"><label>发射功率 P_T（dBm）</label><input type="number" id="pl_pt" value="40" step="1"></div>
+      <div class="field"><label>发射增益 G_T（dBi）</label><input type="number" id="pl_gt" value="8.14" step="0.1"></div>
+      <div class="field"><label>接收增益 G_R（dBi）</label><input type="number" id="pl_gr" value="2.14" step="0.1"></div>
+    </div>
+    <div class="resultbox" id="pl_result"></div>
+    <div class="warn" id="pl_warn"></div>
+  </div>
+</section>
+
+<!-- ============ A5 ============ -->
+<section class="section part-a" id="sec-geometry">
+  <div class="eyebrow">Part A · 05 · Cellular Geometry</div>
+  <h1>蜂窝几何与同频干扰</h1>
+  <p class="lede">簇尺寸 N 怎么取？复用距离和通话质量如何权衡？这一节把几何与干扰理论串起来——它是整门课最核心的一节。</p>
+
+  <div class="vizbox">
+    <h3>互动动画 · 频率复用网格</h3>
+    <p class="lede">切换簇尺寸 N，观察同色（同频）小区如何重新排布、复用距离 D 如何变化。</p>
+    <div class="viz" data-viz="hexReuse"></div>
+  </div>
+
+  <div class="card">
+    <h2>簇、复用距离与复用比</h2>
+    <p>若干小区组成<b>簇（cluster）</b>共同用尽整个分配频谱，簇内小区数记为 <b>N</b>（频率复用因子）。只有满足 <b>N = i² + ij + j²</b>（i, j 为非负整数）的 N 才能实现无缝六边形复用：1, 3, 4, 7, 9, 12, 13, 16, 19, 21…</p>
+    <div class="formula">D = R√(3N)　　　Q = D/R = √(3N)　　　总信道数 T = C × N × (S/N) = C × S</div>
+    <p class="small">实现步骤：整个服务区划成若干小区 → N 个小区成簇 → 每簇用尽全部 S 条信道，均匀固定分配时每小区 S/N 条 → 整个服务区由 C 个簇拼成。</p>
+    <div class="tip"><b>核心权衡：</b>N ↑ → Q ↑ → 同频干扰 ↓ 通话质量 ↑，但每小区信道数 S/N ↓ → 容量 ↓。N 的选择就是<b>容量与质量之间的折中</b>。</div>
+  </div>
+
+  <div class="card">
+    <h2>同频干扰与 SIR</h2>
+    <div class="formula"><span class="fname">定义</span>S/I = S / (N₀ + Σ I<sub>i</sub>)　（干扰受限环境下忽略噪声 N₀）</div>
+    <p class="small">信号损失来自路径损耗、慢衰落（地形阴影）与快衰落（多径）。若只考虑路径损耗且各基站功率相同，第 i 个干扰源的功率 ∝ D<sub>i</sub><sup>−n</sup>，n 为路径损耗指数（2–5）。</p>
+    <h3>三种常用估计口径</h3>
+    <div class="formula"><span class="fname">① 简化近似（6 个干扰源都在距离 D）</span>S/I = Q<sup>n</sup>/6 = (3N)<sup>n/2</sup>/6</div>
+    <div class="formula"><span class="fname">② 最坏情况 · 一般式（移动台位于小区边缘，六个干扰源距离各异）</span>S/I = 1 / [2(Q−1)<sup>−n</sup> + 2Q<sup>−n</sup> + 2(Q+1)<sup>−n</sup>]</div>
+    <div class="formula"><span class="fname">③ 最坏情况 · 保守式（六个干扰源都按最近距离 D−R 计）</span>S/I = (Q−1)<sup>n</sup>/6</div>
+    <p class="note">假设：任意 N 下第一层同频干扰小区恒为 6 个；忽略第二层（距离太远）；移动台位于小区边缘；D ≫ R。N=7、n=4 时三式分别给出 18.66 / 17.27 / 14.39 dB。</p>
+    <div class="tip"><b>例题：</b>要求 SIR ≥ 10dB、n=4。N=1→1.76dB，N=3→11.30dB，N=4→13.80dB，N=7→18.66dB，N=9→20.85dB，N=12→23.34dB，N=13→24.04dB。
+      <b>N≥3 即可满足 10dB</b>，但语音质量通常要求 &gt;18dB，因此工程上取 <b>N=7</b>。</div>
+  </div>
+
+  <div class="calc" id="calc-geom">
+    <h3>互动计算器 · 簇尺寸与 SIR</h3>
+    <div class="grid2">
+      <div class="field"><label>簇尺寸 N</label>
+        <select id="g_n">
+          <option value="1">1</option><option value="3">3</option><option value="4">4</option>
+          <option value="7" selected>7</option><option value="9">9</option><option value="12">12</option>
+          <option value="13">13</option><option value="16">16</option><option value="19">19</option><option value="21">21</option>
+        </select></div>
+      <div class="field"><label>路径损耗指数 n</label><input type="number" id="g_pn" value="4" step="0.1" min="2" max="6"></div>
+    </div>
+    <div class="resultbox" id="g_result"></div>
+    <div class="warn" id="g_valid"></div>
+  </div>
+
+  <div class="vizbox">
+    <h3>SIR 随簇尺寸与路径损耗指数的变化</h3>
+    <div class="viz" data-viz="sirChart"></div>
+  </div>
+</section>
+
+<!-- ============ A6 ============ -->
+<section class="section part-a" id="sec-capacity">
+  <div class="eyebrow">Part A · 06 · Channel Assignment &amp; Capacity</div>
+  <h1>信道分配与容量提升</h1>
+  <p class="lede">频谱有限而用户增长，工程上有三条出路：更聪明地分配信道、把小区切得更小、用定向天线切成扇区。</p>
+
+  <div class="card">
+    <h2>信道分配：FCA vs DCA</h2>
+    <div class="grid2">
+      <div><h3>固定分配 FCA</h3>
+        <p class="small">每小区预分配固定信道组。<b>均匀 FCA</b> 各小区数量相等（S/N）；<b>非均匀 FCA</b> 按话务负载分配。信道用尽即阻塞——<b>即使邻小区有空闲信道也用不上</b>，这是 FCA 的根本缺陷。</p>
+        <p class="note">例：系统共 210 条信道、N=7 → 每小区 30 条，其中 1 条作控制信道，实际可用 29 条。</p></div>
+      <div><h3>动态分配 DCA</h3>
+        <p class="small">信道不永久属于某小区。新呼叫到来时按算法（未来阻塞预测、信道复用距离、其它代价函数）从池中借用，<b>只要不违反基本干扰约束</b>——同一信道不得在复用距离 D 内被重复使用。话务重的小区可以拿到更多信道。借用的信道会被持续监测，通话结束后归还。</p></div>
+    </div>
+  </div>
+
+  <div class="vizbox">
+    <h3>动画 · 小区分裂</h3>
+    <div class="viz" data-viz="cellSplit"></div>
+  </div>
+
+  <div class="card">
+    <h2>小区分裂（Cell Splitting）</h2>
+    <p>把拥塞小区细分为更小的微小区，各自部署基站，天线更低、功率更小。单位面积信道数增加，容量提升且<b>不牺牲干线效率</b>。</p>
+    <div class="formula">P<sub>r</sub>[原小区] ∝ P<sub>t1</sub>R<sup>−n</sup>，P<sub>r</sub>[微小区] ∝ P<sub>t2</sub>(R/k)<sup>−n</sup> ⟹ P<sub>t2</sub> = P<sub>t1</sub>/k<sup>n</sup>，ΔdB = 10n·log k</div>
+    <ul class="small">
+      <li>典型分裂模式：N=3 用 4:1，N=4 用 3:1，N=7 用 3:1 或 4:1，N=9 用 4:1。</li>
+      <li><b>4:1 分裂</b>：新小区位于两个原小区交界中点，半径为原来的 1/2。</li>
+      <li><b>3:1 分裂</b>：新小区位于三个小区交角处，半径为原来的 1/√3。</li>
+      <li>原小区信道要拆成两组：一组给微小区复用，一组留给大小区（大小区服务高速用户可减少切换）。初期只给微小区分配少量信道，随话务增长逐步扩展，最终全区分裂。</li>
+      <li>代价：小区越小，跨越边界越频繁。<b>半径缩小 4 倍，每用户切换率上升约 10 倍</b>，处理负荷显著增加，需要做成本效益分析。</li>
+    </ul>
+    <p class="note">讲义例题：基站均 60 信道，原半径 1km，微小区 0.5km，3km×3km 区域内约 4 个大区 → 240 信道；分裂后约 15 个微小区 → 900 信道，约 <b>4 倍</b>提升。</p>
+  </div>
+
+  <div class="vizbox">
+    <h3>互动动画 · 扇区化如何减少干扰源</h3>
+    <p class="lede">每个小区都涂出了和你<b>同频</b>的那个扇区（都朝东）。判断规则：同频扇区的天线<b>正对着你</b>，才算干扰源。</p>
+    <div class="viz" data-viz="sectorViz"></div>
+  </div>
+
+  <div class="card">
+    <h2>扇区化（Sectoring）与覆盖区</h2>
+    <p>定向天线把小区分成扇区（3×120° 或 6×60°），每个扇区只用一部分信道并朝特定方向发射，从而减少可见的同频干扰源、提升 SIR，进而允许更小的簇尺寸 N 提升频谱效率。</p>
+    <div class="formula"><span class="fname">3 扇区最坏情况</span>S/I = R<sup>−n</sup>/[D<sup>−n</sup> + (D+0.7R)<sup>−n</sup>] = 1/[Q<sup>−n</sup> + (Q+0.7)<sup>−n</sup>]</div>
+    <div class="formula"><span class="fname">6 扇区最坏情况</span>S/I = 1/(Q+0.7)<sup>−n</sup> = (Q+0.7)<sup>n</sup></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>方案</th><th class="num">一层可见干扰源</th><th class="num">S/I（N=7, n=4）</th><th>容量影响</th></tr></thead>
+      <tbody>
+        <tr><td>全向</td><td class="num">6</td><td class="num">14.4 – 18.7 dB</td><td>基准</td></tr>
+        <tr><td>3 扇区 120°</td><td class="num">2</td><td class="num">24.5 dB</td><td>每扇区 M/3 信道；SIR 相当于 12 小区簇 → 信道容量可提升 12/7 ≈ 1.714 倍</td></tr>
+        <tr><td>6 扇区 60°</td><td class="num">1</td><td class="num">28.9 dB</td><td>每扇区 M/6 信道；干线效率进一步下降</td></tr>
+      </tbody>
+    </table></div>
+    <div class="tip"><b>讲义例题（干线效率的代价）：</b>57 信道/小区、2 分钟通话、阻塞 1%。不分扇区可承载 44.2 Erlang ≈ <b>1326 次呼叫/小时</b>；
+      120° 扇区每扇区 19 信道 → 11.2 Erlang ≈ 336 次，三扇区共 <b>1008 次/小时</b>，比不分扇区<b>下降 24%</b>；60° 扇区下降约 44%。
+      <b>扇区化牺牲干线效率来换取 SIR 与更小的 N。</b></div>
+    <p class="small"><b>覆盖区（coverage zone）方案：</b>三个区站连到同一基站、共享射频设备，移动台由信号最强的区服务；基站辐射被局域化、干扰降低，信道可在三个区之间按时空复用。适合高速公路与城市走廊。</p>
+  </div>
+
+  <div class="calc" id="calc-cap">
+    <h3>互动计算器 · 分裂功率 &amp; 扇区容量</h3>
+    <div class="grid2">
+      <div>
+        <h4>小区分裂所需功率下降</h4>
+        <div class="field"><label>原发射功率 P_t1（W）</label><input type="number" id="cs_pt" value="10" step="0.5"></div>
+        <div class="field"><label>半径缩小倍数 k</label>
+          <select id="cs_k">
+            <option value="2" selected>2（4:1 分裂，半径 ×1/2）</option>
+            <option value="1.732">√3（3:1 分裂，半径 ×1/√3）</option>
+            <option value="custom">自定义</option>
+          </select></div>
+        <div class="field" id="cs_kcustom_wrap" style="display:none"><label>自定义 k</label><input type="number" id="cs_kcustom" value="2" step="0.1"></div>
+        <div class="field"><label>路径损耗指数 n</label><input type="number" id="cs_n" value="4" step="0.1"></div>
+        <div class="resultbox" id="cs_result"></div>
+      </div>
+      <div>
+        <h4>扇区化的容量代价（GoS 2%）</h4>
+        <div class="field"><label>原小区信道数 M</label><input type="number" id="ct_m" value="57" step="1"></div>
+        <div class="segrow" id="ct_sectors">
+          <button class="seg active" data-v="1">全向</button>
+          <button class="seg" data-v="3">3 扇区</button>
+          <button class="seg" data-v="6">6 扇区</button>
+        </div>
+        <div class="resultbox" id="ct_result"></div>
+        <p class="note">对比"全向"与"3 扇区"的小区总话务量，就能直接看到干线效率损失。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ A7 ============ -->
+<section class="section part-a" id="sec-traffic">
+  <div class="eyebrow">Part A · 07 · Traffic Theory</div>
+  <h1>话务理论与 Erlang 公式</h1>
+  <p class="lede">一个小区有多少信道是物理问题；这些信道能服务多少用户、达到什么服务质量，是排队论问题。</p>
+
+  <div class="card">
+    <h2>排队系统与 Kendall 记号</h2>
+    <div class="formula"><span class="fname">Kendall 记号</span>A / S / N / C / P / D　＝　到达分布 / 服务分布 / 服务器数 / 系统容量 / 用户总体 / 排队规则</div>
+    <p class="small">A、S 可为 M（马尔可夫/指数）、D（确定性）、G（一般分布）；排队规则有 FCFS、LCFS、优先级、随机。常见简写：M/M/1、M/M/1/S、M/M/m。</p>
+    <div class="formula"><span class="fname">话务强度</span>A = λ/μ　[Erlang]　　<span class="fname" style="margin-top:6px">系统利用率（m 个服务器）</span>ρ = λ/(mμ) = A/m</div>
+    <p class="small">λ 为平均呼叫到达率，1/μ 为平均占用时长（平均通话时长 h）。<b>GoS（服务等级）</b>为呼叫被阻塞或延迟的概率：1%–2% 为理想，&gt;5% 用户明显不满。</p>
+  </div>
+
+  <div class="card">
+    <h2>两种模型：呼损制与排队制</h2>
+    <div class="grid2">
+      <div><h3>呼损制 M/M/m/m（Erlang B）</h3>
+        <p class="small">信道全忙时新呼叫被<b>直接拒绝丢弃</b>，无队列。假设无限用户总体，A = λh = Mρ。</p>
+        <div class="formula" style="font-size:.82rem">P<sub>B</sub> = (A<sup>M</sup>/M!) / Σ<sub>k=0</sub><sup>M</sup>(A<sup>k</sup>/k!)</div>
+        <p class="small">承载话务 C = A(1−P<sub>B</sub>)，被丢弃话务 = A·P<sub>B</sub>；P<sub>B</sub> 较小时 C ≈ A。</p></div>
+      <div><h3>排队制 M/M/m（Erlang C）</h3>
+        <p class="small">信道全忙时新呼叫<b>进队列等待</b>。计算被延迟概率 P<sub>D</sub>、平均等待时间与队长。</p>
+        <div class="formula" style="font-size:.82rem">W = P<sub>D</sub>·h/(M−A)　　N<sub>q</sub> = P<sub>D</sub>·A/(M−A)</div>
+        <p class="small">高容量网络对给定 GoS 更高效，但也更容易因过载而使 GoS 急剧恶化。</p></div>
+    </div>
+    <p class="note">Erlang B / C 表可直接查值，表间数据用<b>线性插值</b>近似即可。</p>
+  </div>
+
+  <div class="vizbox">
+    <h3>Erlang B 曲线族</h3>
+    <div class="viz" data-viz="erlangChart"></div>
+  </div>
+
+  <div class="calc" id="calc-traffic">
+    <h3>互动计算器 · Erlang B / C</h3>
+    <p class="lede">正向计算阻塞/延迟指标，也可反算给定 GoS 下的最大话务量或最少信道数。</p>
+    <div class="grid2">
+      <div class="field"><label>信道数 M</label><input type="number" id="tr_m" value="20" step="1"></div>
+      <div class="field"><label>话务量 A（Erlang）</label><input type="number" id="tr_a" value="13" step="0.1"></div>
+      <div class="field"><label>平均通话时长 h（秒）</label><input type="number" id="tr_h" value="100" step="1"></div>
+      <div class="field"><label>每用户话务量 A_u（Erlang）</label><input type="number" id="tr_au" value="0.25" step="0.01"></div>
+    </div>
+    <div class="resultbox" id="tr_result"></div>
+    <div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+      <div class="field" style="flex:1;min-width:150px"><label>目标 GoS</label><input type="number" id="tr_gos" value="0.02" step="0.01"></div>
+      <button class="btn ghost" id="tr_findA">按 M 求最大 A</button>
+      <button class="btn ghost" id="tr_findM">按 A 求最少 M</button>
+    </div>
+    <div class="resultbox" id="tr_inv_result"></div>
+  </div>
+
+  <div class="card">
+    <h2>干线增益与干线效率</h2>
+    <p><b>干线增益</b> = 特定 GoS 下一组信道服务的用户数 / 信道数。<b>干线效率</b> = 承载话务 / 信道数（Erlang/信道，介于 0 和 1）。</p>
+    <div class="tip"><b>例：</b>λ=1.2 次/小时、h=100s → A<sub>u</sub> = 0.033 Erlang。GoS 2% 时 M=50 可承载 40.3 Erlang，即 40.3/0.033 ≈ <b>1210 个用户</b>，干线增益 = 1210/50 ≈ <b>24.2</b>。M 越大增益越大；GoS 放宽（数值变大）时增益也变大。</div>
+    <div class="tip"><b>集中优于分散：</b>GoS 1% 时 10 条集中信道承载 4.46 Erlang（效率 44.6%）；拆成两组 5 条则各 1.36 Erlang，合计 2.72（效率 27.2%）——<b>一组 10 条比两组 5 条多承载 60%</b>。但分成两组的 SIR 可能更好，这是另一种权衡。</div>
+    <h3>簇尺寸与地域</h3>
+    <p class="small">城区用户密度高，为保证 GoS 需要每小区信道数 M 大 → 宜用<b>小簇尺寸</b>（3、4、7）；农村密度低，可用大 M 且 GoS 仍可接受 → 可用 <b>13、19、21</b> 等大簇；郊区通常 7 左右。因此城区的小区与簇面积远小于郊区和农村。</p>
+  </div>
+</section>
+
+<!-- ============ A8 ============ -->
+<section class="section part-a" id="sec-handover">
+  <div class="eyebrow">Part A · 08 · Handover &amp; Power Control</div>
+  <h1>越区切换与功率控制</h1>
+  <p class="lede">小区分裂和扇区化都会制造更多边界、更多切换。这一节讲切换如何触发、软硬切换的差别，以及功率控制如何反过来压制干扰。</p>
+
+  <div class="vizbox">
+    <h3>互动动画 · 切换门限 Δ 的取舍</h3>
+    <p class="lede">拖动 Δ 滑块并提高移动速度，观察"切换太晚导致掉话"与"切换太早导致频繁切换"两种失衡。</p>
+    <div class="viz" data-viz="handoverAnim"></div>
+  </div>
+
+  <div class="card">
+    <h2>切换的触发与门限</h2>
+    <div class="formula">Δ = P<sub>HO</sub> − P<sub>min</sub></div>
+    <p class="small">P<sub>min</sub>（约 −90 至 −100dBm）是维持可接受通话质量的最小接收电平；P<sub>HO</sub> 是触发切换的门限，略高于 P<sub>min</sub>。
+      <b>Δ 太大</b> → 过早、过于频繁地切换（乒乓效应，浪费网络资源）；<b>Δ 太小</b> → 来不及完成切换，信号跌破 P<sub>min</sub> 而掉话。</p>
+    <h3>切换失败（掉话）的三个原因</h3>
+    <p class="small">① 新小区没有空闲信道；② MSC 时延过大或 Δ 太小导致时间不够；③ 切换执行过程中目标链路失败。</p>
+    <h3>切换的范围分类</h3>
+    <p class="small"><b>小区内切换（intra-cell）</b>：同一小区内为改善质量更换信道。<b>小区间切换（inter-cell）</b>：同一 MSC 下从一个小区/基站移动到另一个。切换过程需要识别新基站，并为语音/数据和相关控制信令分配新信道。</p>
+  </div>
+
+  <div class="card">
+    <h2>硬切换 vs 软切换</h2>
+    <div class="grid2">
+      <div><h3>硬切换 Hard Handover</h3>
+        <p class="small"><b>先断后连（break before make）</b>：先释放与旧 BS 的信道，再建立与新 BS 的信道。<br>
+          优点：实现简单。缺点：通信短暂中断，可能掉话。<br>用于 FDMA/TDMA 系统：GSM、IS-136。</p></div>
+      <div><h3>软切换 Soft Handover</h3>
+        <p class="small"><b>先连后断（make before break）</b>：新信道与旧信道并行建立，两条链路同时用于通信。<br>
+          优点：无中断，并因分集改善边界通话质量。<br>用于 CDMA 系统：IS-95、WCDMA、cdma2000。</p></div>
+    </div>
+    <h3>降低切换掉话率</h3>
+    <p class="small">切换呼叫（进行中的通话）被中断比新呼叫被阻塞更令人反感，因此网络给切换呼叫<b>更高优先级</b>：<br>
+      <b>切换排队</b>——信道全忙时把切换请求放入缓冲区（缓冲区满才放弃）；<b>切换预留</b>——预留 r 条信道专供切换使用，空闲信道数 ≤ r 时新呼叫直接被阻塞。</p>
+  </div>
+
+  <div class="card">
+    <h2>功率控制</h2>
+    <p>同频干扰（CCI）是限制蜂窝容量的主要因素之一，功率控制正是用来压低它的手段：信号太弱就提高发射功率，太强就降低。理念是"没有人使用超过所需的功率"，从而<b>延长终端电池寿命</b>并<b>整体降低系统内干扰水平</b>。</p>
+    <p class="small"><b>闭环操作：</b>MS/BS 估计下行/上行的接收 SIR → 若优于所需 SIR，接收端命令发射端<b>降低</b>功率；若差于所需 SIR，则命令<b>提高</b>功率。</p>
+    <div class="tip"><b>与 CDMA 的关系：</b>CDMA 所有用户同频，强信号会淹没弱信号（远近效应），因此功控精度要求最高，更新周期短至 <b>1ms</b>。</div>
+  </div>
+</section>
+
+<!-- ============ A9 考题精讲 ============ -->
+<section class="section part-a" id="sec-examples">
+  <div class="eyebrow">Part A · 09 · Worked Exam Questions</div>
+  <h1>考题精讲</h1>
+  <p class="lede">用真题把前八节的公式串起来。建议先自己动手，再对照解法。</p>
+
+  <div class="card">
+    <h2>真题 1 · 系统组件 + 容量计算</h2>
+    <p class="note"><b>(a)</b> 除 MS 与 BS 外，典型蜂窝网络还有四个基本组件，解释其功能并画出系统框图。（14 分）<br>
+      <b>(b)</b> 簇尺寸 N<sub>c</sub>=9，可用信道总数 504，用户平均每小时 2 次、每次 15 分钟通话。<br>
+      　(i) 求 GoS=2% 时每小区的承载话务量与干线效率；(ii) 求该小区可容纳的用户数；(iii) 若 N<sub>c</sub> 改为 7，重算并评述。（14 分）</p>
+    <h3>(a) 解题要点</h3>
+    <p class="small">四个组件 = 有线网关、数据库、安全机制、空中接口标准（框图见 <b>A1 节</b>）。每个组件写 2–3 句功能 + 画出 MTSO 居中、BS 与 MS 在下、PSTN 在左的框图，标注上行/下行即可拿满分。</p>
+    <h3>(b) 分步解法</h3>
+    <div class="formula">每用户话务量 A<sub>u</sub> = 2 × 15/60 = <b>0.5 Erlang</b></div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>步骤</th><th>N_c = 9</th><th>N_c = 7</th></tr></thead>
+      <tbody>
+        <tr><td>每小区信道数 M = 504/N</td><td class="num">56</td><td class="num">72</td></tr>
+        <tr><td>查 Erlang B（GoS=2%）得提供话务 A</td><td class="num">45.9 Er</td><td class="num">61.0 Er</td></tr>
+        <tr><td>承载话务 C = A(1−0.02)</td><td class="num">45.0 Er</td><td class="num">59.8 Er</td></tr>
+        <tr><td>干线效率 = C/M</td><td class="num">80.3 %</td><td class="num">83.1 %</td></tr>
+        <tr><td>用户数 = A/A_u</td><td class="num">≈ 91</td><td class="num">≈ 122</td></tr>
+        <tr><td>Q = √(3N)</td><td class="num">5.196</td><td class="num">4.583</td></tr>
+        <tr><td>S/I（n=4，简化式）</td><td class="num">20.85 dB</td><td class="num">18.66 dB</td></tr>
+      </tbody>
+    </table></div>
+    <p class="small"><b>(iii) 评述：</b>簇尺寸由 9 降到 7，每小区信道数 +28.6%，可容纳用户数 +34%，干线效率由 80.3% 升到 83.1%（信道组越大，统计复用越充分 = 干线增益）。
+      代价是复用距离缩小，S/I 下降约 <b>2.2dB</b>。由于 18.66dB 仍在语音可接受门槛附近，N=7 是可行且更经济的选择——这正是 N=7 成为经典方案的原因。若还要更小的 N，就必须靠<b>扇区化</b>把 SIR 补回来。</p>
+    <div class="tip"><b>易错点：</b>① A_u 要换算成 Erlang（分钟 ÷ 60）；② 用户数用<b>提供话务 A</b> 除以 A_u（若题目要求用承载话务须说明）；③ 干线效率是"承载话务/信道数"，不是 A/M；④ 评述题必须同时讲<b>容量收益</b>与<b>SIR 代价</b>才完整。</div>
+  </div>
+
+  <div class="card">
+    <h2>真题 2 · 城市系统规划（讲义例题）</h2>
+    <p class="note">城市面积 1300km²，七小区复用，每小区 41.5km²，每簇分配 40MHz，全双工信道 60kHz，GoS=2%（Erlang B），每用户 0.03 Erlang。求小区数、每小区信道数、话务强度、最大话务、可服务用户数、每信道用户数与理论同时服务上限。</p>
+    <div class="tablewrap"><table>
+      <tbody>
+        <tr><td>小区数</td><td class="num">1300 / 41.5 ≈ <b>31</b></td></tr>
+        <tr><td>每小区信道数 M</td><td class="num">40000 / (60 × 7) ≈ <b>95</b></td></tr>
+        <tr><td>每小区话务量（GoS 2%）</td><td class="num"><b>84 Erlang</b></td></tr>
+        <tr><td>系统最大话务</td><td class="num">31 × 84 = <b>2604 Erlang</b></td></tr>
+        <tr><td>用户总数</td><td class="num">2604 / 0.03 = <b>86,800</b></td></tr>
+        <tr><td>每信道用户数</td><td class="num">86800 / 665 ≈ <b>130</b></td></tr>
+        <tr><td>理论同时服务上限</td><td class="num">M × N = 95 × 31 = <b>2945</b>（占用户数的 3.4%）</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h2>真题 3 · 市场渗透率（讲义例题）</h2>
+    <p class="note">120 万人口区域，3 家运营商：Singa 380 小区×20 信道，Mobi 100×60，Hubba 60×100。GoS=2%，每用户每小时 3 次、每次 5 分钟。求各自支持用户数与市场渗透率。</p>
+    <p class="small">A<sub>u</sub> = 3×5/60 = 0.25 Erlang。<br>
+      <b>Singa：</b>M=20 → A=13 Er → 52 用户/小区 × 380 = <b>19,760</b>（1.65%）<br>
+      <b>Mobi：</b>M=60 → A=50 Er → 200 × 100 = <b>20,000</b>（1.67%）<br>
+      <b>Hubba：</b>M=100 → A=90 Er → 360 × 60 = <b>21,600</b>（1.80%）<br>
+      合计 61,360 人，总渗透率 <b>5.11%</b>。</p>
+    <div class="tip"><b>观察：</b>Hubba 小区数最少却支持最多用户——<b>信道集中在更少的小区里反而更高效</b>（M=100 时每信道 0.9 Erlang，M=20 时只有 0.65），再次印证干线增益。</div>
+  </div>
+
+  <div class="card">
+    <h2>答题策略（讲义最后一页的提醒）</h2>
+    <ul class="small">
+      <li>仔细读题，<b>答案一定要带单位</b>，并留足时间。</li>
+      <li>先做熟悉、有把握的题目。</li>
+      <li>考试附录会给出公式表——复习重点应放在<b>怎么用</b>而不是硬背。</li>
+      <li>复习基本解题技巧：几何论证、解二次方程、简单微积分与化简、线性图。</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============ B1 WLAN ============ -->
+<section class="section part-b" id="sec-wlan">
+  <div class="eyebrow">Part B · 01 · Wireless LAN</div>
+  <h1>无线局域网 IEEE 802.11</h1>
+  <p class="lede">蜂窝网靠集中调度分配资源，WLAN 则靠<b>分布式竞争</b>。这一节的核心是：无线网卡为什么不能做碰撞检测，以及 802.11 用什么替代方案解决这个问题。</p>
+
+  <div class="card">
+    <h2>基本特征与应用</h2>
+    <div class="grid2">
+      <div><h4>物理特征</h4><p class="small">AP 与移动设备构成一个 cell（也可只有移动设备）；覆盖 <b>50–500m</b>；<b>每个 cell 只有一个物理信道</b>——收发双方共用一个频率，上下行也共用；速率 1–54Mbps。</p></div>
+      <div><h4>四类应用</h4><p class="small"><b>LAN 扩展</b>（有线骨干 + 无线接入开阔区域，如厂房、交易大厅、仓库）；<b>跨楼互联</b>（点对点无线链路连接网桥/路由器）；<b>游牧接入</b>（校园等中等距离移动办公）；<b>Ad Hoc 组网</b>（会议临时对等网络）。</p></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>网络架构：BSS / ESS / DS</h2>
+    <svg class="diagram" viewBox="0 0 700 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WLAN 架构：DS、AP、BSS、ESS">
+      <rect class="bx-a" x="120" y="14" width="460" height="34" rx="6"/>
+      <text class="lbl" x="350" y="36" text-anchor="middle" style="font-weight:600">分布式系统 DS（交换机 / 有线或无线骨干）</text>
+      <rect class="bx" x="150" y="80" width="90" height="32" rx="6"/><text class="lbl" x="195" y="101" text-anchor="middle">AP 1</text>
+      <rect class="bx" x="460" y="80" width="90" height="32" rx="6"/><text class="lbl" x="505" y="101" text-anchor="middle">AP 2</text>
+      <path class="ln-a" d="M195 80 V48"/><path class="ln-a" d="M505 80 V48"/>
+      <ellipse class="bx dash" cx="195" cy="165" rx="130" ry="62" fill="none"/>
+      <ellipse class="bx dash" cx="505" cy="165" rx="130" ry="62" fill="none"/>
+      <text class="lbl-s" x="195" y="232" text-anchor="middle">BSS 1（一个 cell）</text>
+      <text class="lbl-s" x="505" y="232" text-anchor="middle">BSS 2</text>
+      <g>
+        <rect class="bx" x="105" y="150" width="46" height="26" rx="4"/><text class="lbl-s" x="128" y="167" text-anchor="middle">STA</text>
+        <rect class="bx" x="172" y="180" width="46" height="26" rx="4"/><text class="lbl-s" x="195" y="197" text-anchor="middle">STA</text>
+        <rect class="bx" x="240" y="150" width="46" height="26" rx="4"/><text class="lbl-s" x="263" y="167" text-anchor="middle">STA</text>
+        <rect class="bx" x="425" y="150" width="46" height="26" rx="4"/><text class="lbl-s" x="448" y="167" text-anchor="middle">STA</text>
+        <rect class="bx" x="530" y="165" width="46" height="26" rx="4"/><text class="lbl-s" x="553" y="182" text-anchor="middle">STA</text>
+      </g>
+      <path class="ln dash" d="M128 150 L188 112"/><path class="ln dash" d="M195 180 L195 112"/>
+      <path class="ln dash" d="M263 150 L203 112"/><path class="ln dash" d="M448 150 L500 112"/>
+      <path class="ln dash" d="M553 165 L512 112"/>
+      <rect x="40" y="96" width="620" height="146" rx="14" fill="none" stroke="var(--accent)" stroke-dasharray="7 5" stroke-width="1.5"/>
+      <text class="lbl" x="52" y="114" style="fill:var(--accent-strong);font-weight:600">ESS = 多个 BSS 经 DS 互连</text>
+    </svg>
+    <p class="small"><b>DS 分布式系统</b>：连接各 AP 的骨干。<b>AP 接入点</b>：网桥兼中央协调功能。<b>BSS 基本服务集</b>：竞争同一无线介质的一组站点，可孤立存在，也可通过 AP 接入 DS，它就是 DS 中的一个 cell。<b>ESS 扩展服务集</b>：两个或多个 BSS 经 DS 互连。</p>
+  </div>
+
+  <div class="card">
+    <h2>802.11 标准与物理层</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>标准</th><th>频段</th><th>物理层技术</th><th class="num">速率</th></tr></thead>
+      <tbody>
+        <tr><td>802.11-1997</td><td>2.4GHz / 红外</td><td>FHSS、DSSS、IR（850–950nm）</td><td class="num">1, 2 Mbps</td></tr>
+        <tr><td>802.11b</td><td>2.4GHz ISM</td><td>DSSS 扩展</td><td class="num">5.5, 11 Mbps</td></tr>
+        <tr><td>802.11a</td><td>5GHz ISM</td><td>OFDM</td><td class="num">6–54 Mbps</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note"><b>Wi-Fi</b> 是 802.11x 系列 WLAN 的统称；Wi-Fi 联盟是非营利国际组织，通过认证保证不同厂商的 "Wi-Fi Certified" 产品互操作。</p>
+  </div>
+
+  <div class="vizbox">
+    <h3>互动动画 · CSMA/CA 完整交互时序 ★</h3>
+    <p class="lede">这是 Part B 最核心的一张图：DIFS → 随机退避 → RTS/CTS → DATA → ACK，以及其它站如何用 NAV 保持静默。切换到"碰撞"场景可看二进制指数退避如何工作。</p>
+    <div class="viz" data-viz="csmaAnim"></div>
+  </div>
+
+  <div class="card">
+    <h2>MAC 层：DFWMAC = DCF + PCF</h2>
+    <div class="grid2">
+      <div><h3>DCF 分布式协调功能</h3><p class="small">基础方案，采用 <b>CSMA/CA</b> 竞争算法，适合异步/突发业务。无线网卡无法边发边听，因此不做碰撞检测（CSMA/CD）而做<b>碰撞避免</b>，并用 ACK 确认代替。</p></div>
+      <div><h3>PCF 点协调功能</h3><p class="small">可选，建立在 DCF 之上并与之共存。由 AP 实现<b>集中轮询</b>，支持面向连接、无碰撞、有时限保证的业务。</p></div>
+    </div>
+    <h3>三种帧间间隔（IFS）</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>IFS</th><th>长度</th><th>用途</th></tr></thead>
+      <tbody>
+        <tr><td><b>SIFS</b></td><td>最短</td><td>需要立即响应的动作：ACK、CTS、轮询响应——优先级最高</td></tr>
+        <tr><td><b>PIFS</b></td><td>中等</td><td>PCF 中集中控制器发起轮询，优先于普通竞争业务</td></tr>
+        <tr><td><b>DIFS</b></td><td>最长</td><td>异步帧竞争接入的最小等待时间——优先级最低</td></tr>
+      </tbody>
+    </table></div>
+    <div class="tip"><b>优先级三级：</b>ACK 包 &gt; 时限业务包 &gt; 非时限数据包，正是通过 SIFS &lt; PIFS &lt; DIFS 实现的。</div>
+    <h3>二进制指数退避</h3>
+    <p class="small">退避时间在 <b>0 ~ CW−1</b> 个时隙中均匀选取；首次尝试 CW = CW<sub>min</sub>；每次失败后 CW <b>翻倍</b>，到 CW<sub>max</sub> 为止。IEEE 802.11 推荐 <b>CW<sub>min</sub>=32，CW<sub>max</sub>=256</b>。</p>
+  </div>
+
+  <div class="calc" id="calc-csma">
+    <h3>互动计算器 · 退避窗口与 MAC 开销</h3>
+    <p class="lede">看清 802.11 的"协议开销税"：即使 PHY 速率 54Mbps，一次 RTS/CTS 交互后有效吞吐往往只剩一半左右。</p>
+    <div class="grid2">
+      <div class="field"><label>物理层</label><select id="cw_phy">
+        <option value="ag" selected>802.11a/g（slot 9µs, SIFS 16µs）</option>
+        <option value="b">802.11b（slot 20µs, SIFS 10µs）</option></select></div>
+      <div class="field"><label>第几次重试（0 = 首次尝试）</label><input type="number" id="cw_k" value="0" min="0" max="5" step="1"></div>
+      <div class="field"><label>数据速率（Mbps）</label><input type="number" id="cw_rate" value="54" step="1"></div>
+      <div class="field"><label>载荷长度（字节）</label><input type="number" id="cw_pay" value="1500" step="100"></div>
+    </div>
+    <div class="resultbox" id="cw_result"></div>
+  </div>
+
+  <div class="card">
+    <h2>可靠交付与信道预约</h2>
+    <div class="grid2">
+      <div><h4>两帧交换</h4><p class="small">源站发数据 → 目的站做 CRC 校验 → 正确则回 ACK；源站收不到 ACK 就重传。</p></div>
+      <div><h4>四帧交换（更健壮，解决隐藏节点）</h4><p class="small">RTS → CTS → DATA → ACK。RTS/CTS 都携带本次 MSDU/ACK 传输的时长信息。</p></div>
+    </div>
+    <p class="small"><b>NAV 虚拟载波侦听：</b>周围节点根据帧中的 duration 更新内部计时器 NAV，在 NAV 归零前推迟发送。即使某节点听不到源站的 RTS，也能收到目的站的 CTS 并据此设置 NAV。</p>
+    <details><summary>展开：信道预约的三方操作细节</summary><div class="dbody">
+      <p><b>发送方：</b>侦听信道空闲达 DIFS → 发 RTS 预约 → 收到 CTS 后等待 SIFS → 发送数据包。</p>
+      <p><b>接收方：</b>等待 SIFS → 回 CTS → 收到数据后等待 SIFS → 回 ACK。</p>
+      <p><b>其它站：</b>监听信道 → 读取 duration ID 设置 NAV → 推迟 NAV 时长 + DIFS → 然后进入退避。</p>
+    </div></details>
+  </div>
+
+  <div class="vizbox">
+    <h3>互动动画 · 隐藏节点问题与 RTS/CTS 的解法</h3>
+    <div class="viz" data-viz="hiddenNode"></div>
+  </div>
+
+  <div class="vizbox">
+    <h3>超帧结构：CFP + CP</h3>
+    <div class="viz" data-viz="superframe"></div>
+  </div>
+
+  <div class="card">
+    <h2>PCF 操作与超帧</h2>
+    <p class="small"><b>PCF 轮询：</b>AP 发 <b>CF-Poll</b> 帧给某个移动节点（若 AP 自己有数据待发，可把 CF-Poll 捎带在数据帧上）；被轮询节点回 <b>Data+CF-ACK</b> 或 <b>CF-ACK</b>；一个节点交互完成后 AP 轮询下一个；全部轮询完或 CFP 时间到，AP 广播 <b>CF-End</b> 宣告 CFP 结束。</p>
+    <p class="small"><b>超帧规则：</b>DTIM 信标帧提供同步与定时，标记 CFP 开始；CFP 期间 AP 用轮询调度收发，CP 期间各站用 DCF 竞争。CFP 不能被 CP 打断（SIFS&lt;PIFS&lt;DIFS）。CFP 在所有站都被轮询一次后结束；CP 长度可由 AP 作为系统参数调整。CP 结束时 AP 用 PIFS 竞争信道：信道空闲则立即取得信道，忙则须等待，于是下一周期的超帧被<b>缩短</b>。AP 在信标中广播实际 CFP 时长供各站更新 NAV；CFP 结束时所有节点把 NAV 清零。</p>
+  </div>
+
+  <div class="card">
+    <h2>连接建立与帧类型</h2>
+    <div class="grid2">
+      <div><h4>加入 BSS 的三步</h4><p class="small">① <b>扫描</b>：被动扫描（等待 AP 的 Beacon）或主动扫描（发 Probe Request 等 Probe Response）；② <b>认证</b>：双方证明掌握给定口令；③ <b>关联</b>：交换节点与 BSS 能力信息，把节点当前位置告知 DS。<b>只有关联完成后才能收发数据帧。</b></p></div>
+      <div><h4>三类 MAC 帧</h4><p class="small"><b>数据帧</b>传数据；<b>控制帧</b>用于信道预约、数据接收确认等；<b>管理帧</b>用于关联/解关联、定时同步、安全控制。</p></div>
+    </div>
+    <h4>数据帧格式字段</h4>
+    <p class="small">帧控制（类型：控制/数据/管理）→ 时长/连接 ID（微秒级信道占用时间）→ 地址（目的、源、BSS、发送方或接收方）→ 序号控制（分片与重组）→ 帧体（MSDU 或其分片）→ 帧校验序列（32 位 CRC）。</p>
+    <h3>802.11e：QoS 增强</h3>
+    <p class="small">引入两种新模式：<b>EDCA</b> 定义 8 个业务类，各类有独立的退避参数，接入方式类似 DCF 但增加了仲裁帧间间隔 <b>AIFS</b>；节点内每个业务类有独立队列，先竞争"虚拟信道"，胜出的帧再像普通 DCF 那样竞争介质。<b>HCCA</b> 类似 PCF，由混合协调器 HC 维护各节点状态，并按各站每类业务的负载智能分配无竞争传输机会。</p>
+  </div>
+</section>
+
+<!-- ============ B2 Ad Hoc ============ -->
+<section class="section part-b" id="sec-adhoc">
+  <div class="eyebrow">Part B · 02 · Ad Hoc &amp; Sensor Networks</div>
+  <h1>Ad Hoc 与无线传感器网络</h1>
+  <p class="lede">去掉基础设施之后，网络必须自己解决三件事：怎么发现彼此、怎么找到路径、路径断了怎么办。</p>
+
+  <div class="vizbox">
+    <h3>互动动画 · 多跳路由与路由重构</h3>
+    <div class="viz" data-viz="adhocRoute"></div>
+  </div>
+
+  <div class="card">
+    <h2>MANET 的定义与特征</h2>
+    <p>移动自组织网络（MANET）是一组无线移动节点自由、动态地自组织成任意临时拓扑的系统，可在<b>没有基础设施</b>的区域实现互联。它是对等网络：无固定控制器，控制功能由参与通信的各站动态选举或分布式承担。</p>
+    <p class="small">Ad Hoc 网络是<b>自创建、自组织、自管理</b>的：控制与管理功能由节点间的交互产生。IEEE 802.11 因其极度简单而适合实现<b>单跳</b> ad hoc 网络；利用 802.11 技术也能构建覆盖数平方公里的<b>多跳</b>网络；更小尺度上，蓝牙可构建半径 10m 内的人体域/个域 Ad Hoc 网络。</p>
+    <h3>运行原理</h3>
+    <ul class="small">
+      <li>若 A 与 B 之间有传播条件足够好的无线信道，就<b>单跳</b>直接通信；否则需要一个或多个中间节点充当<b>中继（路由器）</b>。</li>
+      <li>Ad Hoc 网络的标志性特点：<b>所有节点都必须能按需充当路由器</b>。</li>
+      <li>选路的基本要求：路径必须<b>无环</b>，无环的路径才称为一条 route。</li>
+      <li>建网过程：至少两个节点广播<b>信标（beaconing）</b>宣告存在，携带地址与位置信息 → 通过交换控制消息确认可直连后各自更新路由表 → 第三个节点加入时，要么全部可直连，要么只有部分节点能听到它，此时路由更新在 B↔C、B↔A、B↔C 之间依次进行，最终确认 A 与 C 可经 B 互达。</li>
+    </ul>
+    <h3>运行稳定性（组合稳定性）</h3>
+    <p class="small">节点移动、电池耗尽、软硬件故障都会改变可达关系，需要路由更新；而拓扑更新本身会消耗带宽。<b>组合稳定（combinatorially stable）</b>的定义是：在给定时间窗内，拓扑变化足够慢，使所有必要的拓扑更新都能成功传播完成。它不只取决于网络连通性，还取决于<b>路由协议的复杂度</b>与节点的<b>瞬时计算能力</b>。</p>
+  </div>
+
+  <div class="card">
+    <h2>Ad Hoc 路由</h2>
+    <p class="small">所有 Ad Hoc 路由协议都要完成两项基本功能：<b>路由识别</b>（为一对节点找到路径，是通信的前提）与<b>路由重构</b>（在主机/链路故障、拥塞等不利事件后恢复）。</p>
+    <div class="grid2">
+      <div><h4>基于拓扑的方法</h4>
+        <p class="small"><b>周期性（表驱动）</b>：无论是否有数据要发，都定期交换路由信息以维护到所有节点的当前路由；每个节点负责传播因连通性变化而产生的拓扑更新。<br>
+          <b>按需（on-demand）</b>：只有需要承载流量时才创建路由；通信前先做路由发现，通信期间维持该路由。<br>
+          <b>混合</b>：局部区域内用周期性协议，跨区域用按需协议。</p></div>
+      <div><h4>基于位置的方法</h4>
+        <p class="small">转发只需要<b>自身位置、目的位置和邻居位置</b>：源节点通过位置服务查到目的位置并写进报文；<b>无需显式建立或维护路由，也不需要路由表和表更新</b>。邻居通过有限范围的信标消息与时间戳机制识别；信标含距离限制，超出范围的接收节点直接丢弃。<br>前提是各节点都有<b>及时准确的位置信息</b>，需要一个或多个节点充当<b>位置服务器</b>协调。</p></div>
+    </div>
+    <h3>带 QoS 要求的路由</h3>
+    <p class="small">QoS 是网络在传输数据流时应满足的一组服务要求，即对<b>端到端时延、时延抖动、可用带宽、丢包率与吞吐量</b>等可测量指标的保证。服务调用期间必须有足够的网络资源来兑现这一保证。移动无线 Ad Hoc 网络既要满足不同业务流的 QoS，又要保持高效路由，因此产生了 <b>QoS 路由</b>这一难题。</p>
+  </div>
+
+  <div class="card">
+    <h2>无线传感器网络（WSN）</h2>
+    <p class="small">低成本、低功耗、多功能的微型传感节点由<b>感知、数据处理与通信</b>三部分构成，大量密集部署在被观测现象内部或附近，可随机布撒于人难以进入的地形或救灾场景中。协议与算法必须具备<b>自组织能力</b>，节点必须有效协作。</p>
+    <h3>与一般 Ad Hoc 网络的四点差异</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>维度</th><th>Ad Hoc 网络</th><th>传感器网络</th></tr></thead>
+      <tbody>
+        <tr><td>节点数量</td><td>较少</td><td>高出几个数量级</td></tr>
+        <tr><td>部署与拓扑</td><td>相对稀疏</td><td>密集部署、易失效、拓扑变化非常频繁</td></tr>
+        <tr><td>通信范式</td><td>点对点</td><td><b>广播</b>为主</td></tr>
+        <tr><td>资源</td><td>相对充裕</td><td>功率、计算能力、存储都严重受限</td></tr>
+      </tbody>
+    </table></div>
+    <h3>通信架构与协议栈</h3>
+    <p class="small"><b>架构：</b>传感节点散布在传感场中，各自采集数据并通过<b>多跳、无基础设施</b>的方式把数据路由回<b>汇聚节点 sink</b>；sink 再经 Internet 或卫星与任务管理节点通信。设计受可靠性、可扩展性、生产成本、工作环境、网络拓扑、硬件约束、传输介质与功耗等因素影响。</p>
+    <p class="small"><b>协议栈五层 + 三个管理平面：</b>物理层需简单而健壮的调制收发；MAC 层必须<b>功耗感知</b>并尽量减少与邻居广播的碰撞；网络层负责路由；传输层维持数据流；应用层承载各类应用。横跨各层的<b>功率、移动性、任务管理平面</b>负责监控功耗、移动与任务分配，促成节点间的协同。</p>
+  </div>
+</section>
+
+<!-- ============ B3 LTE ============ -->
+<section class="section part-b" id="sec-lte">
+  <div class="eyebrow">Part B · 03 · 4G LTE</div>
+  <h1>4G LTE 网络</h1>
+  <p class="lede">LTE 是 UMTS 的演进，目标是在移动过程中为用户设备（UE）与分组数据网（PDN）之间提供<b>不中断的无缝 IP 连接</b>。</p>
+
+  <div class="card">
+    <h2>系统架构：EPS = EPC + E-UTRAN</h2>
+    <p class="small">整个系统称为<b>演进分组系统 EPS</b>，由两部分组成：<b>SAE 系统架构演进</b>（即核心网 <b>EPC</b>）与 <b>LTE</b>（即无线接入网 <b>E-UTRAN</b>，其接入技术为 E-UTRA）。EPC 由多个逻辑节点构成，而接入网基本上只有一种节点——<b>eNodeB</b>，各网元之间用标准化接口互连以支持多厂商互操作。</p>
+    <svg class="diagram" viewBox="0 0 700 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="LTE EPS 架构">
+      <rect class="bx" x="14" y="100" width="76" height="40" rx="8"/><text class="lbl" x="52" y="125" text-anchor="middle">UE</text>
+      <rect class="bx-a" x="130" y="60" width="104" height="40" rx="8"/><text class="lbl" x="182" y="85" text-anchor="middle">eNodeB 1</text>
+      <rect class="bx-a" x="130" y="150" width="104" height="40" rx="8"/><text class="lbl" x="182" y="175" text-anchor="middle">eNodeB 2</text>
+      <path class="ln-a" d="M90 116 L130 90"/><text class="lbl-s" x="96" y="98">Uu 空口</text>
+      <path class="ln dash" d="M182 100 V150"/><text class="lbl-s" x="188" y="128">X2</text>
+      <rect x="290" y="20" width="330" height="220" rx="12" fill="none" stroke="var(--accent)" stroke-dasharray="7 5" stroke-width="1.5"/>
+      <text class="lbl" x="302" y="38" style="fill:var(--accent-strong);font-weight:600">EPC 演进分组核心网</text>
+      <rect class="bx" x="310" y="56" width="92" height="38" rx="8"/><text class="lbl" x="356" y="80" text-anchor="middle">MME</text>
+      <rect class="bx" x="440" y="56" width="92" height="38" rx="8"/><text class="lbl" x="486" y="80" text-anchor="middle">HSS</text>
+      <rect class="bx" x="310" y="150" width="92" height="38" rx="8"/><text class="lbl" x="356" y="174" text-anchor="middle">S-GW</text>
+      <rect class="bx" x="440" y="150" width="92" height="38" rx="8"/><text class="lbl" x="486" y="174" text-anchor="middle">P-GW</text>
+      <path class="ln dash" d="M234 74 H310"/><text class="lbl-s" x="242" y="68">S1-MME（信令）</text>
+      <path class="ln-a" d="M234 168 H310"/><text class="lbl-s" x="242" y="163">S1-U（用户面）</text>
+      <path class="ln" d="M402 75 H440"/>
+      <path class="ln" d="M356 94 V150"/>
+      <path class="ln-a" d="M402 169 H440"/>
+      <rect class="bx" x="590" y="150" width="96" height="38" rx="8"/><text class="lbl" x="638" y="174" text-anchor="middle">PDN / Internet</text>
+      <path class="ln-a" d="M532 169 H590"/>
+      <text class="lbl-s" x="14" y="226">E-UTRAN = eNodeB 组成的网络，普通用户流量<tspan>无集中控制器</tspan></text>
+    </svg>
+    <p class="small"><b>接口：</b>eNodeB 之间用 <b>X2</b> 互连；eNodeB 到 EPC 用 <b>S1</b>——到 MME 是 <b>S1-MME</b>，到 S-GW 是 <b>S1-U</b>；eNodeB 与 UE 之间运行 <b>AS（接入层）协议</b>。</p>
+    <h3>E-UTRAN 的职责（全部功能都在 eNodeB 内）</h3>
+    <ul class="small">
+      <li><b>无线资源管理</b>：无线承载控制、无线接入准入控制、无线移动性控制、上下行资源的调度与动态分配</li>
+      <li><b>头压缩</b>：压缩 IP 包头以减少开销</li>
+      <li><b>安全</b>：所有经空口发送的数据都加密</li>
+      <li><b>与 EPC 的连接</b>：面向 MME 的信令与面向 S-GW 的承载通道</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>E-UTRA 的四大特性</h2>
+    <div class="grid2">
+      <div><h4>可伸缩带宽</h4><p class="small">物理信道带宽 1.4MHz 到 20MHz 可伸缩。</p>
+        <h4>高数据率</h4><p class="small">4×4 MIMO 时下行峰值 &gt;300Mbps，上行可达 86Mbps。</p></div>
+      <div><h4>高移动性</h4><p class="small">针对 ≤15km/h 低速优化，同时支持 350 甚至 500km/h。</p>
+        <h4>可伸缩覆盖</h4><p class="small">从家庭 femtocell 到 100km 大区。</p></div>
+    </div>
+  </div>
+
+  <div class="vizbox">
+    <h3>互动图 · 帧结构与资源网格</h3>
+    <div class="viz" data-viz="lteGrid"></div>
+  </div>
+
+  <div class="card">
+    <h2>帧结构与资源网格</h2>
+    <div class="grid2">
+      <div><h4>FDD 模式</h4><p class="small">无线帧 10ms = 10 个 1ms 子帧；每子帧 = 2 个 0.5ms 时隙。</p></div>
+      <div><h4>TDD 模式</h4><p class="small">10ms 帧 = 2 个 5ms 半帧；每半帧 = 5 个 1ms 子帧。第一个半帧含 4 个普通子帧（各 2 个 0.5ms 时隙）+ 1 个<b>特殊子帧</b>（DwPTS + GP + UpPTS，合计 1ms）；第二个半帧是否含特殊子帧取决于上下行配置是 5ms 还是 10ms 周期。</p></div>
+    </div>
+    <p class="small"><b>资源网格：</b>一个时隙内的资源在时域与频域上构成资源网格，划分为若干<b>资源块 RB</b>——每个 RB 在时域占 1 个时隙、在频域占 <b>12 个子载波</b>。时域上，常规 CP 为 <b>7 个</b> OFDM 符号、扩展 CP 为 <b>6 个</b>（小区较大时用扩展 CP）。频域子载波数取决于系统带宽。网格中占 1 个子载波 × 1 个 OFDM 符号的最小单元称为<b>资源单元 RE</b>。</p>
+  </div>
+
+  <div class="calc" id="calc-lte">
+    <h3>互动计算器 · LTE 峰值速率</h3>
+    <div class="grid2">
+      <div class="field"><label>带宽（资源块数）</label><select id="lte_bw">
+        <option value="6">1.4 MHz（6 RB）</option><option value="15">3 MHz（15 RB）</option>
+        <option value="25">5 MHz（25 RB）</option><option value="50">10 MHz（50 RB）</option>
+        <option value="75">15 MHz（75 RB）</option><option value="100" selected>20 MHz（100 RB）</option></select></div>
+      <div class="field"><label>调制方式</label><select id="lte_mod">
+        <option value="2">QPSK（2 bit/符号）</option><option value="4">16QAM（4 bit）</option>
+        <option value="6" selected>64QAM（6 bit）</option><option value="8">256QAM（8 bit）</option></select></div>
+      <div class="field"><label>MIMO 层数</label><select id="lte_mimo">
+        <option value="1">1×1（单天线）</option><option value="2">2×2 MIMO</option>
+        <option value="4" selected>4×4 MIMO</option></select></div>
+      <div class="field"><label>码率</label><input type="number" id="lte_rate" value="0.92" step="0.01" min="0.1" max="1"></div>
+    </div>
+    <div class="resultbox" id="lte_result"></div>
+    <p class="note">用默认值（20MHz、64QAM、4×4 MIMO）即可复现讲义中"下行峰值 &gt;300Mbps"的结论。</p>
+  </div>
+
+  <div class="card">
+    <h2>QoS 框架：承载、QCI 与 ARP</h2>
+    <p class="small">LTE 承载全 IP 业务，QoS 至关重要。EPS 用 <b>EPS 承载（bearer）</b>把 IP 流量从 PDN 网关路由到 UE——承载就是网关与 UE 之间<b>具有确定 QoS 的 IP 包流</b>，本质上是不同节点之间为某个业务流建立的<b>逻辑连接</b>。E-UTRAN 与 EPC 按应用需要建立和释放承载，而在接入网侧，保证承载在空口上的 QoS 是 <b>eNodeB</b> 的职责。</p>
+    <div class="grid2">
+      <div><h4>GBR 承载</h4><p class="small">有最小保证比特率，建立/修改时<b>永久分配</b>专用传输资源，适合 VoIP。资源允许时可超过 GBR，此时用 <b>MBR</b> 参数设定上限。</p></div>
+      <div><h4>non-GBR 承载</h4><p class="small">不保证特定比特率，<b>不永久分配</b>带宽资源，适合网页浏览、FTP。</p></div>
+    </div>
+    <p class="small"><b>默认承载必须是 non-GBR</b>，在 UE 接入网络时创建，用于初始连接；<b>专用承载</b>可以是 GBR 或 non-GBR，在出现具有不同 QoS 需求的新业务时建立。</p>
+    <h3>QCI（QoS 类标识）</h3>
+    <p class="small">每个 QCI 由<b>优先级、包时延预算、可接受丢包率</b>三要素刻画，决定该承载在 eNodeB 中的处理方式，从而保证无论 eNodeB 来自哪个厂商，全网的业务处理行为都一致（由 EPS 中的 PCRF 从标准 QCI 集合中选取）。<br>
+      QCI 的优先级与时延预算决定了 <b>RLC 模式配置</b>、调度策略、队列管理与整形策略：高优先级包先被调度；对丢包敏感的承载用 RLC <b>确认模式 AM</b> 确保可靠交付。<br>
+      LTE 空口调度器的三类输入：<b>UE 的无线条件、承载的 QoS 属性、邻区干扰状况</b>。</p>
+    <h3>ARP（分配与保持优先级）</h3>
+    <p class="small">用于<b>呼叫准入控制</b>：无线拥塞时决定是否建立该承载；也决定新承载建立请求到来时该承载被<b>抢占</b>的优先级；系统过载时决定丢弃哪些连接以保住高优先级连接。<b>承载一旦成功建立，ARP 不再影响包级转发</b>——包转发只由 QCI、GBR、MBR 等承载级参数决定。</p>
+    <div class="tip"><b>开放研究问题：</b>移动性管理、连接准入控制、负载均衡、业务调度、链路自适应、功率控制、安全——都是 LTE/LTE-A QoS 保障中尚未解决的方向。</div>
+  </div>
+</section>
+
+<!-- ============ B4 IoT ============ -->
+<section class="section part-b" id="sec-iot">
+  <div class="eyebrow">Part B · 04 · Internet of Things</div>
+  <h1>物联网 IoT</h1>
+  <p class="lede">IoT 的本质是<b>把尚未连接的物体连接起来</b>，让设备能感知和控制物理世界。难点不在"连上"，而在<b>规模、约束与数据管理</b>。</p>
+
+  <div class="card">
+    <h2>定义与五大挑战</h2>
+    <p class="small">IoT 让原本不在网络中的物体接入互联网，与人和其它物体通信互动，使物理世界与计算系统更紧密结合，从而提升效率、准确性与自动化水平。IoT 涉及的组件与协议极其繁杂，更像是一把涵盖各种概念、协议与技术的"伞"，具体内容取决于行业。</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>挑战</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td><b>可扩展性</b></td><td>系统要支撑数以百万计的设备；网络层可用 <b>IPv6</b> 提供足够的地址空间</td></tr>
+        <tr><td><b>安全</b></td><td>攻击面大幅扩大；一个设备被攻陷就可能成为攻击其它设备和系统的跳板</td></tr>
+        <tr><td><b>隐私</b></td><td>传感器采集的大量数据与个人及其活动强相关，可能含敏感信息与凭据，如何保护与共享是关键问题</td></tr>
+        <tr><td><b>大数据与分析</b></td><td>海量数据必须被及时处理才能产生价值；难点是对来自不同来源、不同形式的数据做实时评估</td></tr>
+        <tr><td><b>互操作性</b></td><td>各种专有与开放的协议、架构竞争；新标准有所缓解，但仍存在多种协议与实现</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="card">
+    <h2>架构标准与简化框架</h2>
+    <p class="small"><b>oneM2M</b>（ETSI 的 M2M 技术委员会 2012 年提出）：目标是构建<b>公共服务层</b>，可嵌入现场设备以便与应用服务器通信，聚焦智能电表、智能电网、智慧城市、电子健康与车联网。<br>
+      <b>IoTWF</b>（IoT 世界论坛 2014 年提出）：<b>七层参考模型</b>，涵盖边缘计算、数据存储与访问；控制流从云端数据中心流向边缘（传感器、设备、机器等智能末端），数据则自边缘沿栈<b>向北</b>汇聚到中心。</p>
+    <p class="small">两者的共性：IoT 端点设备连到一个网络，网络把数据传输到最终使用它的应用（在数据中心、云端或各管理点）。讲义采用的<b>简化框架</b>把 IoT 架构拆成两个并行的三层栈：</p>
+    <svg class="diagram" viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="IoT 简化架构双栈">
+      <text class="lbl" x="20" y="18" style="font-weight:600;fill:var(--accent-strong)">核心 IoT 功能栈</text>
+      <rect class="bx-a" x="20" y="28" width="300" height="48" rx="8"/>
+      <text class="lbl" x="170" y="48" text-anchor="middle">第 3 层 · 应用与分析层</text>
+      <text class="lbl-s" x="170" y="66" text-anchor="middle">分析类应用 / 控制类应用；数据分析 + 网络分析</text>
+      <rect class="bx" x="20" y="84" width="300" height="108" rx="8"/>
+      <text class="lbl" x="170" y="102" text-anchor="middle">第 2 层 · 通信网络层（四个子层）</text>
+      <text class="lbl-s" x="30" y="122">① 接入网子层：802.11ah / 802.15.4g / LoRa</text>
+      <text class="lbl-s" x="30" y="140">② 网关与回传子层：汇聚并经长距离链路上传</text>
+      <text class="lbl-s" x="30" y="158">③ 网络传输子层：IP / UDP / TCP</text>
+      <text class="lbl-s" x="30" y="176">④ IoT 网络管理子层：HTTP / WebSocket 等</text>
+      <rect class="bx" x="20" y="200" width="300" height="48" rx="8"/>
+      <text class="lbl" x="170" y="220" text-anchor="middle">第 1 层 · "物"：传感器与执行器</text>
+      <text class="lbl-s" x="170" y="238" text-anchor="middle">供电方式 / 移动性 / 上报频率 / 数据丰富度 / 范围 / 密度</text>
+
+      <text class="lbl" x="380" y="18" style="font-weight:600;fill:var(--accent-strong)">数据管理与计算栈</text>
+      <rect class="bx-a" x="380" y="28" width="300" height="48" rx="8"/>
+      <text class="lbl" x="530" y="48" text-anchor="middle">云 Cloud</text>
+      <text class="lbl-s" x="530" y="66" text-anchor="middle">历史分析、大数据、长期存储（时效性最低的数据）</text>
+      <rect class="bx" x="380" y="100" width="300" height="48" rx="8"/>
+      <text class="lbl" x="530" y="120" text-anchor="middle">雾 Fog（网关 / 汇聚节点）</text>
+      <text class="lbl-s" x="530" y="138" text-anchor="middle">秒~分钟级响应；上下文感知、降低时延、卸载回传</text>
+      <rect class="bx" x="380" y="172" width="300" height="48" rx="8"/>
+      <text class="lbl" x="530" y="192" text-anchor="middle">边缘 / 雾霭 Edge · Mist</text>
+      <text class="lbl-s" x="530" y="210" text-anchor="middle">端点内计算：最时延敏感的数据就地处理与过滤</text>
+      <path class="ln-a" d="M348 210 C365 210 365 60 378 52"/>
+      <text class="lbl-s" x="352" y="252">数据向北汇聚 ↑</text>
+      <text class="lbl-s" x="352" y="268">控制向南下发 ↓</text>
+      <path class="ln dash" d="M530 172 V148"/><path class="ln dash" d="M530 100 V76"/>
+    </svg>
+  </div>
+
+  <div class="vizbox">
+    <h3>接入技术的通信范围谱</h3>
+    <div class="viz" data-viz="iotRange"></div>
+  </div>
+
+  <div class="card">
+    <h2>第 2 层：通信网络层的三个决定因素</h2>
+    <ul class="small">
+      <li><b>① 通信范围</b>：智能对象与信息汇聚点之间的距离，按 PAN / HAN / NAN / FAN / LAN / MAN / WAN 归类（见上图）。</li>
+      <li><b>② 单元内对象数量</b>：目标对象数结合传输范围与吞吐要求，反过来决定"采集单元（cell）"的大小。</li>
+      <li><b>③ 成本</b>：需综合权衡成本、范围、功耗与可用带宽。</li>
+    </ul>
+    <h4>拓扑结构</h4>
+    <p class="small"><b>点对点</b>：一个对象只与一个网关通信。<b>点对多点</b>：一点与多点通信，是 IoT 的主流，细分为<b>星型、簇星型与网状（mesh）</b>。</p>
+    <h4>网关与回传 / 网络传输 / 网络管理子层</h4>
+    <p class="small">网关负责<b>跨介质</b>通信：智能对象在有限区域内静止或移动，网关通常固定。网络传输子层需要开放、标准化的协议以适配多行业多介质，并满足<b>可扩展（单网数千至百万传感器）与安全</b>的要求——<b>IP</b> 恰好满足这些条件，并能嵌入性质迥异的对象、跨越低功耗低带宽高丢包的网络；其上的 <b>TCP/UDP</b> 则决定由网络（TCP）还是应用（UDP）来控制数据交付。管理子层负责智能对象与其它系统之间的数据传输协议：基于 TCP 的 <b>HTTP</b>（传感器作客户端连到 IoT 应用），以及适配低内存、低功耗、低带宽和高丢包环境的轻量协议 <b>WebSocket</b>（提供简单的双向连接）。</p>
+  </div>
+
+  <div class="card">
+    <h2>第 3 层：应用与分析；以及为什么需要雾计算</h2>
+    <div class="grid2">
+      <div><h4>两类应用</h4><p class="small"><b>分析类</b>：汇集多个智能对象的数据、处理并展示（历史报表、统计、趋势或单个系统状态）。<b>控制类</b>：控制智能对象的行为，尤其适合那些无法在单个对象内部编程实现的复杂逻辑。</p></div>
+      <div><h4>两类分析</h4><p class="small"><b>数据分析</b>：把采集数据处理组合成对系统的智能视图，也可监控 IoT 系统自身；分为<b>静态</b>（监控元素与分析内容固定，常见于工业场景）与<b>灵活</b>（可随时增加传感器、支持上下游操作）两种。<b>网络分析</b>：连通性的丢失或劣化会直接影响效率，甚至造成严重后果，因此对连接系统必不可少。多数应用同时使用两者。</p></div>
+    </div>
+    <h3>集中上云的五个问题</h3>
+    <p class="small">① 末端 IoT 网络可用带宽非常有限；② 时延过高、失去实时响应能力；③ 网关的回传常依赖 3G/LTE 甚至卫星链路，可靠性不足；④ 回传的数据量过大以致难以处理；⑤ 数据越来越大，实时分析与响应几乎不可能。</p>
+    <h3>雾计算的五个特征</h3>
+    <p class="small"><b>上下文位置感知与低时延</b>（雾节点尽量贴近端点）；<b>地理分布</b>（服务与应用本身就要求广泛分布式部署）；<b>部署在 IoT 端点附近</b>（面对大量端点）；<b>与端点之间用无线通信</b>（最容易实现大规模可扩展）；<b>用于实时交互</b>（在雾节点预处理后，上层应用只需对数据子集做批处理）。</p>
+    <p class="small"><b>边缘（mist）计算</b>把这一思路推到极致：部分新型 IoT 端点自身就有足够算力，可完成低级分析与过滤并做出基本决策。边缘与雾<b>并不取代云</b>，而是充当过滤、分析与管理数据的第一道防线，避免云端被每个节点的每个事件反复查询。三层的分工是：<b>最时延敏感的数据在边缘/雾就地处理；可等待数秒到数分钟的交给聚合节点；时效性最低的送云端做历史分析、大数据分析与长期存储。</b></p>
+    <div class="tip"><b>设计准则：</b>设计 IoT 网络时，先评估<b>待分析的数据量</b>与<b>数据的时间敏感性</b>，再决定只用云计算是否足够，还是需要引入边缘/雾层来提升系统效率。</div>
+  </div>
+</section>
+
+<!-- ============ C1 ============ -->
+<section class="section part-c" id="sec-satintro">
+  <div class="eyebrow">Part C · 01 · Satellite Systems</div>
+  <h1>卫星系统与轨道</h1>
+  <p class="lede">地球是球面而无线电沿直线传播，所以远距离通信需要"中继站"。卫星正是理想的中继位置——它能一次覆盖极大的地理范围。</p>
+
+  <div class="vizbox">
+    <h3>互动动画 · LEO / MEO / GEO 轨道运行 ★</h3>
+    <p class="lede">观察三类轨道的周期差异：GEO 与地球自转同步，始终停在地面站上方；LEO 几分钟就掠过。</p>
+    <div class="viz" data-viz="orbitAnim"></div>
+  </div>
+
+  <div class="card">
+    <h2>用途与基本术语</h2>
+    <p class="small">卫星最初用于替代跨洋电话电缆、提供长途电话业务；如今扩展到<b>电信、遥感、气象、导航与 GPS、侦察、移动/个人卫星电话</b>等。业务重心已从电话转向<b>视频与数据</b>，其中电视广播、导航与移动卫星通信最具前景。</p>
+    <div class="tablewrap"><table>
+      <thead><tr><th>术语</th><th>含义</th></tr></thead>
+      <tbody>
+        <tr><td><b>地球站 Earth Station</b></td><td>位于地面或近地面的天线系统</td></tr>
+        <tr><td><b>上行 Uplink</b></td><td>地球站 → 卫星</td></tr>
+        <tr><td><b>下行 Downlink</b></td><td>卫星 → 地球站</td></tr>
+        <tr><td><b>转发器 Transponder</b></td><td>卫星上把上行信号变换为下行信号的电子设备</td></tr>
+        <tr><td><b>FSS / BSS / MSS</b></td><td>固定业务（卫星与固定地面站）/ 广播业务（电视、广播直播）/ 移动业务（飞机、船舶、车辆）</td></tr>
+        <tr><td><b>覆盖范围</b></td><td>全球 / 区域 / 国家</td></tr>
+      </tbody>
+    </table></div>
+    <div class="tip"><b>卫星通信的三大优势：</b>① 覆盖范围极大，<b>3 颗 GEO 即可近乎全球覆盖</b>；② 新增站点快速且成本可控，通信成本<b>对距离不敏感</b>；③ 天然适合<b>一点发多点收</b>的广播业务。</div>
+  </div>
+
+  <div class="card">
+    <h2>三类轨道对比</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>类型</th><th class="num">高度</th><th>特点</th><th>典型用途</th></tr></thead>
+      <tbody>
+        <tr><td><b>GEO</b></td><td class="num">35,863 km</td><td>赤道圆轨道，周期与地球自转相同，相对地面静止；跟踪简单、多普勒影响小；单星覆盖约 1/4 地球</td><td>承载大多数通信业务（固定地面站高增益天线可最大化卫星容量）</td></tr>
+        <tr><td><b>MEO</b></td><td class="num">8,000–18,000 km</td><td>切换远少于 LEO；时延与所需功率大于 LEO；所需卫星数少于 LEO</td><td>GPS 导航（24 颗）；数字语音、数据、传真、消息业务</td></tr>
+        <tr><td><b>LEO</b></td><td class="num">500–1,500 km</td><td>信号强、频谱可更好地局域复用；但多普勒频移大、大气阻力导致轨道逐渐衰减、需多轨道面多卫星、通信常需<b>星间切换</b></td><td>移动语音数据、对地成像与监视</td></tr>
+      </tbody>
+    </table></div>
+    <div class="grid2">
+      <div><h4>轨道形状与倾角</h4><p class="small"><b>形状</b>：以地心为圆心的圆轨道，或以地心为焦点之一的椭圆轨道。<b>倾角</b>：赤道轨道（位于赤道上空）、极轨道（经过两极）、其它称为倾斜轨道。</p></div>
+      <div><h4>GEO 的四个缺点</h4><p class="small">① 经 35,000km 后信号很弱；② 极区与高纬度地区服务差；③ 传播时延大——地面→星→地面约 <b>0.24s</b>；④ 覆盖面积过大，对广播有利但对点对点通信是<b>频谱浪费</b>。</p></div>
+    </div>
+    <h3>LEO 的两个商用类别</h3>
+    <p class="small"><b>Little LEO</b>：工作频率 &lt;1GHz、带宽 &lt;5MHz、速率 ≤10kbps，面向寻呼、跟踪与低速消息。<br>
+      <b>Big LEO</b>：工作频率 &gt;1GHz、速率可达数 Mbps，在 Little LEO 的业务之上还提供语音与定位。</p>
+  </div>
+</section>
+
+<!-- ============ C2 ============ -->
+<section class="section part-c" id="sec-satlink">
+  <div class="eyebrow">Part C · 02 · Geometry &amp; Link</div>
+  <h1>卫星几何与链路性能</h1>
+  <p class="lede">仰角、覆盖角、斜距三者由简单的三角关系联系起来，它们又直接决定了时延、覆盖面积与链路质量。</p>
+
+  <div class="card">
+    <h2>几何关系</h2>
+    <p class="small"><b>仰角 θ</b>：天线对准卫星时，主波束中心与地球站所在水平面（地表切线）之间的夹角。为获得最大覆盖，理想的最小仰角是 0°，此时卫星覆盖可延伸至光学地平线；但低仰角意味着电波穿过更厚的大气。<br>
+      <b>覆盖角 β</b>：在给定最小仰角下，卫星可见的地表范围所对应的角度。</p>
+    <div class="formula"><span class="fname">星下点角（正弦定理）</span>sin ψ = R<sub>E</sub>·cos θ / (R<sub>E</sub> + h)</div>
+    <div class="formula"><span class="fname">中心角</span>γ = 90° − θ − ψ　　<span class="fname" style="margin-top:6px">斜距</span>d = (R<sub>E</sub> + h)·sin γ / cos θ</div>
+    <div class="formula"><span class="fname">覆盖面积（球冠）</span>A = 2πR<sub>E</sub>²(1 − cos γ)　　占地球比例 = (1 − cos γ)/2</div>
+    <div class="formula"><span class="fname">轨道周期与速度</span>T = 2π√(a³/μ)，v = √(μ/a)，a = R<sub>E</sub> + h，μ = 3.986×10⁵ km³/s²</div>
+  </div>
+
+  <div class="vizbox">
+    <h3>几何示意图（随下方计算器实时更新）</h3>
+    <div class="viz" data-viz="satGeometry"></div>
+  </div>
+
+  <div class="calc" id="calc-sat">
+    <h3>互动计算器 · 轨道几何、覆盖与时延</h3>
+    <div class="segrow" id="sat_presets">
+      <button class="seg" data-h="800">LEO 800km</button>
+      <button class="seg" data-h="20200">MEO 20,200km（GPS）</button>
+      <button class="seg active" data-h="35863">GEO 35,863km</button>
+    </div>
+    <div class="grid3">
+      <div class="field"><label>轨道高度 h（km）</label><input type="number" id="sat_h" value="35863" step="100"></div>
+      <div class="field"><label>最小仰角 θ（度）</label><input type="number" id="sat_el" value="10" step="1" min="0" max="89"></div>
+      <div class="field"><label>频率 f（GHz，用于 FSL）</label><input type="number" id="sat_f" value="6" step="0.5"></div>
+    </div>
+    <div class="resultbox" id="sat_result"></div>
+    <p class="note" id="sat_note"></p>
+    <p class="note">把仰角从 10° 调到 0°，可以看到覆盖面积与全球覆盖所需卫星数如何变化；把高度调到 800km，可看到 LEO 为何需要庞大星座。</p>
+  </div>
+
+  <div class="card">
+    <h2>链路性能的三大影响因素</h2>
+    <ol class="small">
+      <li><b>卫星天线与地球站天线之间的距离</b>：<b>频率越高、卫星越高，信号功率损耗越大</b>。</li>
+      <li><b>（下行）地球站与卫星波束"瞄准点"之间的地面距离</b>：卫星波束对准地面某一点，覆盖区<b>中心信号最强</b>，越偏离中心功率下降越多。</li>
+      <li><b>大气衰减</b>：受氧气、水汽、仰角与频率影响。<b>仰角越小，电波穿过的大气越厚，衰减越严重。</b></li>
+    </ol>
+    <div class="formula"><span class="fname">自由空间损耗（GHz / km）</span>L(dB) = 92.45 + 20 log f(GHz) + 20 log d(km)</div>
+    <h3>常用卫星频段</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>频段</th><th class="num">频率范围</th><th>特点</th></tr></thead>
+      <tbody>
+        <tr><td>L</td><td class="num">1–2 GHz</td><td>移动卫星业务，终端天线小</td></tr>
+        <tr><td>S</td><td class="num">2–4 GHz</td><td>移动业务、部分广播</td></tr>
+        <tr><td>C</td><td class="num">4–8 GHz（上行 6 / 下行 4）</td><td>经典固定业务频段，抗雨衰好</td></tr>
+        <tr><td>Ku</td><td class="num">12–18 GHz（上行 14 / 下行 11–12）</td><td>电视直播、VSAT，天线更小但雨衰明显</td></tr>
+        <tr><td>Ka</td><td class="num">26–40 GHz（上行 30 / 下行 20）</td><td>宽带高速业务，波束窄、雨衰严重</td></tr>
+      </tbody>
+    </table></div>
+    <h3>地球站分类</h3>
+    <p class="small">地球站由天线、跟踪系统、接收机、发射机、复用设备与经调制解调器接入的地面链路组成。按天线口径分三类：<b>大型站 10–60m</b>、<b>小型站 1–10m</b>、<b>VSAT 甚小口径站 0.3–0.9m</b>。<b>天线越大，该站的业务容量越大。</b></p>
+  </div>
+</section>
+
+<!-- ============ C3 ============ -->
+<section class="section part-c" id="sec-satnet">
+  <div class="eyebrow">Part C · 03 · Capacity &amp; Networks</div>
+  <h1>容量分配与卫星网络</h1>
+  <p class="lede">卫星的总容量先用 FDMA 切成物理信道，再在每个信道内部做进一步分配。核心问题是：容量应当<b>固定分配</b>还是<b>按需分配</b>。</p>
+
+  <div class="vizbox">
+    <h3>互动动画 · 三种容量分配方式</h3>
+    <div class="viz" data-viz="satAccess"></div>
+  </div>
+
+  <div class="card">
+    <h2>容量分配：FAMA 与 DAMA</h2>
+    <p class="small">卫星总容量先由 <b>FDMA</b> 切成物理信道。例：C 波段 500MHz 带宽经频率复用切成 <b>24 个 40MHz 信道</b>，每个 40MHz 信道内含 <b>4MHz 保护频带</b>。</p>
+    <div class="grid2">
+      <div><h4>FAMA 固定分配</h4><p class="small">容量在多个站之间<b>固定划分</b>。由于需求会波动，这会造成<b>严重的容量闲置</b>。FAMA-FDMA：各站链路带宽预先指定，用不同频段接入卫星。</p></div>
+      <div><h4>DAMA 按需分配</h4><p class="small">容量分配随需求变化而改变，以最优方式响应各站需求波动。</p></div>
+    </div>
+    <h3>DAMA-FDMA 的实现</h3>
+    <p class="small">把一个信道内的一组子信道视为<b>可用链路池</b>；两站要建立全双工通信时，按需动态分配<b>一对子信道</b>。按需分配以<b>分布式</b>方式由地球站通过<b>公共信令信道 CSC</b> 完成：CSC 传送重复的 TDMA 帧，共 <b>50 个时隙</b>，第 1 个时隙用于同步，其余 49 个固定分配给 49 个站。某站选用一个或多个子信道后，就在自己的时隙里广播所选子信道的标识，其它站便不能再选这些信道。为公平使用子信道，还需要<b>集中调度器</b>。</p>
+  </div>
+
+  <div class="card">
+    <h2>TDMA 与 SS/TDMA</h2>
+    <p class="small"><b>TDMA：</b>传输为重复的帧序列，每帧分为若干时隙，各帧中相同位置的时隙固定属于某个用户；每站分配一个或多个时隙，轮流使用上行信道；卫星把收到的传输重发并广播给所有站。各站必须知道<b>用哪个时隙发、用哪个时隙收</b>。</p>
+    <div class="tip"><b>为什么 TDMA 通常比 FDMA 高效：</b>TDMA 的<b>保护时间与控制比特</b>所占用的容量，小于 FDMA 所需的<b>保护频带</b>。在 Ku 与 K 等更高频段，效率优势更明显。</div>
+    <p class="small">高频段的卫星波束可以做得很窄，因而能在<b>同一频率</b>上向不同区域发射多个波束，每个区域内含若干地球站。同一区域内的站之间用普通 <b>FAMA-TDMA</b> 通信；<b>不同区域</b>之间的通信则要求卫星能把时隙从一个波束交换到另一个波束——这就是<b>星上交换 SS/TDMA</b>。</p>
+    <p class="small"><b>SS/TDMA 是 DAMA-TDMA 的一种形式：</b>卫星服务 N 个区域、接收 N 路 TDMA 上行流；任一时刻，星上开关按某种方式把这些上行波束路由到 N 个下行波束，每种配置称为一个<b>模式</b>，实现完全连接需要 <b>N! 种模式</b>。卫星周期性地在模式之间切换，<b>最快每个时隙切换一次</b>；模式序列与持续时间通常可由<b>地面指令调整</b>以适应业务量变化。</p>
+  </div>
+
+  <div class="card">
+    <h2>三种典型通信配置</h2>
+    <svg class="diagram" viewBox="0 0 700 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="卫星通信三种配置">
+      <g>
+        <circle cx="110" cy="34" r="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <path class="ln-a" d="M60 130 L104 44"/><path class="ln-a" d="M116 44 L160 130"/>
+        <rect class="bx" x="40" y="130" width="42" height="24" rx="4"/><rect class="bx" x="140" y="130" width="42" height="24" rx="4"/>
+        <text class="lbl-s" x="110" y="172" text-anchor="middle">① 点对点中继</text>
+      </g>
+      <g>
+        <circle cx="350" cy="34" r="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <path class="ln-a" d="M300 128 L344 44"/>
+        <path class="ln" d="M356 44 L420 128"/><path class="ln" d="M354 46 L360 128"/><path class="ln" d="M352 46 L290 128"/>
+        <rect class="bx-a" x="280" y="128" width="42" height="24" rx="4"/>
+        <rect class="bx" x="340" y="128" width="40" height="24" rx="4"/><rect class="bx" x="400" y="128" width="40" height="24" rx="4"/>
+        <text class="lbl-s" x="350" y="172" text-anchor="middle">② 一发多收广播</text>
+      </g>
+      <g>
+        <circle cx="580" cy="34" r="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <path class="ln-a" d="M530 128 L574 44"/><path class="ln-a" d="M586 44 L640 128"/>
+        <path class="ln dash" d="M584 46 L590 128"/>
+        <rect class="bx-a" x="510" y="128" width="46" height="24" rx="4"/>
+        <text class="lbl-s" x="533" y="144" text-anchor="middle">Hub</text>
+        <rect class="bx" x="570" y="128" width="40" height="24" rx="4"/><rect class="bx" x="622" y="128" width="40" height="24" rx="4"/>
+        <text class="lbl-s" x="580" y="172" text-anchor="middle">③ 中心站 + 多个远端站（VSAT）</text>
+      </g>
+    </svg>
+    <p class="small">① 在两个远距离地球站之间提供点对点链路；② 一个发射站对多个接收站提供业务；③ 一个中心枢纽站与众多远端客户站双向通信——多个客户站共享上行容量发往枢纽站，枢纽站与各客户交换消息，并在客户之间中继消息。</p>
+  </div>
+
+  <div class="card">
+    <h2>卫星网络的路由与切换</h2>
+    <h3>两种路由方案</h3>
+    <div class="grid2">
+      <div><h4>有星间链路（ISL）</h4><p class="small">信息可在太空中直接从一颗卫星路由到另一颗，只需 <b>1 条上行 + 1 条下行</b>，所需的地面关口站也更少。</p></div>
+      <div><h4>无星间链路</h4><p class="small">地球站把信息发给卫星 → 卫星转发给一个关口站 → 关口站经地面网络路由到目标卫星所属的关口站 → 再上行。共需 <b>2 上行 + 2 下行</b>。</p></div>
+    </div>
+    <h3>四类切换</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>类型</th><th>触发原因</th></tr></thead>
+      <tbody>
+        <tr><td><b>星内切换</b> intra-satellite</td><td>用户在同一颗卫星覆盖范围内的<b>不同波束/扇区</b>之间移动</td></tr>
+        <tr><td><b>星间切换</b> inter-satellite</td><td>用户在<b>两颗卫星</b>覆盖之间移动，或卫星本身移出覆盖</td></tr>
+        <tr><td><b>关口站切换</b> gateway</td><td>卫星移出<b>当前关口站</b>的服务范围</td></tr>
+        <tr><td><b>系统间切换</b> inter-system</td><td>卫星系统与地面蜂窝系统之间的<b>垂直切换</b>，依据信号强度与 QoS 性能决定</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note">在 MEO/LEO 系统中，即使用户完全静止，卫星的移动本身也会造成切换——这是与地面蜂窝系统最根本的区别。</p>
+  </div>
+</section>
+
+<!-- ============ 自测题 ============ -->
+<section class="section" id="sec-quiz">
+  <div class="eyebrow">自测 · Self Test</div>
+  <h1>自测题</h1>
+  <p class="lede">59 道选择题覆盖三个部分，作答后立即显示解析；结束后可只重做错题。</p>
+  <div class="fchead">
+    <div class="segrow" id="quizFilter" style="margin:0">
+      <button class="seg active" data-v="ALL">全部</button>
+      <button class="seg" data-v="A">Part A 蜂窝</button>
+      <button class="seg" data-v="B">Part B 无线系统</button>
+      <button class="seg" data-v="C">Part C 卫星</button>
+    </div>
+    <button class="btn ghost" id="quizShuffle">🔀 打乱顺序</button>
+  </div>
+  <div id="quizArea"></div>
+</section>
+
+<!-- ============ 记忆卡片 ============ -->
+<section class="section" id="sec-flashcards">
+  <div class="eyebrow">复习 · Flashcards</div>
+  <h1>记忆卡片</h1>
+  <p class="lede">点击卡片或按空格翻面，方向键 ← → 翻页。</p>
+  <div class="fchead">
+    <div class="segrow" id="fcFilter" style="margin:0">
+      <button class="seg active" data-v="ALL">全部</button>
+      <button class="seg" data-v="A">Part A</button>
+      <button class="seg" data-v="B">Part B</button>
+      <button class="seg" data-v="C">Part C</button>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <span class="fcprogress" id="fc_progress"></span>
+      <button class="btn ghost" id="fc_shuffle">🔀 打乱</button>
+    </div>
+  </div>
+  <div class="fcwrap">
+    <div class="fc" id="fcCard">
+      <div class="fcface fcfront"><div class="term" id="fc_term"></div><div class="tag" id="fc_tag"></div></div>
+      <div class="fcface fcback" id="fc_def"></div>
+    </div>
+  </div>
+  <div class="fchint">点击卡片翻面 · 空格翻面 · ← → 切换</div>
+  <div class="fcctrl">
+    <button class="btn ghost" id="fc_prev">← 上一张</button>
+    <button class="btn" id="fc_next">下一张 →</button>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script src="data.js"></script>
+<script src="viz.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>

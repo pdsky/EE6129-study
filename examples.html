@@ -1,0 +1,636 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EE6129 例题手册</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#eceff0; --surface:#fff; --surface-2:#e3e9e9; --border:#cbd6d7;
+  --text:#13201f; --muted:#4e615f;
+  --accent:#0f766e; --accent-strong:#0a5a53; --accent-soft:#d7eeeb; --on-accent:#fff;
+  --mem:#7a4a0c; --mem-soft:#f7e8d2; --trap:#a3261e; --trap-soft:#fbe3e0;
+  --ok:#137a3f; --shadow:0 1px 2px rgba(19,32,31,.06),0 8px 22px rgba(19,32,31,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0b1413; --surface:#111e1c; --surface-2:#182825; --border:#273a36;
+    --text:#e6f0ed; --muted:#9ab3ad;
+    --accent:#33d1bf; --accent-strong:#7ceede; --accent-soft:#113330; --on-accent:#08100e;
+    --mem:#f0b56a; --mem-soft:#2f2210; --trap:#f2857c; --trap-soft:#351816;
+    --ok:#4fd087; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0b1413; --surface:#111e1c; --surface-2:#182825; --border:#273a36;
+  --text:#e6f0ed; --muted:#9ab3ad;
+  --accent:#33d1bf; --accent-strong:#7ceede; --accent-soft:#113330; --on-accent:#08100e;
+  --mem:#f0b56a; --mem-soft:#2f2210; --trap:#f2857c; --trap-soft:#351816;
+  --ok:#4fd087; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'IBM Plex Sans','Microsoft YaHei',system-ui,sans-serif;line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto;padding:30px 18px 90px}
+h1,h2,h3{font-family:'Barlow Condensed','Microsoft YaHei',sans-serif;font-weight:700;margin:0 0 .3em;text-wrap:balance;letter-spacing:.01em}
+h1{font-size:2.3rem;line-height:1.1}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-strong);margin-bottom:6px}
+.lede{color:var(--muted);max-width:62ch}
+.mono,.num,code{font-family:'IBM Plex Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+sub,sup{font-size:.72em}
+
+/* 工具条 */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:10px 0;margin:18px 0 8px;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:5px 12px;font-size:.8rem;cursor:pointer;font-family:inherit}
+.chip:hover{border-color:var(--accent);color:var(--text)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent);font-weight:600}
+.spacer{flex:1}
+.toggle{display:flex;align-items:center;gap:8px;font-size:.82rem;color:var(--muted);cursor:pointer;user-select:none}
+.toggle input{accent-color:var(--accent);width:16px;height:16px}
+.count{font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--muted)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* 索引表 */
+.tw{overflow-x:auto;margin:10px 0 6px}
+table{border-collapse:collapse;width:100%;font-size:.86rem;min-width:520px}
+th,td{padding:6px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+th{font-family:'IBM Plex Mono',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+td.num,th.num{text-align:right}
+tbody tr:hover{background:var(--surface-2)}
+td a{color:var(--accent-strong);text-decoration:none}
+td a:hover{text-decoration:underline}
+.ok{color:var(--ok);font-weight:600}
+
+/* 分组标题 */
+.group{margin:34px 0 10px;display:flex;align-items:baseline;gap:10px}
+.group h2{font-size:1.5rem;margin:0}
+.group span{font-size:.8rem;color:var(--muted)}
+.group::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* 例题卡片 */
+.ex{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:18px 20px;margin-bottom:14px;scroll-margin-top:70px}
+.ex header{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-bottom:8px}
+.ex h3{font-size:1.28rem;margin:0;flex:1 1 260px}
+.pg{font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;background:var(--accent-soft);color:var(--accent-strong);border-radius:6px;padding:2px 8px;white-space:nowrap}
+.q{background:var(--surface-2);border-radius:10px;padding:10px 14px;font-size:.9rem}
+.q b{color:var(--accent-strong)}
+.given{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.given span{font-family:'IBM Plex Mono',monospace;font-size:.76rem;background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:1px 7px}
+.reveal{margin-top:10px;background:none;border:1px dashed var(--accent);color:var(--accent-strong);border-radius:8px;padding:6px 12px;font-size:.82rem;cursor:pointer;font-family:inherit;display:none}
+.exam .reveal{display:inline-block}
+.exam .sol{display:none}
+.exam .ex.open .sol{display:block}
+.exam .ex.open .reveal{display:none}
+.sol{margin-top:12px}
+ol.steps{margin:0;padding-left:0;list-style:none;counter-reset:s}
+ol.steps li{counter-increment:s;position:relative;padding:5px 0 5px 34px;font-size:.9rem;border-bottom:1px dotted var(--border)}
+ol.steps li:last-child{border-bottom:none}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent-strong);font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;display:flex;align-items:center;justify-content:center}
+.calc{font-family:'IBM Plex Mono',monospace;font-size:.84rem;color:var(--muted)}
+.ans{margin-top:10px;border:1.5px solid var(--accent);border-radius:10px;padding:8px 14px;font-size:.92rem;background:var(--accent-soft)}
+.ans b{color:var(--accent-strong)}
+.mem,.trap,.note{margin-top:9px;border-radius:10px;padding:8px 14px;font-size:.86rem}
+.mem{background:var(--mem-soft)}
+.mem::before{content:'记忆　';font-weight:700;color:var(--mem)}
+.trap{background:var(--trap-soft)}
+.trap::before{content:'易错　';font-weight:700;color:var(--trap)}
+.note{border:1px solid var(--border);color:var(--muted)}
+.note::before{content:'核对　';font-weight:700;color:var(--text)}
+.done{display:flex;justify-content:flex-end;margin-top:10px}
+.done label{font-size:.8rem;color:var(--muted);display:flex;gap:6px;align-items:center;cursor:pointer}
+.done input{accent-color:var(--ok)}
+.ex.mastered{border-color:var(--ok)}
+.ex.mastered .pg::after{content:' ✓';color:var(--ok)}
+.hide{display:none!important}
+
+/* 速记页 */
+.sheet{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow);margin-bottom:14px}
+.sheet h3{font-size:1.2rem;color:var(--accent-strong)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px 22px}
+@media (max-width:640px){.grid2{grid-template-columns:1fr}h1{font-size:1.8rem}.ex{padding:15px}}
+.f{font-family:'IBM Plex Mono',monospace;font-size:.84rem;background:var(--surface-2);border-left:3px solid var(--accent);border-radius:6px;padding:6px 10px;margin:5px 0}
+.f small{display:block;font-family:'IBM Plex Sans',sans-serif;color:var(--muted);font-size:.74rem}
+ul.tight{margin:.3em 0;padding-left:1.2em;font-size:.88rem}
+ul.tight li{margin:.15em 0}
+</style>
+<style>.back{display:inline-block;margin-bottom:14px;font-size:.8rem;color:var(--muted);text-decoration:none}.back:hover{color:var(--accent-strong)}</style>
+</head>
+<body>
+<div class="wrap" id="root">
+  <a class="back" href="index.html">← 学习站目录</a>
+  <div class="eyebrow">EE6129 · Part A Cellular Communications</div>
+  <h1>例题手册</h1>
+  <p class="lede">讲义里的 15 道例题按页码整理，每题拆成：题目 → 分步解法 → 答案 → 记忆方法 → 易错点。讲义里的 Erlang 值是查表取整的，我用公式重新算过，差别写在「核对」里。打开「自测模式」会先隐藏解法，适合考前默写。</p>
+
+  <div class="tw">
+  <table>
+    <thead><tr><th class="num">页码</th><th>例题</th><th>主题</th><th>讲义答案</th></tr></thead>
+    <tbody>
+      <tr><td class="num mono">43–44</td><td><a href="#p44">例 1 · AMPS 频谱效率</a></td><td>频谱效率</td><td class="ok">✓ p.44</td></tr>
+      <tr><td class="num mono">47</td><td><a href="#p47">北美 TDMA 多址效率</a></td><td>频谱效率</td><td class="ok">✓ 同页</td></tr>
+      <tr><td class="num mono">65</td><td><a href="#p65">CCIR 模型求接收功率</a></td><td>路径损耗</td><td class="ok">✓ 同页</td></tr>
+      <tr><td class="num mono">82</td><td><a href="#p82">7 小区 FDD 信道数</a></td><td>频率复用</td><td class="ok">✓ 同页</td></tr>
+      <tr><td class="num mono">89</td><td><a href="#p89">SIR ≥ 10dB 求簇尺寸</a></td><td>同频干扰</td><td class="ok">✓ 同页</td></tr>
+      <tr><td class="num mono">91</td><td><a href="#p91">最坏情况 SIR</a></td><td>同频干扰</td><td class="ok">✓ 同页</td></tr>
+      <tr><td class="num mono">93</td><td><a href="#p93">固定信道分配 210 信道</a></td><td>信道分配</td><td class="ok">✓ 同页</td></tr>
+      <tr><td class="num mono">121–122</td><td><a href="#p121">话务量与干线增益</a></td><td>话务理论</td><td class="ok">✓ 同页</td></tr>
+      <tr><td class="num mono">123–124</td><td><a href="#p123">干线效率：10 信道 vs 5+5</a></td><td>话务理论</td><td class="ok">✓ 同页</td></tr>
+      <tr><td class="num mono">130–132</td><td><a href="#p130">三家运营商市场渗透率</a></td><td>话务理论</td><td class="ok">✓ p.131–132</td></tr>
+      <tr><td class="num mono">133–134</td><td><a href="#p133">城市蜂窝系统规划</a></td><td>话务理论</td><td class="ok">✓ p.134</td></tr>
+      <tr><td class="num mono">136</td><td><a href="#p136">小区分裂的功率下降</a></td><td>容量提升</td><td class="ok">✓ 同页</td></tr>
+      <tr><td class="num mono">140–142</td><td><a href="#p140">小区分裂的信道数</a></td><td>容量提升</td><td class="ok">✓ p.141–142</td></tr>
+      <tr><td class="num mono">144–145</td><td><a href="#p145">扇区化的 SIR 改善</a></td><td>容量提升</td><td class="ok">✓ 同页</td></tr>
+      <tr><td class="num mono">148–149</td><td><a href="#p148">扇区化后每小时呼叫数</a></td><td>容量提升</td><td class="ok">✓ p.149</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="lede" style="font-size:.84rem">Part B（无线系统）和 Part C（卫星通信）<b>没有数值例题</b>，只有需要记住的几个数字，放在最后的<a href="#bc" style="color:var(--accent-strong)">速记页</a>。</p>
+
+  <div class="bar" id="bar">
+    <button class="chip on" data-t="all">全部</button>
+    <button class="chip" data-t="se">频谱效率</button>
+    <button class="chip" data-t="pl">路径损耗</button>
+    <button class="chip" data-t="ci">复用与干扰</button>
+    <button class="chip" data-t="tr">话务理论</button>
+    <button class="chip" data-t="cap">容量提升</button>
+    <span class="spacer"></span>
+    <label class="toggle"><input type="checkbox" id="examMode"> 自测模式</label>
+    <span class="count" id="count"></span>
+  </div>
+
+  <!-- ================= 频谱效率 ================= -->
+  <div class="group" data-t="se"><h2>频谱效率</h2><span>2 题</span></div>
+
+  <article class="ex" data-t="se" id="p44">
+    <header><span class="pg">p.43–44</span><h3>例 1 · AMPS 系统的频谱效率</h3></header>
+    <div class="q">两家运营商共享 25MHz 的 AMPS 系统，每个小区用 3 条控制信道。求频谱效率、每小时呼叫数与用户数。
+      <div class="given"><span>信道宽 30kHz</span><span>小区面积 4km²</span><span>总覆盖 2000km²</span><span>1.2 次/用户/小时</span><span>平均通话 100s</span><span>GoS 2%</span><span>N = 7</span></div>
+    </div>
+    <button class="reveal">显示解法</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>每家运营商分到 25 ÷ 2 = 12.5MHz，信道数 <span class="calc">12.5×10⁶ ÷ 30×10³ = 416</span></li>
+        <li>扣掉控制信道：每个小区 3 条，一簇 7 个小区 → <span class="calc">416 − 3×7 = 395</span> 条业务信道</li>
+        <li>每小区信道数 <span class="calc">395 ÷ 7 ≈ 56</span></li>
+        <li>查 Erlang B 表（M = 56，GoS 2%）→ <b>A = 45.9 Erlang/小区</b>，折合 <span class="calc">45.9 ÷ 4 = 11.5 Er/km²</span></li>
+        <li>频谱效率 <span class="calc">η<sub>m</sub> = 45.9 ÷ (12.5MHz × 4km²) = 0.92 Er/MHz/km²</span></li>
+        <li>每小时呼叫数 = A × 3600 ÷ h：<span class="calc">45.9 × 3600/100 = 1652.4 次/小时/小区</span>，除以面积得 413.1 次/小时/km²</li>
+        <li>用户数 = 呼叫数 ÷ 每人呼叫次数：<span class="calc">1652.4 ÷ 1.2 = 1377 用户/小区</span></li>
+        <li>（p.45 顺带）FDMA 多址效率 <span class="calc">η<sub>a</sub> = 395 × 30kHz ÷ 12.5MHz = 0.948</span></li>
+      </ol>
+      <div class="ans"><b>η<sub>m</sub> = 0.92 Er/MHz/km²</b>　·　1652 次/小时/小区　·　<b>1377 用户/小区</b>　·　η<sub>a</sub> = 0.948</div>
+      <div class="mem">背数字链：<b>25 → 12.5 → 416 → 395 → 56 → 45.9</b>。通话 100 秒时，每小时呼叫数 = A × 36。</div>
+      <div class="trap">控制信道要减 <b>3 × 7 = 21</b> 条，不是 3 条。η<sub>m</sub> 的分母用的是<b>单个小区的面积 4km²</b>，因为 A 是每个小区的话务量；题目给的总覆盖 2000km² 在计算中用不到。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已记住</label></div>
+  </article>
+
+  <article class="ex" data-t="se" id="p47">
+    <header><span class="pg">p.47</span><h3>北美 TDMA 系统的多址频谱效率</h3></header>
+    <div class="q">求北美 TDMA 系统的多址频谱效率 η<sub>a</sub>。
+      <div class="given"><span>单运营商 12.5MHz</span><span>信道间隔 30kHz</span><span>数据信道 395</span><span>帧长 40ms</span><span>每帧 6 时隙</span><span>语音 13kbps</span><span>总速率 16.2kbps</span></div>
+    </div>
+    <button class="reveal">显示解法</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>每个时隙长 40 ÷ 6 = 6.67ms，但其中只有 13/16.2 装的是语音，其余是开销</li>
+        <li>有效时隙 <span class="calc">T<sub>s</sub> = (13/16.2) × (40/6) = 5.35ms</span></li>
+        <li>时间利用率 <span class="calc">T<sub>s</sub>M<sub>t</sub>/T<sub>f</sub> = 5.35 × 6 ÷ 40 = 0.8025</span></li>
+        <li>这是窄带 TDMA（总带宽再分成 30kHz 子带），频率利用率 <span class="calc">B<sub>u</sub>N<sub>u</sub>/B<sub>w</sub> = 30 × 395 ÷ 12500 = 0.948</span></li>
+        <li>两者相乘 <span class="calc">η<sub>a</sub> = 0.8025 × 0.948 = 0.76</span></li>
+      </ol>
+      <div class="ans"><b>η<sub>a</sub> ≈ 0.76</b></div>
+      <div class="mem">η<sub>a</sub> = <b>时间利用率 × 频率利用率 = 0.80 × 0.95 ≈ 0.76</b>。其中 0.948 就是例 1 里的 FDMA 效率，两题可以一起记。</div>
+      <div class="trap">T<sub>s</sub> 不是 40/6 = 6.67ms，要乘 13/16.2 扣掉开销。窄带 TDMA 要乘频率因子，只算 T<sub>s</sub>M<sub>t</sub>/T<sub>f</sub> 是宽带 TDMA 的公式。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已记住</label></div>
+  </article>
+
+  <!-- ================= 路径损耗 ================= -->
+  <div class="group" data-t="pl"><h2>路径损耗</h2><span>1 题</span></div>
+
+  <article class="ex" data-t="pl" id="p65">
+    <header><span class="pg">p.65（背景 p.58–64）</span><h3>用 CCIR 模型求接收功率</h3></header>
+    <div class="q">用 CCIR 城区模型求接收功率 P<sub>R</sub>（f = 900MHz）。
+      <div class="given"><span>P<sub>T</sub> = 5W</span><span>d = 2km</span><span>G<sub>T</sub> = 10dBd</span><span>G<sub>R</sub> = 0dBd</span><span>h<sub>T</sub> = 25m</span><span>h<sub>R</sub> = 2m</span></div>
+    </div>
+    <button class="reveal">显示解法</button>
+    <div class="sol">
+      <p style="font-size:.88rem;margin:.2em 0 .6em">思路：先按<b>标准条件</b>（P<sub>T</sub> = 10W、G<sub>T</sub> = 6dBd、G<sub>R</sub> = 0dBd、h<sub>T</sub> = 30m、h<sub>R</sub> = 3m）算出一条基准直线 P<sub>R</sub> = P<sub>0</sub> + γ log d，再用 p.63 的修正表逐项修正。CCIR 城区：P<sub>0</sub> = −71.04dBm，γ = −35.4。</p>
+      <ol class="steps">
+        <li>基准线 <span class="calc">−71.04 − 35.4 × log2 = −71.04 − 10.66 = −81.70 dBm</span></li>
+        <li>发射功率修正 <span class="calc">10 log(5/10) = −3.01</span></li>
+        <li>基站高度修正（截距）<span class="calc">14 log(25/30) = −1.11</span></li>
+        <li>基站高度修正（斜率）<span class="calc">6.5 log(25/30) × log2 = −0.15</span></li>
+        <li>终端高度修正 <span class="calc">2.25 × (2 − 3) = −2.25</span></li>
+        <li>天线增益修正 <span class="calc">G<sub>T</sub>: 10 − 6 = +4；G<sub>R</sub>: 0 − 0 = 0</span></li>
+        <li>全部相加 <span class="calc">−81.70 − 3.01 − 1.11 − 0.15 − 2.25 + 4 = −84.22 dBm</span></li>
+      </ol>
+      <div class="ans"><b>P<sub>R</sub> = −84.22 dBm</b></div>
+      <div class="tw"><table style="min-width:420px">
+        <thead><tr><th>参数</th><th>标准值</th><th>截距修正</th><th>斜率修正</th></tr></thead>
+        <tbody>
+          <tr><td>P<sub>T</sub></td><td class="mono">10W</td><td class="mono">10 log(P<sub>T</sub>′/10)</td><td class="mono">0</td></tr>
+          <tr><td>h<sub>T</sub></td><td class="mono">30m</td><td class="mono">14 log(h<sub>T</sub>′/30)</td><td class="mono">6.5 log(h<sub>T</sub>′/30)</td></tr>
+          <tr><td>G<sub>T</sub></td><td class="mono">6dBd</td><td class="mono">G<sub>T</sub>′ − 6</td><td class="mono">0</td></tr>
+          <tr><td>h<sub>R</sub></td><td class="mono">3m</td><td class="mono">2.25(h<sub>R</sub>′ − 3)</td><td class="mono">0</td></tr>
+          <tr><td>G<sub>R</sub></td><td class="mono">0dBd</td><td class="mono">G<sub>R</sub>′ − 0</td><td class="mono">0</td></tr>
+        </tbody>
+      </table></div>
+      <div class="mem"><b>先画标准线，再逐项修正。</b>修正表里的系数都来自 CCIR 公式本身：−14 log h<sub>T</sub> → 14；(45 − 6.5 log h<sub>T</sub>) log d → 6.5；A(h<sub>R</sub>) 中的 (log f − 0.7)h<sub>R</sub> 在 f = 900 时等于 <b>2.25 × h<sub>R</sub></b>。</div>
+      <div class="trap">① 功率修正用<b>比值</b> P<sub>T</sub>′/10W；② 基站高度要修正<b>两项</b>（截距和斜率），斜率那项还要乘 log d；③ 天线增益以 dBd 为单位，直接减去标准值 6。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已记住</label></div>
+  </article>
+
+  <!-- ================= 复用与干扰 ================= -->
+  <div class="group" data-t="ci"><h2>频率复用与同频干扰</h2><span>4 题</span></div>
+
+  <article class="ex" data-t="ci" id="p82">
+    <header><span class="pg">p.82</span><h3>7 小区 FDD 系统的信道数</h3></header>
+    <div class="q">7 小区复用的 FDD 蜂窝系统，采用均匀固定信道分配，求系统和每个小区的<b>双工</b>语音信道数。
+      <div class="given"><span>总带宽 30MHz</span><span>单工信道 25kHz</span><span>控制信道占 2MHz</span></div>
+    </div>
+    <button class="reveal">显示解法</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>先减控制 <span class="calc">30 − 2 = 28MHz</span></li>
+        <li>FDD 上下行各一半 <span class="calc">28 ÷ 2 = 14MHz/链路</span></li>
+        <li>每条链路的单工信道 <span class="calc">14000 ÷ 25 = 560</span></li>
+        <li>一个双工信道 = 上行一个单工 + 下行一个单工 → 系统共 <b>560 个双工信道</b></li>
+        <li>每小区 <span class="calc">560 ÷ 7 = 80</span></li>
+      </ol>
+      <div class="ans">系统 <b>560</b> 个双工信道　·　每小区 <b>80</b> 个</div>
+      <div class="mem">四步顺序：<b>减控制 → 对半分 → 除信道宽 → 除 N</b>。</div>
+      <div class="trap">不要写成 28000 ÷ 25 = 1120 个双工信道。1120 是单工信道总数，两个单工才组成一个双工。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已记住</label></div>
+  </article>
+
+  <article class="ex" data-t="ci" id="p89">
+    <header><span class="pg">p.89</span><h3>SIR ≥ 10dB 时选簇尺寸</h3></header>
+    <div class="q">系统要求 SIR = 10dB，路径损耗指数 n = 4，用简化分析求<b>所需</b>簇尺寸与<b>最优</b>簇尺寸。</div>
+    <button class="reveal">显示解法</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>简化假设：第一层 6 个干扰源都在距离 D 处，<span class="calc">S/I = Q<sup>n</sup>/6，Q = √(3N)</span></li>
+        <li>n = 4 时开方消掉：<span class="calc">S/I = (3N)² / 6</span></li>
+        <li>逐个代入有效 N：
+          <div class="tw"><table style="min-width:360px">
+            <thead><tr><th class="num">N</th><th class="num">(3N)²/6</th><th class="num">SIR</th></tr></thead>
+            <tbody>
+              <tr><td class="num">1</td><td class="num">1.5</td><td class="num">1.76 dB</td></tr>
+              <tr><td class="num">3</td><td class="num">13.5</td><td class="num"><b>11.30 dB</b> ← 首个 ≥ 10dB</td></tr>
+              <tr><td class="num">4</td><td class="num">24</td><td class="num">13.80 dB</td></tr>
+              <tr><td class="num">7</td><td class="num">73.5</td><td class="num"><b>18.66 dB</b> ← 首个 &gt; 18dB</td></tr>
+              <tr><td class="num">9</td><td class="num">121.5</td><td class="num">20.85 dB</td></tr>
+              <tr><td class="num">12</td><td class="num">216</td><td class="num">23.34 dB</td></tr>
+              <tr><td class="num">13</td><td class="num">253.5</td><td class="num">24.04 dB</td></tr>
+            </tbody>
+          </table></div>
+        </li>
+      </ol>
+      <div class="ans">所需簇尺寸 <b>N = 3</b>（SIR ≥ 10dB）　·　最优簇尺寸 <b>N = 7</b>（语音质量要求 SIR &gt; 18dB）</div>
+      <div class="mem"><b>n = 4 时 S/I = (3N)²/6，不用开根号。</b>N = 7 → 21² = 441 → ÷6 = 73.5 → 10 log 73.5 = 20 − 1.34 ≈ 18.66dB。</div>
+      <div class="trap">题目问了两个不同的答案：「required」对应满足门槛的<b>最小</b> N，「optimum」对应满足 18dB 语音质量的 N。只答一个会丢分。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已记住</label></div>
+  </article>
+
+  <article class="ex" data-t="ci" id="p91">
+    <header><span class="pg">p.91</span><h3>最坏情况 SIR（N = 7，n = 4）</h3></header>
+    <div class="q">移动台位于小区边缘，第一层 6 个干扰源到它的距离不再相等。分两种情况求 S/I。</div>
+    <button class="reveal">显示解法</button>
+    <div class="sol">
+      <ol class="steps">
+        <li><span class="calc">Q = √21 = 4.583</span>，先把要用的四次方算好：<span class="calc">(Q−1)⁴ = 164.9，Q⁴ = 441，(Q+1)⁴ = 971.8</span></li>
+        <li><b>情况 1</b>：2 个干扰源在 D−R，2 个在 D，2 个在 D+R
+          <div class="calc">S/I = 1 / [2/164.9 + 2/441 + 2/971.8] = 1/0.01872 = 53.4 → 17.27 dB</div></li>
+        <li><b>情况 2（保守）</b>：6 个干扰源全部按最近距离 D−R 计算
+          <div class="calc">S/I = (Q−1)⁴ / 6 = 164.9/6 = 27.5 → 14.39 dB</div></li>
+      </ol>
+      <div class="ans">情况 1：<b>17.27 dB</b>　·　情况 2：<b>14.39 dB</b></div>
+      <div class="mem">三种口径越悲观越低：<b>18.66</b>（全在 D）&gt; <b>17.27</b>（D−R、D、D+R 各两个）&gt; <b>14.39</b>（全在 D−R）。</div>
+      <div class="trap">情况 2 的分母仍然是 6。情况 1 是 2+2+2 的分组，每组系数是 2。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已记住</label></div>
+  </article>
+
+  <article class="ex" data-t="ci" id="p93">
+    <header><span class="pg">p.93</span><h3>固定信道分配：210 条信道</h3></header>
+    <div class="q">系统共有 210 条信道，采用固定信道分配（N = 7），求每个小区的信道数。</div>
+    <button class="reveal">显示解法</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>均匀固定分配（UFCA）：每小区分到 1/7 <span class="calc">210 ÷ 7 = 30</span></li>
+        <li>每小区通常留 1 条作控制信道 <span class="calc">30 − 1 = 29</span></li>
+      </ol>
+      <div class="ans">每小区 <b>30</b> 条，可用于通话的 <b>29</b> 条</div>
+      <div class="mem">UFCA = <b>总数 ÷ N，再减控制</b>。</div>
+      <div class="trap">最后要减 1 条控制信道，否则只拿一半分。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已记住</label></div>
+  </article>
+
+  <!-- ================= 话务理论 ================= -->
+  <div class="group" data-t="tr"><h2>话务理论</h2><span>4 题</span></div>
+
+  <article class="ex" data-t="tr" id="p121">
+    <header><span class="pg">p.121–122</span><h3>话务量与干线增益</h3></header>
+    <div class="q">忙时每用户每小时呼叫 0.4–1.2 次，平均通话 100 秒。求一个 50 信道、GoS 2% 的小区能服务多少用户，以及干线增益。</div>
+    <button class="reveal">显示解法</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>每用户话务量 <span class="calc">A<sub>u</sub> = λ/μ = 1.2 × 100/3600 = 0.033 Erlang</span></li>
+        <li>讲义给出的表值：
+          <div class="tw"><table style="min-width:340px">
+            <thead><tr><th>GoS</th><th class="num">M = 10</th><th class="num">M = 20</th><th class="num">M = 50</th></tr></thead>
+            <tbody>
+              <tr><td>5%</td><td class="num">6.2</td><td class="num">15.2</td><td class="num">44.3</td></tr>
+              <tr><td>2%</td><td class="num">5.08</td><td class="num">13.2</td><td class="num"><b>40.3</b></td></tr>
+            </tbody>
+          </table></div></li>
+        <li>用户数 <span class="calc">40.3 ÷ 0.033 ≈ 1210</span></li>
+        <li>干线增益 = 用户数 ÷ 信道数 <span class="calc">1210 ÷ 50 = 24.2</span></li>
+      </ol>
+      <div class="ans">约 <b>1210 个用户</b>　·　干线增益 <b>24.2</b></div>
+      <div class="mem"><b>A<sub>u</sub> = 次数 × 秒 ÷ 3600</b>。50 条信道约能服务 1200 人，相当于每条信道服务 24 人。M 越大、GoS 越宽松，干线增益越大。</div>
+      <div class="trap">用户数和信道数不是一回事。用户远多于信道，是因为不会所有人同时打电话。</div>
+      <div class="note">公式精确值：M = 50、GoS 5% 时 A = 44.53（讲义写 44.3）；其余表值与公式一致。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已记住</label></div>
+  </article>
+
+  <article class="ex" data-t="tr" id="p123">
+    <header><span class="pg">p.123–124</span><h3>干线效率：一组 10 信道 vs 两组 5 信道</h3></header>
+    <div class="q">GoS = 1%。比较 10 条信道集中成一组，与分成两组各 5 条时能承载的话务量和干线效率。</div>
+    <button class="reveal">显示解法</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>一组 10 条：查表 <span class="calc">A = 4.46 Er → 效率 4.46/10 = 44.6%</span></li>
+        <li>两组各 5 条：查表每组 1.36 Er <span class="calc">→ 共 2.72 Er → 效率 2.72/10 = 27.2%</span></li>
+        <li>比较 <span class="calc">4.46 ÷ 2.72 = 1.64</span>，即集中后多承载约 60%</li>
+      </ol>
+      <div class="ans">集中：<b>4.46 Er（44.6%）</b>　·　分散：<b>2.72 Er（27.2%）</b>　·　集中多承载约 <b>60%</b></div>
+      <div class="mem"><b>一大锅比两小锅多 60%。</b>这是后面扇区化和运营商对比两道题的原理。</div>
+      <div class="trap">评述时要补一句：分成两组后 SIR 可能更好。只写容量，不写 SIR 这个代价，答案不完整。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已记住</label></div>
+  </article>
+
+  <article class="ex" data-t="tr" id="p130">
+    <header><span class="pg">p.130–132</span><h3>三家运营商的市场渗透率</h3></header>
+    <div class="q">某住宅区 120 万人，三家运营商都满负荷运行，GoS 2%。每用户每小时 3 次、每次 5 分钟。求各家支持的用户数和市场渗透率。
+      <div class="given"><span>Singa：380 小区 × 20 信道</span><span>Mobi：100 小区 × 60 信道</span><span>Hubba：60 小区 × 100 信道</span></div>
+    </div>
+    <button class="reveal">显示解法</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>每用户话务量 <span class="calc">A<sub>u</sub> = 3 × 5/60 = 0.25 Erlang</span></li>
+        <li>每家都用同一套三步：查表得 A → 除以 A<sub>u</sub> 得每小区用户 → 乘小区数
+          <div class="tw"><table style="min-width:460px">
+            <thead><tr><th>运营商</th><th class="num">M</th><th class="num">A</th><th class="num">用户/小区</th><th class="num">总用户</th><th class="num">渗透率</th></tr></thead>
+            <tbody>
+              <tr><td>Singa</td><td class="num">20</td><td class="num">13</td><td class="num">52</td><td class="num">19,760</td><td class="num">1.65%</td></tr>
+              <tr><td>Mobi</td><td class="num">60</td><td class="num">50</td><td class="num">200</td><td class="num">20,000</td><td class="num">1.67%</td></tr>
+              <tr><td>Hubba</td><td class="num">100</td><td class="num">90</td><td class="num">360</td><td class="num">21,600</td><td class="num">1.80%</td></tr>
+            </tbody>
+          </table></div></li>
+        <li>合计 <span class="calc">61,360 ÷ 1,200,000 = 5.11%</span></li>
+      </ol>
+      <div class="ans">Singa <b>19,760（1.65%）</b>　·　Mobi <b>20,000（1.67%）</b>　·　Hubba <b>21,600（1.80%）</b>　·　合计 <b>5.11%</b></div>
+      <div class="mem">总信道数 Singa 7600 最多、Hubba 6000 最少，但 <b>Hubba 用户最多</b>，因为它的信道集中在少数小区里。这和上一题「一大锅比两小锅强」是同一个道理。</div>
+      <div class="trap">渗透率的分母是 120 万总人口。A<sub>u</sub> 的单位要从分钟换算成小时（÷ 60）。</div>
+      <div class="note">讲义表值取了整数。公式精确值：Mobi M = 60 时 A = 49.6，Hubba M = 100 时 A = 88.0，渗透率约 1.65% 和 1.76%，排名和结论不变。考试按表值写即可。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已记住</label></div>
+  </article>
+
+  <article class="ex" data-t="tr" id="p133">
+    <header><span class="pg">p.133–134</span><h3>城市蜂窝系统规划</h3></header>
+    <div class="q">城市面积 1300km²，七小区复用，每簇分配 40MHz，采用 Erlang B、GoS 2%。依次求：小区数、每小区信道数、每小区话务量、最大话务量、可服务用户数、每个唯一信道的用户数、理论最大同时服务数。
+      <div class="given"><span>小区面积 41.5km²</span><span>全双工信道 60kHz</span><span>每用户 0.03 Er</span></div>
+    </div>
+    <button class="reveal">显示解法</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>小区数 <span class="calc">1300 ÷ 41.5 ≈ 31</span></li>
+        <li>每小区信道数 <span class="calc">40000kHz ÷ (60 × 7) ≈ 95</span></li>
+        <li>查表（M = 95，GoS 2%）<span class="calc">A = 84 Erlang/小区</span></li>
+        <li>最大话务量 <span class="calc">31 × 84 = 2604 Erlang</span></li>
+        <li>用户数 <span class="calc">2604 ÷ 0.03 = 86,800</span></li>
+        <li>唯一信道数 = 一簇的信道数 <span class="calc">95 × 7 = 665</span>，每信道用户 <span class="calc">86800 ÷ 665 ≈ 130</span></li>
+        <li>理论最大同时服务数 <span class="calc">95 × 31 = 2945</span>，只占用户总数的 3.4%</li>
+      </ol>
+      <div class="ans"><b>31</b> 个小区　·　<b>95</b> 信道/小区　·　<b>84</b> Er/小区　·　<b>2604</b> Er　·　<b>86,800</b> 用户　·　<b>130</b> 用户/信道　·　<b>2945</b>（3.4%）</div>
+      <div class="mem">七问按顺序是一条链：<b>面积比 → 带宽比 → 查表 → 乘小区数 → 除 A<sub>u</sub> → 除 665 → 乘 31</b>。</div>
+      <div class="trap">① 60kHz 已经是<b>全双工</b>信道宽度，不要再乘 2；② 「唯一信道」是 665（一簇 95 × 7），不是全系统的 2945。</div>
+      <div class="note">公式精确值：M = 95、GoS 2% 时 A = 83.1（讲义取 84），用户数约 85,900。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已记住</label></div>
+  </article>
+
+  <!-- ================= 容量提升 ================= -->
+  <div class="group" data-t="cap"><h2>容量提升：小区分裂与扇区化</h2><span>4 题</span></div>
+
+  <article class="ex" data-t="cap" id="p136">
+    <header><span class="pg">p.136</span><h3>小区分裂的功率下降</h3></header>
+    <div class="q">微小区半径是原小区的一半，路径损耗指数 n = 4。为保持相同的 SIR，微小区的发射功率要降低多少？</div>
+    <button class="reveal">显示解法</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>小区边缘的接收功率要相等：<span class="calc">P<sub>t1</sub> R⁻⁴ = P<sub>t2</sub> (R/2)⁻⁴</span></li>
+        <li>整理 <span class="calc">P<sub>t2</sub> = P<sub>t1</sub> / 2⁴ = P<sub>t1</sub>/16</span></li>
+        <li>换成 dB <span class="calc">10 log 16 = 12.04 dB</span></li>
+      </ol>
+      <div class="ans">发射功率降为 <b>1/16</b>，即降低 <b>12dB</b></div>
+      <div class="mem"><b>半径除以 k，功率除以 kⁿ。</b>2⁴ = 16，每个 2 倍是 3dB，4 个就是 12dB。</div>
+      <div class="trap">3:1 分裂时半径是 1/√3，功率除以 (√3)⁴ = 9，降低 9.54dB，不是 12dB。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已记住</label></div>
+  </article>
+
+  <article class="ex" data-t="cap" id="p140">
+    <header><span class="pg">p.140–142</span><h3>小区分裂后的信道数</h3></header>
+    <div class="q">每个基站固定 60 条信道。原小区半径 1km，微小区半径 0.5km。求以基站 A 为中心、3km × 3km 正方形区域内的信道数：(a) 不用微小区；(b) 使用微小区。</div>
+    <button class="reveal">显示解法</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>正方形从 A 向上下左右各延伸 1.5km，从图上估计约含 <b>4 个大小区</b></li>
+        <li>不用微小区 <span class="calc">4 × 60 = 240 条</span></li>
+        <li>半径减半，面积变为 1/4，微小区数最多 <span class="calc">(R ÷ R/2)² × 4 = 16</span>，从图上估计约 15 个</li>
+        <li>使用微小区 <span class="calc">15 × 60 = 900 条</span></li>
+      </ol>
+      <div class="ans">(a) <b>240</b> 条　·　(b) <b>900</b> 条，约 <b>4 倍</b></div>
+      <div class="mem"><b>半径 ÷ 2 → 面积 ÷ 4 → 基站 × 4 → 信道 × 4。</b></div>
+      <div class="trap">讲义取 15 而不是 16，因为这是从图上数出来的估计值。写 16 × 60 = 960 也可以，但要注明是估计。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已记住</label></div>
+  </article>
+
+  <article class="ex" data-t="cap" id="p145">
+    <header><span class="pg">p.144–145</span><h3>扇区化的 SIR 改善（N = 7，n = 4）</h3></header>
+    <div class="q">分别求 3 扇区（120°）和 6 扇区（60°）的最坏情况 S/I，并说明 120° 扇区化带来的容量变化。</div>
+    <button class="reveal">显示解法</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>预先算好 <span class="calc">Q = 4.583，Q⁴ = 441，(Q + 0.7)⁴ = 5.283⁴ = 778.9</span></li>
+        <li><b>3 扇区</b>剩 2 个干扰源，距离分别为 D 和 D + 0.7R
+          <div class="calc">S/I = 1 / [Q⁻⁴ + (Q+0.7)⁻⁴] = 1 / (1/441 + 1/778.9) = 281.6 → 24.5 dB</div></li>
+        <li><b>6 扇区</b>只剩 1 个干扰源，距离 D + 0.7R
+          <div class="calc">S/I = (Q + 0.7)⁴ = 778.9 → 28.9 dB</div></li>
+        <li>全向约 18dB，120° 扇区化后达到 24.5dB，相当于 N = 12 时的水平。可以把簇尺寸从 12 缩小到 7，容量提高 <span class="calc">12/7 = 1.714 倍</span></li>
+      </ol>
+      <div class="ans">3 扇区 <b>24.5 dB</b>　·　6 扇区 <b>28.9 dB</b>　·　120° 扇区化容量约 <b>×1.714</b></div>
+      <div class="mem"><b>3 扇区留 2 个干扰源（Q 和 Q + 0.7），6 扇区只留 1 个（Q + 0.7）。</b>全向时是 6 个干扰源 → 3 扇区 2 个 → 6 扇区 1 个。</div>
+      <div class="trap">扇区化公式里<b>没有除以 6</b>。有几个干扰源，分母就加几项。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已记住</label></div>
+  </article>
+
+  <article class="ex" data-t="cap" id="p148">
+    <header><span class="pg">p.148–149</span><h3>扇区化后每小时能处理多少呼叫</h3></header>
+    <div class="q">呼损制系统，平均通话 2 分钟，阻塞率不超过 1%，每用户每小时 1 次。7 小区复用共 395 条业务信道，即每小区 57 条。求：不分扇区、120° 扇区、60° 扇区时每小时的呼叫数。</div>
+    <button class="reveal">显示解法</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>通话 2 分钟，每小时呼叫数 = <span class="calc">A × 60/2 = A × 30</span></li>
+        <li><b>不分扇区</b>：M = 57，查表 <span class="calc">A = 44.2 Er → 44.2 × 30 = 1326 次/小时</span></li>
+        <li><b>120° 扇区</b>：每扇区 <span class="calc">57/3 = 19</span> 条，查表 A = 11.2 Er → 336 次/小时，3 个扇区共 <span class="calc">1008 次/小时</span></li>
+        <li>下降 <span class="calc">1 − 1008/1326 = 24%</span></li>
+        <li><b>60° 扇区</b>：每扇区 9.5 条，干线效率进一步下降约 44%，切换次数增加，但 SIR 继续提升</li>
+      </ol>
+      <div class="ans">不分扇区 <b>1326</b>　·　120° <b>1008（−24%）</b>　·　60° 约 <b>−44%</b></div>
+      <div class="mem"><b>通话 2 分钟时，Erlang × 30 = 每小时呼叫数。</b>这题和 p.123 是同一个结论：3 个 19 信道的小组，不如 1 个 57 信道的大组。</div>
+      <div class="trap">扇区化要同时写两个方向：<b>SIR 升高，干线效率下降</b>。只写其中一个，评述不完整。</div>
+      <div class="note">讲义没给出 44% 的算法。它是对 M = 9 和 M = 10 的表值插值得到的：(3.78 + 4.46)/2 = 4.12 Er，6 个扇区共 24.7 Er，1 − 24.7/44.2 = 44%。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已记住</label></div>
+  </article>
+
+  <!-- ================= 速记页 ================= -->
+  <div class="group" id="sheet"><h2>考前速记页</h2><span>5 分钟过一遍</span></div>
+
+  <div class="sheet">
+    <h3>A 部分：7 个万能公式</h3>
+    <div class="grid2">
+      <div>
+        <div class="f">A<sub>u</sub> = 次数 × 时长 ÷ 60<small>时长用分钟；用秒则 ÷ 3600</small></div>
+        <div class="f">用户数 = A ÷ A<sub>u</sub><small>A 查 Erlang B 表（M、GoS）</small></div>
+        <div class="f">每小时呼叫数 = A × 3600 ÷ h<small>h = 100s → ×36；h = 2min → ×30</small></div>
+        <div class="f">干线效率 = A(1 − GoS) ÷ M<small>干线增益 = 用户数 ÷ M</small></div>
+      </div>
+      <div>
+        <div class="f">Q = √(3N)，n = 4 时 S/I = (3N)²/6<small>N = 3/4/7/9/12 → 11.3/13.8/18.7/20.8/23.3 dB</small></div>
+        <div class="f">P<sub>t2</sub> = P<sub>t1</sub> ÷ kⁿ<small>半径 ÷2、n = 4 → −12dB；÷√3 → −9.5dB</small></div>
+        <div class="f">η<sub>m</sub> = A ÷ (B<sub>w</sub> × A<sub>c</sub>)<small>信道形式 = 1/(B<sub>c</sub> A<sub>c</sub> N)</small></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sheet">
+    <h3>讲义里出现过的 Erlang B 表值</h3>
+    <div class="tw"><table style="min-width:420px">
+      <thead><tr><th>GoS</th><th>M → A（Erlang）</th></tr></thead>
+      <tbody>
+        <tr><td>1%</td><td class="mono">5 → 1.36　·　10 → 4.46　·　19 → 11.2　·　57 → 44.2</td></tr>
+        <tr><td>2%</td><td class="mono">10 → 5.08　·　20 → 13.2　·　50 → 40.3　·　56 → 45.9　·　60 → 50　·　95 → 84　·　100 → 90</td></tr>
+        <tr><td>5%</td><td class="mono">10 → 6.2　·　20 → 15.2　·　50 → 44.3</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+
+  <div class="sheet">
+    <h3>dB 心算</h3>
+    <ul class="tight">
+      <li><span class="mono">10 log 2 = 3.01　·　10 log 3 = 4.77　·　10 log 5 = 6.99　·　10 log 7 = 8.45</span></li>
+      <li>乘 2 加 3dB，乘 10 加 10dB。例：73.5 = 100 ÷ 1.36，所以 10 log 73.5 = 20 − 1.34 = 18.66dB</li>
+      <li>dBd → dBi 加 2.14；W → dBm：10W = 40dBm，5W = 37dBm，1W = 30dBm</li>
+    </ul>
+  </div>
+
+  <div class="sheet" id="bc">
+    <h3>Part B / Part C：没有计算题，但要记住这些数字</h3>
+    <div class="grid2">
+      <div>
+        <p style="margin:.2em 0;font-weight:600;font-size:.9rem">Part B 无线系统</p>
+        <ul class="tight">
+          <li>WLAN 覆盖 50–500m，速率 1–54Mbps</li>
+          <li>802.11b：2.4GHz DSSS 11Mbps；802.11a：5GHz OFDM 54Mbps</li>
+          <li>SIFS &lt; PIFS &lt; DIFS；CW<sub>min</sub> = 32，CW<sub>max</sub> = 256</li>
+          <li>EDCA 共 8 个业务类</li>
+          <li>LTE 带宽 1.4–20MHz；下行 &gt;300Mbps（4×4 MIMO），上行 86Mbps；最高 350–500km/h</li>
+          <li>LTE 帧 10ms = 10 个子帧，每个 1ms = 2 个 0.5ms 时隙；1 RB = 12 个子载波 × 7 个符号（扩展 CP 为 6 个）</li>
+          <li>蓝牙个域网半径约 10m</li>
+        </ul>
+      </div>
+      <div>
+        <p style="margin:.2em 0;font-weight:600;font-size:.9rem">Part C 卫星通信</p>
+        <ul class="tight">
+          <li>GEO 35,863km；MEO 8,000–18,000km；LEO 500–1,500km</li>
+          <li>3 颗 GEO 相隔 120° 覆盖近全球；GEO 时延 0.24s</li>
+          <li>GPS 使用 24 颗 MEO 卫星</li>
+          <li>Little LEO &lt;1GHz、&lt;5MHz、≤10kbps；Big LEO &gt;1GHz、可达数 Mbps</li>
+          <li>地球站天线：大型 10–60m，小型 1–10m，VSAT 0.3–0.9m</li>
+          <li>C 波段 500MHz 分成 24 个 40MHz 信道，每个含 4MHz 保护频带</li>
+          <li>CSC 帧共 50 个时隙（1 个同步 + 49 个站）；SS/TDMA 需 N! 种模式</li>
+          <li>无星间链路：2 上行 + 2 下行；有星间链路：1 上行 + 1 下行</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var root = document.getElementById('root');
+  var exs = [].slice.call(document.querySelectorAll('.ex'));
+  var groups = [].slice.call(document.querySelectorAll('.group[data-t]'));
+  var countEl = document.getElementById('count');
+  var store = {
+    get: function(k){ try { return localStorage.getItem(k); } catch(e){ return null; } },
+    set: function(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+  };
+
+  function updateCount(){
+    var vis = exs.filter(function(e){ return !e.classList.contains('hide'); });
+    var done = vis.filter(function(e){ return e.classList.contains('mastered'); }).length;
+    countEl.textContent = '已记住 ' + done + ' / ' + vis.length;
+  }
+
+  // 主题筛选
+  document.querySelectorAll('#bar .chip').forEach(function(c){
+    c.addEventListener('click', function(){
+      document.querySelectorAll('#bar .chip').forEach(function(x){ x.classList.remove('on'); });
+      c.classList.add('on');
+      var t = c.dataset.t;
+      exs.forEach(function(e){ e.classList.toggle('hide', t !== 'all' && e.dataset.t !== t); });
+      groups.forEach(function(g){ g.classList.toggle('hide', t !== 'all' && g.dataset.t !== t); });
+      updateCount();
+    });
+  });
+
+  // 自测模式
+  var exam = document.getElementById('examMode');
+  exam.addEventListener('change', function(){
+    root.classList.toggle('exam', exam.checked);
+    exs.forEach(function(e){ e.classList.remove('open'); });
+  });
+  exs.forEach(function(e){
+    e.querySelector('.reveal').addEventListener('click', function(){ e.classList.add('open'); });
+    // 已记住
+    var cb = e.querySelector('.done input');
+    var key = 'ee6129-ex:' + e.id;
+    if (store.get(key) === '1') { cb.checked = true; e.classList.add('mastered'); }
+    cb.addEventListener('change', function(){
+      e.classList.toggle('mastered', cb.checked);
+      store.set(key, cb.checked ? '1' : '0');
+      updateCount();
+    });
+  });
+  updateCount();
+})();
+</script>
+
+</body>
+</html>

@@ -9,6 +9,8 @@ NTU EE6129 Wireless & Mobile Radio Systems 的中文自学网页：零基础向�
 | `partB.html` | Part B 无线系统（802.11 WLAN、自组网、无线传感器网络、LTE、物联网）— 讲解长文，共8章 |
 | `partC.html` | Part C 卫星通信（GEO/MEO/LEO、链路性能、多址接入、路由与切换）— 讲解长文，共6章 |
 | `app.html` | 互动复习小程序：32个知识点笔记、公式速查表、48张记忆卡片、36题自测，进度存在浏览器本地 |
+| `lab/` | 无线与移动网络实验室：16个模块，17个 Canvas 动画与示意图（频率复用网格、扇区化干扰、切换门限、CSMA/CA 时序、隐藏节点、LTE 资源网格、卫星轨道…），8个公式计算器（频谱效率、路径损耗、SIR、Erlang B/C、卫星几何…），59道自测题，63张记忆卡片。入口 `lab/index.html` |
+| `examples.html` | 讲义例题手册：Part A 全部15道例题按页码整理，分步解法 + 记忆方法 + 易错点 + 公式复核，带自测模式和考前速记页 |
 
 静态 HTML，不依赖后端。公式用的衬线字体（Fraunces / Literata / IBM Plex Mono）从 Google Fonts 加载，首次打开需要联网；断网时会自动退回系统自带的中英文字体，内容和交互都不受影响。
 
