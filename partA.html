@@ -1,0 +1,616 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>蜂窝网络是怎么工作的</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,500&family=Literata:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+SC:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+
+:root{
+  --paper:#f2f3f2;
+  --paper-2:#e8eaea;
+  --card:#ffffff;
+  --ink:#171b26;
+  --ink-soft:#4a5266;
+  --ink-faint:#848da0;
+  --accent:#2f4fc4;
+  --accent-ink:#22399a;
+  --accent-soft:#e5eaf9;
+  --gold:#b4790f;
+  --gold-soft:#faefd8;
+  --line:#dcdfe3;
+  --line-strong:#c3c8d0;
+  --good:#1c7a4d;
+  --good-soft:#e2f3ea;
+  --shadow:0 1px 2px rgba(23,27,38,.04), 0 10px 30px -14px rgba(23,27,38,.16);
+  --f-display:'Fraunces','Noto Serif SC',serif;
+  --f-body:'Literata','Noto Serif SC',serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0f1219;
+    --paper-2:#161a24;
+    --card:#151a24;
+    --ink:#e7e9f0;
+    --ink-soft:#a3aabc;
+    --ink-faint:#6b7286;
+    --accent:#7b93f0;
+    --accent-ink:#a9bafa;
+    --accent-soft:rgba(123,147,240,.14);
+    --gold:#e0ac4b;
+    --gold-soft:rgba(224,172,75,.14);
+    --line:#262c3a;
+    --line-strong:#333a4a;
+    --good:#4bc98a;
+    --good-soft:rgba(75,201,138,.13);
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 32px -14px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0f1219;
+  --paper-2:#161a24;
+  --card:#151a24;
+  --ink:#e7e9f0;
+  --ink-soft:#a3aabc;
+  --ink-faint:#6b7286;
+  --accent:#7b93f0;
+  --accent-ink:#a9bafa;
+  --accent-soft:rgba(123,147,240,.14);
+  --gold:#e0ac4b;
+  --gold-soft:rgba(224,172,75,.14);
+  --line:#262c3a;
+  --line-strong:#333a4a;
+  --good:#4bc98a;
+  --good-soft:rgba(75,201,138,.13);
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 32px -14px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--f-body);font-size:17px;line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0;color:var(--ink);}
+p{margin:0 0 1.15em;}
+::selection{background:var(--accent-soft);color:var(--accent-ink);}
+.mono{font-family:var(--f-mono);}
+a{color:var(--accent-ink);}
+
+/* ---------- shell ---------- */
+.shell{display:flex;justify-content:center;gap:48px;max-width:1160px;margin:0 auto;padding:0 24px;}
+.rail{width:220px;flex:none;display:none;}
+@media (min-width:1040px){.rail{display:block;}}
+.rail-inner{position:sticky;top:48px;}
+.rail-kicker{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px;}
+.rail-list{list-style:none;margin:0;padding:0;border-left:2px solid var(--line);}
+.rail-list li{margin:0;}
+.rail-list a{
+  display:block;padding:7px 0 7px 16px;margin-left:-2px;border-left:2px solid transparent;
+  font-family:var(--f-mono);font-size:12.5px;color:var(--ink-faint);text-decoration:none;line-height:1.4;
+}
+.rail-list a:hover{color:var(--ink-soft);}
+.rail-list a.active{color:var(--accent-ink);border-left-color:var(--accent);font-weight:600;}
+
+.main{max-width:680px;width:100%;padding:64px 0 140px;min-width:0;}
+
+/* ---------- header ---------- */
+.masthead{margin-bottom:64px;}
+.masthead .kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+.masthead h1{font-size:44px;font-weight:700;line-height:1.18;margin-bottom:20px;letter-spacing:-.01em;}
+.masthead .lede{font-size:18px;color:var(--ink-soft);line-height:1.7;font-style:italic;max-width:58ch;}
+.masthead .meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:28px;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-faint);}
+.masthead .meta span{display:flex;align-items:center;gap:6px;}
+
+/* ---------- chapter structure ---------- */
+.chapter{margin-bottom:76px;scroll-margin-top:40px;}
+.chapter-head{display:flex;align-items:baseline;gap:16px;margin-bottom:28px;padding-bottom:18px;border-bottom:2px solid var(--ink);}
+.chapter-num{font-family:var(--f-display);font-size:15px;font-weight:600;color:var(--accent);letter-spacing:.02em;flex:none;}
+.chapter-head h2{font-size:28px;font-weight:700;}
+
+.chapter h3{font-size:20px;font-weight:600;margin:34px 0 14px;color:var(--ink);}
+.chapter h3 .zh-num{color:var(--accent);margin-right:8px;font-family:var(--f-mono);font-size:15px;}
+
+/* ---------- prose helpers ---------- */
+.chapter p b{font-weight:700;color:var(--ink);background:linear-gradient(to bottom, transparent 62%, var(--accent-soft) 62%);}
+.dropcap:first-letter{
+  font-family:var(--f-display);font-size:3.6em;font-weight:700;float:left;line-height:.85;
+  margin:.03em .09em -.05em 0;color:var(--accent-ink);
+}
+
+/* Analogy callout */
+.analogy{
+  background:var(--gold-soft);border-radius:4px;padding:18px 22px;margin:24px 0;
+  border-left:3px solid var(--gold);position:relative;
+}
+.analogy .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px;}
+.analogy p{margin-bottom:0;color:var(--ink);font-style:italic;}
+.analogy p+p{margin-top:.8em;}
+
+/* Formula card */
+.formula-card{
+  background:var(--card);border:1px solid var(--line-strong);border-radius:10px;
+  padding:20px 24px;margin:24px 0;box-shadow:var(--shadow);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:16px 16px;background-position:-1px -1px;
+  background-color:var(--card);
+}
+:root[data-theme="dark"] .formula-card, @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .formula-card{ opacity:1; } }
+.formula-card .flbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;margin-bottom:10px;}
+.formula-card .fexpr{font-family:var(--f-mono);font-size:18px;color:var(--ink);overflow-x:auto;padding:4px 0;font-weight:500;}
+.formula-card .fmeaning{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line-strong);font-size:14.5px;color:var(--ink-soft);font-family:var(--f-body);}
+.formula-card .fmeaning b{color:var(--ink);}
+
+/* Worked example */
+.worked{
+  border:1px solid var(--line);border-radius:10px;margin:28px 0;overflow:hidden;background:var(--card);
+}
+.worked > summary{
+  list-style:none;cursor:pointer;padding:16px 22px;display:flex;align-items:center;gap:12px;
+  background:var(--paper-2);font-family:var(--f-body);font-weight:600;font-size:15px;color:var(--ink);
+}
+.worked > summary::-webkit-details-marker{display:none;}
+.worked .wtag{
+  font-family:var(--f-mono);font-size:10px;background:var(--accent);color:#fff;padding:3px 8px;border-radius:5px;
+  letter-spacing:.06em;text-transform:uppercase;flex:none;
+}
+.worked .chev{margin-left:auto;width:15px;height:15px;color:var(--ink-faint);transition:transform .2s;flex:none;}
+.worked[open] .chev{transform:rotate(90deg);}
+.worked .wbody{padding:20px 22px 24px;font-size:15.5px;}
+.worked .wstep{display:flex;gap:14px;margin-bottom:16px;}
+.worked .wstep .wn{
+  font-family:var(--f-mono);font-size:12px;color:var(--accent-ink);background:var(--accent-soft);
+  width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px;font-weight:700;
+}
+.worked .wstep .wtext{flex:1;padding-top:1px;}
+.worked .wstep .wtext .calc{font-family:var(--f-mono);font-size:13.5px;background:var(--paper-2);padding:6px 10px;border-radius:6px;display:inline-block;margin-top:5px;}
+.worked .wans{
+  margin-top:18px;padding:14px 16px;background:var(--good-soft);color:var(--good);border-radius:8px;
+  font-weight:700;font-family:var(--f-mono);font-size:14.5px;
+}
+
+/* lists */
+.chapter ul, .chapter ol{padding-left:1.4em;margin:0 0 1.15em;}
+.chapter li{margin-bottom:.5em;}
+
+/* table */
+.tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px;}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+table th{text-align:left;font-family:var(--f-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);background:var(--paper-2);padding:9px 14px;}
+table td{padding:8px 14px;border-top:1px solid var(--line);font-family:var(--f-mono);font-size:13px;}
+table td:first-child{font-family:var(--f-body);}
+
+/* quiz-check (light self-check, not a review tool) */
+.checkpoint{
+  border:1.5px dashed var(--accent);border-radius:10px;padding:18px 22px;margin:30px 0;background:var(--accent-soft);
+}
+.checkpoint .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;margin-bottom:8px;}
+.checkpoint p{margin-bottom:0;color:var(--ink);}
+.checkpoint .reveal{margin-top:10px;}
+.checkpoint .reveal summary{cursor:pointer;color:var(--accent-ink);font-weight:600;font-size:14px;font-family:var(--f-body);}
+.checkpoint .reveal .ans{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-strong);font-size:15px;}
+
+/* nav footer between chapters / end */
+.chapter-nav{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:24px;border-top:1px solid var(--line);}
+.next-up{
+  background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin-top:64px;
+  display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);
+}
+.next-up .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);}
+.next-up h4{font-size:19px;}
+.next-up p{color:var(--ink-soft);font-size:14.5px;margin-bottom:0;}
+
+/* mobile toc */
+.mobtoc{display:block;position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line);padding:12px 20px;}
+@media (min-width:1040px){.mobtoc{display:none;}}
+.mobtoc select{
+  width:100%;font-family:var(--f-mono);font-size:12.5px;padding:8px 10px;border-radius:8px;border:1px solid var(--line-strong);
+  background:var(--card);color:var(--ink);
+}
+
+@media (max-width:680px){
+  .main{padding:0 20px 100px;}
+  .masthead h1{font-size:32px;}
+  .chapter-head h2{font-size:23px;}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+</style>
+
+<div class="mobtoc">
+  <select id="mobNav" aria-label="跳转到章节"></select>
+</div>
+
+<div class="shell">
+  <aside class="rail">
+    <div class="rail-inner">
+      <div class="rail-kicker">本篇目录</div>
+      <ul class="rail-list" id="railList"></ul>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="masthead">
+      <div class="kicker">EE6129 · Part A 讲解 · 蜂窝移动通信系统</div>
+      <h1>蜂窝网络是怎么工作的</h1>
+      <p class="lede">从"一个信号塔够不够用"这个最土的问题出发，一路推导到六边形、频率复用、话务公式和切换——把整份 Part A 讲义讲成一个完整的故事，假设你零基础。</p>
+      <div class="meta">
+        <span>◆ 面向零基础</span>
+        <span>◆ 全程用类比讲</span>
+        <span>◆ 共11章</span>
+        <span>◆ 例题带完整解题思路</span>
+      </div>
+    </header>
+
+    <!-- ================= CH 0 ================= -->
+    <section class="chapter" id="ch0">
+      <div class="chapter-head"><span class="chapter-num">开篇</span><h2>为什么手机能同时给几万人打电话？</h2></div>
+      <p class="dropcap">想象一下最原始的做法：在城市中心造一根超大功率的天线，一次性把信号打到全城，所有人的手机都直接和它说话。这个办法哪里不对？</p>
+      <p>问题不在信号能不能传那么远——功率开得足够大，物理上当然可以。问题在于<b>无线电频率是一种资源，而且是有限的资源</b>。你可以把它想象成一条马路：车道数是固定的，同一条车道同一时刻只能有一辆车通过。如果全城只有一座信号塔，能同时使用的"车道"（频率信道）就那么多，比如同时只能有1000条通话在跑，第1001个人打电话，系统会告诉他："线路忙，请稍后再拨"。</p>
+      <p>这就是<b>蜂窝（cellular）</b>这个概念要解决的核心问题：怎么用有限的频率资源，服务数量几乎无限增长的用户。答案出奇地朴素——<b>不要用一个大塔，改用很多个小塔，每个小塔只负责很小的一块区域</b>。这一个改动，牵出了这门课第一部分几乎所有的内容：小塔怎么分布（六边形几何）、相邻小塔怎么防止互相干扰（频率复用与同频干扰）、频率不够用时还能怎么挤（小区分裂、扇区化）、以及手机从一个小塔的范围走到另一个的时候怎么保证通话不断（切换）。</p>
+      <p>接下来我们就按照这条逻辑线，一步一步地把整个蜂窝系统讲透。</p>
+    </section>
+
+    <!-- ================= CH 1 ================= -->
+    <section class="chapter" id="ch1">
+      <div class="chapter-head"><span class="chapter-num">第一章</span><h2>三种"分资源"的方式：FDMA / TDMA / CDMA</h2></div>
+
+      <p>在讲蜂窝之前，先要搞懂一个更基础的问题：<b>多个用户要共用同一段无线电频谱，怎么分？</b>这门课把频谱资源想象成一个二维平面——横轴是频率，纵轴是时间——而"分资源"本质上就是在这个平面上切蛋糕。切法主要有三种。</p>
+
+      <h3><span class="zh-num">1.1</span>FDMA——按频率切成一条条车道</h3>
+      <p><b>FDMA（频分多址，Frequency Division Multiple Access）</b>把整个频段切成很多条等宽的窄频带，每个用户始终独占一条，想说话随时可以说，但只能在自己那条"车道"里说。</p>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>就像把一条大马路用white line划成十条车道，每辆车分到一条车道，永远只能在自己的车道上开，谁都不会撞到谁——但车道数是固定的，车再多也挤不出第十一条车道。</p>
+      </div>
+
+      <h3><span class="zh-num">1.2</span>TDMA——按时间切成轮流发言</h3>
+      <p><b>TDMA（时分多址，Time Division Multiple Access）</b>反过来：大家共用同一个频率，但把时间切成一个个很短的"时隙（time slot）"，用户轮流使用，每人只在分配到的时隙里发送信号，其余时间保持沉默。因为时隙很短、轮换很快，人耳几乎察觉不到中断，感觉上像是在连续通话。</p>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>像一群人开会，只有一个话筒，但主持人给每个人分配了固定的发言时间点——A讲0.1秒，B讲0.1秒，C讲0.1秒，然后循环回到A。只要轮换够快，大家仍然能维持一场看似连贯的对话。</p>
+      </div>
+
+      <h3><span class="zh-num">1.3</span>CDMA——每个人有自己的"暗号"</h3>
+      <p><b>CDMA（码分多址，Code Division Multiple Access）</b>是最反直觉的一种：所有用户<i>同时</i>使用<i>整个</i>频段发送信号，互不避让。能区分开各自的信号，靠的是每个用户手里那把独一无二的"编码"。</p>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>想象一个房间里同时进行好几场对话，但每一场都在用不同的语言——法语、日语、粤语……你的耳朵能同时听到所有声音混在一起，但只要你只听得懂法语，你的大脑会自动把法语部分"提取"出来，把其他语言当成背景噪音过滤掉。CDMA里的"语言"就是一串数学上接近正交（orthogonal）的编码：接收端拿自己那把编码去和收到的混合信号做相关运算，属于别人编码的信号会被压成接近于零，只剩下自己的信号被放大出来。</p>
+      </div>
+      <p>后面你会看到，第一代系统主要用类比FDMA的模拟方式，第二代主流用TDMA（GSM）或CDMA（IS-95），第三、四代则进一步演化出WCDMA、OFDMA等更复杂的变体——但万变不离其宗，都是这三种切蛋糕方式的组合与升级。</p>
+    </section>
+
+    <!-- ================= CH 2 ================= -->
+    <section class="chapter" id="ch2">
+      <div class="chapter-head"><span class="chapter-num">第二章</span><h2>蜂窝概念：把一个大塔拆成很多个小塔</h2></div>
+
+      <h3><span class="zh-num">2.1</span>为什么要"小"</h3>
+      <p>回到开篇的问题。既然频率资源有限，那能不能想办法让同一段频率被"重复使用"呢？答案是可以——但前提是发射功率要足够低、覆盖范围要足够小。这就是蜂窝系统的第一个核心思想：<b>用大量低功率的小基站，各自只覆盖一小块区域（称为一个"蜂窝"，cell），而不是一个高功率的大塔</b>。</p>
+      <p>蜂窝系统的四个关键要素，可以先记一个框架，后面每一章都是在展开其中一个：</p>
+      <ul>
+        <li><b>低功率发射 + 小覆盖区域</b> —— 这一章要讲的基础</li>
+        <li><b>频率复用（frequency reuse）</b> —— 第七章的主角</li>
+        <li><b>切换与集中控制（handoff & central control）</b> —— 第十一章</li>
+        <li><b>小区分裂（cell splitting）以扩容</b> —— 第十章</li>
+      </ul>
+
+      <h3><span class="zh-num">2.2</span>为什么是六边形</h3>
+      <p>翻开任何一本讲蜂窝网络的书，配图几乎永远是一堆整整齐齐的六边形拼接图案，很多人第一反应是"这只是示意图，实际信号覆盖肯定是圆形的"。这个直觉是对的——单个基站的天线辐射范围理论上确实接近一个圆。但工程师画六边形，是因为六边形有一个圆形做不到的性质：<b>它能不留空隙、不重叠地把整个平面完全铺满</b>，而且每个六边形与相邻六边形共享一条完整的边，天线之间的间距处处相等。用圆形去铺满一个平面，圆与圆之间必然会留下空隙，或者不得不重叠——两者都会带来麻烦（空隙意味着盲区，重叠意味着浪费）。三角形、正方形也能铺满平面，但六边形在"边数越多、越接近圆形，从而越贴近真实天线覆盖形状"和"能规则镶嵌"这两个要求之间，是最优的折中。</p>
+      <div class="formula-card">
+        <div class="flbl">记一个数字关系</div>
+        <div class="fexpr">d = √3 · R</div>
+        <div class="fmeaning">如果每个六边形蜂窝的半径是 <b>R</b>（中心到顶点的距离），那么相邻两个蜂窝的中心之间的距离就是 <b>d = √3·R</b>，大约是1.73倍的R。这个关系式会在后面推导"复用距离"时被再次用到，先眼熟一下就好。</div>
+      </div>
+
+      <h3><span class="zh-num">2.3</span>系统里都有什么"角色"</h3>
+      <p>把一个真实的蜂窝网络拆开看，主要有这么几个角色：</p>
+      <ul>
+        <li><b>移动台（Mobile Station, MS）</b> —— 也就是你的手机。</li>
+        <li><b>基站（Base Station, BS）</b> —— 每个蜂窝小区里的"小天线塔"，包含天线、控制器和一批接收机，负责跟这片区域内的手机对话。</li>
+        <li><b>移动电话交换局（MTSO）</b> —— 整个系统的"总调度室"，负责把不同基站之间的通话接续起来，也是蜂窝网连接到固定电话网（PSTN）的出口。</li>
+      </ul>
+      <p>手机和基站之间的通信被划分成两类逻辑"信道"（channel，可以理解成两类不同用途的"专线"）：</p>
+      <ul>
+        <li><b>控制信道（control channel）</b> —— 专门用来传递"建立通话""挂断""切换"这类管理指令的信令，不传语音本身。</li>
+        <li><b>业务信道（traffic channel）</b> —— 真正承载你说话声音（或数据）的信道。</li>
+      </ul>
+
+      <h3><span class="zh-num">2.4</span>打一通电话，系统在背后做了什么</h3>
+      <p>理解了角色分工之后，一次完整的打电话过程其实就是这几个角色之间来回"打招呼"的流程：</p>
+      <div class="worked">
+        <summary><span class="wtag">流程</span>从开机到接通，手机经历了什么</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext"><b>开机初始化</b>：手机扫描周围所有的控制信道，锁定信号最强的那一个，然后和对应的基站、MTSO握手，登记自己的身份和位置。之后只要你还在这个蜂窝里，这个登记会定期重复；一旦你移动到新的蜂窝，同样的登记流程会在新基站上再来一遍。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext"><b>你拨号（主叫）</b>：手机先检测控制信道是否空闲，然后把被叫号码发送出去，基站把这个请求转发给MTSO。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext"><b>寻呼（paging）</b>：MTSO并不知道对方手机具体在哪个蜂窝，于是向"最可能覆盖对方"的一批基站群发一条寻呼消息，这些基站各自在自己的控制信道上广播"有人找你"。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext"><b>接通</b>：对方手机认出自己的号码，做出响应，一路回传到MTSO。MTSO这时候在两个基站之间搭好一条电路，并在两边各自分配一个空闲的业务信道，通知双方手机调过去——这一步完成，两个人才真正开始"说上话"。</div></div>
+          <div class="wstep"><div class="wn">5</div><div class="wtext"><b>通话中如果有人走出了这个蜂窝</b>：那就要触发"切换"（第十一章详细讲），业务信道会无缝换到新蜂窝的基站上，理想情况下你完全感觉不到发生了什么。</div></div>
+        </div>
+      </div>
+
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>如果蜂窝做得越小，理论上能塞进城市里的基站就越多，每个基站服务的用户就越少——那是不是蜂窝分得越小越好？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">先别急着下结论——变小是要付出代价的：基站数量增加意味着建设成本上升，而且手机在小蜂窝里移动会更频繁地穿越蜂窝边界，导致切换次数暴增（第十章会给出一个具体数字：半径缩小到1/4，切换率能涨到10倍）。这就是为什么运营商不会一上来就把全城铺满最小的蜂窝，而是先用大蜂窝覆盖，等某个区域话务量真的撑不住了，再对那一片做"小区分裂"局部加密。</div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ================= CH 3 ================= -->
+    <section class="chapter" id="ch3">
+      <div class="chapter-head"><span class="chapter-num">第三章</span><h2>一部简史：从大哥大到4G</h2></div>
+      <p>在深入几何和公式之前，先花一章快速过一遍蜂窝系统怎么从"能打电话"进化到"能刷视频"的，这样后面遇到具体技术名词时，能知道它属于哪个时代、解决的是什么问题。</p>
+
+      <h3><span class="zh-num">3.1</span>第一代（1G）——纯模拟，能打电话就行</h3>
+      <p>最早的商用系统，比如美国/澳大利亚的<b>AMPS</b>、欧洲的<b>ETACS</b>、日本的<b>NTT</b>系统，都是纯模拟制式，工作在800–900 MHz附近，信道间隔30 kHz或25 kHz。它们唯一的目标就是让语音通话能打通，谈不上什么频谱效率优化，更别说数据业务。</p>
+
+      <h3><span class="zh-num">3.2</span>第二代（2G）——数字化，容量暴涨</h3>
+      <p>2G的核心诉求是两个：<b>更高的容量、更低的成本</b>（而不是单纯靠切小蜂窝硬堆），以及<b>能在不同国家的网络之间无缝漫游</b>。实现路径分成两条技术路线：</p>
+      <ul>
+        <li><b>TDMA路线</b> —— 代表是<b>GSM</b>（全球最主流的2G标准）。GSM把频谱切成200 kHz一个的载波，再在每个载波上用TDMA切时隙，25 MHz的分配频谱最终提供出125个全双工信道。</li>
+        <li><b>CDMA路线</b> —— 代表是<b>IS-95</b>。它用直接序列扩频，把一个用户的窄带信号"摊薄"铺满整个宽频带，靠给每个用户分配的近似正交<b>Walsh编码</b>来区分彼此，并且每<b>1毫秒</b>更新一次极其精细的功率控制，来把系统里所有信号的强度维持在恰到好处的水平——太强会压制别人，太弱容易被淹没。</li>
+      </ul>
+      <p>另外还有一个过渡型的<b>N-AMPS</b>，本质上是把AMPS的一个30 kHz模拟信道硬切成三份10 kHz的，容量翻三倍，算是1G到2G之间的一个折中方案。</p>
+
+      <h3><span class="zh-num">3.3</span>第三代（3G）——从"打电话"到"上网"</h3>
+      <p>3G第一次真正把目标定在了"高速多媒体数据"上，同时还要兼顾语音，并且要同时支持电路交换和分组交换两种数据传输方式。技术上主要用<b>WCDMA</b>或<b>MC-CDMA</b>，数据部分改用纠错能力更强的<b>Turbo码</b>，蜂窝结构也从单一大小的宏蜂窝，演化成宏蜂窝套着微蜂窝、微蜂窝里再套着微微蜂窝的分层结构。</p>
+
+      <h3><span class="zh-num">3.4</span>第四代（4G/LTE）——一切皆IP</h3>
+      <p><b>LTE</b>彻底转向"一切业务都走IP协议"，下行接入方式换成了<b>OFDMA</b>（对多径衰落抵抗能力很强，这一点后面讲传播模型时会解释为什么这很重要），上行则用<b>SC-FDMA</b>（省电，适合手机这种电池受限设备）。配合<b>MIMO</b>多天线技术，下行峰值速率理论上能超过300 Mbps。可以说，从1G到4G，就是"信道切分方式"和"抗干扰能力"不断升级的历史。</p>
+    </section>
+
+    <!-- ================= CH 4 ================= -->
+    <section class="chapter" id="ch4">
+      <div class="chapter-head"><span class="chapter-num">第四章</span><h2>双工与频谱效率：怎么衡量"够不够用"</h2></div>
+
+      <h3><span class="zh-num">4.1</span>先解决一个基本问题：上行和下行怎么不打架</h3>
+      <p>打电话是双向的——你说的话要传给对方（上行），对方说的话也要传给你（下行）。这两路信号如果用同一个频率同一时刻传输，会自己跟自己打架，所以必须分开，分开的方法叫<b>双工（duplex）</b>，主要两种：</p>
+      <ul>
+        <li><b>FDD（频分双工）</b>：上行和下行各用一段独立的频率，永久分开，谁也不干扰谁。</li>
+        <li><b>TDD（时分双工）</b>：上行和下行共用同一段频率，但轮流使用不同的时间片。它的好处是可以灵活调整上下行各自占用的时间比例——比如你刷视频时下行流量远大于上行，TDD可以把更多时间片分给下行，FDD却做不到这种动态调整，因为它俩的频段是提前固定死的。</li>
+      </ul>
+
+      <h3><span class="zh-num">4.2</span>频谱效率：一MHz能撑起多少通话</h3>
+      <p>频谱是运营商真金白银买来的稀缺资源，那么很自然会问：<b>同样一段频谱，到底能撑起多少通话？</b>这个指标叫<b>频谱效率</b>，课程里把它拆成两个相互独立的部分，一个管"调制怎么切信道"，一个管"多址方式怎么分资源"：</p>
+      <div class="formula-card">
+        <div class="flbl">总频谱效率</div>
+        <div class="fexpr">η = η_m · η_a</div>
+        <div class="fmeaning"><b>η_m（调制频谱效率）</b>只跟信道间隔、蜂窝面积、频率复用因子有关，跟系统总带宽本身没有直接关系；<b>η_a（多址接入频谱效率）</b>衡量真正拿来传信息的"时间-频率资源"占总资源的比例，比如TDMA里加的保护时隙、同步序列就是被"浪费掉"没有传信息的部分，会拉低η_a。</div>
+      </div>
+      <p>光看公式比较抽象，我们直接上一道讲义里的例题，走一遍完整的计算逻辑。</p>
+
+      <div class="worked">
+        <summary><span class="wtag">例题</span>AMPS系统的调制频谱效率 η_m</summary>
+        <div class="wbody">
+          <p>已知条件：两家运营商共享25 MHz带宽（每家12.5 MHz），每个蜂窝预留3个30 kHz的控制信道，每蜂窝面积4 km²，总覆盖面积2000 km²，服务等级GoS=2%，簇大小N=7。求η_m。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">先算每家运营商在12.5 MHz里能切出多少个30 kHz的信道：<div class="calc">12.5×10⁶ / 30×10³ = 416 个信道</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">减掉控制信道（每蜂窝3个 × 7个蜂窝/簇 = 21个），剩下的才是真正能打电话的语音信道：<div class="calc">416 − (3×7) = 395 个语音信道，平均每蜂窝 395/7 ≈ 56 个</div></div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">这56个信道在2%的服务等级下，到底能承载多少"话务量"？这里要提前借用第九章讲的Erlang B公式/查表得到答案——先接受这个结果，第九章我们再回来推导它是怎么算出来的：<div class="calc">56信道 @ 2% GoS → A ≈ 45.9 Erlang/蜂窝 = 11.5 Erlang/km²</div></div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">最后代入公式：话务量 ÷ （带宽 × 面积）：<div class="calc">η_m = 45.9 / (12.5 × 4)</div></div></div>
+          <div class="wans">η_m ≈ 0.92 Erlang / MHz / km²</div>
+        </div>
+      </div>
+
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>为什么第2步要先减掉控制信道，才能算频谱效率？控制信道难道不算是在"占用"频谱资源吗？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">恰恰相反——正因为控制信道也占用了宝贵的频谱资源，却不能用来承载真正的通话（不产生"有效话务量"），所以在计算"每MHz能撑起多少通话"时，必须先把这部分"管理开销"刨除掉，剩下的才是真正能拿来提供服务的语音信道。这跟你算一间办公室的"人均办公面积"时，要先减掉走廊和会议室的面积，是同一个道理。</div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ================= CH 5 ================= -->
+    <section class="chapter" id="ch5">
+      <div class="chapter-head"><span class="chapter-num">第五章</span><h2>电波是怎么变弱的：传播模型</h2></div>
+
+      <h3><span class="zh-num">5.1</span>最理想的情况：自由空间</h3>
+      <p>假设信号在真空中传播，没有任何遮挡物、没有地面反射——这种理想情况叫<b>自由空间传播</b>。即便在这种最理想的条件下，信号强度也会随距离增大而自然衰减，因为能量会向四面八方扩散（就像往平静水面丢一颗石子，水波纹会越扩越大、越来越弱）。</p>
+      <div class="formula-card">
+        <div class="flbl">自由空间损耗</div>
+        <div class="fexpr">L(dB) = 32 + 20·log f(MHz) + 20·log d(km)</div>
+        <div class="fmeaning">损耗随<b>频率</b>和<b>距离</b>的对数增长——注意都是"20·log"，也就是说距离每增加10倍，损耗要增加20 dB；频率每提高10倍，损耗也增加20 dB。这也是为什么频率越高的信号（比如5G的毫米波），覆盖范围天生就越吃亏。</div>
+      </div>
+
+      <h3><span class="zh-num">5.2</span>现实世界：还得靠"经验模型"</h3>
+      <p>真实的城市环境里到处是建筑物反射、遮挡、地面折射，理论公式已经算不准了，工程师的解决办法很实际：<b>直接拿实测数据去拟合出一套经验公式</b>，比如城区用的<b>CCIR模型</b>、更广泛使用的<b>Okumura–Hata模型</b>——它们本质上都是"损耗 = 一个基础值 + 若干个跟频率/天线高度/距离相关的修正项"，区别只是修正项的具体系数不同，以及各自适用的城区/郊区/开阔地类型不同。</p>
+      <p>这门课给出了一个更直观的简化写法：把接收功率表示成"一个基准值 + 斜率×距离的对数"的直线：</p>
+      <div class="formula-card">
+        <div class="flbl">对数距离形式</div>
+        <div class="fexpr">P_R(dBm) = P₀ + γ·log d</div>
+        <div class="fmeaning">γ是"斜率"（单位dB/十倍距离），环境越复杂，γ的绝对值越大——意味着距离每增加10倍，信号衰减得越厉害。自由空间的γ只有−20，而带地面反射的"平坦地面模型"γ能到−40，城区（CCIR模型）在−30到−35.4之间。这告诉你一个很朴素的道理：<b>环境越复杂，信号衰减越快，蜂窝就得设计得越小</b>——这正是为什么市中心的蜂窝往往比郊区小得多。</div>
+      </div>
+    </section>
+
+    <!-- ================= CH 6 ================= -->
+    <section class="chapter" id="ch6">
+      <div class="chapter-head"><span class="chapter-num">第六章</span><h2>频率复用：把六边形的秘密用起来</h2></div>
+
+      <h3><span class="zh-num">6.1</span>簇——频率复用的基本单位</h3>
+      <p>现在把第二章埋下的伏笔捡回来。既然蜂窝已经做得又小又低功率了，那能不能让相隔足够远的两个蜂窝，重复使用同一组频率？答案是可以，而且这正是整个蜂窝系统"用有限频谱服务无限用户"的关键一招。</p>
+      <p>把一组蜂窝拼在一起、刚好用完整个分配到的频谱、这一组称为一个<b>簇（cluster）</b>，簇里含有的蜂窝数记作<b>N</b>。整个服务区就由这样的簇一块接一块地铺开，同一组频率每隔N个蜂窝重复出现一次。</p>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>回到第一次讲这个概念时用过的比方：一个大房间里开很多桌小型会议，只要两桌之间隔得够远、声音传不到对方那桌，这两桌就可以同时讲话、甚至用同一种"语言"（频率）而互不干扰。这里"隔多远才够安全"，就是接下来要讲的复用距离。</p>
+      </div>
+      <p>数学上并不是任意的N都能让六边形完美地镶嵌重复，只有满足 <span class="mono">N = i² + ij + j²</span>（i、j为整数）的N才行，算出来的合法取值是1、3、4、7、9、12、13、19、21……这也是为什么你会在教材和例题里反复看到N=7、N=4这样的"整齐"数字，而不是N=5或N=8。</p>
+
+      <h3><span class="zh-num">6.2</span>复用距离与复用比</h3>
+      <div class="formula-card">
+        <div class="flbl">复用距离</div>
+        <div class="fexpr">D = R · √(3N)</div>
+        <div class="fmeaning">D是"用同一组频率的两个最近蜂窝之间的距离"。仔细看这个式子——它其实就是把第二章那个 d=√3R 的相邻蜂窝间距，按簇的大小N做了一次放大。N越大，簇铺得越大，同一组频率要"跳"过更多蜂窝才会再出现一次，D自然也越大。</div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">同频复用比</div>
+        <div class="fexpr">Q = D/R = √(3N)</div>
+        <div class="fmeaning">这是一个纯粹描述"相对距离"的比值——不管蜂窝实际半径R是100米还是10公里，只要簇大小N一样，D和R的比值Q就固定不变。Q是贯穿这一章和下一章（同频干扰）的核心变量：<b>Q越大，同频干扰越小、通话质量越好，但频率复用得越"稀疏"，单位面积能用的信道就越少</b>。这正是蜂窝系统设计里最核心的一对矛盾——质量与容量的拔河。</div>
+      </div>
+
+      <div class="worked">
+        <summary><span class="wtag">例题</span>7蜂窝复用系统能提供多少语音信道</summary>
+        <div class="wbody">
+          <p>已知条件：7蜂窝复用的FDD系统，总带宽30 MHz，每个单工语音信道占25 kHz带宽，2 MHz预留给控制信道。求系统总的双工语音信道数，以及每个蜂窝分到多少个。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">先刨掉控制信道，剩下才是语音真正能用的带宽：<div class="calc">30 − 2 = 28 MHz</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">双工通话需要上行和下行各一条单工信道，假设对称分配，每个方向能分到：<div class="calc">28 / 2 = 14 MHz</div></div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">每条链路能切出多少个25 kHz的单工信道：<div class="calc">14,000 / 25 = 560 个</div></div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">一对上下行单工信道组成一个双工信道，所以系统总的双工语音信道数就是560；再按簇大小N=7均匀分给每个蜂窝：<div class="calc">560 / 7 = 80 个/蜂窝</div></div></div>
+          <div class="wans">系统共560个双工语音信道，每个蜂窝分到80个</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CH 7 ================= -->
+    <section class="chapter" id="ch7">
+      <div class="chapter-head"><span class="chapter-num">第七章</span><h2>同频干扰与信道该怎么分配</h2></div>
+
+      <h3><span class="zh-num">7.1</span>用SIR衡量"复用得够不够安全"</h3>
+      <p>频率复用带来容量，但代价是同一组频率的蜂窝之间会互相"听见"对方的信号，造成<b>同频干扰</b>。衡量这种干扰是否在可接受范围内的指标叫<b>信干比（SIR，Signal-to-Interference Ratio）</b>：你想要的信号强度 S，除以所有干扰信号强度之和 I。</p>
+      <p>课程给出一个简化到可以手算的经典模型：只考虑距离最近的<b>第一层6个同频蜂窝</b>作为干扰源（更远的第二层直接忽略不计，因为距离太远、衰减太多影响可以忽略），并假设移动台正好站在蜂窝的最边缘（最不利的位置）：</p>
+      <div class="formula-card">
+        <div class="flbl">简化SIR公式</div>
+        <div class="fexpr">S/I = (1/6) · Qⁿ = (1/6) · (3N)^(n/2)</div>
+        <div class="fmeaning">这里的n是<b>路径损耗指数</b>（回忆一下上一章，自由空间n=2，复杂城区n可以到4甚至更高）。公式里Q（也就是N）被放在指数位置上，意味着<b>簇越大，SIR呈指数级快速改善</b>——但我们已经知道，簇越大意味着频谱效率越低，所以工程上不会无脑选一个巨大的N，而是找到"刚好够用"的最小N。</div>
+      </div>
+
+      <div class="worked">
+        <summary><span class="wtag">例题</span>找到满足10 dB要求的最小簇大小</summary>
+        <div class="wbody">
+          <p>已知条件：系统要求SIR至少10 dB，路径损耗指数n=4。求最小可用的簇大小N。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">直接把不同N代进上面的公式挨个算一遍（这类题目通常靠试算，而不是直接反解方程）：</div></div>
+          <div class="tblwrap"><table><thead><tr><th>N</th><th>SIR (dB)</th></tr></thead><tbody>
+            <tr><td>1</td><td>1.76</td></tr><tr><td>3</td><td>11.30</td></tr><tr><td>4</td><td>13.80</td></tr><tr><td>7</td><td>18.66</td></tr>
+          </tbody></table></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">从表里能看到，N=1时只有1.76 dB，远远不够；N=3时已经跳到11.30 dB，超过了10 dB的门槛。</div></div>
+          <div class="wans">理论上最小N=3就够用；但实际系统常选N=7，是为了留出更大的安全裕量（达到18dB以上），应对现实中比理论模型更复杂的干扰情况</div>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">7.2</span>信道怎么分给每个蜂窝：固定 vs 动态</h3>
+      <p>算出了每个蜂窝该有多少个信道之后，还有一个问题：具体是<b>哪些</b>信道分给哪个蜂窝？两种思路：</p>
+      <ul>
+        <li><b>固定信道分配（FCA）</b>：每个蜂窝提前分配好一组固定信道，用完了就是用完了，哪怕隔壁蜂窝的信道还空着一大把，你也借不到——话务分布不均匀时会很浪费。</li>
+        <li><b>动态信道分配（DCA）</b>：信道不永久属于某个蜂窝，谁有需要、谁就可以按需申请任何一个空闲信道，只要不违反"同频干扰约束"（也就是不能借用一个正在被复用距离范围内的邻居使用的信道）。DCA更灵活，但需要更复杂的中心调度算法。</li>
+      </ul>
+    </section>
+
+    <!-- ================= CH 8 ================= -->
+    <section class="chapter" id="ch8">
+      <div class="chapter-head"><span class="chapter-num">第八章</span><h2>话务工程：用排队论算清楚"够不够用"</h2></div>
+
+      <h3><span class="zh-num">8.1</span>为什么要用排队论</h3>
+      <p>一个蜂窝有固定数量的信道（比如上面算出来的80个），但打电话的人是随机到达、随机挂断的——不可能每时每刻都恰好只有80人在通话。有时候信道全空着，有时候第81个人打进来发现全占线。这种"随机到达、有限服务能力"的场景，正是<b>排队论</b>研究的标准问题：顾客（呼叫）到达，如果没有空闲的服务台（信道）就要等待或者直接被拒绝。</p>
+      <p>课程用<b>Kendall记号 A/S/N/C/P/D</b>来描述一个排队系统（到达分布/服务分布/服务台数/容量/顾客总体/排队规则），你不需要死记这个记号本身，只需要知道后面会用到的两个经典模型都是它的特例：<b>Erlang B</b>对应"信道用完了直接拒绝、不排队"，<b>Erlang C</b>对应"信道用完了顾客愿意排队等"。</p>
+
+      <h3><span class="zh-num">8.2</span>Erlang——话务量的度量单位</h3>
+      <div class="formula-card">
+        <div class="flbl">话务强度</div>
+        <div class="fexpr">A = λ/μ   [单位：Erlang]</div>
+        <div class="fmeaning">λ是平均每单位时间有多少通电话打进来（到达率），μ是每次通话平均能被多快处理完（服务率，等于占用时长的倒数）。A的物理意义其实很直观：<b>平均同时有多少条通话正在进行</b>。比如每小时来100个电话，平均每个占用3分钟（1/20小时），那A = 100 × (1/20) = 5 Erlang，意思是平均任意时刻大概有5条通话同时在线。</div>
+      </div>
+
+      <h3><span class="zh-num">8.3</span>Erlang B：呼损制——打不通就是打不通</h3>
+      <p>这是蜂窝系统里最常用的模型：所有信道被占满时，新呼叫会被直接阻塞、挂断，用户需要自己重新再拨一次（系统不会帮你排队）。这个模型给出的核心指标叫<b>服务等级（Grade of Service, GoS）</b>——也就是"你打电话恰好赶上信道全忙、被拒绝服务"的概率。行业惯例是把GoS控制在1–2%（100次通话大概有1到2次会打不通），超过5%就会让用户明显感到烦躁。</p>
+      <div class="formula-card">
+        <div class="flbl">Erlang B 公式</div>
+        <div class="fexpr">P_B = (Aᴹ/M!) / Σₖ₌₀ᴹ (Aᵏ/k!)</div>
+        <div class="fmeaning">M是信道总数，A是提供的话务强度。这个公式手算比较麻烦，实际工作中工程师通常直接查<b>Erlang B表</b>——给定M和目标GoS，直接查出能承载多少A，或者反过来。</div>
+      </div>
+
+      <div class="worked">
+        <summary><span class="wtag">例题</span>三家运营商，谁的市场渗透率更高</summary>
+        <div class="wbody">
+          <p>已知条件：三家运营商共同服务一个人口120万的地区。Singa：380个蜂窝，每蜂窝20个信道；Mobi：100个蜂窝，每蜂窝60个信道；Hubba：60个蜂窝，每蜂窝100个信道。GoS都定在2%，每用户话务量0.25 Erlang（相当于每小时打3次电话，每次5分钟）。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">先算Singa：查Erlang B表，M=20信道、GoS=2%时能承载A=13 Erlang，除以每用户话务量得到单蜂窝能服务的用户数：<div class="calc">13 / 0.25 = 52 用户/蜂窝 → 52 × 380 = 19,760 用户</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">同样的逻辑算Mobi（M=60→A=50 Erlang）：<div class="calc">50/0.25=200 用户/蜂窝 → 200×100 = 20,000 用户</div></div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">再算Hubba（M=100→A=90 Erlang）：<div class="calc">90/0.25=360 用户/蜂窝 → 360×60 = 21,600 用户</div></div></div>
+          <div class="wans">三家合计服务61,360用户，占120万人口的5.11%——Hubba虽然蜂窝数最少，但每蜂窝信道数最多，反而服务的用户数最多，这提示我们：信道数越多的蜂窝，规模效应越明显（这正是下一节"集群增益"要讲的道理）</div>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">8.4</span>集群增益：为什么信道要"合起来用"</h3>
+      <p>上面这道例题已经悄悄展示了一个很有意思的现象：把信道数从20提高到100（涨了5倍），能服务的用户数却从52涨到360（涨了近7倍）——涨得比信道数本身还快。这就是<b>集群增益（trunking gain）</b>：信道池越大，在同样的服务等级下，平均每个信道能撑起的用户数越多。直觉上很好理解——信道池越大，个别用户的通话高峰更容易被其他空闲信道"匀掉"，类似于大池子比小池子更能吸收波动。这也是为什么运营商总是倾向于把信道集中在大蜂窝里统一调度，而不是拆成很多份各自为政。</p>
+
+      <h3><span class="zh-num">8.5</span>Erlang C：排队制——愿意等就有机会接通</h3>
+      <p>如果系统允许把打不通的呼叫暂存到一个队列里排队（而不是直接拒绝），这时候用的是<b>Erlang C</b>模型。它给出的不是"被拒绝的概率"，而是<b>需要排队等待的概率 P_D</b>，以及排上队之后<b>平均要等多久 W</b>——这套逻辑在数据业务里比在语音通话里更常见，因为数据包本来就可以缓冲，语音通话对实时性要求太高，等不起。</p>
+    </section>
+
+    <!-- ================= CH 9 ================= -->
+    <section class="chapter" id="ch9">
+      <div class="chapter-head"><span class="chapter-num">第九章</span><h2>信道不够用了怎么办：小区分裂与扇区化</h2></div>
+
+      <h3><span class="zh-num">9.1</span>小区分裂——把大蜂窝拆成小蜂窝</h3>
+      <p>某个蜂窝的话务需求涨上来了，原有信道数撑不住怎么办？最直接的办法是<b>小区分裂（cell splitting）</b>：把这块拥挤的区域细分成更多、更小的微蜂窝，每个都配一个低功率的小基站。半径缩小一半，覆盖面积就变成原来的1/4，同样面积里能塞下的蜂窝数量却翻了4倍——单位面积内的信道总数因此大幅提升。</p>
+      <p>但这不是免费的午餐：为了让新的微蜂窝不去干扰更远处仍在使用同一组信道的其他蜂窝，微蜂窝的发射功率必须相应调低。如果路径损耗指数n=4，半径减半意味着发射功率大约要砍掉<b>12 dB</b>（降到原来的1/16），才能维持住原来的SIR水平。同时，蜂窝变小意味着手机穿越蜂窝边界会更频繁，半径缩小到1/4，切换发生的频率能涨到差不多10倍——这是运营商在决定要不要做小区分裂时，必须权衡的现实成本。</p>
+
+      <h3><span class="zh-num">9.2</span>扇区化——同一个基站，换一副"眼睛"</h3>
+      <p>另一条路是<b>扇区化（sectoring）</b>：不新建基站，而是把原来的全向天线换成几个指向不同方向的定向天线（最常见是切成3个120°扇区，或6个60°扇区）。这样做的好处是，某个方向上的定向天线，只会跟位于它波束范围内的少数几个同频蜂窝互相干扰，而不再是全方位地被6个第一层同频蜂窝同时"骚扰"——120°扇区化能把第一层干扰源从6个砍到2个，SIR因此能从全向天线的18 dB左右提升到23–24.5 dB。</p>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>全向天线像是站在房间中央大声喊话，四面八方的人都能听到你、你也会被四面八方的噪音干扰；扇区化则像是用一个喇叭对着一个方向喊，声音更集中，也只需要担心正前方那个方向传来的干扰声。</p>
+      </div>
+      <p>SIR提升了，就可以把簇大小N缩小、让频率复用更密集，从而提升系统总容量。代价是：每个扇区分到的信道池变小了，前面讲的"集群增益"会打折扣（这叫<b>集群效率下降</b>），而且手机在不同扇区之间切换的次数也会增加。所以扇区化本质上是<b>用集群效率换抗干扰能力</b>——和小区分裂是完全不同的一笔账。</p>
+    </section>
+
+    <!-- ================= CH 10 ================= -->
+    <section class="chapter" id="ch10">
+      <div class="chapter-head"><span class="chapter-num">第十章</span><h2>切换与功率控制：让你在移动中感觉不到任何变化</h2></div>
+
+      <h3><span class="zh-num">10.1</span>切换是怎么触发、怎么完成的</h3>
+      <p>回到第二章留下的场景：通话中手机离开了当前蜂窝，系统必须把业务信道无缝换到新蜂窝的基站上。触发这个动作靠一个信号强度的门槛判断：</p>
+      <div class="formula-card">
+        <div class="flbl">切换裕量</div>
+        <div class="fexpr">Δ = P_HO − P_min</div>
+        <div class="fmeaning">P_min是维持通话质量所需的最低信号强度（大约−90到−100 dBm），P_HO是触发切换的门限，比P_min略高一点，留出一点提前量。这个裕量Δ要设计得恰到好处：<b>太大</b>会导致手机在两个蜂窝信号差不多强的边界地带来回"跳来跳去"（专业说法叫乒乓效应，浪费信令资源）；<b>太小</b>又会导致信号已经掉到临界点了才开始切换，很可能还没换完，通话就已经断了。</div>
+      </div>
+
+      <h3><span class="zh-num">10.2</span>硬切换 vs 软切换：先断后连，还是先连后断</h3>
+      <ul>
+        <li><b>硬切换（"先断后连"）</b>：先把旧信道释放掉，再去建立新信道。实现简单，但会有一个短暂的中断——用在FDMA/TDMA系统里（比如GSM），因为这类系统同一时间通常只能锁定一个信道。</li>
+        <li><b>软切换（"先连后断"）</b>：新旧信道并行同时使用一段时间，等新信道稳定之后再切断旧的——用户完全感觉不到中断，代价是短时间内要同时占用两份资源。这种方式用在CDMA系统里（IS-95、WCDMA），因为CDMA的用户本来就是靠编码而不是频率/时隙区分，天然更容易做到"同时连着两个基站"。</li>
+      </ul>
+
+      <h3><span class="zh-num">10.3</span>功率控制：既要够用，又不要浪费</h3>
+      <p>最后一块拼图是<b>功率控制</b>。手机和基站会持续互相估计对方收到的SIR：如果信号质量比要求的还好，就命令对方"把功率调低一点"——既能省电，又能减少对其他用户的同频干扰；如果信号太弱，就命令对方"把功率调高一点"，保证通话不掉线。这个持续的反馈循环，尤其在CDMA系统里至关重要（还记得第三章提到的"每1毫秒更新一次"吗）——因为CDMA所有用户共享同一频段同一时刻传输，一旦有人功率开太大，就会把所有其他用户的信号都淹没掉，这在业内被称为"远近效应（near-far problem）"。</p>
+    </section>
+
+    <div class="next-up">
+      <div class="lbl">下一篇预告</div>
+      <h4>Part B · 无线系统——WLAN、自组网、LTE与物联网</h4>
+      <p>下一篇会讲802.11无线局域网是怎么用CSMA/CA避免大家抢着说话的、自组织网络怎么在没有基站的情况下靠节点互相中继、以及物联网架构里"雾计算"到底解决了什么问题。</p>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const chapters = [...document.querySelectorAll('.chapter')].map(el=>({
+  id: el.id,
+  title: el.querySelector('.chapter-head h2')?.textContent || el.id,
+  num: el.querySelector('.chapter-num')?.textContent || ''
+}));
+
+const railList = document.getElementById('railList');
+railList.innerHTML = chapters.map(c=>`<li><a href="#${c.id}" data-id="${c.id}">${c.num} ${c.title}</a></li>`).join('');
+
+const mobNav = document.getElementById('mobNav');
+mobNav.innerHTML = chapters.map(c=>`<option value="${c.id}">${c.num} · ${c.title}</option>`).join('');
+mobNav.addEventListener('change', ()=>{
+  document.getElementById(mobNav.value)?.scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+const railLinks = [...railList.querySelectorAll('a')];
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    const link = railLinks.find(a=>a.dataset.id===entry.target.id);
+    if(!link) return;
+    if(entry.isIntersecting){
+      railLinks.forEach(a=>a.classList.remove('active'));
+      link.classList.add('active');
+      mobNav.value = entry.target.id;
+    }
+  });
+}, {rootMargin:'-10% 0px -70% 0px', threshold:0});
+chapters.forEach(c=>{ const el=document.getElementById(c.id); if(el) observer.observe(el); });
+</script>
+
+</body></html>

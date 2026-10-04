@@ -1,0 +1,1329 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>EE6129 信号之路</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Source+Sans+3:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+:root{
+  --bg:#f5f6f8;
+  --surface:#ffffff;
+  --surface-2:#eceff3;
+  --ink:#131826;
+  --ink-soft:#5b6472;
+  --ink-faint:#8b93a1;
+  --accent:#0d7a82;
+  --accent-ink:#075359;
+  --accent-soft:#e3f3f2;
+  --accent2:#c76a1f;
+  --accent2-soft:#fbeee0;
+  --line:#dfe3e8;
+  --good:#1a8754;
+  --good-soft:#e4f6ec;
+  --bad:#c0392b;
+  --bad-soft:#fbe8e5;
+  --shadow:0 1px 2px rgba(19,24,38,.04),0 8px 24px -12px rgba(19,24,38,.12);
+  --radius:12px;
+  --font-display:'Archivo','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+  --font-body:'Source Sans 3','PingFang SC','Microsoft YaHei',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0a0e14;
+    --surface:#121822;
+    --surface-2:#1a2230;
+    --ink:#e7ecf2;
+    --ink-soft:#98a3b3;
+    --ink-faint:#6b7688;
+    --accent:#4fd7d0;
+    --accent-ink:#8fe9e3;
+    --accent-soft:rgba(79,215,208,.12);
+    --accent2:#f0a35c;
+    --accent2-soft:rgba(240,163,92,.13);
+    --line:#232c3a;
+    --good:#3ecf8e;
+    --good-soft:rgba(62,207,142,.13);
+    --bad:#ef6461;
+    --bad-soft:rgba(239,100,97,.13);
+    --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px -12px rgba(0,0,0,.55);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0a0e14;
+  --surface:#121822;
+  --surface-2:#1a2230;
+  --ink:#e7ecf2;
+  --ink-soft:#98a3b3;
+  --ink-faint:#6b7688;
+  --accent:#4fd7d0;
+  --accent-ink:#8fe9e3;
+  --accent-soft:rgba(79,215,208,.12);
+  --accent2:#f0a35c;
+  --accent2-soft:rgba(240,163,92,.13);
+  --line:#232c3a;
+  --good:#3ecf8e;
+  --good-soft:rgba(62,207,142,.13);
+  --bad:#ef6461;
+  --bad-soft:rgba(239,100,97,.13);
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 28px -12px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--font-body);font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--accent-soft);color:var(--accent-ink);}
+h1,h2,h3,h4{font-family:var(--font-display);text-wrap:balance;margin:0;letter-spacing:-.01em;}
+p{margin:0 0 .7em;}
+button{font-family:inherit;}
+a{color:var(--accent);}
+.mono{font-family:var(--font-mono);}
+.tabular{font-variant-numeric:tabular-nums;}
+
+/* ---------- App shell ---------- */
+.app{display:flex;min-height:100vh;}
+
+/* Sidebar */
+.sidebar{
+  width:288px;flex:none;background:var(--surface);
+  border-right:1px solid var(--line);
+  display:flex;flex-direction:column;
+  position:sticky;top:0;height:100vh;overflow:hidden;
+  transition:margin-left .25s ease;
+}
+.sidebar-head{padding:20px 18px 14px;border-bottom:1px solid var(--line);flex:none;}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.brand-mark{
+  width:34px;height:34px;border-radius:9px;flex:none;
+  background:linear-gradient(145deg,var(--accent),var(--accent-ink));
+  position:relative;overflow:hidden;
+}
+.brand-mark svg{position:absolute;inset:0;width:100%;height:100%;}
+.brand-text{display:flex;flex-direction:column;}
+.brand-text .course{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.12em;color:var(--ink-faint);text-transform:uppercase;}
+.brand-text .name{font-family:var(--font-display);font-weight:700;font-size:15.5px;color:var(--ink);}
+.progress-wrap{display:flex;align-items:center;gap:10px;}
+.progress-ring{flex:none;}
+.progress-info{flex:1;min-width:0;}
+.progress-label{font-size:11px;color:var(--ink-soft);display:flex;justify-content:space-between;margin-bottom:4px;}
+.progress-track{height:5px;border-radius:3px;background:var(--surface-2);overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-ink));border-radius:3px;transition:width .4s ease;}
+
+.search-box{margin:12px 18px 8px;position:relative;}
+.search-box input{
+  width:100%;padding:8px 10px 8px 30px;border-radius:8px;border:1px solid var(--line);
+  background:var(--surface-2);color:var(--ink);font-size:13px;font-family:var(--font-body);
+}
+.search-box input:focus{outline:2px solid var(--accent);outline-offset:1px;}
+.search-box svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--ink-faint);}
+
+.nav{flex:1;overflow-y:auto;padding:8px 12px 20px;}
+.nav::-webkit-scrollbar{width:8px;}
+.nav::-webkit-scrollbar-thumb{background:var(--line);border-radius:4px;}
+.nav-top-item{
+  display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;margin:2px 0;
+  cursor:pointer;font-size:13.5px;font-weight:600;color:var(--ink-soft);border:none;background:none;width:100%;text-align:left;
+}
+.nav-top-item:hover{background:var(--surface-2);color:var(--ink);}
+.nav-top-item.active{background:var(--accent-soft);color:var(--accent-ink);}
+.nav-top-item svg{width:16px;height:16px;flex:none;}
+
+.nav-group{margin-top:14px;}
+.nav-group-label{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-faint);padding:0 10px;margin-bottom:4px;display:flex;justify-content:space-between;
+}
+.nav-item{
+  display:flex;align-items:center;gap:8px;padding:6.5px 10px 6.5px 10px;border-radius:7px;margin:1px 0;
+  cursor:pointer;font-size:13px;color:var(--ink-soft);border:none;background:none;width:100%;text-align:left;
+  line-height:1.3;
+}
+.nav-item:hover{background:var(--surface-2);color:var(--ink);}
+.nav-item.active{background:var(--accent-soft);color:var(--accent-ink);font-weight:600;}
+.nav-dot{width:6px;height:6px;border-radius:50%;flex:none;background:var(--line);}
+.nav-dot.done{background:var(--good);}
+.nav-item .num{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-faint);flex:none;width:26px;}
+
+/* Main */
+.main-scroll{flex:1;min-width:0;height:100vh;overflow-y:auto;}
+.topbar{
+  position:sticky;top:0;z-index:5;display:none;align-items:center;gap:10px;
+  padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--line);
+}
+.topbar button{background:none;border:none;color:var(--ink);cursor:pointer;padding:4px;}
+.content{max-width:920px;margin:0 auto;padding:40px 44px 100px;}
+@media (max-width:920px){.content{padding:28px 20px 80px;}}
+
+.eyebrow{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--accent);display:flex;align-items:center;gap:8px;margin-bottom:10px;
+}
+.eyebrow .sep{color:var(--ink-faint);}
+.page-title{font-size:29px;font-weight:800;margin-bottom:6px;}
+.page-sub{color:var(--ink-soft);font-size:14.5px;max-width:64ch;margin-bottom:26px;}
+
+.mark-row{display:flex;align-items:center;gap:12px;margin:22px 0 30px;padding-top:18px;border-top:1px solid var(--line);}
+.mark-btn{
+  display:flex;align-items:center;gap:7px;padding:7px 14px;border-radius:20px;border:1px solid var(--line);
+  background:var(--surface);color:var(--ink-soft);font-size:12.5px;font-weight:600;cursor:pointer;
+}
+.mark-btn.done{background:var(--good-soft);border-color:transparent;color:var(--good);}
+.mark-btn svg{width:14px;height:14px;}
+.mark-nav{display:flex;gap:8px;margin-left:auto;}
+.mark-nav button{
+  border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);border-radius:8px;
+  padding:7px 12px;font-size:12.5px;cursor:pointer;display:flex;align-items:center;gap:5px;
+}
+.mark-nav button:hover{color:var(--ink);border-color:var(--ink-faint);}
+
+/* Content blocks */
+.block{margin-bottom:22px;}
+.block h3{font-size:16.5px;font-weight:700;margin-bottom:9px;color:var(--ink);display:flex;align-items:center;gap:8px;}
+.block h3 .tag{
+  font-family:var(--font-mono);font-size:10px;padding:2px 6px;border-radius:5px;background:var(--surface-2);color:var(--ink-faint);
+  text-transform:uppercase;letter-spacing:.06em;font-weight:600;
+}
+ul.notes{margin:0;padding:0;list-style:none;}
+ul.notes li{
+  position:relative;padding-left:18px;margin-bottom:8px;color:var(--ink);font-size:14.5px;
+}
+ul.notes li::before{content:"";position:absolute;left:2px;top:9px;width:5px;height:5px;border-radius:50%;background:var(--accent);}
+ul.notes li b{font-weight:700;color:var(--ink);}
+ul.notes li .soft{color:var(--ink-soft);}
+
+.formula{
+  background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--accent2);
+  border-radius:0 10px 10px 0;padding:13px 16px;margin:12px 0;box-shadow:var(--shadow);
+}
+.formula .flabel{font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent2);margin-bottom:6px;font-weight:600;}
+.formula .fexpr{font-family:var(--font-mono);font-size:15px;color:var(--ink);overflow-x:auto;white-space:nowrap;padding-bottom:2px;}
+.formula .fnote{font-size:12.5px;color:var(--ink-soft);margin-top:6px;}
+
+.example{
+  border:1px solid var(--line);border-radius:var(--radius);margin:14px 0;overflow:hidden;background:var(--surface);
+}
+.example summary{
+  list-style:none;cursor:pointer;padding:12px 15px;display:flex;align-items:center;gap:10px;
+  font-weight:600;font-size:13.5px;color:var(--ink);background:var(--surface-2);
+}
+.example summary::-webkit-details-marker{display:none;}
+.example summary .ex-icon{
+  width:20px;height:20px;border-radius:6px;background:var(--accent-soft);color:var(--accent-ink);
+  display:flex;align-items:center;justify-content:center;flex:none;font-size:11px;font-family:var(--font-mono);font-weight:700;
+}
+.example summary .chev{margin-left:auto;width:14px;height:14px;color:var(--ink-faint);transition:transform .2s;}
+.example[open] summary .chev{transform:rotate(90deg);}
+.example .ex-body{padding:14px 16px 16px;font-size:14px;}
+.example .ex-body p{margin:0 0 8px;color:var(--ink);}
+.example .ex-body .sol-label{font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:10px 0 6px;font-weight:700;}
+.example .ex-body .sol-step{font-family:var(--font-mono);font-size:13px;color:var(--ink);background:var(--surface-2);padding:8px 10px;border-radius:7px;margin-bottom:5px;overflow-x:auto;}
+.example .ex-body .ans{margin-top:8px;padding:9px 12px;background:var(--good-soft);color:var(--good);border-radius:7px;font-weight:700;font-size:13.5px;font-family:var(--font-mono);}
+
+.callout{
+  border-radius:var(--radius);padding:13px 15px;margin:14px 0;font-size:13.5px;
+  background:var(--accent-soft);color:var(--ink);border:1px solid transparent;display:flex;gap:10px;
+}
+.callout svg{width:17px;height:17px;flex:none;color:var(--accent-ink);margin-top:1px;}
+.callout b{color:var(--accent-ink);}
+
+.table-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--line);border-radius:10px;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+table th{
+  text-align:left;font-family:var(--font-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--ink-soft);background:var(--surface-2);padding:9px 12px;white-space:nowrap;
+}
+table td{padding:8px 12px;border-top:1px solid var(--line);color:var(--ink);white-space:nowrap;font-family:var(--font-mono);font-size:12.5px;}
+table td:first-child, table th:first-child{font-family:var(--font-body);font-weight:600;}
+
+/* Overview cards */
+.hero{
+  border-radius:16px;padding:28px 30px;margin-bottom:30px;
+  background:
+    radial-gradient(680px 220px at 88% -10%, var(--accent-soft), transparent 60%),
+    var(--surface);
+  border:1px solid var(--line);position:relative;overflow:hidden;
+}
+.hero .wave{position:absolute;right:-10px;bottom:-14px;opacity:.5;width:260px;height:auto;}
+.hero h1{font-size:26px;margin-bottom:8px;max-width:30ch;}
+.hero p{color:var(--ink-soft);max-width:56ch;font-size:14px;}
+.stat-row{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap;}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:100px;}
+.stat .n{font-family:var(--font-display);font-size:20px;font-weight:800;color:var(--accent-ink);}
+.stat .l{font-size:11px;color:var(--ink-soft);}
+
+.part-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:10px;}
+@media (max-width:760px){.part-grid{grid-template-columns:1fr;}}
+.part-card{
+  border:1px solid var(--line);border-radius:var(--radius);padding:18px;background:var(--surface);cursor:pointer;
+  display:flex;flex-direction:column;gap:8px;transition:border-color .15s, transform .15s;
+}
+.part-card:hover{border-color:var(--accent);transform:translateY(-2px);}
+.part-card .pk{font-family:var(--font-mono);font-size:11px;color:var(--accent);letter-spacing:.08em;}
+.part-card h4{font-size:16px;}
+.part-card p{font-size:12.5px;color:var(--ink-soft);flex:1;}
+.part-card .pf{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:var(--ink-faint);}
+.mini-track{height:4px;background:var(--surface-2);border-radius:2px;flex:1;margin-right:10px;overflow:hidden;}
+.mini-fill{height:100%;background:var(--accent);}
+
+/* Flashcards */
+.fc-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;align-items:center;}
+.chip{
+  padding:6px 12px;border-radius:20px;border:1px solid var(--line);background:var(--surface);
+  font-size:12.5px;color:var(--ink-soft);cursor:pointer;font-weight:600;
+}
+.chip.active{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+.fc-stage{display:flex;flex-direction:column;align-items:center;gap:16px;}
+.fc-count{font-family:var(--font-mono);font-size:12px;color:var(--ink-faint);}
+.flashcard{
+  width:100%;max-width:520px;height:250px;perspective:1400px;cursor:pointer;
+}
+.fc-inner{
+  position:relative;width:100%;height:100%;transition:transform .5s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d;
+}
+.flashcard.flipped .fc-inner{transform:rotateY(180deg);}
+.fc-face{
+  position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;border:1px solid var(--line);
+  background:var(--surface);box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:26px;text-align:center;gap:10px;
+}
+.fc-face .kicker{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);}
+.fc-face .txt{font-size:19px;font-weight:700;font-family:var(--font-display);}
+.fc-back{transform:rotateY(180deg);background:var(--accent-soft);}
+.fc-back .txt{font-size:14.5px;font-weight:500;font-family:var(--font-body);line-height:1.5;color:var(--ink);}
+.fc-controls{display:flex;gap:10px;align-items:center;}
+.fc-btn{
+  border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 16px;
+  cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px;
+}
+.fc-btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink);}
+.fc-btn.good{color:var(--good);}
+.fc-btn.bad{color:var(--bad);}
+.fc-btn:hover{border-color:var(--ink-faint);}
+
+/* Quiz */
+.quiz-setup{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;}
+.quiz-card{border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);padding:22px;box-shadow:var(--shadow);}
+.q-progress{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.q-track{flex:1;height:6px;background:var(--surface-2);border-radius:3px;overflow:hidden;}
+.q-fill{height:100%;background:var(--accent);}
+.q-num{font-family:var(--font-mono);font-size:12px;color:var(--ink-soft);white-space:nowrap;}
+.q-text{font-size:17px;font-weight:700;margin-bottom:18px;line-height:1.4;}
+.q-options{display:flex;flex-direction:column;gap:9px;}
+.q-opt{
+  border:1px solid var(--line);border-radius:10px;padding:12px 14px;cursor:pointer;font-size:14px;
+  display:flex;gap:10px;align-items:flex-start;background:var(--surface);
+}
+.q-opt:hover{border-color:var(--accent);}
+.q-opt .letter{
+  font-family:var(--font-mono);font-weight:700;font-size:11.5px;width:20px;height:20px;border-radius:6px;
+  background:var(--surface-2);color:var(--ink-soft);display:flex;align-items:center;justify-content:center;flex:none;
+}
+.q-opt.correct{background:var(--good-soft);border-color:var(--good);}
+.q-opt.correct .letter{background:var(--good);color:#fff;}
+.q-opt.wrong{background:var(--bad-soft);border-color:var(--bad);}
+.q-opt.wrong .letter{background:var(--bad);color:#fff;}
+.q-opt.disabled{cursor:default;}
+.q-explain{margin-top:16px;padding:13px 15px;border-radius:10px;background:var(--surface-2);font-size:13.5px;color:var(--ink);display:none;}
+.q-explain.show{display:block;}
+.q-explain b{color:var(--accent-ink);}
+.q-footer{display:flex;justify-content:flex-end;margin-top:18px;}
+.q-next{background:var(--ink);color:var(--bg);border:none;border-radius:9px;padding:10px 18px;font-weight:700;font-size:13.5px;cursor:pointer;display:none;align-items:center;gap:6px;}
+.q-next.show{display:inline-flex;}
+.q-result{text-align:center;padding:30px 20px;}
+.q-result .score{font-family:var(--font-display);font-size:52px;font-weight:800;color:var(--accent-ink);}
+.q-result .score span{font-size:22px;color:var(--ink-faint);}
+.q-result p{color:var(--ink-soft);margin:10px 0 22px;}
+
+.formula-sheet-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media (max-width:760px){.formula-sheet-grid{grid-template-columns:1fr;}}
+.fs-group h4{font-size:13px;font-family:var(--font-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-bottom:10px;}
+
+kbd{font-family:var(--font-mono);background:var(--surface-2);border:1px solid var(--line);border-radius:4px;padding:1px 5px;font-size:11px;}
+
+@media (max-width:880px){
+  .sidebar{position:fixed;left:0;top:0;z-index:20;box-shadow:0 0 0 100vmax rgba(0,0,0,0);}
+  .sidebar.closed{margin-left:-288px;}
+  .topbar{display:flex;}
+  .scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:19;display:none;}
+  .scrim.show{display:block;}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none !important;animation:none !important;}}
+</style>
+
+<div class="app">
+  <aside class="sidebar closed" id="sidebar">
+    <div class="sidebar-head">
+      <div class="brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 34 34" fill="none"><path d="M4 22 Q9 10 13 22 T22 22 T30 12" stroke="white" stroke-width="2" stroke-linecap="round" fill="none" opacity=".95"/></svg>
+        </div>
+        <div class="brand-text">
+          <span class="course">EE6129 · NTU</span>
+          <span class="name">信号之路</span>
+        </div>
+      </div>
+      <div class="progress-wrap">
+        <div class="progress-info">
+          <div class="progress-label"><span>课程进度</span><span id="progressPct">0%</span></div>
+          <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input id="navSearch" type="text" placeholder="搜索知识点、术语…" autocomplete="off">
+    </div>
+    <nav class="nav" id="navList"></nav>
+  </aside>
+  <div class="scrim" id="scrim"></div>
+
+  <main class="main-scroll" id="mainScroll">
+    <div class="topbar">
+      <button id="menuBtn" aria-label="打开菜单"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <span style="font-family:var(--font-display);font-weight:700;font-size:14px;">EE6129 信号之路</span>
+    </div>
+    <div class="content" id="content"></div>
+  </main>
+</div>
+
+<script>
+/* ============================= DATA ============================= */
+
+const COURSE = {
+  title: "EE6129 无线与移动通信系统",
+  parts: [
+    {id:"A", key:"cellular", title:"蜂窝移动通信系统", desc:"多址接入技术、1G–4G各代演进、传播模型、频率复用、话务工程、容量提升与切换。", weeks:"第1–2周"},
+    {id:"B", key:"wireless", title:"无线系统", desc:"802.11无线局域网、自组网与传感器网络、LTE/4G架构、物联网。", weeks:"第3–4周"},
+    {id:"C", key:"satellite", title:"卫星通信", desc:"轨道类型（GEO/MEO/LEO）、链路预算、卫星多址接入、路由与切换。", weeks:"第5–6周"},
+  ]
+};
+
+const TOPICS = [
+{id:"a1", part:"A", num:"A.1", title:"多址接入基础与蜂窝概念",
+ notes:[
+  "通信系统的任务被拆分到不同的<b>分层（layers）</b>中；每一层利用下一层提供的基本功能为上一层服务，对等层之间遵循共同的协议（一套规则）。",
+  "<b>FDMA（频分多址）</b>——把频段划分成若干个等带宽的信道，每个用户始终占用一个独立的载波频率。",
+  "<b>TDMA（时分多址）</b>——把一个频率划分成周期性的时隙，多个用户轮流使用同一频率。",
+  "<b>CDMA（码分多址）</b>——每个用户分配一个正交编码，始终在整个频带上同时发送。",
+  "蜂窝系统用大量<b>低功率发射机</b>覆盖小区域（蜂窝小区），而不是一个大功率信号塔——这样才能实现<b>频率复用</b>、<b>切换（handoff）</b>和<b>小区分裂</b>来提升容量。",
+  "蜂窝小区排布成<b>六边形</b>，因为六边形中心到每个顶点的距离都相等（并且等于边长）——这样可以让相邻天线间距完全均匀地铺满整个平面。",
+  "对于半径为 <span class='mono'>R</span> 的六边形蜂窝，相邻蜂窝中心之间的距离为 <span class='mono'>d = √3·R</span>。",
+ ],
+ formulas:[
+  {label:"六边形蜂窝中心间距", expr:"d = √3 · R", note:"R = 蜂窝半径"},
+ ],
+ examples:[]
+},
+{id:"a2", part:"A", num:"A.2", title:"系统组成与呼叫流程",
+ notes:[
+  "<b>基站（BS）</b>：包含天线、控制器、接收机。<b>移动电话交换局（MTSO）</b>：负责在移动用户与公共电话网（PSTN）之间接续/切换呼叫。",
+  "移动台（MS）与基站（BS）之间有两类逻辑信道：<b>控制信道</b>（用于呼叫建立/维护的信令）和<b>业务信道</b>（承载语音/数据）。",
+  "蜂窝系统六大基本组成部分：移动台、基站、MTSO、数据库、安全机制、PSTN网关——通过上/下行链路上的<b>空中接口标准</b>相互连接。",
+  "<b>移动台初始化</b>：手机开机后扫描并锁定信号最强的建立控制信道；通过基站与MTSO握手，登记身份和位置信息；用户移动到新蜂窝时会重复这一过程。",
+  "<b>移动台主叫呼叫</b>：MS先检测信道是否空闲，然后在建立信道上发送被叫号码 → 基站把请求转发给MTSO。",
+  "<b>寻呼（Paging）</b>：MTSO向最可能覆盖被叫用户的一批基站发送寻呼消息；每个基站在各自的建立信道上发出寻呼信号。",
+  "<b>呼叫接通</b>：被叫用户响应 → MTSO在两个基站之间建立电路，并在各自蜂窝内分配一个业务信道 → 两部手机都调谐到该业务信道。",
+  "<b>切换（Handoff）</b>：当移动用户在通话中离开当前蜂窝时，业务信道会切换到新蜂窝基站分配的信道上，同时保证通话不中断。",
+ ],
+ formulas:[], examples:[]
+},
+{id:"a3", part:"A", num:"A.3", title:"第一代（1G）与第二代（2G）系统",
+ notes:[
+  "<b>1G（模拟制式）：</b>AMPS（美国/澳大利亚）、ETACS（欧洲）、NTT（日本）。使用UHF频段约800–900 MHz；收发频率间隔≥45 MHz；信道间隔30 kHz（AMPS）/25 kHz（其他制式）。",
+  "<b>2G的目标：</b>相比单纯小区分裂获得更高容量和更低成本，并支持完整的国际漫游/切换。采用TDMA或CDMA接入方式。",
+  "<b>N-AMPS</b>：从1G到2G的过渡系统（摩托罗拉，IS-91标准）——把一个30 kHz的AMPS信道拆成三个10 kHz信道 → 容量提升到AMPS的3倍以上，并配有抗干扰方案来弥补质量损失。",
+  "<b>TDMA制式家族：</b>IS-54（北美）、<b>GSM</b>（全球主流标准）、PDC（日本）。",
+  "<b>GSM：</b>由移动台 + 基站子系统 + 网络子系统组成。频谱：25 MHz基站发射（935–960 MHz）+ 25 MHz移动台发射（890–915 MHz）。接入方式 = <b>FDMA + TDMA</b>组合，200 kHz射频载波 → 共125个全双工信道。",
+  "<b>CDMA（IS-95）：</b>直接序列扩频——用一个宽带的伪随机码（PN码，每用户唯一）把窄带信号展宽；接收端用同一PN码做相关运算，把其他用户的信号压制为近似零。",
+  "CDMA的容量依赖于两点：(1) 各发射机使用近似正交的<b>Walsh函数</b>；(2) 每 <span class='mono'>1毫秒</span> 更新一次的严格<b>功率控制</b>。",
+  "CDMA的优势：所需基站数更少、抗多径能力更强、语音质量更好、可实现定位、通话容量更高。",
+ ],
+ formulas:[], examples:[]
+},
+{id:"a4", part:"A", num:"A.4", title:"第三代（3G）与第四代（4G/LTE）",
+ notes:[
+  "<b>3G的目标：</b>在语音之外提供高速多媒体/数据/视频业务，同时支持分组交换与电路交换，更高效地利用频谱，并能灵活引入新业务。",
+  "3G技术要点：语音用卷积码，数据用<b>Turbo码</b>；采用<b>WCDMA</b>或<b>MC-CDMA</b>，配合TDD/FDD双工方式；采用快速功率控制；宏蜂窝到微微蜂窝的分层结构，用伞形/重叠蜂窝来处理切换。",
+  "<b>4G / LTE</b> 面向基于IP的数据业务；接入技术为<b>OFDMA</b>（下行）。LTE是UMTS的演进版本，作为演进分组系统（EPS）的一部分在3GPP中标准化。",
+  "<b>E-UTRA的关键特性：</b>可伸缩带宽1.4–20 MHz；采用4×4 MIMO时下行峰值速率可超过300 Mbps，上行峰值约86 Mbps；针对≤15 km/h的低速移动做了优化，同时也支持350–500 km/h的高速移动；覆盖范围从femto蜂窝到100 km大蜂窝均可实现。",
+  "<b>双工方式：</b>FDD和TDD均支持——TDD的优势在于能灵活支持上下行流量不对称的场景。",
+  "下行接入采用<b>OFDMA</b>（对多径衰落有较强鲁棒性）；上行接入采用<b>SC-FDMA</b>（单载波FDMA，峰均功率比更低，适合电池受限的终端设备）。",
+  "<b>MIMO</b>能提升频谱效率和链路可靠性。<b>Turbo码</b>与OFDM配合利用频率分集；<b>HARQ</b>（混合自动重传请求）进一步提高链路可靠性。",
+ ],
+ formulas:[], examples:[]
+},
+{id:"a5", part:"A", num:"A.5", title:"双工方式与频谱效率",
+ notes:[
+  "<b>FDD（频分双工）：</b>上下行使用不同的频带。<b>TDD（时分双工）：</b>上下行在同一频带上用不同时隙区分——与FDD的成对独立频带不同，TDD总带宽大约是单方向带宽的2倍。",
+  "<b>频谱效率</b>用来衡量已分配的射频频谱被利用的程度——常见指标是每MHz、每单位面积能支持的语音信道数。",
+  "频谱效率可拆解为两个独立部分：<b>调制频谱效率（η_m）</b>与<b>多址接入频谱效率（η_a）</b>；总效率为 <span class='mono'>η = η_m · η_a</span>。",
+  "η_m取决于信道间隔、覆盖面积和频率复用因子——<i>并不</i>直接取决于系统总带宽。",
+  "对FDMA：η_a =（信道带宽 × 信道总数）/ 系统总带宽。对宽带TDMA：η_a = 时隙时长·时隙数 / 帧时长。",
+ ],
+ formulas:[
+  {label:"调制效率", expr:"η_m = (B_w/B_c) / (B_w · A_c · N_c)   [信道数/MHz/km²]", note:"B_w=系统带宽, B_c=信道间隔, A_c=蜂窝面积, N_c=簇大小"},
+  {label:"FDMA多址接入效率", expr:"η_a = B_e · N_t / B_w  ≤ 1", note:"B_e=单信道带宽, N_t=可用语音信道数"},
+  {label:"窄带TDMA效率", expr:"η_a = (T_s·M_t/T_f) · (B_u·N_u/B_w)", note:"T_s=时隙时长, T_f=帧时长, M_t=每帧时隙数, N_u=在不同子频带上共享同一时隙的用户数"},
+  {label:"总体频谱效率", expr:"η = η_m · η_a"},
+ ],
+ examples:[
+  {q:"AMPS系统：两家运营商共享25 MHz带宽；每个蜂窝预留3个30 kHz控制信道。每蜂窝面积=4 km²，总覆盖面积=2000 km²，服务等级GoS=2%，N=7。求 η_m。",
+   steps:[
+    "每运营商信道数 = 12.5×10⁶ / 30×10³ = 416",
+    "语音信道数 = 416 − (3×7) = 395 → 每蜂窝56个（395/7）",
+    "GoS=2%时查Erlang B表，56信道 → A = 45.9 Erlang/蜂窝 = 11.5 Erlang/km²",
+   ], ans:"η_m = 45.9 / (12.5 × 4) = 0.92 Erlang/MHz/km²"},
+  {q:"北美TDMA系统：带宽12.5 MHz，信道间隔30 kHz，共395个信道，帧长40 ms含6个时隙，话音速率13 kbps，总速率16.2 kbps。求 η_a。",
+   steps:[
+    "T_s = (13/16.2)×(40/6) = 5.35 ms；T_f = 40 ms；M_t = 6",
+    "η_a = (T_s·M_t/T_f) × (B_u·N_u/B_w) = (13/16.2) × (30×395/12500)",
+   ], ans:"η_a ≈ 0.76"},
+ ]
+},
+{id:"a6", part:"A", num:"A.6", title:"无线电波传播模型",
+ notes:[
+  "<b>自由空间模型</b>（远场）：接收功率取决于收发天线增益和自由空间路径损耗 <span class='mono'>L</span>。",
+  "真实环境需要靠<b>经验模型</b>拟合实测数据，因为纯理论推导难以处理——一般形式含有系数A、B、C、D、E，它们是频率和天线高度的函数。",
+  "<b>CCIR模型</b>（城区）和<b>Okumura–Hata模型</b>是经典的经验模型；Hata模型在城区基础上给出郊区和开阔地区的修正项。",
+  "Okumura–Hata模型适用范围：150 MHz ≤ f ≤ 1500 MHz，30 m ≤ h_T ≤ 200 m，1 km ≤ d ≤ 20 km，1 m ≤ h_R ≤ 10 m。",
+  "一种简化的经验路径损耗模型把接收功率写成<b>截距 + 斜率·log(d)</b>的直线形式——斜率（dB/十倍距离）和截距P₀因环境而异。",
+ ],
+ formulas:[
+  {label:"自由空间接收功率", expr:"P_R = P_T · G_T · G_R / L", note:"L = (4πd/λ)²"},
+  {label:"自由空间损耗（dB）", expr:"L(dB) = 32 + 20·log f(MHz) + 20·log d(km)"},
+  {label:"通用经验路径损耗", expr:"L(dB) = A + B·log f + C·log h_T + D·log h_R + E·log d"},
+  {label:"接收功率（对数距离形式）", expr:"P_R(dBm) = P₀ + γ·log d", note:"γ = −10n，n为路径损耗指数"},
+ ],
+ tables:[{title:"参考斜率/截距（标准收发条件下）", head:["环境","斜率 γ (dB/十倍距离)","P₀ (dBm)"],
+   rows:[["自由空间","−20","−41"],["平坦地面","−40","−30.64"],["CCIR城区","−30 至 −35.4","−71.04"]]}],
+ examples:[]
+},
+{id:"a7", part:"A", num:"A.7", title:"六边形几何与频率复用",
+ notes:[
+  "一组共 <span class='mono'>N</span> 个蜂窝用完整个分配频谱的集合叫作一个<b>簇（cluster）</b>；这个模式不断重复——同一组信道每隔N个蜂窝复用一次。",
+  "<b>复用距离D</b> = 使用同一组信道的两个最近蜂窝之间的间隔。D越大 → 同频干扰越小，但单位面积可用信道数越少（容量越低）。",
+  "只有特定的簇大小才能完美铺满平面：<span class='mono'>N = i² + ij + j²</span>（i、j为整数），取值为1、3、4、7、9、12、13、19、21……",
+  "<b>同频复用比 Q = D/R = √(3N)</b>——N的选择就是在信道容量与链路质量（SIR）之间做权衡。",
+  "整个服务区的信道总数：T = C·N·(S/N) = C·S，其中C为簇的数量，S为每簇的信道总数。",
+  "<b>城区</b>（用户密度高）适合较小的N（3、4、7）；<b>农村</b>适合较大的N（13、19、21）；<b>郊区</b>通常N≈7。",
+ ],
+ formulas:[
+  {label:"复用距离", expr:"D = R · √(3N)"},
+  {label:"同频复用比", expr:"Q = D/R = √(3N)"},
+  {label:"系统信道总数", expr:"T = C · N · (S/N) = C · S"},
+ ],
+ examples:[
+  {q:"7蜂窝复用的FDD系统，总带宽30 MHz，每个单工语音信道25 kHz，预留2 MHz作控制信道。求系统及每个蜂窝的双工语音信道数（均匀固定信道分配UFCA）。",
+   steps:[
+    "语音带宽 = 30 − 2 = 28 MHz → 上/下行各14 MHz（假设对称）",
+    "每条链路的单工信道数 = 14,000/25 = 560",
+    "系统双工语音信道数 = 560（每个双工信道由一对单工信道组成）",
+   ], ans:"共560个，每蜂窝 560/7 = 80个信道"},
+ ]
+},
+{id:"a8", part:"A", num:"A.8", title:"同频干扰与信道分配",
+ notes:[
+  "<b>信干比（SIR）</b>比较所需信号S与来自同频蜂窝的干扰总和I（在干扰受限系统中噪声可忽略）。",
+  "在仅考虑路径损耗（指数为n）的假设下，来自每个同频蜂窝的干扰 ∝ D_i^(−n)；所需信号 ∝ D₀^(−n)。",
+  "简化的第一层模型：假设<b>6个同频干扰源</b>，忽略第二层，移动台位于蜂窝边缘，所有干扰源到移动台的距离都相等，为D。",
+  "增大N可以提高SIR（干扰源更少、更远），但会降低频谱效率——这就是经典的容量与质量的权衡。",
+  "<b>固定信道分配（FCA）：</b>每个蜂窝分配一组预先确定的信道；一旦用完，即使相邻蜂窝有空闲信道，新呼叫也会被阻塞（在话务不均匀时效率低）。",
+  "<b>动态信道分配（DCA）：</b>信道不永久绑定到某个蜂窝——只要不违反干扰（复用距离）约束，任何基站都可以按需使用任意信道，支持\"信道借用\"。",
+ ],
+ formulas:[
+  {label:"通用SIR", expr:"S/I = S / Σᵢ Iᵢ  (i = 1..m个干扰源)"},
+  {label:"简化的第一层SIR（6个干扰源）", expr:"S/I = (1/6) · Qⁿ = (1/6) · (3N)^(n/2)", note:"Q = D/R，n为路径损耗指数"},
+ ],
+ examples:[
+  {q:"要求SIR = 10 dB，路径损耗指数n = 4。求最小簇大小N。",
+   steps:["N=1 → 1.76 dB","N=3 → 11.30 dB","N=4 → 13.80 dB","N=7 → 18.66 dB","N≥3时已满足10 dB要求"],
+   ans:"最小所需N = 3（但实际最优取N = 7，以保证语音质量所需的≥18 dB）"},
+ ]
+},
+{id:"a9", part:"A", num:"A.9", title:"话务工程与排队论",
+ notes:[
+  "蜂窝系统性能 = f(信道容量, 提供话务量)。可以用<b>排队论</b>建模：顾客（呼叫）到达，若没有空闲服务台（信道）则等待，被服务后离开系统。",
+  "<b>Kendall记号 A/S/N/C/P/D</b>：到达分布/服务分布/服务台数/系统容量/顾客总体/排队规则。例如 M/M/m 表示马尔可夫到达与服务、共m个服务台。",
+  "<b>话务强度 A = λ/μ</b>，单位为Erlang（λ=到达率，μ=服务率）。<b>系统利用率 ρ = λ/(mμ) = A/m</b>。",
+  "<b>Erlang B</b>（呼损制/M/M/m/m模型）：被阻塞的呼叫直接被清除，不排队——给出话务系统的阻塞概率P_B。",
+  "<b>Erlang C</b>（排队制，无限队列）：被阻塞的呼叫会等待；给出等待概率P_D和平均等待时间W。",
+  "<b>服务等级（GoS）</b> = 呼叫被阻塞的概率。1–2%是理想水平；超过5%对用户来说不可接受。",
+  "<b>承载话务量 C = A(1−P_B)</b>；被丢弃的话务量 = A·P_B。当P_B很小时，C ≈ A。",
+  "<b>集群增益（Trunking gain）</b> = （给定GoS下能服务的用户数）/（信道数）——信道数越多，在固定GoS下增益越大（规模效应）。<b>集群效率</b> = 承载的Erlang数/信道数，取值在0–1之间。",
+ ],
+ formulas:[
+  {label:"话务强度", expr:"A = λ/μ   [Erlang]"},
+  {label:"Erlang B（阻塞概率）", expr:"P_B = (Aᴹ/M!) / Σₖ₌₀ᴹ (Aᵏ/k!)"},
+  {label:"承载/丢弃话务量", expr:"承载话务 = A(1−P_B)，丢弃话务 = A·P_B"},
+  {label:"Erlang C（延迟概率）", expr:"P_D = E₂,ₘ(A) = (Aᴹ/M!)·(M/(M−A)) / [Σₖ₌₀ᴹ⁻¹ Aᵏ/k! + (Aᴹ/M!)·(M/(M−A))]"},
+  {label:"平均排队等待时间", expr:"W = h · E₂,ₘ(A) / (M − A)", note:"h = 平均占用时长"},
+ ],
+ examples:[
+  {q:"城市面积1300 km²，7蜂窝复用，每蜂窝面积41.5 km²，每簇40 MHz，双工信道带宽60 kHz，GoS=2%，每用户话务量0.03 Erlang。求每蜂窝信道数、蜂窝话务量、总用户数。",
+   steps:[
+    "蜂窝数 N = 1300/41.5 ≈ 31",
+    "每蜂窝信道数 M = 40,000/(60×7) ≈ 95",
+    "GoS=2%，M=95时查Erlang B → A ≈ 84 Erlang/蜂窝",
+    "总话务量 = 31 × 84 = 2604 Erlang",
+   ], ans:"总用户数 = 2604/0.03 ≈ 86,800"},
+  {q:"3家运营商共同服务一个人口120万的地区。Singa：380个蜂窝×20信道；Mobi：100个蜂窝×60信道；Hubba：60个蜂窝×100信道。GoS=2%，每用户话务量0.25 Erlang（每小时3次呼叫×5分钟）。求各家的市场渗透率。",
+   steps:[
+    "Singa：Erlang B(M=20,2%)=13 Er → 13/0.25=52用户/蜂窝 × 380 = 19,760",
+    "Mobi：Erlang B(M=60,2%)=50 Er → 200用户/蜂窝 × 100 = 20,000",
+    "Hubba：Erlang B(M=100,2%)=90 Er → 360用户/蜂窝 × 60 = 21,600",
+   ], ans:"总服务用户 = 61,360 → 三家合计市场渗透率5.11%"},
+ ]
+},
+{id:"a10", part:"A", num:"A.10", title:"容量提升：小区分裂与扇区化",
+ notes:[
+  "随着话务需求增长，两种技术可以提升容量：<b>小区分裂</b>（增加更多、更小的基站）和<b>扇区化</b>（在现有基站上用定向天线）。",
+  "<b>小区分裂：</b>把拥塞的蜂窝细分为微蜂窝，天线更低、发射功率更小。半径减半会使覆盖面积变为1/4，但为了维持SIR不变，发射功率需下降约12 dB（n=4时）。",
+  "典型分裂比例：N=3 → 4:1分裂；N=4 → 3:1分裂；N=7 → 3:1或4:1；N=9 → 4:1。蜂窝越小，切换越频繁——半径缩小到1/4会使切换率提高约10倍。",
+  "<b>扇区化：</b>用定向天线（120°或60°扇区）减少<i>第一层</i>干扰源的数量（120°扇区把6个减到2个，60°扇区减到1个），从而可以缩小N、提升复用效率——但每个扇区可用信道池更小，会损害<b>集群效率</b>并增加切换次数。",
+  "120°扇区化能把SIR从全向天线（N=7）的18 dB提升到约23–24.5 dB——相当于N≈12时的质量 → 容量增益约为12/7≈1.71倍。60°扇区化能把SIR进一步提升（约28.9 dB），但代价是集群效率损失更大。",
+ ],
+ formulas:[
+  {label:"3扇区最差情况SIR", expr:"S/I = 1 / [Q⁻ⁿ + (Q+0.7)⁻ⁿ]", note:"N=7, n=4 → ≈24.5 dB"},
+  {label:"6扇区最差情况SIR", expr:"S/I = 1 / (Q+0.7)⁻ⁿ", note:"N=7, n=4 → ≈28.9 dB"},
+ ],
+ examples:[
+  {q:"平均通话时长2分钟，阻塞率≤1%，每用户每小时1次呼叫，7蜂窝复用共395个业务信道 → 每蜂窝57个。比较不分扇区、120°扇区、60°扇区三种情况下每小时能处理的呼叫数。",
+   steps:[
+    "不分扇区：Erlang B(57信道,1%) ≈ 44.2 Erlang → 每小时1326次呼叫",
+    "120°扇区：每扇区19信道，Erlang B ≈ 11.2 Erlang/扇区 → 336×3 = 每小时1008次呼叫（下降24%）",
+    "60°扇区：集群效率进一步下降（约−44%），但SIR提升到约29 dB",
+   ], ans:"扇区化是用集群效率换取抗干扰（SIR）性能的提升"},
+ ]
+},
+{id:"a11", part:"A", num:"A.11", title:"切换与功率控制",
+ notes:[
+  "<b>切换（Handover）</b> = 由于移动台移动导致信号变弱，从而切换正在进行的呼叫的业务信道（频率/时间/编码）。必须做到对用户透明、不中断、不频繁发生、并且成功完成。",
+  "<b>小区内切换</b>：在同一个蜂窝内，出于信号质量原因进行的切换。<b>小区间切换</b>：移动台在通话中从一个基站移动到另一个基站（同一MSC/运营商）。",
+  "<b>P_min</b> = 能维持可接受语音通话质量的最低信号强度（约−90到−100 dBm）。<b>P_HO</b> = 切换门限，略高于P_min。裕量 Δ = P_HO − P_min：太大 → 产生不必要的切换/乒乓效应；太小 → 切换还没完成通话就已掉话。",
+  "<b>硬切换</b>（\"先断后连\"）：先释放旧信道，再建立新信道——实现简单，会有短暂中断；用于FDMA/TDMA系统（GSM、IS-136）。",
+  "<b>软切换</b>（\"先连后断\"）：新信道与旧信道并行建立，两者同时使用（宏分集）——通话不中断；用于CDMA系统（IS-95、WCDMA、cdma2000）。",
+  "为减少切换掉话（比新呼叫被阻塞更影响体验）：<b>切换排队</b>（缓存切换请求）和<b>切换信道预留</b>（预留r个信道专供切换使用）。",
+  "<b>功率控制</b>：MS/BS估计接收到的SIR；若信号质量过好，命令对端降低发射功率（节省电池、减少同频干扰）；若信号太弱，则命令对端提高功率。",
+ ],
+ formulas:[
+  {label:"切换裕量", expr:"Δ = P_HO − P_min"},
+ ],
+ examples:[]
+},
+
+{id:"b1", part:"B", num:"B.1", title:"WLAN架构与IEEE 802.11物理层",
+ notes:[
+  "WLAN把移动终端以无线方式接入局域网；中等覆盖范围50–500 m；速率1–54+ Mbps。",
+  "<b>BSS</b>（基本服务集）：一组竞争同一共享介质的站点，可能通过<b>AP</b>（接入点）连接到骨干网。<b>ESS</b>（扩展服务集）：由<b>分布式系统（DS）</b>连接起来的2个及以上BSS。",
+  "应用场景：局域网扩展（无线接入有线骨干网）、跨楼宇互联（点对点网桥/路由器链路）、游牧接入、自组网络。",
+  "<b>802.11初代标准（1997年）：</b>定义了MAC层和3种物理层——红外、跳频扩频FHSS（2.4 GHz）、直接序列扩频DSSS（2.4 GHz），速率均为1–2 Mbps。",
+  "<b>802.11b：</b>DSSS的扩展版本，2.4 GHz频段，5.5和11 Mbps。<b>802.11a：</b>采用OFDM，5 GHz频段，6–54 Mbps。",
+  "<b>Wi-Fi</b> = 由Wi-Fi联盟认证的通用术语，指可互操作的802.11x系列产品。",
+ ],
+ formulas:[], examples:[]
+},
+{id:"b2", part:"B", num:"B.2", title:"802.11 MAC层：DCF、PCF与可靠传输",
+ notes:[
+  "可靠传输——<b>两帧交换：</b>数据帧 → ACK确认帧（CRC校验）；未收到ACK则重传。<b>四帧交换</b>（RTS/CTS）进一步增强对隐藏节点问题的鲁棒性。",
+  "RTS/CTS帧携带<b>持续时间（duration）</b>字段；所有听到RTS或CTS的节点都会更新内部的<b>NAV</b>（网络分配向量）计时器并推迟发送——即使节点没听到RTS，也能通过CTS得知信道被占用。",
+  "MAC层方案称为<b>DFWMAC</b>，含两个子层：<b>DCF</b>（分布式协调功能，基于CSMA/CA，强制实现，适合异步/突发流量）和<b>PCF</b>（点协调功能，可选，由AP集中轮询，适合面向连接/时限性业务）。",
+  "三种<b>帧间间隔（IFS）</b>值，间隔越短优先级越高：<b>SIFS</b> < <b>PIFS</b> < <b>DIFS</b>。SIFS用于立即响应（ACK/CTS/轮询响应）；PIFS用于PCF轮询；DIFS是DCF竞争接入的最小延迟。",
+  "<b>二进制指数退避：</b>退避时间在[0, CW−1]内均匀选取；CW从CW_min开始，每次冲突后翻倍，直到CW_max。IEEE 802.11推荐CW_min=32，CW_max=256。",
+  "<b>碰撞避免</b> = 通过NAV实现的虚拟载波侦听：节点在发送前检查NAV是否为0，非零则等待。",
+  "信道预约流程：发送方等待DIFS → 发送RTS → 收到CTS后等待SIFS → 发送数据；接收方等待SIFS → 回复CTS → 收到数据后等待SIFS → 回复ACK。旁观节点读取duration字段，设置NAV，之后延迟发送并退避。",
+ ],
+ formulas:[
+  {label:"IFS优先级顺序", expr:"SIFS < PIFS < DIFS"},
+  {label:"退避窗口", expr:"退避时间 ~ 均匀分布(0, CW−1)；每次冲突CW×2，上限为CW_max"},
+ ],
+ examples:[]
+},
+{id:"b3", part:"B", num:"B.3", title:"PCF、超帧结构与连接建立",
+ notes:[
+  "<b>PCF工作方式：</b>AP用CF-Poll帧轮询各站点（延迟为PIFS），轮询期间锁定DCF流量；以CF-End广播帧结束。",
+  "<b>超帧 = CFP + CP</b>（无竞争期 + 竞争期），由DTIM信标帧界定边界。CP期间：DCF竞争接入；CFP期间：AP依次轮询每个节点一次。",
+  "由于SIFS < PIFS < DIFS，CFP在信道接入上总是优先于CP——优先级顺序为：ACK > 时限性数据包 > 非时限性数据包。",
+  "<b>连接建立流程：</b>被动扫描（等待信标帧）或主动扫描（发送探测请求，等待探测响应）→ <b>认证</b>（证明共享密码）→ <b>关联</b>（向DS登记节点/BSS能力）。只有完成关联后才能收发数据。",
+  "三种MAC帧类型：<b>数据帧</b>（承载payload）、<b>控制帧</b>（信道预约/ACK）、<b>管理帧</b>（关联、时钟同步、安全）。",
+  "<b>802.11e的QoS机制</b>新增<b>EDCA</b>（8个业务类别队列，类似DCF但加入仲裁帧间间隔AIFS）和<b>HCCA</b>（类似PCF，由混合协调器根据各业务类别的负载进行调度）。",
+ ],
+ formulas:[], examples:[]
+},
+{id:"b4", part:"B", num:"B.4", title:"自组织网络（MANET）",
+ notes:[
+  "<b>MANET</b>：无线移动节点自组织形成任意、临时的网络拓扑，没有固定基础设施——对等网络，控制器（若有）动态选举产生。",
+  "自组网具有自建立、自组织、自管理的特性。IEEE 802.11适合单跳自组网；多跳自组网可以覆盖数平方公里；蓝牙适合小范围的个域网/体域网（约10米）。",
+  "当源和目的节点之间没有直连的无线链路时，节点会充当<b>按需路由器</b>（多跳中继）；一条有效路径必须无环（称为一条\"路由\"）。",
+  "<b>组合稳定性</b>：如果拓扑变化的速度足够慢，能让所有路由更新在下一次变化前完全传播，则称该网络是组合稳定的。",
+  "<b>隐藏节点问题</b>：一个节点在接收方的通信范围内，却不在发送方的范围内，会导致发送方无法察觉的碰撞。",
+  "路由协议家族：<b>周期性/主动式</b>（持续维护到所有节点的路由）、<b>按需/被动式</b>（仅在需要时才发现路由）、<b>混合式</b>（本地主动、全局被动）、<b>基于位置</b>（用类似GPS的位置信息代替路由表）。",
+ ],
+ formulas:[], examples:[]
+},
+{id:"b5", part:"B", num:"B.5", title:"无线传感器网络",
+ notes:[
+  "WSN与一般MANET的区别：节点数量多得多、部署密集且容易失效、采用<b>广播</b>（而非点对点）通信方式，并且在功耗/算力/内存上受到严格限制。",
+  "网络架构：传感器节点散布在监测区域中，通过多跳把数据路由到<b>汇聚节点（sink）</b>，汇聚节点再通过互联网/卫星连接到任务管理节点。",
+  "5层协议栈：<b>物理层</b>（简单而稳健的调制方式）、<b>MAC层</b>（功耗感知、尽量减少碰撞）、<b>网络层</b>（路由）、<b>传输层</b>（维护数据流）、<b>应用层</b>——外加贯穿各层的功耗、移动性、任务管理平面。",
+ ],
+ formulas:[], examples:[]
+},
+{id:"b6", part:"B", num:"B.6", title:"4G/LTE架构（EPS）",
+ notes:[
+  "<b>EPS</b>（演进分组系统）= <b>EPC</b>（演进分组核心网，包含若干逻辑节点）+ <b>E-UTRAN</b>（接入网，本质上就是若干个连接UE的<b>eNodeB</b>）。",
+  "eNodeB之间通过<b>X2</b>接口互连；通过<b>S1</b>接口连接EPC（S1-MME连接移动性管理实体，S1-U连接服务网关）。普通用户流量没有集中式控制器——所有无线相关功能都在eNodeB中完成。",
+  "E-UTRAN的职责：无线资源管理（承载/接纳/移动性控制，上下行调度）、头压缩、安全（空口加密）、与EPC的连接。",
+  "<b>FDD帧结构：</b>10 ms无线帧 = 10个1 ms子帧 = 20个0.5 ms时隙。<b>TDD帧结构：</b>10 ms分为两个5 ms半帧；特殊子帧拆分为DwPTS/GP/UpPTS三部分。",
+  "<b>资源网格：</b>一个时隙在时间×频率上展开；划分成若干<b>资源块</b>（1个时隙 × 12个子载波）；每个时隙含7或6个OFDM符号（普通/扩展循环前缀——扩展CP用于较大的蜂窝）。一个子载波 × 一个OFDM符号 = <b>资源单元</b>。",
+  "<b>EPS承载</b> = 网关与UE之间具有确定QoS的IP数据流。<b>GBR承载</b>（如VoIP）预留专用资源并保证最低比特率（可选设置最大比特率上限）；<b>非GBR承载</b>（如网页浏览/FTP）不做永久资源分配。<b>默认承载</b>（在UE附着时建立）总是非GBR；<b>专用承载</b>可以是GBR也可以是非GBR。",
+  "每个承载都带有一个<b>QCI</b>（QoS类别标识：优先级、时延预算、丢包率）——确保不同厂商设备行为一致——以及一个<b>ARP</b>（分配和保留优先级），用于接纳控制和抢占决策，而非日常的数据包转发处理。",
+ ],
+ formulas:[
+  {label:"FDD无线帧", expr:"10 ms = 10个子帧 × 1 ms = 20个时隙 × 0.5 ms"},
+ ], examples:[]
+},
+{id:"b7", part:"B", num:"B.7", title:"物联网（IoT）",
+ notes:[
+  "物联网把以前未联网的物理对象连接起来，通过一个智能网络实现对物理世界的感知与控制。",
+  "两大知名架构：<b>oneM2M</b>（ETSI主导的通用服务层，面向M2M/IoT应用）和<b>IoT世界论坛（IoTWF）</b>的7层参考模型（云→边缘，控制自上而下、数据自下而上流动）。",
+  "简化视角下用两个并行的技术栈来描述：<b>核心IoT功能栈</b>（物→通信网络→应用与分析）和<b>IoT数据管理与计算栈</b>。",
+  "通信网络子层：<b>接入层</b>（最后一公里无线接入，如802.11ah、802.15.4g、LoRa）、<b>网关/回传层</b>、<b>网络传输层</b>（IP/UDP/TCP）、<b>IoT网络管理层</b>（HTTP、WebSocket等应用协议）。",
+  "按覆盖范围分类的网络规模：<b>PAN</b>（几米，蓝牙）、<b>HAN</b>（几十米，ZigBee/BLE）、<b>NAN</b>（几百米，802.11 mesh网状网）、<b>FAN</b>（开阔/室外区域）、<b>LAN</b>（≤100米，802.11）、<b>MAN</b>（公里级）、<b>WAN</b>（超过公里级）。",
+  "拓扑结构：<b>点对点</b>（单一链路）、<b>点对多点</b>（星形、簇状星形、网状）。",
+  "IoT面临的挑战：<b>可扩展性</b>（数百万设备，IPv6地址分配）、<b>安全</b>（攻击面大幅扩大）、<b>隐私</b>（个人数据）、<b>大数据</b>分析、<b>互操作性</b>（多种协议并存竞争）。",
+  "<b>雾计算：</b>把数据处理推向网络边缘（任何具备计算+存储+连接能力的设备都可以充当雾节点）——降低时延、减轻核心网负担、让敏感数据留在本地；同时引入了一个新的架构层\"雾层\"。",
+  "<b>边缘/雾霭计算</b>把处理能力进一步下沉到端点传感器/设备本身。<b>边缘–雾–云分层架构：</b>最具时效性的数据在边缘/雾层处理；以秒到分钟为量级的数据在区域内汇总；长期/历史性分析数据发送到云端。边缘/雾计算是对云的补充，而不是替代。",
+ ],
+ formulas:[], examples:[]
+},
+
+{id:"c1", part:"C", num:"C.1", title:"卫星通信基础与轨道类型",
+ notes:[
+  "最初用于替代跨洋电缆；如今广泛用于电信、遥感、气象、GPS/导航、侦察、移动/个人卫星电话等领域。",
+  "由于地球是球体而无线电沿直线传播，卫星起到<b>中继器</b>的作用，能以几乎与距离无关的成本覆盖极大的地理区域。",
+  "按高度划分的轨道类型：<b>GEO（地球静止轨道）</b>35,863 km，<b>MEO（中轨道）</b>8,000–18,000 km，<b>LEO（低轨道）</b>500–1,500 km。轨道形状：圆形（圆心在地心）或椭圆形（地心为一个焦点）。轨道倾角：赤道轨道、极地轨道或倾斜轨道。",
+  "<b>仰角θ</b>：从当地水平面到卫星主波束方向的夹角。0°仰角能让卫星的地面覆盖范围最大（在各个方向都能到达其光学地平线）。",
+  "<b>覆盖角β</b>：在最小可用仰角下，卫星能看到的地球表面所占的比例。",
+ ],
+ formulas:[], examples:[]
+},
+{id:"c2", part:"C", num:"C.2", title:"GEO / MEO / LEO 的权衡比较",
+ notes:[
+  "<b>GEO</b>（35,863 km，赤道轨道，与地球自转同步→在地面看来静止不动）：跟踪简单，覆盖范围广（单颗卫星可覆盖地球的¼）；<b>3颗按120°间隔分布的GEO卫星</b>几乎能覆盖全球。",
+  "GEO的缺点：信号经过约35,000 km传播后已经很弱、对极地及高纬度地区服务较差、传播时延显著——卫星正下方两个地面点之间的<b>往返时延约为0.24秒</b>。宽波束适合广播，但用于点对点通信会浪费频谱。",
+  "<b>LEO</b>：相对运动速度快 → 多普勒频移大、大气阻力显著（导致轨道衰减）；需要多个轨道面部署大量卫星；要实现连续通信需要卫星间切换。",
+  "LEO的优势：在相同发射功率下接收信号远强于GEO，通过局部覆盖可以更好地复用频谱，适合移动/个人终端；但要实现24小时全球覆盖需要大量卫星。",
+  "<b>小型LEO（Little LEO）</b>：频率<1 GHz，带宽<5 MHz，速率≤10 kbps——用于寻呼、跟踪、低速率消息。<b>大型LEO（Big LEO）</b>：频率>1 GHz，速率可达几个Mbps——还能支持语音和定位。",
+  "<b>MEO</b>：切换次数比LEO少，但传播时延和所需功率都比LEO大——用于GPS（24颗MEO卫星），也被提议用于语音/数据/传真/消息业务。",
+ ],
+ formulas:[
+  {label:"GEO往返时延（星下点路径）", expr:"≈ 0.24 秒"},
+ ], examples:[]
+},
+{id:"c3", part:"C", num:"C.3", title:"链路性能与地面站",
+ notes:[
+  "三个因素主导卫星链路质量：<b>距离</b>（收发天线间隔；频率越高、轨道越高，路径损耗都越大）、<b>偏离波束中心的程度</b>（地面位置与波束瞄准点之间的距离——信号在波束中心最强，偏离中心后逐渐减弱）、以及<b>大气衰减</b>（氧气、水汽、仰角——仰角越低，信号穿过的大气层越厚，损耗越大，且频率越高影响越明显）。",
+  "业务类型：<b>FSS</b>（固定卫星业务——卫星与固定地面站之间）、<b>BSS</b>（广播业务——电视/广播直播）、<b>MSS</b>（移动卫星业务——飞机、船舶、陆地车辆）。覆盖范围可分为全球、区域、国家级。",
+  "<b>地面站</b> = 天线 + 跟踪系统 + 收发信机 + 复用器 + 与地面网络相连的调制解调链路。按天线直径分类：<b>大型</b>地面站（10–60 m）、<b>小型</b>地面站（1–10 m）、<b>VSAT</b>甚小口径终端（0.3–0.9 m）。天线越大，可承载的话务容量越大。",
+  "三种卫星通信配置：点对点（2个地面站之间）、点对多点（1个发射站、多个接收站——广播方式）、以及枢纽-辐射式（一个中心枢纽站 + 多个共享容量的远程客户端站）。",
+ ],
+ formulas:[], examples:[]
+},
+{id:"c4", part:"C", num:"C.4", title:"卫星多址接入方式",
+ notes:[
+  "卫星的总容量首先通过<b>FDMA</b>划分为若干物理信道（例如把500 MHz的C波段通过频率复用划分为24×40 MHz的信道，每个信道含4 MHz保护带），然后再进一步细分。",
+  "<b>FAMA</b>（固定分配多址）：容量永久性地分配给各站——简单，但在需求波动时会浪费容量。<b>DAMA</b>（按需分配多址）：容量根据实际需求动态重新分配。",
+  "<b>DAMA-FDMA</b>：各子信道组成一个共享资源池；一条全双工链路 = 一对动态分配的子信道，通过携带重复50时隙TDMA帧（1个同步时隙 + 49个站点时隙）的<b>公共信令信道（CSC）</b>来协调分配。",
+  "<b>TDMA</b>：以重复的帧结构划分为若干时隙，每站分配一个（或多个）时隙；卫星把收到的突发信号转发/广播给所有站点；各站必须知道自己的发送和接收时隙分配。",
+  "总体而言TDMA比FDMA更高效——TDMA的保护时间/控制比特所占容量，比FDMA的保护频带占用的容量更少；在Ku/K波段配合窄波束多波束天线时效率可进一步提升。",
+  "<b>SS-TDMA</b>（星上交换TDMA，是DAMA-TDMA的一种形式）：卫星在N个覆盖区域的上行和下行波束之间动态切换时隙；每种切换配置称为一种<b>模式</b>——要实现全连通需要N!种模式，最多每个时隙切换一次模式，可由地面指令调整。",
+ ],
+ formulas:[
+  {label:"SS-TDMA全连通所需", expr:"切换模式数 = N!", note:"N = 覆盖区域/波束数量"},
+ ], examples:[]
+},
+{id:"c5", part:"C", num:"C.5", title:"卫星网络：路由与切换",
+ notes:[
+  "<b>有星间链路（ISL）时的路由：</b>业务在太空中卫星与卫星之间直接路由；只需1个上行链路+1个下行链路，需要的地面网关也更少。",
+  "<b>无星间链路时的路由：</b>业务需经过 地面站→卫星→网关→地面网络→网关→目的卫星；需要2个上行链路+2个下行链路。",
+  "MEO/LEO系统除了常规的用户移动性切换外，还面临由卫星自身运动引起的切换——共分四种类型：",
+  "<b>星内切换</b>——用户在同一颗卫星覆盖范围内的不同扇区之间移动。",
+  "<b>星间切换</b>——用户在两颗卫星的覆盖范围之间移动（或卫星移出了用户所在的覆盖范围）。",
+  "<b>网关切换</b>——卫星运动导致其移出了当前地面网关的覆盖范围。",
+  "<b>系统间切换</b>——卫星系统与地面蜂窝系统之间的垂直切换，由信号强度/QoS驱动。",
+ ],
+ formulas:[], examples:[]
+},
+];
+
+const QUIZ = [
+ // --- Part A ---
+ {part:"A", q:"在六边形蜂窝布局中，若蜂窝半径为R，两个相邻蜂窝中心之间的距离是多少？", opts:["R","√3·R","2R","3R"], correct:1, exp:"相邻六边形蜂窝中心的距离为 d = √3·R，因为六边形的顶点到中心距离恰好等于其边长。"},
+ {part:"A", q:"哪种多址接入技术在共享整个频带和时间的同时，给每个用户分配一个正交编码？", opts:["FDMA","TDMA","CDMA","SDMA"], correct:2, exp:"CDMA（码分多址）通过正交/近似正交的编码来区分用户，而不是靠频率或时间。"},
+ {part:"A", q:"GSM最初的频谱分配中，每个射频载波的信道间隔大约是多少？", opts:["25 kHz","30 kHz","200 kHz","1.25 MHz"], correct:2, exp:"GSM采用200 kHz的射频载波（配合TDMA），在25 MHz分配频谱内共提供125个全双工信道。"},
+ {part:"A", q:"在六边形蜂窝系统中，簇大小为N时的同频复用比Q是多少？", opts:["Q = N","Q = √N","Q = √(3N)","Q = 3N"], correct:2, exp:"Q = D/R = √(3N)，把簇大小与所需的同频复用距离联系起来。"},
+ {part:"A", q:"在简化的仅考虑第一层的6干扰源同频干扰模型中，通常假设有多少个同频干扰源？", opts:["3","6","9","12"], correct:1, exp:"经典的简化模型假设有6个位于第一层、距离均为D的同频干扰源，并忽略第二层的影响。"},
+ {part:"A", q:"哪种接入技术使用带Walsh函数的直接序列扩频，并且功率控制大约每1毫秒更新一次？", opts:["GSM","AMPS","IS-95 CDMA","N-AMPS"], correct:2, exp:"IS-95 CDMA依靠近似正交的Walsh码，以及严格、快速（约1毫秒）的功率控制来管理容量。"},
+ {part:"A", q:"Erlang B公式计算的是什么？", opts:["平均通话占用时长","呼叫被阻塞并直接丢弃的概率（无排队）","呼叫需要排队等待的概率","每次通话的切换次数"], correct:1, exp:"Erlang B对应呼损清除制（M/M/m/m）系统，被阻塞的呼叫不会排队而是直接被清除。"},
+ {part:"A", q:"服务等级（GoS）为1–2%通常被认为是：", opts:["不可接受的","非常理想的","只适用于农村系统","与Erlang B无关"], correct:1, exp:"较低的阻塞概率（1–2%）是理想目标；超过5%会被认为让用户感到不满、不可接受。"},
+ {part:"A", q:"在小区分裂时把蜂窝半径减半（路径损耗指数n=4），要维持同样的SIR，发射功率大约需要降低多少？", opts:["3 dB","6 dB","12 dB","20 dB"], correct:2, exp:"接收功率P_r ∝ R⁻⁴；半径减半会使覆盖面积变为1/4，但微蜂窝的发射功率必须下降12 dB（即降为1/16）才能保持SIR不变。"},
+ {part:"A", q:"120°扇区化把第一层同频干扰源的数量从6个减少到：", opts:["4个","3个","2个","1个"], correct:2, exp:"采用120°定向扇区化后，6个第一层同频蜂窝中只有2个仍落在天线波束范围内。"},
+ {part:"A", q:"哪种切换方式被称为\"先连后断\"，且通常用于CDMA系统？", opts:["硬切换","软切换","网关切换","系统内切换"], correct:1, exp:"软切换在释放旧信道之前先建立新信道，可实现分集合并；用于IS-95/WCDMA/cdma2000系统。"},
+ {part:"A", q:"在功率控制中，如果接收到的SIR优于所需值，接收端会命令发射端：", opts:["提高发射功率","降低发射功率","切换到新信道","发起一次切换"], correct:1, exp:"过多的SIR裕量会浪费电池并增加同频干扰，因此会命令发射端降低功率。"},
+
+ // --- Part B ---
+ {part:"B", q:"在IEEE 802.11术语中，什么把两个或更多基本服务集（BSS）连接在一起？", opts:["单靠接入点（AP）","分布式系统（DS）","MAC服务数据单元（MSDU）","网络分配向量（NAV）"], correct:1, exp:"当分布式系统把多个BSS互连起来时，就形成了一个扩展服务集（ESS）。"},
+ {part:"B", q:"哪种802.11物理层变体在5 GHz频段使用OFDM，速率最高可达54 Mbps？", opts:["802.11（初代）","802.11b","802.11a","802.11 红外"], correct:2, exp:"802.11a在5 GHz ISM频段定义了基于OFDM的物理层，支持6–54 Mbps。"},
+ {part:"A/B", q:"802.11中的RTS/CTS四帧交换主要用于解决什么问题？", opts:["隐藏节点问题","远近效应问题","多普勒频移","小区分裂"], correct:0, exp:"RTS/CTS让附近所有节点——即使没听到RTS的节点——也能通过CTS得知信道已被预约，从而避免隐藏节点导致的碰撞。"},
+ {part:"B", q:"哪个IEEE 802.11 MAC子层采用由接入点执行的集中式轮询方案？", opts:["DCF","PCF","EDCA","HCCA（仅802.11e）"], correct:1, exp:"PCF（点协调功能）是可选的集中式轮询方案；DCF才是基础的分布式CSMA/CA方案。"},
+ {part:"B", q:"把IEEE 802.11的三种帧间间隔按从短到长排序：", opts:["DIFS < PIFS < SIFS","PIFS < SIFS < DIFS","SIFS < PIFS < DIFS","SIFS < DIFS < PIFS"], correct:2, exp:"SIFS（立即响应）最短，其次是PIFS（PCF轮询），最长的是DIFS（用于DCF竞争）——间隔越短优先级越高。"},
+ {part:"B", q:"IEEE 802.11推荐的二进制指数退避的CW_min和CW_max分别是：", opts:["8和64","16和128","32和256","64和1024"], correct:2, exp:"标准推荐CW_min = 32，CW_max = 256，每次冲突后翻倍。"},
+ {part:"B", q:"无线传感器网络（WSN）与一般的移动自组网（MANET）相比，主要区别是什么？", opts:["WSN只使用点对点通信","WSN的节点数量多得多、部署密集、资源受限，并采用广播通信", "WSN从不使用多跳路由","WSN有固定的中心控制器"], correct:1, exp:"WSN的特点是节点数量高出几个数量级、部署密集且容易失效、采用广播通信，并且在功耗/算力/内存上受到严格限制。"},
+ {part:"B", q:"在LTE的E-UTRAN中，哪个接口连接两个eNodeB？", opts:["S1","X2","Uu","S1-MME"], correct:1, exp:"eNodeB之间通过X2接口互连；S1接口（分为S1-MME和S1-U）用于把eNodeB连接到EPC。"},
+ {part:"B", q:"LTE的默认EPS承载必须是：", opts:["GBR承载","非GBR承载","始终为TDD","分配最高的QCI"], correct:1, exp:"UE附着网络时创建的默认承载始终是非GBR承载；专用承载则可以是GBR也可以是非GBR。"},
+ {part:"B", q:"对于LTE的FDD无线帧，10 ms的帧由多少个1 ms子帧组成？", opts:["5个","8个","10个","20个"], correct:2, exp:"LTE的FDD无线帧长10 ms，划分为10个1 ms的子帧（即20个0.5 ms的时隙）。"},
+ {part:"B", q:"哪个IoT网络规模类别通常对应蓝牙，覆盖范围只有几米？", opts:["HAN","NAN","PAN","FAN"], correct:2, exp:"PAN（个域网）的覆盖范围只有几米——正是典型的蓝牙覆盖距离。"},
+ {part:"B", q:"雾计算在物联网架构中的主要好处是什么？", opts:["完全取代云计算","在靠近网络边缘的地方处理数据，降低时延并减轻核心网负担","不再需要网关","只能用于有线传感器"], correct:1, exp:"雾计算把处理能力分布到靠近IoT终端的地方，降低时延、减轻核心网负担、让敏感数据留在本地——是对云的补充，而非取代。"},
+
+ // --- Part C ---
+ {part:"C", q:"GEO卫星对应的轨道高度范围是？", opts:["500–1,500 km","8,000–18,000 km","35,863 km","100,000+ km"], correct:2, exp:"地球静止轨道位于赤道上方固定的35,863 km高度，与地球自转周期同步。"},
+ {part:"C", q:"大约需要多少颗均匀分布的GEO卫星才能几乎覆盖整个地球？", opts:["1颗","2颗","3颗","6颗"], correct:2, exp:"3颗按120°间隔分布的GEO卫星共同几乎可以覆盖地球表面的全部区域（极地极端区域除外）。"},
+ {part:"C", q:"对于卫星正下方的两个地面点之间的GEO链路，往返传播时延大约是多少？", opts:["0.024秒","0.24秒","2.4秒","24秒"], correct:1, exp:"由于约35,863 km的轨道高度，GEO往返时延约为0.24秒——这是交互式业务的一大时延短板。"},
+ {part:"C", q:"哪一类卫星轨道需要应对最大的多普勒频移，并且要实现连续覆盖需要多个轨道面部署大量卫星？", opts:["GEO","MEO","LEO","三者都一样"], correct:2, exp:"LEO卫星相对地面点运动速度很快，导致多普勒频移大，需要多个轨道面部署大量卫星，并频繁进行星间切换。"},
+ {part:"C", q:"\"小型LEO（Little LEO）\"卫星系统的特点是：", opts:["频率高于1 GHz，速率达Mbps级，支持语音","频率低于1 GHz，带宽<5 MHz，速率≤10 kbps，用于寻呼/跟踪","MEO高度，提供类似GPS的服务","仅用于电视广播"], correct:1, exp:"小型LEO工作在1 GHz以下、带宽小于5 MHz，最高支持10 kbps，用于寻呼、跟踪和低速率消息业务。"},
+ {part:"C", q:"哪种地面站类型的天线直径最小（0.3–0.9 m）？", opts:["大型地面站","小型地面站","VSAT","网关地面站"], correct:2, exp:"VSAT（甚小口径终端）地面站使用直径在0.3至0.9米之间的天线。"},
+ {part:"C", q:"广播卫星业务（BSS）主要用于：", opts:["固定点对点干线电话","电视/广播直播","与飞机和船舶通信","仅用于GPS定位"], correct:1, exp:"BSS（广播卫星业务）专门用于电视/广播的现场直播分发，区别于FSS（固定）和MSS（移动）。"},
+ {part:"C", q:"在DAMA-FDMA中，什么用于协调各地面站之间子信道对的动态分配？", opts:["携带重复TDMA帧的公共信令信道（CSC）","Erlang B公式","固定信道表","GEO卫星上的机载路由器"], correct:0, exp:"CSC携带一个重复的50时隙TDMA帧——1个同步时隙加49个站点时隙——用来按需协商子信道分配。"},
+ {part:"C", q:"在覆盖N个区域的SS-TDMA（星上交换TDMA）中，要实现全连通需要多少种不同的切换模式？", opts:["N种","N²种","N!种","log₂N种"], correct:2, exp:"每种模式对应把N个上行波束路由到N个下行波束的一种特定方式；要实现所有可能的配对需要N!种模式。"},
+ {part:"C", q:"哪种卫星切换是由于卫星自身运动而移出了当前地面网关的覆盖范围所导致的？", opts:["星内切换","星间切换","网关切换","系统间切换"], correct:2, exp:"网关切换发生在卫星的运动使其超出了原先所用地面网关的覆盖范围时，与用户是否移动无关。"},
+ {part:"C", q:"在没有星间链路（ISL）的情况下，在两颗卫星之间路由一次呼叫需要：", opts:["1个上行链路和1个下行链路","2个上行链路和2个下行链路","不需要上行链路，只需要下行链路","单一共享网关、无需中继"], correct:1, exp:"没有ISL时，业务必须先上行到第一颗卫星，下行到网关，经地面网络传输，再上行到第二颗卫星，最后下行——总共需要2个上行和2个下行链路。"},
+ {part:"C", q:"在低仰角情况下，卫星链路的大气衰减增大的主要原因是什么？", opts:["信号沿更倾斜的路径穿过了更多的大气层","仰角越低总是意味着卫星距离越近","大气衰减与仰角无关","低仰角只会增加多普勒频移"], correct:0, exp:"在低仰角时，信号穿过大气层的倾斜路径更长，导致氧气和水汽吸收造成的衰减增大。"},
+];
+
+const FLASHCARDS = [
+ // Part A
+ {part:"A", term:"频率复用 Frequency Reuse", def:"在相隔复用距离D的蜂窝上重新使用同一组信道，使有限的频谱能服务无限扩展的覆盖区域。"},
+ {part:"A", term:"簇 Cluster (N)", def:"由N个相邻蜂窝组成的一组，它们合起来恰好用完整个分配的信道集合，簇内不重复使用任何信道。"},
+ {part:"A", term:"同频复用比 Q", def:"Q = D/R = √(3N)——把复用距离与蜂窝半径、簇大小联系起来；Q越大，SIR越好，但频谱效率越低。"},
+ {part:"A", term:"切换 Handoff / Handover", def:"移动台移动时，把正在进行的通话的业务信道切换到新的基站/频率/时隙/编码上，理想情况下通话不中断。"},
+ {part:"A", term:"服务等级 GoS", def:"新呼叫因信道不可用而被阻塞的概率；通常目标定在1–2%。"},
+ {part:"A", term:"Erlang（爱尔兰）", def:"衡量提供话务强度的无量纲单位：A = λ/μ，即平均同时进行的通话数。"},
+ {part:"A", term:"Erlang B 公式", def:"给出有M个信道、被阻塞呼叫不排队（呼损清除制模型）的话务系统的阻塞概率。"},
+ {part:"A", term:"Erlang C 公式", def:"给出被阻塞呼叫在无限队列中等待（而非被丢弃）的话务系统的排队延迟概率。"},
+ {part:"A", term:"集群增益 Trunking Gain", def:"在给定GoS下能服务的用户数与所用信道数之比——随信道池增大而增大（规模效应）。"},
+ {part:"A", term:"小区分裂 Cell Splitting", def:"把拥塞的蜂窝细分为更小的微蜂窝，每个都有自己的低功率基站，从而提升单位面积的容量。"},
+ {part:"A", term:"扇区化 Sectoring", def:"用定向天线（如120°或60°）取代全向天线，以减少同频干扰，从而允许使用更小的簇大小。"},
+ {part:"A", term:"软切换 Soft Handover", def:"\"先连后断\"——旧信道仍在使用时就先建立新信道，避免任何中断（用于CDMA系统）。"},
+ {part:"A", term:"硬切换 Hard Handover", def:"\"先断后连\"——旧信道先被释放，然后才建立新信道（用于GSM等FDMA/TDMA系统）。"},
+ {part:"A", term:"FCA 与 DCA", def:"固定信道分配把信道组永久绑定到蜂窝；动态信道分配允许任意基站按需使用任意空闲且不违反干扰约束的信道。"},
+ {part:"A", term:"Kendall记号", def:"A/S/N/C/P/D的简写，用于描述排队系统的到达过程、服务过程、服务台数量、容量、顾客总体和排队规则。"},
+ {part:"A", term:"OFDMA / SC-FDMA（LTE）", def:"LTE下行采用OFDMA（抗多径能力强）；上行采用SC-FDMA（单载波，峰均功率比更低，适合手机终端）。"},
+
+ // Part B
+ {part:"B", term:"BSS / ESS", def:"基本服务集：共享一个无线蜂窝的一组站点（可以有也可以没有AP）。扩展服务集：通过分布式系统连接起来的2个及以上BSS。"},
+ {part:"B", term:"DCF", def:"分布式协调功能——802.11中强制实现、基于CSMA/CA竞争接入的MAC方案。"},
+ {part:"B", term:"PCF", def:"点协调功能——802.11中可选的、由AP执行集中式轮询的MAC方案，用于提供无竞争业务。"},
+ {part:"B", term:"NAV（网络分配向量）", def:"每个802.11节点维护的虚拟载波侦听计时器，根据监听到的帧中的duration字段更新，用于在信道被占用期间推迟发送。"},
+ {part:"B", term:"RTS/CTS", def:"请求发送/允许发送握手机制，在数据传输前预约信道，以缓解隐藏节点问题。"},
+ {part:"B", term:"二进制指数退避", def:"一种冲突解决机制，站点每次重传前，退避窗口在每次冲突后翻倍（从CW_min到CW_max）。"},
+ {part:"B", term:"隐藏节点问题", def:"一个节点在接收方的通信范围内，却不在发送方范围内，可能在接收方处造成发送方无法察觉的碰撞。"},
+ {part:"B", term:"MANET", def:"移动自组织网络——无线移动节点自组织形成的临时性、无固定基础设施的多跳网络。"},
+ {part:"B", term:"组合稳定性", def:"自组网的一种性质：拓扑变化的速度足够慢，使所有路由更新能在下一次变化前完全传播完毕。"},
+ {part:"B", term:"eNodeB", def:"LTE的E-UTRAN接入网中唯一的逻辑节点，集成了所有无线控制器功能，并直接连接UE。"},
+ {part:"B", term:"EPS承载", def:"网关与UE之间具有确定QoS的逻辑IP数据流——是LTE QoS机制的基本单位。"},
+ {part:"B", term:"QCI", def:"QoS类别标识——定义承载的优先级、数据包时延预算和可接受丢包率的标签。"},
+ {part:"B", term:"ARP（LTE）", def:"分配和保留优先级——用于呼叫接纳控制和承载抢占决策，而不影响日常的数据包转发处理。"},
+ {part:"B", term:"雾计算 Fog Computing", def:"把数据处理/存储/网络功能分布到IoT网络边缘附近（而非集中在云端），以降低时延、减轻核心网负担。"},
+ {part:"B", term:"资源块（LTE）", def:"LTE最基本的调度单位：时间上一个时隙（0.5 ms）× 频率上12个子载波。"},
+ {part:"B", term:"oneM2M", def:"ETSI主导的IoT标准化架构，定义了一个可嵌入现场设备、用于与应用服务器通信的通用服务层。"},
+
+ // Part C
+ {part:"C", term:"GEO轨道", def:"地球静止轨道，位于赤道上方35,863 km高度；卫星与地球自转同步，在地面看来位置固定不动。"},
+ {part:"C", term:"LEO轨道", def:"低地球轨道，高度500–1,500 km；接收信号强，但由于相对运动速度快，需要大量卫星并频繁切换。"},
+ {part:"C", term:"MEO轨道", def:"中地球轨道，高度8,000–18,000 km；用于GPS（24颗卫星）；切换比LEO少，但时延和所需功率比LEO大。"},
+ {part:"C", term:"仰角 θ", def:"从地面站所在处的当地水平面到卫星主天线波束方向之间的夹角。"},
+ {part:"C", term:"覆盖角 β", def:"在卫星最小可用仰角下，卫星能看到的地球表面所占的角度范围。"},
+ {part:"C", term:"转发器 Transponder", def:"卫星上接收上行信号，并将其转换/重新发射为下行信号的电子设备。"},
+ {part:"C", term:"FSS / BSS(卫星) / MSS", def:"固定卫星业务（卫星与固定地面站）、广播卫星业务（电视/广播直播）、移动卫星业务（飞机/船舶/车辆）。"},
+ {part:"C", term:"VSAT", def:"甚小口径终端——天线直径0.3–0.9米的地面站，是三类地面站中尺寸最小的一种。"},
+ {part:"C", term:"FAMA 与 DAMA", def:"固定分配多址把容量永久分配给各站；按需分配多址根据实际需求动态重新分配容量。"},
+ {part:"C", term:"SS-TDMA", def:"星上交换TDMA——卫星在多个覆盖区域的上行和下行波束之间动态切换时隙。"},
+ {part:"C", term:"星间链路（ISL）", def:"两颗卫星之间的直接链路，允许业务在太空中被路由，只需1个上行+1个下行，而不是2+2个。"},
+ {part:"C", term:"小型LEO 与 大型LEO", def:"小型LEO：<1 GHz，带宽<5 MHz，速率≤10 kbps，用于寻呼/跟踪。大型LEO：>1 GHz，速率可达几个Mbps，还支持语音和定位。"},
+ {part:"C", term:"网关切换", def:"由于卫星自身运动移出了当前地面网关覆盖范围而触发的一种卫星切换。"},
+ {part:"C", term:"系统间切换", def:"卫星系统与地面蜂窝系统之间的垂直切换，由信号强度和QoS驱动。"},
+ {part:"C", term:"GEO往返时延", def:"约0.24秒——信号从地面到GEO卫星再回到地面所需的传播时延，是GEO系统的一大时延短板。"},
+ {part:"C", term:"枢纽-辐射式配置", def:"一种卫星网络拓扑，多个远程客户端站通过一个中心枢纽站通信，枢纽站负责在各客户端之间转发消息。"},
+];
+
+const FORMULA_SHEET = [
+ {group:"蜂窝几何", items:[
+   ["相邻蜂窝间距","d = √3 · R"],
+   ["复用距离","D = R · √(3N)"],
+   ["同频复用比","Q = D/R = √(3N)"],
+   ["有效簇大小","N = i² + ij + j²（i、j为整数）"],
+   ["系统信道总数","T = C · N · (S/N) = C · S"],
+ ]},
+ {group:"干扰与SIR", items:[
+   ["通用SIR","S/I = S / Σ Iᵢ"],
+   ["简化的第一层SIR","S/I = (1/6)·Qⁿ = (1/6)·(3N)^(n/2)"],
+   ["3扇区最差情况","S/I = 1/[Q⁻ⁿ + (Q+0.7)⁻ⁿ]"],
+   ["6扇区最差情况","S/I = 1/(Q+0.7)⁻ⁿ"],
+ ]},
+ {group:"传播模型", items:[
+   ["自由空间接收功率","P_R = P_T·G_T·G_R / L,  L=(4πd/λ)²"],
+   ["自由空间损耗（dB）","L(dB) = 32 + 20log f(MHz) + 20log d(km)"],
+   ["通用经验损耗","L(dB) = A + B log f + C log h_T + D log h_R + E log d"],
+   ["对数距离接收功率","P_R(dBm) = P₀ + γ·log d"],
+ ]},
+ {group:"话务工程", items:[
+   ["话务强度","A = λ/μ  [Erlang]"],
+   ["利用率","ρ = A/m"],
+   ["Erlang B阻塞概率","P_B = (Aᴹ/M!) / Σₖ₌₀ᴹ(Aᵏ/k!)"],
+   ["承载/丢弃话务量","承载 = A(1−P_B)，丢弃 = A·P_B"],
+   ["Erlang C延迟概率","P_D = E₂,ₘ(A)"],
+   ["平均排队等待时间","W = h · E₂,ₘ(A)/(M−A)"],
+ ]},
+ {group:"频谱效率", items:[
+   ["调制效率","η_m = (B_w/B_c)/(B_w·A_c·N_c)"],
+   ["FDMA接入效率","η_a = B_e·N_t/B_w"],
+   ["总体效率","η = η_m · η_a"],
+ ]},
+ {group:"小区分裂与切换", items:[
+   ["功率比（n=4, R→R/2）","ΔP ≈ 下降12 dB"],
+   ["切换裕量","Δ = P_HO − P_min"],
+ ]},
+ {group:"LTE帧结构", items:[
+   ["FDD无线帧","10 ms = 10×1 ms子帧 = 20×0.5 ms时隙"],
+   ["资源块","1个时隙（0.5 ms）× 12个子载波"],
+ ]},
+ {group:"卫星通信", items:[
+   ["GEO轨道高度","35,863 km"],
+   ["GEO往返时延","≈ 0.24 秒"],
+   ["N个波束的SS-TDMA模式数","N!"],
+   ["GEO全球覆盖","3颗卫星，间隔120°"],
+ ]},
+];
+
+/* ============================= STATE ============================= */
+const state = {
+  view: "overview",       // overview | topic | flashcards | quiz | formulas
+  topicId: null,
+  fcIndex: 0,
+  fcFilter: "ALL",
+  fcOrder: [],
+  fcKnown: new Set(),
+  quiz: { active:false, order:[], idx:0, score:0, answered:false, filter:"ALL", finished:false }
+};
+
+function loadProgress(){
+  try{ return new Set(JSON.parse(localStorage.getItem("ee6129_progress")||"[]")); }catch(e){ return new Set(); }
+}
+function saveProgress(s){
+  try{ localStorage.setItem("ee6129_progress", JSON.stringify([...s])); }catch(e){}
+}
+let progress = loadProgress();
+
+function loadKnown(){
+  try{ return new Set(JSON.parse(localStorage.getItem("ee6129_known")||"[]")); }catch(e){ return new Set(); }
+}
+function saveKnown(s){ try{ localStorage.setItem("ee6129_known", JSON.stringify([...s])); }catch(e){} }
+state.fcKnown = loadKnown();
+
+/* ============================= RENDER: NAV ============================= */
+const PART_META = {A:{name:"蜂窝系统", icon:"📡"}, B:{name:"无线系统", icon:"📶"}, C:{name:"卫星通信", icon:"🛰"}};
+
+function svgIcon(name){
+  const icons = {
+    overview: '<path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/>',
+    cards: '<rect x="3" y="6" width="14" height="10" rx="2"/><rect x="7" y="3" width="14" height="10" rx="2" fill="none"/>',
+    quiz: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 0 1 5 0c0 1.7-2.5 2-2.5 4" stroke="white" fill="none" stroke-width="1.6"/><circle cx="12" cy="17" r=".6" fill="white"/>',
+    formula: '<path d="M6 4h12M8 4l-3 16M13 4l-3 16M9 12h9"/>',
+  };
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${icons[name]||""}</svg>`;
+}
+
+function renderNav(filterText){
+  const nav = document.getElementById("navList");
+  const q = (filterText||"").trim().toLowerCase();
+  let html = "";
+
+  const topLevel = [
+    {id:"overview", label:"总览", icon:"overview"},
+    {id:"formulas", label:"公式速查表", icon:"formula"},
+    {id:"flashcards", label:"记忆卡片", icon:"cards"},
+    {id:"quiz", label:"自测模式", icon:"quiz"},
+  ];
+  if(!q){
+    html += topLevel.map(t => `<button class="nav-top-item ${state.view===t.id?'active':''}" data-nav="${t.id}">${svgIcon(t.icon)}<span>${t.label}</span></button>`).join("");
+  }
+
+  ["A","B","C"].forEach(p=>{
+    const items = TOPICS.filter(t=>t.part===p && (!q || t.title.toLowerCase().includes(q) || t.num.toLowerCase().includes(q)));
+    if(!items.length) return;
+    const doneCount = TOPICS.filter(t=>t.part===p && progress.has(t.id)).length;
+    const total = TOPICS.filter(t=>t.part===p).length;
+    html += `<div class="nav-group"><div class="nav-group-label"><span>${PART_META[p].icon} ${PART_META[p].name}</span><span>${doneCount}/${total}</span></div>`;
+    items.forEach(t=>{
+      html += `<button class="nav-item ${state.view==='topic'&&state.topicId===t.id?'active':''}" data-topic="${t.id}">
+        <span class="nav-dot ${progress.has(t.id)?'done':''}"></span>
+        <span class="num">${t.num}</span><span>${t.title}</span></button>`;
+    });
+    html += `</div>`;
+  });
+
+  if(q){
+    const fcHits = FLASHCARDS.filter(f=>f.term.toLowerCase().includes(q)||f.def.toLowerCase().includes(q));
+    if(fcHits.length){
+      html += `<div class="nav-group"><div class="nav-group-label"><span>术语匹配</span><span>${fcHits.length}</span></div>`;
+      fcHits.slice(0,8).forEach(f=>{
+        html += `<button class="nav-item" data-nav="flashcards"><span class="nav-dot"></span><span>${f.term}</span></button>`;
+      });
+      html += `</div>`;
+    }
+  }
+
+  nav.innerHTML = html;
+  nav.querySelectorAll("[data-nav]").forEach(el=>el.addEventListener("click",()=>{ setView(el.dataset.nav); closeSidebarMobile(); }));
+  nav.querySelectorAll("[data-topic]").forEach(el=>el.addEventListener("click",()=>{ openTopic(el.dataset.topic); closeSidebarMobile(); }));
+}
+
+function updateProgressBar(){
+  const pct = Math.round((progress.size/TOPICS.length)*100);
+  document.getElementById("progressFill").style.width = pct+"%";
+  document.getElementById("progressPct").textContent = pct+"%";
+}
+
+/* ============================= RENDER: CONTENT VIEWS ============================= */
+const content = document.getElementById("content");
+
+function setView(v){ state.view = v; state.topicId = null; render(); window.scrollTo?.(0,0); document.getElementById("mainScroll").scrollTop=0; }
+function openTopic(id){ state.view="topic"; state.topicId=id; render(); document.getElementById("mainScroll").scrollTop=0; }
+
+function render(){
+  renderNav(document.getElementById("navSearch").value);
+  updateProgressBar();
+  if(state.view==="overview") return renderOverview();
+  if(state.view==="topic") return renderTopic();
+  if(state.view==="formulas") return renderFormulas();
+  if(state.view==="flashcards") return renderFlashcards();
+  if(state.view==="quiz") return renderQuiz();
+}
+
+function renderOverview(){
+  const pct = Math.round((progress.size/TOPICS.length)*100);
+  content.innerHTML = `
+  <div class="hero">
+    <svg class="wave" viewBox="0 0 260 120" fill="none"><path d="M0 90 Q30 30 60 90 T120 90 T180 90 T240 90" stroke="var(--accent)" stroke-width="3" opacity=".5" fill="none"/><path d="M0 100 Q30 55 60 100 T120 100 T180 100 T240 100" stroke="var(--accent2)" stroke-width="3" opacity=".4" fill="none"/></svg>
+    <div class="eyebrow">EE6129 <span class="sep">·</span> 无线与移动通信系统 <span class="sep">·</span> NTU</div>
+    <h1>一趟穿越蜂窝、无线与卫星系统的信噪之旅</h1>
+    <p>从第1–6周课程材料（A–C三部分）中提炼的精简讲义、历年例题、公式速查表、记忆卡片和自测题。可在侧边栏随时查看复习进度。</p>
+    <div class="stat-row">
+      <div class="stat"><div class="n tabular">${TOPICS.length}</div><div class="l">知识点</div></div>
+      <div class="stat"><div class="n tabular">${TOPICS.reduce((n,t)=>n+(t.examples?t.examples.length:0),0)}</div><div class="l">例题详解</div></div>
+      <div class="stat"><div class="n tabular">${QUIZ.length}</div><div class="l">自测题</div></div>
+      <div class="stat"><div class="n tabular">${FLASHCARDS.length}</div><div class="l">记忆卡片</div></div>
+      <div class="stat"><div class="n tabular">${pct}%</div><div class="l">当前进度</div></div>
+    </div>
+  </div>
+
+  <div class="block"><h3>三大部分，一场考试</h3></div>
+  <div class="part-grid">
+    ${COURSE.parts.map(p=>{
+      const items = TOPICS.filter(t=>t.part===p.id);
+      const done = items.filter(t=>progress.has(t.id)).length;
+      const fillPct = Math.round((done/items.length)*100);
+      return `<div class="part-card" data-part="${p.id}">
+        <span class="pk">${p.weeks} · 第${p.id}部分</span>
+        <h4>${p.title}</h4>
+        <p>${p.desc}</p>
+        <div class="pf"><div class="mini-track"><div class="mini-fill" style="width:${fillPct}%"></div></div><span>${done}/${items.length}</span></div>
+      </div>`;
+    }).join("")}
+  </div>
+
+  <div class="block" style="margin-top:8px;">
+    <h3>快速开始复习</h3>
+    <div class="stat-row">
+      <div class="part-card" data-nav="formulas" style="flex:1;min-width:200px;"><span class="pk">快速查阅</span><h4>公式速查表</h4><p>幻灯片中的每个公式，按主题分类。</p></div>
+      <div class="part-card" data-nav="flashcards" style="flex:1;min-width:200px;"><span class="pk">${FLASHCARDS.length} 个术语</span><h4>记忆卡片</h4><p>按部分翻阅关键定义。</p></div>
+      <div class="part-card" data-nav="quiz" style="flex:1;min-width:200px;"><span class="pk">${QUIZ.length} 道题</span><h4>自测模式</h4><p>即时反馈与解析。</p></div>
+    </div>
+  </div>
+  `;
+  content.querySelectorAll("[data-part]").forEach(el=>el.addEventListener("click",()=>{
+    const first = TOPICS.find(t=>t.part===el.dataset.part);
+    if(first) openTopic(first.id);
+  }));
+  content.querySelectorAll("[data-nav]").forEach(el=>el.addEventListener("click",()=>setView(el.dataset.nav)));
+}
+
+function renderTopic(){
+  const idx = TOPICS.findIndex(t=>t.id===state.topicId);
+  const t = TOPICS[idx];
+  if(!t) return renderOverview();
+  const isDone = progress.has(t.id);
+  const prev = TOPICS[idx-1], next = TOPICS[idx+1];
+
+  let html = `
+  <div class="eyebrow">${PART_META[t.part].icon} 第${t.part}部分 <span class="sep">·</span> ${PART_META[t.part].name} <span class="sep">·</span> ${t.num}</div>
+  <h1 class="page-title">${t.title}</h1>
+  <div class="block"><h3><span class="tag">重点笔记</span></h3>
+    <ul class="notes">${t.notes.map(n=>`<li>${n}</li>`).join("")}</ul>
+  </div>`;
+
+  if(t.formulas && t.formulas.length){
+    html += `<div class="block"><h3><span class="tag">公式</span></h3>`;
+    t.formulas.forEach(f=>{
+      html += `<div class="formula"><div class="flabel">${f.label}</div><div class="fexpr">${f.expr}</div>${f.note?`<div class="fnote">${f.note}</div>`:""}</div>`;
+    });
+    html += `</div>`;
+  }
+
+  if(t.tables && t.tables.length){
+    t.tables.forEach(tb=>{
+      html += `<div class="block"><h3>${tb.title}</h3><div class="table-wrap"><table><thead><tr>${tb.head.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>
+        ${tb.rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}
+      </tbody></table></div></div>`;
+    });
+  }
+
+  if(t.examples && t.examples.length){
+    html += `<div class="block"><h3><span class="tag">例题详解</span></h3>`;
+    t.examples.forEach((ex,i)=>{
+      html += `<details class="example"><summary><span class="ex-icon">${i+1}</span><span>${ex.q}</span><svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></summary>
+        <div class="ex-body">
+          <div class="sol-label">解答</div>
+          ${ex.steps.map(s=>`<div class="sol-step">${s}</div>`).join("")}
+          <div class="ans">${ex.ans}</div>
+        </div></details>`;
+    });
+    html += `</div>`;
+  }
+
+  html += `<div class="mark-row">
+    <button class="mark-btn ${isDone?'done':''}" id="markBtn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 13l4 4L19 7"/></svg>
+      ${isDone? "已复习" : "标记为已复习"}
+    </button>
+    <div class="mark-nav">
+      ${prev?`<button id="prevBtn">← ${prev.num}</button>`:""}
+      ${next?`<button id="nextBtn">${next.num} →</button>`:"" }
+    </div>
+  </div>`;
+
+  content.innerHTML = html;
+  document.getElementById("markBtn").addEventListener("click",()=>{
+    if(progress.has(t.id)) progress.delete(t.id); else progress.add(t.id);
+    saveProgress(progress); render();
+  });
+  document.getElementById("prevBtn")?.addEventListener("click",()=>openTopic(prev.id));
+  document.getElementById("nextBtn")?.addEventListener("click",()=>openTopic(next.id));
+}
+
+function renderFormulas(){
+  content.innerHTML = `
+  <div class="eyebrow">快速查阅</div>
+  <h1 class="page-title">公式速查表</h1>
+  <p class="page-sub">A–C三部分的所有公式汇总在一处，按主题分类——方便考前最后冲刺复习。</p>
+  <div class="formula-sheet-grid">
+    ${FORMULA_SHEET.map(g=>`
+      <div class="fs-group">
+        <h4>${g.group}</h4>
+        ${g.items.map(([label,expr])=>`<div class="formula"><div class="flabel">${label}</div><div class="fexpr">${expr}</div></div>`).join("")}
+      </div>
+    `).join("")}
+  </div>
+  `;
+}
+
+/* ---- Flashcards ---- */
+function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function fcSetOrder(){
+  const pool = FLASHCARDS.map((f,i)=>i).filter(i=> state.fcFilter==="ALL" || FLASHCARDS[i].part===state.fcFilter);
+  state.fcOrder = shuffle(pool);
+  state.fcIndex = 0;
+}
+if(!state.fcOrder.length) fcSetOrder();
+
+function renderFlashcards(){
+  if(!state.fcOrder.length) fcSetOrder();
+  const total = state.fcOrder.length;
+  const cardIdx = state.fcOrder[state.fcIndex];
+  const card = FLASHCARDS[cardIdx];
+  content.innerHTML = `
+  <div class="eyebrow">主动回忆</div>
+  <h1 class="page-title">记忆卡片</h1>
+  <p class="page-sub">点击卡片可以翻面。标记你是否掌握了这张卡——没掌握的会被重新洗回队列里。</p>
+  <div class="fc-toolbar">
+    <span class="chip ${state.fcFilter==='ALL'?'active':''}" data-fc-part="ALL">全部</span>
+    <span class="chip ${state.fcFilter==='A'?'active':''}" data-fc-part="A">A部分 · 蜂窝</span>
+    <span class="chip ${state.fcFilter==='B'?'active':''}" data-fc-part="B">B部分 · 无线</span>
+    <span class="chip ${state.fcFilter==='C'?'active':''}" data-fc-part="C">C部分 · 卫星</span>
+    <span class="chip" id="fcShuffle" style="margin-left:auto;">🔀 随机打乱</span>
+  </div>
+  <div class="fc-stage">
+    <div class="fc-count">第 ${total?state.fcIndex+1:0} / ${total} 张 <span style="margin-left:10px;color:var(--good);">✓ 已掌握：${state.fcKnown.size}</span></div>
+    ${total ? `
+    <div class="flashcard" id="fcCard">
+      <div class="fc-inner">
+        <div class="fc-face fc-front"><div class="kicker">第${card.part}部分 · 术语</div><div class="txt">${card.term}</div><div class="kicker" style="margin-top:6px;">点击查看答案</div></div>
+        <div class="fc-face fc-back"><div class="kicker">定义</div><div class="txt">${card.def}</div></div>
+      </div>
+    </div>
+    <div class="fc-controls">
+      <button class="fc-btn" id="fcPrev">← 上一张</button>
+      <button class="fc-btn bad" id="fcDontKnow">✕ 还没掌握</button>
+      <button class="fc-btn good" id="fcKnow">✓ 已掌握</button>
+      <button class="fc-btn primary" id="fcNext">下一张 →</button>
+    </div>` : `<p class="page-sub">该分类下暂无卡片。</p>`}
+  </div>
+  `;
+  content.querySelectorAll("[data-fc-part]").forEach(el=>el.addEventListener("click",()=>{
+    state.fcFilter = el.dataset.fcPart; fcSetOrder(); renderFlashcards();
+  }));
+  document.getElementById("fcShuffle")?.addEventListener("click",()=>{ fcSetOrder(); renderFlashcards(); });
+  const cardEl = document.getElementById("fcCard");
+  cardEl?.addEventListener("click",()=> cardEl.classList.toggle("flipped"));
+  document.getElementById("fcPrev")?.addEventListener("click",()=>{ state.fcIndex=(state.fcIndex-1+total)%total; renderFlashcards(); });
+  document.getElementById("fcNext")?.addEventListener("click",()=>{ state.fcIndex=(state.fcIndex+1)%total; renderFlashcards(); });
+  document.getElementById("fcKnow")?.addEventListener("click",()=>{ state.fcKnown.add(cardIdx); saveKnown(state.fcKnown); state.fcIndex=(state.fcIndex+1)%total; renderFlashcards(); });
+  document.getElementById("fcDontKnow")?.addEventListener("click",()=>{ state.fcKnown.delete(cardIdx); saveKnown(state.fcKnown); state.fcIndex=(state.fcIndex+1)%total; renderFlashcards(); });
+}
+
+/* ---- Quiz ---- */
+function quizStart(filter){
+  const pool = QUIZ.map((q,i)=>i).filter(i=> filter==="ALL" || QUIZ[i].part===filter || QUIZ[i].part.includes(filter));
+  state.quiz = { active:true, order: shuffle(pool), idx:0, score:0, answered:false, filter, finished:false };
+  renderQuiz();
+}
+function quizAnswer(optIdx){
+  if(state.quiz.answered) return;
+  state.quiz.answered = true;
+  const qi = state.quiz.order[state.quiz.idx];
+  const q = QUIZ[qi];
+  if(optIdx === q.correct) state.quiz.score++;
+  renderQuiz();
+}
+function quizNext(){
+  if(state.quiz.idx+1 >= state.quiz.order.length){ state.quiz.finished = true; }
+  else { state.quiz.idx++; state.quiz.answered=false; }
+  renderQuiz();
+}
+
+function renderQuiz(){
+  const st = state.quiz;
+  if(!st.active){
+    content.innerHTML = `
+    <div class="eyebrow">自我测验</div>
+    <h1 class="page-title">自测模式</h1>
+    <p class="page-sub">共${QUIZ.length}道考试风格的题目，覆盖全部三个部分。选择一个范围开始——每题都会有即时反馈和解析。</p>
+    <div class="quiz-setup">
+      <span class="chip" data-qstart="ALL">全部（${QUIZ.length}题）</span>
+      <span class="chip" data-qstart="A">A部分 · 蜂窝（${QUIZ.filter(q=>q.part==='A').length}题）</span>
+      <span class="chip" data-qstart="B">B部分 · 无线（${QUIZ.filter(q=>q.part.includes('B')).length}题）</span>
+      <span class="chip" data-qstart="C">C部分 · 卫星（${QUIZ.filter(q=>q.part==='C').length}题）</span>
+    </div>`;
+    content.querySelectorAll("[data-qstart]").forEach(el=>el.addEventListener("click",()=>quizStart(el.dataset.qstart)));
+    return;
+  }
+  if(st.finished){
+    const pct = Math.round((st.score/st.order.length)*100);
+    content.innerHTML = `
+    <div class="eyebrow">测验结果</div>
+    <h1 class="page-title">自测模式</h1>
+    <div class="quiz-card q-result">
+      <div class="score">${st.score}<span>/${st.order.length}</span></div>
+      <p>${pct>=80?"掌握得很扎实——已经具备应考水平。":pct>=60?"基础不错，但要再复习一下答错的知识点。":"考前建议再通读一遍笔记。"}（正确率${pct}%）</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button class="fc-btn primary" id="qRetry">↻ 重新测验（同范围）</button>
+        <button class="fc-btn" id="qHome">选择其他范围</button>
+      </div>
+    </div>`;
+    document.getElementById("qRetry").addEventListener("click",()=>quizStart(st.filter));
+    document.getElementById("qHome").addEventListener("click",()=>{ st.active=false; renderQuiz(); });
+    return;
+  }
+
+  const qi = st.order[st.idx];
+  const q = QUIZ[qi];
+  const letters = ["A","B","C","D"];
+  content.innerHTML = `
+  <div class="eyebrow">自我测验 <span class="sep">·</span> ${st.filter==='ALL'?'全部部分':'第'+st.filter+'部分'}</div>
+  <h1 class="page-title">自测模式</h1>
+  <div class="quiz-card">
+    <div class="q-progress">
+      <span class="q-num tabular">${st.idx+1} / ${st.order.length}</span>
+      <div class="q-track"><div class="q-fill" style="width:${(st.idx/st.order.length)*100}%"></div></div>
+      <span class="q-num tabular">得分：${st.score}</span>
+    </div>
+    <div class="q-text">${q.q}</div>
+    <div class="q-options" id="qOpts">
+      ${q.opts.map((o,i)=>`<div class="q-opt" data-opt="${i}"><span class="letter">${letters[i]}</span><span>${o}</span></div>`).join("")}
+    </div>
+    <div class="q-explain" id="qExplain"><b>解析：</b>${q.exp}</div>
+    <div class="q-footer"><button class="q-next" id="qNext">${st.idx+1>=st.order.length?'查看结果':'下一题'} →</button></div>
+  </div>`;
+
+  content.querySelectorAll("[data-opt]").forEach(el=>{
+    el.addEventListener("click",()=>{
+      if(st.answered) return;
+      const chosen = parseInt(el.dataset.opt);
+      quizAnswer(chosen);
+    });
+  });
+
+  if(st.answered){
+    content.querySelectorAll("[data-opt]").forEach(el=>{
+      const i = parseInt(el.dataset.opt);
+      el.classList.add("disabled");
+      if(i===q.correct) el.classList.add("correct");
+    });
+    document.getElementById("qExplain").classList.add("show");
+    document.getElementById("qNext").classList.add("show");
+    document.getElementById("qNext").addEventListener("click", quizNext);
+  }
+}
+
+/* patch quizAnswer to mark wrong choice too */
+const _origQuizAnswer = quizAnswer;
+quizAnswer = function(optIdx){
+  if(state.quiz.answered) return;
+  state.quiz.answered = true;
+  const qi = state.quiz.order[state.quiz.idx];
+  const q = QUIZ[qi];
+  if(optIdx === q.correct) state.quiz.score++;
+  renderQuiz();
+  requestAnimationFrame(()=>{
+    if(optIdx !== q.correct){
+      const el = content.querySelector(`[data-opt="${optIdx}"]`);
+      el && el.classList.add("wrong");
+    }
+  });
+};
+
+/* ============================= WIRE UP GLOBAL UI ============================= */
+document.getElementById("navSearch").addEventListener("input", (e)=> renderNav(e.target.value));
+document.getElementById("menuBtn").addEventListener("click", ()=>{
+  document.getElementById("sidebar").classList.remove("closed");
+  document.getElementById("scrim").classList.add("show");
+});
+document.getElementById("scrim").addEventListener("click", closeSidebarMobile);
+function closeSidebarMobile(){
+  if(window.innerWidth<=880){
+    document.getElementById("sidebar").classList.add("closed");
+    document.getElementById("scrim").classList.remove("show");
+  }
+}
+function handleResize(){
+  if(window.innerWidth>880){ document.getElementById("sidebar").classList.remove("closed"); document.getElementById("scrim").classList.remove("show"); }
+  else { document.getElementById("sidebar").classList.add("closed"); }
+}
+window.addEventListener("resize", handleResize);
+handleResize();
+
+render();
+</script>
+
+</body></html>

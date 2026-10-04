@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EE6129 学习站</title>
+<style>
+  :root { --bg:#F5F6F8; --surface:#FFFFFF; --border:#DCE1E8; --ink:#16202E; --muted:#5B6675; --t1:#0E7C86; --t2:#2F4FC4; --t3:#B4790F; --t4:#7A4FC4; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0B1220; --surface:#121B2C; --border:#253148; --ink:#E7ECF5; --muted:#93A0B8; --t1:#2DD4C7; --t2:#7B93F0; --t3:#E0AC4B; --t4:#B79CF0; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); line-height:1.55;
+         font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei","Noto Sans CJK SC",sans-serif; }
+  .wrap { max-width:720px; margin:0 auto; padding:40px 16px; }
+  .eyebrow { font-family:ui-monospace,Consolas,"DejaVu Sans Mono",monospace; font-size:12.5px; letter-spacing:.09em; color:var(--muted); text-transform:uppercase; }
+  h1 { font-size:26px; margin:4px 0 8px; }
+  .sub { color:var(--muted); font-size:14px; margin-bottom:28px; }
+  .group-label { font-family:ui-monospace,Consolas,"DejaVu Sans Mono",monospace; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:28px 0 10px; }
+  .group-label:first-of-type { margin-top:0; }
+  a.topic { display:block; text-decoration:none; color:inherit; background:var(--surface); border:1px solid var(--border);
+            border-radius:12px; padding:18px 20px; margin-bottom:12px; transition:border-color .15s; }
+  a.topic:hover, a.topic:focus-visible { border-color:currentColor; outline:none; }
+  .code { font-family:ui-monospace,Consolas,"DejaVu Sans Mono",monospace; font-size:12px; font-weight:600; }
+  .t1 .code { color:var(--t1); } .t2 .code { color:var(--t2); } .t3 .code { color:var(--t3); } .t4 .code { color:var(--t4); }
+  .name { font-size:17px; font-weight:600; margin:2px 0 4px; }
+  .desc { font-size:14px; color:var(--muted); }
+  footer { margin-top:32px; font-size:12.5px; color:var(--muted); }
+  footer code { background:var(--surface); border:1px solid var(--border); border-radius:4px; padding:1px 5px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">EE6129 · Wireless &amp; Mobile Radio Systems · NTU</div>
+  <h1>EE6129 学习站</h1>
+  <div class="sub">讲解长文（零基础、类比讲解、带例题）+ 互动复习小程序（笔记/公式表/记忆卡片/自测题），覆盖蜂窝、无线系统、卫星通信三大部分。</div>
+
+  <div class="group-label">讲解长文 · 先学这个</div>
+  <a class="topic t2" href="partA.html">
+    <div class="code">PART A</div>
+    <div class="name">蜂窝网络是怎么工作的</div>
+    <div class="desc">多址接入、蜂窝概念、1G–4G简史、频率复用、话务工程、小区分裂与扇区化、切换 — 共11章</div>
+  </a>
+  <a class="topic t2" href="partB.html">
+    <div class="code">PART B</div>
+    <div class="name">没有信号塔时，网络怎么办</div>
+    <div class="desc">WLAN架构、CSMA/CA、自组织网络、无线传感器网络、LTE全IP架构、物联网 — 共8章</div>
+  </a>
+  <a class="topic t2" href="partC.html">
+    <div class="code">PART C</div>
+    <div class="name">从三万五千公里外看地球</div>
+    <div class="desc">GEO/MEO/LEO轨道权衡、链路性能、卫星多址接入、路由与切换 — 共6章</div>
+  </a>
+
+  <div class="group-label">复习工具 · 学完再用</div>
+  <a class="topic t1" href="app.html">
+    <div class="code">APP</div>
+    <div class="name">EE6129 信号之路</div>
+    <div class="desc">32个知识点笔记 + 公式速查表 + 48张记忆卡片 + 36题自测，进度自动保存在浏览器本地</div>
+  </a>
+
+  <footer>纯静态 HTML。公式字体和中英文衬线字体从 Google Fonts 加载，首次打开需要联网；离线时会自动退回系统字体，内容仍完整可读。</footer>
+</div>
+</body>
+</html>

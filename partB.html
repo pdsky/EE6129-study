@@ -1,0 +1,456 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>没有信号塔时网络怎么办</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,500&family=Literata:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+SC:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+
+:root{
+  --paper:#f2f3f2;
+  --paper-2:#e8eaea;
+  --card:#ffffff;
+  --ink:#171b26;
+  --ink-soft:#4a5266;
+  --ink-faint:#848da0;
+  --accent:#2f4fc4;
+  --accent-ink:#22399a;
+  --accent-soft:#e5eaf9;
+  --gold:#b4790f;
+  --gold-soft:#faefd8;
+  --line:#dcdfe3;
+  --line-strong:#c3c8d0;
+  --good:#1c7a4d;
+  --good-soft:#e2f3ea;
+  --shadow:0 1px 2px rgba(23,27,38,.04), 0 10px 30px -14px rgba(23,27,38,.16);
+  --f-display:'Fraunces','Noto Serif SC',serif;
+  --f-body:'Literata','Noto Serif SC',serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0f1219;
+    --paper-2:#161a24;
+    --card:#151a24;
+    --ink:#e7e9f0;
+    --ink-soft:#a3aabc;
+    --ink-faint:#6b7286;
+    --accent:#7b93f0;
+    --accent-ink:#a9bafa;
+    --accent-soft:rgba(123,147,240,.14);
+    --gold:#e0ac4b;
+    --gold-soft:rgba(224,172,75,.14);
+    --line:#262c3a;
+    --line-strong:#333a4a;
+    --good:#4bc98a;
+    --good-soft:rgba(75,201,138,.13);
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 32px -14px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0f1219;
+  --paper-2:#161a24;
+  --card:#151a24;
+  --ink:#e7e9f0;
+  --ink-soft:#a3aabc;
+  --ink-faint:#6b7286;
+  --accent:#7b93f0;
+  --accent-ink:#a9bafa;
+  --accent-soft:rgba(123,147,240,.14);
+  --gold:#e0ac4b;
+  --gold-soft:rgba(224,172,75,.14);
+  --line:#262c3a;
+  --line-strong:#333a4a;
+  --good:#4bc98a;
+  --good-soft:rgba(75,201,138,.13);
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 32px -14px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--f-body);font-size:17px;line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0;color:var(--ink);}
+p{margin:0 0 1.15em;}
+::selection{background:var(--accent-soft);color:var(--accent-ink);}
+.mono{font-family:var(--f-mono);}
+a{color:var(--accent-ink);}
+
+.shell{display:flex;justify-content:center;gap:48px;max-width:1160px;margin:0 auto;padding:0 24px;}
+.rail{width:220px;flex:none;display:none;}
+@media (min-width:1040px){.rail{display:block;}}
+.rail-inner{position:sticky;top:48px;}
+.rail-kicker{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px;}
+.rail-list{list-style:none;margin:0;padding:0;border-left:2px solid var(--line);}
+.rail-list li{margin:0;}
+.rail-list a{
+  display:block;padding:7px 0 7px 16px;margin-left:-2px;border-left:2px solid transparent;
+  font-family:var(--f-mono);font-size:12.5px;color:var(--ink-faint);text-decoration:none;line-height:1.4;
+}
+.rail-list a:hover{color:var(--ink-soft);}
+.rail-list a.active{color:var(--accent-ink);border-left-color:var(--accent);font-weight:600;}
+
+.main{max-width:680px;width:100%;padding:64px 0 140px;min-width:0;}
+
+.masthead{margin-bottom:64px;}
+.masthead .kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+.masthead h1{font-size:44px;font-weight:700;line-height:1.18;margin-bottom:20px;letter-spacing:-.01em;}
+.masthead .lede{font-size:18px;color:var(--ink-soft);line-height:1.7;font-style:italic;max-width:58ch;}
+.masthead .meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:28px;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-faint);}
+.masthead .meta span{display:flex;align-items:center;gap:6px;}
+.prev-link{
+  display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:12px;color:var(--ink-faint);
+  text-decoration:none;margin-bottom:22px;
+}
+.prev-link:hover{color:var(--accent-ink);}
+
+.chapter{margin-bottom:76px;scroll-margin-top:40px;}
+.chapter-head{display:flex;align-items:baseline;gap:16px;margin-bottom:28px;padding-bottom:18px;border-bottom:2px solid var(--ink);}
+.chapter-num{font-family:var(--f-display);font-size:15px;font-weight:600;color:var(--accent);letter-spacing:.02em;flex:none;}
+.chapter-head h2{font-size:28px;font-weight:700;}
+
+.chapter h3{font-size:20px;font-weight:600;margin:34px 0 14px;color:var(--ink);}
+.chapter h3 .zh-num{color:var(--accent);margin-right:8px;font-family:var(--f-mono);font-size:15px;}
+
+.chapter p b{font-weight:700;color:var(--ink);background:linear-gradient(to bottom, transparent 62%, var(--accent-soft) 62%);}
+.dropcap:first-letter{
+  font-family:var(--f-display);font-size:3.6em;font-weight:700;float:left;line-height:.85;
+  margin:.03em .09em -.05em 0;color:var(--accent-ink);
+}
+
+.analogy{
+  background:var(--gold-soft);border-radius:4px;padding:18px 22px;margin:24px 0;
+  border-left:3px solid var(--gold);position:relative;
+}
+.analogy .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px;}
+.analogy p{margin-bottom:0;color:var(--ink);font-style:italic;}
+.analogy p+p{margin-top:.8em;}
+
+.formula-card{
+  background:var(--card);border:1px solid var(--line-strong);border-radius:10px;
+  padding:20px 24px;margin:24px 0;box-shadow:var(--shadow);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:16px 16px;background-position:-1px -1px;
+  background-color:var(--card);
+}
+.formula-card .flbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;margin-bottom:10px;}
+.formula-card .fexpr{font-family:var(--f-mono);font-size:18px;color:var(--ink);overflow-x:auto;padding:4px 0;font-weight:500;}
+.formula-card .fmeaning{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line-strong);font-size:14.5px;color:var(--ink-soft);font-family:var(--f-body);}
+.formula-card .fmeaning b{color:var(--ink);}
+
+.worked{
+  border:1px solid var(--line);border-radius:10px;margin:28px 0;overflow:hidden;background:var(--card);
+}
+.worked > summary{
+  list-style:none;cursor:pointer;padding:16px 22px;display:flex;align-items:center;gap:12px;
+  background:var(--paper-2);font-family:var(--f-body);font-weight:600;font-size:15px;color:var(--ink);
+}
+.worked > summary::-webkit-details-marker{display:none;}
+.worked .wtag{
+  font-family:var(--f-mono);font-size:10px;background:var(--accent);color:#fff;padding:3px 8px;border-radius:5px;
+  letter-spacing:.06em;text-transform:uppercase;flex:none;
+}
+.worked .chev{margin-left:auto;width:15px;height:15px;color:var(--ink-faint);transition:transform .2s;flex:none;}
+.worked[open] .chev{transform:rotate(90deg);}
+.worked .wbody{padding:20px 22px 24px;font-size:15.5px;}
+.worked .wstep{display:flex;gap:14px;margin-bottom:16px;}
+.worked .wstep .wn{
+  font-family:var(--f-mono);font-size:12px;color:var(--accent-ink);background:var(--accent-soft);
+  width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px;font-weight:700;
+}
+.worked .wstep .wtext{flex:1;padding-top:1px;}
+.worked .wstep .wtext .calc{font-family:var(--f-mono);font-size:13.5px;background:var(--paper-2);padding:6px 10px;border-radius:6px;display:inline-block;margin-top:5px;}
+.worked .wans{
+  margin-top:18px;padding:14px 16px;background:var(--good-soft);color:var(--good);border-radius:8px;
+  font-weight:700;font-family:var(--f-mono);font-size:14.5px;
+}
+
+.chapter ul, .chapter ol{padding-left:1.4em;margin:0 0 1.15em;}
+.chapter li{margin-bottom:.5em;}
+
+.tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px;}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+table th{text-align:left;font-family:var(--f-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);background:var(--paper-2);padding:9px 14px;}
+table td{padding:8px 14px;border-top:1px solid var(--line);font-family:var(--f-mono);font-size:13px;}
+table td:first-child{font-family:var(--f-body);}
+
+.checkpoint{
+  border:1.5px dashed var(--accent);border-radius:10px;padding:18px 22px;margin:30px 0;background:var(--accent-soft);
+}
+.checkpoint .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;margin-bottom:8px;}
+.checkpoint p{margin-bottom:0;color:var(--ink);}
+.checkpoint .reveal{margin-top:10px;}
+.checkpoint .reveal summary{cursor:pointer;color:var(--accent-ink);font-weight:600;font-size:14px;font-family:var(--f-body);}
+.checkpoint .reveal .ans{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-strong);font-size:15px;}
+
+.next-up{
+  background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin-top:64px;
+  display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);
+}
+.next-up .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);}
+.next-up h4{font-size:19px;}
+.next-up p{color:var(--ink-soft);font-size:14.5px;margin-bottom:0;}
+
+.mobtoc{display:block;position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line);padding:12px 20px;}
+@media (min-width:1040px){.mobtoc{display:none;}}
+.mobtoc select{
+  width:100%;font-family:var(--f-mono);font-size:12.5px;padding:8px 10px;border-radius:8px;border:1px solid var(--line-strong);
+  background:var(--card);color:var(--ink);
+}
+
+@media (max-width:680px){
+  .main{padding:0 20px 100px;}
+  .masthead h1{font-size:32px;}
+  .chapter-head h2{font-size:23px;}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+</style>
+
+<div class="mobtoc">
+  <select id="mobNav" aria-label="跳转到章节"></select>
+</div>
+
+<div class="shell">
+  <aside class="rail">
+    <div class="rail-inner">
+      <div class="rail-kicker">本篇目录</div>
+      <ul class="rail-list" id="railList"></ul>
+    </div>
+  </aside>
+
+  <main class="main">
+    <a class="prev-link" href="partA.html">← Part A · 蜂窝移动通信系统</a>
+    <header class="masthead">
+      <div class="kicker">EE6129 · Part B 讲解 · 无线系统</div>
+      <h1>没有信号塔时，网络怎么办</h1>
+      <p class="lede">上一篇讲的蜂窝网络，核心假设是"总有一个基站在附近"。这一篇要打破这个假设——从会议室里的WiFi，到互相当对方基站的自组织网络，再到LTE的全IP架构和物联网的百亿设备，看看没有中心塔、或者塔本身也要重新设计时，网络是怎么运转的。</p>
+      <div class="meta">
+        <span>◆ 承接Part A</span>
+        <span>◆ 全程用类比讲</span>
+        <span>◆ 共8章</span>
+      </div>
+    </header>
+
+    <!-- ================= CH 0 ================= -->
+    <section class="chapter" id="ch0">
+      <div class="chapter-head"><span class="chapter-num">开篇</span><h2>蜂窝网络之外，还有另一套逻辑</h2></div>
+      <p class="dropcap">Part A讲的所有内容，都建立在一个前提上：有一个由运营商统一规划、统一调度的基站网络，手机只需要"找到最近的基站"就行，剩下的复杂调度都由MTSO在背后默默完成。这套集中式的逻辑非常强大，但它并不是无线通信唯一的形态。</p>
+      <p>这一篇要看的是几种"去中心化"或者"轻中心化"的场景：办公室里的<b>WLAN</b>，只需要一个便宜的接入点就能让一屋子笔记本电脑互相通信；<b>自组织网络（MANET）</b>，干脆连接入点都不要，每个节点既是终端又是中继；再往前一步是<b>无线传感器网络</b>，成千上万个几乎不用维护的小节点自己组成网络。之后我们会回到"正规军"——<b>LTE/4G</b>，看它是怎么在蜂窝网络的骨架上，把一切都改造成基于IP的架构。最后聊聊<b>物联网</b>，这是几乎所有前面讲过的技术，在一个更庞大、更异构的场景下的集大成应用。</p>
+    </section>
+
+    <!-- ================= CH 1 ================= -->
+    <section class="chapter" id="ch1">
+      <div class="chapter-head"><span class="chapter-num">第一章</span><h2>WLAN是怎么搭起来的</h2></div>
+
+      <h3><span class="zh-num">1.1</span>一个接入点，撑起一间办公室</h3>
+      <p>无线局域网（WLAN）要解决的问题比蜂窝网络简单得多：覆盖范围通常只有50到500米（一栋楼、一个校园的量级），不需要处理"移动中不断切换基站"这种复杂场景。它的基本组网单位叫<b>基本服务集（BSS）</b>——一组共享同一个无线介质、互相竞争信道使用权的设备，通常由一个<b>接入点（AP）</b>充当中心枢纽，AP再把这些设备接到有线的骨干网上。如果一个场所需要多个AP才能覆盖（比如整栋大楼），这些AP会通过一个<b>分布式系统（DS）</b>连接起来，组成一个更大的<b>扩展服务集（ESS）</b>——你的手机从会议室走到茶水间，Wi-Fi信号在不同AP之间切换，但对你来说始终是"同一个网络"，靠的就是DS在背后维持这种连续性。</p>
+
+      <h3><span class="zh-num">1.2</span>物理层的几代演进</h3>
+      <p>802.11标准的物理层规格，是一路从1–2 Mbps爬到几十Mbps的：最早的802.11标准（1997年）定义了红外、跳频扩频（FHSS）、直接序列扩频（DSSS）三种可选方案，速率都停留在1–2 Mbps；802.11b把DSSS升级到5.5和11 Mbps，仍然工作在拥挤的2.4 GHz频段；802.11a则换到相对干净的5 GHz频段，用OFDM技术把速率一口气提到6–54 Mbps。市面上说的"Wi-Fi"，其实是Wi-Fi联盟对这些互相兼容的802.11系列产品的一个认证品牌，而不是某个具体的技术标准本身。</p>
+    </section>
+
+    <!-- ================= CH 2 ================= -->
+    <section class="chapter" id="ch2">
+      <div class="chapter-head"><span class="chapter-num">第二章</span><h2>没有基站中心调度，大家怎么不抢着说话</h2></div>
+
+      <h3><span class="zh-num">2.1</span>先"听一听"再说话：CSMA/CA</h3>
+      <p>Part A里的蜂窝网络，信道分配是MTSO统一调度的——谁用哪个信道，中心说了算。但WLAN里的设备理论上都是平等的，没有一个像MTSO那样的中心指挥官（AP更多是转发数据，而不是分配信道）。那么多台设备想同时发数据，怎么避免大家一起抢着说话、信号互相"撞车"？</p>
+      <p>802.11用的方案叫<b>CSMA/CA</b>（带碰撞避免的载波侦听多路访问），核心思路很像开会时的礼貌规则：<b>先听一听有没有人在说话，没有人在说才轮到自己发言，而且发言前还要客气地"让一让"，看看有没有人比自己更着急</b>。</p>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>想象一场没有主持人的圆桌讨论。每个人想发言前，先竖起耳朵听一听现在是不是安静的——如果安静，也不能立刻就说，得先礼貌地等一小会儿（这就是下面要讲的"帧间间隔"），如果这段等待期间还是没人抢先，才轮到自己开口。如果不巧两个人同时觉得"该我说了"，同时开口造成了"冲突"，两人就都闭嘴，各自随机等一段时间再重新尝试——等待时间随机，就是为了避免两人又同时醒过来再次撞车。</p>
+      </div>
+
+      <h3><span class="zh-num">2.2</span>三种"客气程度"不同的等待：IFS</h3>
+      <p>"先礼貌地等一等"这个动作，802.11里细分成三档不同长度的等待时间，统称<b>帧间间隔（IFS）</b>，等待越短代表优先级越高：</p>
+      <ul>
+        <li><b>SIFS（最短）</b>——留给最紧急、最该被立刻回应的动作，比如收到数据后立刻回一个确认帧（ACK）。</li>
+        <li><b>PIFS（中等）</b>——留给下一章要讲的"AP集中轮询"模式使用，比普通抢答优先级高。</li>
+        <li><b>DIFS（最长）</b>——普通设备想主动发起一次新的数据传输，必须等待这个最长的间隔，确保不会抢在别人的紧急回复前面插队。</li>
+      </ul>
+      <div class="formula-card">
+        <div class="flbl">优先级顺序</div>
+        <div class="fexpr">SIFS &lt; PIFS &lt; DIFS</div>
+        <div class="fmeaning">记住这个顺序，后面讲超帧结构时会直接用到——等待时间越短，谁就能越快抢到信道，也就意味着优先级越高。</div>
+      </div>
+
+      <h3><span class="zh-num">2.3</span>撞车之后怎么办：二进制指数退避</h3>
+      <p>即便有礼貌地"先听后说"，两个设备还是有可能凑巧同时开口。撞车之后，双方都要随机等一段时间再重试，而且这段随机等待的"窗口"会越撞车越变宽：</p>
+      <div class="formula-card">
+        <div class="flbl">二进制指数退避</div>
+        <div class="fexpr">退避时间 ~ 均匀分布(0, CW−1)；每撞一次车，CW ×2，直到CW_max</div>
+        <div class="fmeaning">CW从一个最小值CW_min（标准推荐32）开始，每次冲突后翻倍，直到封顶在CW_max（标准推荐256）。这个设计很聪明：偶尔撞一次车，稍微多等一下就好；但如果信道一直很拥挤、反复撞车，退避窗口会越拉越长，相当于自动给大家"降速"，避免所有人在拥堵的信道上无休止地互相冲撞。</div>
+      </div>
+
+      <h3><span class="zh-num">2.4</span>隐藏节点问题与RTS/CTS握手</h3>
+      <p>光靠"先听一听"还有一个漏洞：如果A和C都想跟B说话，但A和C彼此距离太远、互相听不到对方的信号（只能各自听到B），那A在准备发送前"听了一听"，完全听不到C正在跟B说话，于是误以为信道是空的，贸然发送，结果两人的信号在B处撞在一起——这就是<b>隐藏节点问题</b>：C对A来说是"隐藏"的。</p>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>想象两个人分别站在一间大房子的两端，各自能听见站在房子正中间的第三个人说话，却听不见彼此。如果两人都以为"中间那位现在没在忙"，同时开始跟他讲话，中间那位听到的就是两人声音叠在一起的噪音，谁的话都没听清。</p>
+      </div>
+      <p>解决办法是<b>RTS/CTS四次握手</b>：A在真正发数据前，先发一个简短的"请求发送（RTS）"给B；B收到后回一个"允许发送（CTS）"；A收到CTS之后才正式发送数据；B收到数据后再回一个ACK确认。关键的巧妙之处在于——<b>C虽然听不到A发的RTS，但一定能听到B回的CTS</b>（因为C和B距离够近），从CTS里读出"信道接下来会被占用多久"的信息，从而提前让路。这套握手协议为什么管用，本质上就是靠CTS这一步把"A要占用信道"的消息，传递给了A自己传不到、但B能传到的那群隐藏节点。</p>
+      <p>每个节点内部会维护一个叫<b>NAV（网络分配向量）</b>的倒计时器，从听到的RTS或CTS帧里的"持续时间"字段更新——只要NAV没倒数到零，节点就乖乖不发送任何东西，这种做法叫<b>虚拟载波侦听</b>，是对"物理上真的去听信道"这种硬件侦听方式的一个软件补充。</p>
+    </section>
+
+    <!-- ================= CH 3 ================= -->
+    <section class="chapter" id="ch3">
+      <div class="chapter-head"><span class="chapter-num">第三章</span><h2>如果需要绝对的时限性：PCF与超帧</h2></div>
+
+      <h3><span class="zh-num">3.1</span>DCF是竞争的，PCF是被安排的</h3>
+      <p>上一章讲的CSMA/CA整套机制，标准里称为<b>DCF（分布式协调功能）</b>——"分布式"三个字点明了它的本质：没有中心指挥，靠大家自觉排队。这对邮件、网页浏览这类不紧不慢的业务够用了，但如果是语音、视频这类对延迟极其敏感的业务，"大家随缘竞争"就不够稳妥了——万一恰好赶上信道拥堵，你的语音包可能要等很久才轮到发送。</p>
+      <p>为此，802.11还定义了一个可选的<b>PCF（点协调功能）</b>：由AP充当"班长"，用PIFS这个比DIFS更短的等待时间抢先拿到信道控制权，然后依次点名轮询每个设备——"轮到你了，有数据要发吗？"。因为PIFS比DIFS短，PCF轮询期间，其他还在用DCF方式竞争的设备根本抢不过AP，只能干等着。</p>
+
+      <h3><span class="zh-num">3.2</span>超帧：把"抢着说"和"排队说"缝在一起</h3>
+      <p>实际系统里DCF和PCF不是二选一，而是在时间上交替运行，组成一个周期性的<b>超帧（superframe）</b>：</p>
+      <div class="formula-card">
+        <div class="flbl">超帧结构</div>
+        <div class="fexpr">超帧 = 无竞争期(CFP) + 竞争期(CP)</div>
+        <div class="fmeaning">CP期间大家用DCF自由竞争；CFP期间AP接管信道、逐一轮询每个设备。因为CFP的启动优先级（PIFS）天然高于CP的DIFS，所以AP总能准时抢到CFP的控制权；轮询完所有设备之后，CFP结束，重新回到CP让大家自由竞争，直到下一个周期的信标帧（beacon）宣布新一轮CFP开始。</div>
+      </div>
+
+      <h3><span class="zh-num">3.3</span>怎么"加入"一个WLAN</h3>
+      <p>一台新设备想接入一个WLAN，要走完这几步：先通过<b>被动扫描</b>（安静地等AP周期性广播的信标帧）或<b>主动扫描</b>（主动发一个"探测请求"，等AP回"探测响应"）找到附近的AP；确认AP之后进入<b>认证</b>阶段，双方证明彼此持有约定好的密码；认证通过后进入<b>关联</b>阶段，把自己的能力信息注册到AP所在的分布式系统里。只有完成关联，才真正能开始收发数据——这跟你手机连Wi-Fi时"搜索网络→输入密码→已连接"的三个阶段，其实是同一套逻辑的不同说法。</p>
+
+      <h3><span class="zh-num">3.4</span>想要QoS？802.11e加了两个新玩法</h3>
+      <p>基础的802.11没有"优先级"概念，视频包和普通网页数据包在DCF里享有同等的竞争地位。802.11e引入了两套新机制来解决这个问题：<b>EDCA</b>把流量分成8个优先级队列，本质上还是DCF那一套竞争逻辑，只是给不同优先级的队列设置了不同长度的等待间隔（数据越紧急，等待越短、越容易抢到信道）；<b>HCCA</b>则是PCF思路的升级版，由一个"混合协调器"根据各类业务实际的负载情况，更智能地安排无竞争的传输机会。</p>
+    </section>
+
+    <!-- ================= CH 4 ================= -->
+    <section class="chapter" id="ch4">
+      <div class="chapter-head"><span class="chapter-num">第四章</span><h2>连接入点都不要了：自组织网络</h2></div>
+
+      <h3><span class="zh-num">4.1</span>每个节点，既是终端也是中继站</h3>
+      <p>WLAN好歹还有一个AP撑场面。<b>移动自组织网络（MANET）</b>把这最后一点中心结构也拿掉了：一群无线设备凑到一起，自己动态组织出一张临时的网络拓扑，谁来充当"临时协调者"（如果需要的话）也是动态选举产生，没有任何预先架设的基础设施。这在灾害救援、战场通信、临时会议这类"来不及、也没必要架设固定基站"的场景里特别有用。</p>
+      <p>这套网络最独特的设计是：<b>当源节点和目的节点之间没有直连的信号覆盖时，中间的节点会主动充当"路由器"，帮忙把数据一跳一跳地转发过去</b>，这叫多跳（multi-hop）通信。</p>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>就像在没有邮局的荒野里传消息——A想把信送到相隔很远的E，够不到怎么办？让站在中间的B、C、D依次接力，"A交给B、B交给C……"一路传下去，只要中间每一棒接得上，消息最终能送到E手上，即便A和E从始至终都没有直接见过面。</p>
+      </div>
+      <p>这也带来一个新问题：怎么找到一条"接力路线"？这就是MANET里<b>路由协议</b>要解决的核心任务，主要分成几种思路：</p>
+      <ul>
+        <li><b>周期性/主动式路由</b>——每个节点持续维护一份到所有其他节点的路径信息，不管当下用不用得上，先备好，好处是要用的时候立刻能查到，坏处是持续维护这份信息本身要消耗带宽。</li>
+        <li><b>按需/被动式路由</b>——平时什么都不做，真的需要发数据给某个节点时，才现场发起一次"路由发现"流程，好处是省资源，坏处是第一次发数据前会有一点延迟。</li>
+        <li><b>混合式路由</b>——近处用主动式（反正节点少，维护成本低），远处用被动式，两头兼顾。</li>
+        <li><b>基于位置的路由</b>——每个节点知道自己的地理位置（类似GPS），转发数据时只需要知道"目的地大概在哪个方向"，不需要维护复杂的路由表。</li>
+      </ul>
+      <p>不管用哪种路由方式，都要面对一个现实：节点是会动的，网络拓扑随时在变。如果拓扑变化的速度，慢到"每次变化后，所有相关的路由更新都来得及在下一次变化前传播完毕"，这个网络就被称为具有<b>组合稳定性</b>——这是判断一个MANET路由方案设计得好不好的一个重要标准。</p>
+
+      <h3><span class="zh-num">4.2</span>老朋友又出现了：隐藏节点问题</h3>
+      <p>上一章在WLAN里讲过的隐藏节点问题，在MANET里同样存在，而且往往更严重——因为MANET里节点分布更松散，"谁能听到谁"完全取决于实时的相对位置，没有一个固定的AP能帮忙统一协调。</p>
+    </section>
+
+    <!-- ================= CH 5 ================= -->
+    <section class="chapter" id="ch5">
+      <div class="chapter-head"><span class="chapter-num">第五章</span><h2>把节点缩小到极限：无线传感器网络</h2></div>
+      <p>把MANET的思路推向极致的一个特殊应用，是<b>无线传感器网络（WSN）</b>——想象在一片农田或者一座森林里撒下成千上万颗火柴盒大小的传感器节点，各自监测温度、湿度或者震动，然后把数据汇总到一个出口。它跟一般的MANET比起来，有几个鲜明的不同：</p>
+      <ul>
+        <li><b>数量级完全不同</b>——一般MANET可能是几十上百个节点，WSN动辄成千上万。</li>
+        <li><b>部署密集、容易失效</b>——传感器节点通常很便宜、电池有限，用坏了、没电了是常态，网络必须能容忍这种持续的节点"掉线"。</li>
+        <li><b>通信方式是广播，而不是点对点</b>——大多数场景下，节点不需要精确地"跟某一个特定节点对话"，而是把数据往外广播出去，让感兴趣的节点自己接收。</li>
+        <li><b>极度受限的资源</b>——功耗、计算能力、存储空间都被压缩到极限，协议设计必须把"省电"放在第一优先级。</li>
+      </ul>
+      <p>整个网络的典型结构是：传感器节点散落在监测区域里，通过和MANET一样的多跳中继方式，把数据一路传到一个叫<b>汇聚节点（sink）</b>的出口，汇聚节点再通过互联网或者卫星，把数据送到真正处理数据的任务管理中心。支撑这一切的协议栈分成五层——物理层（简单、省电的调制方式）、MAC层（要特别在意如何避免碰撞，因为重传同样耗电）、网络层（负责多跳路由）、传输层（维护数据流的完整性）、应用层，外加贯穿所有层的"功耗管理""移动性管理""任务管理"三个横切面。</p>
+    </section>
+
+    <!-- ================= CH 6 ================= -->
+    <section class="chapter" id="ch6">
+      <div class="chapter-head"><span class="chapter-num">第六章</span><h2>回到"正规军"：LTE的全IP架构</h2></div>
+
+      <h3><span class="zh-num">6.1</span>LTE把整个网络简化成了什么样子</h3>
+      <p>讲完了几种"轻中心化"的网络之后，我们回到蜂窝网络的世界，看4G/LTE是怎么把Part A讲的那一整套BS-MTSO架构，重新设计成一个更简洁的全IP系统的。</p>
+      <p>LTE所在的整个系统叫<b>EPS（演进分组系统）</b>，拆成两大块：核心网<b>EPC</b>（负责鉴权、计费、路由这些"后台管理"工作）和接入网<b>E-UTRAN</b>。E-UTRAN的设计非常干脆——<b>只有一种网元，叫eNodeB</b>，直接跟手机（术语叫UE，User Equipment）打交道。回想一下Part A里GSM还需要单独的基站子系统和网络子系统分层协作，LTE把这些无线相关的控制功能，统统塞进了eNodeB这一个盒子里，架构一下子扁平了很多。</p>
+      <p>各个eNodeB之间靠<b>X2</b>接口互相直连（不需要绕道核心网就能协调相邻小区之间的资源，比如切换），再各自通过<b>S1</b>接口连回EPC——一路（S1-MME）连到负责移动性管理的核心网元，另一路（S1-U）连到负责实际数据转发的网关。这也解释了为什么LTE里没有一个像GSM里MTSO那样的"集中控制塔"——协调工作被分散到了eNodeB之间的横向直连，加上EPC里的几个功能明确的核心网元。</p>
+
+      <h3><span class="zh-num">6.2</span>无线资源是怎么被切开分配的</h3>
+      <p>LTE用OFDMA（下行）和SC-FDMA（上行）做接入，具体的时间-频率资源被组织成一套精细的网格：</p>
+      <div class="formula-card">
+        <div class="flbl">FDD无线帧结构</div>
+        <div class="fexpr">10 ms无线帧 = 10个1 ms子帧 = 20个0.5 ms时隙</div>
+        <div class="fmeaning">每个0.5 ms的时隙，在频率方向上进一步切成若干个12个子载波宽的<b>资源块</b>——这是LTE调度器分配资源时最小的操作单位，就像Part A里蜂窝系统把频谱切成一个个信道一样，只不过LTE的"信道"是在时间和频率两个维度上同时切分的一张网格，粒度细得多。</div>
+      </div>
+
+      <h3><span class="zh-num">6.3</span>怎么保证不同业务各自应得的服务质量</h3>
+      <p>一切业务都走IP之后，怎么区分"这是一通对延迟极度敏感的语音通话"还是"这只是一次后台的软件更新下载"？LTE的做法是给每条数据流分配一个<b>EPS承载</b>——一条在网关和手机之间、具有明确QoS约定的逻辑数据通道。承载分两类：<b>GBR承载</b>（比如VoIP语音）会预留专属资源、保证一个最低比特率；<b>非GBR承载</b>（比如刷网页）则不做任何资源预留，能用多少算多少。每台手机接入网络时会先建立一条<b>默认承载</b>（永远是非GBR，负责最基本的连通性），有特殊业务需求时再按需建立<b>专用承载</b>。</p>
+      <p>每条承载还带着一个<b>QCI（QoS类别标识）</b>标签，说明这条数据流该有多高的优先级、能容忍多长的延迟、能接受多大的丢包率——这样不管手机连的是哪个厂商生产的eNodeB，同一个QCI标签下的业务体验都是一致的。另外还有一个<b>ARP（分配和保留优先级）</b>参数，专门用在"资源紧张时该接纳谁、该牺牲谁"这类接纳控制决策上，一旦承载建立成功，ARP就不再影响日常的数据转发。</p>
+    </section>
+
+    <!-- ================= CH 7 ================= -->
+    <section class="chapter" id="ch7">
+      <div class="chapter-head"><span class="chapter-num">第七章</span><h2>物联网：把前面所有招数用在百亿设备上</h2></div>
+
+      <h3><span class="zh-num">7.1</span>为什么物联网是"集大成"</h3>
+      <p>物联网（IoT）想做的事情，说穿了很简单：<b>把以前"不联网"的物理设备也接入网络</b>，让它们能感知环境、也能被远程控制。但真正做起来会发现，前面几章讲过的几乎所有技术，在物联网场景里都会被用到——有的地方像WLAN一样用固定AP集中接入，有的地方像MANET一样靠节点互相中继，有的地方干脆就是无线传感器网络的直接应用。物联网的难点，与其说是"发明新技术"，不如说是"怎么把不同规模、不同能力的设备，用统一的架构组织起来"。</p>
+
+      <h3><span class="zh-num">7.2</span>三层拆解一个物联网系统</h3>
+      <p>一个简化的物联网架构，可以从下往上拆成三层：</p>
+      <ul>
+        <li><b>"物"层</b>——真正的物理设备，可能是电池供电的、也可能是接市电的；可能是移动的、也可能是固定的；可能只是几秒上报一次开关状态，也可能持续吐出高清视频流——这些差异会直接决定它该用哪种通信技术。</li>
+        <li><b>通信网络层</b>——负责把"物"层收集到的数据传出去，又细分成接入（最后一公里的无线连接）、网关/回传（把一堆末端设备的数据汇总，用更长距离的链路送出去）、网络传输（IP/UDP/TCP这些熟悉的协议）、网络管理（HTTP、WebSocket这类应用层协议）四个子层。</li>
+        <li><b>应用与分析层</b>——真正让数据产生价值的地方，分成只负责"看数据、出报表"的分析类应用，和能反过来"控制物理设备"的控制类应用。</li>
+      </ul>
+
+      <h3><span class="zh-num">7.3</span>按覆盖范围挑技术</h3>
+      <p>物联网设备该用哪种无线技术接入，很大程度上取决于它需要覆盖多远——这跟Part A里"根据用户密度选簇大小"的逻辑其实很像，本质上都是"覆盖范围 vs 资源效率"的权衡：</p>
+      <div class="tblwrap"><table><thead><tr><th>规模类别</th><th>覆盖范围</th><th>典型技术</th></tr></thead><tbody>
+        <tr><td>PAN 个域网</td><td>几米</td><td>蓝牙</td></tr>
+        <tr><td>HAN 家庭网</td><td>几十米</td><td>ZigBee、BLE</td></tr>
+        <tr><td>NAN 邻域网</td><td>几百米</td><td>802.11 网状网</td></tr>
+        <tr><td>LAN 局域网</td><td>百米以内</td><td>802.11</td></tr>
+        <tr><td>MAN / WAN</td><td>公里级以上</td><td>蜂窝网络、LoRa</td></tr>
+      </tbody></table></div>
+
+      <h3><span class="zh-num">7.4</span>数据不一定非要送到云端：雾计算</h3>
+      <p>物联网还带来一个新的现实问题：<b>如果每个末端设备的每一条数据，都要千里迢迢传到云端服务器才能被处理，网络的带宽和延迟很快就会撑不住</b>——尤其是当设备数量涨到百万、千万级的时候。</p>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>就像一家连锁便利店，如果每一笔收银都要先打电话请示总部才能完成，总部的电话线路很快就会被打爆，顾客也要排长队等结账——更合理的做法是，让每家门店自己处理日常的收银决策，只把真正需要总部统筹的信息（比如月度销售汇总）定期上报。</p>
+      </div>
+      <p><b>雾计算</b>就是这个"门店自己处理"的思路：把数据处理能力从云端下放到靠近末端设备的地方——任何具备一定计算、存储、联网能力的设备都可以充当一个"雾节点"，先在本地完成实时性要求高的处理，只把真正需要长期存档或者跨区域汇总分析的数据，才送去云端。这样做能显著降低延迟、减少核心网络的流量压力，还顺带能把敏感数据留在本地，不必都上传到云端。如果把这个思路推到极致，直接让处理能力下沉进末端传感器/设备本身，就叫<b>边缘计算（或"雾霭"计算）</b>。</p>
+      <p>最终形成的是一个<b>边缘–雾–云三层分工</b>的格局：最紧急、最讲究实时性的数据，在边缘或雾节点当场处理掉；能容忍几秒到几分钟延迟的数据，汇总到区域性的节点做进一步分析；真正的历史数据归档和大范围的大数据分析，才交给云端。边缘/雾计算不是要取代云，而是帮云分担掉那些它本来就不擅长应付的实时性压力。</p>
+
+      <h3><span class="zh-num">7.5</span>规模上去之后，麻烦也跟着来</h3>
+      <p>物联网设备数量一旦冲到百万、千万级，会带来几个前面章节里都没遇到过的新挑战：<b>可扩展性</b>（光是给每个设备分配一个网络地址，就得依赖IPv6这种地址空间大得多的方案）、<b>安全</b>（每多一个联网设备，就多一个可能被攻破的入口，一旦某个设备被攻陷，还可能被当作跳板攻击其他设备）、<b>隐私</b>（大量传感器采集的数据往往跟具体的人和行为强相关）、<b>大数据处理</b>（如何在海量、多源、格式各异的数据里及时提炼出有用信息）、以及<b>互操作性</b>（不同厂商、不同行业各自推自己的协议标准，缺乏统一规范）。</p>
+    </section>
+
+    <div class="next-up">
+      <div class="lbl">下一篇预告</div>
+      <h4>Part C · 卫星通信——从35,863公里外看地球</h4>
+      <p>下一篇讲卫星通信：GEO、MEO、LEO三种轨道各自的取舍，为什么GEO的延迟是硬伤，以及卫星版本的"频率复用"和"切换"跟蜂窝网络比起来有什么不一样。</p>
+      <p><a href="partC.html">→ 继续阅读 Part C</a></p>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const chapters = [...document.querySelectorAll('.chapter')].map(el=>({
+  id: el.id,
+  title: el.querySelector('.chapter-head h2')?.textContent || el.id,
+  num: el.querySelector('.chapter-num')?.textContent || ''
+}));
+
+const railList = document.getElementById('railList');
+railList.innerHTML = chapters.map(c=>`<li><a href="#${c.id}" data-id="${c.id}">${c.num} ${c.title}</a></li>`).join('');
+
+const mobNav = document.getElementById('mobNav');
+mobNav.innerHTML = chapters.map(c=>`<option value="${c.id}">${c.num} · ${c.title}</option>`).join('');
+mobNav.addEventListener('change', ()=>{
+  document.getElementById(mobNav.value)?.scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+const railLinks = [...railList.querySelectorAll('a')];
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    const link = railLinks.find(a=>a.dataset.id===entry.target.id);
+    if(!link) return;
+    if(entry.isIntersecting){
+      railLinks.forEach(a=>a.classList.remove('active'));
+      link.classList.add('active');
+      mobNav.value = entry.target.id;
+    }
+  });
+}, {rootMargin:'-10% 0px -70% 0px', threshold:0});
+chapters.forEach(c=>{ const el=document.getElementById(c.id); if(el) observer.observe(el); });
+</script>
+
+</body></html>
