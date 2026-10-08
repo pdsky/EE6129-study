@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>EE6129 Part B·C 练习</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#eceff0; --surface:#fff; --surface-2:#e3e9e9; --border:#cbd6d7;
+  --text:#13201f; --muted:#4e615f;
+  --accent:#0f766e; --accent-strong:#0a5a53; --accent-soft:#d7eeeb; --on-accent:#fff;
+  --warn:#7a4a0c; --warn-soft:#f7e8d2; --bad:#a3261e; --bad-soft:#fbe3e0; --ok:#137a3f; --ok-soft:#dcf1e3;
+  --extra:#7a4fc4; --extra-soft:#f2ecfb;
+  --shadow:0 1px 2px rgba(19,32,31,.06),0 8px 22px rgba(19,32,31,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0b1413; --surface:#111e1c; --surface-2:#182825; --border:#273a36;
+    --text:#e6f0ed; --muted:#9ab3ad;
+    --accent:#33d1bf; --accent-strong:#7ceede; --accent-soft:#113330; --on-accent:#08100e;
+    --warn:#f0b56a; --warn-soft:#2f2210; --bad:#f2857c; --bad-soft:#351816; --ok:#4fd087; --ok-soft:#12301f;
+    --extra:#b79cf0; --extra-soft:rgba(183,156,240,.12);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0b1413; --surface:#111e1c; --surface-2:#182825; --border:#273a36;
+  --text:#e6f0ed; --muted:#9ab3ad;
+  --accent:#33d1bf; --accent-strong:#7ceede; --accent-soft:#113330; --on-accent:#08100e;
+  --warn:#f0b56a; --warn-soft:#2f2210; --bad:#f2857c; --bad-soft:#351816; --ok:#4fd087; --ok-soft:#12301f;
+  --extra:#b79cf0; --extra-soft:rgba(183,156,240,.12);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'IBM Plex Sans','Noto Sans CJK SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:900px;margin:0 auto;padding:28px 18px 90px}
+h1,h2,h3{font-family:'Barlow Condensed','Noto Sans CJK SC','Microsoft YaHei',sans-serif;font-weight:700;margin:0 0 .3em;text-wrap:balance;line-height:1.15;letter-spacing:.01em}
+h1{font-size:2.4rem} h2{font-size:1.55rem} h3{font-size:1.18rem}
+a{color:var(--accent-strong)}
+.back{font-size:.82rem;text-decoration:none;color:var(--muted)}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-strong);margin:14px 0 6px}
+.lede{color:var(--muted);max-width:66ch;margin:.2em 0 .8em}
+.notice{border:1px solid var(--border);border-radius:10px;padding:9px 14px;font-size:.86rem;color:var(--muted);max-width:72ch}
+.notice b{color:var(--text)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:12px 0 10px;margin:20px 0 6px;border-bottom:1px solid var(--border)}
+.tab{font:inherit;font-size:.9rem;font-weight:600;padding:6px 16px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.tabs .spacer{flex:1}
+.toggle{display:flex;align-items:center;gap:6px;font-size:.82rem;color:var(--muted);cursor:pointer}
+.toggle input{accent-color:var(--accent);width:16px;height:16px}
+.count{font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--muted)}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.chipbtn{font:inherit;font-size:.78rem;border:1px solid var(--border);background:var(--surface);color:var(--muted);border-radius:999px;padding:3px 11px;cursor:pointer}
+.chipbtn.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-strong);font-weight:600}
+.tw{overflow-x:auto;margin:8px 0}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th,td{padding:6px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+th{font-family:'IBM Plex Mono',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+table.mini{width:auto;min-width:240px}
+.ov{min-width:620px}
+.group{margin:38px 0 10px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;scroll-margin-top:70px}
+.group h2{margin:0}
+.group span{font-size:.8rem;color:var(--muted)}
+.ex{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:18px 20px;margin-bottom:14px;scroll-margin-top:70px}
+.ex header{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px;margin-bottom:8px}
+.ex h3{margin:0;flex:1 1 260px}
+.pg{font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;background:var(--accent-soft);color:var(--accent-strong);border-radius:6px;padding:2px 8px;white-space:nowrap}
+.orig{border:1px solid var(--border);border-radius:10px;padding:10px 14px 8px;font-size:.92rem;line-height:1.65}
+.orig-lab{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-strong);margin-bottom:4px}
+.orig-lab span:last-child{color:var(--muted)}
+.orig p{margin:.4em 0}
+.orig .eq{text-align:center;margin:.6em 0;overflow-x:auto}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px}
+.chip{font-size:.74rem;border-radius:999px;padding:2px 10px;background:var(--accent-soft);color:var(--accent-strong);font-weight:500}
+.chip.src{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.reveal{margin-top:10px;background:none;border:1px dashed var(--accent);color:var(--accent-strong);border-radius:8px;padding:6px 12px;font-size:.82rem;cursor:pointer;font-family:inherit;display:none}
+.exam .reveal{display:inline-block}
+.exam .sol{display:none}
+.exam .ex.open .sol{display:block}
+.exam .ex.open .reveal{display:none}
+.sol{margin-top:10px}
+.idea{font-size:.9rem;margin:.3em 0 .6em;max-width:74ch}
+ol.steps{margin:0;padding-left:0;list-style:none;counter-reset:s}
+ol.steps>li{counter-increment:s;position:relative;padding:6px 0 6px 34px;font-size:.92rem;border-bottom:1px dotted var(--border)}
+ol.steps>li:last-child{border-bottom:none}
+ol.steps>li::before{content:counter(s);position:absolute;left:0;top:8px;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent-strong);font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;display:flex;align-items:center;justify-content:center}
+.calc{font-family:'IBM Plex Mono',monospace;font-size:.85rem;background:var(--surface-2);border-radius:6px;padding:5px 10px;margin:5px 0;overflow-x:auto}
+.ans{margin-top:10px;border:1.5px solid var(--accent);border-radius:10px;padding:8px 14px;font-size:.92rem;background:var(--accent-soft)}
+.official{margin-top:8px;border-radius:10px;padding:7px 14px;font-size:.88rem;background:var(--ok-soft)}
+.official b{color:var(--ok)}
+.note{margin-top:8px;border-radius:10px;padding:8px 14px;font-size:.86rem;background:var(--extra-soft);border:1px solid var(--extra)}
+.note::before{content:'补充　';font-weight:700;color:var(--extra)}
+.done{display:flex;justify-content:flex-end;margin-top:10px}
+.done label{font-size:.8rem;color:var(--muted);display:flex;gap:6px;align-items:center;cursor:pointer}
+.done input{accent-color:var(--ok)}
+.ex.mastered{border-color:var(--ok)}
+.ex.mastered .pg::after{content:' ✓';color:var(--ok)}
+.hide{display:none!important}
+/* drill */
+.drill{background:var(--surface);border:1px solid var(--accent);border-radius:14px;box-shadow:var(--shadow);padding:18px 20px;margin-top:14px}
+.drow{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.drow select,.drow input{font:inherit;font-size:.9rem;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);color:var(--text)}
+.drow input{font-family:'IBM Plex Mono',monospace;width:11em}
+.btn{font:inherit;font-size:.86rem;font-weight:600;border:1px solid var(--accent);background:var(--accent);color:var(--on-accent);border-radius:8px;padding:6px 14px;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent-strong)}
+.dq{margin:14px 0 10px;font-size:.96rem;max-width:74ch}
+.dq .tag{font-family:'IBM Plex Mono',monospace;font-size:.7rem;color:var(--accent-strong);letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px}
+.verdict{margin-top:10px;border-radius:10px;padding:8px 14px;font-size:.9rem}
+.verdict.good{background:var(--ok-soft);color:var(--ok)}
+.verdict.bad{background:var(--bad-soft);color:var(--bad)}
+.dsteps{margin-top:10px}
+.score{font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--muted)}
+mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+footer{margin-top:40px;font-size:.78rem;color:var(--muted);max-width:72ch}
+@media (max-width:640px){h1{font-size:1.9rem}.ex{padding:15px}}
+
+.qcard{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:16px 18px;margin-bottom:12px}
+.qhead{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-bottom:6px}
+.badge{font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:600;border-radius:6px;padding:2px 8px;background:var(--accent-soft);color:var(--accent-strong)}
+.badge.t-num{background:var(--warn-soft);color:var(--warn)}
+.badge.t-short{background:var(--extra-soft);color:var(--extra)}
+.qref{font-size:.74rem;color:var(--muted);margin-left:auto}
+.qtext{font-size:.96rem;margin:.2em 0 .5em;max-width:76ch}
+.opts{display:grid;gap:6px}
+.opt{font:inherit;text-align:left;font-size:.9rem;border:1px solid var(--border);background:var(--surface-2);color:var(--text);border-radius:10px;padding:7px 12px;cursor:pointer}
+.opt:hover{border-color:var(--accent)}
+.opt.right{border-color:var(--ok);background:var(--ok-soft);color:var(--ok);font-weight:600}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft);color:var(--bad)}
+.opt[disabled]{cursor:default}
+.numrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.numrow input{font:inherit;font-family:'IBM Plex Mono',monospace;font-size:.9rem;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);color:var(--text);width:10em}
+.expl{margin-top:10px;border-radius:10px;padding:8px 14px;font-size:.88rem;background:var(--accent-soft)}
+.expl .lk{display:block;margin-top:4px;font-size:.8rem}
+.sum{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.sum div{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:6px 12px;font-size:.82rem}
+.sum b{font-family:'IBM Plex Mono',monospace;font-size:1rem}
+.quizbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0}
+</style>
+</head>
+<body>
+<div class="wrap" id="root">
+  <a class="back" href="index.html">← 学习站目录</a>
+  <div class="eyebrow">EE6129 · Part B 无线系统 · Part C 卫星通信</div>
+  <h1>Part B · C 练习</h1>
+  <p class="lede">讲义没有给这两部分配练习，这里按讲义逐页出了 62 道题：选择题点选项即判对错，计算题输入数字自动核对，简答题点开看参考答案。每题都标了讲义页码，并链接到对应的讲解章节。</p>
+  <div class="notice">题目全部出自 Part B（114 页）和 Part C（41 页）讲义；标"课外补充"的两道计算题用到讲义图上的几何关系和 Part A 的公式。「小测」每次随机抽 10 道选择题和计算题。</div>
+
+  <div class="tabs" role="tablist" aria-label="页面视图">
+    <button class="tab" role="tab" id="tab-bank" aria-controls="bank" aria-selected="true" data-tab="bank">题库</button>
+    <button class="tab" role="tab" id="tab-quiz" aria-controls="quiz" aria-selected="false" data-tab="quiz">小测（随机 10 题）</button>
+    <span class="spacer"></span>
+    <span class="count" id="stat"></span>
+  </div>
+
+  <section id="bank" role="tabpanel" aria-labelledby="tab-bank">
+    <div class="filters" id="filters"></div>
+    <div id="list"></div>
+  </section>
+
+  <section id="quiz" role="tabpanel" aria-labelledby="tab-quiz" hidden>
+    <div class="quizbar"><span class="score" id="qprog"></span><button class="btn" type="button" id="qnew">重新抽 10 题</button></div>
+    <div id="qbox"></div>
+    <div class="quizbar"><span></span><button class="btn ghost" type="button" id="qnext">下一题 →</button></div>
+  </section>
+
+  <footer>题目根据 EE6129 Part B、Part C 讲义整理，仅供个人复习。</footer>
+</div>
+<script>
+(function(){
+  var Q=[{"id": "b1", "part": "B", "topic": "WLAN", "type": "mcq", "q": "WLAN 的典型无线覆盖范围是？", "opts": ["5–50 m", "50–500 m", "0.5–5 km", "5–50 km"], "ans": 1, "exp": "讲义 p.6：Radio coverage: medium 50–500 meters。同一个小区里上下行、所有收发方共用一个频率。", "ref": "Part B p.6"}, {"id": "b2", "part": "B", "topic": "WLAN", "type": "mcq", "q": "在 802.11 架构里，\"两个以上的 BSS 通过分布系统 DS 连起来\"叫什么？", "opts": ["IBSS", "ESS", "AP", "DSSS"], "ans": 1, "exp": "BSS 是一个小区（一群竞争同一信道的站点）；ESS = 多个 BSS 经 DS 互联（p.10）。AP 是 BSS 里的桥接与中心协调者。", "ref": "Part B p.10"}, {"id": "b3", "part": "B", "topic": "WLAN", "type": "mcq", "q": "下面哪一项对 802.11 物理层的描述是对的？", "opts": ["802.11b：5 GHz、OFDM、54 Mbps", "802.11a：2.4 GHz、DSSS、11 Mbps", "802.11a：5 GHz、OFDM、6–54 Mbps", "802.11-1997 只定义了红外一种物理层"], "ans": 2, "exp": "802.11-1997 定义了三种物理层（红外、2.4 GHz 跳频 FHSS、2.4 GHz 直扩 DSSS），都是 1/2 Mbps；802.11b 是 2.4 GHz DSSS 的 5.5/11 Mbps 扩展；802.11a 是 5 GHz OFDM 的 6–54 Mbps（p.12–14）。", "ref": "Part B p.12–14"}, {"id": "b4", "part": "B", "topic": "WLAN", "type": "short", "q": "列出讲义中 WLAN 的四类应用，各举一个例子。", "model": "① LAN 扩展：在已有有线 LAN 的场所（厂房、交易大厅、仓库）用无线覆盖大空间；② 楼间互联：用点对点无线链路连接相邻建筑的 LAN（设备通常是网桥/路由器）；③ 游牧接入：在校园等中等距离范围内移动上网；④ 自组网：临时会议时几台笔记本直接组成对等网络（p.7–8）。", "ref": "Part B p.7–8"}, {"id": "b5", "part": "B", "topic": "WLAN", "type": "short", "q": "两帧交换和四帧交换（RTS/CTS）各是什么流程？四帧交换解决什么问题？", "model": "两帧：源发数据 → 目的检查 CRC，无误回 ACK；收不到 ACK 就重传。四帧：RTS → CTS → 数据 → ACK。RTS 和 CTS 都携带后续传输时长，周围节点据此设置 NAV 并推迟发送；即使听不到 RTS 的隐藏节点，也能听到目的端的 CTS，从而避免冲突。四帧交换提高可靠性，解决<b>隐藏节点问题</b>（p.16–17）。", "ref": "Part B p.16–17"}, {"id": "b6", "part": "B", "topic": "MAC", "type": "mcq", "q": "三种帧间间隔从短到长的正确顺序是？", "opts": ["DIFS < PIFS < SIFS", "SIFS < DIFS < PIFS", "SIFS < PIFS < DIFS", "PIFS < SIFS < DIFS"], "ans": 2, "exp": "SIFS 最短，用于 ACK、CTS、轮询应答这类立即响应；PIFS 给 PCF 的中心控制器发轮询用，优先于普通竞争；DIFS 最长，是异步帧竞争前的最短等待（p.20）。间隔越短优先级越高。", "ref": "Part B p.20、p.29"}, {"id": "b7", "part": "B", "topic": "MAC", "type": "mcq", "q": "关于 DCF 和 PCF，哪一句是错的？", "opts": ["DCF 基于 CSMA/CA，适合突发数据", "PCF 由 AP 轮询，提供无冲突、有时限的服务", "PCF 可以单独工作，不需要 DCF", "PCF 是可选的，建立在 DCF 之上"], "ans": 2, "exp": "PCF 是可选的，和 DCF 共存并建立在 DCF 之上（p.18），不能单独工作。", "ref": "Part B p.18"}, {"id": "b8", "part": "B", "topic": "MAC", "type": "num", "q": "802.11 二进制指数退避：CW_min = 32，CW_max = 256。某站连续失败 3 次后准备第 4 次尝试，此时退避时间在 0 到 CW − 1 之间均匀选。平均退避多少个时隙？", "ans": 127.5, "unit": "个时隙", "rel": null, "abs": 0.01, "exp": "第 1 次 CW = 32，每失败一次翻倍：32 → 64 → 128 → 256，第 4 次尝试时 CW = 256（正好到上限）。均匀分布在 0…255，平均 (0 + 255)/2 = 127.5 个时隙（p.22）。", "ref": "Part B p.22"}, {"id": "b9", "part": "B", "topic": "MAC", "type": "num", "q": "接上题：如果又失败 2 次，第 6 次尝试的 CW 是多少？", "ans": 256, "unit": "", "rel": null, "abs": 0, "exp": "CW 到 CW_max = 256 后不再增长（p.22），所以还是 256。", "ref": "Part B p.22"}, {"id": "b10", "part": "B", "topic": "MAC", "type": "short", "q": "按顺序写出一次 RTS/CTS 数据传输里发送方、接收方和旁观站点各自做什么。", "model": "发送方：信道空闲 DIFS → 发 RTS → 收到 CTS 后等 SIFS → 发数据。接收方：收到 RTS 后等 SIFS → 回 CTS → 收完数据等 SIFS → 回 ACK。其他站点：监听信道，读出帧里的持续时间字段设置 NAV，推迟 NAV + DIFS，再进入退避（p.24）。", "ref": "Part B p.24"}, {"id": "b11", "part": "B", "topic": "MAC", "type": "mcq", "q": "NAV（网络分配向量）实现的是什么？", "opts": ["物理载波侦听", "虚拟载波侦听", "功率控制", "跳频同步"], "ans": 1, "exp": "每个帧带一个\"持续时间\"字段，附近节点据此设置 NAV；NAV 不为零就认为信道忙，这是虚拟载波侦听（p.23）。", "ref": "Part B p.23"}, {"id": "b12", "part": "B", "topic": "MAC", "type": "short", "q": "PCF 轮询是怎么进行的？超帧由哪两部分组成？为什么 CFP 不会被 CP 打断？", "model": "AP 先发 CF-Poll 给某个节点（自己有数据就把数据和 CF-Poll 捎带在一起），被轮询的节点回 Data+CF-ACK 或 CF-ACK；轮完所有节点或 CFP 时间到，AP 广播 CF-End（p.27）。超帧 = 无竞争期 CFP + 竞争期 CP，由 DTIM 信标开始（p.28）。AP 用 PIFS 抢信道，PIFS 比 DIFS 短，所以 CFP 优先级更高，不会被 CP 打断；优先级 ACK &gt; 有时限分组 &gt; 无时限数据（p.29）。", "ref": "Part B p.27–29"}, {"id": "b13", "part": "B", "topic": "MAC", "type": "mcq", "q": "CP 结束时信道正忙，AP 抢不到信道，会发生什么？", "opts": ["AP 立刻中断当前传输", "下一个超帧被缩短（foreshortened）", "本次 CFP 取消，直到下一个 DTIM", "所有站点重置 NAV 为零"], "ans": 1, "exp": "AP 在 CP 末尾用 PIFS 竞争；信道忙就要等到空闲，导致下一周期的超帧缩短（p.29）。", "ref": "Part B p.29"}, {"id": "b14", "part": "B", "topic": "MAC", "type": "mcq", "q": "新节点加入 BSS 的正确顺序是？", "opts": ["认证 → 扫描 → 关联", "扫描 → 关联 → 认证", "扫描 → 认证 → 关联", "关联 → 扫描 → 认证"], "ans": 2, "exp": "先扫描找 AP（被动：等信标；主动：发 Probe Request 等 Probe Response），再认证（双方证明知道密码），最后关联（交换能力信息，告诉 DS 节点的位置）。关联完成后才能收发数据帧（p.31–32）。", "ref": "Part B p.31–32"}, {"id": "b15", "part": "B", "topic": "MAC", "type": "mcq", "q": "\"用于与 AP 关联/解除关联、定时同步和安全控制\"的是哪类 MAC 帧？", "opts": ["数据帧", "控制帧", "管理帧", "信标帧以外的所有帧"], "ans": 2, "exp": "三类 MAC 帧：数据帧传数据；控制帧做信道预约（RTS/CTS）、确认（ACK）；管理帧做关联、同步、安全（p.33）。数据帧末尾的 FCS 是 32 位 CRC（p.34）。", "ref": "Part B p.33–34"}, {"id": "b16", "part": "B", "topic": "MAC", "type": "mcq", "q": "802.11e 的 EDCA 定义了多少个业务类别？靠什么区分优先级？", "opts": ["4 个，靠不同信道", "8 个，靠各自的退避参数和 AIFS", "8 个，靠 AP 轮询", "16 个，靠 QCI"], "ans": 1, "exp": "EDCA 定义 8 个业务类，每类有独立队列和退避参数，并引入仲裁帧间间隔 AIFS；HCCA 类似 PCF，由混合协调器 HC 按各类负载调度无竞争发送机会（p.39–40）。", "ref": "Part B p.39–40"}, {"id": "b17", "part": "B", "topic": "MANET/WSN", "type": "short", "q": "什么是移动自组网 MANET？它和有 AP 的 WLAN 最大的区别是什么？", "model": "一组无线移动节点在没有基础设施的地方自由、动态地自组织成临时网络（p.42）。没有固定控制器（控制器动态选举或分布在各节点），网络自建、自组织、自管理（p.43）。最大区别：<b>每个节点都必须能当路由器</b>，A 和 C 不能直通时由中间节点 B 中继（多跳）（p.45）。", "ref": "Part B p.42–45"}, {"id": "b18", "part": "B", "topic": "MANET/WSN", "type": "mcq", "q": "A 发数据给 B。下面哪个节点是\"隐藏节点\"？", "opts": ["在 A 的范围内、B 的范围外的节点", "在 B 的范围内、A 的范围外的节点", "同时在 A 和 B 范围内的节点", "不在任何人范围内的节点"], "ans": 1, "exp": "隐藏节点：在目的端范围内、发送端范围外（p.48）。它听不到 A，以为信道空闲就发，在 B 处造成冲突。RTS/CTS 让它听到 B 的 CTS 后推迟发送。", "ref": "Part B p.48"}, {"id": "b19", "part": "B", "topic": "MANET/WSN", "type": "mcq", "q": "\"平时不维护路由，有数据要发时才发起路由发现\"的是哪类协议？", "opts": ["周期性（表驱动）协议", "按需协议", "混合协议", "基于位置的协议"], "ans": 1, "exp": "周期性协议不管用不用都周期交换路由信息；按需协议只在需要时发现路由，通信期间维护；混合协议在本地区域用周期性、全局用按需；基于位置的协议只需知道自己、目的和邻居的位置，不用路由表（p.51–53）。", "ref": "Part B p.51–53"}, {"id": "b20", "part": "B", "topic": "MANET/WSN", "type": "short", "q": "什么叫自组网的\"组合稳定性\"（combinatorial stability）？由哪些因素决定？", "model": "在给定时间窗内，拓扑变化足够慢，使得所有必要的拓扑更新都能成功传播，网络就是组合稳定的（p.47）。它不仅取决于网络的连通性，还取决于路由协议的复杂度和节点的瞬时计算能力。拓扑变化来自节点移动、电池耗尽、软硬件故障。", "ref": "Part B p.47"}, {"id": "b21", "part": "B", "topic": "MANET/WSN", "type": "short", "q": "无线传感器网络和一般自组网有哪四点不同？", "model": "① 节点数量多几个数量级；② 部署密集、容易失效，拓扑变化非常频繁；③ 传感器用广播通信，自组网主要是点对点；④ 功率、计算能力和内存都很有限（p.56）。所以自组网的协议不能直接照搬。", "ref": "Part B p.56"}, {"id": "b22", "part": "B", "topic": "MANET/WSN", "type": "mcq", "q": "传感器网络协议栈除了 5 层，还有哪三个管理平面？", "opts": ["功率、移动、任务", "安全、QoS、计费", "时钟、路由、存储", "频率、功率、编码"], "ans": 0, "exp": "5 层：物理、MAC（要省电、减少和邻居广播冲突）、网络、传输、应用；3 个平面：功率管理、移动管理、任务管理（p.59）。", "ref": "Part B p.59"}, {"id": "b23", "part": "B", "topic": "LTE", "type": "mcq", "q": "EPS 由哪两部分组成？", "opts": ["UTRAN + GSM 核心网", "EPC（核心网）+ E-UTRAN（接入网）", "eNodeB + MME", "S1 + X2"], "ans": 1, "exp": "EPS = 核心网 EPC（SAE 的成果）+ 接入网 E-UTRAN（LTE 的成果）。接入网基本上只有一种节点：eNodeB（p.61–62）。", "ref": "Part B p.61–62"}, {"id": "b24", "part": "B", "topic": "LTE", "type": "mcq", "q": "eNodeB 之间、eNodeB 与核心网之间分别用什么接口？", "opts": ["S1；X2", "X2；S1（S1-MME 接 MME，S1-U 接 S-GW）", "Uu；S1", "X2；Gi"], "ans": 1, "exp": "eNodeB 之间用 X2；到 EPC 用 S1，其中 S1-MME 接 MME（信令），S1-U 接 S-GW（用户面）（p.63）。", "ref": "Part B p.63"}, {"id": "b25", "part": "B", "topic": "LTE", "type": "short", "q": "E-UTRAN 负责哪些功能？", "model": "所有与无线相关的功能：① 无线资源管理（承载控制、接纳控制、移动控制、上下行调度与动态资源分配）；② IP 包头压缩；③ 安全：空口数据全部加密；④ 与 EPC 的连接（到 MME 的信令、到 S-GW 的承载）。所有无线控制功能都集成在 eNodeB 里，没有集中控制器（p.63–64）。", "ref": "Part B p.63–64"}, {"id": "b26", "part": "B", "topic": "LTE", "type": "mcq", "q": "下面关于 LTE 指标哪一项与讲义不符？", "opts": ["带宽 1.4–20 MHz 可伸缩", "4×4 MIMO 下行峰值超过 300 Mbps", "上行峰值约 86 Mbps", "针对 350 km/h 优化，最高 15 km/h"], "ans": 3, "exp": "应该反过来：针对 15 km/h 以下的低速优化，最高支持 350 甚至 500 km/h。覆盖从毫微微小区到 100 km（p.65）。", "ref": "Part B p.65"}, {"id": "b27", "part": "B", "topic": "LTE", "type": "num", "q": "LTE FDD：一个无线帧有多少个 0.5 ms 时隙？", "ans": 20, "unit": "个", "rel": null, "abs": 0, "exp": "无线帧 10 ms = 10 个子帧（各 1 ms），每个子帧 2 个时隙（各 0.5 ms），共 20 个时隙（p.66）。", "ref": "Part B p.66"}, {"id": "b28", "part": "B", "topic": "LTE", "type": "num", "q": "LTE 一个资源块（RB）在常规循环前缀下包含多少个资源单元（RE）？", "ans": 84, "unit": "个", "rel": null, "abs": 0, "exp": "RB = 频域 12 个子载波 × 时域 1 个时隙；常规 CP 时一个时隙 7 个 OFDM 符号，扩展 CP 时 6 个。RE = 1 个子载波 × 1 个符号，所以 12 × 7 = 84（扩展 CP 为 72）（p.67）。", "ref": "Part B p.67"}, {"id": "b29", "part": "B", "topic": "LTE", "type": "mcq", "q": "什么时候用扩展循环前缀？", "opts": ["小区很小时", "小区很大时", "上行时", "TDD 模式时"], "ans": 1, "exp": "扩展 CP 用于大小区（p.67）：大小区的多径时延扩展长，需要更长的 CP 挡住回波（对照 Part 2 第七章 CP ≥ 最大时延扩展）。代价是每时隙只能放 6 个符号。", "ref": "Part B p.67"}, {"id": "b30", "part": "B", "topic": "LTE", "type": "short", "q": "GBR 承载和 non-GBR 承载有什么区别？默认承载属于哪种？", "model": "GBR：有最低保证速率，建立时永久分配资源，适合 VoIP；资源富余时可以超过 GBR，上限由 MBR 规定。non-GBR：不保证任何速率，不永久分配资源，适合网页、FTP（p.69）。<b>默认承载必须是 non-GBR</b>，在 UE 接入网络时建立；专用承载可以是 GBR 或 non-GBR，有新业务、新 QoS 需求时建立（p.70）。", "ref": "Part B p.69–70"}, {"id": "b31", "part": "B", "topic": "LTE", "type": "mcq", "q": "ARP 参数的作用是什么？", "opts": ["决定已建立承载的分组转发优先级", "决定拥塞时是否接纳新承载、能否抢占、过载时先断谁", "决定调制方式", "决定 RLC 是否用确认模式"], "ans": 1, "exp": "ARP 用于呼叫接纳控制和抢占；承载建立后，ARP 不再影响分组转发，转发由 QCI、GBR、MBR 决定（p.74）。QCI 由优先级、时延预算、丢包率刻画，决定调度、队列、RLC 模式（p.71–73）。", "ref": "Part B p.71–74"}, {"id": "b32", "part": "B", "topic": "IoT", "type": "short", "q": "讲义列出的 IoT 五大挑战是什么？", "model": "① 可扩展性（数以百万计的设备，IPv6 提供海量地址）；② 安全（攻击面扩大，被攻破的设备可成为跳板）；③ 隐私（传感数据与个人活动相关）；④ 大数据与分析（海量、多源、多格式数据要及时处理）；⑤ 互操作性（协议和架构林立，有专有有开放）（p.82–83）。", "ref": "Part B p.82–83"}, {"id": "b33", "part": "B", "topic": "IoT", "type": "mcq", "q": "IoT World Forum（IoTWF）参考架构有几层？", "opts": ["3 层", "5 层", "7 层", "两个三层栈"], "ans": 2, "exp": "IoTWF 2014 年提出 7 层参考模型；oneM2M 由 ETSI 的 M2M 技术委员会 2012 年提出，目标是公共服务层。讲义的简化架构是两个并行的三层栈：核心功能栈 + 数据管理与计算栈（p.84–86）。", "ref": "Part B p.84–86"}, {"id": "b34", "part": "B", "topic": "IoT", "type": "short", "q": "核心 IoT 功能栈的三层是什么？通信网络层又分哪四个子层？", "model": "三层：① \"物\"层（传感器和执行器）；② 通信网络层；③ 应用与分析层。通信网络层的四个子层：接入网（最后一公里，如 802.11ah、802.15.4g、LoRa）、网关与回程、网络传输（IP、UDP/TCP）、IoT 网络管理（HTTP、WebSocket 等应用协议）（p.89–90、p.98–99）。", "ref": "Part B p.89–99"}, {"id": "b35", "part": "B", "topic": "IoT", "type": "mcq", "q": "按覆盖范围，ZigBee 和 BLE 属于哪一类网络？", "opts": ["PAN（几米）", "HAN（几十米）", "NAN（几百米）", "WAN（几公里以上）"], "ans": 1, "exp": "PAN 几米（蓝牙）；HAN 几十米（ZigBee、BLE）；NAN 几百米（802.11 mesh）；FAN 几十到几百米的户外；LAN 约 100 m（802.11）；MAN 几公里；WAN 超过几公里（p.95）。", "ref": "Part B p.95"}, {"id": "b36", "part": "B", "topic": "IoT", "type": "mcq", "q": "选择 IoT 接入技术时，讲义列的前三个决定因素不包括哪一项？", "opts": ["通信距离", "单个采集小区里的设备数量（决定小区大小）", "技术成本", "终端的屏幕分辨率"], "ans": 3, "exp": "第一是通信距离，第二是单个采集小区的目标设备数量和吞吐，第三是成本；综合考虑成本、距离、功耗和带宽（p.95–96）。", "ref": "Part B p.95–96"}, {"id": "b37", "part": "B", "topic": "IoT", "type": "short", "q": "IoT 数据为什么不能全部送到云端处理？雾计算怎么解决？", "model": "问题：最后一公里带宽很小；时延大，做不到实时响应；网关回程依赖 3G/LTE 甚至卫星，不可靠；回程上数据量太大；大数据越来越大，实时分析几乎不可能（p.105）。雾计算：把数据管理分布到尽量靠近网络边缘的地方，任何有计算、存储和联网能力的设备都可以当雾节点。在数据产生处附近分析，可以降低时延、减轻核心网流量、让敏感数据留在本地（p.106）。", "ref": "Part B p.103–106"}, {"id": "b38", "part": "B", "topic": "IoT", "type": "short", "q": "雾计算有哪五个特点？", "model": "① 上下文位置感知、低时延；② 地理上分布；③ 部署在大量 IoT 终端附近；④ 雾节点和终端之间用无线通信（易于扩展）；⑤ 用于实时交互，预处理后让上层应用只批处理一部分数据（p.109）。", "ref": "Part B p.109"}, {"id": "b39", "part": "B", "topic": "IoT", "type": "mcq", "q": "按\"边缘—雾—云\"的分工，\"需要几秒到几分钟内处理\"的数据应该送到哪里？", "opts": ["边缘节点", "离设备最近的雾节点", "汇聚节点", "云端"], "ans": 2, "exp": "最时间敏感的数据在边缘或最近的雾节点处理；可以等几秒到几分钟的送到汇聚节点；不敏感的送云端做历史分析和长期存储（p.113）。边缘（mist）计算是把雾推进到终端设备本身（p.110）。", "ref": "Part B p.110–113"}, {"id": "c1", "part": "C", "topic": "轨道", "type": "mcq", "q": "三类轨道的高度，哪一组是对的？", "opts": ["GEO 35,863 km；MEO 8,000–18,000 km；LEO 500–1,500 km", "GEO 20,000 km；MEO 5,000 km；LEO 100 km", "GEO 35,863 km；MEO 2,000–5,000 km；LEO 100–500 km", "GEO 42,000 km；MEO 20,000 km；LEO 2,000 km"], "ans": 0, "exp": "讲义 p.10。GPS 用 24 颗 MEO 卫星（p.9）。", "ref": "Part C p.9–10"}, {"id": "c2", "part": "C", "topic": "轨道", "type": "short", "q": "卫星轨道按形状和倾角怎么分类？", "model": "形状：圆轨道（圆心在地心）、椭圆轨道（一个焦点在地心）。倾角：赤道轨道（在赤道上空）、极轨道（经过两极）、其他叫倾斜轨道（p.10–11）。", "ref": "Part C p.10–11"}, {"id": "c3", "part": "C", "topic": "轨道", "type": "short", "q": "什么是仰角和覆盖角？为了覆盖最大，最小仰角理想取多少？", "model": "仰角 θ：从地面站所在处的水平线（地表切线）到天线主瓣指向卫星方向的夹角。覆盖角 β：在最小仰角下卫星能看到的地球表面范围。理想最小仰角取 0°，覆盖可以延伸到卫星的光学地平线（p.12）。实际上仰角太低时信号要穿过更厚的大气，衰减大（p.21、p.23）。", "ref": "Part C p.12–13"}, {"id": "c4", "part": "C", "topic": "轨道", "type": "num", "q": "两个地面站都在 GEO 卫星正下方附近（高度 35,863 km）。信号\"地面站 → 卫星 → 另一地面站\"单程传播大约要多少秒？（光速 3×10⁸ m/s）", "ans": 0.239, "unit": "s", "rel": 0.02, "abs": null, "exp": "路程 2 × 35,863 km = 71,726 km，时间 71,726 / 300,000 = 0.239 s。讲义 p.16 写的 \"round-trip propagation delay … is 0.24 s\" 指的就是经卫星往返一趟（上行 + 下行）。", "ref": "Part C p.14、p.16"}, {"id": "c5", "part": "C", "topic": "轨道", "type": "num", "q": "（课外补充）地球半径取 6,370 km。GEO 卫星在仰角 0° 时的覆盖角 β 是多少度？提示：几何关系 cos β = R / (R + h)。", "ans": 81.3, "unit": "°", "rel": null, "abs": 0.3, "exp": "由 p.13 的几何图，仰角 0° 时地面站视线和地球半径垂直：cos β = 6370 / (6370 + 35863) = 0.1508，β = 81.3°。覆盖的地表直径约 2 × 81.3°/360° × 2π × 6370 ≈ 18,000 km，所以 3 颗相隔 120° 的 GEO 就能覆盖几乎全球（极地除外）（p.15）。", "ref": "Part C p.13、p.15"}, {"id": "c6", "part": "C", "topic": "轨道", "type": "mcq", "q": "下面哪一条不是 GEO 卫星的特点？", "opts": ["和地球同步转动，地面站跟踪简单", "多普勒频移对通信影响不大", "往返时延约 250 ms", "极地和高纬度地区覆盖良好"], "ans": 3, "exp": "极地和南北高纬度地区覆盖差（仰角太低），这是 GEO 的缺点（p.16）。其他缺点：信号经过 35,000 多公里后很弱、时延大、点对点通信时浪费频谱（大波束覆盖）。", "ref": "Part C p.15–16"}, {"id": "c7", "part": "C", "topic": "轨道", "type": "short", "q": "LEO 卫星有哪些问题和优点？Little LEO 和 Big LEO 有什么区别？", "model": "问题：相对地面运动快，多普勒频移大；大气阻力大，轨道逐渐衰退；需要多个轨道面、每面多颗卫星；两地通信常要在卫星间切换（p.17）。优点：同样发射功率下信号比 GEO 强得多；覆盖更局部，节省频谱；适合手持终端（p.18）。Little LEO：1 GHz 以下、带宽小于 5 MHz、速率不超过 10 kbps，用于寻呼、跟踪、低速消息；Big LEO：1 GHz 以上、可达几 Mbps，额外提供话音和定位（p.19）。", "ref": "Part C p.17–19"}, {"id": "c8", "part": "C", "topic": "轨道", "type": "mcq", "q": "和 LEO 相比，MEO 卫星的特点是？", "opts": ["切换多得多", "切换少得多，但时延和所需功率更大", "时延更小", "不能用于导航"], "ans": 1, "exp": "MEO 比 LEO 切换少得多，但到地面的传播时延和所需功率更大；需要的卫星数比 LEO 少。应用：数字话音、数据、传真、消息（p.20）；GPS 就是 MEO（p.9）。", "ref": "Part C p.20"}, {"id": "c9", "part": "C", "topic": "轨道", "type": "mcq", "q": "根据讲义的轨道参数表，LEO 卫星每次过顶的可见时间大约是？", "opts": ["15–20 分钟", "2–8 小时", "24 小时", "几秒"], "ans": 0, "exp": "表（p.14）：LEO 周期 1.5–2 h、每次可见 15–20 min、往返时延几毫秒、覆盖直径约 6000 km；MEO 周期 5–10 h、每次 2–8 h、几十毫秒、12000–15000 km；GEO 24 h、永久可见、约 250 ms、约 16000 km。", "ref": "Part C p.14"}, {"id": "c10", "part": "C", "topic": "链路", "type": "short", "q": "影响卫星链路质量的三大因素是什么？", "model": "① 卫星天线和地面站天线之间的距离：频率越高、卫星越高，损耗越大；② 下行时地面站离卫星\"瞄准点\"的距离：覆盖区中心功率最高，越往外越弱；③ 大气衰减：受氧气、水汽、仰角和频率影响，仰角越小，信号穿过的大气越厚（p.21–23）。", "ref": "Part C p.21–23"}, {"id": "c11", "part": "C", "topic": "链路", "type": "num", "q": "用 Part A 的自由空间损耗公式 L(dB) = 32.44 + 20 log f(MHz) + 20 log d(km)，算 4 GHz 下 GEO（d = 35,863 km）的路径损耗。", "ans": 195.6, "unit": "dB", "rel": null, "abs": 0.6, "exp": "20 log 4000 = 72.04，20 log 35863 = 91.09，L = 32.44 + 72.04 + 91.09 = 195.6 dB，和讲义 p.22 图上 4 GHz、GEO 高度处约 196 dB 一致。（Part A 讲义写的常数是 32，算出 195.1 dB，也算对。）", "ref": "Part C p.22；Part A p.51"}, {"id": "c12", "part": "C", "topic": "链路", "type": "mcq", "q": "讲义 p.23 的图显示，仰角从 30° 降到 5° 时，雨衰和雾衰会？", "opts": ["基本不变", "明显增大", "明显减小", "只有雾衰增大"], "ans": 1, "exp": "仰角越低，信号在大气中走的路越长，各种吸收都明显增大（p.21、p.23）。", "ref": "Part C p.23"}, {"id": "c13", "part": "C", "topic": "链路", "type": "short", "q": "卫星通信的三种常见配置是什么？", "model": "① 点对点：两个远距离地面站之间的链路；② 广播：一个发射站对多个接收站；③ 双向星形（VSAT 网）：一个中心站（hub）和许多远端站，远端站共享卫星容量发到中心站，中心站和各站交换消息、并在远端站之间中转（p.24–25）。", "ref": "Part C p.24–25"}, {"id": "c14", "part": "C", "topic": "链路", "type": "mcq", "q": "VSAT 地面站的天线直径大约是？", "opts": ["10–60 m", "1–10 m", "0.3–0.9 m", "0.01–0.1 m"], "ans": 2, "exp": "大型地面站 10–60 m，小型 1–10 m，VSAT 0.3–0.9 m；天线越大，业务容量越大（p.26）。地面站由天线、跟踪系统、收发信机、复用器和地面链路组成。", "ref": "Part C p.26"}, {"id": "c15", "part": "C", "topic": "链路", "type": "mcq", "q": "\"广播卫星业务 BSS\"主要用哪个频段？", "opts": ["L 波段", "C 波段", "Ku 波段（以及 K）", "S 波段"], "ans": 2, "exp": "频段表（p.27）：L 1–2 GHz（MSS）、S 2–4 GHz（MSS、深空）、C 4–8 GHz（FSS）、X 8–12.5 GHz（军用、气象）、Ku 12.5–18 GHz（FSS、BSS）、K 18–26.5 GHz（BSS、FSS）、Ka 26.5–40 GHz（FSS）。", "ref": "Part C p.27"}, {"id": "c16", "part": "C", "topic": "多址", "type": "num", "q": "C 波段卫星总带宽 500 MHz，切成 24 个 40 MHz 信道，每个信道含 4 MHz 保护带。每个信道实际可用多少 MHz？", "ans": 36, "unit": "MHz", "rel": null, "abs": 0, "exp": "40 − 4 = 36 MHz。24 × 40 = 960 MHz 超过了 500 MHz，靠的是频率复用（讲义原话 \"by frequency reuse technique\"）（p.28）。", "ref": "Part C p.28"}, {"id": "c17", "part": "C", "topic": "多址", "type": "short", "q": "FAMA 和 DAMA 有什么区别？DAMA-FDMA 的公共信令信道 CSC 怎么工作？", "model": "FAMA 固定分配容量，需求波动时浪费很大；DAMA 按需动态分配（p.29）。DAMA-FDMA 把一个信道里的子信道当成资源池，两个地面站要全双工通信时动态分配一对子信道。分配由地面站分布式完成，靠 CSC：CSC 是一个重复的 TDMA 帧，50 个时隙，第 1 个用于同步，其余 49 个固定分给 49 个站；站点在自己的时隙里广播所选子信道的编号，别的站就不再选它们（p.30）。", "ref": "Part C p.29–30"}, {"id": "c18", "part": "C", "topic": "多址", "type": "num", "q": "DAMA-FDMA 的公共信令信道 CSC 一帧有 50 个时隙。最多能支持多少个地面站？", "ans": 49, "unit": "个", "rel": null, "abs": 0, "exp": "第 1 个时隙用于同步，其余 49 个时隙永久分配给 49 个站（p.30）。", "ref": "Part C p.30"}, {"id": "c19", "part": "C", "topic": "多址", "type": "mcq", "q": "为什么卫星上 TDMA 通常比 FDMA 效率高？", "opts": ["TDMA 不需要同步", "TDMA 的保护时间和控制比特占用的容量比 FDMA 的保护带少", "TDMA 带宽更宽", "TDMA 不需要地面站"], "ans": 1, "exp": "讲义 p.35 原话：TDMA 的保护时间和控制比特比 FDMA 的保护带占用更少容量。在 Ku、K 等高频段还能用窄波束做多波束复用。", "ref": "Part C p.35"}, {"id": "c20", "part": "C", "topic": "多址", "type": "num", "q": "SS/TDMA 卫星服务 N = 5 个区域，要实现全连通需要多少种开关模式（mode）？", "ans": 120, "unit": "种", "rel": null, "abs": 0, "exp": "需要 N! 种模式：5! = 120（p.36）。卫星周期性地从一种模式切到另一种，最多每个时隙切一次，模式和时长可由地面指令调整。", "ref": "Part C p.36"}, {"id": "c21", "part": "C", "topic": "多址", "type": "short", "q": "TDMA 帧由哪些部分组成？（看讲义 p.32 的图）", "model": "一帧开头是参考突发（reference burst），包含载波与比特定时恢复、协调数据；后面依次是各站的数据突发，突发之间留保护时间。每个站的突发 = 前导（preamble：载波与比特定时恢复、唯一字、站识别、网络控制与请求）+ 信息（p.31–32）。", "ref": "Part C p.31–32"}, {"id": "c22", "part": "C", "topic": "网络", "type": "mcq", "q": "两颗卫星之间有星间链路时，路由需要几条上行和下行？", "opts": ["1 条上行 + 1 条下行", "2 条上行 + 2 条下行", "0 条", "1 条上行 + 2 条下行"], "ans": 0, "exp": "有星间链路：信息在太空中直接转发，只要 1 上 1 下，还能减少地面网关。没有星间链路：卫星先下传到网关，经地面网络转到另一颗卫星的网关再上传，要 2 上 2 下（p.39）。", "ref": "Part C p.39"}, {"id": "c23", "part": "C", "topic": "网络", "type": "short", "q": "MEO/LEO 卫星系统有哪四种切换？", "model": "① 星内切换：用户在同一颗卫星覆盖区内跨波束（扇区）移动；② 星间切换：用户移到另一颗卫星的覆盖区，或卫星飞走了；③ 网关切换：卫星离开当前网关；④ 系统间切换：卫星系统和地面蜂窝系统之间，因信号强度和 QoS 发生的垂直切换（p.40）。", "ref": "Part C p.40"}], LEARN={"B": "partB.html", "C": "partC.html"}, ANCHOR={"WLAN": "ch1", "MAC": "ch2", "MANET/WSN": "ch4", "LTE": "ch6", "IoT": "ch7", "轨道": "ch1", "链路": "ch3", "多址": "ch4", "网络": "ch5"};
+  var store={get:function(k){try{return localStorage.getItem(k);}catch(e){return null;}},set:function(k,v){try{localStorage.setItem(k,v);}catch(e){}}};
+  var TYPE={mcq:'选择',num:'计算',short:'简答'};
+  function esc(s){ return String(s); }
+  function learnLink(q){ var a=ANCHOR[q.topic]||''; return '<a class="lk" href="'+LEARN[q.part]+(a?'#'+a:'')+'">去 Part '+q.part+' 讲解页看「'+q.topic+'」→</a>'; }
+  function parse(v){ v=String(v).trim().replace(/×\s*10\^?/,'e').replace(/\s/g,''); return parseFloat(v); }
+  function okNum(q,x){ if(isNaN(x)) return false; if(q.abs!==null&&q.abs!==undefined) return Math.abs(x-q.ans)<=q.abs+1e-9; return Math.abs(x-q.ans)<=Math.abs(q.ans)*(q.rel||0.02); }
+  function stat(){ var done=Q.filter(function(q){return store.get('ee6129-bc:'+q.id)==='1';}).length; document.getElementById('stat').textContent='已答对 '+done+' / '+Q.length; }
+
+  function card(q, onResult){
+    var el=document.createElement('article'); el.className='qcard'; el.id='q-'+q.id;
+    var h='<div class="qhead"><span class="badge t-'+q.type+'">Part '+q.part+' · '+q.topic+' · '+TYPE[q.type]+'</span><span class="qref">'+q.ref+'</span></div><div class="qtext">'+q.q+'</div>';
+    if(q.type==='mcq'){ h+='<div class="opts">'+q.opts.map(function(o,i){return '<button type="button" class="opt" data-i="'+i+'">'+String.fromCharCode(65+i)+'. '+o+'</button>';}).join('')+'</div>'; }
+    else if(q.type==='num'){ h+='<div class="numrow"><input type="text" inputmode="decimal" aria-label="答案"><span class="score">'+(q.unit||'')+'</span><button class="btn" type="button" data-act="check">核对</button><button class="btn ghost" type="button" data-act="show">看解析</button></div>'; }
+    else { h+='<button class="reveal" style="display:inline-block" type="button" data-act="show">显示参考答案</button>'; }
+    h+='<div class="expl" hidden></div>';
+    el.innerHTML=h;
+    var ex=el.querySelector('.expl');
+    function showExp(prefix){ ex.innerHTML=(prefix||'')+(q.type==='short'?q.model:q.exp)+learnLink(q); ex.hidden=false; }
+    if(q.type==='mcq'){
+      var bs=[].slice.call(el.querySelectorAll('.opt'));
+      bs.forEach(function(b){ b.addEventListener('click',function(){
+        var i=+b.dataset.i, ok=i===q.ans;
+        bs.forEach(function(x){ x.disabled=true; if(+x.dataset.i===q.ans) x.classList.add('right'); });
+        if(!ok) b.classList.add('wrong');
+        showExp(ok?'<b>答对了。</b>':'<b>正确答案是 '+String.fromCharCode(65+q.ans)+'。</b>');
+        if(onResult) onResult(ok);
+      }); });
+    } else if(q.type==='num'){
+      var inp=el.querySelector('input');
+      function chk(){ var ok=okNum(q,parse(inp.value)); showExp((ok?'<b>答对了：</b>':'<b>答案是 ')+q.ans+' '+(q.unit||'')+(ok?'。':'。</b>')+' '); if(onResult){ onResult(ok); onResult=null; } }
+      el.querySelector('[data-act="check"]').addEventListener('click',chk);
+      inp.addEventListener('keydown',function(e){ if(e.key==='Enter') chk(); });
+      el.querySelector('[data-act="show"]').addEventListener('click',function(){ showExp('<b>答案：'+q.ans+' '+(q.unit||'')+'。</b>'); });
+    } else {
+      el.querySelector('[data-act="show"]').addEventListener('click',function(e){ e.target.style.display='none'; showExp('<b>参考答案：</b>'); });
+    }
+    return el;
+  }
+
+  // bank
+  var topics=[]; Q.forEach(function(q){ var k=q.part+'|'+q.topic; if(topics.indexOf(k)<0) topics.push(k); });
+  var fbar=document.getElementById('filters'), list=document.getElementById('list');
+  function fbtn(label,key){ var b=document.createElement('button'); b.type='button'; b.className='chipbtn'; b.textContent=label; b.dataset.k=key; fbar.appendChild(b); return b; }
+  fbtn('全部','all').classList.add('on'); fbtn('Part B','B'); fbtn('Part C','C');
+  topics.forEach(function(k){ var p=k.split('|'); fbtn(p[0]+' · '+p[1],k); });
+  ['mcq','num','short'].forEach(function(t){ fbtn('只看'+TYPE[t]+'题','t:'+t); });
+  Q.forEach(function(q){ list.appendChild(card(q,function(ok){ if(ok){ store.set('ee6129-bc:'+q.id,'1'); stat(); } })); });
+  fbar.addEventListener('click',function(e){
+    var b=e.target.closest('.chipbtn'); if(!b) return;
+    [].forEach.call(fbar.children,function(x){x.classList.remove('on');}); b.classList.add('on');
+    var k=b.dataset.k;
+    Q.forEach(function(q){ var show = k==='all' || k===q.part || k===q.part+'|'+q.topic || k==='t:'+q.type; document.getElementById('q-'+q.id).classList.toggle('hide',!show); });
+  });
+  stat();
+
+  // quiz
+  var pool=Q.filter(function(q){return q.type!=='short';}), set=[], idx=0, score=0;
+  function newQuiz(){ set=pool.slice().sort(function(){return Math.random()-0.5;}).slice(0,10); idx=0; score=0; showQ(); }
+  function showQ(){
+    var box=document.getElementById('qbox'); box.innerHTML='';
+    if(idx>=set.length){ box.innerHTML='<div class="qcard"><h3>完成：答对 '+score+' / '+set.length+'</h3><p class="score">点"重新抽 10 题"再来一轮；没答对的题可以回题库按主题复习。</p></div>'; document.getElementById('qprog').textContent=''; document.getElementById('qnext').style.visibility='hidden'; return; }
+    document.getElementById('qnext').style.visibility='visible';
+    document.getElementById('qprog').textContent='第 '+(idx+1)+' / '+set.length+' 题 · 已答对 '+score;
+    var answered=false;
+    box.appendChild(card(set[idx],function(ok){ if(answered) return; answered=true; if(ok){ score++; store.set('ee6129-bc:'+set[idx].id,'1'); stat(); } document.getElementById('qprog').textContent='第 '+(idx+1)+' / '+set.length+' 题 · 已答对 '+score; }));
+  }
+  document.getElementById('qnew').addEventListener('click',newQuiz);
+  document.getElementById('qnext').addEventListener('click',function(){ idx++; showQ(); });
+  newQuiz();
+
+  // tabs
+  var tabs=[].slice.call(document.querySelectorAll('[data-tab]'));
+  function show(id){ tabs.forEach(function(t){ var on=t.dataset.tab===id; t.setAttribute('aria-selected',String(on)); document.getElementById(t.dataset.tab).hidden=!on; }); }
+  tabs.forEach(function(t){ t.addEventListener('click',function(){ show(t.dataset.tab); try{history.replaceState(null,'','#'+t.dataset.tab);}catch(e){} }); });
+  if((location.hash||'')==='#quiz') show('quiz');
+})();
+</script>
+</body>
+</html>

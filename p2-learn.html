@@ -1,0 +1,1316 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>EE6129 Part 2 讲解</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,500&family=Literata:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+SC:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+
+:root{
+  --paper:#f2f3f2;
+  --paper-2:#e8eaea;
+  --card:#ffffff;
+  --ink:#171b26;
+  --ink-soft:#4a5266;
+  --ink-faint:#848da0;
+  --accent:#2f4fc4;
+  --accent-ink:#22399a;
+  --accent-soft:#e5eaf9;
+  --gold:#b4790f;
+  --gold-soft:#faefd8;
+  --line:#dcdfe3;
+  --line-strong:#c3c8d0;
+  --good:#1c7a4d;
+  --good-soft:#e2f3ea;
+  --shadow:0 1px 2px rgba(23,27,38,.04), 0 10px 30px -14px rgba(23,27,38,.16);
+  --f-display:'Fraunces','Noto Serif SC',serif;
+  --f-body:'Literata','Noto Serif SC',serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0f1219;
+    --paper-2:#161a24;
+    --card:#151a24;
+    --ink:#e7e9f0;
+    --ink-soft:#a3aabc;
+    --ink-faint:#6b7286;
+    --accent:#7b93f0;
+    --accent-ink:#a9bafa;
+    --accent-soft:rgba(123,147,240,.14);
+    --gold:#e0ac4b;
+    --gold-soft:rgba(224,172,75,.14);
+    --line:#262c3a;
+    --line-strong:#333a4a;
+    --good:#4bc98a;
+    --good-soft:rgba(75,201,138,.13);
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 32px -14px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0f1219;
+  --paper-2:#161a24;
+  --card:#151a24;
+  --ink:#e7e9f0;
+  --ink-soft:#a3aabc;
+  --ink-faint:#6b7286;
+  --accent:#7b93f0;
+  --accent-ink:#a9bafa;
+  --accent-soft:rgba(123,147,240,.14);
+  --gold:#e0ac4b;
+  --gold-soft:rgba(224,172,75,.14);
+  --line:#262c3a;
+  --line-strong:#333a4a;
+  --good:#4bc98a;
+  --good-soft:rgba(75,201,138,.13);
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 32px -14px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--f-body);font-size:17px;line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0;color:var(--ink);}
+p{margin:0 0 1.15em;}
+::selection{background:var(--accent-soft);color:var(--accent-ink);}
+.mono{font-family:var(--f-mono);}
+a{color:var(--accent-ink);}
+
+/* ---------- shell ---------- */
+.shell{display:flex;justify-content:center;gap:48px;max-width:1160px;margin:0 auto;padding:0 24px;}
+.rail{width:220px;flex:none;display:none;}
+@media (min-width:1040px){.rail{display:block;}}
+.rail-inner{position:sticky;top:48px;}
+.rail-kicker{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px;}
+.rail-list{list-style:none;margin:0;padding:0;border-left:2px solid var(--line);}
+.rail-list li{margin:0;}
+.rail-list a{
+  display:block;padding:7px 0 7px 16px;margin-left:-2px;border-left:2px solid transparent;
+  font-family:var(--f-mono);font-size:12.5px;color:var(--ink-faint);text-decoration:none;line-height:1.4;
+}
+.rail-list a:hover{color:var(--ink-soft);}
+.rail-list a.active{color:var(--accent-ink);border-left-color:var(--accent);font-weight:600;}
+
+.main{max-width:680px;width:100%;padding:64px 0 140px;min-width:0;}
+
+/* ---------- header ---------- */
+.masthead{margin-bottom:64px;}
+.masthead .kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+.masthead h1{font-size:44px;font-weight:700;line-height:1.18;margin-bottom:20px;letter-spacing:-.01em;}
+.masthead .lede{font-size:18px;color:var(--ink-soft);line-height:1.7;font-style:italic;max-width:58ch;}
+.masthead .meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:28px;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-faint);}
+.masthead .meta span{display:flex;align-items:center;gap:6px;}
+
+/* ---------- chapter structure ---------- */
+.chapter{margin-bottom:76px;scroll-margin-top:40px;}
+.chapter-head{display:flex;align-items:baseline;gap:16px;margin-bottom:28px;padding-bottom:18px;border-bottom:2px solid var(--ink);}
+.chapter-num{font-family:var(--f-display);font-size:15px;font-weight:600;color:var(--accent);letter-spacing:.02em;flex:none;}
+.chapter-head h2{font-size:28px;font-weight:700;}
+
+.chapter h3{font-size:20px;font-weight:600;margin:34px 0 14px;color:var(--ink);}
+.chapter h3 .zh-num{color:var(--accent);margin-right:8px;font-family:var(--f-mono);font-size:15px;}
+
+/* ---------- prose helpers ---------- */
+.chapter p b{font-weight:700;color:var(--ink);background:linear-gradient(to bottom, transparent 62%, var(--accent-soft) 62%);}
+.dropcap:first-letter{
+  font-family:var(--f-display);font-size:3.6em;font-weight:700;float:left;line-height:.85;
+  margin:.03em .09em -.05em 0;color:var(--accent-ink);
+}
+
+/* Analogy callout */
+.analogy{
+  background:var(--gold-soft);border-radius:4px;padding:18px 22px;margin:24px 0;
+  border-left:3px solid var(--gold);position:relative;
+}
+.analogy .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px;}
+.analogy p{margin-bottom:0;color:var(--ink);font-style:italic;}
+.analogy p+p{margin-top:.8em;}
+
+/* Formula card */
+.formula-card{
+  background:var(--card);border:1px solid var(--line-strong);border-radius:10px;
+  padding:20px 24px;margin:24px 0;box-shadow:var(--shadow);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:16px 16px;background-position:-1px -1px;
+  background-color:var(--card);
+}
+:root[data-theme="dark"] .formula-card, @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .formula-card{ opacity:1; } }
+.formula-card .flbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;margin-bottom:10px;}
+.formula-card .fexpr{font-family:var(--f-mono);font-size:18px;color:var(--ink);overflow-x:auto;padding:4px 0;font-weight:500;}
+.formula-card .fmeaning{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line-strong);font-size:14.5px;color:var(--ink-soft);font-family:var(--f-body);}
+.formula-card .fmeaning b{color:var(--ink);}
+
+/* Worked example */
+.worked{
+  border:1px solid var(--line);border-radius:10px;margin:28px 0;overflow:hidden;background:var(--card);
+}
+.worked > summary{
+  list-style:none;cursor:pointer;padding:16px 22px;display:flex;align-items:center;gap:12px;
+  background:var(--paper-2);font-family:var(--f-body);font-weight:600;font-size:15px;color:var(--ink);
+}
+.worked > summary::-webkit-details-marker{display:none;}
+.worked .wtag{
+  font-family:var(--f-mono);font-size:10px;background:var(--accent);color:#fff;padding:3px 8px;border-radius:5px;
+  letter-spacing:.06em;text-transform:uppercase;flex:none;
+}
+.worked .chev{margin-left:auto;width:15px;height:15px;color:var(--ink-faint);transition:transform .2s;flex:none;}
+.worked[open] .chev{transform:rotate(90deg);}
+.worked .wbody{padding:20px 22px 24px;font-size:15.5px;}
+.worked .wstep{display:flex;gap:14px;margin-bottom:16px;}
+.worked .wstep .wn{
+  font-family:var(--f-mono);font-size:12px;color:var(--accent-ink);background:var(--accent-soft);
+  width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px;font-weight:700;
+}
+.worked .wstep .wtext{flex:1;padding-top:1px;}
+.worked .wstep .wtext .calc{font-family:var(--f-mono);font-size:13.5px;background:var(--paper-2);padding:6px 10px;border-radius:6px;display:inline-block;margin-top:5px;}
+.worked .wans{
+  margin-top:18px;padding:14px 16px;background:var(--good-soft);color:var(--good);border-radius:8px;
+  font-weight:700;font-family:var(--f-mono);font-size:14.5px;
+}
+
+/* lists */
+.chapter ul, .chapter ol{padding-left:1.4em;margin:0 0 1.15em;}
+.chapter li{margin-bottom:.5em;}
+
+/* table */
+.tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px;}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+table th{text-align:left;font-family:var(--f-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);background:var(--paper-2);padding:9px 14px;}
+table td{padding:8px 14px;border-top:1px solid var(--line);font-family:var(--f-mono);font-size:13px;}
+table td:first-child{font-family:var(--f-body);}
+
+/* quiz-check (light self-check, not a review tool) */
+.checkpoint{
+  border:1.5px dashed var(--accent);border-radius:10px;padding:18px 22px;margin:30px 0;background:var(--accent-soft);
+}
+.checkpoint .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;margin-bottom:8px;}
+.checkpoint p{margin-bottom:0;color:var(--ink);}
+.checkpoint .reveal{margin-top:10px;}
+.checkpoint .reveal summary{cursor:pointer;color:var(--accent-ink);font-weight:600;font-size:14px;font-family:var(--f-body);}
+.checkpoint .reveal .ans{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-strong);font-size:15px;}
+
+/* nav footer between chapters / end */
+.chapter-nav{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:24px;border-top:1px solid var(--line);}
+.next-up{
+  background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin-top:64px;
+  display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);
+}
+.next-up .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);}
+.next-up h4{font-size:19px;}
+.next-up p{color:var(--ink-soft);font-size:14.5px;margin-bottom:0;}
+
+/* mobile toc */
+.mobtoc{display:block;position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line);padding:12px 20px;}
+@media (min-width:1040px){.mobtoc{display:none;}}
+.mobtoc select{
+  width:100%;font-family:var(--f-mono);font-size:12.5px;padding:8px 10px;border-radius:8px;border:1px solid var(--line-strong);
+  background:var(--card);color:var(--ink);
+}
+
+@media (max-width:680px){
+  .main{padding:0 20px 100px;}
+  .masthead h1{font-size:32px;}
+  .chapter-head h2{font-size:23px;}
+}
+
+/* 课外补充框 */
+:root{--extra:#7a4fc4;--extra-soft:#f2ecfb;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--extra:#b79cf0;--extra-soft:rgba(183,156,240,.12);}}
+:root[data-theme="dark"]{--extra:#b79cf0;--extra-soft:rgba(183,156,240,.12);}
+.extra{border:1.5px solid var(--extra);border-radius:10px;padding:16px 20px 18px;margin:30px 0;background:var(--extra-soft);}
+.extra > .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;color:var(--extra);font-weight:700;margin-bottom:8px;}
+.extra .worked{margin:16px 0 4px;}
+.extra > p:last-child{margin-bottom:0;}
+.chapter h4{font-family:var(--f-display);font-size:17px;font-weight:600;margin:26px 0 10px;color:var(--ink);}
+/* 示意图 */
+.figwrap{margin:26px 0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 14px 12px;}
+.figwrap svg{display:block;width:100%;height:auto;margin:0 auto;}
+.figwrap svg.sectfig{max-width:440px;}
+.figwrap .cap{font-size:13.5px;color:var(--ink-soft);margin-top:8px;line-height:1.65;}
+.figwrap svg text{font-family:var(--f-body);fill:var(--ink);}
+.nl-axis{stroke:var(--line-strong);stroke-width:2;}
+.nl-bs{fill:var(--ink);} .nl-int{fill:var(--gold);} .nl-ms{fill:var(--accent);stroke:var(--card);stroke-width:2;}
+.nl-dim{stroke:var(--ink-soft);stroke-width:1;fill:none;}
+.figwrap svg .nl-t{font-size:12.5px;font-weight:600;}
+.figwrap svg .nl-d{font-family:var(--f-mono);font-size:11.5px;fill:var(--ink-soft);}
+.figwrap svg .nl-d.near{fill:var(--gold);font-weight:700;}
+.sf-cell{fill:var(--card);stroke:var(--line-strong);stroke-width:1;}
+.sf-cell.home{stroke:var(--ink);stroke-width:1.5;}
+.sf-sec{fill:var(--accent-soft);}
+.sf-sec.on{fill:var(--accent);fill-opacity:.3;}
+.sf-line{stroke:var(--ink-faint);stroke-width:1.2;stroke-dasharray:4 3;}
+.sf-line.on{stroke:var(--gold);stroke-width:2.2;stroke-dasharray:none;}
+.figwrap svg .sf-lab{font-family:var(--f-mono);font-size:9px;fill:var(--ink-faint);paint-order:stroke;stroke:var(--card);stroke-width:3px;}
+.figwrap svg .sf-lab.on{fill:var(--gold);font-weight:700;font-size:9.5px;}
+.sf-bs{fill:var(--ink);}
+.sf-ms{fill:var(--accent);stroke:var(--card);stroke-width:1.5;}
+.figwrap svg .sf-mslab{font-size:11px;font-weight:700;fill:var(--accent-ink);}
+
+@media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+
+/* Part 2 additions */
+.extra-inline{font-size:14px;color:var(--extra);}
+.tool{border:1px solid var(--accent);border-radius:10px;background:var(--card);padding:16px 20px;margin:22px 0;box-shadow:var(--shadow);}
+.tool h4{font-family:var(--f-display);font-size:17px;margin:0 0 10px;color:var(--accent-ink);}
+.trow{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end;}
+.trow label{display:flex;flex-direction:column;font-size:12.5px;color:var(--ink-soft);gap:4px;}
+.trow input{font-family:var(--f-mono);font-size:14px;padding:5px 8px;border:1px solid var(--line-strong);border-radius:6px;background:var(--paper-2);color:var(--ink);width:8em;max-width:100%;}
+.tout{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin-top:12px;}
+.tout div{background:var(--paper-2);border-radius:8px;padding:6px 10px;}
+.tout span{display:block;font-size:11.5px;color:var(--ink-faint);font-family:var(--f-mono);}
+.tout b{font-family:var(--f-mono);font-size:15px;word-break:break-word;}
+.thint{font-size:13px;color:var(--ink-soft);margin-top:8px;}
+.formula-card .fexpr{line-height:2.1;}
+mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%;}
+.formula-card .fexpr mjx-container{max-width:100%;}
+.worked .wtext{min-width:0;}
+</style>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" async></script>
+</head>
+<body>
+<div class="mobtoc">
+  <select id="mobNav" aria-label="跳转到章节"></select>
+</div>
+
+<div class="shell">
+  <aside class="rail">
+    <div class="rail-inner">
+      <div class="rail-kicker">本篇目录</div>
+      <ul class="rail-list" id="railList"></ul>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="masthead">
+      <div class="kicker">EE6129 · Part 2 讲解 · Ser Wee · 第 7–13 周</div>
+      <h1>信号在路上变坏了，怎么救回来</h1>
+      <p class="lede">从"无线信道到底怎么折腾信号"出发，一路讲到信号检测、分集、MIMO、均衡和 OFDM。每个公式先讲直觉、再讲推导，讲义例题和 Practice 1–7 的题目都配了完整解答，假设你零基础。</p>
+      <div class="meta">
+        <span>◆ 对应讲义第 1–7 章</span>
+        <span>◆ 每节标讲义页码</span>
+        <span>◆ 紫色框 = 课外补充</span>
+        <span>◆ <a href="p2-practice.html">配套练习页 →</a></span>
+      </div>
+    </header>
+    <!-- ================= CH 0 ================= -->
+    <section class="chapter" id="ch0">
+      <div class="chapter-head"><span class="chapter-num">开篇</span><h2>Part 2 讲什么：从"信号怎么变坏"到"怎么救回来"</h2></div>
+      <p class="dropcap">Part 1 站在网络的高度看问题：小区怎么排、频率怎么复用、能装多少用户。Part 2 把镜头拉近到<b>一条无线链路</b>：信号从天线发出去，路上会变弱、会抖动、会叠出回声，接收机要怎样把原来的比特找回来。</p>
+      <p>整门课就是一条"先找毛病、再开药方"的逻辑线：</p>
+      <div class="tblwrap"><table><thead><tr><th>章</th><th>回答的问题</th><th>周次</th><th>练习</th></tr></thead><tbody>
+        <tr><td>第 1 章 概述 + 概率复习</td><td>无线系统有哪些；后面要用的概率工具</td><td>Week 7</td><td>—</td></tr>
+        <tr><td>第 2 章 无线信道</td><td>信号在路上怎么变坏：路径损耗、阴影、多径衰落；信道最多能传多快</td><td>Week 8–9</td><td>Practice 1、2</td></tr>
+        <tr><td>第 3 章 信号检测</td><td>收到一堆带噪声的波形，怎么判断发的是哪个符号；衰落让误码率变差多少</td><td>Week 9</td><td>Practice 3</td></tr>
+        <tr><td>第 4 章 分集</td><td>药方一：同一份信息走好几条独立的路</td><td>Week 10</td><td>Practice 4</td></tr>
+        <tr><td>第 5 章 MIMO</td><td>药方二：多根天线，既能分集又能并行传多路</td><td>Week 11</td><td>Practice 5</td></tr>
+        <tr><td>第 6 章 均衡</td><td>药方三：在接收端抵消码间干扰（ISI）</td><td>Week 12</td><td>Practice 6</td></tr>
+        <tr><td>第 7 章 OFDM</td><td>药方四：把宽带信道切成很多条平坦的窄带信道</td><td>Week 13</td><td>Practice 7</td></tr>
+      </tbody></table></div>
+      <p>考核（课程概览 p.2）：<b>CA 2 小测</b>（第 10 周，10%）、<b>CA 3 作业</b>（第 12–13 周，15%）、<b>期末考试</b>（Part 2 占 30%）。讲义作者是 A/Prof. Ser Wee，教材是 Molisch《Wireless Communications》第 2 版，参考书是 Rappaport 和 Goldsmith（概览 p.4）。</p>
+      <div class="extra">
+        <div class="lbl">课外补充 · 怎么读这一页</div>
+        <p>每一节都标了讲义页码，比如"第 2 章 p.16"就是 Chapter 2 PDF 的第 16 页。紫色框里是讲义以外的补充（直觉解释、讲义笔误、多算一步的验证），考试以讲义为准。每章末尾都有"自测"，答案点开才显示。</p>
+      </div>
+    </section>
+
+    <!-- ================= CH 1 ================= -->
+    <section class="chapter" id="ch1">
+      <div class="chapter-head"><span class="chapter-num">第一章</span><h2>无线系统一览与概率复习</h2></div>
+
+      <h3><span class="zh-num">1.1</span>现有的无线系统（第 1a 章）</h3>
+      <p>这部分是背景知识，考试一般只考概念。把讲义 p.3–12 压成一张表：</p>
+      <div class="tblwrap"><table><thead><tr><th>系统</th><th>关键数字</th><th>一句话</th></tr></thead><tbody>
+        <tr><td>蜂窝 1G→5G</td><td>2G 9.6–14.4 kbps；3G 384 kbps–2 Mbps；4G 1 Gbps；5G 20 Gbps</td><td>每一代都要在"速率 × 移动性"上有突破（p.3–4）</td></tr>
+        <tr><td>WiFi</td><td>802.11b 11 Mbps（DSSS）、802.11a/g 54 Mbps（OFDM）、802.11n 600 Mbps（MIMO-OFDM）</td><td>免授权 ISM 频段，随机接入（p.7–8）</td></tr>
+        <tr><td>蓝牙</td><td>2.4 GHz，BR 1 Mbps / EDR 2 Mbps，跳频</td><td>短距离；LE 版本给物联网用（p.9）</td></tr>
+        <tr><td>ZigBee（802.15.4）</td><td>250 kbps，低功耗，CSMA-CA</td><td>低速个域网（p.10）</td></tr>
+        <tr><td>卫星</td><td>GEO 约 39000 km vs LEO 约 2000 km</td><td>覆盖大，适合单向广播（p.11）</td></tr>
+        <tr><td>UWB</td><td>皮秒到纳秒级脉冲，GHz 带宽</td><td>不需要载波，测距能力强，多径可分辨（p.12）</td></tr>
+      </tbody></table></div>
+      <p>讲义 p.16 提出一个有意思的问题：<b>干扰是敌人还是朋友？</b></p>
+      <ul>
+        <li>当成噪声处理 → 敌人，用 <b>SINR</b> = P / (N + I) 衡量；</li>
+        <li>能把它解码出来（多用户检测 MUD）→ 不敌不友，Practice 2 第 3 题就是这个情形；</li>
+        <li>通过协作、认知加以利用 → 朋友（网络 MIMO、认知无线电）。</li>
+      </ul>
+      <p>认知无线电有三种工作方式（p.19）：<b>Overlay</b>（偷听并帮助原有用户的传输）、<b>Interweave</b>（找频谱空洞，见缝插针）、<b>Underlay</b>（和原有用户同时用，但把对它的干扰压到很低）。p.21–24 讲 M2M（机器对机器）通信和人打电话的区别：设备数量巨大、消息很短、对时延不敏感、对能耗非常敏感。</p>
+
+      <h3><span class="zh-num">1.2</span>概率：后面每一章都要用</h3>
+      <p>第 2–7 章几乎每个公式都是"某件坏事发生的概率"：中断概率、误码率、深衰落的概率。所以先把讲义第 1b 章的工具捋一遍。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>掷骰子与摸弹珠（第 1b 章 p.3–4）</summary>
+        <div class="wbody">
+          <p>事件 A：骰子出偶数 {2, 4, 6}；事件 B：出质数 {2, 3, 5}。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">各自概率：\(P(A) = 3/6\)，\(P(B) = 3/6\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">"A 且 B"只有 2 这一个数：\(P(A\cap B) = 1/6\)。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">"A 或 B"用加法规则，减掉重复数的那一块：\(P(A\cup B) = 3/6 + 3/6 - 1/6 = 5/6\)（只有 1 不在里面）。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">弹珠：袋里 3 红 4 蓝。先摸出一个蓝的概率 \(P(B) = 4/7\)；摸走一个蓝的以后剩 3 红 3 蓝，再摸到红的概率 \(P(A\mid B) = 3/6 = 1/2\)。</div></div>
+          <div class="wans">P(A∪B) = 5/6，P(A∩B) = 1/6；摸弹珠 P(B) = 4/7，P(A|B) = 1/2</div>
+        </div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">四条规则（第 1b 章 p.5–9）</div>
+        <div class="fexpr">\(P(A\cup B)=P(A)+P(B)-P(A\cap B)\)<br>\(P(A\cap B)=P(A)\,P(B\mid A)\)<br>\(P(B)=\sum_i P(A_i)\,P(B\mid A_i)\)<br>\(P(A_i\mid B)=\dfrac{P(A_i)P(B\mid A_i)}{\sum_j P(A_j)P(B\mid A_j)}\)</div>
+        <div class="fmeaning">加法规则（或）、乘法规则（且）、全概率定理（分情况再加起来）、贝叶斯公式（知道结果，反推原因）。<b>独立</b>时 \(P(A\cap B)=P(A)P(B)\)：分集（第 4 章）的核心就是"几条独立的路同时坏掉"的概率等于各自概率相乘。</div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">期望与方差（第 1b 章 p.10–12）</div>
+        <div class="fexpr">\(E[X]=\sum_x x\,P_X(x)\)　\(\mathrm{Var}(X)=E[X^2]-(E[X])^2\)<br>\(E[aX+b]=aE[X]+b\)　\(\mathrm{Var}(aX+b)=a^2\mathrm{Var}(X)\)</div>
+        <div class="fmeaning">X、Y 独立时 \(E[XY]=E[X]E[Y]\)，\(\mathrm{Var}(X+Y)=\mathrm{Var}(X)+\mathrm{Var}(Y)\)。p.14 留的问题 "Y = aX + b 的均值和方差"，答案就是上面两式：均值 \(a\mu+b\)，方差 \(a^2\sigma^2\)。</div>
+      </div>
+      <p>第 4 章的 Practice 4 第 2 题会大量用到"离散分布求平均"：SNR 以 1/3 的概率是 8、2/3 的概率是 11，平均 SNR 就是 \(8\times\tfrac13 + 11\times\tfrac23 = 10\)。</p>
+
+      <h3><span class="zh-num">1.3</span>高斯分布和 Q 函数：本课最常用的一张表</h3>
+      <p>噪声、阴影衰落的 dB 值，都服从高斯（正态）分布 \(\mathcal N(\mu,\sigma^2)\)。我们最常问的是：<b>它比平均值低（或高）超过一定量的概率是多少？</b>这个概率用 Q 函数表示：</p>
+      <div class="formula-card">
+        <div class="flbl">Q 函数（第 2 章 p.15，课程附带 Q 函数表）</div>
+        <div class="fexpr">\(Q(x)=\displaystyle\int_x^{\infty}\frac{1}{\sqrt{2\pi}}e^{-u^2/2}\,du\)</div>
+        <div class="fmeaning">标准正态变量大于 x 的概率，也就是钟形曲线右边那条"尾巴"的面积。对一般的 \(X\sim\mathcal N(\mu,\sigma^2)\)：\(P(X>\mu+k\sigma)=Q(k)\)，由对称性 \(P(X<\mu-k\sigma)=Q(k)\)。<b>口诀：先减均值、再除标准差，就变成 Q 函数。</b></div>
+      </div>
+      <div class="tblwrap"><table><thead><tr><th>x</th><th>0</th><th>0.5</th><th>1</th><th>1.5</th><th>2</th><th>2.33</th><th>2.69</th><th>3</th><th>3.09</th></tr></thead><tbody>
+        <tr><td>Q(x)</td><td>0.5</td><td>0.309</td><td>0.159</td><td>0.0668</td><td>0.0228</td><td>0.0099</td><td>0.0036</td><td>0.00135</td><td>0.001</td></tr>
+      </tbody></table></div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>用 Q 函数算中断概率（Practice 1 第 2 题的思路）</summary>
+        <div class="wbody">
+          <p>已知条件：接收功率（dBm）\(\sim\mathcal N(15, 8^2)\)，低于 10 dBm 就算中断。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">先减均值：10 − 15 = −5 dB，门限比平均值低 5 dB。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">再除标准差：5 / 8 = 0.625 个标准差。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">\(P(\text{功率}<10)=P(X<\mu-0.625\sigma)=Q(0.625)\approx 0.266\)。</div></div>
+          <div class="wans">中断概率约 26%</div>
+        </div>
+      </div>
+      <div class="checkpoint">
+        <div class="lbl">自测</div>
+        <p>(1) 有个随机变量 X ~ N(2, 9)，求 P(X &gt; 8)。(2) 两条独立链路各有 5% 的时间中断，两条同时中断的概率是多少？</p>
+        <details class="reveal"><summary>点击看答案</summary>
+          <div class="ans">(1) σ = 3，(8 − 2)/3 = 2，P = Q(2) ≈ 0.0228。(2) 独立 → 相乘：0.05 × 0.05 = 0.0025。这就是第 4 章"分集"的全部直觉。</div>
+        </details>
+      </div>
+    </section>
+    <!-- ================= CH 2 ================= -->
+    <section class="chapter" id="ch2">
+      <div class="chapter-head"><span class="chapter-num">第二章</span><h2>无线信道：信号在路上会遇到三种麻烦</h2></div>
+      <p>讲义第 2 章 p.2 把信号变坏分成三层，尺度从大到小：</p>
+      <ol>
+        <li><b>路径损耗（path loss）</b>：离得越远越弱，是平均意义上的衰减，几百米到几公里才看得出变化；</li>
+        <li><b>阴影衰落（shadowing，大尺度衰落）</b>：被楼房、树挡住，信号在平均值上下随机起伏，几十米变化一次；</li>
+        <li><b>多径衰落（multipath fading，小尺度衰落）</b>：很多条反射路径叠在一起，走半个波长（900 MHz 时约 17 cm）信号就可能剧烈变化。</li>
+      </ol>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>在山里打电话：走得越远声音越小（路径损耗）；转到山背面声音突然闷了一截（阴影）；站在山谷里，回声和原声叠在一起，同一句话有时清楚、有时含糊（多径）。</p>
+      </div>
+
+      <h3><span class="zh-num">2.1</span>路径损耗：平均来看离多远、弱多少</h3>
+      <p>讲义 p.3 列了四类模型：自由空间（太简单）、射线追踪（需要现场几何数据）、经验模型（Okumura、Hata、COST 231，换个环境就不准）、<b>简化路径损耗模型</b>（最适合做分析，考试主要用它）。</p>
+      <div class="formula-card">
+        <div class="flbl">自由空间（p.4）与双径模型（p.5）</div>
+        <div class="fexpr">\(P_r=P_t\dfrac{G_tG_r\lambda^2}{(4\pi d)^2}\)　　\(P_r\approx P_t\dfrac{G_tG_r(h_th_r)^2}{d^4}\ \ (d>d_c=\tfrac{4h_th_r}{\lambda})\)</div>
+        <div class="fmeaning">自由空间：功率和 \(d^2\) 成反比，和频率的平方成反比（频率越高 λ 越小，越吃亏）。双径：直射波加一条地面反射，超过临界距离 \(d_c\) 以后变成和 \(d^4\) 成反比。Part A 第五章讲过同样的结论（n = 2 和 n = 4）。</div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">简化路径损耗模型（p.8）</div>
+        <div class="fexpr">\(P_r=P_tK\left(\dfrac{d_0}{d}\right)^{\gamma}\ \Longrightarrow\ P_{r,\mathrm{dB}}=P_{t,\mathrm{dB}}+K_{\mathrm{dB}}-10\gamma\log_{10}\dfrac{d}{d_0}\)</div>
+        <div class="fmeaning">γ 就是 Part A 的路径损耗指数 n，这一章写成 γ。K 是和天线有关的常数（dB 时通常是负数），\(d_0\) 是参考距离，一般取 1 m。γ 和 K 都靠实测拟合（p.8）。p.9 给了典型 γ：城区宏蜂窝 3.7–6.5、城区微蜂窝 2.7–3.5、同层办公楼 1.6–3.5、住宅 3；频率越高 γ 越大。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>150 m 处收到多少功率（第 2 章 p.10）</summary>
+        <div class="wbody">
+          <p>已知条件：\(K_{\mathrm{dB}}=-26.67\) dB，γ = 3.97，发射功率 1 mW，求 150 m 处的接收功率（\(d_0\) = 1 m）。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">先把发射功率换成 dBm：1 mW = 0 dBm。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">距离项：\(10\times3.97\times\log_{10}150 = 39.7\times2.176 = 86.39\) dB。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">代入：<div class="calc">P_r = 0 − 26.67 − 86.39 = −113.06 dBm</div></div></div>
+          <div class="wans">约 −113 dBm</div>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">2.2</span>阴影衰落与中断概率</h3>
+      <p>信号在路上要穿过 M 个障碍物，每个都把功率乘上一个衰减因子 \(A_i\)，总衰减 \(\psi=\prod A_i\)（p.11）。取对数以后乘法变成加法：\(\log\psi=\sum\log A_i\)。很多个随机量相加，按中心极限定理近似服从<b>高斯分布</b>，所以 \(\psi\) 的 dB 值是高斯的，\(\psi\) 本身叫<b>对数正态（log-normal）</b>分布。讲义给的典型值：均值 0，方差 4–12 dB²。</p>
+      <div class="formula-card">
+        <div class="flbl">路径损耗 + 阴影（p.12）</div>
+        <div class="fexpr">\(\left.\dfrac{P_r}{P_t}\right|_{\mathrm{dB}}=K_{\mathrm{dB}}-10\gamma\log_{10}\dfrac{d}{d_0}+\psi_{\mathrm{dB}},\qquad \psi_{\mathrm{dB}}\sim\mathcal N(0,\sigma_{\psi}^2)\)</div>
+        <div class="fmeaning">前两项是"平均值"，第三项是围绕平均值的随机起伏。<b>拟合数据时</b>（p.13），用最小二乘让模型线和实测点的均方误差（MSE）最小；最后剩下的 MSE 就是阴影方差 \(\sigma_{\psi}^2\)。Practice 1 第 1 题就是这个过程。</div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">中断概率（p.14–15）</div>
+        <div class="fexpr">\(P_{\mathrm{out}}=P(P_{r,\mathrm{dB}}<P_{m,\mathrm{dB}})=Q\!\left(\dfrac{P_{r,\mathrm{dB}}(\text{无阴影})-P_{m,\mathrm{dB}}}{\sigma_{\psi}}\right)\)</div>
+        <div class="fmeaning">\(P_m\) 是能正常工作的最低功率。分子是"平均功率比门限高出多少 dB"（余量），除以阴影的标准差，再查 Q 表。余量越大、阴影越小，中断越少。讲义说典型目标是中断概率小于 1%（p.16）。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>150 m 处的中断概率（第 2 章 p.16）</summary>
+        <div class="wbody">
+          <p>已知条件：MSE = 3.36，\(K_{\mathrm{dB}}=-26.67\) dB，γ = 3.97，d = 150 m，\(P_t\) = 0 dBm，门限 \(P_m=-118\) dBm。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">无阴影时的平均接收功率，上一题算过：−113.06 dBm。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">余量：−113.06 − (−118) = 4.94 dB。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">阴影方差 \(\sigma_\psi^2\) = MSE = 3.36，<b>标准差</b> \(\sigma_\psi=\sqrt{3.36}=1.833\)。<div class="calc">P_out = Q(4.94 / 1.833) = Q(2.69) ≈ 0.0036</div></div></div>
+          <div class="wans">中断概率约 0.36%，低于 1% 的目标</div>
+          <p style="margin-top:12px">易错：讲义算式里分母写的是 "3.36"，实际要用它的平方根 1.833。MSE 是方差，Q 函数里除的是标准差。</p>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">2.3</span>多径衰落：很多条回波叠在一起</h3>
+      <p>同一个信号沿很多条路到达接收机，每条路有自己的幅度 \(\alpha_n\)、相位 \(\phi_n\)、时延 \(\tau_n\)、多普勒频移，而且这些量都随时间变（p.19–22）。讲义用时变冲激响应描述：</p>
+      <div class="formula-card">
+        <div class="flbl">时变冲激响应（p.20）</div>
+        <div class="fexpr">\(c(\tau,t)=\displaystyle\sum_{n=1}^{N}\alpha_n(t)\,e^{-j\phi_n(t)}\,\delta(\tau-\tau_n(t))\)</div>
+        <div class="fmeaning">t 是"现在"，τ 是"这一条回波比最早那条晚到多久"。p.21 的图：t = 1 s 时有两条回波（2 µs、5 µs），t = 4 s 时变成三条（3 µs、7 µs、10 µs）。信道在不停变化。</div>
+      </div>
+      <p><b>窄带假设</b>（p.23）：如果所有回波之间的时延差，比一个符号的长度小得多，那么各条回波"对得齐"，只是被乘了不同的复数系数后加在一起。效果是信号整体被乘上一个随机的复数增益，波形本身不变形。这就是<b>平坦衰落</b>。</p>
+      <p>这个复数增益的实部 \(r_I\) 和虚部 \(r_Q\) 都是很多个随机量之和，所以都是高斯的（p.24）。它的<b>包络</b>（模长）\(z=\sqrt{r_I^2+r_Q^2}\) 服从<b>瑞利（Rayleigh）分布</b>：</p>
+      <div class="formula-card">
+        <div class="flbl">瑞利衰落（p.25–26）</div>
+        <div class="fexpr">\(p_z(z)=\dfrac{z}{\sigma^2}e^{-z^2/(2\sigma^2)}\)　　\(p_\gamma(\gamma)=\dfrac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}\)</div>
+        <div class="fmeaning">包络是瑞利分布；功率 \(z^2\) 和 SNR γ 是<b>指数分布</b>，平均功率 \(2\sigma^2\)、平均 SNR \(\bar\gamma\)。指数分布有个好用的结论：\(P(\gamma<\gamma_0)=1-e^{-\gamma_0/\bar\gamma}\)，第 3、4 章反复用到。</div>
+      </div>
+      <p>如果除了散射波还有一条<b>直射波（LOS）</b>，包络变成<b>莱斯（Rician）分布</b>（p.27）。莱斯因子 \(K=s^2/(2\sigma^2)\) 是直射功率和散射功率之比（p.28）：K = 0 退化成瑞利（最糟），K → ∞ 几乎不衰落，接近 AWGN。</p>
+      <div class="extra">
+        <div class="lbl">课外补充 · 瑞利衰落有多深</div>
+        <p>用 \(P(\gamma<\gamma_0)=1-e^{-\gamma_0/\bar\gamma}\) 算一下：信号比平均值低 10 dB（γ₀/γ̄ = 0.1）的概率是 \(1-e^{-0.1}\approx 9.5\%\)；低 20 dB 的概率约 1%；低 30 dB 约 0.1%。所以在瑞利信道里，<b>大约 1% 的时间信号比平均值低 20 dB</b>。这就是 p.51 说"中断概率 1% 需要 20 dB 衰落余量"的来源。</p>
+      </div>
+
+      <h3><span class="zh-num">2.4</span>时延扩展：回声拖了多长的尾巴</h3>
+      <p>功率时延分布（power delay profile）\(P_r(\tau)\) 记录"晚到 τ 秒的那些回波有多少功率"（p.30）。用它算两个数：</p>
+      <div class="formula-card">
+        <div class="flbl">平均时延与 rms 时延扩展（p.30）</div>
+        <div class="fexpr">\(\mu_{T_m}=\dfrac{\int\tau P_r(\tau)d\tau}{\int P_r(\tau)d\tau}\)　　\(\sigma_{T_m}=\sqrt{\dfrac{\int(\tau-\mu_{T_m})^2P_r(\tau)d\tau}{\int P_r(\tau)d\tau}}\)</div>
+        <div class="fmeaning">把 \(P_r(\tau)\) 当成一个概率分布：\(\mu_{T_m}\) 是"平均晚到多久"，\(\sigma_{T_m}\) 是"晚到时间的标准差"，也就是回波拖尾有多散。离散时把积分换成求和。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>均匀功率时延分布（Practice 1 第 3 题）</summary>
+        <div class="wbody">
+          <p>已知条件：\(P_r(\tau)=1\)（0 ≤ τ ≤ 10 µs），其他为 0。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">这相当于 0–10 µs 上的均匀分布，平均值在正中间：\(\mu_{T_m}=5\) µs。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">\(E[\tau^2]=\frac{1}{10}\int_0^{10}\tau^2d\tau=\frac{100}{3}=33.33\)，所以 \(\sigma_{T_m}^2=33.33-25=8.33\)，\(\sigma_{T_m}=2.89\) µs。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">平坦衰落的经验条件 \(\sigma_{T_m}/T_s<0.1\)（p.33）：\(T_s>28.9\) µs，即符号速率 \(R_s<34.6\) ksps。</div></div>
+          <div class="wans">μ = 5 µs，σ = 2.89 µs；R_s &lt; 34.6 ksps 时是平坦衰落</div>
+        </div>
+      </div>
+      <p>时延扩展在频域的对应量是<b>相干带宽</b> \(B_C\)（p.31）：两个频率相隔超过 \(B_C\)，它们的衰落就互不相关。于是（p.31–33）：</p>
+      <ul>
+        <li>信号带宽 &lt; \(B_C\)，或者 \(\sigma_{T_m}\ll T_s\)：整个信号一起起伏，<b>平坦衰落</b>，波形不失真；</li>
+        <li>信号带宽 &gt; \(B_C\)，或者 \(\sigma_{T_m}\) 和 \(T_s\) 相当：不同频率衰落不同，<b>频率选择性衰落</b>，在时域表现为<b>码间干扰（ISI）</b>：上一个符号的回波拖进了下一个符号。</li>
+      </ul>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>在大教堂里说话：说得慢（符号长），每个字的回声在下一个字开始前就消失了，听得清；说得快（符号短），上一个字的回声和下一个字重叠，就含糊了。回声拖多长是房间决定的（时延扩展），说多快是你决定的（符号速率）。</p>
+      </div>
+
+      <h3><span class="zh-num">2.5</span>多普勒：信道变化有多快</h3>
+      <div class="formula-card">
+        <div class="flbl">多普勒频移与相干时间（p.34–36）</div>
+        <div class="fexpr">\(f_d=\dfrac{v}{\lambda}\cos\theta=\dfrac{v}{c}f_c\cos\theta\)　　\(f_m=\dfrac{v}{c}f_c\)　　\(T_C\approx\dfrac{1}{B_D}=\dfrac{1}{f_m}\)</div>
+        <div class="fmeaning">手机朝着信号来的方向走，频率变高；背着走，频率变低。各条回波从不同方向来，频移不同，原本一根谱线被展宽成多普勒谱，宽度就是多普勒扩展 \(B_D\)（讲义取 \(f_m\)）。相干时间 \(T_C\) 是信道"基本不变"的时长。</div>
+      </div>
+      <p>例：120 km/h（33.3 m/s）、载频 5 GHz：\(f_m=33.3\times5\times10^9/(3\times10^8)=555.6\) Hz，\(T_C\approx1.8\) ms。</p>
+      <ul>
+        <li>符号时长 ≪ \(T_C\)（信号带宽 ≫ \(B_D\)）：一个符号内信道几乎不变，<b>慢衰落</b>；</li>
+        <li>符号时长和 \(T_C\) 相当或更长：一个符号内信道就在变，<b>快衰落</b>（p.37）。</li>
+      </ul>
+      <div class="tblwrap"><table><thead><tr><th>比较</th><th>决定什么</th><th>条件</th></tr></thead><tbody>
+        <tr><td>\(T_s\) vs \(\sigma_{T_m}\)（或 \(B_s\) vs \(B_C\)）</td><td>平坦 / 频率选择性</td><td>\(T_s\gg\sigma_{T_m}\)：平坦</td></tr>
+        <tr><td>\(T_s\) vs \(T_C\)（或 \(B_s\) vs \(B_D\)）</td><td>慢 / 快衰落</td><td>\(T_s\ll T_C\)：慢衰落</td></tr>
+      </tbody></table></div>
+      <p>两个维度互相独立，组合出四种信道：平坦慢衰落、平坦快衰落、频率选择性慢衰落、频率选择性快衰落（p.38–39 的两张图）。<b>易错：这两组判断互不相干，"平坦"不代表"慢"。</b></p>
+
+      <h3><span class="zh-num">2.6</span>电平通过率与平均衰落时长</h3>
+      <p>设能正常工作的最低信号强度是 \(Z_{\min}\)，记 \(\rho=Z_{\min}/Z_{\mathrm{rms}}\)（门限和信号 rms 值之比）。</p>
+      <div class="formula-card">
+        <div class="flbl">瑞利衰落的 LCR 与 AFD（p.41–43）</div>
+        <div class="fexpr">\(L_Z=\sqrt{2\pi}\,f_m\,\rho\,e^{-\rho^2}\)　（次/秒）　　\(\bar\tau_Z=\dfrac{e^{\rho^2}-1}{\sqrt{2\pi}\,f_m\,\rho}\)　（秒）</div>
+        <div class="fmeaning"><b>电平通过率 LCR</b>：每秒有多少次信号"往下穿过"门限，也就是每秒进入几次深衰落。<b>平均衰落时长 AFD</b>：每次掉到门限以下平均持续多久。两者的乘积等于"信号低于门限的时间比例"：\(L_Z\bar\tau_Z=P(z<Z_{\min})=1-e^{-\rho^2}\)。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>一次衰落会连错几个符号（第 2 章 p.45–47）</summary>
+        <div class="wbody">
+          <p>已知条件：门限是 rms 值的 10%（ρ = 0.1），车速最高 120 km/h，载频 5 GHz，符号速率 1 Msps，瑞利衰落；符号只要有一部分落在衰落里就算错。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">\(f_m=555.56\) Hz。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">\(L_Z=\sqrt{2\pi}\times555.56\times0.1\times e^{-0.01}=2.5066\times55.556\times0.990=137.87\) 次/秒。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">\(\bar\tau_Z=\dfrac{e^{0.01}-1}{2.5066\times55.556}=\dfrac{0.01005}{139.26}=72.17\) µs。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">(a) 每次衰落连错的符号数 = AFD ÷ 符号时长 = \(72.17\times10^{-6}\times10^6\approx72\) 个。</div></div>
+          <div class="wstep"><div class="wn">5</div><div class="wtext">(b) 每秒错的符号数 = 每次错的个数 × 每秒衰落次数 = 72.17 × 137.87 ≈ 9950 个，误符号率约 \(9.95\times10^{-3}\)。</div></div>
+          <div class="wans">每次衰落连错约 72 个符号；每秒约 9950 个错误，SER ≈ 1%</div>
+        </div>
+      </div>
+      <div class="extra">
+        <div class="lbl">课外补充 · 讲义笔误</div>
+        <p>讲义 p.47 写的是 AFD = 71.17 µs、每秒 9812 个错误。按讲义自己的公式精确算是 <b>72.17 µs</b>，每秒 <b>9950</b> 个。可以用另一个办法核对：每秒错误数 = 低于门限的时间比例 × 符号速率 = \((1-e^{-0.01})\times10^6=9950\)，和 72.17 µs 的结果一致。考试按公式自己算即可，差别不大。</p>
+      </div>
+      <p>Practice 2 第 1 题：\(f_D\) = 50 Hz，ρ = 0.1，\(\bar\tau=\dfrac{e^{0.01}-1}{\sqrt{2\pi}\times50\times0.1}=\dfrac{0.01005}{12.53}=0.80\) ms。</p>
+
+      <h3><span class="zh-num">2.7</span>信道容量：最多能传多快</h3>
+      <div class="formula-card">
+        <div class="flbl">AWGN 信道的香农容量（p.48）</div>
+        <div class="fexpr">\(C=B\log_2(1+\gamma),\qquad \gamma=\dfrac{P}{N_0B}\)</div>
+        <div class="fmeaning">只要传输速率 R &lt; C，就存在能让误码率任意小的编码；R &gt; C 则误码率不可能趋于零。带宽翻倍容量差不多翻倍；SNR 翻倍只多 1 bit/s/Hz 左右（高 SNR 时）。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>两个用户同时发（Practice 2 第 3 题）</summary>
+        <div class="wbody">
+          <p>已知条件：每个用户收到 10 mW，噪声 0.1 mW，每个用户带宽 20 MHz。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">(a) 先解用户 1，用户 2 当噪声：\(\gamma_1=10/(10+0.1)=0.990\)。<div class="calc">C₁ = 20 MHz × log₂(1.990) = 19.86 Mbps</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">(b) 多用户检测（MUD）把用户 1 完全减掉，用户 2 只剩噪声：\(\gamma_2=10/0.1=100\)。<div class="calc">C₂ = 20 MHz × log₂(101) = 133.16 Mbps</div></div></div>
+          <div class="wans">用户 1：19.86 Mbps；用户 2：133.16 Mbps。这就是 p.16 "干扰能解码就不再是敌人"的例子</div>
+        </div>
+      </div>
+      <p><b>衰落信道</b>里 SNR 是随机的。讲义给了两种容量：</p>
+      <ul>
+        <li><b>遍历容量（ergodic，p.49）</b>：\(C_E=E[B\log_2(1+\gamma)]\)，对 SNR 的分布求平均。由 Jensen 不等式，\(C_E\le B\log_2(1+\bar\gamma)\)：<b>平均 SNR 相同时，衰落信道的容量不会超过 AWGN 信道</b>。</li>
+        <li><b>中断容量（outage，p.50）</b>：允许 ε 的时间中断，能保证的最高速率 \(C_\varepsilon=B\log_2(1+\gamma_{\min})\)，其中 \(P(\gamma<\gamma_{\min})=\varepsilon\)。适合慢衰落。平均无错速率是 \((1-\varepsilon)C_\varepsilon\)。</li>
+      </ul>
+      <div class="formula-card">
+        <div class="flbl">瑞利衰落的衰落余量（p.51）</div>
+        <div class="fexpr">\(\gamma_{\min}=\bar\gamma\ln\dfrac{1}{1-\varepsilon}\ \Longrightarrow\ \text{余量}=10\log_{10}\dfrac{1}{\ln\frac{1}{1-\varepsilon}}\ \text{dB}\)</div>
+        <div class="fmeaning">要在中断概率 ε 下达到和 AWGN 一样的容量，平均 SNR 要高出这么多。ε = 0.01：\(\ln(1/0.99)=0.01005\)，余量 = 10 log₁₀(99.5) ≈ <b>20 dB</b>。</div>
+      </div>
+
+      <h3><span class="zh-num">2.8</span>注水法：功率该怎么分</h3>
+      <p>频率选择性信道可以切成很多段子带，每段宽度约等于相干带宽，各自近似平坦（p.52–53）。每段是一个增益不同的 AWGN 信道。总功率有限时怎么分？答案是<b>注水（water-filling）</b>：好的子信道多分，太差的干脆不给。</p>
+      <div class="formula-card">
+        <div class="flbl">注水法（p.54）</div>
+        <div class="fexpr">\(\dfrac{P_j}{P}=\begin{cases}\dfrac{1}{\gamma_0}-\dfrac{1}{\gamma_j}, & \gamma_j\ge\gamma_0\\ 0, & \gamma_j<\gamma_0\end{cases}\qquad \sum_j\Big(\dfrac1{\gamma_0}-\dfrac1{\gamma_j}\Big)=1\qquad C=\sum_{\gamma_j\ge\gamma_0}B_j\log_2\dfrac{\gamma_j}{\gamma_0}\)</div>
+        <div class="fmeaning">\(\gamma_j\) 是"把全部功率都给第 j 个子信道时的 SNR"。\(1/\gamma_0\) 是"水面高度"，\(1/\gamma_j\) 是"池底高度"：池底越低（信道越好），注的水越多；池底高过水面的子信道不分功率。</div>
+      </div>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>往一个底部高低不平的水池里倒固定量的水。水会先填满最深的坑（最好的信道），倒到一定程度水面高过某个坑，那个坑才开始有水。有些地方地势太高（信道太差），水根本漫不过去。</p>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>三个子信道的注水（第 2 章 p.56–57）</summary>
+        <div class="wbody">
+          <p>已知条件：γ₁ = 17.77，γ₂ = 2.63，γ₃ = 0.087，发射端知道信道。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">先假设三个都分到功率：\(3/\gamma_0=1+1/17.77+1/2.63+1/0.087=12.97\)，γ₀ = 0.23。可是 γ₃ = 0.087 &lt; γ₀，矛盾，第三个不该分功率。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">只用前两个：\(2/\gamma_0=1+1/17.77+1/2.63=1.436\)，γ₀ = 1.39。这次 γ₂ = 2.63 &gt; 1.39，成立。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">功率：\(P_1=(1/1.39-1/17.77)P=0.66P\)，\(P_2=(1/1.39-1/2.63)P=0.34P\)。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">容量：\(\log_2(17.77/1.39)+\log_2(2.63/1.39)=3.68+0.92=4.59\) bit/s/Hz。</div></div>
+          <div class="wans">P₁ = 0.66P，P₂ = 0.34P，P₃ = 0；C ≈ 4.59 bit/s/Hz</div>
+        </div>
+      </div>
+      <p><b>做题步骤记住三步</b>：① 假设全部子信道都分功率，解出 γ₀；② 有子信道的 γ 小于 γ₀，就把最差的去掉重算；③ 直到所有剩下的都大于 γ₀，再算功率和容量。Practice 5 第 1 题、Practice 7 第 1 题都用这个方法。</p>
+      <div class="checkpoint">
+        <div class="lbl">自测</div>
+        <p>(1) 某信道 rms 时延扩展 1 µs，符号速率 200 ksps，是平坦衰落吗？(2) 手机以 72 km/h 移动，载频 900 MHz，最大多普勒频移是多少？(3) 瑞利信道平均 SNR 20 dB，SNR 低于 10 dB 的概率？</p>
+        <details class="reveal"><summary>点击看答案</summary>
+          <div class="ans">(1) T_s = 5 µs，σ/T_s = 0.2 &gt; 0.1，不算平坦，有轻微的频率选择性。(2) v = 20 m/s，f_m = 20 × 9×10⁸ / 3×10⁸ = 60 Hz。(3) γ₀/γ̄ = 10/100 = 0.1，P = 1 − e^{−0.1} ≈ 9.5%。</div>
+        </details>
+      </div>
+    </section>
+    <!-- ================= CH 3 ================= -->
+    <section class="chapter" id="ch3">
+      <div class="chapter-head"><span class="chapter-num">第三章</span><h2>信号检测：从一堆带噪声的波形里认出符号</h2></div>
+      <p>发射端把比特变成波形（调制），接收端反过来：先把收到的波形变成几个数（<b>解调</b>，得到"判决变量"），再根据这几个数判断发的是哪个符号（<b>检测</b>）（p.2、p.13）。</p>
+
+      <h3><span class="zh-num">3.1</span>用"坐标"表示波形</h3>
+      <p>关键想法：波形虽然是连续的函数，但调制用的那一组波形，往往只需要两三个"基本波形"就能拼出来，就像平面上任何一点都能用 x、y 两个坐标表示。</p>
+      <div class="formula-card">
+        <div class="flbl">正交基展开（p.4）</div>
+        <div class="fexpr">\(s_i(t)=\displaystyle\sum_{j=1}^{D}s_{ij}\psi_j(t),\qquad s_{ij}=\int_0^T s_i(t)\psi_j(t)dt,\qquad \int_0^T\psi_i\psi_j\,dt=\begin{cases}1&i=j\\0&i\ne j\end{cases}\)</div>
+        <div class="fmeaning">\(\psi_j(t)\) 叫<b>正交归一基函数</b>（orthonormal basis），互相"垂直"、各自能量为 1。D 是基函数个数，叫信号空间的<b>维数</b>，D ≤ M（M 是信号个数）。\(s_{ij}\) 就是第 i 个信号在第 j 个方向上的"坐标"，用内积（相乘再积分）求出来。</div>
+      </div>
+      <p>最常用的一对基（p.6）：\(\psi_1=\sqrt{2/T}\cos(2\pi f_ct)\)，\(\psi_2=\sqrt{2/T}\sin(2\pi f_ct)\)。前面的 \(\sqrt{2/T}\) 是为了让能量正好等于 1。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>找正交基和维数（Practice 3 第 1 题）</summary>
+        <div class="wbody">
+          <p>已知条件：信号 \(A_i\cos(2\pi t/T+\phi_j)\)，0 &lt; t &lt; T，信息同时调制在幅度 \(A_i\) 和相位 \(\phi_j\) 上。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">用和角公式拆开：\(A_i\cos(2\pi t/T+\phi_j)=A_i\cos\phi_j\cos(2\pi t/T)-A_i\sin\phi_j\sin(2\pi t/T)\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">所有信号都是 \(\cos(2\pi t/T)\) 和 \(\sin(2\pi t/T)\) 的线性组合。它们在 [0, T] 上正交，能量都是 T/2，所以乘上 \(\sqrt{2/T}\) 归一化。</div></div>
+          <div class="wans">基：{ √(2/T)·cos(2πt/T), √(2/T)·sin(2πt/T) }，维数 D = 2</div>
+        </div>
+      </div>
+      <p>把每个信号的坐标画在平面上，就是<b>星座图</b>（constellation，p.8）：</p>
+      <div class="tblwrap"><table><thead><tr><th>调制</th><th>信号</th><th>维数</th><th>星座</th></tr></thead><tbody>
+        <tr><td>PAM（p.9）</td><td>\(A_ip(t)\cos2\pi f_ct\)，\(A_i=2i-1-M\)</td><td>1</td><td>4-PAM：−3, −1, +1, +3 排在一条线上</td></tr>
+        <tr><td>PSK（p.10）</td><td>\(Ap(t)\cos(2\pi f_ct+\phi_i)\)，\(\phi_i=2\pi(i-1)/M\)</td><td>2</td><td>M 个点均匀排在一个圆上</td></tr>
+        <tr><td>QAM（p.11）</td><td>幅度和相位都变</td><td>2</td><td>16-QAM：4×4 方阵</td></tr>
+      </tbody></table></div>
+
+      <h3><span class="zh-num">3.2</span>AWGN 信道：每个坐标上加一点高斯噪声</h3>
+      <p>收到的信号 \(x(t)=s_i(t)+w(t)\)，\(w(t)\) 是加性高斯白噪声，双边功率谱密度 \(N_0/2\)（p.12）。把 \(x(t)\) 分别和各个基函数做内积，得到 D 个判决变量（p.14–15）：</p>
+      <div class="formula-card">
+        <div class="flbl">向量信道（p.15）</div>
+        <div class="fexpr">\(\mathbf y=\mathbf s_i+\mathbf w,\qquad \mathbf w\sim\mathcal N\!\left(\mathbf 0,\tfrac{N_0}{2}\mathbf I\right)\)</div>
+        <div class="fmeaning">每个坐标上的噪声独立、均值 0、方差 \(N_0/2\)。这 D 个数是<b>充分统计量</b>：判断发了哪个符号需要的信息全在里面，不会因为只看这几个数而损失性能。</div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">SNR 的几种写法（p.16–17）</div>
+        <div class="fexpr">\(\mathrm{SNR}=\dfrac{P_r}{N_0B}=\dfrac{E_s}{N_0BT_s}=\dfrac{E_b}{N_0BT_b}\)　　\(\gamma_s=\dfrac{E_s}{N_0}\)　\(\gamma_b=\dfrac{E_b}{N_0}=\dfrac{\gamma_s}{\log_2M}\)</div>
+        <div class="fmeaning">\(E_s\)：每个符号的能量；\(E_b\)：每个比特的能量。一个 M 进制符号装 \(\log_2M\) 个比特，所以 \(E_s=E_b\log_2M\)。比较不同调制方式时用每比特 SNR \(\gamma_b\) 和误比特率 \(P_b\)，因为"比特"是共同单位。</div>
+      </div>
+
+      <h3><span class="zh-num">3.3</span>最优检测：选离收到的点最近的那个</h3>
+      <ul>
+        <li><b>MAP（最大后验，p.18）</b>：选"收到 y 以后，最可能被发送"的符号，最大化 \(p(\mathbf s_i\mid\mathbf y)\)。理论最优，但需要先验概率。</li>
+        <li><b>ML（最大似然，p.19）</b>：选"发了它以后，最可能收到 y"的符号，最大化 \(p(\mathbf y\mid\mathbf s_i)\)。各符号等概时，ML 和 MAP 一样。</li>
+      </ul>
+      <div class="formula-card">
+        <div class="flbl">AWGN 下 ML = 最小距离（p.19–20）</div>
+        <div class="fexpr">\(p(\mathbf y\mid\mathbf s_i)\propto\exp\!\left(-\dfrac{\|\mathbf y-\mathbf s_i\|^2}{N_0}\right)\ \Longrightarrow\ \hat{\mathbf s}=\arg\min_{\mathbf s_i}\|\mathbf y-\mathbf s_i\|^2\)</div>
+        <div class="fmeaning">高斯噪声下，概率随距离的平方指数下降，所以"最可能"就是"最近"。在星座图上，每个星座点"管"离它最近的一块区域（判决区域 \(Z_i\)），收到的点落在哪块就判成哪个符号。</div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">误符号率的上界与 BPSK（p.20–21）</div>
+        <div class="fexpr">\(P_s\le(M-1)\,Q\!\left(\dfrac{d_{\min}}{\sqrt{2N_0}}\right)\)　　BPSK：\(P_b=Q\!\left(\dfrac{d_{\min}}{\sqrt{2N_0}}\right)=Q\!\left(\sqrt{\dfrac{2E_b}{N_0}}\right)=Q(\sqrt{2\gamma_b})\)</div>
+        <div class="fmeaning">BPSK 两个点在 ±A，\(E_b=A^2\)，\(d_{\min}=2A\)，代入 \(2A/\sqrt{2N_0}=\sqrt{2A^2/N_0}=\sqrt{2E_b/N_0}\)。<b>星座点之间的最小距离决定误码率</b>：M 越大，点越挤，距离越小，误码越多，但每个符号装的比特越多（p.22）。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>噪声方差不同时的 ML 判决（Practice 3 第 2 题）</summary>
+        <div class="wbody">
+          <p>已知条件：\(y_n=x_n+w_n\)，\(x_n\in\{0,1\}\) 等概；发 0 时噪声方差 \(\sigma_0^2\)，发 1 时 \(\sigma_1^2\)，且 \(\sigma_1^2>\sigma_0^2\)。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">ML：比较两个似然。判 1 的条件是 \(\dfrac{1}{\sigma_1}e^{-(y-1)^2/2\sigma_1^2}>\dfrac{1}{\sigma_0}e^{-y^2/2\sigma_0^2}\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">两边取对数整理：<div class="calc">g(y) = y²/(2σ₀²) − (y−1)²/(2σ₁²) + ln(σ₀/σ₁) &gt; 0 → 判 1</div>令 g(ỹ) = 0，在 0 和 1 之间解出门限 ỹ。方差相等时门限就是 0.5；σ₁ 更大时门限往 0 那边移，因为发 1 时噪声大，需要给它更宽的判决区。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">规则：\(y_n>\tilde y\) 判 1，\(y_n<\tilde y\) 判 0。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">误码率：发 0 却超过门限的概率 \(Q(\tilde y/\sigma_0)\)，发 1 却低于门限的概率 \(Q((1-\tilde y)/\sigma_1)\)，各占一半：<div class="calc">P_e = ½ [ Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀) ]</div></div></div>
+          <div class="wans">y &gt; ỹ 判 1，否则判 0；P_e = ½[Q((1−ỹ)/σ₁) + Q(ỹ/σ₀)]</div>
+          <p style="margin-top:12px" class="extra-inline">课外补充：g(y) 是开口向上的二次函数，严格说在很负的 y 处还有第二个根（y 极小时也会判 1，因为发 1 的噪声更宽）。那个区域概率极小，讲义答案忽略了它。</p>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">3.4</span>功率效率 vs 带宽效率</h3>
+      <p>讲义 p.23–30 讨论怎么公平地比较不同系统：</p>
+      <ul>
+        <li><b>功率效率</b>：在发射功率有限时，误码率能做到多低。卫星、蓝牙、GSM 看重这个。</li>
+        <li><b>带宽效率</b>：在带宽有限时，速率能做到多高。WiFi（802.11g）、WiMAX 看重这个。</li>
+      </ul>
+      <div class="formula-card">
+        <div class="flbl">比较用的三个量（p.24–27）</div>
+        <div class="fexpr">\(D=2BT\)　　\(\eta=\dfrac{R}{B}=\dfrac{2b}{D}\)　　\(\bar b=\dfrac bD=\dfrac\eta2\)　　\(\bar\varepsilon_x=\dfrac{\varepsilon_x}{D}\)　　\(\bar P_s=\dfrac{P_s}{D}\)</div>
+        <div class="fmeaning">D：一个符号周期 T、带宽 B 内可用的维数；b：每符号比特数；\(\bar b\)：每维比特数（衡量带宽效率）；\(\bar\varepsilon_x\)：每维平均能量（衡量功率效率）；\(\bar P_s\)：每维误符号率。经验法则：给定误码率和 \(\bar b\)，\(\bar\varepsilon_x\) 越小越好。</div>
+      </div>
+      <p>p.28–30 的例子：系统 I（D = 1）\(\bar b=1\)、\(\bar P_s=Q(1/\sigma)\)；系统 II（D = 2）\(\bar b=1/2\)、\(\bar P_s=\tfrac12Q(\sqrt2/\sigma)\)，两者每维能量都是 1。系统 II 误码率更好，但多用了一倍带宽：<b>用带宽效率换功率效率</b>。</p>
+
+      <h3><span class="zh-num">3.5</span>衰落信道里的误码率</h3>
+      <p>衰落时 SNR 是随机的，误码率也跟着随机。两种看法（p.31）：</p>
+      <div class="formula-card">
+        <div class="flbl">平均误码率与中断概率（p.31）</div>
+        <div class="fexpr">\(\bar P_s=\displaystyle\int_0^\infty P_s(\gamma)\,p_\gamma(\gamma)\,d\gamma\)　　\(P_{\mathrm{out}}=P(\gamma<\gamma_0)=1-e^{-\gamma_0/\bar\gamma}\)（瑞利）</div>
+        <div class="fmeaning">平均误码率：把 AWGN 下的误码率按 SNR 的概率加权平均。中断概率：SNR 低于最低要求的时间比例。p.32 的结论很重要：<b>AWGN 中误码率随 SNR 指数下降，瑞利衰落中只按线性（1/SNR）下降</b>，要达到同样误码率需要多几十 dB 功率。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>BPSK 在瑞利衰落下需要多大平均 SNR（第 3 章 p.33–34）</summary>
+        <div class="wbody">
+          <p>已知条件：要求 95% 的时间 SNR 高于最低需要的 8.5 dB。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">中断概率 \(P_{\mathrm{out}}=1-0.95=0.05\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">由 \(P_{\mathrm{out}}=1-e^{-\gamma_0/\bar\gamma}\) 解出 \(\bar\gamma=\dfrac{\gamma_0}{-\ln(1-P_{\mathrm{out}})}\)。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">\(\gamma_0=10^{0.85}=7.08\)，\(-\ln0.95=0.0513\)：<div class="calc">γ̄ = 7.08 / 0.0513 = 138 → 21.4 dB</div></div></div>
+          <div class="wans">平均 SNR 需要 21.4 dB，衰落余量 = 21.4 − 8.5 = 12.9 dB</div>
+        </div>
+      </div>
+      <p><b>不可消除的误码平台（error floor，p.35）</b>：衰落太快（多普勒）或时延扩展太大时，即使 SNR 趋于无穷，误码率也降不到零，停在一个"地板"上。讲义的两个近似公式：</p>
+      <div class="formula-card">
+        <div class="flbl">误码平台（第 3 章 p.35；Practice 3）</div>
+        <div class="fexpr">多普勒（DPSK）：\(P_{\mathrm{floor}}\approx\tfrac12(\pi f_DT_b)^2\)　　时延扩展（BPSK）：\(P_{\mathrm{floor}}\approx\left(\dfrac{\sigma_{T_m}}{T_b}\right)^2\)</div>
+        <div class="fmeaning">多普勒平台：符号越长，一个符号内信道变化越大，所以要<b>速率足够高</b>。时延扩展平台：符号越短，回声占的比例越大，所以要<b>速率足够低</b>。两者正好方向相反。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>多普勒平台下的最低速率（第 3 章 p.36）</summary>
+        <div class="wbody">
+          <p>已知条件：瑞利衰落、均匀散射，\(f_D\) = 80 Hz，要求 DPSK 的误码平台低于 10⁻⁴。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">\(\tfrac12(\pi\cdot80\cdot T_b)^2\le10^{-4}\Rightarrow\pi\cdot80\cdot T_b\le\sqrt{2\times10^{-4}}=0.01414\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">\(T_b\le0.01414/251.3=5.63\times10^{-5}\) s。</div></div>
+          <div class="wans">R = 1/T_b ≥ 17.77 kbps（讲义算式里 π 在 PDF 转文字时丢了，原式有 π）</div>
+        </div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>时延扩展平台下的最高速率（Practice 3 第 3 题）</summary>
+        <div class="wbody">
+          <p>已知条件：\(\sigma_{T_m}\) = 3 µs，要求平台 10⁻³，用 QPSK。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">\((3\,\mu s/T)^2\le10^{-3}\Rightarrow T\ge3/0.03162=94.9\) µs。这个 T 是<b>符号</b>时长：ISI 取决于回声相对于一个符号有多长。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">BPSK 每符号 1 bit：10.54 kbps；QPSK 每符号 2 bit：<div class="calc">R = 2 / 94.9 µs = 21.08 kbps</div></div></div>
+          <div class="wans">QPSK 最高约 21.08 kbps</div>
+        </div>
+      </div>
+      <div class="checkpoint">
+        <div class="lbl">自测</div>
+        <p>(1) 8-PSK 的信号空间是几维？(2) 为什么 AWGN 下 ML 检测等于"最小距离"检测？(3) 瑞利信道里平均 SNR 每提高 10 dB，BPSK 的平均误码率大约降多少？</p>
+        <details class="reveal"><summary>点击看答案</summary>
+          <div class="ans">(1) 2 维（cos 和 sin 两个基）。(2) 高斯似然 ∝ exp(−‖y − s‖²/N₀)，距离越小似然越大。(3) 只降约 10 倍（线性），而 AWGN 中会降很多个数量级。</div>
+        </details>
+      </div>
+    </section>
+    <!-- ================= CH 4 ================= -->
+    <section class="chapter" id="ch4">
+      <div class="chapter-head"><span class="chapter-num">第四章</span><h2>分集：别把鸡蛋放在一个篮子里</h2></div>
+      <p>第 3 章的坏消息是：瑞利衰落下误码率只按 1/SNR 下降，靠加功率很不划算。根本原因是信道偶尔会掉进深衰落，掉进去以后加多少功率都救不回来。第 4 章的思路是：<b>同一份信息走几条独立衰落的路，几条路同时掉进深衰落的概率很小</b>（p.2–3）。</p>
+      <div class="formula-card">
+        <div class="flbl">分集的核心公式（p.3）</div>
+        <div class="fexpr">\(P_{\mathrm{out,diversity}}=P(\text{M 条路的 SNR 同时}<\gamma_{\min})=P_{\mathrm{out}}^M\)</div>
+        <div class="fmeaning">前提是各条路<b>独立</b>。一条路中断 10%，两条独立的路同时中断只有 1%，三条只有 0.1%。</div>
+      </div>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>重要文件同时用快递、邮件、U 盘三种方式寄出。任何一种出问题的概率都不小，但三种同时出问题的概率很小。前提是三种方式"不相关"：如果都要经过同一个已经被淹的仓库，就没用了。</p>
+      </div>
+
+      <h3><span class="zh-num">4.1</span>宏分集与微分集</h3>
+      <ul>
+        <li><b>宏分集（macroscopic，p.4）</b>：一个手机同时连几个<b>不同位置的基站</b>，选信号最强的。用来对付<b>阴影衰落</b>：阴影是大尺度的，同一个基站方向上被楼挡住了，换个方向的基站很可能没被挡。Practice 4 第 1 题、Practice 2 第 2 题就是这个。</li>
+        <li><b>微分集（microscopic，p.5）</b>：对付<b>多径衰落</b>（小尺度）。几根天线隔开几个波长，衰落就基本独立了。</li>
+      </ul>
+      <div class="tblwrap"><table><thead><tr><th>分集方式（p.6）</th><th>怎么做</th><th>优点</th></tr></thead><tbody>
+        <tr><td>路径</td><td>利用信道里本来就有的多条独立路径</td><td>不用多天线，不多占功率和带宽</td></tr>
+        <tr><td>空间</td><td>基站上放几根隔开的天线</td><td>分支数可选，不多占功率和带宽</td></tr>
+        <tr><td>频率</td><td>同一数据在两个以上载频上发</td><td>分支数可选</td></tr>
+        <tr><td>时间</td><td>同一信息在不同时间重复发</td><td>分支数可选，不需要额外空间</td></tr>
+        <tr><td>极化</td><td>利用信号在多径中发生的去极化</td><td>不需要额外空间和带宽</td></tr>
+      </tbody></table></div>
+
+      <h3><span class="zh-num">4.2</span>三种合并方法</h3>
+      <p>系统模型（p.8）：第 i 路收到 \(r_i(t)=A_ie^{j\theta_i}s(t)+w_i(t)\)，\(A_ie^{j\theta_i}\) 是这一路的衰落增益。理想分集时各路增益独立同分布。</p>
+      <div class="formula-card">
+        <div class="flbl">选择分集 SD（p.10–12）</div>
+        <div class="fexpr">\(\gamma_{SD}=\max(\gamma_1,\dots,\gamma_M)\)　　\(P_{\mathrm{out}}(\gamma_0)=\left(1-e^{-\gamma_0/\bar\gamma}\right)^M\)　　\(\bar\gamma_{SD}=\bar\gamma\displaystyle\sum_{i=1}^{M}\frac1i\)</div>
+        <div class="fmeaning">只挑 SNR 最高的那一路。中断要求<b>每一路</b>都低于门限，独立时概率相乘。平均 SNR 只按 1 + 1/2 + 1/3 + … 增长：M = 2 时 1.5 倍，M = 3 时 1.83 倍。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>选择分集的中断概率（第 4 章 p.13）</summary>
+        <div class="wbody">
+          <p>已知条件：BPSK，要求 \(P_b=10^{-3}\)，瑞利衰落，每路平均 SNR 15 dB，比较 M = 1、2、3。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">AWGN 下 \(Q(\sqrt{2\gamma_0})=10^{-3}\) → \(\sqrt{2\gamma_0}=3.09\) → \(\gamma_0=4.77\) = 6.8 dB，这就是最低 SNR。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">\(\gamma_0/\bar\gamma=10^{0.68}/10^{1.5}=4.79/31.6=0.151\)，\(1-e^{-0.151}=0.140\)。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">M = 1：0.140；M = 2：0.140² = 0.020；M = 3：0.140³ = 0.003。</div></div>
+          <div class="wans">中断概率 14% → 2% → 0.3%，每多一路就降约 7 倍</div>
+        </div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">最大比合并 MRC（p.15–16）</div>
+        <div class="fexpr">\(y(t)=\displaystyle\sum_iA_ie^{-j\theta_i}r_i(t)\)　　\(\gamma_{MRC}=\dfrac{\sum_iA_i^2E_b}{N_0}=\sum_i\gamma_i\)</div>
+        <div class="fmeaning">每一路先乘上自己增益的共轭：<b>相位对齐</b>（\(e^{-j\theta_i}\)），<b>按信号强度加权</b>（\(A_i\)，强的路说话分量重）。结果是<b>输出 SNR 等于各路 SNR 之和</b>，这是线性合并能达到的最优。代价：每一路都要估计信道（p.17）。</div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">等增益合并 EGC（p.19–20）</div>
+        <div class="fexpr">\(y(t)=\displaystyle\sum_ie^{-j\theta_i}r_i(t)\)　　\(\gamma_{EGC}=\dfrac{\left(\sum_iA_i\right)^2E_b}{MN_0}\)</div>
+        <div class="fmeaning">只对齐相位、不加权，所有路等权相加。不需要估计幅度 \(A_i\)，性能和 MRC 非常接近（p.20 的图）。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">小例子</span>三种合并方法比一比</summary>
+        <div class="wbody">
+          <p>两路某一时刻的增益 \(A_1=1\)、\(A_2=0.5\)，\(E_b/N_0=1\)，即两路 SNR 分别为 1 和 0.25。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">SD：选大的，γ = 1。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">MRC：相加，γ = 1 + 0.25 = 1.25。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">EGC：\((1+0.5)^2/2=1.125\)。</div></div>
+          <div class="wans">MRC 1.25 ≥ EGC 1.125 ≥ SD 1：MRC 最好，EGC 接近，SD 最简单</div>
+        </div>
+      </div>
+      <p><b>相关性的影响（p.21）</b>：两路如果相关，一路掉进深衰落时另一路也倾向于掉进去，\(P(\text{两路都深衰落})\ge P(\text{一路})\times P(\text{另一路})\)。只有不相关时才取等号，分集效果最好。Practice 4 第 2(c) 题就是"两路共享同一个阴影项 β"的相关情况。</p>
+
+      <h3><span class="zh-num">4.3</span>分集后的误码率</h3>
+      <p>平均误码率还是"按 SNR 的分布加权平均"：\(\bar P_s=\int P_s(\gamma)p_\gamma(\gamma)d\gamma\)（p.23）。以 DPSK + 选择分集为例（p.24–26）：</p>
+      <div class="formula-card">
+        <div class="flbl">DPSK + 选择分集（p.25–26）</div>
+        <div class="fexpr">\(\bar P_b=\dfrac M2\displaystyle\sum_{n=0}^{M-1}(-1)^n\binom{M-1}{n}\frac{1}{\bar\gamma+n+1}\)　　M = 1：\(\dfrac{1}{2(1+\bar\gamma)}\approx\dfrac{1}{2\bar\gamma}\)　　M = 2：\(\dfrac{1}{(\bar\gamma+1)(\bar\gamma+2)}\approx\dfrac{1}{\bar\gamma^2}\)</div>
+        <div class="fmeaning">一路时误码率和 \(\bar\gamma\) 成反比；两路时和 \(\bar\gamma^2\) 成反比。SNR 提高 10 dB，一路只降 10 倍，两路降 100 倍。<b>指数 M 就是"分集阶数"</b>。</div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">阵列增益与分集增益（p.27–28）</div>
+        <div class="fexpr">\(g\approx\dfrac{\bar\gamma_\Sigma}{\bar\gamma}\)　　\(\bar P_e\approx\bar\gamma^{-d}\ \Longrightarrow\ d\approx\dfrac{-\log_{10}\bar P_e}{\log_{10}\bar\gamma}\)</div>
+        <div class="fmeaning"><b>阵列增益 g</b>：合并后平均 SNR 比单路高多少倍，是曲线的"平移"。<b>分集增益 d</b>：误码率曲线在高 SNR 时的"斜率"，d ≤ M；N 发 M 收的 MIMO，d ≤ N × M，满分集时取等号。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>离散 SNR 分布下的 MRC（Practice 4 第 2 题）</summary>
+        <div class="wbody">
+          <p>已知条件：DPSK，\(P_s=\tfrac12e^{-\gamma}\)；单路 SNR γ = 8（概率 1/3）或 11（概率 2/3）；发射功率和噪声都是 1 W。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">(a) 单路：\(\bar\gamma=8\cdot\tfrac13+11\cdot\tfrac23=10\)；\(\bar P_s=\tfrac13\cdot\tfrac12e^{-8}+\tfrac23\cdot\tfrac12e^{-11}=6.15\times10^{-5}\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">(b) 两路 MRC，输出 \(\gamma_\Sigma=\gamma_1+\gamma_2\)。两路独立，四种组合：16（1/9）、19（4/9）、22（4/9）。<div class="calc">γ̄_Σ = 16/9 + 19·4/9 + 22·4/9 = 20</div><div class="calc">P̄_s = ½[e⁻¹⁶/9 + 4e⁻¹⁹/9 + 4e⁻²²/9] = 7.56 × 10⁻⁹</div></div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">阵列增益 g = 20/10 = 2；分集增益 \(d=-\log_{10}(7.56\times10^{-9})/\log_{10}10=8.1\)。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">(c) 两路共享阴影项：\(\gamma_i=r_i+\beta\)。平均仍是 2 × (1 + 9) = 20。因为 \(e^{-\gamma_\Sigma}=e^{-r_1}e^{-r_2}e^{-2\beta}\) 且三者独立：<div class="calc">E[e^{−r}] = ⅓e^{−0.6} + ⅔e^{−1.2} = 0.3837</div><div class="calc">E[e^{−2β}] = ⅓e^{−14} + ⅔e^{−20} = 2.786 × 10⁻⁷</div><div class="calc">P̄_s = ½ × 0.3837² × 2.786 × 10⁻⁷ = 2.05 × 10⁻⁸，d = 7.7</div></div></div>
+          <div class="wans">(a) γ̄ = 10，P̄s = 6.15×10⁻⁵；(b) γ̄Σ = 20，P̄s = 7.6×10⁻⁹，g = 2，d = 8.1；(c) γ̄Σ = 20，P̄s = 2.05×10⁻⁸，g = 2，d = 7.7</div>
+          <p style="margin-top:12px">(b) 和 (c) 平均 SNR 一样，但 (c) 的误码率高了近 3 倍：两路共享阴影 β，一起变差，这就是"相关性削弱分集"。</p>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">4.4</span>空间复用与分集-复用折中</h3>
+      <p><b>空间复用（p.30）</b>：N 根发射天线各发<b>不同</b>的数据，速率变成 N 倍，但没有分集增益，衰落下性能可能很差；接收天线数 M ≥ N 才解得开。</p>
+      <p>多天线能不能同时要分集（误码率低）和复用（速率高）？p.31–33 定义了两个量：</p>
+      <div class="formula-card">
+        <div class="flbl">分集-复用折中（p.32–33）</div>
+        <div class="fexpr">\(d=\lim\dfrac{-\log_2P_e}{\log_2\mathrm{SNR}}\)　　\(r=\lim\dfrac{R}{\log_2\mathrm{SNR}}\)　　\(d(r)=(N-r)(M-r),\ r=0,1,\dots,\min(N,M)\)</div>
+        <div class="fmeaning">d：SNR 每翻一倍，误码率降多快，最大 N × M。r：SNR 每翻一倍，速率多几 bit/s/Hz，最大 min(N, M)。两者此消彼长：r = 0 时分集最大 N × M；r = min(N, M) 时分集为 0。高 SNR 时容量 \(\approx\min(N,M)\log_2\mathrm{SNR}\)（p.31）。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>8 × 4 MIMO 能传多快（Practice 5 第 3 题）</summary>
+        <div class="wbody">
+          <p>已知条件：\(d(r)=(N-r)(M-r)\)，N = 8，M = 4，r、d 取整数；要求 \(P_e=\gamma^{-d}\le10^{-3}\)，γ = 10 dB。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">γ = 10，\(10^{-d}\le10^{-3}\) → d ≥ 3。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">列表：r = 0 → 32；r = 1 → 21；r = 2 → 12；r = 3 → 5；r = 4 → 0。满足 d ≥ 3 的最大 r 是 3（d = 5）。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">速率 \(R=r\log_2\gamma=3\times\log_210=9.97\) bit/s/Hz；误码率 \(P_e=10^{-5}\)。</div></div>
+          <div class="wans">(a) 9.96 bit/s/Hz；(b) Pe = 10⁻⁵</div>
+        </div>
+      </div>
+      <p>p.34 的例子：\(P_e=2^{2R}/\mathrm{SNR}\)，把 \(R=r\log_2\mathrm{SNR}\) 代入：\(2^{2R}=\mathrm{SNR}^{2r}\)，所以 \(P_e=\mathrm{SNR}^{-(1-2r)}\)，\(d(r)=1-2r\)。</p>
+      <div class="checkpoint">
+        <div class="lbl">自测</div>
+        <p>(1) 3 路选择分集，每路平均 SNR 相同，平均输出 SNR 是单路的几倍？(2) MRC 两路 SNR 分别为 3 和 5，输出 SNR？(3) 4 × 2 MIMO 的最大分集增益和最大复用增益？</p>
+        <details class="reveal"><summary>点击看答案</summary>
+          <div class="ans">(1) 1 + 1/2 + 1/3 = 1.83 倍。(2) 3 + 5 = 8。(3) d_max = 4 × 2 = 8，r_max = min(4, 2) = 2。</div>
+        </details>
+      </div>
+    </section>
+    <!-- ================= CH 5 ================= -->
+    <section class="chapter" id="ch5">
+      <div class="chapter-head"><span class="chapter-num">第五章</span><h2>MIMO：多根天线，既抗衰落又提速</h2></div>
+      <p>MIMO（Multiple-Input Multiple-Output）就是发射端 N 根天线、接收端 M 根天线。第 4 章已经提到它能提供空间分集，这一章讲四件事：信号模型、用 MIMO 做分集、空时编码、MIMO 容量（p.2）。</p>
+
+      <h3><span class="zh-num">5.1</span>信号模型：y = Hx + v</h3>
+      <div class="formula-card">
+        <div class="flbl">平坦、时不变 MIMO 信道（p.5–6）</div>
+        <div class="fexpr">\(y_m=\displaystyle\sum_{n=1}^{N}h_{m,n}x_n+v_m\quad\Longleftrightarrow\quad\mathbf y=\mathbf H\mathbf x+\mathbf v\)</div>
+        <div class="fmeaning">第 m 根接收天线收到的，是 N 根发射天线信号的加权和，再加噪声。\(h_{m,n}\) 是"第 n 根发射天线到第 m 根接收天线"的信道增益，排成 M 行 N 列的矩阵 \(\mathbf H\)。噪声在各天线间独立、方差 \(\sigma^2\)。</div>
+      </div>
+      <p>多个时刻叠起来就是块模型 \(\mathbf Y=\mathbf H\mathbf X+\mathbf V\)（p.7）。频率选择性信道会有记忆：\(\mathbf y_i=\sum_{l=0}^{L}\mathbf H_l\mathbf x_{i-l}+\mathbf v_i\)，当前输出受前面 L 个输入影响，这就是 ISI（p.8，第 6 章的主题）。</p>
+
+      <h3><span class="zh-num">5.2</span>接收分集 SIMO：最大比合并的推导</h3>
+      <p>1 发 2 收（p.12–15）：\(y_1=h_1x+v_1\)，\(y_2=h_2x+v_2\)，写成 \(\mathbf y=x\mathbf h+\mathbf v\)。接收端用权重线性合并：\(\hat x=\mathbf w^H\mathbf y=x\,\mathbf w^H\mathbf h+\mathbf w^H\mathbf v\)。</p>
+      <div class="worked">
+        <summary><span class="wtag">推导</span>权重怎么选，SNR 最大（第 5 章 p.13–15）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">信噪比：\(\mathrm{SNR}=\dfrac{E\{|x|^2\}\,|\mathbf w^H\mathbf h|^2}{\sigma^2\,\mathbf w^H\mathbf w}\)（噪声空间白，\(E\{\mathbf v\mathbf v^H\}=\sigma^2\mathbf I\)）。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">分子是两个向量内积的平方。由柯西-施瓦茨不等式，\(|\mathbf w^H\mathbf h|^2\le\|\mathbf w\|^2\|\mathbf h\|^2\)，当 \(\mathbf w\) 和 \(\mathbf h\) 同方向时取等号：\(\mathbf w=\alpha\mathbf h\)。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">代回：<div class="calc">SNR_max = E{|x|²}/σ² · ‖h‖² = E{|x|²}/σ² · (|h₁|² + |h₂|²)</div></div></div>
+          <div class="wans">w ∝ h，就是第 4 章的 MRC；SNR 正比于 |h₁|² + |h₂|²</div>
+          <p style="margin-top:12px">直觉：只要 h₁、h₂ 不同时很小，SNR 就不会太差。两者独立时，同时很小的概率远低于其中一个很小的概率（p.15）。</p>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">5.3</span>发射分集 MISO：知不知道信道很关键</h3>
+      <p>2 发 1 收（p.16–18），两根天线发同一个 x，各乘一个权重：\(y=x\,\mathbf w^H\mathbf h+v\)。</p>
+      <ul>
+        <li><b>发射端知道信道（informed）</b>：取 \(\mathbf w=\alpha\mathbf h\)，SNR ∝ \(|h_1|^2+|h_2|^2\)，有分集（p.17）。相当于发射端提前把两路信号的相位对齐，让它们在接收端同相相加，叫波束成形。</li>
+        <li><b>发射端不知道信道（uninformed）</b>：权重是固定的，\(|w_1^*h_1+w_2^*h_2|^2\) 和单个 \(|h|^2\) 分布一样（只差一个比例），<b>没有分集</b>（p.18）。两路信号随机地时而相加、时而抵消，和一根天线没区别。</li>
+      </ul>
+      <p>发射端不知道信道时怎么办？答案是下面的空时编码。</p>
+      <div class="formula-card">
+        <div class="flbl">特征子信道（p.19）</div>
+        <div class="fexpr">\(\mathbf H=\mathbf U\boldsymbol\Sigma\mathbf G^H\)，发端乘 \(\mathbf G\)、收端乘 \(\mathbf U^H\)：\(\tilde{\mathbf y}=\mathbf U^H\mathbf H\mathbf G\mathbf x=\boldsymbol\Sigma\mathbf x\)</div>
+        <div class="fmeaning">奇异值分解（SVD）把 MIMO 信道拆成几条互不干扰的并行 SISO "特征子信道"，增益就是奇异值。前提是发射端知道 \(\mathbf H\)。这是 5.5 节 MIMO 容量公式的来历。</div>
+      </div>
+
+      <h3><span class="zh-num">5.4</span>Alamouti 空时块码：发射端不知道信道也能分集</h3>
+      <p>空时块码（STBC）把符号同时在<b>空间</b>（哪根天线）和<b>时间</b>（哪个时隙）上编排（p.20）。最经典的是 Alamouti 码：2 根发射天线、2 个时隙、发 2 个符号（p.21）：</p>
+      <div class="formula-card">
+        <div class="flbl">Alamouti 编码矩阵（p.21–22）</div>
+        <div class="fexpr">\(\mathbf X(\mathbf s)=\begin{bmatrix}s_1 & s_2\\ -s_2^* & s_1^*\end{bmatrix}\)（行：时隙 1、2；列：天线 1、2）　　\(\mathbf X\mathbf X^H=\|\mathbf s\|^2\mathbf I\)</div>
+        <div class="fmeaning">时隙 1：天线 1 发 \(s_1\)、天线 2 发 \(s_2\)；时隙 2：天线 1 发 \(-s_2^*\)、天线 2 发 \(s_1^*\)。码率 R = K/T = 2 个符号 / 2 个时隙 = 1（全速率，p.29）。关键性质是<b>正交</b>：\(\mathbf X\mathbf X^H=(|s_1|^2+|s_2|^2)\mathbf I\)，正是这个性质让接收端能用很简单的线性运算把两个符号分开。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">推导</span>Alamouti 的判决变量（Practice 5 第 2 题）</summary>
+        <div class="wbody">
+          <p>已知条件：符号 \(u_1,u_2\)；时隙 1：A 发 \(u_1\)、B 发 \(u_2\)；时隙 2：A 发 \(-u_2^*\)、B 发 \(u_1^*\)。两个时隙信道不变（\(h_A,h_B\)），1 根接收天线，噪声 \(\mathcal N(0,N_0)\)。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">两个时隙收到：<div class="calc">y₁ = h_A u₁ + h_B u₂ + w₁</div><div class="calc">y₂ = −h_A u₂* + h_B u₁* + w₂</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">第二式取共轭：\(y_2^*=-h_A^*u_2+h_B^*u_1+w_2^*\)。现在两个式子都是 \(u_1,u_2\) 的线性组合：<div class="calc">[y₁, y₂*]ᵀ = F [u₁, u₂]ᵀ + [w₁, w₂*]ᵀ，F = [[h_A, h_B], [h_B*, −h_A*]]</div></div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">F 的两列正交：\(\mathbf F^H\mathbf F=(|h_A|^2+|h_B|^2)\mathbf I\)。两边左乘 \(\mathbf F^H\)：<div class="calc">z₁ = h_A* y₁ + h_B y₂* = (|h_A|² + |h_B|²) u₁ + h_A* w₁ + h_B w₂*</div><div class="calc">z₂ = h_B* y₁ − h_A y₂* = (|h_A|² + |h_B|²) u₂ + h_B* w₁ − h_A w₂*</div></div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">除以 \(\|\mathbf h\|=\sqrt{|h_A|^2+|h_B|^2}\) 归一化，噪声方差回到 \(N_0\)。</div></div>
+          <div class="wans">z₁ = ‖h‖u₁ + w̃₁，z₂ = ‖h‖u₂ + w̃₂，w̃ ~ N(0, N₀)：两个符号完全分开，每个都得到 |h_A|² + |h_B|² 的二阶分集</div>
+          <p style="margin-top:12px">官方答案写成 ‖h₁‖、‖h₂‖，其实两个都是同一个 ‖h‖ = √(|h_A|² + |h_B|²)。</p>
+        </div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">SNR 对比（p.26、p.30）</div>
+        <div class="fexpr">MRC（1 发 2 收）：\(\dfrac{\|\mathbf h\|^2E_b}{\sigma^2}\)　　OSTBC：\(\dfrac{T\|\mathbf h\|^2E_b}{KN\sigma^2}\)　　Alamouti：\(\dfrac12\dfrac{\|\mathbf h\|^2E_b}{\sigma^2}\)</div>
+        <div class="fmeaning">Alamouti 和 MRC 的分集阶数一样（都是 2），但 SNR 低 3 dB：发射端的总功率要分给两根天线，每根只有一半。所以 MRC 比 Alamouti 多一个"阵列增益"。</div>
+      </div>
+      <p><b>正交空时块码 OSTBC</b>（Tarokh 1998，p.27–28）把 Alamouti 推广到 N &gt; 2 根天线：元素是符号及其共轭的线性组合，且满足 \(\mathbf X\mathbf X^H=\|\mathbf s\|^2\mathbf I\)，能达到满分集 d = N × M。p.28 的 3 天线例子用 8 个时隙发 4 个符号，码率只有 1/2。p.29 的对角码 \(\mathrm{diag}(s_1,s_2)\) 不满足正交条件，不是 OSTBC。WiMAX、802.11n、LTE 都采用了 OSTBC（p.27）。</p>
+
+      <h3><span class="zh-num">5.5</span>MIMO 容量：几根天线 = 几条并行的数据管道</h3>
+      <div class="formula-card">
+        <div class="flbl">MIMO 容量（Telatar 1999，p.32–36）</div>
+        <div class="fexpr">\(C(\mathbf H)=B\log_2\det\!\Big(\mathbf I+\dfrac{1}{\sigma^2}\mathbf H\mathbf P\mathbf H^H\Big)=B\displaystyle\sum_{i=1}^{r}\log_2\!\Big(1+\frac{\lambda_i}{\sigma^2}\Big)\)</div>
+        <div class="fmeaning">第二个等号的推导（p.34–35）：对 \(\mathbf H\mathbf P\mathbf H^H\) 做特征分解 \(\mathbf U\boldsymbol\Lambda\mathbf U^H\)，再用 \(\det(\mathbf I+\mathbf A\mathbf B)=\det(\mathbf I+\mathbf B\mathbf A)\) 和 \(\mathbf U^H\mathbf U=\mathbf I\)，行列式变成对角线元素之积，log 把积变成和。r 是矩阵的秩，\(\lambda_i\) 是特征值。<b>MIMO 容量 = r 条并行 SISO 信道容量之和</b>。</div>
+      </div>
+      <ul>
+        <li><b>SISO</b>（N = M = 1）：退化成 \(B\log_2(1+P|h|^2/\sigma^2)\)，就是香农公式（p.33）。</li>
+        <li><b>SIMO / MISO</b>（p.38–39）：只有 1 条空间管道，加天线只让 SNR 变大，容量按 <b>log</b> 增长。</li>
+        <li><b>MIMO</b>：秩 r 可以到 min(N, M)，容量按 <b>min(N, M) 倍</b>线性增长，这是 MIMO 最大的价值。</li>
+        <li><b>发射端不知道信道</b>（p.37）：每根天线平均分功率，\(\mathbf P=\frac PN\mathbf I\)，\(C=B\log_2\det(\mathbf I+\frac{P}{N\sigma^2}\mathbf H\mathbf H^H)\)。</li>
+        <li><b>发射端知道信道</b>（p.40）：用第 2 章的注水法给各特征子信道分功率。</li>
+        <li><b>遍历容量</b>（p.41–42）：H 随机时对 H 取平均。高 SNR 时知不知道信道差别很小。</li>
+        <li><b>慢衰落的中断</b>（p.43）：\(P_{\mathrm{out}}(R)=P(C(\mathbf H)<R)\)，有效速率 \((1-P_{\mathrm{out}})R\)。</li>
+      </ul>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>3 个子信道注水求容量（Practice 5 第 1 题）</summary>
+        <div class="wbody">
+          <p>已知条件：三个子信道的 SNR 为 80、40、40，带宽 10 MHz，发射端知道信道。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">假设三个都分功率：\(3/\gamma_0=1+1/80+1/40+1/40=1.0625\) → \(\gamma_0=2.82\)。三个 SNR 都大于 2.82，成立。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">\(C=B\sum\log_2(\gamma_i/\gamma_0)=10\text{ MHz}\times[\log_2(28.3)+2\log_2(14.2)]=10\times(4.82+2\times3.82)\)。</div></div>
+          <div class="wans">C ≈ 124.7 Mbps ≈ 125 Mbps</div>
+        </div>
+      </div>
+      <div class="extra">
+        <div class="lbl">课外补充 · 一个 2 × 2 的小算例</div>
+        <p>设 \(\mathbf H=\begin{bmatrix}1&0\\0&0.5\end{bmatrix}\)，每根天线功率 P/2，\(P/\sigma^2=10\)。\(\mathbf H\mathbf H^H=\mathrm{diag}(1,0.25)\)，容量 \(\log_2(1+5)+\log_2(1+1.25)=2.58+1.17=3.75\) bit/s/Hz。如果只有 1 根天线、全部功率 \(P|h|^2/\sigma^2=10\)：\(\log_2 11=3.46\)。两条管道即使一条较弱，总容量也更高；SNR 越高，这个差距越大（两条管道时容量随 SNR 的增长速度是一条的两倍）。</p>
+      </div>
+      <div class="checkpoint">
+        <div class="lbl">自测</div>
+        <p>(1) Alamouti 码的码率是多少？为什么叫"全速率"？(2) 发射端不知道信道时，两根天线发同一个信号有没有分集？(3) 4 × 4 MIMO 在高 SNR 时容量大约是 SISO 的几倍？</p>
+        <details class="reveal"><summary>点击看答案</summary>
+          <div class="ans">(1) R = K/T = 2/2 = 1，每个时隙平均发一个新符号，和单天线一样快。(2) 没有（p.18），相位随机地相加或抵消；要用 Alamouti 这类空时码。(3) 约 min(4, 4) = 4 倍。</div>
+        </details>
+      </div>
+    </section>
+    <!-- ================= CH 6 ================= -->
+    <section class="chapter" id="ch6">
+      <div class="chapter-head"><span class="chapter-num">第六章</span><h2>均衡：把拖进下一个符号的回声抵消掉</h2></div>
+      <p>第 2 章说过，信号带宽超过相干带宽时会出现频率选择性衰落，在时域表现为<b>码间干扰 ISI</b>：前一个符号的回波拖进了后一个符号（p.4）。<b>均衡器</b>放在接收端，在采样时刻把 ISI 压下去（p.2）。</p>
+
+      <h3><span class="zh-num">6.1</span>ISI 从哪来：奈奎斯特准则</h3>
+      <p>发射信号 \(s(t)=\sum_n m_n\psi(t-nT)\)。如果 \(\psi(t)\) 和它平移 nT 后的版本正交，采样时就互不干扰。两种做法（p.6–7）：</p>
+      <ul>
+        <li>\(\psi(t)\) 只在 [0, T] 内非零（矩形脉冲）：带宽无限大，不现实；</li>
+        <li>\(\psi(t)=\frac{1}{\sqrt T}\mathrm{sinc}(t/T)\)：在自己的采样时刻是 1，在别的采样时刻都是 0，带宽只要 1/T。</li>
+      </ul>
+      <p>可是信道本身也是个滤波器。即使发射脉冲正交，经过信道 h(t) 以后的<b>等效脉冲</b> \(p(t)=\psi(t)*h(t)\) 就未必正交了（p.8–9）。例：\(\psi(t)=\mathrm{sinc}(t)\)，\(h(t)=\delta(t)+\delta(t-1)\)，T = 1，则 \(p(t)=\mathrm{sinc}(t)+\mathrm{sinc}(t-1)\)，相邻脉冲的内积是 1 ≠ 0，解调输出变成 \(\hat m_1=m_0+m_1\)。</p>
+      <div class="formula-card">
+        <div class="flbl">奈奎斯特无 ISI 准则（p.12）</div>
+        <div class="fexpr">\(y(nT)=m[n]g_e(0)+\displaystyle\sum_{i\ne n}m[i]\,g_e(nT-iT)+w(nT)\)，要求 \(g_e(nT-iT)=\begin{cases}1&n=i\\0&n\ne i\end{cases}\)</div>
+        <div class="fmeaning">\(g_e=g_T*g_C*g_R\) 是"发送滤波 × 信道 × 接收滤波"的总冲激响应。中间那个求和就是 ISI。只要总响应在其他采样点上都为 0，就没有 ISI。最优接收滤波是<b>匹配滤波</b> \(p^*(-t)\)（p.11）。</div>
+      </div>
+      <p>对付 ISI 有三类办法（p.13）：最优检测（MAP / MLSE）、均衡、多载波（OFDM，第 7 章）。</p>
+
+      <h3><span class="zh-num">6.2</span>最优：最大似然序列估计 MLSE 和维特比算法</h3>
+      <p>ISI 把相邻符号绑在一起，单独判每个符号不再最优。MLSE 把整个序列当成一个整体，找最可能的那一串（p.16）：</p>
+      <div class="formula-card">
+        <div class="flbl">MLSE（p.16–17）</div>
+        <div class="fexpr">\(\hat{\mathbf m}=\arg\max_{\mathbf m}p(\mathbf r\mid\mathbf m)\)　　穷举 \(M^K\) 种 → 维特比算法只需跟踪 \(M^L\) 个状态</div>
+        <div class="fmeaning">K 个 M 进制符号共有 \(M^K\) 种可能的序列，穷举不现实。如果 ISI 只涉及最近 L 个符号（L ≪ K），用<b>维特比算法</b>只需要跟踪 \(M^L\) 个"状态"（最近 L 个符号的组合）。例：QPSK（M = 4）、信道记忆 L = 2，状态数 4² = 16（p.35）。但复杂度仍随 L 指数增长。</div>
+      </div>
+
+      <h3><span class="zh-num">6.3</span>线性均衡：迫零与 MMSE</h3>
+      <p>线性均衡器就是一个横向（FIR）滤波器，逐个符号判决，复杂度随信道长度线性增长（p.19–20）。离散模型：\(r_n=\sum_{i=0}^{L-1}m_{n-i}h_i+w_n\)，信道和均衡器级联后 \(Q(z)=H(z)C(z)\)（p.22）。</p>
+      <div class="formula-card">
+        <div class="flbl">迫零均衡 ZFE（p.23）</div>
+        <div class="fexpr">\(C(z)=\dfrac{1}{H(z)}\ \Longrightarrow\ Q(z)=1\)</div>
+        <div class="fmeaning">直接把信道"除掉"，输出完全没有 ISI。名字里的"迫零"就是强迫所有 ISI 项为零。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>用长除法求迫零均衡器的系数（第 6 章 p.24）</summary>
+        <div class="wbody">
+          <p>已知条件：\(H(z)=1+0.3z^{-1}+0.1z^{-2}\)，求 ZFE 的前两个系数。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">\(C(z)=1/H(z)\)，用多项式长除法求 1 ÷ (1 + 0.3z⁻¹ + 0.1z⁻²)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">商的第一项是 1：1 − (1 + 0.3z⁻¹ + 0.1z⁻²) = −0.3z⁻¹ − 0.1z⁻²。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">第二项是 −0.3z⁻¹：余数 −0.3z⁻¹ − 0.1z⁻² − (−0.3z⁻¹ − 0.09z⁻² − 0.03z⁻³) = −0.01z⁻² + 0.03z⁻³。</div></div>
+          <div class="wans">C(z) = 1 − 0.3z⁻¹ − 0.01z⁻² + …，前两个系数是 1 和 −0.3</div>
+        </div>
+      </div>
+      <p><b>迫零的毛病：放大噪声</b>（p.25）。信道在某些频率上很弱时，1/H 在那里就很大，把那些频率上的噪声也一起放大。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>迫零均衡把噪声放大多少（第 6 章 p.25）</summary>
+        <div class="wbody">
+          <p>已知条件：\(h_n=\sqrt{1-a^2}\,a^n\)（n ≥ 0，|a| &lt; 1），噪声方差 σ²。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">等比数列求和：\(H(z)=\dfrac{\sqrt{1-a^2}}{1-az^{-1}}\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">\(C(z)=\dfrac{1-az^{-1}}{\sqrt{1-a^2}}=\dfrac{1}{\sqrt{1-a^2}}-\dfrac{a}{\sqrt{1-a^2}}z^{-1}\)，只有两个系数。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">白噪声通过 FIR 滤波器后的方差 = σ² × 系数平方和：<div class="calc">σ_n² = σ² · (1 + a²)/(1 − a²)</div></div></div>
+          <div class="wans">a = 0.9 时噪声放大 (1 + 0.81)/(1 − 0.81) = 9.5 倍，约 9.8 dB</div>
+        </div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">线性 MMSE（p.26）与性能分析（p.27–28）</div>
+        <div class="fexpr">\(\min_{c}E\Big[\big|s-\textstyle\sum_ic_ir_i\big|^2\Big]\)　　\(P_e\mid\mathbf m_l=Q\!\left(\dfrac{q_0+\sum_{i\ne0}m_{n+i}q_i}{\sqrt{\sigma^2\|\mathbf c\|^2}}\right)\)，\(P_e=E[P_e\mid\mathbf m_l]\)</div>
+        <div class="fmeaning">MMSE 不追求 ISI 为零，而是让"残余 ISI + 放大后的噪声"总和最小，噪声大时比 ZF 好。误码率的算法：先固定其他符号的取值（ISI 是确定的），算条件误码率，再对各种 ISI 组合求平均。Practice 6 的三道题都用这个套路。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>有 ISI 时的误码率（Practice 6 第 2 题）</summary>
+        <div class="wbody">
+          <p>已知条件：\(y_n=b_n+a\,b_{n-1}+w_n\)，\(b_n=\pm1\) 等概独立，0 &lt; a &lt; 1，噪声方差 0.1。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">(a) 直接判 sgn(y)。设发 \(b_n=+1\)：若 \(b_{n-1}=+1\)，信号幅度 1 + a；若 \(b_{n-1}=-1\)，幅度 1 − a，各占一半：<div class="calc">P_e = ½Q((1 + a)/√0.1) + ½Q((1 − a)/√0.1)</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">(b) 理想迫零：\(C(z)=1/(1+az^{-1})=\sum_k(-a)^kz^{-k}\)，ISI 消失，但噪声方差变成 \(0.1\sum_ka^{2k}=0.1/(1-a^2)\)：<div class="calc">P_e = Q( 1 / √(0.1/(1 − a²)) ) = Q( √((1 − a²)/0.1) )</div></div></div>
+          <div class="wans">(a) ½Q((1+a)/√0.1) + ½Q((1−a)/√0.1)；(b) Q(√((1−a²)/0.1))</div>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">6.4</span>判决反馈均衡 DFE</h3>
+      <p>线性均衡的缺点是放大噪声（p.29）。DFE 换个思路：<b>过去的符号已经判决过了，直接把它们造成的 ISI 减掉</b>。</p>
+      <ul>
+        <li><b>前馈滤波器</b>：线性地压制<b>未来</b>符号的 ISI；</li>
+        <li><b>反馈滤波器</b>：用已判决的<b>过去</b>符号 \(\hat m[n-1],\hat m[n-2],\dots\) 重构并减去它们的 ISI（p.32–33）。</li>
+      </ul>
+      <p>如果过去的判决都对，减掉 ISI 不放大任何噪声，性能接近最优。问题是<b>错误传播</b>（p.34）：一旦判错一个，减的就是错误的 ISI，反而加大干扰，后面可能连着错，直到连续判对几个以后才恢复。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>线性均衡 vs DFE（Practice 6 第 3 题）</summary>
+        <div class="wbody">
+          <p>已知条件：\(y_n=A_n+\tfrac12A_{n-1}+z_n\)，\(A_n=\pm1\)，噪声方差 1。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">(a) 线性：\(u_n=y_n+qy_{n+1}=(1+\tfrac q2)A_n+\tfrac12A_{n-1}+qA_{n+1}+z_n+qz_{n+1}\)。<div class="calc">E[(u_n − A_n)²] = (q/2)² + ¼ + q² + 1 + q² = 1.25 + 2.25q²</div>q = 0 时最小，均衡器什么都不做。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">于是 \(u_n=y_n\)，幅度是 1.5 或 0.5，各占一半：<div class="calc">P_e = ½Q(1.5) + ½Q(0.5) = ½(0.0668) + ½(0.3085) = 0.188</div></div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">(b) DFE：\(u_n=y_n-\tfrac12\hat A_{n-1}\)。上一个判对时，ISI 被完全抵消，\(u_n=A_n+z_n\)，出错概率 Q(1) = 0.159。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">上一个判错时，\(u_n=A_n+A_{n-1}+z_n\)，幅度 2 或 0：出错概率 ½Q(2) + ½ × ½ = 0.261。</div></div>
+          <div class="wstep"><div class="wn">5</div><div class="wtext">长期误码率 p 满足"本次错 = 上次对 × 0.159 + 上次错 × 0.261"：<div class="calc">p = (1 − p)(0.159) + p(0.261) → p = 0.159 / (1 − 0.261 + 0.159) = 0.177</div></div></div>
+          <div class="wans">(a) q = 0，Pe ≈ 0.19；(b) Pe ≈ 0.18：DFE 更好，但错误传播吃掉了一部分好处（无错误传播时是 0.159）</div>
+        </div>
+      </div>
+      <p>三种方法的对比（p.35、p.41）：MLSE 最优但复杂；线性均衡简单但放大噪声；DFE 非线性、接近最优、复杂度中等，有错误传播。</p>
+
+      <h3><span class="zh-num">6.5</span>信道估计：均衡器需要先知道信道</h3>
+      <div class="formula-card">
+        <div class="flbl">最小二乘信道估计（p.38–40）</div>
+        <div class="fexpr">\(\mathbf Y=\mathbf H\mathbf X+\mathbf V\)，\(\hat{\mathbf H}_{LS}=\mathbf Y\mathbf X^\dagger,\ \mathbf X^\dagger=\mathbf X^H(\mathbf X\mathbf X^H)^{-1}\)　　最优训练：\(\mathbf X\mathbf X^H=\dfrac PN\mathbf I\)</div>
+        <div class="fmeaning">发一段双方都知道的训练序列 X，收到 Y，反解出 H 使 \(\|\mathbf Y-\mathbf H\mathbf X\|^2\) 最小。训练矩阵各行正交、功率平均分时最好，此时 \(\hat{\mathbf H}_{LS}=\frac NP\mathbf Y\mathbf X^H=\mathbf H+\frac NP\mathbf V\mathbf X^H\)，估计误差的 MSE 和 N² 成正比。</div>
+      </div>
+      <div class="checkpoint">
+        <div class="lbl">自测</div>
+        <p>(1) 信道 H(z) = 1 + 0.5z⁻¹，迫零均衡器的前三个系数？(2) 为什么说 DFE 不放大噪声？它的代价是什么？(3) 8PSK、信道记忆 L = 2，维特比算法有多少个状态？</p>
+        <details class="reveal"><summary>点击看答案</summary>
+          <div class="ans">(1) 1/(1 + 0.5z⁻¹) = 1 − 0.5z⁻¹ + 0.25z⁻² − …，系数 1、−0.5、0.25。(2) 过去的 ISI 是用已判决的符号直接减掉，不经过会放大噪声的滤波；代价是判错时会错误传播。(3) 8² = 64。</div>
+        </details>
+      </div>
+    </section>
+    <!-- ================= CH 7 ================= -->
+    <section class="chapter" id="ch7">
+      <div class="chapter-head"><span class="chapter-num">第七章</span><h2>OFDM：把一条坑洼的宽路，改成很多条平整的窄路</h2></div>
+      <p>单载波系统速率越高，符号越短，ISI 拖的符号越多，时域均衡器越复杂（p.3）。OFDM 换个思路：<b>不把一条高速数据流塞进一个宽带信道，而是拆成 N 条低速子流，每条用一个窄带子载波发</b>（p.2、p.4）。</p>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>一辆卡车在坑洼的宽马路上飞驰，颠得厉害（频率选择性衰落、ISI）；把货分给 N 辆小推车，每辆走一条很窄、很平整的小道，每辆都慢慢走，但加起来运量一样。每条小道窄到"路面平整"（平坦衰落），每辆车慢到"颠簸的回声来不及影响下一趟"（无 ISI）。</p>
+      </div>
+
+      <h3><span class="zh-num">7.1</span>两条设计原则</h3>
+      <div class="formula-card">
+        <div class="flbl">OFDM 设计（p.5）</div>
+        <div class="fexpr">\(\dfrac1T<B_C\)（每个子载波上平坦衰落）　　\(T_G>T_D\)（保护间隔长于最大时延扩展）</div>
+        <div class="fmeaning">T 是 OFDM 符号时长，1/T 约等于子载波宽度，要小于相干带宽，每个子信道才是平坦的。再在每个 OFDM 符号前加一段保护间隔 \(T_G\)，长度超过最大时延扩展 \(T_D\)，上一个符号的回声就全落在保护间隔里，不影响下一个符号。</div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">子载波数与速率（p.8）</div>
+        <div class="fexpr">\(\Delta f=\dfrac BN\)　　\(T=NT_S\)　　每个子载波的符号速率 \(R=\dfrac1T=\dfrac{R_S}{N}\)</div>
+        <div class="fmeaning">总带宽 B 分成 N 份，每份 Δf。原来单载波的符号时长是 \(T_S\)，现在每个子载波上的符号拉长 N 倍。N 越大，子信道越窄越平坦、符号越长，越不怕 ISI。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>N 该怎么选（Practice 7 第 1(a) 题）</summary>
+        <div class="wbody">
+          <p>已知条件：总带宽 B，多普勒扩展 \(B_d\)，相干带宽 \(B_C\)；要求每个子信道都是<b>慢平坦衰落</b>。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">平坦：子信道宽度远小于相干带宽：\(B/N\ll B_C\) → \(N\gg B/B_C\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">慢衰落：子载波符号时长 \(N/B\) 远小于相干时长 \(1/B_d\) → \(N\ll B/B_d\)。</div></div>
+          <div class="wans">B/B_C ≪ N ≪ B/B_d：N 太小，子信道不平坦；N 太大，符号太长，一个符号内信道就变了</div>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">7.2</span>子载波为什么能挤在一起而不干扰：正交</h3>
+      <div class="formula-card">
+        <div class="flbl">子载波正交（p.7）与 OFDM 信号（p.9）</div>
+        <div class="fexpr">\(\dfrac1T\displaystyle\int_0^Te^{j2\pi(f_j-f_k)t}dt=\begin{cases}1&j=k\\0&j\ne k\end{cases}\)　　\(x(t)=\dfrac{1}{\sqrt T}\sum_{k=0}^{N-1}s_ke^{j2\pi kt/T}\)</div>
+        <div class="fmeaning">子载波间隔正好是 1/T，任意两个子载波在一个符号周期内都相差整数个周期，相乘积分为 0。所以虽然各子载波的频谱（sinc 形状）互相重叠，在每个子载波的中心频率处，其他子载波正好过零（p.10–11）。接收端在 \(f=k/T\) 处采样频谱，就能把 \(s_k\) 单独取出来。</div>
+      </div>
+      <p>频谱互相重叠，所以 OFDM 比传统频分复用（各子载波之间要留保护带）省带宽（p.27）。功率谱 \(\sum_n\mathrm{sinc}^2(fT-n)\)，N 很大时总带宽趋于 N/T（p.11）。</p>
+      <p><b>实现</b>：发射端的"N 个子载波相加"在离散时间就是 <b>IDFT</b>，接收端的"N 个相关器"就是 <b>DFT</b>（p.19–20），都用 FFT 快速计算。</p>
+
+      <h3><span class="zh-num">7.3</span>多径信道下：子信道增益 H_k</h3>
+      <div class="formula-card">
+        <div class="flbl">子信道增益（p.15）</div>
+        <div class="fexpr">\(H_k=\displaystyle\sum_{i=0}^{L-1}h_i\,e^{-j2\pi ik/N}\)</div>
+        <div class="fmeaning">\(h_i\) 是信道冲激响应的第 i 个抽头。\(H_k\) 就是冲激响应的 DFT 在第 k 个子载波上的值。不同子载波的增益不同，这就是"频率选择性"；但每个子载波内部增益是一个常数，所以是平坦的。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>4 个子载波的信道增益（Practice 7 第 1(b) 题）</summary>
+        <div class="wbody">
+          <p>已知条件：\(y(t)=h_0x(t)+h_1x(t-\tau)+w(t)\)，\(h_0=0.8\)，\(h_1=0.6\)，N = 4，延迟正好一个采样。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">\(H_k=0.8+0.6e^{-j2\pi k/4}=0.8+0.6e^{-j\pi k/2}\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">逐个代入：\(e^{-j\pi k/2}\) 依次是 1、−j、−1、j：<div class="calc">H₀ = 0.8 + 0.6 = 1.4；H₁ = 0.8 − 0.6j；H₂ = 0.8 − 0.6 = 0.2；H₃ = 0.8 + 0.6j；H₄ = H₀ = 1.4</div></div></div>
+          <div class="wans">|H|²：H₁、H₃ 为 1，H₂ 只有 0.04（深衰落），H₄ 为 1.96</div>
+          <p style="margin-top:12px">直观看：子载波 2 上，直射和延迟两路正好反相相减，只剩 0.2；子载波 0（= 4）上同相相加，有 1.4。</p>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">7.4</span>保护间隔与循环前缀</h3>
+      <p>多径会带来两种干扰（p.16）：上一个 OFDM 符号的回声（时延扩展），和子载波之间失去正交（子载波间干扰 ICI）。</p>
+      <ul>
+        <li><b>保护间隔</b>（p.17–18）：每个 OFDM 块前面延长 \(T_G\ge T_D\)，接收端把这段丢掉，只看后面的 N 个采样，上一块的回声就进不来。代价是多花了时间和功率，<b>功率损失</b> \(=10\log_{10}\dfrac{NT_S+T_G}{NT_S}\) dB。</li>
+        <li><b>循环前缀 CP</b>（p.21–22）：保护间隔里放的不是空白，而是把这个块<b>最后 G 个采样复制到最前面</b>。这样信道的线性卷积在接收窗口里等价于循环卷积，DFT 以后正好变成相乘：\(r_k=H_ks_k+w_k\)。子载波之间保持正交，没有 ICI。</li>
+      </ul>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>最短需要多长的循环前缀（Practice 7 第 3 题）</summary>
+        <div class="wbody">
+          <p>已知条件：信道 \(H(z)=1+0.9z^{-1}\)。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">冲激响应只有两个抽头：当前采样，加上晚一个采样的回声（系数 0.9）。最大时延扩展 = 1 个采样。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">CP 长度要 ≥ 信道长度 − 1 = 2 − 1 = 1，才能把上一个块的回声挡住。</div></div>
+          <div class="wans">最短 CP = 1 个采样（符号）长度</div>
+        </div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>设计一个 OFDM 系统（Practice 7 第 2 题）</summary>
+        <div class="wbody">
+          <p>已知条件：速率 2 Mbps，16-QAM，可用带宽 600 kHz，最大时延扩展 20 µs，CP 等于最大时延扩展。求子载波数和 OFDM 符号时长。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">16-QAM 每符号 4 bit，需要的总符号速率：2 Mbps ÷ 4 = 500 k 符号/秒。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">N 个子载波，每个宽 600k/N Hz，有用符号时长 \(T=N/600\text{k}\)；加上 CP，一个 OFDM 符号总长 \(T+20\) µs，期间发出 N 个符号：<div class="calc">N / (N/600k + 20 µs) = 500k</div></div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">解方程：N = 500k × (N/600k + 2×10⁻⁵) = 0.8333N + 10 → 0.1667N = 10 → N = 60。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">有用部分 T = 60/600k = 100 µs，加 CP 20 µs，总长 120 µs。</div></div>
+          <div class="wans">N = 60 个子载波，OFDM 符号时长 0.12 ms（其中 0.1 ms 有用 + 0.02 ms CP）</div>
+          <p style="margin-top:12px">检验：每秒 1/120 µs = 8333 个 OFDM 符号 × 60 个子载波 × 4 bit = 2 Mbps ✓。CP 占 1/6 的时间，功率损失 10 log(120/100) = 0.79 dB。</p>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">7.5</span>OFDM 的容量和均衡</h3>
+      <div class="formula-card">
+        <div class="flbl">OFDM 容量（p.24）</div>
+        <div class="fexpr">\(C(\mathbf P)=\displaystyle\sum_{k=1}^{N}\log_2\!\left(1+\frac{|H_k|^2P_k}{N_k}\right)\)</div>
+        <div class="fmeaning">N 个独立的平行高斯信道，最优功率分配还是第 2 章的注水法。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>等容量分配 vs 注水（Practice 7 第 1(c)(d) 题）</summary>
+        <div class="wbody">
+          <p>已知条件：沿用上面的 \(|H_k|^2=\{1,\ 0.04,\ 1,\ 1.96\}\)，噪声 1，总功率 10。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">(c) 要每个子信道容量相等，就要 \(|H_k|^2P_k\) 都相等，记为 c：\(P_k=c/|H_k|^2\)。<div class="calc">c(1 + 25 + 1 + 0.510) = 10 → c = 0.3635</div><div class="calc">P₁ = 0.36，P₂ = 9.09，P₃ = 0.36，P₄ = 0.19</div>为了"拉平"，最差的子信道吃掉了 91% 的功率。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">(d) 求最大总容量用注水。把"噪声/增益" \(1/|H_k|^2=\{1,25,1,0.51\}\) 当池底，水面 μ 满足 \(\sum(\mu-1/|H_k|^2)=10\)。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">四个都放水：μ = (10 + 27.51)/4 = 9.38 &lt; 25，子信道 2 的池底高过水面，去掉。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">剩三个：μ = (10 + 1 + 1 + 0.51)/3 = 4.17，功率 3.17、3.17、3.66。<div class="calc">C = log₂(4.17) + log₂(4.17) + log₂(4.17 × 1.96) = 2.06 + 2.06 + 3.03 = 7.15 bit/OFDM 符号</div></div></div>
+          <div class="wans">每个子载波占 B/N 的带宽，所以按 bit/s/Hz 算要除以 N = 4：C ≈ 1.79 ≈ 1.8 bit/s/Hz</div>
+        </div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">频域均衡（p.25–26）</div>
+        <div class="fexpr">\(R_k=s_kH_k+W_k\ \Longrightarrow\ \hat s_k=\dfrac{R_k}{H_k}\)</div>
+        <div class="fmeaning">每个子载波只要除以一个复数（估计出的信道增益），比第 6 章的时域均衡器简单得多。这是 OFDM 能做高速率的根本原因（p.27）：把频率选择性信道变成 N 条平行的平坦信道，不需要复杂的时域均衡。</div>
+      </div>
+      <div class="checkpoint">
+        <div class="lbl">自测</div>
+        <p>(1) 为什么 OFDM 的子载波频谱重叠也不会互相干扰？(2) CP 为什么要复制块尾，而不是放一段空白？(3) 带宽 1 MHz、64 个子载波，子载波间隔和有用符号时长各是多少？</p>
+        <details class="reveal"><summary>点击看答案</summary>
+          <div class="ans">(1) 间隔正好 1/T，在每个子载波的采样频率上其他子载波都过零（正交）。(2) 复制块尾让线性卷积在接收窗口内等价于循环卷积，DFT 后正好是 H_k s_k，子载波保持正交、没有 ICI；空白只能挡住上一块的回声。(3) Δf = 1 MHz/64 = 15.625 kHz，T = 1/Δf = 64 µs。</div>
+        </details>
+      </div>
+    </section>
+    <!-- ================= TOOLS ================= -->
+    <section class="chapter" id="ch8">
+      <div class="chapter-head"><span class="chapter-num">工具箱</span><h2>四个计算器：做题时拿来核对</h2></div>
+      <p>考试要手算，这些计算器只用来核对自己的结果。每个都预填了讲义或练习里的数字。</p>
+
+      <div class="tool" id="t-q">
+        <h4>Q 函数与反函数</h4>
+        <div class="trow">
+          <label for="q-x">x<input id="q-x" type="number" step="0.01" value="2.69"></label>
+          <label for="q-p">概率 p（求 Q⁻¹）<input id="q-p" type="number" step="0.0001" value="0.01"></label>
+        </div>
+        <div class="tout"><div><span>Q(x)</span><b id="q-out">—</b></div><div><span>Q⁻¹(p)</span><b id="qi-out">—</b></div></div>
+        <div class="thint">Q(2.69) 是第 2 章 p.16 的中断概率；Q⁻¹(0.01) = 2.33 是 Practice 1 第 2(b) 题要用的。</div>
+      </div>
+
+      <div class="tool" id="t-wf">
+        <h4>注水法（第 2 章 p.54；Practice 5、7）</h4>
+        <div class="trow">
+          <label for="wf-g">各子信道 SNR γ（逗号分隔）<input id="wf-g" type="text" value="17.77, 2.63, 0.087" style="width:16em"></label>
+          <label for="wf-b">带宽 B（MHz，填 1 则结果是 bit/s/Hz）<input id="wf-b" type="number" step="0.1" value="1"></label>
+        </div>
+        <div class="tout"><div><span>截止值 γ₀</span><b id="wf-g0">—</b></div><div><span>功率分配 Pⱼ / P</span><b id="wf-p">—</b></div><div><span>容量</span><b id="wf-c">—</b></div></div>
+        <div class="thint">试试 80, 40, 40 和 B = 10，应该得到约 124.7 Mbps（Practice 5 第 1 题）。</div>
+      </div>
+
+      <div class="tool" id="t-lcr">
+        <h4>多普勒、LCR 与 AFD（第 2 章 p.34–47）</h4>
+        <div class="trow">
+          <label for="l-v">车速（km/h）<input id="l-v" type="number" value="120"></label>
+          <label for="l-f">载频（GHz）<input id="l-f" type="number" step="0.1" value="5"></label>
+          <label for="l-r">ρ = Z_min / Z_rms<input id="l-r" type="number" step="0.01" value="0.1"></label>
+          <label for="l-rs">符号速率（ksps）<input id="l-rs" type="number" value="1000"></label>
+        </div>
+        <div class="tout"><div><span>f_m（Hz）</span><b id="l-fm">—</b></div><div><span>T_C ≈ 1/f_m</span><b id="l-tc">—</b></div><div><span>LCR（次/秒）</span><b id="l-lcr">—</b></div><div><span>AFD</span><b id="l-afd">—</b></div><div><span>每次衰落连错符号</span><b id="l-n">—</b></div></div>
+      </div>
+
+      <div class="tool" id="t-ofdm">
+        <h4>OFDM 系统设计（Practice 7 第 2 题）</h4>
+        <div class="trow">
+          <label for="o-r">目标速率（Mbps）<input id="o-r" type="number" step="0.1" value="2"></label>
+          <label for="o-b">每符号比特数<input id="o-b" type="number" value="4"></label>
+          <label for="o-w">带宽（kHz）<input id="o-w" type="number" value="600"></label>
+          <label for="o-g">CP 长度（µs）<input id="o-g" type="number" value="20"></label>
+        </div>
+        <div class="tout"><div><span>子载波数 N</span><b id="o-n">—</b></div><div><span>有用符号时长</span><b id="o-t">—</b></div><div><span>OFDM 符号总长</span><b id="o-tt">—</b></div><div><span>CP 功率损失</span><b id="o-loss">—</b></div></div>
+        <div class="thint">解的是 N / (N/B + T_G) = R / b。结果不是整数时取上整。</div>
+      </div>
+    </section>
+
+    <div class="next-up">
+      <div class="lbl">接下来</div>
+      <h4><a href="p2-practice.html">Part 2 练习：Practice 1–7 全部题目逐题详解</a></h4>
+      <p>每题附英文原题、考点、分步解答和官方答案核对，还有随机出题的练习模式。</p>
+    </div>
+  </main>
+</div>
+
+<script>
+const chapters = [...document.querySelectorAll('.chapter')].map(el=>({
+  id: el.id,
+  title: el.querySelector('.chapter-head h2')?.textContent || el.id,
+  num: el.querySelector('.chapter-num')?.textContent || ''
+}));
+
+const railList = document.getElementById('railList');
+railList.innerHTML = chapters.map(c=>`<li><a href="#${c.id}" data-id="${c.id}">${c.num} ${c.title}</a></li>`).join('');
+
+const mobNav = document.getElementById('mobNav');
+mobNav.innerHTML = chapters.map(c=>`<option value="${c.id}">${c.num} · ${c.title}</option>`).join('');
+mobNav.addEventListener('change', ()=>{
+  document.getElementById(mobNav.value)?.scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+const railLinks = [...railList.querySelectorAll('a')];
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    const link = railLinks.find(a=>a.dataset.id===entry.target.id);
+    if(!link) return;
+    if(entry.isIntersecting){
+      railLinks.forEach(a=>a.classList.remove('active'));
+      link.classList.add('active');
+      mobNav.value = entry.target.id;
+    }
+  });
+}, {rootMargin:'-10% 0px -70% 0px', threshold:0});
+chapters.forEach(c=>{ const el=document.getElementById(c.id); if(el) observer.observe(el); });
+</script>
+<script>
+(function(){
+  function erfc(x){ var z=Math.abs(x), t=1/(1+0.5*z);
+    var r=t*Math.exp(-z*z-1.26551223+t*(1.00002368+t*(0.37409196+t*(0.09678418+t*(-0.18628806+t*(0.27886807+t*(-1.13520398+t*(1.48851587+t*(-0.82215223+t*0.17087277)))))))));
+    return x>=0?r:2-r; }
+  function Q(x){ return 0.5*erfc(x/Math.SQRT2); }
+  function Qinv(p){ var lo=-10, hi=40; for (var i=0;i<200;i++){ var m=(lo+hi)/2; if (Q(m)>p) lo=m; else hi=m; } return lo; }
+  function fmt(x){ if (!isFinite(x)) return '—'; var a=Math.abs(x); return (a!==0&&(a<1e-3||a>=1e6))?x.toExponential(3):(+x.toPrecision(4)).toString(); }
+  function $(id){ return document.getElementById(id); }
+  function on(ids, fn){ ids.forEach(function(i){ $(i).addEventListener('input', fn); }); fn(); }
+
+  on(['q-x','q-p'], function(){
+    $('q-out').textContent = fmt(Q(+$('q-x').value));
+    var p=+$('q-p').value; $('qi-out').textContent = (p>0&&p<1)? fmt(Qinv(p)) : '—';
+  });
+
+  on(['wf-g','wf-b'], function(){
+    var g=$('wf-g').value.split(/[,\s]+/).map(Number).filter(function(v){ return v>0; });
+    var B=+$('wf-b').value;
+    if (!g.length){ $('wf-g0').textContent=$('wf-p').textContent=$('wf-c').textContent='—'; return; }
+    var idx=g.map(function(v,i){ return i; }).sort(function(a,b){ return g[b]-g[a]; }), g0=NaN, k;
+    for (k=idx.length;k>=1;k--){
+      var s=1; for (var i=0;i<k;i++) s+=1/g[idx[i]];
+      g0=k/s; if (g[idx[k-1]]>=g0) break;
+    }
+    var P=g.map(function(v){ return v>=g0 ? 1/g0-1/v : 0; });
+    var C=0; g.forEach(function(v){ if (v>=g0) C+=Math.log2(v/g0); });
+    $('wf-g0').textContent=fmt(g0);
+    $('wf-p').textContent=P.map(function(v){ return v.toFixed(3); }).join(' / ');
+    $('wf-c').textContent=fmt(C*B)+(B===1?' bit/s/Hz':' Mbps');
+  });
+
+  on(['l-v','l-f','l-r','l-rs'], function(){
+    var fm=(+$('l-v').value/3.6)*(+$('l-f').value)*1e9/3e8, r=+$('l-r').value, Rs=+$('l-rs').value*1e3;
+    var L=Math.sqrt(2*Math.PI)*fm*r*Math.exp(-r*r), A=(Math.exp(r*r)-1)/(Math.sqrt(2*Math.PI)*fm*r);
+    $('l-fm').textContent=fmt(fm); $('l-tc').textContent=fmt(1e3/fm)+' ms';
+    $('l-lcr').textContent=fmt(L); $('l-afd').textContent=fmt(A*1e6)+' µs'; $('l-n').textContent=fmt(A*Rs);
+  });
+
+  on(['o-r','o-b','o-w','o-g'], function(){
+    var Rs=(+$('o-r').value*1e6)/(+$('o-b').value), B=+$('o-w').value*1e3, Tg=+$('o-g').value*1e-6;
+    if (!(Rs<B)){ ['o-n','o-t','o-tt','o-loss'].forEach(function(i){ $(i).textContent='不可行'; }); return; }
+    var N=Rs*Tg/(1-Rs/B), Nn=Math.ceil(N-1e-9), T=Nn/B;
+    $('o-n').textContent=fmt(N)+(Math.abs(N-Nn)>1e-6?' → '+Nn:'');
+    $('o-t').textContent=fmt(T*1e6)+' µs'; $('o-tt').textContent=fmt((T+Tg)*1e6)+' µs';
+    $('o-loss').textContent=fmt(10*Math.log10((T+Tg)/T))+' dB';
+  });
+})();
+</script>
+</body>
+</html>

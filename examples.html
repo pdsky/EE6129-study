@@ -112,6 +112,25 @@ ol.steps li::before{content:counter(s);position:absolute;left:0;top:6px;width:22
 .f small{display:block;font-family:'IBM Plex Sans',sans-serif;color:var(--muted);font-size:.74rem}
 ul.tight{margin:.3em 0;padding-left:1.2em;font-size:.88rem}
 ul.tight li{margin:.15em 0}
+
+/* 课件英文原题 */
+:root{--img-filter:none}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--img-filter:invert(.88) hue-rotate(180deg)}}
+:root[data-theme="dark"]{--img-filter:invert(.88) hue-rotate(180deg)}
+.orig{border:1px solid var(--border);border-radius:10px;padding:10px 14px 8px;margin-bottom:10px;font-size:.92rem;line-height:1.6}
+.orig-lab{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-strong);margin-bottom:6px}
+.orig-lab span:last-child{color:var(--muted);text-transform:none;letter-spacing:0}
+.orig p{margin:.35em 0}
+.orig ul{margin:.3em 0 .4em;padding-left:1.3em}
+.orig ul.plain{list-style:none;padding-left:.2em}
+.orig li{margin:.12em 0}
+.orig .eq{font-family:'IBM Plex Mono',monospace;font-size:.84rem;background:var(--surface-2);border-radius:6px;padding:6px 10px;overflow-x:auto}
+.orig .blank{display:inline-block;min-width:2.2em;text-align:center;border-bottom:1.5px solid var(--accent);color:var(--accent-strong);font-weight:600}
+.orig-note{font-size:.78rem;color:var(--muted);margin-top:6px}
+.slidefig{margin:4px 0 8px}
+.slidefig img{display:block;max-width:100%;height:auto;filter:var(--img-filter)}
+.slidefig figcaption{font-size:.74rem;color:var(--muted)}
+.q::before{content:'中文题意';display:block;font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.06em;color:var(--muted);margin-bottom:2px}
 </style>
 <style>.back{display:inline-block;margin-bottom:14px;font-size:.8rem;color:var(--muted);text-decoration:none}.back:hover{color:var(--accent-strong)}</style>
 </head>
@@ -120,7 +139,7 @@ ul.tight li{margin:.15em 0}
   <a class="back" href="index.html">← 学习站目录</a>
   <div class="eyebrow">EE6129 · Part A Cellular Communications</div>
   <h1>例题手册</h1>
-  <p class="lede">讲义里的 15 道例题按页码整理，每题拆成：题目 → 分步解法 → 答案 → 记忆方法 → 易错点。讲义里的 Erlang 值是查表取整的，我用公式重新算过，差别写在「核对」里。打开「自测模式」会先隐藏解法，适合考前默写。</p>
+  <p class="lede">讲义里的 15 道例题按页码整理。每题先给<b>课件原版英文题目</b>（逐字照录，没有删改），再给中文题意，然后是分步解法 → 答案 → 记忆方法 → 易错点。几页讲解型例题原文自带结果，照录时把结果换成 ?，方便自测。讲义里的 Erlang 值是查表取整的，我用公式重新算过，差别写在「核对」里。打开「自测模式」会先隐藏解法，适合考前默写。</p>
 
   <div class="tw">
   <table>
@@ -163,6 +182,16 @@ ul.tight li{margin:.15em 0}
 
   <article class="ex" data-t="se" id="p44">
     <header><span class="pg">p.43–44</span><h3>例 1 · AMPS 系统的频谱效率</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Slide 43</span></div><p>Consider an AMPS system with two operators sharing the 25 MHz bandwidth. Assume each cell uses 3 control channels. Calculate the spectral efficiency based on the following parameters.</p>
+<ul>
+<li>Area of cell = 4 km<sup>2</sup></li>
+<li>Total coverage area = 2000 km<sup>2</sup></li>
+<li>Average number of calls per user per hour = 1.2</li>
+<li>Average holding time of a call = 100 sec</li>
+<li>Call blocking probability: GOS = 2%</li>
+<li>Frequency reuse factor = 7</li>
+</ul>
+    </div>
     <div class="q">两家运营商共享 25MHz 的 AMPS 系统，每个小区用 3 条控制信道。求频谱效率、每小时呼叫数与用户数。
       <div class="given"><span>信道宽 30kHz</span><span>小区面积 4km²</span><span>总覆盖 2000km²</span><span>1.2 次/用户/小时</span><span>平均通话 100s</span><span>GoS 2%</span><span>N = 7</span></div>
     </div>
@@ -187,6 +216,14 @@ ul.tight li{margin:.15em 0}
 
   <article class="ex" data-t="se" id="p47">
     <header><span class="pg">p.47</span><h3>北美 TDMA 系统的多址频谱效率</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Slide 47</span></div><p>In the North American TDMA system, the parameters are as follows. Calculate the multiple access spectral efficiency.</p>
+<ul>
+<li>Single operator bandwidth = 12.5 MHz with channel spacing = 30 kHz</li>
+<li>Total data channels = 395</li>
+<li>Frame duration = 40 ms with time slots per frame = 6</li>
+<li>Speech rate = 13 kbps and gross data rate = 16.2 kbps</li>
+</ul>
+    </div>
     <div class="q">求北美 TDMA 系统的多址频谱效率 η<sub>a</sub>。
       <div class="given"><span>单运营商 12.5MHz</span><span>信道间隔 30kHz</span><span>数据信道 395</span><span>帧长 40ms</span><span>每帧 6 时隙</span><span>语音 13kbps</span><span>总速率 16.2kbps</span></div>
     </div>
@@ -211,6 +248,13 @@ ul.tight li{margin:.15em 0}
 
   <article class="ex" data-t="pl" id="p65">
     <header><span class="pg">p.65（背景 p.58–64）</span><h3>用 CCIR 模型求接收功率</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Slide 65</span></div><p>Find the received power using CCIR model for</p>
+<ul class="plain">
+<li>P<sub>T</sub> = 5W, d = 2km</li>
+<li>G<sub>T</sub> = 10dBd, G<sub>R</sub> = 0 dBd</li>
+<li>h<sub>T</sub> = 25m, h<sub>R</sub> = 2m</li>
+</ul>
+    </div>
     <div class="q">用 CCIR 城区模型求接收功率 P<sub>R</sub>（f = 900MHz）。
       <div class="given"><span>P<sub>T</sub> = 5W</span><span>d = 2km</span><span>G<sub>T</sub> = 10dBd</span><span>G<sub>R</sub> = 0dBd</span><span>h<sub>T</sub> = 25m</span><span>h<sub>R</sub> = 2m</span></div>
     </div>
@@ -248,6 +292,8 @@ ul.tight li{margin:.15em 0}
 
   <article class="ex" data-t="ci" id="p82">
     <header><span class="pg">p.82</span><h3>7 小区 FDD 系统的信道数</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Slide 82</span></div><p>A 7-cell reuse FDD cellular system has a total of 30 MHz of bandwidth. Each simplex voice channel occupies 25 kHz bandwidth. A total of 2 MHz bandwidth is allocated to control channels. Determine the number of duplex voice channels in the system and per cell. Assume that uniform fixed channel assignment (UFCA) is used.</p>
+    </div>
     <div class="q">7 小区复用的 FDD 蜂窝系统，采用均匀固定信道分配，求系统和每个小区的<b>双工</b>语音信道数。
       <div class="given"><span>总带宽 30MHz</span><span>单工信道 25kHz</span><span>控制信道占 2MHz</span></div>
     </div>
@@ -269,6 +315,8 @@ ul.tight li{margin:.15em 0}
 
   <article class="ex" data-t="ci" id="p89">
     <header><span class="pg">p.89</span><h3>SIR ≥ 10dB 时选簇尺寸</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Slide 89</span></div><p>If a SIR of 10 dB is required for a cellular system, find the optimum cluster size with the path loss exponent to be 4. Using simple analysis assumptions.</p>
+    </div>
     <div class="q">系统要求 SIR = 10dB，路径损耗指数 n = 4，用简化分析求<b>所需</b>簇尺寸与<b>最优</b>簇尺寸。</div>
     <button class="reveal">显示解法</button>
     <div class="sol">
@@ -299,6 +347,13 @@ ul.tight li{margin:.15em 0}
 
   <article class="ex" data-t="ci" id="p91">
     <header><span class="pg">p.91</span><h3>最坏情况 SIR（N = 7，n = 4）</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Slide 91 · “The Worse Case”</span></div><p><b>Case 1:</b> Then SIR,</p>
+<p class="eq">S/I = R<sup>−n</sup> / [2(D − R)<sup>−n</sup> + 2D<sup>−n</sup> + 2(D + R)<sup>−n</sup>] = 1 / [2(Q − 1)<sup>−n</sup> + 2Q<sup>−n</sup> + 2(Q + 1)<sup>−n</sup>]</p>
+<p>N = 7, n = 4, S/I = <span class="blank">?</span> dB</p>
+<p><b>Case 2:</b> To be conservative, shortest distance D − R for all 6 interferers, then</p>
+<p class="eq">S/I = R<sup>−n</sup> / 6(D − R)<sup>−n</sup> = 1 / 6(Q − 1)<sup>−n</sup></p>
+<p>N = 7, n = 4, S/I = <span class="blank">?</span> dB</p>
+    <div class="orig-note">这页是推导页，没有单独的题干。下面是原文，结果用 ? 代替。</div></div>
     <div class="q">移动台位于小区边缘，第一层 6 个干扰源到它的距离不再相等。分两种情况求 S/I。</div>
     <button class="reveal">显示解法</button>
     <div class="sol">
@@ -318,6 +373,8 @@ ul.tight li{margin:.15em 0}
 
   <article class="ex" data-t="ci" id="p93">
     <header><span class="pg">p.93</span><h3>固定信道分配：210 条信道</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Slide 93</span></div><p>If the total number of system channel is 210. Compute the number of channels per cell if the fixed channel assignment is used.</p>
+    </div>
     <div class="q">系统共有 210 条信道，采用固定信道分配（N = 7），求每个小区的信道数。</div>
     <button class="reveal">显示解法</button>
     <div class="sol">
@@ -337,6 +394,16 @@ ul.tight li{margin:.15em 0}
 
   <article class="ex" data-t="tr" id="p121">
     <header><span class="pg">p.121–122</span><h3>话务量与干线增益</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Slides 121–122</span></div><p>Typical call arrival rate λ in a large population of mobile users, during the busy hour can range from 0.4 calls/hr/per subscriber to 1.2 calls/hr/per subscriber.</p>
+<p>Typical holding time 1/μ can be around 100 seconds. Thus, it can give rise to an offered traffic of λ/μ = (1.2)(100/3600) = <span class="blank">?</span> Erlangs.</p>
+<p>Typical values of blocking probability are:</p>
+<ul>
+<li>For P<sub>B</sub> = 0.05, M = 10, A = 6.2, M = 20, A = 15.2, M = 50, A = 44.3</li>
+<li>For P<sub>B</sub> = 0.02, M = 10, A = 5.08, M = 20, A = 13.2, M = 50, A = 40.3</li>
+</ul>
+<p>A cell with 50 channels would be able to handle 40.3 Erlangs with P<sub>B</sub> = 2%. This is equivalent to handling <span class="blank">?</span> mobile subscribers with 2% GoS during busy hour traffic.</p>
+<p>Trunking gain is defined as: Trunking gain = the number of users served by a set of channels (or trunks) with a specified GOS / the number of channels (or trunks). In the mobile environment, under busy hour traffic conditions, the trunking gain is ≈ <span class="blank">?</span> for a GoS of 2%.</p>
+    <div class="orig-note">讲解型例题，原文自带结果。下面照录原文，结果用 ? 代替。</div></div>
     <div class="q">忙时每用户每小时呼叫 0.4–1.2 次，平均通话 100 秒。求一个 50 信道、GoS 2% 的小区能服务多少用户，以及干线增益。</div>
     <button class="reveal">显示解法</button>
     <div class="sol">
@@ -363,6 +430,11 @@ ul.tight li{margin:.15em 0}
 
   <article class="ex" data-t="tr" id="p123">
     <header><span class="pg">p.123–124</span><h3>干线效率：一组 10 信道 vs 两组 5 信道</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Slides 123–124 · “Trunking Efficiency”</span></div><p>Trunking efficiency: 10 trunked channels at a GoS of 0.01 can support <span class="blank">?</span> Erlangs of traffic. Two groups of 5 trunked channels at the same GoS (0.01) support 2 × <span class="blank">?</span> = <span class="blank">?</span> Erlangs of traffic.</p>
+<p>Trunking efficiency: is expressed as value between 0 and 1 and is the carried traffic in Erlangs/channel. It is a function of the number of channels per cell for a specified GOS parameter i.e. P(blocking) = 0.01 for Erlang B a fixed channel C = 10.</p>
+<p>For 1st case: Trunking efficiency is = <span class="blank">?</span><br>For 2nd case: Trunking efficiency is = <span class="blank">?</span></p>
+<p>So 1 group of 10 channels support <span class="blank">?</span>% more traffic than 2 groups of 5 channels. But the SIR for 2 groups would probably be better.</p>
+    <div class="orig-note">讲解型例题，原文自带结果。下面照录原文，结果用 ? 代替。</div></div>
     <div class="q">GoS = 1%。比较 10 条信道集中成一组，与分成两组各 5 条时能承载的话务量和干线效率。</div>
     <button class="reveal">显示解法</button>
     <div class="sol">
@@ -380,6 +452,9 @@ ul.tight li{margin:.15em 0}
 
   <article class="ex" data-t="tr" id="p130">
     <header><span class="pg">p.130–132</span><h3>三家运营商的市场渗透率</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Slide 130</span></div><p>In a residential area with 1.2 million people, there are 3 service providers (Singa, Mobi, Hubba). Singa has 380 cells with 20 channels each. Mobi has 100 cells with 60 channels each. Hubba has 60 cell with 100 channels each.</p>
+<p>Find the number of users supported by each blocked system with GoS of 2%. Given that each user has average 3 calls per hour with an average call duration of 5 minutes. Assuming that all 3 service provider operates at maximum capacity, compute the percentage market penetration for each provider.</p>
+    </div>
     <div class="q">某住宅区 120 万人，三家运营商都满负荷运行，GoS 2%。每用户每小时 3 次、每次 5 分钟。求各家支持的用户数和市场渗透率。
       <div class="given"><span>Singa：380 小区 × 20 信道</span><span>Mobi：100 小区 × 60 信道</span><span>Hubba：60 小区 × 100 信道</span></div>
     </div>
@@ -408,6 +483,17 @@ ul.tight li{margin:.15em 0}
 
   <article class="ex" data-t="tr" id="p133">
     <header><span class="pg">p.133–134</span><h3>城市蜂窝系统规划</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Slide 133</span></div><p>A city has an area of 1300 km<sup>2</sup> and is covered by a seven-cell reuse pattern system. Each cell has an area of 41.5 km<sup>2</sup>, and each cluster is allocated 40MHz of spectrum with a full duplex channel bandwidth of 60kHz. Assume a GoS of 2% for an Erlang B system is specified. If the offered traffic per user is 0.03 Erlangs, Compute:</p>
+<ul>
+<li>Number of cells in the service area</li>
+<li>Number of channels per cell</li>
+<li>Traffic intensity of each cell</li>
+<li>Maximum traffic</li>
+<li>Total number of users that can be served for 2% GoS</li>
+<li>Numbers of mobiles per unique channel</li>
+<li>Theoretical maximum number of users that could be served at one time by the system</li>
+</ul>
+    </div>
     <div class="q">城市面积 1300km²，七小区复用，每簇分配 40MHz，采用 Erlang B、GoS 2%。依次求：小区数、每小区信道数、每小区话务量、最大话务量、可服务用户数、每个唯一信道的用户数、理论最大同时服务数。
       <div class="given"><span>小区面积 41.5km²</span><span>全双工信道 60kHz</span><span>每用户 0.03 Er</span></div>
     </div>
@@ -435,6 +521,11 @@ ul.tight li{margin:.15em 0}
 
   <article class="ex" data-t="cap" id="p136">
     <header><span class="pg">p.136</span><h3>小区分裂的功率下降</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Slide 136 · “Cell Splitting”</span></div><p>Subdivide congested cell into smaller cells (microcells), each with its own base station. These smaller cells have lower antenna height and smaller transmit power. Capacity is increased due to additional channels per unit area.</p>
+<p>If microcells have half of the radius of original cell,</p>
+<p class="eq">P<sub>r</sub>[original cell] ∝ P<sub>t1</sub>R<sup>−n</sup><br>P<sub>r</sub>[microcell] ∝ P<sub>t2</sub>(R/2)<sup>−n</sup></p>
+<p>If path loss exponent n = 4, P<sub>t2</sub> = <span class="blank">?</span>. Transmitted power for microcell has to be reduced by <span class="blank">?</span> dB in order to maintain the same SIR.</p>
+    <div class="orig-note">讲解型例题，原文自带结果。下面照录原文，结果用 ? 代替。</div></div>
     <div class="q">微小区半径是原小区的一半，路径损耗指数 n = 4。为保持相同的 SIR，微小区的发射功率要降低多少？</div>
     <button class="reveal">显示解法</button>
     <div class="sol">
@@ -452,6 +543,13 @@ ul.tight li{margin:.15em 0}
 
   <article class="ex" data-t="cap" id="p140">
     <header><span class="pg">p.140–142</span><h3>小区分裂后的信道数</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Slide 140</span></div><figure class="slidefig"><img src="data:image/png;base64,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" alt="Slide 140 figure: hexagonal cells of radius R around base station A, each split into microcells of radius R/2, with a square drawn around A" width="533" height="356"><figcaption>课件 p.140 原图</figcaption></figure>
+<p>For the above figure, each base station uses 60 channels regardless of cell size. If original cell radius is 1km and microcell has 0.5km radius, find the number of channels contained in a 3km by 3km square centered around A, under following conditions:</p>
+<ul>
+<li>Without microcells</li>
+<li>With the microcells used</li>
+</ul>
+    </div>
     <div class="q">每个基站固定 60 条信道。原小区半径 1km，微小区半径 0.5km。求以基站 A 为中心、3km × 3km 正方形区域内的信道数：(a) 不用微小区；(b) 使用微小区。</div>
     <button class="reveal">显示解法</button>
     <div class="sol">
@@ -470,6 +568,16 @@ ul.tight li{margin:.15em 0}
 
   <article class="ex" data-t="cap" id="p145">
     <header><span class="pg">p.144–145</span><h3>扇区化的 SIR 改善（N = 7，n = 4）</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Slides 144–145 · “Sectoring” / “Cell Sectoring”</span></div><p>By using 120 degree sectoring, first tier interference can be reduced to <span class="blank">?</span>. SIR is found to be <span class="blank">?</span> dB as compared to 18dB for omni-directional without sectoring, which is a significant improvement.</p>
+<p>The improvement in SIR decreases cluster size N, improves frequency reuse, thus system capacity. If SIR for 7 cell is 18dB, with 120 degree, the SIR improved is comparable to 12 cells. Therefore, increase in channel capacity by a factor of <span class="blank">?</span>.</p>
+<p>Co-channel interference reduction with cell sectoring due to use of directional antennas:</p>
+<p><b>3-sector, worst case:</b></p>
+<p class="eq">S/I = R<sup>−n</sup> / {D<sup>−n</sup> + (D + 0.7R)<sup>−n</sup>} = 1 / {Q<sup>−n</sup> + (Q + 0.7)<sup>−n</sup>}</p>
+<p>When N = 7 and n = 4, S/I = ? dB</p>
+<p><b>6-sector, worst case:</b></p>
+<p class="eq">S/I = R<sup>−n</sup> / (D + 0.7R)<sup>−n</sup> = 1 / (Q + 0.7)<sup>−n</sup></p>
+<p>When N = 7 and n = 4, S/I = ? dB</p>
+    <div class="orig-note">讲解型例题，原文自带结果。下面照录原文，结果用 ? 代替（p.145 原文本身就写着 “S/I = ? dB”）。</div></div>
     <div class="q">分别求 3 扇区（120°）和 6 扇区（60°）的最坏情况 S/I，并说明 120° 扇区化带来的容量变化。</div>
     <button class="reveal">显示解法</button>
     <div class="sol">
@@ -490,6 +598,10 @@ ul.tight li{margin:.15em 0}
 
   <article class="ex" data-t="cap" id="p148">
     <header><span class="pg">p.148–149</span><h3>扇区化后每小时能处理多少呼叫</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Slide 148</span></div><p>A system has an average call duration of 2 minutes with the probability of blocking no more then 1%. Assume that this is a blocked system and each user makes 1 call per hour on average, if there are 395 traffic channels for a 7 cell reuse system, there will be 57 channels per cell.</p>
+<p>Find the number of calls per hour if no sectoring is used.</p>
+<p>Compute the number of calls per hour when 120 degree and 60 degree sectoring is used.</p>
+    </div>
     <div class="q">呼损制系统，平均通话 2 分钟，阻塞率不超过 1%，每用户每小时 1 次。7 小区复用共 395 条业务信道，即每小区 57 条。求：不分扇区、120° 扇区、60° 扇区时每小时的呼叫数。</div>
     <button class="reveal">显示解法</button>
     <div class="sol">

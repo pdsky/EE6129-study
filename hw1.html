@@ -1,0 +1,1056 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>EE6129 HW1 讲解</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  color-scheme:light;
+  --bg:#eceff0; --surface:#fff; --surface-2:#e3e9e9; --border:#cbd6d7;
+  --text:#13201f; --muted:#4e615f;
+  --accent:#0f766e; --accent-strong:#0a5a53; --accent-soft:#d7eeeb; --on-accent:#fff;
+  --mem:#7a4a0c; --mem-soft:#f7e8d2; --trap:#a3261e; --trap-soft:#fbe3e0;
+  --ok:#137a3f; --near:#b4361f; --mid:#b07a12; --far:#2f6fb0;
+  --extra:#7a4fc4; --extra-soft:#f2ecfb;
+  --shadow:0 1px 2px rgba(19,32,31,.06),0 8px 22px rgba(19,32,31,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0b1413; --surface:#111e1c; --surface-2:#182825; --border:#273a36;
+    --text:#e6f0ed; --muted:#9ab3ad;
+    --accent:#33d1bf; --accent-strong:#7ceede; --accent-soft:#113330; --on-accent:#08100e;
+    --mem:#f0b56a; --mem-soft:#2f2210; --trap:#f2857c; --trap-soft:#351816;
+    --ok:#4fd087; --near:#f2857c; --mid:#e9b85a; --far:#7fb3ec;
+    --extra:#b79cf0; --extra-soft:rgba(183,156,240,.12);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0b1413; --surface:#111e1c; --surface-2:#182825; --border:#273a36;
+  --text:#e6f0ed; --muted:#9ab3ad;
+  --accent:#33d1bf; --accent-strong:#7ceede; --accent-soft:#113330; --on-accent:#08100e;
+  --mem:#f0b56a; --mem-soft:#2f2210; --trap:#f2857c; --trap-soft:#351816;
+  --ok:#4fd087; --near:#f2857c; --mid:#e9b85a; --far:#7fb3ec;
+  --extra:#b79cf0; --extra-soft:rgba(183,156,240,.12);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'IBM Plex Sans','Noto Sans CJK SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto;padding:28px 18px 90px}
+h1,h2,h3{font-family:'Barlow Condensed','Noto Sans CJK SC','Microsoft YaHei',sans-serif;font-weight:700;margin:0 0 .3em;text-wrap:balance;letter-spacing:.01em;line-height:1.15}
+h1{font-size:2.4rem}
+h2{font-size:1.65rem}
+h3{font-size:1.2rem}
+a{color:var(--accent-strong)}
+.back{font-size:.82rem;text-decoration:none;color:var(--muted)}
+.back:hover{color:var(--accent-strong)}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-strong);margin:14px 0 6px}
+.lede{color:var(--muted);max-width:64ch;margin:.2em 0 .8em}
+.mono,code{font-family:'IBM Plex Mono',ui-monospace,monospace;font-variant-numeric:tabular-nums}
+sub,sup{font-size:.72em;line-height:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.notice{border:1px solid var(--border);border-radius:10px;padding:9px 14px;font-size:.86rem;color:var(--muted);max-width:70ch}
+.notice b{color:var(--text)}
+
+/* tabs */
+.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);display:flex;gap:6px;flex-wrap:wrap;padding:12px 0 10px;margin:20px 0 6px;border-bottom:1px solid var(--border)}
+.tab{font:inherit;font-size:.9rem;font-weight:600;padding:6px 16px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer}
+.tab:hover{color:var(--text);border-color:var(--accent)}
+.tab[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.jump{display:flex;flex-wrap:wrap;gap:4px 12px;font-family:'IBM Plex Mono',monospace;font-size:.76rem;margin:4px 0 0}
+.jump a{text-decoration:none;color:var(--muted)}
+.jump a:hover{color:var(--accent-strong)}
+
+/* overview table */
+.tw{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th,td{padding:6px 10px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top}
+th{font-family:'IBM Plex Mono',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.ov{min-width:600px}
+
+/* question sections */
+.qsec{margin:40px 0 0;scroll-margin-top:70px}
+.qhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;border-bottom:2px solid var(--text);padding-bottom:4px;margin-bottom:12px}
+.qhead h2{margin:0}
+.marks{font-family:'IBM Plex Mono',monospace;font-size:.75rem;color:var(--muted)}
+.orig{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 16px;font-size:.92rem;line-height:1.6}
+.orig-lab{font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.07em;text-transform:uppercase;color:var(--accent-strong);margin-bottom:4px}
+.orig p{margin:.35em 0}
+.orig ol{margin:.3em 0;padding-left:2.2em}
+.orig ol li{margin:.15em 0}
+.orig .eq{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:.86rem;margin:.5em 0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 4px}
+.chip{font-size:.76rem;border-radius:999px;padding:2px 10px;background:var(--accent-soft);color:var(--accent-strong);font-weight:500}
+.chip.src{background:transparent;border:1px solid var(--border);color:var(--muted)}
+.chip.src a{color:inherit}
+.prose{max-width:70ch}
+.prose p{margin:.6em 0}
+.prose ul,.prose ol{padding-left:1.3em;margin:.4em 0}
+.prose li{margin:.25em 0}
+ol.steps{margin:.6em 0;padding-left:0;list-style:none;counter-reset:s;max-width:74ch}
+ol.steps>li{counter-increment:s;position:relative;padding:6px 0 6px 34px;border-bottom:1px dotted var(--border)}
+ol.steps>li:last-child{border-bottom:none}
+ol.steps>li::before{content:counter(s);position:absolute;left:0;top:8px;width:22px;height:22px;border-radius:50%;background:var(--accent-soft);color:var(--accent-strong);font-family:'IBM Plex Mono',monospace;font-size:.72rem;font-weight:600;display:flex;align-items:center;justify-content:center}
+.f{font-family:'IBM Plex Mono',monospace;font-size:.86rem;background:var(--surface-2);border-radius:6px;padding:6px 12px;margin:6px 0;overflow-x:auto;white-space:nowrap}
+.f.wrapok,.doc .f{white-space:normal}
+.calc{font-family:'IBM Plex Mono',monospace;font-size:.86rem;color:var(--muted)}
+.mem,.trap{margin-top:10px;border-radius:10px;padding:8px 14px;font-size:.88rem;max-width:74ch}
+.mem{background:var(--mem-soft)}
+.mem::before{content:'记忆　';font-weight:700;color:var(--mem)}
+.trap{background:var(--trap-soft)}
+.trap::before{content:'易错　';font-weight:700;color:var(--trap)}
+.trap ul{margin:.2em 0;padding-left:1.2em}
+.see{font-size:.84rem;color:var(--muted);margin-top:10px}
+
+/* figures */
+figure{margin:14px 0}
+.fig{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px;overflow-x:auto}
+.fig svg{display:block;width:100%;height:auto;max-width:100%}
+figcaption{font-size:.8rem;color:var(--muted);margin-top:6px;max-width:70ch}
+svg text{font-family:'IBM Plex Sans','Noto Sans CJK SC','Microsoft YaHei',sans-serif;fill:var(--text)}
+svg .mono{font-family:'IBM Plex Mono',monospace}
+.nd{fill:var(--surface);stroke:var(--text);stroke-width:1.3}
+.nd.core{fill:var(--accent-soft);stroke:var(--accent);stroke-width:2}
+.nd.ext{fill:var(--surface-2);stroke:var(--border)}
+.ln{stroke:var(--text);stroke-width:1.3;fill:none}
+.ln.air{stroke:var(--accent);stroke-width:2}
+.t-sub{fill:var(--muted)!important;font-size:11px}
+.t-num{fill:var(--accent-strong)!important;font-weight:700}
+.hx{fill:var(--surface);stroke:var(--border);stroke-width:1}
+.hx.co{fill:var(--accent-soft);stroke:var(--accent)}
+.hx.home{fill:var(--accent);stroke:var(--accent)}
+.hl{font-size:9px;fill:var(--muted)!important;text-anchor:middle;dominant-baseline:central}
+.hl.home{fill:var(--on-accent)!important;font-weight:700}
+.hl.co{fill:var(--accent-strong)!important;font-weight:700}
+.path-i{stroke:var(--text);stroke-width:2.2;fill:none}
+.path-d{stroke:var(--trap);stroke-width:1.8;stroke-dasharray:5 4;fill:none}
+.arrowhead{fill:var(--text)}
+.lab-d{fill:var(--trap)!important;font-weight:700}
+.halo{paint-order:stroke;stroke:var(--surface);stroke-width:3.5px;stroke-linejoin:round}
+.cell7{fill:var(--surface);stroke:var(--border)}
+.cell7.home{fill:var(--accent-soft);stroke:var(--accent)}
+.bs{fill:var(--text)}
+.ms{fill:var(--accent);stroke:var(--surface);stroke-width:1.5}
+.il{stroke-width:1.8;fill:none;transition:opacity .2s}
+.il.near{stroke:var(--near)} .il.mid{stroke:var(--mid)} .il.far{stroke:var(--far)}
+.ilab{font-size:9px;font-weight:600;paint-order:stroke;stroke:var(--surface);stroke-width:3px;stroke-linejoin:round}
+#intsvg{max-width:480px;margin:0 auto}
+svg.hexgrid{max-width:520px;margin:0 auto}
+.ilab.near{fill:var(--near)!important} .ilab.mid{fill:var(--mid)!important} .ilab.far{fill:var(--far)!important}
+.wedge{fill:var(--accent);opacity:.12;stroke:var(--accent);stroke-width:.8}
+.wedge.hit{opacity:.32}
+.sect .il.blocked{opacity:.18;stroke-dasharray:3 3}
+.sect .ilab.blocked{opacity:.25}
+.omni .wedge{display:none}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:999px;overflow:hidden;margin:8px 0}
+.seg button{font:inherit;font-size:.82rem;border:0;background:var(--surface);color:var(--muted);padding:5px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);font-weight:600}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.8rem;color:var(--muted);margin-top:4px}
+.legend i{display:inline-block;width:18px;height:3px;border-radius:2px;vertical-align:middle;margin-right:5px}
+
+/* calculators */
+.tool{background:var(--surface);border:1px solid var(--accent);border-radius:12px;padding:14px 16px;margin:16px 0;box-shadow:var(--shadow)}
+.tool h3{margin:0 0 8px;color:var(--accent-strong);font-size:1.15rem}
+.tool .row{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:flex-end}
+.tool label{display:flex;flex-direction:column;font-size:.76rem;color:var(--muted);gap:3px}
+.tool input,.tool select{font:inherit;font-family:'IBM Plex Mono',monospace;font-size:.92rem;width:7.5em;padding:5px 8px;border:1px solid var(--border);border-radius:8px;background:var(--surface-2);color:var(--text)}
+.tool input[type=range]{width:11em;padding:0;background:none;border:0;accent-color:var(--accent)}
+.presets{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px}
+.presets button{font:inherit;font-size:.76rem;border:1px dashed var(--accent);background:none;color:var(--accent-strong);border-radius:8px;padding:3px 10px;cursor:pointer}
+.out{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-top:12px}
+.out div{background:var(--surface-2);border-radius:8px;padding:6px 10px}
+.out span{display:block;font-size:.7rem;color:var(--muted)}
+.out b{font-family:'IBM Plex Mono',monospace;font-size:1.05rem;font-variant-numeric:tabular-nums}
+.tool .hint{font-size:.78rem;color:var(--muted);margin-top:8px}
+
+/* answer documents */
+.doc{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:22px 26px 28px;box-shadow:var(--shadow);margin-top:18px}
+.doc-head{border-bottom:1px solid var(--border);padding-bottom:10px;margin-bottom:6px}
+.doc-head p{margin:.2em 0;color:var(--muted);font-size:.86rem}
+.doc h2{scroll-margin-top:70px;margin-top:30px;font-size:1.5rem;border-bottom:2px solid var(--text);padding-bottom:3px}
+.doc h3{margin-top:20px;font-size:1.15rem;color:var(--accent-strong)}
+.doc p,.doc li{max-width:74ch}
+.doc p{margin:.5em 0}
+.doc ul,.doc ol{padding-left:1.4em}
+.doc li{margin:.2em 0}
+.doc .given{font-size:.9rem;color:var(--muted)}
+.box{border:1.5px solid var(--accent);background:var(--accent-soft);border-radius:8px;padding:6px 12px;margin:8px 0;font-weight:500;max-width:74ch}
+.box b{color:var(--accent-strong)}
+.doc table{min-width:460px}
+.essay{border-left:3px solid var(--accent);padding-left:16px;margin:10px 0}
+.essay h4{margin:.8em 0 .2em;font-size:1rem}
+.refs{font-size:.84rem}
+.refs li{margin:.3em 0;word-break:break-word}
+.ack{font-size:.86rem;border:1px dashed var(--border);border-radius:8px;padding:6px 12px;max-width:74ch}
+.extra{border:1.5px solid var(--extra);background:var(--extra-soft);border-radius:10px;padding:10px 16px 12px;margin:14px 0;max-width:76ch}
+.extra-lbl{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.06em;color:var(--extra);font-weight:700;margin-bottom:4px}
+.extra p{margin:.4em 0}
+.extra ul{margin:.3em 0;padding-left:1.3em}
+.extra .tw{margin:8px 0}
+footer{margin-top:40px;font-size:.78rem;color:var(--muted);max-width:70ch}
+
+@media (max-width:640px){
+  h1{font-size:1.9rem}
+  .doc{padding:16px 14px 20px}
+}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← 学习站目录</a>
+  <div class="eyebrow">EE6129 · Homework 1 · Semester 2 AY2026/27</div>
+  <h1>HW1 讲解与参考答案</h1>
+  <p class="lede">3 道大题、14 个小问。「讲解」按题拆考点和思路，配图和计算器；「中文答案」和「English answers」是两份完整的参考答案，内容一致。所有 Erlang 值都用课件 Erlang B 表查得，并用公式复核过。</p>
+  <div class="notice"><b>紫色框</b>是课件以外的补充内容，帮助理解，考试以课件为准。<br><b>写作业前先看：</b>作业要手写提交，截止第 9 周周五。参考答案用来核对思路和数字，自己推一遍再写。Q3(b) 题目要求：用了 AI 查资料就要在答案里注明，并附参考文献。</div>
+
+  <div class="tabs" role="tablist" aria-label="页面视图">
+    <button class="tab" role="tab" id="tab-guide" aria-controls="guide" aria-selected="true" data-tab="guide">讲解</button>
+    <button class="tab" role="tab" id="tab-zh" aria-controls="zh" aria-selected="false" data-tab="zh">中文答案</button>
+    <button class="tab" role="tab" id="tab-en" aria-controls="en" aria-selected="false" data-tab="en">English answers</button>
+  </div>
+
+<!-- ======================================================= 讲解 -->
+<section id="guide" role="tabpanel" aria-labelledby="tab-guide">
+  <div class="tw">
+  <table class="ov">
+    <thead><tr><th>题</th><th class="num">分</th><th>考什么</th><th>课件</th><th>先做这道例题</th></tr></thead>
+    <tbody>
+      <tr><td><a href="#g1a">1(a)</a></td><td class="num">14</td><td>蜂窝系统的 6 个组成部分</td><td class="mono">p.10–14</td><td>—</td></tr>
+      <tr><td><a href="#g1b">1(b)</a></td><td class="num">14</td><td>Erlang B 查表、承载话务量、中继效率、簇大小的取舍</td><td class="mono">p.44, 115–124</td><td><a href="examples.html#p44">p.43 例 1</a>、<a href="examples.html#p123">p.123</a></td></tr>
+      <tr><td><a href="#g2a">2(a)</a></td><td class="num">16</td><td>带宽 → 信道数 → 话务量 → 用户数</td><td class="mono">p.133–134</td><td><a href="examples.html#p133">p.133 城市规划</a></td></tr>
+      <tr><td><a href="#g2b">2(b)</a></td><td class="num">12</td><td>SIR 公式推导、路径损耗指数、最坏情况、120° 扇区</td><td class="mono">p.84–91, 143–145</td><td><a href="examples.html#p89">p.89</a>、<a href="examples.html#p91">p.91</a>、<a href="examples.html#p145">p.145</a></td></tr>
+      <tr><td><a href="#g2c">2(c)</a></td><td class="num">12</td><td>六边形几何：推导 D 和 N</td><td class="mono">p.9, 73–78</td><td>—</td></tr>
+      <tr><td><a href="#g3a">3(a)</a></td><td class="num">20</td><td>GSM 容量、频谱效率 η<sub>m</sub> × η<sub>a</sub></td><td class="mono">p.38–47</td><td><a href="examples.html#p44">p.43 例 1</a>、<a href="examples.html#p47">p.47</a></td></tr>
+      <tr><td><a href="#g3b">3(b)</a></td><td class="num">12</td><td>WiFi 7 与 802.11a 对比短文</td><td class="mono">Part B p.12–14</td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- ---------- Q1(a) ---------- -->
+  <div class="qsec" id="g1a">
+    <div class="qhead"><h2>Q1(a) 蜂窝网络的组成</h2><span class="marks">14 marks</span></div>
+    <div class="orig" lang="en"><div class="orig-lab">Original question</div>
+      <p>Considering a typical cellular system with the service area partitioned into clusters with each cell having a BS serving the MS. There are four other basic components in a typical cellular network system besides the “MS” and the “BS”. Explain the functions of these four components and sketch the block diagram to show how all these components function as a cellular network system.</p>
+    </div>
+    <div class="chips"><span class="chip">系统组成</span><span class="chip">MTSO / MSC</span><span class="chip">呼叫流程</span><span class="chip src">课件 Part A p.10–14</span></div>
+    <div class="prose">
+      <p>课件 p.11 的图一共标了 6 个 component。题目说"除了 MS 和 BS 之外的四个"，就是剩下的 4 个：</p>
+      <ol>
+        <li><b>Component 1 · Gateway to the wireline system（有线网关）</b>：移动网通往 PSTN（固定电话网）和 Internet 的出口。手机打固话、上网都要从这里出去，它负责两边信令和格式的转换。</li>
+        <li><b>Component 3 · Databases（数据库）</b>：HLR 存用户签约资料和所在位置区，VLR 存当前在本区漫游用户的临时记录。被叫寻呼、漫游、切换都要先查数据库。</li>
+        <li><b>Component 4 · Security mechanism（安全机制）</b>：鉴权（AuC 确认是合法用户）、空口加密（防窃听）、设备识别（EIR 拦截被盗手机）。</li>
+        <li><b>Component 5 · Air interface standard（空口标准）</b>：MS 和 BS 之间的无线协议，比如 AMPS、GSM、IS-95。它规定频段、多址方式（FDMA/TDMA/CDMA）、调制、控制信道和业务信道，以及上行（reverse）和下行（forward）链路。</li>
+      </ol>
+      <p>把它们连成一个系统的是 <b>MTSO</b>（Mobile Telecommunications Switching Office，也叫 MSC）。课件图里那条标着 MTSO 的线就是它。题目要求说明"how all these components function as a cellular network system"，所以画完框图，还要用 p.12–14 的呼叫流程把各部件串起来。</p>
+    </div>
+    <figure>
+      <div class="fig"><svg class="netdiag" viewBox="0 0 700 300" role="img" aria-labelledby="net-t">
+        <title id="net-t">蜂窝网络框图：MS 经空口连 BS，BS 连 MTSO，MTSO 连数据库、安全机制和有线网关，网关通往 PSTN 和 Internet</title>
+        <!-- links -->
+        <path class="ln" d="M120 62 H170"/><path class="ln" d="M120 140 H145 V105 H170"/>
+        <path class="ln" d="M300 92 H340"/>
+        <path class="ln" d="M500 92 H540"/>
+        <path class="ln" d="M420 130 V190"/>
+        <path class="ln" d="M340 215 H300"/>
+        <path class="ln air" d="M585 125 L600 214"/><path class="ln air" d="M612 214 L597 125"/>
+        <polygon class="arrowhead" style="fill:var(--accent)" points="585,125 580,136 591,134"/>
+        <polygon class="arrowhead" style="fill:var(--accent)" points="612,214 606,203 617,205"/>
+        <!-- external networks -->
+        <rect class="nd ext" x="20" y="40" width="100" height="44" rx="22"/><text x="70" y="67" text-anchor="middle" font-size="14" font-weight="600">PSTN</text>
+        <rect class="nd ext" x="20" y="118" width="100" height="44" rx="22"/><text x="70" y="145" text-anchor="middle" font-size="14" font-weight="600">Internet</text>
+        <!-- gateway -->
+        <rect class="nd" x="170" y="60" width="130" height="64" rx="8"/>
+        <text x="182" y="80" font-size="11" class="t-num mono">①</text>
+        <text x="235" y="86" text-anchor="middle" font-size="13" font-weight="600">Gateway</text>
+        <text x="235" y="104" text-anchor="middle" class="t-sub">to wireline system</text>
+        <!-- MTSO -->
+        <rect class="nd core" x="340" y="54" width="160" height="76" rx="8"/>
+        <text x="420" y="84" text-anchor="middle" font-size="15" font-weight="700">MTSO / MSC</text>
+        <text x="420" y="104" text-anchor="middle" class="t-sub">交换 · 呼叫控制 · 切换</text>
+        <text x="420" y="119" text-anchor="middle" class="t-sub">switching core</text>
+        <!-- BS -->
+        <rect class="nd" x="540" y="60" width="120" height="64" rx="8"/>
+        <text x="552" y="80" font-size="11" class="t-num mono">②</text>
+        <text x="600" y="90" text-anchor="middle" font-size="13" font-weight="600">Base Station</text>
+        <text x="600" y="108" text-anchor="middle" class="t-sub">BS</text>
+        <!-- databases -->
+        <rect class="nd" x="340" y="190" width="160" height="56" rx="8"/>
+        <text x="352" y="208" font-size="11" class="t-num mono">③</text>
+        <text x="420" y="214" text-anchor="middle" font-size="13" font-weight="600">Databases</text>
+        <text x="420" y="232" text-anchor="middle" class="t-sub">HLR / VLR</text>
+        <!-- security -->
+        <rect class="nd" x="170" y="190" width="130" height="56" rx="8"/>
+        <text x="182" y="208" font-size="11" class="t-num mono">④</text>
+        <text x="235" y="214" text-anchor="middle" font-size="13" font-weight="600">Security</text>
+        <text x="235" y="232" text-anchor="middle" class="t-sub">AuC / EIR / 加密</text>
+        <!-- MS -->
+        <rect class="nd" x="560" y="214" width="100" height="56" rx="8"/>
+        <text x="572" y="232" font-size="11" class="t-num mono">⑥</text>
+        <text x="610" y="240" text-anchor="middle" font-size="13" font-weight="600">Mobile</text>
+        <text x="610" y="257" text-anchor="middle" class="t-sub">MS</text>
+        <!-- air interface label -->
+        <text x="578" y="160" text-anchor="end" font-size="12" font-weight="600" style="fill:var(--accent-strong)"><tspan class="t-num mono" font-size="11">⑤ </tspan>Air interface</text>
+        <text x="578" y="176" text-anchor="end" class="t-sub">uplink ↑ / downlink ↓</text>
+      </svg></div>
+      <figcaption>按课件 p.11 重画。编号就是课件里的 Component 编号；MTSO 在课件图里是一条连线，这里画成方框，方便看出它是中心。</figcaption>
+    </figure>
+    <ol class="steps">
+      <li><b>开机初始化</b>：MS 扫描并锁定最强的控制信道，经 BS 和 MTSO 握手。这一步要查数据库、做鉴权，然后登记位置。</li>
+      <li><b>主叫</b>：MS 在控制信道上发出被叫号码，BS 把请求转给 MTSO。</li>
+      <li><b>寻呼</b>：MTSO 查 HLR/VLR 找到被叫所在位置区，让那里的 BS 发寻呼。被叫是固话时，则经 Gateway 接到 PSTN。</li>
+      <li><b>接通</b>：MTSO 在两个小区各分配一条业务信道，双方调到这条信道开始通话。</li>
+      <li><b>切换</b>：MS 走进新小区时，MTSO 把通话换到新 BS 的业务信道，通话不中断。</li>
+    </ol>
+    <div class="trap"><ul>
+      <li>MTSO 不在"四个部件"里，但框图里必须有它，否则各部件没法连起来。</li>
+      <li>只画图、不写功能，或只列名字、不讲怎么配合，都会丢分。14 分大致是 4 个部件各 2–2.5 分，图和流程说明占剩下的分。</li>
+    </ul></div>
+    <div class="extra"><div class="extra-lbl">课外补充 · 课件里没有这些名字</div>
+      <p>课件 p.11 只写了 "Databases" 和 "Security Mechanism"。上面提到的 <b>HLR</b>（归属位置寄存器）、<b>VLR</b>（拜访位置寄存器）、<b>AuC</b>（鉴权中心）、<b>EIR</b>（设备识别寄存器）、<b>MSC</b>，是 GSM 标准里对应部件的名字。答案里写上能显得具体，但不是课件要求的内容。</p>
+      <p>可以这样理解：HLR 像你的"户口本"，永远记着你是谁、开通了什么业务、现在大概在哪个区域；VLR 像酒店的"住客登记"，你漫游到哪里，那里的 VLR 就临时登记你；AuC 像"门卫查身份证"；EIR 像"失窃手机黑名单"。</p>
+    </div>
+  </div>
+
+  <!-- ---------- Q1(b) ---------- -->
+  <div class="qsec" id="g1b">
+    <div class="qhead"><h2>Q1(b) Erlang B 与中继效率</h2><span class="marks">14 marks</span></div>
+    <div class="orig" lang="en"><div class="orig-lab">Original question</div>
+      <p>For a cellular system, suppose you selected the cluster size of N<sub>c</sub> = 9, with a total number of available channels of 504. Assume that the average users place 2 calls of 15 minutes duration per hour for the given cellular system.</p>
+      <ol type="i">
+        <li>Determine the carrier load per cell and the trunking efficiency for a 2% Grade of Service (GOS)?</li>
+        <li>Calculate the number of users that can be accommodated for this cell at that given GOS.</li>
+        <li>Compute the carried load and trunking efficiency if the cluster size is changed to N<sub>c</sub>=7. Comment on your results.</li>
+      </ol>
+    </div>
+    <div class="chips"><span class="chip">每用户话务量 A<sub>u</sub></span><span class="chip">Erlang B 查表</span><span class="chip">carried load</span><span class="chip">trunking efficiency</span><span class="chip src">课件 p.44, 115–124</span></div>
+    <div class="prose">
+      <p>这道题的 N<sub>c</sub> = 9 那问，信道数刚好和课件 p.44 的 AMPS 例题一样，都是每小区 <b>56 条</b>。课件那页写的是 "the total traffic carried by 56 channels is 45.9 Er/cell"，可以直接拿来对照。</p>
+      <p>需要的三个概念：</p>
+      <ul>
+        <li><b>每用户话务量</b> A<sub>u</sub> = 每小时呼叫次数 × 每次时长（小时）。这里是 2 × 15/60 = <b>0.5 Erlang</b>，相当于每人每小时有半小时在通话，数值很大。</li>
+        <li><b>Erlang B 表</b>：已知信道数 M 和阻塞率 GoS，查出在这个 GoS 下最多能承载的话务量 A。题目说的 "carrier load" 应是 carried load 的笔误。课件 p.44 把查表得到的 A 直接叫作这些信道承载的话务量。严格定义是 C = A(1 − P<sub>B</sub>)（p.120），两种都写最稳妥。</li>
+        <li><b>中继效率</b> η<sub>t</sub> = 承载话务量 ÷ 信道数，也就是平均每条信道忙的比例。课件 p.124 的算法是 4.46 / 10 = 44.6%。</li>
+      </ul>
+    </div>
+    <ol class="steps">
+      <li>每小区信道数 <span class="calc">M = 504 / 9 = 56</span></li>
+      <li>查表 M = 56、B = 2% → <b>A = 45.9 E</b>；严格的承载话务量 <span class="calc">45.9 × 0.98 = 45.0 E</span></li>
+      <li>中继效率 <span class="calc">η<sub>t</sub> = 45.9 / 56 = 0.82</span>（用 45.0 算是 0.80）</li>
+      <li>用户数 <span class="calc">U = A / A<sub>u</sub> = 45.9 / 0.5 = 91.8 → 91 人</span>（向下取整：多 0.8 个人就超出 2% 的阻塞率了）</li>
+      <li>换成 N<sub>c</sub> = 7：<span class="calc">M = 72 → A = 61.0 E → η<sub>t</sub> = 0.85 → U = 122 人</span></li>
+    </ol>
+    <div class="tw"><table style="min-width:520px">
+      <thead><tr><th></th><th class="num">M / 小区</th><th class="num">A (E)</th><th class="num">η<sub>t</sub></th><th class="num">用户 / 小区</th><th class="num">SIR (n = 4)</th></tr></thead>
+      <tbody>
+        <tr><td>N<sub>c</sub> = 9</td><td class="num">56</td><td class="num">45.9</td><td class="num">0.82</td><td class="num">91</td><td class="num">20.8 dB</td></tr>
+        <tr><td>N<sub>c</sub> = 7</td><td class="num">72</td><td class="num">61.0</td><td class="num">0.85</td><td class="num">122</td><td class="num">18.7 dB</td></tr>
+        <tr><td>变化</td><td class="num">+29%</td><td class="num">+33%</td><td class="num">+0.03</td><td class="num">+34%</td><td class="num">−2.2 dB</td></tr>
+      </tbody>
+    </table></div>
+    <div class="prose"><p><b>评论的三层意思：</b>① 簇变小，每小区信道变多；② 信道池越大，中继效率越高，所以话务量的增幅（+33%）超过信道数的增幅（+29%），这就是 p.123 "一大组比两小组多承载 60%" 的道理；③ 代价是同频小区离得更近，SIR 下降。N = 7 的 18.7 dB 仍高于语音需要的约 18 dB，但余量变小了。</p></div>
+
+    <div class="tool" id="eb">
+      <h3>Erlang B 计算器</h3>
+      <div class="row">
+        <label for="eb-m">信道数 M<input id="eb-m" type="number" min="1" max="400" step="1" value="56"></label>
+        <label for="eb-g">阻塞率 GoS (%)<input id="eb-g" type="number" min="0.01" max="40" step="0.1" value="2"></label>
+        <label for="eb-u">每用户话务量 A<sub>u</sub> (E)<input id="eb-u" type="number" min="0.001" step="0.005" value="0.5"></label>
+      </div>
+      <div class="presets"><button type="button" data-eb="56,2,0.5">Q1(b) N<sub>c</sub>=9</button><button type="button" data-eb="72,2,0.5">Q1(b) N<sub>c</sub>=7</button><button type="button" data-eb="65,2,0.025">Q2(a)</button><button type="button" data-eb="57,1,0.0333">课件 p.148</button></div>
+      <div class="out" aria-live="polite">
+        <div><span>可承载话务量 A</span><b id="eb-a">—</b></div>
+        <div><span>严格承载 A(1−P<sub>B</sub>)</span><b id="eb-c">—</b></div>
+        <div><span>中继效率 A / M</span><b id="eb-e">—</b></div>
+        <div><span>用户数 ⌊A / A<sub>u</sub>⌋</span><b id="eb-n">—</b></div>
+      </div>
+      <div class="hint">这里用 Erlang B 公式精确求解，和课件表值可能差 0.1 左右（例如 M = 56 公式算出 45.88，表值 45.9）。考试和作业写表值。</div>
+    </div>
+    <div class="trap"><ul>
+      <li>A<sub>u</sub> 别算成 2 × 15 = 30；时长要换成小时：15 min = 0.25 h。</li>
+      <li>用户数向下取整，不能四舍五入成 92。</li>
+      <li>评论只写"容量变大"不够，必须同时写 SIR 下降这个代价。</li>
+    </ul></div>
+  </div>
+
+  <!-- ---------- Q2(a) ---------- -->
+  <div class="qsec" id="g2a">
+    <div class="qhead"><h2>Q2(a) 从带宽算到用户数</h2><span class="marks">16 marks</span></div>
+    <div class="orig" lang="en"><div class="orig-lab">Original question</div>
+      <p>A cellular system has a total bandwidth of 30 MHz. Each full duplex voice channel uses two 25 kHz simplex channels. The system uses a 9-cell reuse pattern and 0.75 MHz from the total bandwidth is allocated for control channels. The system service area consists of 50 cells. It is a blocked system with a call blocking probability of 2%. If the offered traffic of each user is 0.025 Erlang, calculate:</p>
+      <ol type="i">
+        <li>the traffic load in each cell and the trunking efficiency,</li>
+        <li>the total number of users in each cell and in the system, respectively,</li>
+        <li>the number of users per channel in each cell and in the system, and</li>
+        <li>the maximum number of users in service at any instant in the system.</li>
+      </ol>
+    </div>
+    <div class="chips"><span class="chip">双工信道带宽</span><span class="chip">控制信道</span><span class="chip">unique channels</span><span class="chip">最大同时用户</span><span class="chip src">课件 p.133–134</span></div>
+    <div class="prose"><p>这题和课件 p.133–134 的城市规划例题是同一个模板。先把带宽换成信道数，后面就是查表和除法。</p></div>
+    <ol class="steps">
+      <li>一条双工信道 = 两条 25 kHz 单工信道 = <b>50 kHz</b>，所以 <span class="calc">总信道 = 30 MHz / 50 kHz = 600</span></li>
+      <li>控制信道 <span class="calc">0.75 MHz / 50 kHz = 15 条</span>，话音信道 <span class="calc">600 − 15 = 585 条</span></li>
+      <li>9 小区复用，每小区 <span class="calc">585 / 9 = 65 条</span></li>
+      <li>(i) 查表 M = 65、B = 2% → <b>A = 54.4 E/小区</b>；<span class="calc">η<sub>t</sub> = 54.4 / 65 = 0.837</span></li>
+      <li>(ii) 每小区用户 <span class="calc">54.4 / 0.025 = 2176</span>；全系统 <span class="calc">2176 × 50 = 108,800</span></li>
+      <li>(iii) 每小区每信道 <span class="calc">2176 / 65 = 33.5</span>；全系统按"不重复信道"算 <span class="calc">108,800 / 585 = 186</span></li>
+      <li>(iv) 任意时刻最多同时通话人数 = 全系统信道总数 <span class="calc">65 × 50 = 3250</span>，约占用户总数的 3%</li>
+    </ol>
+    <div class="mem">课件 p.134 的口径：每信道用户数用"不重复信道"（一簇的信道总数 95 × 7 = 665）做分母；最大同时服务数用"每小区信道 × 小区数"（95 × 31）。本题照搬：585 和 65 × 50。</div>
+    <div class="trap"><ul>
+      <li>15 条控制信道是全系统共用的，从总数里扣一次，不是每小区扣 15 条。</li>
+      <li>(iii) 全系统那问分母是 585，不是 3250。585 条信道在 50 个小区里被重复使用了约 5.6 次。</li>
+      <li>50 个小区不是 9 的整数倍，不影响计算：每个小区都有 65 条信道。</li>
+    </ul></div>
+  </div>
+
+  <!-- ---------- Q2(b) ---------- -->
+  <div class="qsec" id="g2b">
+    <div class="qhead"><h2>Q2(b) SIR 与簇大小、路径损耗指数、扇区化</h2><span class="marks">12 marks</span></div>
+    <div class="orig" lang="en"><div class="orig-lab">Original question</div>
+      <p>Derive and establish the following relationship between Signal-to-Interference Ratio SIR<sub>dB</sub> and cluster size N<sub>c</sub>.</p>
+      <p class="eq">SIR<sub>dB</sub> = 1.76 + 20 log<sub>10</sub>(N<sub>c</sub>)</p>
+      <ol type="i">
+        <li>Consider the Simplified SIR analysis where SIR = (1/6)Q<sup>n</sup> and Q is the co-channel reuse factor and there are six co-channel interferers in the first tier. You may assume a path loss exponent of n = 4 in your initial evaluation. Determine the SIR<sub>dB</sub> for N<sub>c</sub>=7 and comment on your results.</li>
+        <li>If the required minimum SIR<sub>dB</sub> is to be least 20 dB, derive the corresponding value of the path loss exponent n for this case.</li>
+        <li>Using the new value of n from part (ii), determine Co-Channel interference SIR for the worst case omnidirectional as shown below.
+          <p class="eq">SIR = 1 / [2(Q − 1)<sup>−n</sup> + 2Q<sup>−n</sup> + 2(Q + 1)<sup>−n</sup>]</p></li>
+        <li>Using the new value of n from part (ii), determine the SIR when using co-channel interference SIR with 120° sectoring. State and comment on your results when compared to part (iii).</li>
+      </ol>
+    </div>
+    <div class="chips"><span class="chip">Q = D/R = √(3N)</span><span class="chip">简化模型 Q<sup>n</sup>/6</span><span class="chip">最坏情况</span><span class="chip">120° 扇区</span><span class="chip src">课件 p.84–91, 143–145</span></div>
+    <h3 style="margin-top:14px">推导 1.76 + 20 log N</h3>
+    <ol class="steps">
+      <li>假设（课件 p.88）：只算第一层 6 个同频干扰；MS 在小区边缘，离本小区 BS 距离 R；6 个干扰 BS 离 MS 都约为 D；收到的功率与距离的 −n 次方成正比。</li>
+      <li><div class="f">S/I = R<sup>−n</sup> / (6 D<sup>−n</sup>) = (D/R)<sup>n</sup> / 6 = Q<sup>n</sup> / 6</div></li>
+      <li>代入 Q = √(3N) 和 n = 4：<div class="f">S/I = (√(3N))<sup>4</sup> / 6 = 9N<sup>2</sup> / 6 = 1.5 N<sup>2</sup></div></li>
+      <li>取 dB：<div class="f">SIR<sub>dB</sub> = 10 log<sub>10</sub>1.5 + 10 log<sub>10</sub>N<sup>2</sup> = 1.76 + 20 log<sub>10</sub>N</div>所以 1.76 dB 就是 N = 1 时的 SIR（课件 p.89 表第一行）。</li>
+    </ol>
+    <h3>四个小问</h3>
+    <ol class="steps">
+      <li>(i) <span class="calc">1.76 + 20 log 7 = 1.76 + 16.90 = 18.66 dB</span>。高于语音约需的 18 dB，所以 7 小区复用最常用；但简化模型把 6 个干扰都放在距离 D，偏乐观。</li>
+      <li>(ii) 要求 <span class="calc">Q<sup>n</sup>/6 ≥ 100</span>，Q = √21 = 4.583：<div class="f">n = log<sub>10</sub>600 / log<sub>10</sub>4.583 = 2.778 / 0.661 = 4.20</div></li>
+      <li>(iii) n = 4.2 代入最坏情况公式：<div class="f">(Q−1)<sup>4.2</sup> = 212.6,  Q<sup>4.2</sup> = 597.9,  (Q+1)<sup>4.2</sup> = 1370.0</div><div class="f">SIR = 1 / (2/212.6 + 2/597.9 + 2/1370.0) = 1 / 0.01421 = 70.4 → 18.5 dB</div>没达到 20 dB：MS 在小区边缘时，有两个干扰源只隔 D − R。</li>
+      <li>(iv) 120° 扇区：<div class="f">SIR = 1 / (Q<sup>−n</sup> + (Q+0.7)<sup>−n</sup>) = 1 / (1/597.9 + 1/1086.3) = 385.7 → 25.9 dB</div>比 (iii) 高约 7.4 dB，满足 20 dB 且余量约 6 dB。</li>
+    </ol>
+    <h3>(i) 那句评论在说什么：简化算法 vs 最坏情况</h3>
+    <div class="prose">
+      <p>课件对同一个系统给了三种算法，区别只在一个问题上：<b>6 个干扰基站离手机有多远？</b>（完整的零基础讲解，见 Part A 讲解长文第七章 7.2–7.3。）</p>
+      <ul>
+        <li><b>简化算法（p.88）</b>：假设 6 个都在距离 D（课件原文 "equidistant, D"），S/I = Q<sup>n</sup>/6 → <b>18.66 dB</b>。</li>
+        <li><b>Case 1（p.91）</b>：手机站在小区边上，等于从自己基站往一边走了 R。于是 2 个干扰变近（D − R），2 个变远（D + R），2 个基本不变（D）→ <b>17.27 dB</b>。</li>
+        <li><b>Case 2（p.91）</b>："To be conservative"，往最坏处想，6 个都按最近的 D − R 算 → <b>14.39 dB</b>。</li>
+      </ul>
+      <p>为什么一近一远不能抵消？因为强度按距离的 −4 次方变化。取 R = 1、N = 7，则 D = 4.58：</p>
+    </div>
+    <div class="tw"><table style="min-width:440px">
+      <thead><tr><th>距离</th><th class="num">距离⁴</th><th class="num">每个干扰的强度</th><th class="num">和"都在 D"比</th></tr></thead>
+      <tbody>
+        <tr><td>D − R = 3.58（变近）</td><td class="num">164.7</td><td class="num">0.00607</td><td class="num">2.7 倍</td></tr>
+        <tr><td>D = 4.58</td><td class="num">441</td><td class="num">0.00227</td><td class="num">1 倍</td></tr>
+        <tr><td>D + R = 5.58（变远）</td><td class="num">971.3</td><td class="num">0.00103</td><td class="num">0.45 倍</td></tr>
+      </tbody>
+    </table></div>
+    <div class="prose"><p>变近的强了 2.7 倍，变远的只弱到 0.45 倍，6 个加起来总干扰多了约 38%。所以 SIR 从 18.66 dB 降到 17.27 dB，低于课件 p.89 要求的 18 dB。这就是评论里"简化模型偏乐观"的意思，也是 (iii) 要你用最坏情况公式重算的原因。</p></div>
+    <figure>
+      <div class="seg" role="group" aria-label="天线类型">
+        <button type="button" id="mode-omni" aria-pressed="true">全向天线 · 6 个干扰</button>
+        <button type="button" id="mode-sect" aria-pressed="false">120° 扇区 · 2 个干扰</button>
+      </div>
+      <div class="fig"><svg id="intsvg" class="omni" viewBox="-128 -124 256 248" role="img" aria-label="同频干扰示意：中心小区的移动台和 6 个同频干扰基站"></svg></div>
+      <div class="legend" id="int-legend"><span><i style="background:var(--near)"></i>最近两个，约 D − R</span><span><i style="background:var(--mid)"></i>中间两个，约 D</span><span><i style="background:var(--far)"></i>最远两个，约 D + R</span></div>
+      <figcaption id="int-cap"></figcaption>
+    </figure>
+    <div class="tool" id="sir">
+      <h3>SIR 计算器</h3>
+      <div class="row">
+        <label for="sir-n">簇大小 N<select id="sir-n"><option>1</option><option>3</option><option>4</option><option selected>7</option><option>9</option><option>12</option><option>13</option></select></label>
+        <label for="sir-x">路径损耗指数 n = <span id="sir-xv" class="mono">4.20</span><input id="sir-x" type="range" min="2" max="5" step="0.01" value="4.2"></label>
+        <label for="sir-t">目标 SIR (dB)<input id="sir-t" type="number" step="0.5" value="20"></label>
+      </div>
+      <div class="out" aria-live="polite">
+        <div><span>Q = √(3N)</span><b id="sir-q">—</b></div>
+        <div><span>简化 Q<sup>n</sup>/6</span><b id="sir-s">—</b></div>
+        <div><span>最坏情况 · 全向</span><b id="sir-w">—</b></div>
+        <div><span>120° 扇区</span><b id="sir-3">—</b></div>
+        <div><span>60° 扇区</span><b id="sir-6">—</b></div>
+        <div><span>简化模型达标所需 n</span><b id="sir-need">—</b></div>
+      </div>
+      <div class="hint">拖到 n = 4 可以核对课件数字：简化 18.66、最坏 17.27、120° 24.5、60° 28.9 dB。</div>
+    </div>
+    <div class="extra"><div class="extra-lbl">课外补充 · 课件没有推导</div>
+      <p><b>(iv) 公式里的 D 和 D + 0.7R 是怎么来的？</b>课件 p.145 直接给了这两个距离。我按上图的几何精确算了一遍：手机站在自己 1 号扇区最远的那个角上（离自己基站 R），能照到它的只有身后两个同频小区的 1 号扇区，距离分别是 <b>5.29R</b> 和 <b>4.36R</b>。D = √21 R = 4.58R，所以 5.29R = D + 0.71R，就是课件的 D + 0.7R；4.36R = D − 0.22R，课件近似成 D。</p>
+      <p>为什么只剩 2 个：所有小区的 1 号扇区朝向一样，同频小区的 1 号扇区用同一组信道。这些天线只照前方 120°，所以只有位于手机<b>身后</b>的同频基站照得到它；前方的几个（包括最近的 3.61R 和 4.00R）天线背对手机，被挡掉了。这就是扇区化公式里没有 (Q − 1) 项、SIR 提升这么多的原因。</p>
+    </div>
+    <div class="mem">从乐观到保守，三个口径依次是：简化（6 个都在 D）＞最坏情况（D−R、D、D+R 各两个）＞全按 D−R。扇区化把干扰源从 6 个砍到 2 个（120°）或 1 个（60°），所以公式里<b>没有除以 6</b>。</div>
+    <div class="trap"><ul>
+      <li>(ii) 是解指数方程，两边取对数；别用 dB 值直接相除。</li>
+      <li>(iv) 评论要写两面：SIR 升高，但每扇区只有 1/3 的信道，中继效率下降（课件 p.149 的例子每小时呼叫数降了 24%），切换也会增多。</li>
+      <li>SIR 余量还可以换成更小的簇（比如 N = 4），把容量补回来，写上加分。</li>
+    </ul></div>
+  </div>
+
+  <!-- ---------- Q2(c) ---------- -->
+  <div class="qsec" id="g2c">
+    <div class="qhead"><h2>Q2(c) 推导复用距离 D 和簇大小 N</h2><span class="marks">12 marks</span></div>
+    <div class="orig" lang="en"><div class="orig-lab">Original question</div>
+      <p>Considering a cellular system with hexagonal cells, each with cell radius R. The service area is partitioned into clusters. Frequency is reused. Derive the distance D between the centers of two adjacent co-channel cells and the number of cells N in each cluster.</p>
+    </div>
+    <div class="chips"><span class="chip">相邻小区中心距 √3R</span><span class="chip">i、j 坐标</span><span class="chip">归一化距离 D<sub>norm</sub></span><span class="chip">大六边形面积</span><span class="chip src">课件 p.73–76</span></div>
+    <figure>
+      <div class="fig"><svg class="hexgrid" viewBox="0 0 10 10" role="img" aria-label="N = 7 的六边形复用图：从中心小区沿一个方向走 2 格，转 60 度再走 1 格，到达同频小区，距离为 D"></svg></div>
+      <figcaption>N = 7（i = 2，j = 1）。数字是信道组编号，深色是起点小区，浅色是和它同频的 6 个小区，全都在距离 D = √21 R 处。</figcaption>
+    </figure>
+    <ol class="steps">
+      <li><b>相邻小区中心距离（p.73）</b>：六边形半径 R（中心到顶点，等于边长）。中心到一条边的垂直距离是 R cos30° = (√3/2)R，相邻两个小区中心隔着一条公共边，所以相距 <div class="f">2R cos30° = √3 R</div></li>
+      <li><b>建 i、j 坐标（p.73–74）</b>：把相邻中心的距离 √3R 当作 1 个单位（"归一化"）。以参考小区中心为原点 (0, 0)，i 轴和 j 轴分别穿过两条相邻的边、垂直于这两条边，<b>两轴夹角 60°</b>。这样每个小区中心都落在整数坐标 (i, j) 上：沿 i 轴走 i 格，再沿 j 轴方向走 j 格。</li>
+      <li><b>算归一化距离（p.75）</b>：60° 斜坐标不能直接用勾股定理，先把"沿 j 轴走 j 格"拆成两个互相垂直的分量：沿 i 轴方向是 j sin30° = j/2，垂直于 i 轴方向是 j cos30° = (√3/2) j。于是：
+        <div class="f wrapok">D<sub>norm</sub><sup>2</sup> = [j cos30°]<sup>2</sup> + [i + j sin30°]<sup>2</sup> = (3/4)j<sup>2</sup> + i<sup>2</sup> + ij + (1/4)j<sup>2</sup> = i<sup>2</sup> + ij + j<sup>2</sup></div></li>
+      <li><b>乘回实际长度（p.75）</b>：1 个单位是 √3R：<div class="f">D = √3 R · D<sub>norm</sub> = √3 R · √(i<sup>2</sup> + ij + j<sup>2</sup>)</div>例：i = 2、j = 1，D<sub>norm</sub><sup>2</sup> = 4 + 2 + 1 = 7，D = √3R × √7 = √21 R ≈ 4.58R。</li>
+      <li><b>求 N（p.76）</b>：同频小区中心之间相距 D，就像普通小区中心之间相距 √3R。普通小区的半径是 √3R ÷ √3 = R；按同样的比例，每个同频小区"管"的那块区域是一个半径 <b>D/√3</b> 的大六边形，它的面积正好等于一个簇（N 个小区）。半径 r 的正六边形面积是 (3√3/2) r<sup>2</sup>，所以：
+        <div class="f">N × (3√3/2) R<sup>2</sup> = (3√3/2) (D/√3)<sup>2</sup>   →   N = D<sup>2</sup> / (3R<sup>2</sup>)</div>
+        把第 4 步的 D<sup>2</sup> = 3R<sup>2</sup>(i<sup>2</sup> + ij + j<sup>2</sup>) 代进去：<div class="f">N = i<sup>2</sup> + ij + j<sup>2</sup> = D<sub>norm</sub><sup>2</sup></div></li>
+      <li><b>结论（p.75）</b>：N = D<sub>norm</sub><sup>2</sup>，所以 D = √3R · √N：<div class="f">D = R√(3N)，  Q = D/R = √(3N)</div>N 只能取 1, 3, 4, 7, 9, 12, 13 …（p.76–77）；例如 i = 2、j = 1 时 N = 7。</li>
+    </ol>
+    <div class="trap"><ul>
+      <li>相邻小区中心距离是 √3R，不是 R，也不是 2R。</li>
+      <li>i、j 两轴夹角是 60°，不能直接 D² = i² + j²。要先把 j 拆成 j/2 和 (√3/2)j 两个分量，展开时 (3/4)j² + (1/4)j² 合起来才是 j²。</li>
+      <li>求 N 要写出"大六边形面积 = 簇面积"这一步和半径 D/√3 的理由，只写结论拿不到推导分。</li>
+    </ul></div>
+    <div class="extra"><div class="extra-lbl">课外补充 · 另一种算 D 的方法</div>
+      <p>也可以用余弦定理：两段位移长 i√3R 和 j√3R，在三角形里夹角是 120°，D² = (i√3R)² + (j√3R)² − 2(i√3R)(j√3R)cos120° = 3R²(i² + ij + j²)，结果一样。作业里写课件 p.75 的投影法更稳妥。</p>
+    </div>
+  </div>
+
+  <!-- ---------- Q3(a) ---------- -->
+  <div class="qsec" id="g3a">
+    <div class="qhead"><h2>Q3(a) GSM 容量与频谱效率</h2><span class="marks">20 marks</span></div>
+    <div class="orig" lang="en"><div class="orig-lab">Original question</div>
+      <p>A Mobile Communications (GSM) system has a service area of 4,500 km<sup>2</sup> with a cluster size of 7. Each cell has a coverage area of 7.5 km<sup>2</sup>. The total system bandwidth of 50 MHz is divided into 25 MHz for uplink and 25 MHz for downlink. Between the uplink and downlink, there is a frequency separation of 45 MHz. There are a total of 125 duplex radio frequency carriers. Each carrier has a bandwidth of 2 × 200 KHz to support 8 users by Time Division Multiple Access (TDMA) with a frame duration of 4.615 ms. Each time slot is 156.25 bits long including coded speech of 116 bits. During a busy hour, each user makes 2 calls on average and each call lasts 5 minutes. If the trunking efficiency is 0.85, determine:</p>
+      <ol type="i">
+        <li>the number of cells in the system,</li>
+        <li>the number of calls per hour per cell,</li>
+        <li>the average number of users served per hour per cell, and</li>
+        <li>the overall system spectral efficiency in Erlangs/MHz/km<sup>2</sup>.</li>
+      </ol>
+    </div>
+    <div class="chips"><span class="chip">TDMA 信道数</span><span class="chip">中继效率给定</span><span class="chip">η<sub>m</sub> 调制效率</span><span class="chip">η<sub>a</sub> 多址效率</span><span class="chip src">课件 p.38–47</span></div>
+    <div class="prose"><p>这题不用查 Erlang B 表：中继效率已经给了 0.85，每条信道承载 0.85 E，直接相乘。题目特意给出帧长、时隙比特数和语音比特数，就是要用课件 p.46 的<b>总频谱效率 η = η<sub>m</sub> × η<sub>a</sub></b>。45 MHz 双工间隔是背景信息，计算用不到。</p></div>
+    <ol class="steps">
+      <li>(i) <span class="calc">小区数 = 4500 / 7.5 = 600</span></li>
+      <li>信道数：<span class="calc">125 载频 × 8 时隙 = 1000 条</span>，每小区 <span class="calc">1000 / 7 = 142.9 → 142 条</span></li>
+      <li>每小区话务量 <span class="calc">0.85 × 142 = 120.7 E</span></li>
+      <li>(ii) 每次通话 5 min = 1/12 h：<span class="calc">120.7 × 12 = 1448 次/小时/小区</span></li>
+      <li>(iii) 每人每小时 2 次：<span class="calc">1448 / 2 = 724 人/小时/小区</span></li>
+      <li>(iv) 调制效率（与课件 p.44 同口径，B<sub>w</sub> 取单向 25 MHz，因为 25 MHz / 200 kHz 正好是 125 个载频）：<div class="f">η<sub>m</sub> = 120.7 / (25 × 7.5) = 0.644 Erl/MHz/km<sup>2</sup></div></li>
+      <li>多址效率（窄带 TDMA，p.46）：时隙 4.615/8 = 0.577 ms 装 156.25 bit，其中 116 bit 是语音：<div class="f">η<sub>a</sub> = (T<sub>s</sub>M<sub>t</sub>/T<sub>f</sub>)(B<sub>u</sub>N<sub>u</sub>/B<sub>w</sub>) = (116/156.25) × (200k × 125 / 25M) = 0.742 × 1 = 0.742</div></li>
+      <li>总频谱效率 <div class="f">η = η<sub>m</sub> × η<sub>a</sub> = 0.644 × 0.742 = 0.48 Erl/MHz/km<sup>2</sup></div></li>
+    </ol>
+    <div class="trap"><ul>
+      <li>B<sub>w</sub> 用 25 MHz 还是 50 MHz 要写明。用 50 MHz 时 η<sub>m</sub> = 0.322、η = 0.24。</li>
+      <li>每小区信道取 142（整数）或 142.9 都行，结果只差约 0.6%，写清楚用的是哪个。</li>
+      <li>(iii) 是"每小时服务多少用户"，所以用呼叫次数 ÷ 每人呼叫次数，不是话务量 ÷ A<sub>u</sub>（两者结果相同：A<sub>u</sub> = 2 × 5/60 = 1/6 E，120.7 × 6 = 724）。</li>
+    </ul></div>
+  </div>
+
+  <!-- ---------- Q3(b) ---------- -->
+  <div class="qsec" id="g3b">
+    <div class="qhead"><h2>Q3(b) WiFi 7 短文</h2><span class="marks">12 marks</span></div>
+    <div class="orig" lang="en"><div class="orig-lab">Original question</div>
+      <p>Write a short essay description (limit A4 size page) about the performance of the latest IEEE802.11 Wireless LAN standard i.e. known as WiFi 7. What is the specification of this new standard? Explain is short detail the differences between this standard with another earlier version e.g. IEEE802.11a. Keep your description concise and [acknowledge if you use AI to search for this information &amp; provide the necessary references]</p>
+    </div>
+    <div class="chips"><span class="chip">IEEE 802.11be (EHT)</span><span class="chip">802.11a</span><span class="chip">OFDM → OFDMA</span><span class="chip src">课件 Part B p.12–14</span></div>
+    <div class="prose"><p>一页 A4 大约 350–450 个英文单词。题目要回答三件事：性能、规格、和 802.11a 的区别。建议分四段：①一句话定义和发布时间；②关键规格；③与 802.11a 对比（用表格最省字）；④结论，加注 AI 使用说明和参考文献。</p></div>
+    <div class="extra"><div class="extra-lbl">课外补充 · 题目要求查课外资料（课件 Part B 只讲到 802.11a）</div>
+    <div class="tw"><table style="min-width:560px">
+      <thead><tr><th>项目</th><th>IEEE 802.11a（1999）</th><th>WiFi 7 · IEEE 802.11be</th></tr></thead>
+      <tbody>
+        <tr><td>频段</td><td>5 GHz</td><td>2.4 / 5 / 6 GHz</td></tr>
+        <tr><td>信道带宽</td><td>20 MHz</td><td>最高 320 MHz（仅 6 GHz）</td></tr>
+        <tr><td>物理层</td><td>OFDM，64 点 FFT，52 个子载波（48 数据 + 4 导频），间隔 312.5 kHz</td><td>OFDMA，子载波间隔 78.125 kHz（沿用 802.11ax）</td></tr>
+        <tr><td>最高调制</td><td>64-QAM（6 bit/符号）</td><td>4096-QAM（12 bit/符号）</td></tr>
+        <tr><td>天线</td><td>单流 SISO</td><td>最多 8 个空间流，MU-MIMO</td></tr>
+        <tr><td>多用户</td><td>CSMA/CA，一次只服务一个站</td><td>OFDMA 多资源单元、Multi-RU、前导码打孔、MLO 多链路</td></tr>
+        <tr><td>峰值速率</td><td>54 Mbit/s</td><td>单链路约 23 Gbit/s（8 流、320 MHz、4096-QAM）</td></tr>
+      </tbody>
+    </table></div>
+    <p>名词速查：<b>OFDM</b> 把一个宽信道切成很多窄的子载波并行传；<b>OFDMA</b> 在此基础上把不同子载波分给不同用户，多人同时传；<b>QAM</b> 的阶数越高，每个符号携带的比特越多（64-QAM 6 bit，4096-QAM 12 bit），但要求信号更干净；<b>空间流</b>是用多根天线同时传几路不同的数据；<b>MLO</b> 让设备同时在 2.4/5/6 GHz 几个频段上收发。</p>
+    </div>
+    <div class="trap"><ul>
+      <li>早期草案写过 16 个空间流、46 Gbit/s，但 2024 年定稿时删掉了，正式标准是 8 流。网上很多文章还在用旧数字。</li>
+      <li>引用标准原文和 Wi-Fi Alliance 官方新闻稿，不要只引百科或厂商博客。</li>
+      <li>题目要求注明 AI 使用，参考答案末尾有一句可以照着改。</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ======================================================= 中文答案 -->
+<section id="zh" role="tabpanel" aria-labelledby="tab-zh" hidden>
+  <div class="jump"><a href="#zh1a">1(a)</a><a href="#zh1b">1(b)</a><a href="#zh2a">2(a)</a><a href="#zh2b">2(b)</a><a href="#zh2c">2(c)</a><a href="#zh3a">3(a)</a><a href="#zh3b">3(b)</a></div>
+  <article class="doc">
+    <div class="doc-head">
+      <h2 style="margin:0;border:0;font-size:1.8rem">EE6129 HW1 参考答案（中文）</h2>
+      <p>Erlang 值取自课件 Erlang B 表（GoS 2%）。课件页码指 Part A Cellular Communications。</p>
+    </div>
+
+    <h2 id="zh1a">Q1(a)</h2>
+    <p>除 MS 和 BS 外，蜂窝网络还有四个基本组成部分（课件 p.11）：</p>
+    <ol>
+      <li><b>有线网关（Gateway to the wireline system）</b>：经 MTSO 把移动网接到 PSTN 和 Internet，使移动用户能与固话用户和数据网络通信；负责两种网络之间的信令和格式转换。</li>
+      <li><b>数据库（Databases）</b>：归属位置寄存器 HLR 保存每个用户的签约资料和当前位置区；拜访位置寄存器 VLR 保存在本区漫游用户的临时记录。MTSO 依靠它们完成被叫寻呼、路由、漫游和切换。</li>
+      <li><b>安全机制（Security mechanism）</b>：提供服务前鉴权（鉴权中心 AuC），对空口话音和信令加密以防窃听，并通过设备识别寄存器 EIR 拦截被盗或非法终端，防止盗用和欺诈。</li>
+      <li><b>空口标准（Air interface standard）</b>：MS 与 BS 之间的无线协议（如 AMPS、GSM、IS-95 CDMA），规定频段、多址方式（FDMA/TDMA/CDMA）、调制方式、控制信道和业务信道，以及上行（reverse）和下行（forward）链路。</li>
+    </ol>
+    <p><b>框图</b>（见下图）：各 BS 连到移动交换中心 MTSO（MSC）。MTSO 负责小区间的呼叫交换，连接数据库和安全功能，并经网关接入 PSTN/Internet；MS 通过空口与 BS 通信。</p>
+    <div class="fig" data-clone="net"></div>
+    <p><b>系统如何协同工作：</b></p>
+    <ol>
+      <li>开机：MS 扫描并锁定最强的控制信道，经 BS 与 MTSO 握手；MTSO 查数据库并鉴权后登记 MS 的位置。</li>
+      <li>主叫：MS 在控制信道上发送被叫号码，BS 把请求转给 MTSO。</li>
+      <li>寻呼：MTSO 查数据库找到被叫所在位置区，经该区 BS 发寻呼；被叫是固话时经网关接到 PSTN。</li>
+      <li>接通：MTSO 在两个小区各分配一条业务信道并通知 BS，双方调到该信道通话。</li>
+      <li>切换：MS 移入相邻小区时，MTSO 把通话转到新 BS 的业务信道，通话不中断。</li>
+    </ol>
+
+    <h2 id="zh1b">Q1(b)</h2>
+    <p class="given">已知：N<sub>c</sub> = 9，总信道 504，每用户每小时 2 次、每次 15 min，GoS = 2%。</p>
+    <p>每用户话务量：A<sub>u</sub> = λH = 2 × (15/60) = <b>0.5 Erlang</b></p>
+    <h3>(i)</h3>
+    <p>每小区信道数 M = 504 / 9 = 56。查 Erlang B 表（M = 56，B = 2%）得 A = 45.9 E，即 56 条信道在 2% GoS 下能承载的话务量（与课件 p.44 相同）。</p>
+    <div class="box">每小区承载话务量 ≈ <b>45.9 Erlang</b>；中继效率 η<sub>t</sub> = 45.9 / 56 = <b>0.82（82%）</b></div>
+    <p>注：若严格按 C = A(1 − P<sub>B</sub>) 计算，C = 45.9 × 0.98 = 45.0 E，η<sub>t</sub> = 45.0 / 56 = 0.80。</p>
+    <h3>(ii)</h3>
+    <div class="box">每小区用户数 U = A / A<sub>u</sub> = 45.9 / 0.5 = 91.8 → <b>91 个用户</b></div>
+    <h3>(iii)</h3>
+    <p>N<sub>c</sub> = 7：M = 504 / 7 = 72，查表 A = 61.0 E（严格 C = 59.8 E）。</p>
+    <div class="box">承载话务量 ≈ <b>61.0 Erlang/小区</b>；η<sub>t</sub> = 61.0 / 72 = <b>0.85</b>；用户数 = 61.0 / 0.5 = <b>122</b></div>
+    <div class="tw"><table>
+      <thead><tr><th></th><th class="num">M</th><th class="num">A (E)</th><th class="num">η<sub>t</sub></th><th class="num">用户/小区</th><th class="num">SIR (n=4)</th></tr></thead>
+      <tbody>
+        <tr><td>N<sub>c</sub> = 9</td><td class="num">56</td><td class="num">45.9</td><td class="num">0.82</td><td class="num">91</td><td class="num">20.8 dB</td></tr>
+        <tr><td>N<sub>c</sub> = 7</td><td class="num">72</td><td class="num">61.0</td><td class="num">0.85</td><td class="num">122</td><td class="num">18.7 dB</td></tr>
+      </tbody>
+    </table></div>
+    <p><b>评论：</b>簇大小从 9 减到 7，每小区多出 16 条信道（+29%）。信道池越大中继效率越高，所以承载话务量增加 33%（45.9 → 61.0 E），η<sub>t</sub> 从 0.82 升到 0.85，每小区用户数增加 34%（91 → 122）。小区大小不变，整个系统的容量也按同样比例增加。代价是同频干扰加大：Q = √(3N) 从 5.20 降到 4.58，n = 4 时 SIR 从 20.8 dB 降到 18.7 dB，仍高于语音质量通常要求的约 18 dB，但余量变小。簇大小的选择是容量与通话质量之间的折中。</p>
+
+    <h2 id="zh2a">Q2(a)</h2>
+    <p class="given">已知：总带宽 30 MHz，双工信道 = 2 × 25 kHz，9 小区复用，控制信道 0.75 MHz，50 个小区，GoS 2%，每用户 0.025 E。</p>
+    <p>双工信道带宽 = 2 × 25 = 50 kHz；总信道数 = 30 MHz / 50 kHz = 600；控制信道 = 0.75 MHz / 50 kHz = 15；话音信道 = 600 − 15 = 585；每小区 M = 585 / 9 = 65。</p>
+    <h3>(i)</h3>
+    <div class="box">查表（M = 65，B = 2%）：每小区话务量 <b>A = 54.4 Erlang</b>；中继效率 η<sub>t</sub> = 54.4 / 65 = <b>0.837（约 84%）</b></div>
+    <h3>(ii)</h3>
+    <div class="box">每小区用户 = 54.4 / 0.025 = <b>2176</b>；全系统用户 = 2176 × 50 = <b>108,800</b></div>
+    <h3>(iii)</h3>
+    <div class="box">每小区：2176 / 65 = <b>33.5 用户/信道</b>；全系统：108,800 / 585 = <b>186 用户/信道</b></div>
+    <p>全系统按不重复的 585 条话音信道计算，每条信道在 50 个小区中约被重复使用 50/9 ≈ 5.6 次（与课件 p.134 口径一致）。</p>
+    <h3>(iv)</h3>
+    <div class="box">任意时刻最多同时服务 = 全系统信道总数 = 65 × 50 = <b>3250 个用户</b>（约占用户总数的 3%）</div>
+
+    <h2 id="zh2b">Q2(b)</h2>
+    <h3>推导</h3>
+    <p>假设：只考虑第一层 6 个同频干扰小区；MS 位于小区边缘，与服务 BS 距离 R；6 个干扰 BS 与 MS 的距离都约为 D；接收功率与距离的 −n 次方成正比。则</p>
+    <div class="f">S/I = R<sup>−n</sup> / (6D<sup>−n</sup>) = (D/R)<sup>n</sup> / 6 = Q<sup>n</sup> / 6，  Q = D/R = √(3N)</div>
+    <p>取 n = 4：</p>
+    <div class="f">S/I = (3N)<sup>2</sup> / 6 = 1.5N<sup>2</sup>  ⇒  SIR<sub>dB</sub> = 10 log<sub>10</sub>1.5 + 20 log<sub>10</sub>N = 1.76 + 20 log<sub>10</sub>N</div>
+    <h3>(i)</h3>
+    <div class="box">N<sub>c</sub> = 7：SIR<sub>dB</sub> = 1.76 + 20 log<sub>10</sub>7 = 1.76 + 16.90 = <b>18.66 dB</b>（S/I = 73.5）</div>
+    <p>评论：高于模拟语音通常要求的约 18 dB，因此 N = 7 是常用的复用方案（课件 p.89）。但简化模型假设 6 个干扰源都在距离 D，忽略了 MS 在小区角落的情况、第二层干扰和阴影衰落，实际最坏情况的 SIR 会更低，余量很小。</p>
+    <h3>(ii)</h3>
+    <p>要求 Q<sup>n</sup> / 6 ≥ 10<sup>20/10</sup> = 100，Q = √21 = 4.583：</p>
+    <div class="f">n ≥ log<sub>10</sub>(600) / log<sub>10</sub>(4.583) = 2.778 / 0.6611 = 4.20</div>
+    <div class="box">所需路径损耗指数 <b>n ≈ 4.2</b></div>
+    <p>路径损耗指数越大，远处干扰衰减得越快，SIR 越高。</p>
+    <h3>(iii)</h3>
+    <p>n = 4.2，Q = 4.583：(Q − 1)<sup>4.2</sup> = 3.583<sup>4.2</sup> = 212.6；Q<sup>4.2</sup> = 597.9；(Q + 1)<sup>4.2</sup> = 5.583<sup>4.2</sup> = 1370.0</p>
+    <div class="f">SIR = 1 / (2/212.6 + 2/597.9 + 2/1370.0) = 1 / (0.009406 + 0.003345 + 0.001460) = 1 / 0.01421 = 70.4</div>
+    <div class="box">最坏情况（全向）SIR = 10 log<sub>10</sub>70.4 = <b>18.5 dB</b>，低于 20 dB 的要求</div>
+    <p>原因：MS 位于小区边缘时，有两个干扰源只相距 D − R，比简化模型假设的 D 近，因此比简化结果低约 1.5 dB。</p>
+    <h3>(iv)</h3>
+    <div class="f">SIR = 1 / (Q<sup>−n</sup> + (Q + 0.7)<sup>−n</sup>) = 1 / (1/597.9 + 1/1086.3) = 1 / 0.002593 = 385.7</div>
+    <div class="box">120° 扇区 SIR = 10 log<sub>10</sub>385.7 = <b>25.9 dB</b></div>
+    <p>与 (iii) 比较：SIR 提高约 7.4 dB，满足 20 dB 要求且余量约 6 dB。原因是定向天线只接收前方 120° 内的干扰，第一层干扰源从 6 个减为 2 个。代价是每个小区的信道分到 3 个扇区，每扇区信道变少，中继效率下降（课件 p.149 例子中每小时呼叫数减少 24%）；扇区之间切换增多，天线和设备也更多。多出的 SIR 余量可以用来减小簇大小（如 N = 4），把容量补回来。</p>
+
+    <h2 id="zh2c">Q2(c)</h2>
+    <div class="fig" data-clone="hex"></div>
+    <ol>
+      <li>六边形半径为 R（中心到顶点，等于边长）。中心到边的距离为 R cos30° = (√3/2)R，所以相邻两个小区中心的距离为 <b>√3R</b>。</li>
+      <li>以相邻中心距离 √3R 为 1 个单位，以参考小区中心为原点建立 i、j 坐标轴：两轴分别垂直于六边形的两条相邻边，夹角 60°。每个小区中心都位于整数坐标 (i, j)，最近的同频小区在 (i, j) 处（i、j 为非负整数）。</li>
+      <li>把沿 j 轴的位移分解为沿 i 轴方向的 j sin30° 和垂直方向的 j cos30°，归一化距离为
+        <div class="f">D<sub>norm</sub> = {[j cos30°]<sup>2</sup> + [i + j sin30°]<sup>2</sup>}<sup>1/2</sup> = {(3/4)j<sup>2</sup> + i<sup>2</sup> + ij + (1/4)j<sup>2</sup>}<sup>1/2</sup> = (i<sup>2</sup> + ij + j<sup>2</sup>)<sup>1/2</sup></div>
+        实际距离 D = √3R · D<sub>norm</sub> = √3R (i<sup>2</sup> + ij + j<sup>2</sup>)<sup>1/2</sup>。</li>
+      <li>同频小区中心相距 D，以每个同频小区为中心、半径为 D/√3 的大六边形覆盖的面积等于一个 N 小区簇的面积（正六边形面积 = (3√3/2)r<sup>2</sup>）：
+        <div class="f">N × (3√3/2)R<sup>2</sup> = (3√3/2)(D/√3)<sup>2</sup>  ⇒  N = D<sup>2</sup> / 3R<sup>2</sup> = i<sup>2</sup> + ij + j<sup>2</sup> = D<sub>norm</sub><sup>2</sup></div></li>
+    </ol>
+    <div class="box"><b>D = R√(3N)</b>，<b>N = i<sup>2</sup> + ij + j<sup>2</sup></b>，同频复用比 Q = D/R = √(3N)</div>
+    <p>N 只能取 1, 3, 4, 7, 9, 12, 13, 16, 19, 21 …。例如 i = 2、j = 1：N = 7，D = √21 R ≈ 4.58R。</p>
+
+    <h2 id="zh3a">Q3(a)</h2>
+    <p class="given">已知：服务区 4500 km<sup>2</sup>，N = 7，小区面积 7.5 km<sup>2</sup>，上下行各 25 MHz，125 个双工载频，每载频 8 个 TDMA 时隙，帧长 4.615 ms，时隙 156.25 bit（含 116 bit 编码语音），每用户忙时 2 次、每次 5 min，中继效率 0.85。</p>
+    <h3>(i)</h3>
+    <div class="box">小区数 = 4500 / 7.5 = <b>600 个</b></div>
+    <h3>(ii)</h3>
+    <p>总业务信道 = 125 × 8 = 1000；每小区 = 1000 / 7 = 142.9，取 142 条。每小区话务量 = η<sub>t</sub> × M = 0.85 × 142 = 120.7 E。每次通话 5 min = 1/12 h：</p>
+    <div class="box">每小区每小时呼叫数 = 120.7 × 60/5 = <b>1448 次</b></div>
+    <h3>(iii)</h3>
+    <div class="box">每小区每小时服务用户数 = 1448 / 2 = <b>724 个</b></div>
+    <h3>(iv)</h3>
+    <p>调制频谱效率（B<sub>w</sub> 取单向 25 MHz，25 MHz / 200 kHz = 125 个载频；与课件 p.44 口径一致）：</p>
+    <div class="f">η<sub>m</sub> = 每小区话务量 / (B<sub>w</sub> × A<sub>c</sub>) = 120.7 / (25 × 7.5) = 0.644 Erl/MHz/km<sup>2</sup></div>
+    <p>多址频谱效率（窄带 TDMA，课件 p.46）：时隙长 4.615 / 8 = 0.577 ms，含 156.25 bit（270.8 kbit/s），其中 116 bit 为编码语音。</p>
+    <div class="f wrapok">η<sub>a</sub> = (T<sub>s</sub>M<sub>t</sub>/T<sub>f</sub>)(B<sub>u</sub>N<sub>u</sub>/B<sub>w</sub>) = (116/156.25) × (200 kHz × 125 / 25 MHz) = 0.742 × 1 = 0.742</div>
+    <div class="box">总频谱效率 η = η<sub>m</sub> × η<sub>a</sub> = 0.644 × 0.742 = <b>0.48 Erl/MHz/km<sup>2</sup></b></div>
+    <p>注：若带宽取上下行合计 50 MHz，则 η<sub>m</sub> = 0.322，η = 0.24 Erl/MHz/km<sup>2</sup>。</p>
+
+    <h2 id="zh3b">Q3(b)</h2>
+    <div class="essay">
+      <h4>WiFi 7（IEEE 802.11be）的性能、规格及与 802.11a 的比较</h4>
+      <p>WiFi 7 是 Wi-Fi Alliance 对 IEEE 802.11be "极高吞吐量"（Extremely High Throughput, EHT）修订案的命名。Wi-Fi Alliance 于 2024 年 1 月 8 日推出 Wi-Fi CERTIFIED 7 认证 [2]，IEEE Std 802.11be-2024 于 2025 年 7 月正式发布 [1]。它的目标是多 Gbit/s 的吞吐量，以及更低、更稳定的时延，用于 AR/VR、8K 视频、云游戏和工业物联网等场景。</p>
+      <p><b>主要规格：</b>① 工作于 2.4、5、6 GHz 三个频段；② 6 GHz 频段支持 320 MHz 信道，是 WiFi 6 最大 160 MHz 的两倍；③ 4096-QAM，每符号 12 bit，比 1024-QAM 的峰值速率高 20%；④ 多链路操作（MLO），设备可同时在多个频段上收发，提高吞吐、降低时延、增强可靠性，是认证必选功能；⑤ 一个用户可分配多个资源单元（Multi-RU），配合前导码打孔，宽信道中某段受干扰时可跳过该段，其余带宽继续使用；⑥ 最多 8 个空间流，支持多用户 MIMO；⑦ 单条 320 MHz 链路的理论峰值约 23 Gbit/s [1][3]。</p>
+      <p><b>与 802.11a 比较：</b>802.11a（1999 年）工作于 5 GHz，信道 20 MHz，采用 64 点 FFT 的 OFDM（52 个子载波，其中 48 个承载数据），最高 64-QAM，单天线，速率 6–54 Mbit/s；接入方式为 CSMA/CA，每次传输只服务一个站 [4][5]。WiFi 7 的信道宽 16 倍，每符号比特数是 2 倍（12 对 6），空间流多 8 倍，再加上 LDPC 编码和更长的 OFDM 符号降低了开销，峰值速率约高 400 倍。更关键的是多用户效率：OFDMA 和 MU-MIMO 让多个用户同时共享信道，MLO 跨频段聚合，适合用户密集的场景，而 802.11a 只能逐个轮流传输。</p>
+      <p><b>结论：</b>WiFi 7 的提升来自更宽的频谱、更高阶的调制、更多空间流和多链路并发。实际吞吐受距离、干扰和各国 6 GHz 频谱政策限制，通常远低于理论峰值，且 6 GHz 的覆盖范围比 5 GHz 小。</p>
+    </div>
+    <p class="ack"><b>AI 使用说明：</b>本文使用 AI 助手（Claude）协助查找和整理资料，所有规格均已对照以下参考文献核实。</p>
+    <ol class="refs">
+      <li>IEEE, <i>IEEE Std 802.11be-2024, Amendment 2: Enhancements for Extremely High Throughput (EHT)</i>, published Jul. 2025. https://standards.ieee.org/ieee/802.11be/7516/</li>
+      <li>Wi-Fi Alliance, "Wi-Fi Alliance introduces Wi-Fi CERTIFIED 7," press release, 8 Jan. 2024. https://www.wi-fi.org/news-events/newsroom/wi-fi-alliance-introduces-wi-fi-certified-7</li>
+      <li>X. Liu, Y. Dong, Y. Li, Y. Lin, M. Gan, "IEEE 802.11be Wi-Fi 7: Feature Summary and Performance Evaluation," arXiv:2309.15951, 2023 (rev. 2025).</li>
+      <li>IEEE, <i>IEEE Std 802.11a-1999, High-speed Physical Layer in the 5 GHz Band</i>, 1999.</li>
+      <li>EE6129 课件 Part B Wireless Systems, slides 12–14.</li>
+    </ol>
+  </article>
+</section>
+
+<!-- ======================================================= English -->
+<section id="en" role="tabpanel" aria-labelledby="tab-en" lang="en" hidden>
+  <div class="jump"><a href="#en1a">1(a)</a><a href="#en1b">1(b)</a><a href="#en2a">2(a)</a><a href="#en2b">2(b)</a><a href="#en2c">2(c)</a><a href="#en3a">3(a)</a><a href="#en3b">3(b)</a></div>
+  <article class="doc">
+    <div class="doc-head">
+      <h2 style="margin:0;border:0;font-size:1.8rem">EE6129 HW1 — Model Answers (English)</h2>
+      <p>Erlang values are read from the course Erlang B table (GoS 2%). Slide numbers refer to Part A Cellular Communications.</p>
+    </div>
+
+    <h2 id="en1a">Q1(a)</h2>
+    <p>Besides the MS and the BS, a cellular network has four further basic components (slide 11):</p>
+    <ol>
+      <li><b>Gateway to the wireline system</b> — connects the mobile network, through the MTSO, to the PSTN and the Internet, so that mobile users can reach fixed-line telephones and data networks. It performs the signalling and format conversion between the two networks.</li>
+      <li><b>Databases</b> — the Home Location Register (HLR) stores each subscriber's profile and current location area; the Visitor Location Register (VLR) holds temporary records of users roaming in its area. The MTSO consults them to route calls, page the called user and support roaming and handoff.</li>
+      <li><b>Security mechanism</b> — authenticates a user before service is given (Authentication Centre, AuC), encrypts voice and signalling over the radio link against eavesdropping, and blocks stolen or unauthorised equipment (Equipment Identity Register, EIR), protecting subscribers and the operator against fraud.</li>
+      <li><b>Air interface standard</b> — the radio protocol between MS and BS (e.g. AMPS, GSM, IS-95 CDMA). It specifies the frequency band, the multiple access scheme (FDMA/TDMA/CDMA), modulation, control and traffic channels, and the uplink (reverse) and downlink (forward) links.</li>
+    </ol>
+    <p><b>Block diagram</b> (below): the BSs are connected to the Mobile Telecommunications Switching Office (MTSO, or MSC), which switches calls between cells, uses the databases and security functions, and reaches the PSTN/Internet through the gateway. The MS communicates with the BS over the air interface.</p>
+    <div class="fig" data-clone="net"></div>
+    <p><b>How the components work together:</b></p>
+    <ol>
+      <li>Initialisation: the MS scans for and locks onto the strongest setup (control) channel; a handshake through the BS lets the MTSO identify and authenticate the user and register its location.</li>
+      <li>Mobile-originated call: the MS sends the called number on the setup channel; the BS forwards the request to the MTSO.</li>
+      <li>Paging: the MTSO looks up the called user in the databases and pages it through the BSs of its location area; a call to a fixed line is routed through the gateway to the PSTN.</li>
+      <li>Call accepted: the MTSO sets up the circuit and assigns a traffic channel in each cell; both units tune to their channels.</li>
+      <li>Handoff: when the MS moves into a neighbouring cell, the MTSO switches the call to a traffic channel of the new BS without interrupting it.</li>
+    </ol>
+
+    <h2 id="en1b">Q1(b)</h2>
+    <p class="given">Given: N<sub>c</sub> = 9, 504 channels in total, 2 calls per hour of 15 min each, GoS = 2%.</p>
+    <p>Traffic per user: A<sub>u</sub> = λH = 2 × (15/60) = <b>0.5 Erlang</b>.</p>
+    <h3>(i)</h3>
+    <p>Channels per cell: M = 504 / 9 = 56. From the Erlang B table (M = 56, B = 2%), A = 45.9 Erlangs — the traffic that 56 channels can carry at 2% GoS (as on slide 44).</p>
+    <div class="box">Carried load per cell ≈ <b>45.9 Erlangs</b>; trunking efficiency η<sub>t</sub> = 45.9 / 56 = <b>0.82 (82%)</b></div>
+    <p>Note: using the strict definition C = A(1 − P<sub>B</sub>) = 45.9 × 0.98 = 45.0 E gives η<sub>t</sub> = 45.0 / 56 = 0.80.</p>
+    <h3>(ii)</h3>
+    <div class="box">Users per cell U = A / A<sub>u</sub> = 45.9 / 0.5 = 91.8 → <b>91 users</b></div>
+    <h3>(iii)</h3>
+    <p>For N<sub>c</sub> = 7: M = 504 / 7 = 72; from the table A = 61.0 E (strictly C = 59.8 E).</p>
+    <div class="box">Carried load ≈ <b>61.0 Erlangs per cell</b>; η<sub>t</sub> = 61.0 / 72 = <b>0.85</b>; users per cell = 61.0 / 0.5 = <b>122</b></div>
+    <div class="tw"><table>
+      <thead><tr><th></th><th class="num">M</th><th class="num">A (E)</th><th class="num">η<sub>t</sub></th><th class="num">Users/cell</th><th class="num">SIR (n=4)</th></tr></thead>
+      <tbody>
+        <tr><td>N<sub>c</sub> = 9</td><td class="num">56</td><td class="num">45.9</td><td class="num">0.82</td><td class="num">91</td><td class="num">20.8 dB</td></tr>
+        <tr><td>N<sub>c</sub> = 7</td><td class="num">72</td><td class="num">61.0</td><td class="num">0.85</td><td class="num">122</td><td class="num">18.7 dB</td></tr>
+      </tbody>
+    </table></div>
+    <p><b>Comment:</b> Reducing the cluster size from 9 to 7 gives every cell 16 more channels (+29%). Because a larger trunk group is used more efficiently, the carried traffic rises by 33% (45.9 → 61.0 E), the trunking efficiency improves from 0.82 to 0.85, and each cell supports 34% more users (91 → 122). With the same cell size, the capacity of the whole system rises in the same proportion. The price is more co-channel interference: Q = √(3N) falls from 5.20 to 4.58, so with n = 4 the SIR drops from 20.8 dB to 18.7 dB — still above the ~18 dB normally needed for acceptable voice quality, but with less margin. The choice of cluster size is a trade-off between capacity and signal quality.</p>
+
+    <h2 id="en2a">Q2(a)</h2>
+    <p class="given">Given: 30 MHz total, duplex channel = 2 × 25 kHz, 9-cell reuse, 0.75 MHz for control, 50 cells, GoS 2%, 0.025 E per user.</p>
+    <p>Duplex channel bandwidth = 2 × 25 = 50 kHz. Total channels = 30 MHz / 50 kHz = 600. Control channels = 0.75 MHz / 50 kHz = 15. Voice channels = 600 − 15 = 585. Channels per cell M = 585 / 9 = 65.</p>
+    <h3>(i)</h3>
+    <div class="box">Erlang B table (M = 65, B = 2%): traffic load per cell <b>A = 54.4 Erlangs</b>; trunking efficiency η<sub>t</sub> = 54.4 / 65 = <b>0.837 (≈ 84%)</b></div>
+    <h3>(ii)</h3>
+    <div class="box">Users per cell = 54.4 / 0.025 = <b>2176</b>; users in the system = 2176 × 50 = <b>108,800</b></div>
+    <h3>(iii)</h3>
+    <div class="box">Per cell: 2176 / 65 = <b>33.5 users per channel</b>; system: 108,800 / 585 = <b>186 users per channel</b></div>
+    <p>For the system the 585 unique voice channels are used as the denominator; each is reused about 50/9 ≈ 5.6 times across the 50 cells (same approach as slide 134).</p>
+    <h3>(iv)</h3>
+    <div class="box">Maximum users in service at any instant = total channels in the system = 65 × 50 = <b>3250 users</b> (about 3% of the subscribers)</div>
+
+    <h2 id="en2b">Q2(b)</h2>
+    <h3>Derivation</h3>
+    <p>Assumptions: only the six first-tier co-channel cells interfere; the MS is at the cell edge, a distance R from its serving BS; all six interfering BSs are at approximately distance D from the MS; received power is proportional to (distance)<sup>−n</sup>. Then</p>
+    <div class="f">S/I = R<sup>−n</sup> / (6D<sup>−n</sup>) = (D/R)<sup>n</sup> / 6 = Q<sup>n</sup> / 6,   with Q = D/R = √(3N)</div>
+    <p>With n = 4:</p>
+    <div class="f">S/I = (3N)<sup>2</sup> / 6 = 1.5N<sup>2</sup>  ⇒  SIR<sub>dB</sub> = 10 log<sub>10</sub>1.5 + 20 log<sub>10</sub>N = 1.76 + 20 log<sub>10</sub>N</div>
+    <h3>(i)</h3>
+    <div class="box">N<sub>c</sub> = 7: SIR<sub>dB</sub> = 1.76 + 20 log<sub>10</sub>7 = 1.76 + 16.90 = <b>18.66 dB</b> (S/I = 73.5)</div>
+    <p>Comment: this exceeds the ~18 dB usually required for acceptable analogue voice quality, which is why N = 7 is the classic reuse pattern (slide 89). However, the simplified model places all six interferers at distance D and ignores the MS at a cell corner, second-tier interferers and shadowing, so the real worst-case SIR is lower and the margin is small.</p>
+    <h3>(ii)</h3>
+    <p>Require Q<sup>n</sup> / 6 ≥ 10<sup>20/10</sup> = 100 with Q = √21 = 4.583:</p>
+    <div class="f">n ≥ log<sub>10</sub>(600) / log<sub>10</sub>(4.583) = 2.778 / 0.6611 = 4.20</div>
+    <div class="box">Required path loss exponent <b>n ≈ 4.2</b></div>
+    <p>A larger path loss exponent attenuates distant interferers faster, which raises the SIR.</p>
+    <h3>(iii)</h3>
+    <p>With n = 4.2 and Q = 4.583: (Q − 1)<sup>4.2</sup> = 3.583<sup>4.2</sup> = 212.6; Q<sup>4.2</sup> = 597.9; (Q + 1)<sup>4.2</sup> = 5.583<sup>4.2</sup> = 1370.0.</p>
+    <div class="f">SIR = 1 / (2/212.6 + 2/597.9 + 2/1370.0) = 1 / (0.009406 + 0.003345 + 0.001460) = 1 / 0.01421 = 70.4</div>
+    <div class="box">Worst-case omnidirectional SIR = 10 log<sub>10</sub>70.4 = <b>18.5 dB</b>, below the 20 dB requirement</div>
+    <p>Reason: with the MS at the cell edge, two interferers are only D − R away, closer than the distance D assumed in the simplified model, so the SIR is about 1.5 dB lower.</p>
+    <h3>(iv)</h3>
+    <div class="f">SIR = 1 / (Q<sup>−n</sup> + (Q + 0.7)<sup>−n</sup>) = 1 / (1/597.9 + 1/1086.3) = 1 / 0.002593 = 385.7</div>
+    <div class="box">SIR with 120° sectoring = 10 log<sub>10</sub>385.7 = <b>25.9 dB</b></div>
+    <p>Compared with part (iii), the SIR improves by about 7.4 dB and now meets the 20 dB requirement with about 6 dB margin, because the directional antenna receives interference only within its 120° beam, reducing the first-tier interferers from six to two. The cost is that each cell's channels are split among three sectors, so each sector has fewer channels and the trunking efficiency drops (in the slide 149 example the calls per hour fall by 24%); there are also more handoffs between sectors and more antennas and equipment. The SIR margin can be traded for a smaller cluster size (e.g. N = 4) to recover capacity.</p>
+
+    <h2 id="en2c">Q2(c)</h2>
+    <div class="fig" data-clone="hex"></div>
+    <ol>
+      <li>Let the hexagon radius be R (centre to vertex, equal to the side). The distance from the centre to a side is R cos30° = (√3/2)R, so the centres of two adjacent cells are <b>√3R</b> apart.</li>
+      <li>Normalise the centre-to-centre distance √3R to one unit and take the centre of the reference cell as the origin. The i and j axes pass perpendicularly through two adjacent sides of the hexagon, so they are 60° apart, and every cell centre lies at integer co-ordinates (i, j). The nearest co-channel cell is at (i, j), with i, j non-negative integers.</li>
+      <li>Resolving the j displacement into j sin30° along the i axis and j cos30° perpendicular to it, the normalised distance is
+        <div class="f">D<sub>norm</sub> = {[j cos30°]<sup>2</sup> + [i + j sin30°]<sup>2</sup>}<sup>1/2</sup> = {(3/4)j<sup>2</sup> + i<sup>2</sup> + ij + (1/4)j<sup>2</sup>}<sup>1/2</sup> = (i<sup>2</sup> + ij + j<sup>2</sup>)<sup>1/2</sup></div>
+        and the actual distance is D = √3R · D<sub>norm</sub> = √3R (i<sup>2</sup> + ij + j<sup>2</sup>)<sup>1/2</sup>.</li>
+      <li>Co-channel cell centres are D apart, so a large hexagon of radius D/√3 centred on each co-channel cell covers the same area as one N-cell cluster (area of a regular hexagon = (3√3/2)r<sup>2</sup>):
+        <div class="f">N × (3√3/2)R<sup>2</sup> = (3√3/2)(D/√3)<sup>2</sup>  ⇒  N = D<sup>2</sup> / 3R<sup>2</sup> = i<sup>2</sup> + ij + j<sup>2</sup> = D<sub>norm</sub><sup>2</sup></div></li>
+    </ol>
+    <div class="box"><b>D = R√(3N)</b>, <b>N = i<sup>2</sup> + ij + j<sup>2</sup></b>, co-channel reuse ratio Q = D/R = √(3N)</div>
+    <p>Only N = 1, 3, 4, 7, 9, 12, 13, 16, 19, 21, … are possible. For example i = 2, j = 1 gives N = 7 and D = √21 R ≈ 4.58R.</p>
+
+    <h2 id="en3a">Q3(a)</h2>
+    <p class="given">Given: service area 4500 km<sup>2</sup>, N = 7, cell area 7.5 km<sup>2</sup>, 25 MHz each for uplink and downlink, 125 duplex carriers, 8 TDMA slots per carrier, frame 4.615 ms, slot 156.25 bits including 116 bits of coded speech, 2 calls of 5 min per user in the busy hour, trunking efficiency 0.85.</p>
+    <h3>(i)</h3>
+    <div class="box">Number of cells = 4500 / 7.5 = <b>600 cells</b></div>
+    <h3>(ii)</h3>
+    <p>Total traffic channels = 125 × 8 = 1000; per cell = 1000 / 7 = 142.9, taken as 142. Traffic per cell = η<sub>t</sub> × M = 0.85 × 142 = 120.7 E. Holding time 5 min = 1/12 h, so</p>
+    <div class="box">Calls per hour per cell = 120.7 × 60/5 = <b>1448 calls/h</b></div>
+    <h3>(iii)</h3>
+    <div class="box">Users served per hour per cell = 1448 / 2 = <b>724 users</b></div>
+    <h3>(iv)</h3>
+    <p>Modulation spectral efficiency, with B<sub>w</sub> = 25 MHz one-way (25 MHz / 200 kHz = 125 carriers; same convention as slide 44):</p>
+    <div class="f">η<sub>m</sub> = traffic per cell / (B<sub>w</sub> × A<sub>c</sub>) = 120.7 / (25 × 7.5) = 0.644 Erl/MHz/km<sup>2</sup></div>
+    <p>Multiple access efficiency for narrowband TDMA (slide 46): each slot lasts 4.615 / 8 = 0.577 ms and carries 156.25 bits (270.8 kbit/s), of which 116 bits are coded speech.</p>
+    <div class="f wrapok">η<sub>a</sub> = (T<sub>s</sub>M<sub>t</sub>/T<sub>f</sub>)(B<sub>u</sub>N<sub>u</sub>/B<sub>w</sub>) = (116/156.25) × (200 kHz × 125 / 25 MHz) = 0.742 × 1 = 0.742</div>
+    <div class="box">Overall spectral efficiency η = η<sub>m</sub> × η<sub>a</sub> = 0.644 × 0.742 = <b>0.48 Erl/MHz/km<sup>2</sup></b></div>
+    <p>Note: if the total 50 MHz (both directions) is taken as the bandwidth, η<sub>m</sub> = 0.322 and η = 0.24 Erl/MHz/km<sup>2</sup>.</p>
+
+    <h2 id="en3b">Q3(b)</h2>
+    <div class="essay">
+      <h4>Wi-Fi 7 (IEEE 802.11be): performance, specification and comparison with IEEE 802.11a</h4>
+      <p>Wi-Fi 7 is the Wi-Fi Alliance name for IEEE 802.11be, the “Extremely High Throughput” (EHT) amendment to IEEE 802.11. The Wi-Fi Alliance launched Wi-Fi CERTIFIED 7 on 8 January 2024 [2], and IEEE Std 802.11be-2024 was published in July 2025 [1]. Its aim is multi-gigabit throughput with lower and more predictable latency for applications such as AR/VR, 8K video, cloud gaming and industrial IoT.</p>
+      <p><b>Key specifications.</b> (1) Operation in the 2.4, 5 and 6 GHz bands. (2) Channels up to 320 MHz in the 6 GHz band, double the 160 MHz of Wi-Fi 6. (3) 4096-QAM, carrying 12 bits per symbol and giving 20% higher peak rates than 1024-QAM. (4) Multi-Link Operation (MLO): a device transmits and receives simultaneously over several links in different bands, increasing throughput, reducing latency and improving reliability; it is mandatory for certification. (5) Multiple resource units per user and preamble puncturing: when part of a wide channel suffers interference, that part is skipped and the rest of the bandwidth is still used. (6) Up to 8 spatial streams with multi-user MIMO. (7) A theoretical peak PHY rate of about 23 Gbit/s on a single 320 MHz link [1][3].</p>
+      <p><b>Comparison with 802.11a.</b> IEEE 802.11a (1999) operates in the 5 GHz band with 20 MHz channels, using OFDM with a 64-point FFT (52 subcarriers, 48 carrying data), modulation up to 64-QAM, a single antenna, and rates of 6–54 Mbit/s; access is by CSMA/CA, so each transmission serves one station [4][5]. Wi-Fi 7 uses 16 times the channel width, twice the bits per symbol (12 versus 6) and up to 8 times as many spatial streams, and LDPC coding with longer OFDM symbols reduces overhead, so its peak rate is roughly 400 times higher. Just as important is multi-user efficiency: OFDMA and MU-MIMO let many users share a channel at the same time and MLO aggregates bands, which suits dense deployments, whereas 802.11a can only serve stations one after another.</p>
+      <p><b>Conclusion.</b> Wi-Fi 7's gains come from wider spectrum, higher-order modulation, more spatial streams and simultaneous multi-link operation. Real throughput is limited by distance, interference and national 6 GHz spectrum rules and is usually far below the theoretical peak; coverage at 6 GHz is also smaller than at 5 GHz.</p>
+    </div>
+    <p class="ack"><b>AI acknowledgement:</b> An AI assistant (Claude) was used to help search for and organise the information. All specifications were checked against the references below.</p>
+    <ol class="refs">
+      <li>IEEE, <i>IEEE Std 802.11be-2024, Amendment 2: Enhancements for Extremely High Throughput (EHT)</i>, published Jul. 2025. https://standards.ieee.org/ieee/802.11be/7516/</li>
+      <li>Wi-Fi Alliance, “Wi-Fi Alliance introduces Wi-Fi CERTIFIED 7,” press release, 8 Jan. 2024. https://www.wi-fi.org/news-events/newsroom/wi-fi-alliance-introduces-wi-fi-certified-7</li>
+      <li>X. Liu, Y. Dong, Y. Li, Y. Lin, M. Gan, “IEEE 802.11be Wi-Fi 7: Feature Summary and Performance Evaluation,” arXiv:2309.15951, 2023 (rev. 2025).</li>
+      <li>IEEE, <i>IEEE Std 802.11a-1999, High-speed Physical Layer in the 5 GHz Band</i>, 1999.</li>
+      <li>EE6129 lecture notes, Part B Wireless Systems, slides 12–14.</li>
+    </ol>
+  </article>
+</section>
+
+  <footer>Erlang B 数值取自课件 Erlang B 表并用公式复核；SIR 和频谱效率按课件 Part A 的公式计算。页面 2026 年 10 月整理。</footer>
+</div>
+
+<script>
+(function(){
+  var NS='http://www.w3.org/2000/svg';
+  function el(tag, attrs, parent, text){
+    var e=document.createElementNS(NS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    if (text!=null) e.textContent=text;
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function hexPts(cx, cy, R){
+    var p=[];
+    for (var k=0;k<6;k++){ var a=Math.PI/180*(90+60*k); p.push((cx+R*Math.cos(a)).toFixed(2)+','+(cy-R*Math.sin(a)).toFixed(2)); }
+    return p.join(' ');
+  }
+  function arrow(parent, x1, y1, x2, y2, cls){
+    var a=Math.atan2(y2-y1, x2-x1), s=7;
+    var p=[[x2,y2],[x2-s*Math.cos(a-0.4), y2-s*Math.sin(a-0.4)],[x2-s*Math.cos(a+0.4), y2-s*Math.sin(a+0.4)]];
+    el('polygon',{points:p.map(function(q){return q[0].toFixed(1)+','+q[1].toFixed(1);}).join(' '), 'class':cls||'arrowhead'}, parent);
+  }
+
+  /* ---------- Q2(c) hex grid, N = 7 (i = 2, j = 1) ---------- */
+  function drawHex(svg){
+    var R=22, s3=Math.sqrt(3);
+    var e0=[s3*R,0], e60=[s3*R/2,-1.5*R];
+    function pos(a,b){ return [a*e0[0]+b*e60[0], a*e0[1]+b*e60[1]]; }
+    var offs=[[0,0],[1,0],[0,1],[-1,1],[-1,0],[0,-1],[1,-1]];
+    function group(a,b){
+      for (var g=0; g<7; g++){
+        var da=a-offs[g][0], db=b-offs[g][1];
+        if (((3*da+db)%7+7)%7===0 && ((-da+2*db)%7+7)%7===0) return g;
+      }
+      return -1;
+    }
+    var minx=1e9,maxx=-1e9,miny=1e9,maxy=-1e9, cells=[];
+    for (var a=-4;a<=4;a++) for (var b=-4;b<=4;b++){
+      if ((Math.abs(a)+Math.abs(b)+Math.abs(a+b))/2>3) continue;
+      var p=pos(a,b); cells.push([a,b,p]);
+      minx=Math.min(minx,p[0]-R); maxx=Math.max(maxx,p[0]+R); miny=Math.min(miny,p[1]-R); maxy=Math.max(maxy,p[1]+R);
+    }
+    var pad=10;
+    svg.setAttribute('viewBox', (minx-pad)+' '+(miny-pad)+' '+(maxx-minx+2*pad)+' '+(maxy-miny+2*pad));
+    var gc=el('g',{},svg), gl=el('g',{},svg);
+    cells.forEach(function(c){
+      var g=group(c[0],c[1]), home=(c[0]===0&&c[1]===0), co=(g===0&&!home);
+      el('polygon',{points:hexPts(c[2][0],c[2][1],R*0.985),'class':'hx'+(home?' home':co?' co':'')}, gc);
+      el('text',{x:c[2][0],y:c[2][1],'class':'hl'+(home?' home':co?' co':'')}, gc, String(g+1));
+    });
+    // path i (2 steps along e0) then j (1 step along 60°)
+    var O=pos(0,0), P1=pos(1,0), P2=pos(2,0), P3=pos(2,1);
+    el('path',{d:'M'+O+' L'+P2, 'class':'path-i'}, gl);
+    arrow(gl, P1[0], P1[1], P2[0]-4, P2[1]);
+    el('path',{d:'M'+P2+' L'+P3, 'class':'path-i'}, gl);
+    arrow(gl, P2[0], P2[1], P3[0]-2, P3[1]+3.5);
+    el('path',{d:'M'+O+' L'+P3, 'class':'path-d'}, gl);
+    // 60° arc at P2
+    var r=13; el('path',{d:'M'+(P2[0]+r)+','+P2[1]+' A'+r+','+r+' 0 0 0 '+(P2[0]+r*Math.cos(Math.PI/3)).toFixed(1)+','+(P2[1]-r*Math.sin(Math.PI/3)).toFixed(1),'class':'path-i','style':'stroke-width:1.2'}, gl);
+    el('text',{x:P2[0]+17,y:P2[1]-3,'font-size':9,'class':'mono halo'}, gl, '60°');
+    el('text',{x:(O[0]+P2[0])/2,y:O[1]+15,'font-size':10.5,'text-anchor':'middle','font-weight':700,'class':'halo'}, gl, 'i = 2');
+    el('text',{x:(P1[0]+P2[0])/2,y:O[1]-6,'font-size':9,'text-anchor':'middle','class':'mono halo'}, gl, '√3R');
+    el('text',{x:(P2[0]+P3[0])/2+13,y:(P2[1]+P3[1])/2+4,'font-size':10.5,'font-weight':700,'class':'halo'}, gl, 'j = 1');
+    el('text',{x:(O[0]+P3[0])/2-4,y:(O[1]+P3[1])/2-9,'font-size':11,'text-anchor':'end','class':'lab-d halo'}, gl, 'D = √21 R');
+  }
+
+  /* ---------- Q2(b) interference geometry: MS at the far corner of its 120° sector ---------- */
+  function drawInterf(svg){
+    var R=20, s3=Math.sqrt(3), D=Math.sqrt(21)*R, deg=Math.PI/180;
+    var base=Math.atan2(1.5, 2.5*s3)/deg;           // first-tier co-channel cells at 19.1° + 60°k
+    var ms=[R*Math.cos(-30*deg), -R*Math.sin(-30*deg)];   // hexagon vertex at −30°
+    function rhombus(cx, cy){                        // sector 1: centre → vertices at −30°, 30°, 90°
+      var p=[[cx,cy]];
+      [-30,30,90].forEach(function(a){ p.push([cx+R*Math.cos(a*deg), cy-R*Math.sin(a*deg)]); });
+      return p.map(function(q){ return q[0].toFixed(1)+','+q[1].toFixed(1); }).join(' ');
+    }
+    el('polygon',{points:hexPts(0,0,R),'class':'cell7 home'}, svg);
+    el('polygon',{points:rhombus(0,0),'class':'wedge hit'}, svg);
+    var cells=[];
+    for (var k=0;k<6;k++){
+      var a=(base+60*k)*deg, x=D*Math.cos(a), y=-D*Math.sin(a);
+      cells.push({k:k, x:x, y:y, d:Math.hypot(x-ms[0], y-ms[1])/R, hit:(k===3||k===4)});
+    }
+    var order=cells.slice().sort(function(p,q){ return p.d-q.d; });
+    order.forEach(function(c,i){ c.grp = i<2 ? 'near' : i<4 ? 'mid' : 'far'; });
+    var lines=el('g',{},svg), labs=el('g',{},svg);
+    cells.forEach(function(c){
+      el('polygon',{points:hexPts(c.x,c.y,R),'class':'cell7'}, svg);
+      el('polygon',{points:rhombus(c.x,c.y),'class':'wedge'+(c.hit?' hit':'')}, svg);
+      el('circle',{cx:c.x,cy:c.y,r:3.2,'class':'bs'}, svg);
+      el('line',{x1:c.x.toFixed(1),y1:c.y.toFixed(1),x2:ms[0].toFixed(1),y2:ms[1].toFixed(1),'class':'il '+c.grp+(c.hit?'':' blocked')}, lines);
+      var t=0.58, mx=ms[0]+(c.x-ms[0])*t, my=ms[1]+(c.y-ms[1])*t;
+      var L=Math.hypot(c.x-ms[0], c.y-ms[1]), nx=-(c.y-ms[1])/L, ny=(c.x-ms[0])/L;
+      var omni=c.d.toFixed(2)+'R', sect=omni+(c.k===3?' ≈ D+0.7R':c.k===4?' ≈ D':'');
+      var tx=el('text',{x:(mx+nx*9).toFixed(1),y:(my+ny*9+3).toFixed(1),'text-anchor':'middle','class':'ilab '+c.grp+(c.hit?'':' blocked')}, labs, omni);
+      tx.setAttribute('data-omni', omni); tx.setAttribute('data-sect', sect);
+    });
+    el('circle',{cx:0,cy:0,r:3.2,'class':'bs'}, svg);
+    el('text',{x:-6,y:-6,'font-size':10,'text-anchor':'end','font-weight':600}, svg, 'BS');
+    el('circle',{cx:ms[0].toFixed(1),cy:ms[1].toFixed(1),r:4.5,'class':'ms'}, svg);
+    el('text',{x:(ms[0]+7).toFixed(1),y:(ms[1]+13).toFixed(1),'font-size':10,'font-weight':700,'style':'fill:var(--accent-strong)'}, svg, 'MS');
+  }
+
+  document.querySelectorAll('svg.hexgrid').forEach(drawHex);
+  var intsvg=document.getElementById('intsvg');
+  if (intsvg) drawInterf(intsvg);
+
+  // clone diagrams into the answer documents
+  var net=document.querySelector('svg.netdiag'), hex=document.querySelector('svg.hexgrid');
+  document.querySelectorAll('[data-clone]').forEach(function(box){
+    var src=box.getAttribute('data-clone')==='net'?net:hex;
+    if (!src) return;
+    var c=src.cloneNode(true);
+    c.querySelectorAll('[id]').forEach(function(n){ n.removeAttribute('id'); });
+    c.removeAttribute('aria-labelledby');
+    c.setAttribute('aria-label', src.getAttribute('aria-label')||'diagram');
+    box.appendChild(c);
+  });
+
+  // omni / sector toggle
+  var bO=document.getElementById('mode-omni'), bS=document.getElementById('mode-sect'), cap=document.getElementById('int-cap');
+  function setMode(sect){
+    intsvg.setAttribute('class', sect?'sect':'omni');
+    bO.setAttribute('aria-pressed', String(!sect)); bS.setAttribute('aria-pressed', String(sect));
+    intsvg.querySelectorAll('.ilab').forEach(function(t){ t.textContent = t.getAttribute(sect?'data-sect':'data-omni'); });
+    cap.textContent = sect
+      ? '120° 扇区：每个小区切成 3 个菱形扇区，1 号扇区（浅色菱形）朝向全都一样。手机只被身后 2 个同频小区的 1 号扇区照到（实线），前方 4 个被挡掉（虚线），包括最近的 3.61R 和 4.00R。剩下两个在 5.29R ≈ D + 0.7R 和 4.36R ≈ D，正是课件 p.145 公式里的两项。n = 4.2 时 SIR ≈ 25.9 dB。'
+      : 'N = 7，按比例画（D = 4.58R）。手机站在小区边上（六边形的一个角）。6 个同频基站的距离从 3.61R 到 5.57R 不等：最近两个约 D − R，中间两个约 D，最远两个约 D + R，这就是 (iii) 公式里 2(Q−1)、2Q、2(Q+1) 三项的来历。n = 4.2 时课件公式给 SIR ≈ 18.5 dB。';
+  }
+  if (bO && bS){ bO.addEventListener('click', function(){ setMode(false); }); bS.addEventListener('click', function(){ setMode(true); }); setMode(false); }
+
+  /* ---------- Erlang B calculator ---------- */
+  function erlangB(A, M){ var b=1; for (var k=1;k<=M;k++) b=A*b/(k+A*b); return b; }
+  function solveA(M, pb){ var lo=0, hi=Math.max(10, 2*M); for (var i=0;i<80;i++){ var mid=(lo+hi)/2; if (erlangB(mid,M)>pb) hi=mid; else lo=mid; } return lo; }
+  var em=document.getElementById('eb-m'), eg=document.getElementById('eb-g'), eu=document.getElementById('eb-u');
+  function runEB(){
+    var M=Math.round(+em.value), pb=(+eg.value)/100, au=+eu.value;
+    var ok = M>=1 && M<=400 && pb>0 && pb<1;
+    var A = ok ? solveA(M,pb) : NaN;
+    document.getElementById('eb-a').textContent = ok ? A.toFixed(2)+' E' : '—';
+    document.getElementById('eb-c').textContent = ok ? (A*(1-pb)).toFixed(2)+' E' : '—';
+    document.getElementById('eb-e').textContent = ok ? (A/M).toFixed(3) : '—';
+    document.getElementById('eb-n').textContent = ok && au>0 ? String(Math.floor(A/au+1e-9)) : '—';
+  }
+  [em,eg,eu].forEach(function(i){ i.addEventListener('input', runEB); });
+  document.querySelectorAll('[data-eb]').forEach(function(b){
+    b.addEventListener('click', function(){ var v=b.getAttribute('data-eb').split(','); em.value=v[0]; eg.value=v[1]; eu.value=v[2]; runEB(); });
+  });
+  runEB();
+
+  /* ---------- SIR calculator ---------- */
+  var sn=document.getElementById('sir-n'), sx=document.getElementById('sir-x'), st=document.getElementById('sir-t');
+  function dB(x){ return (10*Math.log10(x)).toFixed(2)+' dB'; }
+  function runSIR(){
+    var N=+sn.value, n=+sx.value, Q=Math.sqrt(3*N), T=+st.value;
+    document.getElementById('sir-xv').textContent=n.toFixed(2);
+    document.getElementById('sir-q').textContent=Q.toFixed(3);
+    document.getElementById('sir-s').textContent=dB(Math.pow(Q,n)/6);
+    document.getElementById('sir-w').textContent = Q>1 ? dB(1/(2*Math.pow(Q-1,-n)+2*Math.pow(Q,-n)+2*Math.pow(Q+1,-n))) : '—';
+    document.getElementById('sir-3').textContent=dB(1/(Math.pow(Q,-n)+Math.pow(Q+0.7,-n)));
+    document.getElementById('sir-6').textContent=dB(Math.pow(Q+0.7,n));
+    document.getElementById('sir-need').textContent = Q>1 ? (Math.log10(6*Math.pow(10,T/10))/Math.log10(Q)).toFixed(2) : '—';
+  }
+  [sn,sx,st].forEach(function(i){ i.addEventListener('input', runSIR); });
+  runSIR();
+
+  /* ---------- tabs ---------- */
+  var tabs=[].slice.call(document.querySelectorAll('[data-tab]'));
+  function show(id, push){
+    tabs.forEach(function(t){
+      var on=t.getAttribute('data-tab')===id;
+      t.setAttribute('aria-selected', String(on));
+      document.getElementById(t.getAttribute('data-tab')).hidden=!on;
+    });
+    if (push){ try{ history.replaceState(null,'','#'+id); }catch(e){} }
+  }
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ show(t.getAttribute('data-tab'), true); window.scrollTo({top:document.querySelector('.tabs').offsetTop-4}); }); });
+  function fromHash(){
+    var h=(location.hash||'').slice(1);
+    if (!h) return;
+    var target=document.getElementById(h);
+    if (!target) return;
+    var panel = target.closest('[role="tabpanel"]');
+    if (panel){ show(panel.id, false); if (panel!==target) target.scrollIntoView(); }
+  }
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
+})();
+</script>
+</body>
+</html>
