@@ -703,6 +703,47 @@ table td:first-child{font-family:var(--f-body);}
           <div class="ans">GEO 卫星相对地面静止，地面站一直看得到同一颗卫星，不会因为"卫星飞走了"而切换；只有当用户移出这颗卫星的覆盖区（大约 1/4 个地球）时才会换卫星，这对一般用户极少发生。</div>
         </details>
       </div>
+    
+<!-- PASTQ:begin --><style id="pastq-css">
+.pastq-block{margin:46px 0 10px;padding-top:26px;border-top:2px dashed var(--line-strong);}
+.pastq-block > h3 .zh-num{background:var(--ink);color:var(--paper);padding:1px 7px;border-radius:5px;font-size:12.5px;}
+.pq-intro{font-size:14.5px;color:var(--ink-soft);}
+.pastq{border:1px solid var(--line-strong);border-radius:12px;background:var(--card);padding:16px 18px 10px;margin:18px 0 22px;box-shadow:var(--shadow);scroll-margin-top:60px;}
+.pq-head{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-family:var(--f-mono);font-size:12px;}
+.pq-head span{padding:2px 8px;border-radius:5px;border:1px solid var(--line-strong);color:var(--ink-soft);}
+.pq-head .pq-paper{background:var(--ink);color:var(--paper);border-color:var(--ink);font-weight:600;}
+.pq-head .pq-q{color:var(--accent-ink);border-color:var(--accent);font-weight:700;}
+.pq-head .pq-quiz{background:var(--good-soft);color:var(--good);border-color:var(--good);font-weight:700;}
+.pq-head .pq-hw{background:var(--gold-soft);color:var(--gold);border-color:var(--gold);}
+.pq-head a{color:inherit;text-decoration:none;}
+.pq-topic{font-size:14px;color:var(--ink-soft);margin:9px 0 4px;}
+.pq-topic b{color:var(--ink);background:none;}
+.pastq details > summary{cursor:pointer;font-weight:600;font-size:14px;color:var(--accent-ink);padding:6px 0;list-style:none;}
+.pastq details > summary::-webkit-details-marker{display:none;}
+.pastq details > summary::before{content:"▸ ";}
+.pastq details[open] > summary::before{content:"▾ ";}
+.pq-en{font-family:"Times New Roman",Georgia,'Literata',serif;font-size:15.5px;line-height:1.6;background:var(--paper-2);border-left:3px solid var(--ink-faint);border-radius:4px;padding:12px 16px;margin:4px 0 8px;overflow-x:auto;}
+.pq-en p{margin:0 0 .7em;}
+.pq-en .eq{display:block;text-align:center;margin:.45em 0;font-style:italic;white-space:normal;}
+.pq-en .marks{text-align:right;font-size:13.5px;color:var(--ink-soft);}
+.pq-en span.marks{display:inline;float:right;}
+.pq-en .figwrap{background:var(--card);border-radius:6px;margin:8px 0;}
+.pastq .worked{margin:6px 0 10px;}
+.pastq .worked .wbody{font-size:15px;}
+.pq-note{font-size:13.5px;background:var(--gold-soft);border-left:3px solid var(--gold);border-radius:4px;padding:8px 12px;margin:10px 0 2px;}
+.pq-links{font-size:13px;font-family:var(--f-mono);margin:8px 0 4px;display:flex;flex-wrap:wrap;gap:4px 16px;}
+.pq-links a{text-decoration:none;}
+.pastq .figwrap svg{max-width:100%;height:auto;}
+.pq-table td{font-family:var(--f-body);font-size:13.5px;line-height:1.55;vertical-align:top;}
+</style><div class="pastq-block"><h3><span class="zh-num">真题</span>本章的历年期末考题（1 题）</h3><p class="pq-intro">来自 2025-26 S2 期末卷。原题照试卷逐字转录，先自己做，再展开解答。</p><div class="pastq" id="pq-y2526s2-q4b">
+  <div class="pq-head"><span class="pq-paper">2025-26 S2</span><span class="pq-q">Q4(b)</span><span>8 分</span></div>
+  <div class="pq-topic"><b>考点</b>：MEO/LEO 卫星系统的四种切换</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) In a satellite system with Medium Earth Orbit (MEO) or Low Earth Orbit (LEO) satellites, there could also be handovers in the system if the satellite acts as a base station. Briefly describe the 4 different types of handovers that can occur in this type of satellite system.</p>
+<p class="marks">(8 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>星内切换（Intra-satellite）</b>（讲义 Part C p.40）：用户在同一颗卫星的覆盖区内，从一个扇区（点波束）移到另一个扇区。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>星间切换（Inter-satellite）</b>：用户从一颗卫星的覆盖区移到另一颗卫星的覆盖区，或者卫星自己飞走了。LEO 卫星每次只可见 15–20 分钟，这种切换很频繁。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>网关切换（Gateway）</b>：卫星移动后离开了当前连接的地面网关，需要换一个网关。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>系统间切换（Inter-system）</b>：卫星系统和地面蜂窝系统之间，根据信号强度和 QoS 进行的<b>垂直切换</b>。</div></div><div class="wans">星内、星间、网关、系统间（垂直）切换</div></div></div></details>
+  <div class="pq-links"><a href="exams.html#y2526s2-q4b">→ 在「历年真题」页看整份 2025-26 S2 试卷</a></div>
+</div>
+</div><!-- PASTQ:end -->
     </section>
 
     <div class="next-up">

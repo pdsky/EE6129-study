@@ -1,0 +1,871 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>EE6129 历年期末真题</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,500&family=Literata:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+SC:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+
+:root{
+  --paper:#f2f3f2;
+  --paper-2:#e8eaea;
+  --card:#ffffff;
+  --ink:#171b26;
+  --ink-soft:#4a5266;
+  --ink-faint:#848da0;
+  --accent:#2f4fc4;
+  --accent-ink:#22399a;
+  --accent-soft:#e5eaf9;
+  --gold:#b4790f;
+  --gold-soft:#faefd8;
+  --line:#dcdfe3;
+  --line-strong:#c3c8d0;
+  --good:#1c7a4d;
+  --good-soft:#e2f3ea;
+  --shadow:0 1px 2px rgba(23,27,38,.04), 0 10px 30px -14px rgba(23,27,38,.16);
+  --f-display:'Fraunces','Noto Serif SC',serif;
+  --f-body:'Literata','Noto Serif SC',serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --paper:#0f1219;
+    --paper-2:#161a24;
+    --card:#151a24;
+    --ink:#e7e9f0;
+    --ink-soft:#a3aabc;
+    --ink-faint:#6b7286;
+    --accent:#7b93f0;
+    --accent-ink:#a9bafa;
+    --accent-soft:rgba(123,147,240,.14);
+    --gold:#e0ac4b;
+    --gold-soft:rgba(224,172,75,.14);
+    --line:#262c3a;
+    --line-strong:#333a4a;
+    --good:#4bc98a;
+    --good-soft:rgba(75,201,138,.13);
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 32px -14px rgba(0,0,0,.6);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0f1219;
+  --paper-2:#161a24;
+  --card:#151a24;
+  --ink:#e7e9f0;
+  --ink-soft:#a3aabc;
+  --ink-faint:#6b7286;
+  --accent:#7b93f0;
+  --accent-ink:#a9bafa;
+  --accent-soft:rgba(123,147,240,.14);
+  --gold:#e0ac4b;
+  --gold-soft:rgba(224,172,75,.14);
+  --line:#262c3a;
+  --line-strong:#333a4a;
+  --good:#4bc98a;
+  --good-soft:rgba(75,201,138,.13);
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 12px 32px -14px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--f-body);font-size:17px;line-height:1.85;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:var(--f-display);text-wrap:balance;margin:0;color:var(--ink);}
+p{margin:0 0 1.15em;}
+::selection{background:var(--accent-soft);color:var(--accent-ink);}
+.mono{font-family:var(--f-mono);}
+a{color:var(--accent-ink);}
+
+/* ---------- shell ---------- */
+.shell{display:flex;justify-content:center;gap:48px;max-width:1160px;margin:0 auto;padding:0 24px;}
+.rail{width:220px;flex:none;display:none;}
+@media (min-width:1040px){.rail{display:block;}}
+.rail-inner{position:sticky;top:48px;}
+.rail-kicker{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px;}
+.rail-list{list-style:none;margin:0;padding:0;border-left:2px solid var(--line);}
+.rail-list li{margin:0;}
+.rail-list a{
+  display:block;padding:7px 0 7px 16px;margin-left:-2px;border-left:2px solid transparent;
+  font-family:var(--f-mono);font-size:12.5px;color:var(--ink-faint);text-decoration:none;line-height:1.4;
+}
+.rail-list a:hover{color:var(--ink-soft);}
+.rail-list a.active{color:var(--accent-ink);border-left-color:var(--accent);font-weight:600;}
+
+.main{max-width:680px;width:100%;padding:64px 0 140px;min-width:0;}
+
+/* ---------- header ---------- */
+.masthead{margin-bottom:64px;}
+.masthead .kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+.masthead h1{font-size:44px;font-weight:700;line-height:1.18;margin-bottom:20px;letter-spacing:-.01em;}
+.masthead .lede{font-size:18px;color:var(--ink-soft);line-height:1.7;font-style:italic;max-width:58ch;}
+.masthead .meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:28px;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-faint);}
+.masthead .meta span{display:flex;align-items:center;gap:6px;}
+
+/* ---------- chapter structure ---------- */
+.chapter{margin-bottom:76px;scroll-margin-top:40px;}
+.chapter-head{display:flex;align-items:baseline;gap:16px;margin-bottom:28px;padding-bottom:18px;border-bottom:2px solid var(--ink);}
+.chapter-num{font-family:var(--f-display);font-size:15px;font-weight:600;color:var(--accent);letter-spacing:.02em;flex:none;}
+.chapter-head h2{font-size:28px;font-weight:700;}
+
+.chapter h3{font-size:20px;font-weight:600;margin:34px 0 14px;color:var(--ink);}
+.chapter h3 .zh-num{color:var(--accent);margin-right:8px;font-family:var(--f-mono);font-size:15px;}
+
+/* ---------- prose helpers ---------- */
+.chapter p b{font-weight:700;color:var(--ink);background:linear-gradient(to bottom, transparent 62%, var(--accent-soft) 62%);}
+.dropcap:first-letter{
+  font-family:var(--f-display);font-size:3.6em;font-weight:700;float:left;line-height:.85;
+  margin:.03em .09em -.05em 0;color:var(--accent-ink);
+}
+
+/* Analogy callout */
+.analogy{
+  background:var(--gold-soft);border-radius:4px;padding:18px 22px;margin:24px 0;
+  border-left:3px solid var(--gold);position:relative;
+}
+.analogy .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px;}
+.analogy p{margin-bottom:0;color:var(--ink);font-style:italic;}
+.analogy p+p{margin-top:.8em;}
+
+/* Formula card */
+.formula-card{
+  background:var(--card);border:1px solid var(--line-strong);border-radius:10px;
+  padding:20px 24px;margin:24px 0;box-shadow:var(--shadow);
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size:16px 16px;background-position:-1px -1px;
+  background-color:var(--card);
+}
+:root[data-theme="dark"] .formula-card, @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .formula-card{ opacity:1; } }
+.formula-card .flbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;margin-bottom:10px;}
+.formula-card .fexpr{font-family:var(--f-mono);font-size:18px;color:var(--ink);overflow-x:auto;padding:4px 0;font-weight:500;}
+.formula-card .fmeaning{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line-strong);font-size:14.5px;color:var(--ink-soft);font-family:var(--f-body);}
+.formula-card .fmeaning b{color:var(--ink);}
+
+/* Worked example */
+.worked{
+  border:1px solid var(--line);border-radius:10px;margin:28px 0;overflow:hidden;background:var(--card);
+}
+.worked > summary{
+  list-style:none;cursor:pointer;padding:16px 22px;display:flex;align-items:center;gap:12px;
+  background:var(--paper-2);font-family:var(--f-body);font-weight:600;font-size:15px;color:var(--ink);
+}
+.worked > summary::-webkit-details-marker{display:none;}
+.worked .wtag{
+  font-family:var(--f-mono);font-size:10px;background:var(--accent);color:#fff;padding:3px 8px;border-radius:5px;
+  letter-spacing:.06em;text-transform:uppercase;flex:none;
+}
+.worked .chev{margin-left:auto;width:15px;height:15px;color:var(--ink-faint);transition:transform .2s;flex:none;}
+.worked[open] .chev{transform:rotate(90deg);}
+.worked .wbody{padding:20px 22px 24px;font-size:15.5px;}
+.worked .wstep{display:flex;gap:14px;margin-bottom:16px;}
+.worked .wstep .wn{
+  font-family:var(--f-mono);font-size:12px;color:var(--accent-ink);background:var(--accent-soft);
+  width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px;font-weight:700;
+}
+.worked .wstep .wtext{flex:1;padding-top:1px;}
+.worked .wstep .wtext .calc{font-family:var(--f-mono);font-size:13.5px;background:var(--paper-2);padding:6px 10px;border-radius:6px;display:inline-block;margin-top:5px;}
+.worked .wans{
+  margin-top:18px;padding:14px 16px;background:var(--good-soft);color:var(--good);border-radius:8px;
+  font-weight:700;font-family:var(--f-mono);font-size:14.5px;
+}
+
+/* lists */
+.chapter ul, .chapter ol{padding-left:1.4em;margin:0 0 1.15em;}
+.chapter li{margin-bottom:.5em;}
+
+/* table */
+.tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px;}
+table{width:100%;border-collapse:collapse;font-size:14px;}
+table th{text-align:left;font-family:var(--f-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);background:var(--paper-2);padding:9px 14px;}
+table td{padding:8px 14px;border-top:1px solid var(--line);font-family:var(--f-mono);font-size:13px;}
+table td:first-child{font-family:var(--f-body);}
+
+/* quiz-check (light self-check, not a review tool) */
+.checkpoint{
+  border:1.5px dashed var(--accent);border-radius:10px;padding:18px 22px;margin:30px 0;background:var(--accent-soft);
+}
+.checkpoint .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;margin-bottom:8px;}
+.checkpoint p{margin-bottom:0;color:var(--ink);}
+.checkpoint .reveal{margin-top:10px;}
+.checkpoint .reveal summary{cursor:pointer;color:var(--accent-ink);font-weight:600;font-size:14px;font-family:var(--f-body);}
+.checkpoint .reveal .ans{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-strong);font-size:15px;}
+
+/* nav footer between chapters / end */
+.chapter-nav{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:24px;border-top:1px solid var(--line);}
+.next-up{
+  background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin-top:64px;
+  display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);
+}
+.next-up .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);}
+.next-up h4{font-size:19px;}
+.next-up p{color:var(--ink-soft);font-size:14.5px;margin-bottom:0;}
+
+/* mobile toc */
+.mobtoc{display:block;position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line);padding:12px 20px;}
+@media (min-width:1040px){.mobtoc{display:none;}}
+.mobtoc select{
+  width:100%;font-family:var(--f-mono);font-size:12.5px;padding:8px 10px;border-radius:8px;border:1px solid var(--line-strong);
+  background:var(--card);color:var(--ink);
+}
+
+@media (max-width:680px){
+  .main{padding:0 20px 100px;}
+  .masthead h1{font-size:32px;}
+  .chapter-head h2{font-size:23px;}
+}
+
+/* 课外补充框 */
+:root{--extra:#7a4fc4;--extra-soft:#f2ecfb;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--extra:#b79cf0;--extra-soft:rgba(183,156,240,.12);}}
+:root[data-theme="dark"]{--extra:#b79cf0;--extra-soft:rgba(183,156,240,.12);}
+.extra{border:1.5px solid var(--extra);border-radius:10px;padding:16px 20px 18px;margin:30px 0;background:var(--extra-soft);}
+.extra > .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;color:var(--extra);font-weight:700;margin-bottom:8px;}
+.extra .worked{margin:16px 0 4px;}
+.extra > p:last-child{margin-bottom:0;}
+.chapter h4{font-family:var(--f-display);font-size:17px;font-weight:600;margin:26px 0 10px;color:var(--ink);}
+/* 示意图 */
+.figwrap{margin:26px 0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 14px 12px;}
+.figwrap svg{display:block;width:100%;height:auto;margin:0 auto;}
+.figwrap svg.sectfig{max-width:440px;}
+.figwrap .cap{font-size:13.5px;color:var(--ink-soft);margin-top:8px;line-height:1.65;}
+.figwrap svg text{font-family:var(--f-body);fill:var(--ink);}
+.nl-axis{stroke:var(--line-strong);stroke-width:2;}
+.nl-bs{fill:var(--ink);} .nl-int{fill:var(--gold);} .nl-ms{fill:var(--accent);stroke:var(--card);stroke-width:2;}
+.nl-dim{stroke:var(--ink-soft);stroke-width:1;fill:none;}
+.figwrap svg .nl-t{font-size:12.5px;font-weight:600;}
+.figwrap svg .nl-d{font-family:var(--f-mono);font-size:11.5px;fill:var(--ink-soft);}
+.figwrap svg .nl-d.near{fill:var(--gold);font-weight:700;}
+.sf-cell{fill:var(--card);stroke:var(--line-strong);stroke-width:1;}
+.sf-cell.home{stroke:var(--ink);stroke-width:1.5;}
+.sf-sec{fill:var(--accent-soft);}
+.sf-sec.on{fill:var(--accent);fill-opacity:.3;}
+.sf-line{stroke:var(--ink-faint);stroke-width:1.2;stroke-dasharray:4 3;}
+.sf-line.on{stroke:var(--gold);stroke-width:2.2;stroke-dasharray:none;}
+.figwrap svg .sf-lab{font-family:var(--f-mono);font-size:9px;fill:var(--ink-faint);paint-order:stroke;stroke:var(--card);stroke-width:3px;}
+.figwrap svg .sf-lab.on{fill:var(--gold);font-weight:700;font-size:9.5px;}
+.sf-bs{fill:var(--ink);}
+.sf-ms{fill:var(--accent);stroke:var(--card);stroke-width:1.5;}
+.figwrap svg .sf-mslab{font-size:11px;font-weight:700;fill:var(--accent-ink);}
+
+@media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+
+.pastq-block{margin:46px 0 10px;padding-top:26px;border-top:2px dashed var(--line-strong);}
+.pastq-block > h3 .zh-num{background:var(--ink);color:var(--paper);padding:1px 7px;border-radius:5px;font-size:12.5px;}
+.pq-intro{font-size:14.5px;color:var(--ink-soft);}
+.pastq{border:1px solid var(--line-strong);border-radius:12px;background:var(--card);padding:16px 18px 10px;margin:18px 0 22px;box-shadow:var(--shadow);scroll-margin-top:60px;}
+.pq-head{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;font-family:var(--f-mono);font-size:12px;}
+.pq-head span{padding:2px 8px;border-radius:5px;border:1px solid var(--line-strong);color:var(--ink-soft);}
+.pq-head .pq-paper{background:var(--ink);color:var(--paper);border-color:var(--ink);font-weight:600;}
+.pq-head .pq-q{color:var(--accent-ink);border-color:var(--accent);font-weight:700;}
+.pq-head .pq-quiz{background:var(--good-soft);color:var(--good);border-color:var(--good);font-weight:700;}
+.pq-head .pq-hw{background:var(--gold-soft);color:var(--gold);border-color:var(--gold);}
+.pq-head a{color:inherit;text-decoration:none;}
+.pq-topic{font-size:14px;color:var(--ink-soft);margin:9px 0 4px;}
+.pq-topic b{color:var(--ink);background:none;}
+.pastq details > summary{cursor:pointer;font-weight:600;font-size:14px;color:var(--accent-ink);padding:6px 0;list-style:none;}
+.pastq details > summary::-webkit-details-marker{display:none;}
+.pastq details > summary::before{content:"▸ ";}
+.pastq details[open] > summary::before{content:"▾ ";}
+.pq-en{font-family:"Times New Roman",Georgia,'Literata',serif;font-size:15.5px;line-height:1.6;background:var(--paper-2);border-left:3px solid var(--ink-faint);border-radius:4px;padding:12px 16px;margin:4px 0 8px;overflow-x:auto;}
+.pq-en p{margin:0 0 .7em;}
+.pq-en .eq{display:block;text-align:center;margin:.45em 0;font-style:italic;white-space:normal;}
+.pq-en .marks{text-align:right;font-size:13.5px;color:var(--ink-soft);}
+.pq-en span.marks{display:inline;float:right;}
+.pq-en .figwrap{background:var(--card);border-radius:6px;margin:8px 0;}
+.pastq .worked{margin:6px 0 10px;}
+.pastq .worked .wbody{font-size:15px;}
+.pq-note{font-size:13.5px;background:var(--gold-soft);border-left:3px solid var(--gold);border-radius:4px;padding:8px 12px;margin:10px 0 2px;}
+.pq-links{font-size:13px;font-family:var(--f-mono);margin:8px 0 4px;display:flex;flex-wrap:wrap;gap:4px 16px;}
+.pq-links a{text-decoration:none;}
+.pastq .figwrap svg{max-width:100%;height:auto;}
+.pq-table td{font-family:var(--f-body);font-size:13.5px;line-height:1.55;vertical-align:top;}
+</style>
+</head>
+<body>
+<div class="mobtoc">
+  <select id="mobNav" aria-label="跳转到章节"></select>
+</div>
+<div class="shell">
+  <aside class="rail"><div class="rail-inner"><div class="rail-kicker">本页目录</div><ul class="rail-list" id="railList"></ul></div></aside>
+  <main class="main">
+    <header class="masthead">
+      <div class="kicker">EE6129 · 历年期末真题 · 2024–2026</div>
+      <h1>四份期末卷，逐题讲透</h1>
+      <p class="lede">2023-24 S2、2024-25 S2、2025-26 S1、2025-26 S2 四份期末卷，16 道大题全部逐字转录英文原题，配中文分步解答。每道题也插进了对应讲解页的章节末尾，学完一章就能做那一章的真题。</p>
+      <div class="meta"><span>◆ 4 份试卷 · 16 道大题</span><span>◆ 计算全部用脚本核对</span><span>◆ 标出 Quiz 范围</span><span>◆ 原题笔误已注明</span></div>
+    </header>
+
+    <section class="chapter" id="overview">
+      <div class="chapter-head"><span class="chapter-num">总览</span><h2>先看出题规律</h2></div>
+      <p>四份卷子的结构完全一样：3 小时、闭卷、4 道题全做、每题 25 分。附录给了傅里叶变换表、常用公式（高斯概率密度、Q 函数、SIR 与扇区化 SIR、Erlang B/C 公式、线性插值）、Erlang B 表、Erlang C 表和 Q 函数表，所以<b>这些公式不用背，但要会用、会查表</b>。</p>
+      <div class="tblwrap"><table class="pq-table"><thead><tr><th>试卷</th><th>Q1 · Part 2</th><th>Q2 · Part 2</th><th>Q3 · Part A 计算</th><th>Q4 · 论述</th></tr></thead><tbody><tr><td><a href="#y2324s2"><b>2023-24 S2</b></a><br><span style="font-size:11px">April / May 2024</span></td><td><a href="#y2324s2-q1a">Q1</a> 信道（路径损耗、阴影中断、衰落类型、衰落余量）＋ SD 分集 ＋ 空间复用、Alamouti</td><td><a href="#y2324s2-q2a">Q2</a> ISI 与线性均衡 ＋ OFDM（H<sub>k</sub>、保护间隔损失）</td><td><a href="#y2324s2-q3a">Q3</a> Erlang B 反推小区半径、集群增益、扇区化 ＋ 三种多址</td><td><a href="#y2324s2-q4ab">Q4</a> IoT 两个栈、雾计算 ＋ 推导 SIR = 1.76 + 20 log N</td></tr><tr><td><a href="#y2425s2"><b>2024-25 S2</b></a><br><span style="font-size:11px">April / May 2025</span></td><td><a href="#y2425s2-q1a">Q1</a> 信道（路径损耗图、AFD/LCR、注水）＋ SD 支路数 ＋ 分集复用折中、MIMO 容量</td><td><a href="#y2425s2-q2a">Q2</a> 迫零均衡、残余 ISI ＋ OFDM（速率、CP 表达式、等容量功率）</td><td><a href="#y2425s2-q3">Q3</a> FDD-TDMA 选簇、Erlang B、小区分裂、三扇区</td><td><a href="#y2425s2-q4a">Q4</a> HLR/VLR ＋ IoT 四子层 ＋ Erlang B 中继效率</td></tr><tr><td><a href="#y2526s1"><b>2025-26 S1</b></a><br><span style="font-size:11px">November / December 2025</span></td><td><a href="#y2526s1-q1a">Q1</a> 二进制检测（星座、高斯、Q(2)）＋ MRC 分集增益 ＋ SIMO、并行信道容量</td><td><a href="#y2526s1-q2a">Q2</a> ISI 误码率、均衡器噪声增强 ＋ OFDM（子载波数、速率、相关器）</td><td><a href="#y2526s1-q3a">Q3</a> 小区数、信道数、频谱效率 ＋ Erlang C ＋ FCA/DCA</td><td><a href="#y2526s1-q4a">Q4</a> WLAN 入网过程 ＋ IoT 五难点 ＋ 雾计算特征</td></tr><tr><td><a href="#y2526s2"><b>2025-26 S2</b></a><br><span style="font-size:11px">April / May 2026</span></td><td><a href="#y2526s2-q1a">Q1</a> 衰落类型、LCR、衰落余量 ＋ 阵列增益 ＋ MIMO 模型、Alamouti 检测方差</td><td><a href="#y2526s2-q2a">Q2</a> Nyquist 准则、均衡器噪声、残余 ISI ＋ OFDM（H<sub>k</sub>、IDFT、CP 损失）</td><td><a href="#y2526s2-q3a">Q3</a> 簇与系统容量 ＋ Erlang C ＋ M/M/m 推导</td><td><a href="#y2526s2-q4a">Q4</a> 硬/软切换 ＋ 卫星四种切换 ＋ WSN 架构 ＋ IoT 四子层</td></tr></tbody></table></div>
+      <h3><span class="zh-num">1</span>每年都考的固定套路</h3>
+      <ul>
+        <li><b>Q1、Q2 固定是 Part 2（Ser Wee），共 50 分。</b>Q1(a) 几乎每年都是第二章无线信道；Q1(b) 是分集加 MIMO。</li>
+        <li><b>Q2(a) 4 年都考"有残余 ISI 时的误码率"</b>：P<sub>e</sub> = ½[Q((1−a)/σ) + Q((1+a)/σ)]，a 是残余 ISI 系数。这是最稳的送分题。</li>
+        <li><b>Q2(b) 4 年都考 OFDM</b>：子信道增益 H<sub>k</sub>、保护间隔/循环前缀的功率损失 10 log[(NT<sub>s</sub>+T<sub>G</sub>)/NT<sub>s</sub>] 各考了 2 次。</li>
+        <li><b>Q3 每年都是 Part A 的话务计算</b>：Erlang B（前两年）、Erlang C（后两年），配合簇大小、小区数、扇区化。</li>
+        <li><b>Q4 每年都有 IoT</b>：通信网络层四个子层考了 2 次，雾计算考了 2 次。其余是 Part A/B/C 的概念题（HLR/VLR、WLAN 入网、切换、WSN）。</li>
+        <li><b>HW1 的两道题原样出现过</b>：<a href="hw1.html">HW1</a> Q1(b) ≡ 2024-25 Q4(c)，Q2(b) ≡ 2023-24 Q4(c)；HW1 Q1(a) 的系统组成也和 2024-25 Q4(a) 同源。</li>
+      </ul>
+      <h3><span class="zh-num">2</span>10 月 23 日 Quiz 相关的真题</h3>
+      <p>Quiz 范围是 Ch1b、Ch2 和 Practice 1–2。下面这些真题（或其中的小问）落在范围内，可以当模拟题做，每题限时 10 分钟左右：</p>
+      <ul><li><a href="#y2324s2-q1a">2023-24 S2 Q1(a)</a>：路径损耗 dB 形式 · 阴影衰落中断 · 平坦/慢衰落判别 · 衰落余量</li><li><a href="#y2425s2-q1a">2024-25 S2 Q1(a)</a>：路径损耗图读数 · LCR/AFD 求误符号数 · 注水功率分配</li><li><a href="#y2526s2-q1a">2025-26 S2 Q1(a)</a>：用 B<sub>c</sub>、B<sub>D</sub>、B<sub>s</sub> 判衰落类型 · LCR 与连续误符号 · 衰落余量</li><li><a href="#y2526s1-q1a">2025-26 S1 Q1(a)</a>：二进制 AWGN：星座维数与距离 · 条件高斯分布 · 误码率 Q(2)</li></ul>
+      <h3><span class="zh-num">3</span>每道题插在哪一章</h3>
+      <div class="tblwrap"><table class="pq-table"><thead><tr><th>讲解章节</th><th>题数</th><th>真题</th></tr></thead><tbody><tr><td><a href="p2-learn.html#ch2">Part 2 第二章</a><br><span style="font-size:12px">无线信道：信号在路上会遇到三种麻烦</span></td><td>3</td><td><a href="#y2324s2-q1a">2023-24 S2 Q1(a)</a> · <a href="#y2425s2-q1a">2024-25 S2 Q1(a)</a> · <a href="#y2526s2-q1a">2025-26 S2 Q1(a)</a></td></tr><tr><td><a href="p2-learn.html#ch3">Part 2 第三章</a><br><span style="font-size:12px">信号检测：从一堆带噪声的波形里认出符号</span></td><td>1</td><td><a href="#y2526s1-q1a">2025-26 S1 Q1(a)</a></td></tr><tr><td><a href="p2-learn.html#ch4">Part 2 第四章</a><br><span style="font-size:12px">分集：别把鸡蛋放在一个篮子里</span></td><td>4</td><td><a href="#y2324s2-q1b1">2023-24 S2 Q1(b)(i)</a> · <a href="#y2425s2-q1b1">2024-25 S2 Q1(b)(i)</a> · <a href="#y2526s1-q1b1">2025-26 S1 Q1(b)(i)</a> · <a href="#y2526s2-q1b1">2025-26 S2 Q1(b)(i)</a></td></tr><tr><td><a href="p2-learn.html#ch5">Part 2 第五章</a><br><span style="font-size:12px">MIMO：多根天线，既抗衰落又提速</span></td><td>4</td><td><a href="#y2324s2-q1b2">2023-24 S2 Q1(b)(ii)–(iv)</a> · <a href="#y2425s2-q1b2">2024-25 S2 Q1(b)(ii)(iii)</a> · <a href="#y2526s1-q1b2">2025-26 S1 Q1(b)(ii)(iii)</a> · <a href="#y2526s2-q1b2">2025-26 S2 Q1(b)(ii)(iii)</a></td></tr><tr><td><a href="p2-learn.html#ch6">Part 2 第六章</a><br><span style="font-size:12px">均衡：把拖进下一个符号的回声抵消掉</span></td><td>4</td><td><a href="#y2324s2-q2a">2023-24 S2 Q2(a)</a> · <a href="#y2425s2-q2a">2024-25 S2 Q2(a)</a> · <a href="#y2526s1-q2a">2025-26 S1 Q2(a)</a> · <a href="#y2526s2-q2a">2025-26 S2 Q2(a)</a></td></tr><tr><td><a href="p2-learn.html#ch7">Part 2 第七章</a><br><span style="font-size:12px">OFDM：把一条坑洼的宽路，改成很多条平整的窄路</span></td><td>4</td><td><a href="#y2324s2-q2b">2023-24 S2 Q2(b)</a> · <a href="#y2425s2-q2b">2024-25 S2 Q2(b)</a> · <a href="#y2526s1-q2b">2025-26 S1 Q2(b)</a> · <a href="#y2526s2-q2b">2025-26 S2 Q2(b)</a></td></tr><tr><td><a href="partA.html#ch1">Part A 第一章</a><br><span style="font-size:12px">三种"分资源"的方式：FDMA / TDMA / CDMA</span></td><td>1</td><td><a href="#y2324s2-q3b">2023-24 S2 Q3(b)</a></td></tr><tr><td><a href="partA.html#ch2">Part A 第二章</a><br><span style="font-size:12px">蜂窝概念：把一个大塔拆成很多个小塔</span></td><td>1</td><td><a href="#y2425s2-q4a">2024-25 S2 Q4(a)</a></td></tr><tr><td><a href="partA.html#ch4">Part A 第四章</a><br><span style="font-size:12px">双工与频谱效率：怎么衡量"够不够用"</span></td><td>1</td><td><a href="#y2526s1-q3a">2025-26 S1 Q3(a)</a></td></tr><tr><td><a href="partA.html#ch6">Part A 第六章</a><br><span style="font-size:12px">频率复用：把六边形的秘密用起来</span></td><td>1</td><td><a href="#y2526s2-q3a">2025-26 S2 Q3(a)</a></td></tr><tr><td><a href="partA.html#ch7">Part A 第七章</a><br><span style="font-size:12px">同频干扰与信道该怎么分配</span></td><td>2</td><td><a href="#y2324s2-q4c">2023-24 S2 Q4(c)</a> · <a href="#y2526s1-q3c">2025-26 S1 Q3(c)</a></td></tr><tr><td><a href="partA.html#ch8">Part A 第八章</a><br><span style="font-size:12px">话务工程：用排队论算清楚"够不够用"</span></td><td>4</td><td><a href="#y2324s2-q3a">2023-24 S2 Q3(a)</a> · <a href="#y2425s2-q4c">2024-25 S2 Q4(c)</a> · <a href="#y2526s1-q3b">2025-26 S1 Q3(b)</a> · <a href="#y2526s2-q3bc">2025-26 S2 Q3(b)(c)</a></td></tr><tr><td><a href="partA.html#ch9">Part A 第九章</a><br><span style="font-size:12px">信道不够用了怎么办：小区分裂与扇区化</span></td><td>1</td><td><a href="#y2425s2-q3">2024-25 S2 Q3</a></td></tr><tr><td><a href="partA.html#ch10">Part A 第十章</a><br><span style="font-size:12px">切换与功率控制：让你在移动中感觉不到任何变化</span></td><td>1</td><td><a href="#y2526s2-q4a">2025-26 S2 Q4(a)</a></td></tr><tr><td><a href="partB.html#ch3">Part B 第三章</a><br><span style="font-size:12px">需要准时的时候：PCF、超帧、入网和帧格式</span></td><td>1</td><td><a href="#y2526s1-q4a">2025-26 S1 Q4(a)</a></td></tr><tr><td><a href="partB.html#ch5">Part B 第五章</a><br><span style="font-size:12px">把节点缩到极限：无线传感器网络</span></td><td>1</td><td><a href="#y2526s2-q4c">2025-26 S2 Q4(c)</a></td></tr><tr><td><a href="partB.html#ch7">Part B 第七章</a><br><span style="font-size:12px">物联网：把前面所有招数用在海量设备上</span></td><td>4</td><td><a href="#y2324s2-q4ab">2023-24 S2 Q4(a)(b)</a> · <a href="#y2425s2-q4b">2024-25 S2 Q4(b)</a> · <a href="#y2526s1-q4bc">2025-26 S1 Q4(b)(c)</a> · <a href="#y2526s2-q4d">2025-26 S2 Q4(d)</a></td></tr><tr><td><a href="partC.html#ch6">Part C 第六章</a><br><span style="font-size:12px">卫星网络：数据怎么路由，用户怎么切换</span></td><td>1</td><td><a href="#y2526s2-q4b">2025-26 S2 Q4(b)</a></td></tr></tbody></table></div>
+      <p class="pq-intro">说明：题目逐字转录自 NTU 图书馆提供的扫描版试卷，仅供个人复习，仓库保持私有。官方没有给答案，这里的解答是按讲义的定义和公式推出来的，所有数值都用脚本复核过；题意有歧义的地方在"注"里写明了另一种理解。</p>
+    </section>
+
+    <section class="chapter" id="y2324s2">
+      <div class="chapter-head"><span class="chapter-num">2023-24 S2</span><h2>April / May 2024</h2></div>
+      <p class="pq-intro">Semester 2 Examination 2023-2024 · 3 小时 · 闭卷 · 4 题全做、每题 25 分 · 试卷 14 页（含附录）</p>
+      <div class="pastq" id="y2324s2-q1a">
+  <div class="pq-head"><span class="pq-paper">2023-24 S2</span><span class="pq-q">Q1(a)</span><span>12 分</span><span class="pq-quiz">Quiz 范围</span></div>
+  <div class="pq-topic"><b>考点</b>：路径损耗 dB 形式 · 阴影衰落中断 · 平坦/慢衰落判别 · 衰落余量</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>1. (a) A wireless channel can be modelled using a simplified path loss model, or a model incorporating the effect of shadowing, or a more complex fading model, depending on the types of the channels assumed.</p>
+<p>(i) The path loss model that includes shadowing can be expressed as,
+<span class="eq">P<sub>r</sub> = P<sub>t</sub>K(d)<sup>−γ</sup>ψ</span>
+where P<sub>r</sub> and P<sub>t</sub> are the received and transmitted signal power respectively, d is the distance between the transmitter and the receiver, K is a constant, γ is the path loss exponent, and ψ is a random variable due to shadowing. Convert this model into the dB form and use it to sketch a graph of path loss (in dB) versus distance (in dB) and indicate how K<sub>dB</sub> and γ fit in the graph.</p>
+<p>(ii) For the model described in part (a)(i) above, if the mean value of P<sub>r,dB</sub> is 10 dB higher than the minimum received signal power needed for non-outage, determine the maximum value of the variance of ψ<sub>dB</sub> that will result in an outage probability lower than 1%.</p>
+<p>(iii) A signal, s(t), with a symbol duration of 1 ms, is transmitted through a fading channel. The channel has a time invariant channel impulse response and a rms delay spread of 0.01ms. What is the fading type of this channel? Explain your answer.</p>
+<p>(iv) Consider the Rayleigh fading channel. At an outage probability of ε, the outage capacity per Hz of the channel can be expressed as
+<span class="eq">C<sub>ε</sub> = log<sub>2</sub>[1 + γ̄<sub>R</sub> ln(1/(1 − ε))]</span>
+where γ̄<sub>R</sub> is the average signal to noise ratio for the fading channel. Determine the fade margin at an outage probability of 0.1%.</p>
+<p class="marks">(12 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i) 化成 dB。</b>两边取 10 log₁₀：<div class="calc">P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 10γ log₁₀ d + ψ<sub>dB</sub></div>路径损耗定义为发射功率减接收功率：<div class="calc">P<sub>L,dB</sub> = P<sub>t,dB</sub> − P<sub>r,dB</sub> = −K<sub>dB</sub> + γ·(10 log₁₀ d) − ψ<sub>dB</sub></div>把横轴取成 10 log₁₀ d（"距离的 dB"），去掉随机项后就是一条直线：<b>斜率是 γ</b>，在 d = 1（横轴 0 dB）处的<b>截距是 −K<sub>dB</sub></b>。ψ<sub>dB</sub> 是零均值高斯随机变量，所以实测点散布在直线两侧。<div class="figwrap"><svg viewBox="0 0 460 250" role="img" aria-label="路径损耗（dB）对 10log10 d 的草图：一条斜率为 γ 的直线，截距为 −K_dB，阴影衰落使测量点散布在直线两侧">
+<line x1="50" y1="215" x2="440" y2="215" style="stroke:var(--ink)" stroke-width="1.5"/>
+<line x1="50" y1="215" x2="50" y2="15" style="stroke:var(--ink)" stroke-width="1.5"/>
+<line x1="50" y1="170" x2="420" y2="45" style="stroke:var(--accent)" stroke-width="2.5"/>
+<g style="fill:var(--gold)"><circle cx="90" cy="150" r="3.5"/><circle cx="120" cy="160" r="3.5"/><circle cx="150" cy="122" r="3.5"/><circle cx="185" cy="140" r="3.5"/><circle cx="215" cy="104" r="3.5"/><circle cx="250" cy="122" r="3.5"/><circle cx="280" cy="80" r="3.5"/><circle cx="315" cy="98" r="3.5"/><circle cx="345" cy="62" r="3.5"/><circle cx="380" cy="72" r="3.5"/></g>
+<line x1="250" y1="102" x2="320" y2="102" style="stroke:var(--ink-faint)" stroke-dasharray="4 3"/>
+<line x1="320" y1="102" x2="320" y2="78" style="stroke:var(--ink-faint)" stroke-dasharray="4 3"/>
+<text x="326" y="96" font-size="12" style="fill:var(--ink)">斜率 = γ</text>
+<text x="8" y="174" font-size="12" style="fill:var(--accent-ink)">−K<tspan font-size="9" dy="3">dB</tspan></text>
+<text x="56" y="28" font-size="12" style="fill:var(--ink)">P<tspan font-size="9" dy="3">L,dB</tspan><tspan dy="-3"> = P</tspan><tspan font-size="9" dy="3">t,dB</tspan><tspan dy="-3"> − P</tspan><tspan font-size="9" dy="3">r,dB</tspan></text>
+<text x="330" y="238" font-size="12" style="fill:var(--ink)">10 log₁₀ d (dB)</text>
+<text x="44" y="232" font-size="11" style="fill:var(--ink-soft)">0（d = 1）</text>
+<text x="140" y="196" font-size="11" style="fill:var(--gold)">● 实测点：阴影衰落 ψ<tspan font-size="8" dy="3">dB</tspan><tspan dy="-3"> 让它们散在直线两侧</tspan></text>
+</svg><div class="cap">横轴用 10 log₁₀ d（单位 dB），纵轴是路径损耗（dB）。直线在 d = 1 处的截距是 −K<sub>dB</sub>，斜率是 γ。</div></div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii) 阴影衰落的中断概率。</b>P<sub>r,dB</sub> 服从均值 μ、标准差 σ（dB）的高斯分布，σ² 就是 ψ<sub>dB</sub> 的方差。中断 = 接收功率低于门限 P<sub>min</sub>：<div class="calc">P<sub>out</sub> = P(P<sub>r,dB</sub> &lt; P<sub>min</sub>) = Q((μ − P<sub>min</sub>)/σ) = Q(10/σ)</div>要求 Q(10/σ) &lt; 0.01。查 Q 表：Q(2.33) ≈ 0.01，Q 是减函数，所以要 10/σ &gt; 2.33：<div class="calc">σ &lt; 10/2.33 = 4.30 dB　→　σ² &lt; 18.5 dB²</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii) 衰落类型。</b>两个维度分别判断：<br>• <b>频率上</b>：σ<sub>τ</sub>/T<sub>s</sub> = 0.01 ms / 1 ms = 0.01 &lt; 0.1，满足讲义的经验法则，所以是<b>平坦衰落</b>（时延扩展远小于符号时长，几乎没有 ISI）。<br>• <b>时间上</b>：信道冲激响应不随时间变化，相当于没有多普勒扩展、相干时间无穷大，符号时长远小于相干时间，所以是<b>慢衰落</b>。<br>结论：<b>平坦慢衰落</b>（flat, slow fading）。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iv) 衰落余量。</b>要和 AWGN 信道达到同样容量，瑞利信道需要多出的平均 SNR（讲义 Ch2 p.51）：<div class="calc">FM = 10 log₁₀[1 / ln(1/(1 − ε))]</div>ε = 0.001：ln(1/0.999) = 0.0010005，<div class="calc">FM = 10 log₁₀(1/0.0010005) ≈ 30.0 dB</div>对照讲义例子：ε = 1% 时是 20 dB。中断概率要求严 10 倍，余量就多 10 dB。</div></div><div class="wans">(ii) σ² &lt; 18.5 dB²（σ &lt; 4.3 dB）　(iii) 平坦、慢衰落　(iv) 衰落余量 ≈ 30 dB</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch2">→ 回到讲解：Part 2 第二章 无线信道：信号在路上会遇到三种麻烦</a></div>
+</div>
+<div class="pastq" id="y2324s2-q1b1">
+  <div class="pq-head"><span class="pq-paper">2023-24 S2</span><span class="pq-q">Q1(b)(i)</span><span>(b) 共 13 分</span></div>
+  <div class="pq-topic"><b>考点</b>：DPSK 两支路选择分集 · 离散 SNR 分布求平均</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) Diversity techniques can be used to lower the outage probability of a wireless system operating in a fading channel.</p>
+<p>(i) A Differential Phase Shift Keying (DPSK) system uses a 2-branch Selection Diversity (SD) scheme to mitigate fading. The signal to noise ratio (SNR) of the received signal for each branch is assumed to be a discrete random variable with the following distribution:
+<span class="eq">10 dB with a probability of 0.2;　12 dB with a probability of 0.8</span>
+Determine the average SNR in dB of the received signals and the average symbol error probability of the SD scheme. Note: Symbol error probability of DPSK is ½e<sup>−SNR</sup>.</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext">先把 dB 换成线性值（公式里的 SNR 一定要用线性值）：10 dB → 10，12 dB → 15.85。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>每支路接收信号的平均 SNR</b>：<div class="calc">γ̄ = 0.2 × 10 + 0.8 × 15.85 = 14.68 → 11.67 dB</div>注意要先在线性域平均再转 dB。直接平均 dB 值（0.2×10 + 0.8×12 = 11.6 dB）是错的做法。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>选择分集取两支路中 SNR 较大的一个。</b>两支路独立，只有两支都是 10 dB 时输出才是 10 dB：<div class="calc">P(输出 = 10 dB) = 0.2 × 0.2 = 0.04；P(输出 = 12 dB) = 1 − 0.04 = 0.96</div>SD 输出的平均 SNR = 0.04 × 10 + 0.96 × 15.85 = 15.61 → 11.94 dB。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>平均误符号率</b>：对每种输出情况算 ½e<sup>−SNR</sup> 再按概率加权：<div class="calc">P̄<sub>s</sub> = 0.04 × ½e<sup>−10</sup> + 0.96 × ½e<sup>−15.85</sup> = 9.08×10⁻⁷ + 6.2×10⁻⁸ ≈ 9.7×10⁻⁷</div>对比不用分集（单支路）：0.2 × ½e<sup>−10</sup> + 0.8 × ½e<sup>−15.85</sup> ≈ 4.6×10⁻⁶。分集让误码率降到约 1/5，主要是把"差的那种情况"出现的概率从 0.2 压到 0.04。</div></div><div class="wans">接收信号平均 SNR ≈ 11.7 dB（SD 输出平均 ≈ 11.9 dB）；SD 平均误符号率 ≈ 9.7×10⁻⁷</div><div class="pq-note">注：题目说的 "average SNR of the received signals" 指每支路的接收 SNR。为保险，SD 输出端的平均 SNR 也一并写出。</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch4">→ 回到讲解：Part 2 第四章 分集：别把鸡蛋放在一个篮子里</a></div>
+</div>
+<div class="pastq" id="y2324s2-q1b2">
+  <div class="pq-head"><span class="pq-paper">2023-24 S2</span><span class="pq-q">Q1(b)(ii)–(iv)</span><span>(b) 共 13 分</span></div>
+  <div class="pq-topic"><b>考点</b>：空间复用 · 复用增益 min(N,M) · Alamouti 正交性与分集增益</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(ii) Briefly describe the basic principle of the spatial multiplexing scheme and the mathematical relationship between the number of transmit antennas and the number of receive antennas for the scheme. For a MIMO system with 3 transmit antennas and 5 receive antennas, find the maximum possible multiplexing gain.</p>
+<p>(iii) A Space-Time Block Coding system uses 2 transmit antennas and 2 time slots to transmit 2 complex symbols, s<sub>1</sub> and s<sub>2</sub>. The code can be represented by the matrix
+<span class="eq">X = ( s<sub>1</sub>　−s<sub>2</sub>* ; s<sub>2</sub>　s<sub>1</sub>* )</span>
+where s<sub>1</sub> and s<sub>1</sub> are the two transmitted symbols, and s<sub>1</sub>* and s<sub>2</sub>* are the complex conjugates of s<sub>1</sub> and s<sub>1</sub> respectively. Show that this is or is not an orthogonal space time block code.</p>
+<p>(iv) Does the Alamouti code have diversity gain? Explain your answer.</p>
+<p class="marks">(13 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(ii) 空间复用</b>（讲义 Ch4 p.30）：把 N 个不同的数据符号同时从 N 根发射天线发出去，速率变成原来的 N 倍；代价是没有分集增益，衰落信道里误码性能可能较差。接收端要解出 N 路数据流，需要 <b>M ≥ N</b> 根接收天线。最大复用增益 r<sub>max</sub> = min(N, M)：<div class="calc">N = 3，M = 5 → r<sub>max</sub> = min(3, 5) = 3</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(iii) 正交性检验。</b>正交 STBC 的定义（讲义 Ch5 p.22、p.27）是 X X<sup>H</sup> = (|s₁|² + |s₂|²) I。题中的 X 有两行：r₁ = (s₁, −s₂*)，r₂ = (s₂, s₁*)。<div class="calc">r₁·r₁<sup>H</sup> = |s₁|² + |s₂|²；　r₂·r₂<sup>H</sup> = |s₂|² + |s₁|²</div><div class="calc">r₁·r₂<sup>H</sup> = s₁s₂* + (−s₂*)(s₁*)* = s₁s₂* − s₂*s₁ = 0</div>所以 X X<sup>H</sup> = (|s₁|² + |s₂|²) I，<b>是正交 STBC</b>。它其实就是讲义 Alamouti 矩阵的转置（讲义把行当时隙，这里把列当时隙），本质一样。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iv) Alamouti 有分集增益。</b>每个符号在两个时隙里分别从两根天线各发一次，经过两条独立衰落的路径到达接收端；接收端利用正交结构做线性合并，得到的检测量里有 (|h₁|² + |h₂|²)，两条路径同时深衰落的概率很小。2 发 1 收时分集阶数为 2，2 发 M 收时为 2M，即<b>满分集</b> N × M。代价：它不需要发射端知道信道，但相比接收端 MRC 少了阵列增益（讲义 Ch5 p.30 "MRC has array gain over OSTBC &amp; Alamouti code"）。</div></div><div class="wans">(ii) 需 M ≥ N；最大复用增益 = 3　(iii) X X<sup>H</sup> = (|s₁|²+|s₂|²)I，是正交 STBC　(iv) 有，满分集 2M</div><div class="pq-note">注：原题 (iii) 把 "s₁ and s₂" 印成了 "s₁ and s₁"，按 s₁、s₂ 理解即可。</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch5">→ 回到讲解：Part 2 第五章 MIMO：多根天线，既抗衰落又提速</a></div>
+</div>
+<div class="pastq" id="y2324s2-q2a">
+  <div class="pq-head"><span class="pq-paper">2023-24 S2</span><span class="pq-q">Q2(a)</span><span>13 分</span></div>
+  <div class="pq-topic"><b>考点</b>：ISI 离散模型 · 由 H(Z) 读冲激响应 · 线性均衡后的判决与误码率</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>2. (a) The discrete time representation of the received signal, {r[i], i = 1,2, …}, at the output of an Additive White Gaussian Noise (AWGN) Inter-Symbol-Interference (ISI) channel can be expressed as,
+<span class="eq">r[i] = Σ<sub>n=1</sub><sup>3</sup> h[n] m[i − n + 1] + w[i]</span>
+where m[k] is the k<sup>th</sup> transmitted symbol which is assumed to be equally likely to be −1 or 1, h[n] is the n<sup>th</sup> component of the sampled channel impulse response, and w[i] is the i<sup>th</sup> sample of the AWGN with zero mean and a variance of 0.3.</p>
+<p>(i) Explain how the discrete time representation above shows that ISI is present.</p>
+<p>(ii) If the Z-transform of the channel is, H(Z) = 1 + 0.6Z<sup>−2</sup>, determine all non-zero values of h[n].</p>
+<p>(iii) The received signal is processed by a linear filter which has a Z-transform of C(Z) = 1 − 0.6Z<sup>−2</sup>. The output of the filter is used as the decision variable for detecting m[i]. Derive the decision rule.</p>
+<p>(iv) Using the decision rule, determine the average probability of bit error of this system.</p>
+<p class="marks">(13 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 把求和展开：r[i] = h[1]m[i] + h[2]m[i−1] + h[3]m[i−2] + w[i]。第 i 个采样里除了想要的 m[i]，还混进了前两个符号 m[i−1]、m[i−2]，这就是符号间干扰（ISI）。只要 h[2]、h[3] 不全为 0 就存在 ISI。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 按这个求和式，H(Z) = h[1] + h[2]Z⁻¹ + h[3]Z⁻²（h[n] 对应 Z<sup>−(n−1)</sup>）。对照 1 + 0.6Z⁻²：<div class="calc">h[1] = 1，h[3] = 0.6（h[2] = 0）</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii) 滤波后的信号。</b>总响应 C(Z)H(Z) = (1 − 0.6Z⁻²)(1 + 0.6Z⁻²) = 1 − 0.36Z⁻⁴。噪声也经过滤波：w′[i] = w[i] − 0.6w[i−2]。所以<div class="calc">y[i] = m[i] − 0.36 m[i−4] + w′[i]</div>ISI 没有完全消掉，但从 0.6 降到了 0.36，而且被推到 4 个符号之外。m[i] 等概取 ±1，判决规则取符号：<div class="calc">m̂[i] = +1，若 y[i] ≥ 0；m̂[i] = −1，若 y[i] &lt; 0</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iv) 误码率。</b>先算滤波后的噪声方差：<div class="calc">σ′² = 0.3 × (1² + 0.6²) = 0.3 × 1.36 = 0.408，σ′ = 0.639</div>设发 m[i] = +1，残余干扰 −0.36m[i−4] 等概为 −0.36 或 +0.36，有用信号到判决门限（0）的距离分别是 0.64 和 1.36：<div class="calc">P<sub>b</sub> = ½Q(0.64/0.639) + ½Q(1.36/0.639) = ½Q(1.00) + ½Q(2.13)</div><div class="calc">= ½(0.158) + ½(0.0166) ≈ 0.087</div>发 −1 时由对称性结果相同。</div></div><div class="wans">(ii) h[1] = 1，h[3] = 0.6　(iii) y[i] = m[i] − 0.36m[i−4] + w′[i]，按符号判决　(iv) P<sub>b</sub> ≈ 0.087</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch6">→ 回到讲解：Part 2 第六章 均衡：把拖进下一个符号的回声抵消掉</a></div>
+</div>
+<div class="pastq" id="y2324s2-q2b">
+  <div class="pq-head"><span class="pq-paper">2023-24 S2</span><span class="pq-q">Q2(b)</span><span>12 分</span></div>
+  <div class="pq-topic"><b>考点</b>：OFDM 子载波数 · 子信道增益 H<sub>k</sub> · 保护间隔与功率损失</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) A wireless system operates with a bandwidth of 1 MHz and implements an OFDM scheme with N sub-carriers. The fading channel has a coherence bandwidth of 500 kHz and a sampled channel impulse response of {1, −0.6, 0.2}.</p>
+<p>(i) Determine the value of N if the bandwidth of each OFDM sub-carrier is to be half of the coherence bandwidth.</p>
+<p>(ii) Determine the channel gain coefficient values for the N sub-channels.</p>
+<p>(iii) Using the simplified formula, T = 1/B, where T is the signal symbol duration and B is the signal bandwidth, determine the total OFDM block duration if a Guard interval of 1 microsecond is added.</p>
+<p>(iv) For the question in 2(b) part (iii) above, determine the power loss due to the addition of the guard interval.</p>
+<p class="marks">(12 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 每个子载波带宽 = 500/2 = 250 kHz，<div class="calc">N = 1 MHz / 250 kHz = 4</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 子信道增益（讲义 Ch7 p.15）H<sub>k</sub> = Σ<sub>i</sub> h<sub>i</sub> e<sup>−j2πik/N</sup>，h = {1, −0.6, 0.2}，N = 4，e<sup>−j2πk/4</sup> 依次是 −j、−1、j、1：<div class="calc">H₁ = 1 − 0.6(−j) + 0.2(−1) = 0.8 + 0.6j　(|H₁| = 1)</div><div class="calc">H₂ = 1 − 0.6(−1) + 0.2(1) = 1.8</div><div class="calc">H₃ = 1 − 0.6(j) + 0.2(−1) = 0.8 − 0.6j　(|H₃| = 1)</div><div class="calc">H₄ = H₀ = 1 − 0.6 + 0.2 = 0.6</div>每个子信道只剩一个复数增益，这正是 OFDM 把频率选择性信道变成 N 个平坦子信道的意思。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 原始符号时长 T<sub>s</sub> = 1/(1 MHz) = 1 µs；一个 OFDM 块 = N T<sub>s</sub> = 4 µs（也等于每个子载波的 1/250 kHz）。加 1 µs 保护间隔：<div class="calc">T<sub>block</sub> = 4 + 1 = 5 µs</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iv)</b> 讲义 Ch7 p.18：<div class="calc">功率损失 = 10 log₁₀[(NT<sub>s</sub> + T<sub>G</sub>)/(NT<sub>s</sub>)] = 10 log₁₀(5/4) ≈ 0.97 dB</div></div></div><div class="wans">N = 4；H = {0.8+0.6j, 1.8, 0.8−0.6j, 0.6}；块长 5 µs；功率损失 ≈ 0.97 dB</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch7">→ 回到讲解：Part 2 第七章 OFDM：把一条坑洼的宽路，改成很多条平整的窄路</a></div>
+</div>
+<div class="pastq" id="y2324s2-q3a">
+  <div class="pq-head"><span class="pq-paper">2023-24 S2</span><span class="pq-q">Q3(a)</span><span>20 分</span></div>
+  <div class="pq-topic"><b>考点</b>：Erlang B 反推小区半径 · 集群增益 · 120° 扇区化的代价</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>3. (a) A heavily populated small island has a user density of 720 users per km<sup>2</sup> for the service area. The operator A decides to select a cellular system that has a cluster size N<sub>c</sub> = 7 and a total of 399 duplex traffic channels. The system uses a fixed channel assignment, blocked calls cleared scheme and omni-directional antennas at the base station (BS). During the busy hour, on the average, a user generates 0.9 call with a holding time of 90 seconds. The expected Grade of Service (GOS) is given by 1% blocking probability. The service area will be covered by hexagonal cells with radius R. Note: The area of each hexagonal cell is A<sub>ce</sub> = (3√3/2)R<sup>2</sup>. State and justify any necessary assumptions.</p>
+<p>(i) Determine the number of channels per cluster and the offered traffic supported by the GOS.</p>
+<p>(ii) Determine the number of users m and the offered traffic generated by users in each cell.</p>
+<p>(iii) Determine the cell radius R, when the offered traffic generated by users is equal to the offered traffic supported for the given GOS for each cell.</p>
+<p>(iv) Determine the trunking gain T<sub>g</sub> of the system.</p>
+<p>(v) Suppose the operator A decides to improve the hexagonal cellular design further where one uses the 120-degree sector being deployed in each cell for the BS. For this new design, calculate the new value of R and T<sub>g</sub>. State your observation and comment on the changes to the results from the operator's perspective.</p>
+<p class="marks">(20 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>假设</b>：均匀固定分配（UFCA），每小区信道数相同；blocked calls cleared → 用 Erlang B；399 条全是话务信道（题目已说 traffic channels）；用户在服务区内均匀分布。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(i)</b> 每簇 399 条信道（一个簇用完全部信道），每小区 399/7 = <b>57</b> 条。查 Erlang B 表 M = 57、B = 1%：<div class="calc">A ≈ 44.2 Erlang / 小区</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(ii)</b> 每用户话务量 A<sub>u</sub> = 0.9 × 90/3600 = 0.0225 E。每小区用户产生的话务量 = m × 0.0225；令它等于小区能支持的 44.2 E：<div class="calc">m = 44.2 / 0.0225 ≈ 1965 用户/小区</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iii)</b> 用户密度 720 /km²，所以每小区面积 = 1965/720 = 2.73 km²：<div class="calc">(3√3/2)R² = 2.73 → R² = 2.73/2.598 = 1.051 → R ≈ 1.03 km</div></div></div><div class="wstep"><div class="wn">5</div><div class="wtext"><b>(iv)</b> 讲义 p.122：集群增益 = 一组信道在给定 GoS 下能服务的用户数 ÷ 信道数：<div class="calc">T<sub>g</sub> = 1965 / 57 ≈ 34.5 用户/信道</div></div></div><div class="wstep"><div class="wn">6</div><div class="wtext"><b>(v) 120° 扇区。</b>每小区 57 条信道分给 3 个扇区，每扇区 19 条，各自成为独立的信道池。查 Erlang B（M = 19，1%）：A ≈ 11.2 E/扇区，每小区 3 × 11.2 = 33.7 E。<div class="calc">m = 33.7/0.0225 ≈ 1497；面积 = 1497/720 = 2.08 km²；R = √(2.08/2.598) ≈ 0.89 km</div><div class="calc">T<sub>g</sub> = 1497/57 ≈ 26.3</div><b>评论</b>：信道总数不变，但被切成 3 个小池，集群效率下降（57 条一起用能承载 44.2 E，切开只有 33.7 E，少了约 24%），所以每个小区只能覆盖更小的面积，需要更多基站，集群增益从 34.5 降到 26.3。对运营商的好处在于 SIR：只剩 2 个同频干扰源（N = 7、n = 4 时约 24.5 dB，见讲义 p.145）。如果改用更小的簇，扇区化才真正换来容量；在 N 不变的前提下单纯加扇区，只换来干扰改善，付出的是覆盖和集群效率。</div></div><div class="wans">57 条/小区，A ≈ 44.2 E；m ≈ 1965；R ≈ 1.03 km；T<sub>g</sub> ≈ 34.5；扇区化后 R ≈ 0.89 km，T<sub>g</sub> ≈ 26.3</div><div class="pq-note">注：Erlang B 的 A 值用公式精确算出（44.22、11.23），和考卷附表读数相同到小数点后一位。</div></div></div></details>
+  <div class="pq-links"><a href="partA.html#ch8">→ 回到讲解：Part A 第八章 话务工程：用排队论算清楚"够不够用"</a></div>
+</div>
+<div class="pastq" id="y2324s2-q3b">
+  <div class="pq-head"><span class="pq-paper">2023-24 S2</span><span class="pq-q">Q3(b)</span><span>5 分</span></div>
+  <div class="pq-topic"><b>考点</b>：FDMA / TDMA / CDMA 及系统举例</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) Multiple access schemes are important features in mobile cellular systems as they allow many users to share the limited spectrum simultaneously. There are three basic multiple access schemes used in the 1G-3G mobile cellular systems. Briefly describe each of the multiple access schemes and give an example of an existing mobile cellular system for each scheme.</p>
+<p class="marks">(5 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>FDMA</b>：把频谱切成许多窄带信道，每个用户在通话期间独占一个频率信道。例：1G 的 <b>AMPS</b>（30 kHz 信道）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>TDMA</b>：几个用户共用一个载波，按时隙轮流发送，每人只在自己的时隙里发。例：2G 的 <b>GSM</b>（200 kHz 载波、每帧 8 个时隙）、IS-136。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>CDMA</b>：所有用户同时占用同一段宽带频谱，每人用不同的扩频码区分，接收端靠码的正交性/低相关性把自己的信号解出来。例：2G 的 <b>IS-95</b>，3G 的 <b>WCDMA</b>、cdma2000。</div></div><div class="wans">FDMA–AMPS；TDMA–GSM；CDMA–IS-95/WCDMA</div></div></div></details>
+  <div class="pq-links"><a href="partA.html#ch1">→ 回到讲解：Part A 第一章 三种"分资源"的方式：FDMA / TDMA / CDMA</a></div>
+</div>
+<div class="pastq" id="y2324s2-q4ab">
+  <div class="pq-head"><span class="pq-paper">2023-24 S2</span><span class="pq-q">Q4(a)(b)</span><span>13 分</span></div>
+  <div class="pq-topic"><b>考点</b>：简化 IoT 架构的两个并行栈 · 为什么要引入雾计算</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>4. (a) For Internet of Things (IoT), the simplified IoT architecture consists of two parallel stacks, i.e., the Management and Compute Stack and Core IoT Functional Stack. Briefly describe the major components in each of the two stacks.</p>
+<p class="marks">(7 Marks)</p>
+<p>(b) Discuss the necessity to introduce Fog Computing into the simplified IoT architecture.</p>
+<p class="marks">(6 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(a) Core IoT Functional Stack（核心功能栈，三层）</b>（讲义 Part B p.86–91）：<br>① <b>"Things" 层</b>：传感器、执行器等智能物体，要适应部署环境的约束（供电、体积、移动性），同时提供所需的数据；<br>② <b>通信网络层</b>：分四个子层——接入网（最后一公里，802.11ah、802.15.4g、LoRa 等）、网关与回传（把一片区域内的设备汇聚到网关，再用长距离链路送回中心）、网络传输（IP、UDP/TCP）、IoT 网络管理（HTTP、WebSocket 等应用协议）；<br>③ <b>应用与分析层</b>：处理收集的数据，既做分析决策，也反过来控制物体。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(a) Data Management and Compute Stack（数据管理与计算栈）</b>：决定数据在哪里处理，三个层次对应核心栈：<b>边缘（edge/mist）</b>在传感器或设备本身做最基本的过滤和判断；<b>雾（fog）</b>在靠近终端的网关/路由器等网络设备上做实时处理；<b>云（cloud/数据中心）</b>做集中存储、历史数据和大规模分析。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(b) 为什么需要雾计算</b>（讲义 p.103–106）：如果所有数据都直接送云端处理——<br>• 最后一公里带宽很有限，海量数据挤不进去；<br>• 来回时延大，无法做实时响应；<br>• 网关的回传链路常依赖 3G/LTE 甚至卫星，不可靠；<br>• 回传和数据中心要承受的数据量太大，大数据越来越难做实时分析。<br>雾计算把数据处理分散到靠近网络边缘的地方：就近分析能<b>降低时延</b>，<b>卸载核心网</b>大量流量，把<b>敏感数据留在本地</b>；雾节点地理上靠近传感器，具备上下文感知，能形成分布式的边缘控制回路，并在上传前<b>压缩/精简数据</b>。</div></div><div class="wans">两栈：Things / 通信网络（4 子层）/ 应用与分析；Edge / Fog / Cloud。雾计算解决带宽、时延、回传可靠性和数据量问题</div></div></div></details>
+  <div class="pq-links"><a href="partB.html#ch7">→ 回到讲解：Part B 第七章 物联网：把前面所有招数用在海量设备上</a></div>
+</div>
+<div class="pastq" id="y2324s2-q4c">
+  <div class="pq-head"><span class="pq-paper">2023-24 S2</span><span class="pq-q">Q4(c)</span><span>12 分</span><span class="pq-hw"><a href="hw1.html">≡ HW1 Q2(b)</a></span></div>
+  <div class="pq-topic"><b>考点</b>：推导 SIR = 1.76 + 20 log N · 反求 n · 最坏情况与 120° 扇区</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(c) Derive and establish the following relationship between Signal-to-Interference Ratio SIR<sub>dB</sub> and cluster size N<sub>c</sub>.
+<span class="eq">SIR<sub>dB</sub> = 1.76 + 20 log<sub>10</sub>(N<sub>c</sub>)</span></p>
+<p>(i) Consider the Simplified SIR analysis where SIR = (1/6)Q<sup>n</sup> and Q is the co-channel reuse factor and there are six co-channel interferers in the first tier. You may assume a path loss exponent of n = 4 in your initial evaluation. Determine the SIR<sub>dB</sub> for N<sub>c</sub>=7 and comment on your results.</p>
+<p>(ii) If the required minimum SNR<sub>dB</sub> is to be least 20 dB, derive the corresponding value of the path loss exponent n for this case.</p>
+<p>(iii) Using the new value of n from part (ii), determine Co-Channel interference SIR for the worst case omnidirectional as shown below.
+<span class="eq">SIR = 1 / [2(Q − 1)<sup>−n</sup> + 2Q<sup>−n</sup> + 2(Q + 1)<sup>−n</sup>]</span></p>
+<p>(iv) Using the new value of n from part (ii), determine the SIR when using co-channel interference SIR with 120° sectoring. State and comment on your results when compared to part (iii).</p>
+<p class="marks">(12 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>推导</b>：只算第一层 6 个同频干扰，手机在小区边缘离本基站 R，6 个干扰基站都近似在距离 D：<div class="calc">S/I = R<sup>−n</sup> / (6D<sup>−n</sup>) = Q<sup>n</sup>/6，　Q = D/R = √(3N)</div>n = 4：S/I = (3N)²/6 = 1.5N²，取 dB：<div class="calc">SIR<sub>dB</sub> = 10 log₁₀ 1.5 + 20 log₁₀ N = 1.76 + 20 log₁₀ N</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(i)</b> N = 7：1.76 + 20 log 7 = 1.76 + 16.90 = <b>18.66 dB</b>，刚好高于语音约需的 18 dB，所以 7 小区复用最常用。但这个简化模型把 6 个干扰都放在 D，偏乐观。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(ii)</b> 要 Q<sup>n</sup>/6 ≥ 100（20 dB），Q = √21 = 4.583：<div class="calc">n = log₁₀ 600 / log₁₀ 4.583 = 2.778/0.661 ≈ 4.20</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iii)</b> n = 4.2 代入最坏情况：(Q−1)<sup>4.2</sup> = 212.6，Q<sup>4.2</sup> = 597.9，(Q+1)<sup>4.2</sup> = 1370<div class="calc">SIR = 1/(2/212.6 + 2/597.9 + 2/1370) = 1/0.0142 = 70.4 → 18.5 dB</div>没达到 20 dB：手机在边上时有两个干扰只隔 D − R。</div></div><div class="wstep"><div class="wn">5</div><div class="wtext"><b>(iv)</b> 120° 扇区只剩 2 个干扰：<div class="calc">SIR = 1/(Q<sup>−n</sup> + (Q + 0.7)<sup>−n</sup>) = 1/(1/597.9 + 1/1086) = 385.7 → 25.9 dB</div>比 (iii) 高约 7.4 dB，满足 20 dB 还有约 6 dB 余量。代价是每扇区信道变少、集群效率下降、切换增多。</div></div><div class="wans">(i) 18.66 dB　(ii) n ≈ 4.2　(iii) 18.5 dB　(iv) 25.9 dB</div></div></div></details>
+  <div class="pq-links"><a href="partA.html#ch7">→ 回到讲解：Part A 第七章 同频干扰与信道该怎么分配</a></div>
+</div>
+
+    </section>
+    <section class="chapter" id="y2425s2">
+      <div class="chapter-head"><span class="chapter-num">2024-25 S2</span><h2>April / May 2025</h2></div>
+      <p class="pq-intro">Semester 2 Examination 2024-2025 · 3 小时 · 闭卷 · 4 题全做、每题 25 分 · 试卷 15 页（含附录）</p>
+      <div class="pastq" id="y2425s2-q1a">
+  <div class="pq-head"><span class="pq-paper">2024-25 S2</span><span class="pq-q">Q1(a)</span><span>13 分</span><span class="pq-quiz">Quiz 范围</span></div>
+  <div class="pq-topic"><b>考点</b>：路径损耗图读数 · LCR/AFD 求误符号数 · 注水功率分配</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>1. (a) Mobile radio channels introduce path loss and fading to the transmitted radio signals.</p>
+<p>(i) Consider the simplified path loss model, P<sub>r</sub> = P<sub>t</sub>K(d)<sup>−3.5</sup>, where P<sub>r</sub>, P<sub>t</sub>, K, and d, are the received signal power, transmitted signal power, a constant, and distance between the transmitter and receiver, respectively. Using the dB form of the model, a plot of the path loss (in dB) versus log<sub>10</sub>(d) is shown in Figure 1 on page 2. Determine the values of <b>A</b> and <b>B</b> if K<sub>dB</sub> = −30 dB, where K<sub>dB</sub> is the value of K in dB.</p><div class="figwrap"><svg viewBox="0 0 420 220" role="img" aria-label="原卷 Figure 1：纵轴 Path Loss，横轴 log10(d)；直线从 d = 1 m 处的 A 点向右下降，与横轴交于 B；A 到横轴的高度标注 88 dB">
+<line x1="70" y1="30" x2="70" y2="185" style="stroke:var(--ink)" stroke-width="1.5"/>
+<line x1="60" y1="150" x2="390" y2="150" style="stroke:var(--ink)" stroke-width="1.5"/>
+<line x1="62" y1="38" x2="320" y2="160" style="stroke:var(--ink)" stroke-width="3"/>
+<line x1="56" y1="42" x2="84" y2="42" style="stroke:var(--ink)"/>
+<line x1="78" y1="46" x2="78" y2="146" style="stroke:var(--accent)" stroke-width="1.4"/>
+<text x="84" y="100" font-size="13" style="fill:var(--accent-ink)">88 dB</text>
+<text x="40" y="47" font-size="15" font-weight="700" style="fill:var(--ink)">A</text>
+<text x="290" y="178" font-size="15" font-weight="700" style="fill:var(--ink)">B</text>
+<line x1="298" y1="142" x2="298" y2="158" style="stroke:var(--ink)"/>
+<text x="46" y="200" font-size="12" style="fill:var(--ink)">d = 1 m</text>
+<text x="74" y="24" font-size="12" style="fill:var(--ink)">Path Loss</text>
+<text x="350" y="140" font-size="12" style="fill:var(--ink)">log₁₀(d)</text>
+</svg><div class="cap">按原卷 Figure 1 重画（不按比例）。</div></div>
+<p>(ii) A fading channel has an average fade duration of of 6 × 10<sup>−6</sup> second and a level crossing rate of 5. If the average fade duration covers exactly three (3) consecutive symbols, determine the symbol duration. If an error is assumed to have occurred in a symbol when more than half of the symbol lies within a deep fade, determine the average number of symbol errors per second.</p>
+<p>(iii) The spectrum of a frequency selective channel is organized into three sub-bands. The signal-to-noise ratios (SNR's) of the sub-bands are 18dB, 10dB, and 3dB, respectively. The transmitted powers of the sub-bands are allocated using the formula below,
+<span class="eq">P<sub>i</sub> = P(1/γ<sub>0</sub> − 1/γ<sub>i</sub>) when γ<sub>i</sub> ≥ γ<sub>0</sub>;　P<sub>i</sub> = 0 when γ<sub>i</sub> &lt; γ<sub>0</sub></span>
+where P = 1W is the total power, γ<sub>i</sub> and P<sub>i</sub> are the signal-to-noise ratio and allocated signal power for the i<sup>th</sup> sub-band, and γ<sub>0</sub> is a suitable threshold value. Determine the allocated powers for the three sub-bands.</p>
+<p class="marks">(13 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i) 读图。</b>dB 形式：10 log₁₀(P<sub>r</sub>/P<sub>t</sub>) = K<sub>dB</sub> − 35 log₁₀ d。图中的线从 A 往右<b>下降</b>，说明纵轴画的是 10 log₁₀(P<sub>r</sub>/P<sub>t</sub>)（损耗越大越往下）。<br>• d = 1 m 时 log₁₀ d = 0，纵坐标就是 K<sub>dB</sub>：<b>A = −30 dB</b>（即 1 m 处损耗 30 dB）。<br>• 从 A 到横轴下降了 88 dB，斜率是 −35 dB/十倍距离：<div class="calc">35 × B = 88 → B = log₁₀ d = 2.51（d ≈ 327 m）</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii) 符号时长</b>：一次平均衰落正好盖住 3 个符号：T<sub>s</sub> = 6 µs / 3 = <b>2 µs</b>。<br><b>每秒误符号数</b>：每次衰落持续 3T<sub>s</sub>。如果和符号边界对齐，正好 3 个符号全在衰落里；如果不对齐，就是 2 个完整符号加头尾两个"碎片"，两个碎片加起来是一个符号长，必有一个超过一半（恰好各一半是边界情况）。所以每次衰落约 3 个错符号。LCR = 5 次/秒：<div class="calc">误符号数 = 5 × 3 = 15 个/秒</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii) 注水分配。</b>SNR 化线性：γ = 63.1、10、2.0。先假设三个子带都分到功率，ΣP<sub>i</sub> = 1：<div class="calc">3/γ₀ − (1/63.1 + 1/10 + 1/2.0) = 1 → 1/γ₀ = (1 + 0.0158 + 0.1 + 0.501)/3 = 0.539</div>γ₀ = 1.855（2.7 dB），三个 γ<sub>i</sub> 都 ≥ γ₀，假设成立。<div class="calc">P₁ = 0.539 − 0.016 = 0.523 W；P₂ = 0.539 − 0.100 = 0.439 W；P₃ = 0.539 − 0.501 = 0.038 W</div>三者之和为 1 W。SNR 越好的子带分到的功率越多；最差的 3 dB 子带只比门限高一点，分到的很少。</div></div><div class="wans">(i) A = −30 dB，B ≈ 2.51　(ii) T<sub>s</sub> = 2 µs，15 个误符号/秒　(iii) P ≈ 0.523 / 0.439 / 0.038 W</div><div class="pq-note">注：如果把纵轴理解为正的路径损耗 −K<sub>dB</sub> + 35 log d，则 A = 30 dB；但那条线应该上升。按图中下降的线，A = K<sub>dB</sub> = −30 dB。B 两种理解都一样。</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch2">→ 回到讲解：Part 2 第二章 无线信道：信号在路上会遇到三种麻烦</a></div>
+</div>
+<div class="pastq" id="y2425s2-q1b1">
+  <div class="pq-head"><span class="pq-paper">2024-25 S2</span><span class="pq-q">Q1(b)(i)</span><span>(b) 共 12 分</span></div>
+  <div class="pq-topic"><b>考点</b>：BPSK 选择分集：由 P<sub>out</sub> 反求支路数 M</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) One common technique used to mitigate fading effects is Diversity.</p>
+<p>(i) The Selection Diversity scheme of a BPSK system uses M branches. The BPSK system's outage probability at a probability of error of P<sub>b</sub> = Q(√(2 × γ<sub>b</sub>)) = 1.35 × 10<sup>−3</sup> can be expressed as,
+<span class="eq">P<sub>out</sub> = (1 − e<sup>−γ<sub>b</sub>/30</sup>)<sup>M</sup></span>
+If P<sub>out</sub> equals 0.02 approximately, determine the number of branches used by the BPSK system.</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext">先从误码率门限求 γ<sub>b</sub>：查 Q 表，Q(3.0) = 1.35×10⁻³，所以 √(2γ<sub>b</sub>) = 3.0：<div class="calc">γ<sub>b</sub> = 9/2 = 4.5</div>这里 30 是每支路的平均 SNR，γ<sub>b</sub> 是能接受的最低 SNR。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><div class="calc">1 − e<sup>−4.5/30</sup> = 1 − e<sup>−0.15</sup> = 0.139</div><div class="calc">0.139<sup>M</sup> = 0.02 → M = ln 0.02 / ln 0.139 = (−3.91)/(−1.97) ≈ 1.98</div>验证：M = 2 时 P<sub>out</sub> = 0.139² = 0.0194 ≈ 0.02 ✓（M = 1 是 0.139，M = 3 是 0.0027）。</div></div><div class="wans">M = 2 个支路</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch4">→ 回到讲解：Part 2 第四章 分集：别把鸡蛋放在一个篮子里</a></div>
+</div>
+<div class="pastq" id="y2425s2-q1b2">
+  <div class="pq-head"><span class="pq-paper">2024-25 S2</span><span class="pq-q">Q1(b)(ii)(iii)</span><span>(b) 共 12 分</span></div>
+  <div class="pq-topic"><b>考点</b>：最大分集增益 N×M · 分集-复用折中求速率 · 无信息发射机的 MIMO 容量</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(ii) For a MIMO system that uses 5 transmit antennas and 3 receive antennas, what is the maximum diversity gain of the system? If the system operates with a diversity gain of 3 and a multiplexing gain of 2, determine the maximum transmission rate per Hz of the system at a probability of error of 10<sup>−3</sup>.</p>
+<p>(iii) The channel capacity of a MIMO system with N transmitter antennas and M receiver antennas can be expressed as,
+<span class="eq">C<sub>MIMO</sub> = B × log<sub>2</sub> det{I + (1/σ<sup>2</sup>) HPH<sup>H</sup>}</span>
+where B is the receiver bandwidth, I is the Identity matrix, σ<sup>2</sup> is the noise power, H and P are the channel matrix and transmit power matrix respectively, H<sup>H</sup> is the conjugate transpose of H, and det{X} is the determinant of the matrix X. Simplify the channel capacity expression if the MIMO system has an uninformed transmitter with a total transmit power of P. Hence determine the channel capacity per Hz of this system if N = M = 1, P = 1, σ<sup>2</sup> = 0.25, and the channel gain is 2.</p>
+<p class="marks">(12 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(ii) 最大分集增益</b> d<sub>max</sub> = N × M = 5 × 3 = <b>15</b>。<br><b>速率</b>：讲义 Ch4 p.32–33，P<sub>e</sub> ≈ SNR<sup>−d</sup>，R = r log₂ SNR。先由误码率和分集增益求 SNR：<div class="calc">10⁻³ = SNR⁻³ → SNR = 10</div><div class="calc">R = r log₂ SNR = 2 × log₂ 10 = 2 × 3.32 ≈ 6.64 bit/s/Hz</div>顺便检查：(r, d) = (2, 3) 正好在最优折中曲线上，d(2) = (5−2)(3−2) = 3。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(iii) 无信息发射机</b>：发射端不知道信道，就把总功率平均分给 N 根天线，P = (P/N) I（讲义 Ch5 p.37）：<div class="calc">C = B log₂ det{I + (P/(Nσ²)) HH<sup>H</sup>}</div>N = M = 1 时 H 就是标量 h，HH<sup>H</sup> = |h|² = 4：<div class="calc">C/B = log₂(1 + 1 × 4/0.25) = log₂ 17 ≈ 4.09 bit/s/Hz</div></div></div><div class="wans">(ii) d<sub>max</sub> = 15；R ≈ 6.64 bit/s/Hz　(iii) C/B = log₂17 ≈ 4.09 bit/s/Hz</div><div class="pq-note">注："channel gain is 2" 按幅度增益 h = 2 理解（|h|² = 4）。如果理解成功率增益 |h|² = 2，结果是 log₂ 9 ≈ 3.17。</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch5">→ 回到讲解：Part 2 第五章 MIMO：多根天线，既抗衰落又提速</a></div>
+</div>
+<div class="pastq" id="y2425s2-q2a">
+  <div class="pq-head"><span class="pq-paper">2024-25 S2</span><span class="pq-q">Q2(a)</span><span>13 分</span></div>
+  <div class="pq-topic"><b>考点</b>：横向滤波器 · 迫零均衡抽头 · 残余 ISI 下的误码率</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>2. (a) The Z-transform of a channel is H(Z) = 1 + hZ<sup>−1</sup>, where h is the channel gain. The equalizer at the receiver is implemented as a transversal filter shown in Figure 2, where r<sub>i</sub> and y<sub>i</sub> are the received signal and equalizer output respectively, c<sub>0</sub>, c<sub>1</sub> and c<sub>2</sub> are the equalizer gain coefficients, and Z<sup>−1</sup> represents a delay of 1 symbol duration.</p><div class="figwrap"><svg viewBox="0 0 420 170" role="img" aria-label="原卷 Figure 2：三抽头横向滤波器，r_i 经过两个 Z^-1 延迟，三个抽头分别乘 c0、c1、c2 后相加得到 y_i">
+<g style="stroke:var(--ink);fill:none" stroke-width="1.4">
+<line x1="40" y1="40" x2="120" y2="40"/><rect x="120" y="25" width="44" height="30"/><line x1="164" y1="40" x2="220" y2="40"/><rect x="220" y="25" width="44" height="30"/><line x1="264" y1="40" x2="300" y2="40"/>
+<line x1="90" y1="40" x2="90" y2="85"/><line x1="190" y1="40" x2="190" y2="85"/><line x1="300" y1="40" x2="300" y2="85"/>
+<circle cx="90" cy="92" r="7"/><circle cx="190" cy="92" r="7"/><circle cx="300" cy="92" r="7"/>
+<line x1="90" y1="99" x2="90" y2="120"/><line x1="190" y1="99" x2="190" y2="120"/><line x1="300" y1="99" x2="300" y2="120"/>
+<rect x="70" y="120" width="250" height="30"/><line x1="320" y1="135" x2="360" y2="135"/>
+</g>
+<g font-size="12" style="fill:var(--ink)"><text x="20" y="44">r<tspan font-size="9" dy="3">i</tspan></text><text x="128" y="45">Z⁻¹</text><text x="228" y="45">Z⁻¹</text>
+<text x="100" y="86">c₀</text><text x="200" y="86">c₁</text><text x="310" y="86">c₂</text><text x="186" y="141" font-size="15">Σ</text><text x="366" y="139">y<tspan font-size="9" dy="3">i</tspan></text></g>
+<g style="stroke:var(--ink)"><line x1="85" y1="87" x2="95" y2="97"/><line x1="95" y1="87" x2="85" y2="97"/><line x1="185" y1="87" x2="195" y2="97"/><line x1="195" y1="87" x2="185" y2="97"/><line x1="295" y1="87" x2="305" y2="97"/><line x1="305" y1="87" x2="295" y2="97"/></g>
+</svg><div class="cap">按原卷 Figure 2 重画：三抽头横向（FIR）均衡器。</div></div>
+<p>(i) What should the value of h be for an AWGN channel without fading? What would you observe on the value of h for fast-fading channels? Explain your answers.</p>
+<p>(ii) If the equalizer implements the zero-forcing technique, determine the values of c<sub>1</sub>, c<sub>2</sub>, and c<sub>3</sub> in Figure 2, if h = 0.2.</p>
+<p>(iii) The equalizer is now implemented with another design such that the decision variable is y<sub>i</sub> = s<sub>i</sub> + 0.6s<sub>i−1</sub> + w′<sub>i</sub>, where s<sub>i</sub> is the transmitted symbol that is equally likely to be 1 or −1, and w′<sub>i</sub> is an additive white Gaussian noise with zero mean and a variance of 0.64. The decision rule is such that, s<sub>i</sub> will be detected as 1 if y<sub>i</sub> ≥ 0, or −1 if y<sub>i</sub> &lt; 0. Determine the probability of error for this equalizer.</p>
+<p class="marks">(13 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 纯 AWGN、没有多径衰落时，信道只有一条直达路径，H(Z) = 1，所以 <b>h = 0</b>（没有 ISI）。快衰落信道的相干时间和符号时长相当甚至更短，<b>h 会随时间快速变化</b>（幅度和相位都在变），均衡器系数必须不断重新估计和跟踪，否则很快失配。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii) 迫零均衡</b>：C(Z) = 1/H(Z) = 1/(1 + 0.2Z⁻¹)，长除法展开（讲义 Ch6 p.24 的做法）：<div class="calc">1/(1 + 0.2Z⁻¹) = 1 − 0.2Z⁻¹ + 0.04Z⁻² − 0.008Z⁻³ + …</div>只有 3 个抽头，取前三项：<div class="calc">c₀ = 1，c₁ = −0.2，c₂ = 0.04</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> σ = √0.64 = 0.8。发 s<sub>i</sub> = +1 时，前一个符号带来 ±0.6 的干扰，各占一半：<br>• s<sub>i−1</sub> = +1：y 的均值 1.6，出错要 y &lt; 0 → Q(1.6/0.8) = Q(2) = 0.0228<br>• s<sub>i−1</sub> = −1：均值 0.4 → Q(0.4/0.8) = Q(0.5) = 0.3085<div class="calc">P<sub>e</sub> = ½(0.3085 + 0.0228) ≈ 0.166</div>发 −1 时由对称性相同。残余 ISI 太大（0.6），误码率很高，说明这个设计不好。</div></div><div class="wans">(i) h = 0；快衰落时 h 快速时变　(ii) 1，−0.2，0.04　(iii) P<sub>e</sub> ≈ 0.166</div><div class="pq-note">注：原题 (ii) 写的是 "c₁, c₂, and c₃"，但 Figure 2 标的是 c₀、c₁、c₂，按图作答。</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch6">→ 回到讲解：Part 2 第六章 均衡：把拖进下一个符号的回声抵消掉</a></div>
+</div>
+<div class="pastq" id="y2425s2-q2b">
+  <div class="pq-head"><span class="pq-paper">2024-25 S2</span><span class="pq-q">Q2(b)</span><span>12 分</span></div>
+  <div class="pq-topic"><b>考点</b>：OFDM 速率划分 · 加循环前缀的表达式 · 等容量功率分配</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) A 4-level communication system has a transmitted symbol rate of 5 million symbols per second. The system experiences severe fading effects and will be modified to use the OFDM technique with N = 4, where N is the number of sub-carriers of the OFDM system.</p>
+<p>(i) Determine the transmission bit rates for the system and for each of the OFDM sub-carriers.</p>
+<p>(ii) The transmitted signal of an OFDM signal can be expressed as,
+<span class="eq">x(t) = (1/√T) Σ<sub>k=0</sub><sup>N−1</sup> s<sub>k</sub>(t)e<sup>j2π(k/T)t</sup>,　nT ≤ t ≤ (n + 1)T</span>
+where s<sub>k</sub>(t) is the signals in the k<sup>th</sup> OFDM sub-carrier and T is the OFDM symbol duration. Modify this expression to incorporate the inclusion of a cyclic prefix of T<sub>g</sub>.</p>
+<p>(iii) The channel capacity per Hz for the k<sup>th</sup> sub-carrier of an OFDM system has been derived to be,
+<span class="eq">C<sub>k</sub> = ¼ log<sub>2</sub>(1 + P<sub>k</sub>|H<sub>k</sub>|<sup>2</sup>), k = 1, 2, 3, 4</span>
+where P<sub>k</sub> is the power allocated to the k<sup>th</sup> OFDM sub-carrier and H<sub>k</sub> is the channel gain experienced by the k<sup>th</sup> OFDM sub-carrier signal. Powers are allocated to the sub-carriers to have the same channel capacity per Hz of C<sub>k</sub> = 0.9 bit per second per Hz. Determine the total power needed for this system if the channel gains have the following values.
+<span class="eq">|H<sub>1</sub>| = 1, |H<sub>2</sub>| = 0.2, |H<sub>3</sub>| = 1, |H<sub>4</sub>| = 1.4</span></p>
+<p class="marks">(12 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 4 电平 → 每符号 log₂4 = 2 bit。系统速率 = 5 M × 2 = <b>10 Mbit/s</b>。分到 4 个子载波，每个子载波符号率 1.25 Msymbol/s，<b>2.5 Mbit/s</b>。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 讲义 Ch7 p.17、p.21 的写法：表达式不变，只把每个块的时间范围往前延伸 T<sub>g</sub>：<div class="calc">x(t) = (1/√T) Σ<sub>k=0</sub><sup>N−1</sup> s<sub>k</sub>(t) e<sup>j2πkt/T</sup>，　nT − T<sub>g</sub> ≤ t &lt; (n+1)T</div>因为 e<sup>j2πkt/T</sup> 以 T 为周期，前面多出的 T<sub>g</sub> 段正好是块尾 T<sub>g</sub> 段的复制，这就是"循环"前缀；接收端丢掉这一段，只取 nT ≤ t &lt; (n+1)T。（若按块周期 T + T<sub>g</sub> 计时，也可写成区间 n(T+T<sub>g</sub>) ≤ t &lt; (n+1)(T+T<sub>g</sub>)、指数里用 t − n(T+T<sub>g</sub>) − T<sub>g</sub>。）</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 每个子载波都要 ¼ log₂(1 + P<sub>k</sub>|H<sub>k</sub>|²) = 0.9：<div class="calc">1 + P<sub>k</sub>|H<sub>k</sub>|² = 2<sup>3.6</sup> = 12.13 → P<sub>k</sub>|H<sub>k</sub>|² = 11.13</div><div class="calc">P₁ = 11.13/1 = 11.13；P₂ = 11.13/0.04 = 278.1；P₃ = 11.13；P₄ = 11.13/1.96 = 5.68</div><div class="calc">P<sub>total</sub> ≈ 306.1（功率单位）</div>差的子载波（|H₂| = 0.2）一个人就吃掉 90% 的功率。这正好说明为什么要用注水法，而不是强求每个子载波容量相同。</div></div><div class="wans">(i) 10 Mbit/s；每子载波 2.5 Mbit/s　(iii) 总功率 ≈ 306</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch7">→ 回到讲解：Part 2 第七章 OFDM：把一条坑洼的宽路，改成很多条平整的窄路</a></div>
+</div>
+<div class="pastq" id="y2425s2-q3">
+  <div class="pq-head"><span class="pq-paper">2024-25 S2</span><span class="pq-q">Q3</span><span>25 分</span></div>
+  <div class="pq-topic"><b>考点</b>：FDD-TDMA 信道数 · 由 SIR 选簇 · Erlang B · 小区分裂 · 三扇区重新选簇</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>3. A particular city deploys a frequency division duplexing-time division multiple access (FDD-TDMA) cellular network. The cellular network has a total of 60 cells with a cell radius of 1,000 meters. An omni-directional antenna is used in the system. A total of 40 MHz bandwidth is allocated to the system. Each link (uplink or downlink) uses 2 MHz of bandwidth for control and signalling transmission. The carrier frequency is 200 KHz and each frame has 8 timeslots. The minimum acceptable signal-to-interference ratio (SIR) is 18 dB for the downlink. There is a potential subscriber density of 2,000 subscribers/km<sup>2</sup> in the system and the traffic loads are uniformly distributed over the city and covered by the cellular network. On average, each user generates about 0.03 Erlangs of traffic. The path-loss exponent is assumed to be 3.7.</p>
+<p>Assume that the co-channel cells in the first tier create significant interference and all the interfering base stations are equidistant from the desired mobile unit which is located at the edge of the cell. You may use any suitable assumptions and approximation to answer the following questions.</p>
+<p>Note: A hexagonal-shaped cell is assumed in the analysis and the area of the hexagonal cell with the cell radius R is given by A<sub>ce</sub> = (3√3/2)R<sup>2</sup>.</p>
+<p>(a) Determine the number of duplex channels per cell. <span class="marks">(6 Marks)</span></p>
+<p>(b) Can the system support 1% call blocking probability? <span class="marks">(6 Marks)</span></p>
+<p>(c) Show that the cell splitting technique can be used to get 1% call blocking probability. Determine the new cell radius. <span class="marks">(4 Marks)</span></p>
+<p>(d) If a 3-sector directional antenna is used, how many cells are required in order to have a 1% call blocking probability? Assume that a single carrier can be shared between two sectors. <span class="marks">(9 Marks)</span></p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(a) 系统总信道数。</b>FDD：40 MHz 一半上行一半下行，每个方向 20 MHz，扣掉 2 MHz 控制信令，剩 18 MHz。"carrier frequency is 200 KHz" 应理解为每个载波<b>带宽</b> 200 kHz：<div class="calc">载波数 = 18 MHz / 200 kHz = 90；双工信道 = 90 × 8 时隙 = 720</div><b>选簇大小</b>：6 个等距干扰、手机在小区边缘，S/I = Q<sup>n</sup>/6 ≥ 10<sup>1.8</sup> = 63.1：<div class="calc">Q<sup>3.7</sup> ≥ 378.6 → Q ≥ 4.98 → N = Q²/3 ≥ 8.25</div>合法簇大小（i² + ij + j²）里 ≥ 8.25 的最小值是 <b>N = 9</b>（N = 7 只有 16.7 dB，不够；N = 9 为 18.7 dB）。<div class="calc">每小区信道 = 720/9 = 80 条双工信道</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(b)</b> 小区面积 = 2.598 × 1² = 2.598 km²，用户 = 2.598 × 2000 = 5196，话务量 = 5196 × 0.03 = <b>155.9 E</b>。Erlang B 表 M = 80、B = 1%：A ≈ <b>65.4 E</b>。155.9 远大于 65.4，<b>不能</b>满足 1% 阻塞率（阻塞率会远高于 1%）。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(c) 小区分裂</b>：分裂后每个小区信道数不变（仍 80 条，SIR 只取决于 Q = D/R，分裂后 D 和 R 同比例缩小），但每个小区覆盖的用户变少。要求每小区话务量 ≤ 65.4 E：<div class="calc">面积 ≤ 65.4/(2000 × 0.03) = 1.09 km² → R = √(1.09/2.598) ≈ 0.648 km</div>新半径约 <b>650 m</b>（基站数约增加到 2.4 倍），即可满足 1%。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(d) 三扇区</b>：每个扇区只剩 2 个同频干扰，SIR = 1/(Q<sup>−n</sup> + (Q + 0.7)<sup>−n</sup>)，可以用更小的簇：<div class="calc">N = 3：Q = 3 → 16.0 dB ✗；　N = 4：Q = 3.46 → 18.2 dB ✓</div>取 N = 4：每小区 720/4 = 180 条，每扇区 60 条（每小区 22.5 个载波，"一个载波可被两个扇区共用"正是让每扇区分到 7.5 个载波 = 60 条成立）。Erlang B（M = 60，1%）：A ≈ 46.9 E/扇区，每小区 140.8 E。<br>全城面积 = 60 × 2.598 = 155.9 km²，总话务量 = 155.9 × 2000 × 0.03 = 9353 E：<div class="calc">小区数 = 9353 / 140.8 ≈ 66.4 → 67 个小区</div>（对应半径约 0.95 km。）对比：不改簇、只加扇区（N = 9、每扇区约 26–27 条）需要约 180 个小区，反而更多。扇区化必须配合缩小簇才划算。</div></div><div class="wans">(a) N = 9，80 条/小区　(b) 需 155.9 E，只能承载 65.4 E，不能　(c) R ≈ 0.65 km　(d) N = 4，每扇区 60 条，约 67 个小区</div><div class="pq-note">注：(d) 的题意有不同理解，这里采用"扇区化 → 允许更小的簇 → 每小区信道更多"的思路，并说明了只加扇区不改簇的结果。</div></div></div></details>
+  <div class="pq-links"><a href="partA.html#ch9">→ 回到讲解：Part A 第九章 信道不够用了怎么办：小区分裂与扇区化</a></div>
+</div>
+<div class="pastq" id="y2425s2-q4a">
+  <div class="pq-head"><span class="pq-paper">2024-25 S2</span><span class="pq-q">Q4(a)</span><span>8 分</span><span class="pq-hw"><a href="hw1.html">≡ HW1 Q1(a)</a></span></div>
+  <div class="pq-topic"><b>考点</b>：蜂窝系统六大组成之数据库：HLR 与 VLR</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>4. (a) For every cellular network, a database unit is one of the six basic components. What are the basic functions of the database unit? Describe the differences between the home location register (HLR) and the visitor location register (VLR) in the database units.</p>
+<p class="marks">(8 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>数据库的基本功能</b>（讲义 Part A p.11 的 Component 3）：保存用户签约信息（号码、业务权限、计费信息）和<b>位置信息</b>，供 MTSO 在呼叫建立、寻呼被叫、鉴权、漫游和切换时查询；没有它，网络不知道"这个用户是谁、现在在哪"。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>HLR（归属位置寄存器）</b>：每个用户在其归属网络里有一条<b>永久记录</b>，存签约资料、鉴权参数和"当前在哪个 VLR/MSC 区域"的指针。一个运营商通常只有一个（逻辑上的）HLR。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>VLR（拜访位置寄存器）</b>：和每个 MSC/MTSO 区域关联，保存当前<b>在本区域内</b>的用户（包括外地来的漫游用户）的<b>临时副本</b>，用户进入时从 HLR 下载，离开后删除。本地呼叫和寻呼查 VLR 就够，不用每次都去问 HLR，减少信令。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>区别一句话</b>：HLR 是"户口所在地"，永久、集中、存全部签约信息；VLR 是"暂住登记"，临时、分布在各个服务区、只存当前在场的用户。用户移动到新区域时，新 VLR 向 HLR 登记，HLR 更新位置并通知旧 VLR 删除记录。</div></div><div class="wans">数据库存用户与位置信息；HLR 永久归属记录，VLR 临时拜访记录</div><div class="pq-note">注：讲义只在 p.11 的框图里列出 "Databases"，HLR/VLR 的细节属于课外补充（GSM 的标准结构），和 HW1 Q1(a) 的答法一致。</div></div></div></details>
+  <div class="pq-links"><a href="partA.html#ch2">→ 回到讲解：Part A 第二章 蜂窝概念：把一个大塔拆成很多个小塔</a></div>
+</div>
+<div class="pastq" id="y2425s2-q4b">
+  <div class="pq-head"><span class="pq-paper">2024-25 S2</span><span class="pq-q">Q4(b)</span><span>8 分</span></div>
+  <div class="pq-topic"><b>考点</b>：IoT 通信网络层的四个子层</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) Internet of Things (IoT) networks are built around the concept of "things" or smart objects performing functions and delivering new connected services. For the core functional IoT stack, the communication network layer is structured with four sublayers. List down each of these sublayers and briefly describe the each of the features.</p>
+<p class="marks">(8 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>接入网子层（Access network）</b>：IoT 网络的"最后一公里"，通常是无线技术，如 802.11ah、802.15.4g、LoRa；按覆盖范围分 PAN、HAN、NAN、FAN、LAN、WAN 等（讲义 p.89、p.94–95）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>网关与回传子层（Gateways and backhaul）</b>：把一片区域内的多个智能物体汇聚到一个公共网关，网关再用更长距离的介质（如蜂窝、光纤）把数据转发到中心站；物体可以静止或在小范围移动，网关通常固定。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>网络传输子层（Network transport）</b>：用开放、标准化的网络层和传输层协议（IP、UDP/TCP）连接各种设备和介质；要求可扩展到成千上万个传感器并保证安全。IP 能适应低功耗、低带宽、高丢包的网络；TCP 由网络控制可靠传输，UDP 把控制交给应用。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>IoT 网络管理子层（IoT network management）</b>：应用层协议，负责智能物体与头端应用之间的数据交换，如基于 TCP 的 HTTP（传感器作为客户端），以及适合低内存、低带宽、高丢包环境的轻量双向协议 WebSocket。</div></div><div class="wans">Access network / Gateways &amp; backhaul / Network transport / IoT network management</div></div></div></details>
+  <div class="pq-links"><a href="partB.html#ch7">→ 回到讲解：Part B 第七章 物联网：把前面所有招数用在海量设备上</a></div>
+</div>
+<div class="pastq" id="y2425s2-q4c">
+  <div class="pq-head"><span class="pq-paper">2024-25 S2</span><span class="pq-q">Q4(c)</span><span>9 分</span><span class="pq-hw"><a href="hw1.html">≡ HW1 Q1(b)</a></span></div>
+  <div class="pq-topic"><b>考点</b>：Erlang B：承载话务量 · 中继效率 · 用户数 · 换簇大小</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(c) For a cellular system, suppose you selected the cluster size of N<sub>c</sub> = 9, with a total number of available channels of 504. Assume that the average users place 2 calls of 15 minutes duration per hour for the given cellular system.</p>
+<p>(i) Determine the carrier load per cell and the trunking efficiency for a 2% Grade of Service (GOS)?</p>
+<p>(ii) Calculate the number of users that can be accommodated for this cell at that given GOS.</p>
+<p>(iii) Compute the carried load and trunking efficiency if the cluster size is changed to N<sub>c</sub>=7. Comment on your results.</p>
+<p class="marks">(9 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 每小区 M = 504/9 = 56 条。Erlang B（M = 56，2%）：A ≈ <b>45.9 E</b>（和讲义 p.44 AMPS 例题同一个数）。严格的承载话务量 = A(1 − P<sub>B</sub>) = 45.9 × 0.98 = 45.0 E。中继效率 = 45.9/56 ≈ <b>0.82</b>（用 45.0 算是 0.80）。"carrier load" 是 carried load 的笔误。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> A<sub>u</sub> = 2 × 15/60 = 0.5 E/用户：<div class="calc">U = 45.9/0.5 = 91.8 → 91 个用户</div>向下取整，多一个人就超过 2% 阻塞率。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> N = 7：M = 504/7 = 72，A ≈ 61.0 E，承载 61.0 × 0.98 = 59.8 E，中继效率 61.0/72 ≈ <b>0.85</b>，用户 122 人。<br><b>评论</b>：簇变小，每小区信道多了 29%，话务量却多了 33%，因为信道池越大集群效率越高；代价是同频小区离得更近，SIR 从 20.8 dB 降到 18.7 dB（n = 4），余量变小。</div></div><div class="wans">N = 9：45.9 E，η ≈ 0.82，91 人；N = 7：61.0 E，η ≈ 0.85，122 人</div></div></div></details>
+  <div class="pq-links"><a href="partA.html#ch8">→ 回到讲解：Part A 第八章 话务工程：用排队论算清楚"够不够用"</a></div>
+</div>
+
+    </section>
+    <section class="chapter" id="y2526s1">
+      <div class="chapter-head"><span class="chapter-num">2025-26 S1</span><h2>November / December 2025</h2></div>
+      <p class="pq-intro">Semester 1 Examination 2025-2026 · 3 小时 · 闭卷 · 4 题全做、每题 25 分 · 试卷 14 页（含附录）</p>
+      <div class="pastq" id="y2526s1-q1a">
+  <div class="pq-head"><span class="pq-paper">2025-26 S1</span><span class="pq-q">Q1(a)</span><span>12 分</span></div>
+  <div class="pq-topic"><b>考点</b>：二进制 AWGN：星座维数与距离 · 条件高斯分布 · 误码率 Q(2)</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>1. (a) A binary signal is transmitted over an Additive White Gaussian Noise (AWGN) channel, where the Gaussian noise has a zero mean and a variance of 0.25. The received signal can be expressed as, y = s + w, where s is a transmitted symbol which is equally likely to be +1 or −1, and w is the AWGN component. Note: The probability density function of a Gaussian random variable x with mean μ, variance σ<sup>2</sup> is,
+<span class="eq">p(x) = (1/√(2πσ<sup>2</sup>)) e<sup>−(x−μ)<sup>2</sup>/(2σ<sup>2</sup>)</sup></span></p>
+<p>(i) Sketch the signal constellation of s. Find the dimension of this constellation and the distance between the two possible signal vectors.</p>
+<p>(ii) y can be shown to be a random variable with a Gaussian distribution. Determine the expected values and variances of y when s = 1 and when s = −1. Hence, derive the corresponding probability density function of y.</p>
+<p>(iii) If the decision rule is, ŝ = +1 when y &gt; 0 and ŝ = −1 when y ≤ 0, determine the bit error probability of this system. Note: The Q-function of z is,
+<span class="eq">Q(z) = ∫<sub>z</sub><sup>+∞</sup> (1/√(2π)) e<sup>−x<sup>2</sup>/2</sup> dx</span></p>
+<p class="marks">(12 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 两个点 +1 和 −1 都在实轴上：<b>维数 = 1</b>，两点距离 = |1 − (−1)| = <b>2</b>。<div class="figwrap"><svg viewBox="0 0 400 110" role="img" aria-label="BPSK 星座图：一维实轴上两个点 −1 和 +1，相距 2">
+<line x1="30" y1="55" x2="370" y2="55" style="stroke:var(--ink)" stroke-width="1.4"/>
+<line x1="200" y1="45" x2="200" y2="65" style="stroke:var(--ink-faint)"/>
+<circle cx="110" cy="55" r="7" style="fill:var(--accent)"/><circle cx="290" cy="55" r="7" style="fill:var(--accent)"/>
+<text x="98" y="84" font-size="13" style="fill:var(--ink)">s = −1</text><text x="278" y="84" font-size="13" style="fill:var(--ink)">s = +1</text>
+<text x="194" y="84" font-size="12" style="fill:var(--ink-soft)">0</text>
+<line x1="110" y1="28" x2="290" y2="28" style="stroke:var(--gold)" stroke-width="1.4"/>
+<text x="176" y="22" font-size="12" style="fill:var(--gold)">距离 = 2</text>
+<text x="350" y="46" font-size="12" style="fill:var(--ink-soft)">实轴</text>
+</svg><div class="cap">两个信号点都在一条直线（实轴）上，所以星座是一维的。</div></div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> s 给定时 y = s + w 只是把零均值噪声平移了 s：<div class="calc">s = +1：E[y] = 1，Var[y] = 0.25；　s = −1：E[y] = −1，Var[y] = 0.25</div>（常数加随机变量，均值加上常数、方差不变，Ch1b 的性质。）条件概率密度：<div class="calc">p(y | s = ±1) = (1/√(0.5π)) e<sup>−(y ∓ 1)²/0.5</sup></div>两者等概，y 的（无条件）概率密度是两个高斯的平均：<div class="calc">p(y) = ½ · (1/√(0.5π)) [e<sup>−(y−1)²/0.5</sup> + e<sup>−(y+1)²/0.5</sup>]</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 发 +1、判成 −1 的条件是 y ≤ 0，即噪声 w ≤ −1。σ = 0.5：<div class="calc">P(y ≤ 0 | s = +1) = P(w ≤ −1) = Q(1/0.5) = Q(2) ≈ 0.0228</div>由对称性，发 −1 出错的概率也是 Q(2)，所以 <b>P<sub>b</sub> = Q(2) ≈ 0.023</b>。一般式：P<sub>b</sub> = Q(d/(2σ))，d = 2 是 (i) 求的距离。</div></div><div class="wans">(i) 1 维，距离 2　(ii) 均值 ±1，方差 0.25　(iii) P<sub>b</sub> = Q(2) ≈ 0.0228</div><div class="pq-note">注：这道题 (ii) 用到的高斯随机变量性质属于 Ch1b（概率复习），也是 Quiz 范围内的知识。</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch3">→ 回到讲解：Part 2 第三章 信号检测：从一堆带噪声的波形里认出符号</a></div>
+</div>
+<div class="pastq" id="y2526s1-q1b1">
+  <div class="pq-head"><span class="pq-paper">2025-26 S1</span><span class="pq-q">Q1(b)(i)</span><span>(b) 共 13 分</span></div>
+  <div class="pq-topic"><b>考点</b>：两支路 MRC：平均输入/输出 SNR · 由误码率求分集增益</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) Mobile radio systems operating with multiple antennas (or branches) at the transmitter and/or receiver can provide diversity in a fading environment.</p>
+<p>(i) Consider a system that uses a 2-branch receiver combining technique. The Signal to Noise Ratios (SNR) at the input of the receiver, γ<sub>1</sub> and γ<sub>2</sub>, have the following values and probability distributions.
+<span class="eq">γ<sub>i</sub> = 11 dB with a probability of 0.2;　12 dB with a probability of 0.5;　13 dB with a probability of 0.3;　i = 1,2</span>
+Determine the average receiver input SNR, the average receiver output SNR if the receiver uses the Maximal Ratio Combing (MRC) technique, and the diversity gain of this system at a probability of error of 2 × 10<sup>−4</sup>.</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext">dB 化线性：11 dB → 12.59，12 dB → 15.85，13 dB → 19.95。<div class="calc">γ̄ = 0.2 × 12.59 + 0.5 × 15.85 + 0.3 × 19.95 = 16.43 → 12.16 dB</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>MRC 输出 SNR = 各支路 SNR 之和</b>，所以平均值也相加：<div class="calc">γ̄<sub>Σ</sub> = 2 × 16.43 = 32.86 → 15.17 dB</div>阵列增益 g = γ̄<sub>Σ</sub>/γ̄ = 2（3 dB）。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>分集增益</b>（讲义 Ch4 p.27）：P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>，γ̄ 是<b>合并器输入</b>的平均 SNR：<div class="calc">d ≈ −log₁₀ P̄<sub>e</sub> / log₁₀ γ̄ = −log₁₀(2×10⁻⁴) / log₁₀(16.43) = 3.70/1.216 ≈ 3.0</div>Practice 4 Q2 的官方答案也是用输入 SNR 算 d（γ̄ = 10，P̄<sub>s</sub> = 7.6×10⁻⁹ → d = 8.1）。</div></div><div class="wans">输入 ≈ 16.4（12.2 dB）；MRC 输出 ≈ 32.9（15.2 dB）；d ≈ 3.0</div><div class="pq-note">注：d ≈ 3 比支路数 2 还大，因为讲义的 d 是用"高 SNR 近似"由单个误码率点反算的，不是严格的渐近斜率。考试按讲义公式算即可。</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch4">→ 回到讲解：Part 2 第四章 分集：别把鸡蛋放在一个篮子里</a></div>
+</div>
+<div class="pastq" id="y2526s1-q1b2">
+  <div class="pq-head"><span class="pq-paper">2025-26 S1</span><span class="pq-q">Q1(b)(ii)(iii)</span><span>(b) 共 13 分</span></div>
+  <div class="pq-topic"><b>考点</b>：SIMO 如何获得分集 · MIMO 容量 = 并行信道容量之和</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(ii) The input-output relationship of a MIMO system is given below,
+<span class="eq">y<sub>1</sub> = (h<sub>1</sub> × s) + v<sub>1</sub>;　y<sub>2</sub> = (h<sub>2</sub> × s) + v<sub>2</sub></span>
+where s is the transmitted symbol, h<sub>1</sub>, h<sub>2</sub> are the channel gains, v<sub>1</sub>, v<sub>2</sub> are the Additive White Gaussian Noise (AWGN), and y<sub>1</sub>, y<sub>2</sub> are the received signals. Explain why this can be a Single-Input Multiple-Output (SIMO) system. Using the input-output relationship, explain conceptually how such systems can achieve diversity.</p>
+<p>(iii) The channel capacity of a MIMO system can be simplified to,
+<span class="eq">B log<sub>2</sub> det{I + (1/σ<sup>2</sup>)Λ}</span>
+where B is the bandwidth, det{•} is the Determinant of {•}, I is the Identity matrix, σ<sup>2</sup> is the noise variance, and Λ is a diagonal matrix whose diagonal elements are some eigenvalues. Simplify this expression further and use it to explain that the channel capacity of a MIMO system is equal to the sum of the channel capacities of a set of parallel channels.</p>
+<p class="marks">(13 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(ii) 为什么是 SIMO</b>：只有一个发送符号 s（一根发射天线），却有两个接收信号 y₁、y₂（两根接收天线），各经过不同的信道增益 h₁、h₂ 和独立噪声，所以是单输入多输出（1 × 2）。<br><b>怎么得到分集</b>：同一个 s 经过两条（若天线间距足够则）独立衰落的路径到达。h₁ 深衰落时 h₂ 大概率不衰落，两条同时深衰落的概率是各自概率的乘积，小得多。接收端把两路合并，例如 MRC：z = h₁*y₁ + h₂*y₂ = (|h₁|² + |h₂|²)s + 噪声，有效增益是两路之和，分集阶数为 2。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(iii)</b> Λ 是对角阵 diag(λ₁, …, λ<sub>K</sub>)，所以 I + Λ/σ² 也是对角阵，行列式就是对角元素的乘积：<div class="calc">det{I + Λ/σ²} = Π<sub>i</sub>(1 + λ<sub>i</sub>/σ²)</div>对数把乘积变成求和：<div class="calc">C = B log₂ Π(1 + λ<sub>i</sub>/σ²) = Σ<sub>i=1</sub><sup>K</sup> B log₂(1 + λ<sub>i</sub>/σ²)</div>每一项正是一个 SNR 为 λ<sub>i</sub>/σ² 的 SISO 信道的香农容量。所以 MIMO 信道（经 SVD 分解后）等价于 K = rank(H) ≤ min(N, M) 个互不干扰的并行子信道，总容量是它们之和；这也是 MIMO 容量随 min(N, M) 线性增长的原因。</div></div><div class="wans">(ii) 1 发 2 收；两条独立衰落路径合并 → 分集阶数 2　(iii) C = Σ B log₂(1 + λ<sub>i</sub>/σ²)</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch5">→ 回到讲解：Part 2 第五章 MIMO：多根天线，既抗衰落又提速</a></div>
+</div>
+<div class="pastq" id="y2526s1-q2a">
+  <div class="pq-head"><span class="pq-paper">2025-26 S1</span><span class="pq-q">Q2(a)</span><span>13 分</span></div>
+  <div class="pq-topic"><b>考点</b>：ISI 信道长度 L · 不均衡直接判决的误码率 · 均衡器放大噪声</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>2. (a) A mobile radio system transmits message symbols, {m[n]} over an AWGN Inter-Symbol Interference (ISI) channel. The received signal can be expressed as,
+<span class="eq">r[n] = Σ<sub>i=1</sub><sup>L</sup> m[n − i + 1]h[i] + w(n)</span>
+where m[n] is equally likely to be +1 or −1, {w(n)} is a Gaussian random variable with zero mean and a variance of 0.36, and the ISI channel, {h[i]}, has a Z-transform of H(Z) = 1 + 0.3Z<sup>−1</sup>.</p>
+<p>(i) Determine the value of L in the expression for r[n] above.</p>
+<p>(ii) r[n] can be used as a decision variable to detect m[n]. Determine the average probability of error if the decision rule is m̂[n] = sgn[r[n]].</p>
+<p>(iii) The receiver uses an equalizer that has a Z-transform of C(Z) = 1 − c<sub>1</sub>Z<sup>−1</sup> + c<sub>2</sub>Z<sup>−2</sup>, where c<sub>1</sub> &gt; 0 and c<sub>2</sub> &gt; 0. Show that there is an increase in the noise variance at the equalizer output.</p>
+<p class="marks">(13 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> H(Z) = 1 + 0.3Z⁻¹ 有两项：h[1] = 1，h[2] = 0.3，所以 <b>L = 2</b>：r[n] = m[n] + 0.3m[n−1] + w(n)。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> σ = √0.36 = 0.6。发 m[n] = +1，干扰 0.3m[n−1] 等概为 ±0.3：<br>• m[n−1] = +1：均值 1.3 → 出错概率 Q(1.3/0.6) = Q(2.17) = 0.0151<br>• m[n−1] = −1：均值 0.7 → Q(0.7/0.6) = Q(1.17) = 0.1217<div class="calc">P<sub>e</sub> = ½(0.1217 + 0.0151) ≈ 0.068</div>对比没有 ISI 时 Q(1/0.6) = Q(1.67) ≈ 0.048，ISI 让误码率变差。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 噪声经过均衡器：w′(n) = w(n) − c₁w(n−1) + c₂w(n−2)。各个 w 独立、方差都是 σ²，独立变量之和的方差 = 方差之和（系数要平方）：<div class="calc">Var[w′] = σ²(1 + c₁² + c₂²) = 0.36(1 + c₁² + c₂²) &gt; 0.36</div>只要 c₁、c₂ 不全为 0，输出噪声方差就比输入大，这就是线性均衡器的"噪声增强"（讲义 Ch6 p.41）。</div></div><div class="wans">(i) L = 2　(ii) P<sub>e</sub> ≈ 0.068　(iii) σ′² = 0.36(1 + c₁² + c₂²) &gt; 0.36</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch6">→ 回到讲解：Part 2 第六章 均衡：把拖进下一个符号的回声抵消掉</a></div>
+</div>
+<div class="pastq" id="y2526s1-q2b">
+  <div class="pq-head"><span class="pq-paper">2025-26 S1</span><span class="pq-q">Q2(b)</span><span>12 分</span></div>
+  <div class="pq-topic"><b>考点</b>：平坦衰落所需最少子载波 · 有效速率 · 相关器输出 = s<sub>n</sub></div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) An 4-QAM OFDM system transmits data with an available bandwidth of 500 kHz. The coherence bandwidth and maximum delay spread of the channel have been measured to be 30 kHz and 10 microseconds (μs) respectively. Note: For this question, you may assume T = 1/B, where T is signal duration and B is the corresponding bandwidth.</p>
+<p>(i) Determine the minimum number of carriers the OFDM system should use for its signal to experience flat fading.</p>
+<p>(ii) If the OFDM system uses N = 50 carriers, determine the effective transmission bit rate of this system.</p>
+<p>(iii) The received OFDM signal can be expressed as,
+<span class="eq">r(t) = x(t) + w(t) = (1/√T<sub>OFDM</sub>) Σ<sub>k=0</sub><sup>N−1</sup> s<sub>k</sub>(t)e<sup>j2π(k/T<sub>OFDM</sub>)t</sup> + w(t)</span>
+where s<sub>k</sub>(t) is the transmitted signal with the k<sup>th</sup> carrier and w(t) is an Additive White Gaussian Noise. At the receiver, r(t) is passed through a set of correlators. Show that at the output of the n<sup>th</sup> correlator, the signal x(t) is simplified to s<sub>n</sub>(t).</p>
+<p class="marks">(12 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 每个子载波带宽 500/N 要小于相干带宽 30 kHz：<div class="calc">N &gt; 500/30 = 16.7 → N<sub>min</sub> = 17</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> N = 50：子载波带宽 10 kHz → 子载波符号时长 T = 1/10 kHz = 100 µs。为消除时延扩展的 ISI 要加保护间隔 T<sub>G</sub> ≥ 10 µs，块长 110 µs。每个 OFDM 块携带 50 × 2 = 100 bit（4-QAM 每符号 2 bit）：<div class="calc">R<sub>eff</sub> = 100 bit / 110 µs ≈ 909 kbit/s</div>不计保护间隔的原始速率是 100/100 µs = 1 Mbit/s；"effective" 指扣掉保护间隔后的速率。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 第 n 个相关器把 r(t) 乘以 (1/√T)e<sup>−j2πnt/T</sup> 再在一个符号期 T 内积分（T = T<sub>OFDM</sub>，s<sub>k</sub> 在符号期内为常数）：<div class="calc">(1/√T)∫₀<sup>T</sup> x(t)e<sup>−j2πnt/T</sup>dt = (1/T) Σ<sub>k</sub> s<sub>k</sub> ∫₀<sup>T</sup> e<sup>j2π(k−n)t/T</sup>dt</div>当 k = n，被积函数是 1，积分 = T；当 k ≠ n，积分的是整数个完整周期的复指数，结果为 0（子载波正交）：<div class="calc">∫₀<sup>T</sup> e<sup>j2π(k−n)t/T</sup>dt = T·δ[k − n] → 输出 = (1/T)·s<sub>n</sub>·T = s<sub>n</sub>(t)</div>噪声项另算，所以信号部分只剩 s<sub>n</sub>，其他子载波对它没有干扰。</div></div><div class="wans">(i) N ≥ 17　(ii) ≈ 909 kbit/s（不计保护间隔 1 Mbit/s）　(iii) 子载波正交 → 输出 s<sub>n</sub></div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch7">→ 回到讲解：Part 2 第七章 OFDM：把一条坑洼的宽路，改成很多条平整的窄路</a></div>
+</div>
+<div class="pastq" id="y2526s1-q3a">
+  <div class="pq-head"><span class="pq-paper">2025-26 S1</span><span class="pq-q">Q3(a)</span><span>12 分</span></div>
+  <div class="pq-topic"><b>考点</b>：小区数 · 总信道数（扣保护带）· 小区容量 · 频谱效率 channels/MHz/km²</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>3. (a) A metropolis city with a total area of 1500 km<sup>2</sup> is covered by a hexagonal cellular system with a cluster size of 9. Suppose that each cell has a radius R of 2 km and the cellular system is allocated 25 MHz of spectrum, with a full-duplex channel bandwidth of 30 kHz and a total 40 kHz guard bands. The system uses frequency division multiple access (FDMA) with 18 control channels. Determine:</p>
+<p>(i) the number of cells in the service area;</p>
+<p>(ii) the number of channels without frequency reuse;</p>
+<p>(iii) The cell capacity; and</p>
+<p>(iv) The system spectral efficiency in the units of channels/ MHz / km<sup>2</sup>.</p>
+<p class="marks">(12 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 小区面积 = (3√3/2) × 2² = 10.39 km²：<div class="calc">小区数 = 1500 / 10.39 = 144.3 → 约 145 个（向上取整才能覆盖全区）</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 扣掉保护带后可用 25 000 − 40 = 24 960 kHz：<div class="calc">信道数 = 24 960 / 30 = 832 条（全双工信道）</div>这就是不复用时整个系统能用的信道数。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii) 小区容量</b>：832 条里 18 条是控制信道，话务信道 814 条，分给簇内 9 个小区：<div class="calc">814 / 9 = 90.4 → 每小区 90 条话务信道</div>（若把控制信道也算进来是 832/9 ≈ 92 条。）</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iv) 频谱效率</b>（讲义 Part A p.40）η = (B<sub>w</sub>/B<sub>c</sub>)/(B<sub>w</sub>·A<sub>c</sub>·N) = 1/(B<sub>c</sub>·A<sub>c</sub>·N)：<div class="calc">η = 1/(0.03 MHz × 10.39 km² × 9) ≈ 0.356 channels/MHz/km²</div>也可以从定义直接算：系统总信道数 = (832/9) × 144.3 ≈ 13 340，除以 25 MHz × 1500 km²，同样约 0.356。</div></div><div class="wans">(i) ≈ 145 个小区　(ii) 832 条　(iii) 90 条话务信道/小区　(iv) ≈ 0.36 channels/MHz/km²</div></div></div></details>
+  <div class="pq-links"><a href="partA.html#ch4">→ 回到讲解：Part A 第四章 双工与频谱效率：怎么衡量"够不够用"</a></div>
+</div>
+<div class="pastq" id="y2526s1-q3b">
+  <div class="pq-head"><span class="pq-paper">2025-26 S1</span><span class="pq-q">Q3(b)</span><span>9 分</span></div>
+  <div class="pq-topic"><b>考点</b>：Erlang C（5% 延迟概率）· 每 km² 用户数 · 平均通话时长</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) A cellular system has a cluster size of 9. In the system, there are 1001 radio channels for traffic. The area of each cell is 4 km<sup>2</sup>. The entire service area of the system is 3500 km<sup>2</sup>. Given that the traffic load per user is 0.03 Erlangs and the average number of calls per hour per user is 1.5. For an Erlang C system with a blocking probability of 5%, determine the following:</p>
+<p>(i) The traffic load per cell;</p>
+<p>(ii) The number of users per km<sup>2</sup>; and</p>
+<p>(iii) The average call duration of a call.</p>
+<p class="marks">(9 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 每小区信道 = 1001/9 = 111.2 → 111 条。查 Erlang C 表（M = 111，延迟概率 5%）：<div class="calc">A ≈ 93.4 Erlang / 小区</div>（Erlang C 表在 100 条以上按 5 条一档，可在 110 与 115 之间线性插值，附录给了插值公式。）</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 每小区用户 = 93.4/0.03 ≈ 3114，每 km²：<div class="calc">3114 / 4 ≈ 779 用户/km²</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> A<sub>u</sub> = λ<sub>u</sub> × H → H = 0.03 / 1.5 = 0.02 小时 = <b>72 秒</b>。</div></div><div class="wans">(i) ≈ 93.4 E　(ii) ≈ 779 用户/km²　(iii) 72 s</div><div class="pq-note">注：3500 km² 这个条件在三小问里都用不到（可以用来算总小区数 875 个）。</div></div></div></details>
+  <div class="pq-links"><a href="partA.html#ch8">→ 回到讲解：Part A 第八章 话务工程：用排队论算清楚"够不够用"</a></div>
+</div>
+<div class="pastq" id="y2526s1-q3c">
+  <div class="pq-head"><span class="pq-paper">2025-26 S1</span><span class="pq-q">Q3(c)</span><span>4 分</span></div>
+  <div class="pq-topic"><b>考点</b>：固定信道分配 FCA 与动态信道分配 DCA</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(c) Briefly describe the concept of fixed and dynamic channel assignment for a cellular system.</p>
+<p class="marks">(4 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>固定信道分配（FCA）</b>（讲义 Part A p.92–94）：每个小区预先分配一组固定的信道，小区内的呼叫只能用本小区空闲的信道，用完就阻塞，哪怕邻区有空闲信道。可均匀分配（UFCA），也可按业务量不均匀分配。简单，但对业务量的变化适应性差。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>动态信道分配（DCA）</b>（p.95–96）：信道不永久分给小区；新呼叫到来时，任何基站都可以按某种算法使用任一信道，只要不违反同频干扰约束（同一信道不能在复用距离 D 以内重复使用）。算法依据未来阻塞预测、复用距离和其他代价函数。信道借用是一种 DCA。业务量大的小区可以用更多信道，灵活、阻塞率低，但需要集中控制和更多计算。</div></div><div class="wans">FCA：固定分组、简单但不灵活；DCA：按需分配、受复用距离约束、灵活但复杂</div></div></div></details>
+  <div class="pq-links"><a href="partA.html#ch7">→ 回到讲解：Part A 第七章 同频干扰与信道该怎么分配</a></div>
+</div>
+<div class="pastq" id="y2526s1-q4a">
+  <div class="pq-head"><span class="pq-paper">2025-26 S1</span><span class="pq-q">Q4(a)</span><span>8 分</span></div>
+  <div class="pq-topic"><b>考点</b>：接入 AP 的过程：扫描 → 认证 → 关联</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>4. (a) An Access Point (AP) is a portal of a Wireless Local Area Network (WLAN), which can be used to connect to the Internet. When a user tries to connect to an AP, there will be a connection establishment procedure. Describe the connection establishment process and explain the function of the authentication process.</p>
+<p class="marks">(8 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>① 获取同步信息（扫描）</b>（讲义 Part B p.31–32）：节点要加入已有的 BSS，先要从 AP 获得同步信息。两种方式：<b>被动扫描</b>，等待 AP 周期性广播的信标帧（Beacon）；<b>主动扫描</b>，发送探测请求帧（Probe Request），等待 AP 回复探测响应帧（Probe Response）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>② 认证（Authentication）</b>：找到 AP 后，节点和 AP 交换信息，<b>双方证明自己知道约定的密码</b>。作用：确认对方是合法用户/合法 AP，防止未授权设备接入网络。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>③ 关联（Association）</b>：认证通过后，交换节点和 BSS 的能力信息，并把节点当前的位置告诉分布式系统（DSS，所有 AP 的集合），以便数据能正确地送到这个节点。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext">只有关联完成后，节点才能收发数据帧。</div></div><div class="wans">扫描（被动/主动）→ 认证（互证密码，防止非法接入）→ 关联（交换能力、登记位置）→ 开始传数据</div></div></div></details>
+  <div class="pq-links"><a href="partB.html#ch3">→ 回到讲解：Part B 第三章 需要准时的时候：PCF、超帧、入网和帧格式</a></div>
+</div>
+<div class="pastq" id="y2526s1-q4bc">
+  <div class="pq-head"><span class="pq-paper">2025-26 S1</span><span class="pq-q">Q4(b)(c)</span><span>17 分</span></div>
+  <div class="pq-topic"><b>考点</b>：IoT 的五个难点 · 雾计算的关键特征</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) The Internet of Things (IoT) is the technique that connects all unconnected objects. Discuss five of the potential difficulties and briefly describe each of them in the context of the development of IoT.</p>
+<p class="marks">(10 Marks)</p>
+<p>(c) An outstanding technique that processes data generated by IoT sensors is fog computing. Discuss the key features of fog computing.</p>
+<p class="marks">(7 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(b) 五个难点</b>（讲义 Part B p.82–83）：<br>① <b>可扩展性（Scalability）</b>：设备数量可达数百万，系统如何支撑是关键；网络层可用 IPv6 分配海量地址。<br>② <b>安全（Security）</b>：联网"物"越多，攻击面越大；一个设备被攻破后可以成为攻击其他设备和系统的跳板。<br>③ <b>隐私（Privacy）</b>：传感器收集的大量数据与具体个人及其活动相关，可能包含敏感信息和凭证，如何保护、与谁共享是关键问题。<br>④ <b>大数据与分析（Big data and analytics）</b>：海量传感器产生的数据洪流，要及时处理来自不同来源、不同格式的大量数据才能得到有价值的信息。<br>⑤ <b>互操作性（Interoperability）</b>：各种协议和架构争夺市场和标准，有的私有、有的开放，导致不同设备/网络难以互通。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(c) 雾计算的关键特征</b>（讲义 p.109）：<br>• <b>上下文位置感知与低时延</b>：雾节点尽可能靠近 IoT 终端，就近做分布式计算；<br>• <b>地理分布</b>：雾节点服务的业务需要广泛分布式部署；<br>• <b>部署在大量 IoT 终端附近</b>；<br>• <b>雾节点与终端之间用无线通信</b>，便于连接大量终端、实现可扩展；<br>• <b>用于实时交互</b>：在雾节点预处理数据，上层应用只需批处理数据子集。<br>好处：降低时延、减轻核心网流量、敏感数据留在本地、提供分布式边缘控制回路、减少需要上传的数据量。</div></div><div class="wans">(b) 可扩展性、安全、隐私、大数据分析、互操作性　(c) 低时延/位置感知、地理分布、靠近终端、无线接入、实时交互</div></div></div></details>
+  <div class="pq-links"><a href="partB.html#ch7">→ 回到讲解：Part B 第七章 物联网：把前面所有招数用在海量设备上</a></div>
+</div>
+
+    </section>
+    <section class="chapter" id="y2526s2">
+      <div class="chapter-head"><span class="chapter-num">2025-26 S2</span><h2>April / May 2026</h2></div>
+      <p class="pq-intro">Semester 2 Examination 2025-2026 · 3 小时 · 闭卷 · 4 题全做、每题 25 分 · 试卷 11 页（含附录）</p>
+      <div class="pastq" id="y2526s2-q1a">
+  <div class="pq-head"><span class="pq-paper">2025-26 S2</span><span class="pq-q">Q1(a)</span><span>12 分</span><span class="pq-quiz">Quiz 范围</span></div>
+  <div class="pq-topic"><b>考点</b>：用 B<sub>c</sub>、B<sub>D</sub>、B<sub>s</sub> 判衰落类型 · LCR 与连续误符号 · 衰落余量</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>1. (a) (i) Explain how coherence bandwidth, doppler spread, and signal bandwidth can be used to determine the type of fading the signal is experiencing.</p>
+<p>(ii) A wireless system transmits a signal over a fading channel. The signal has a symbol duration of 5 ms and the average fade duration has been estimated to be 20 ms. For a period of 10 seconds, deep fades have been observed to have occurred 40 times. Assume that whenever a deep fade occurs, the affected symbol will be in error. Determine the Level Crossing Rate and the average number of consecutive symbol errors per second.</p>
+<p>(iii) For an outage probability of ε, the channel capacity of a Rayleigh fading channel can be expressed as,
+<span class="eq">C<sub>ε</sub> = B × log<sub>2</sub>[1 + γ̄<sub>R</sub> ln(1/(1 − ε))]</span>
+where B is the signal bandwidth and γ̄<sub>R</sub> = 25dB is the average signal to noise ratio (SNR). If ε = 0.005, determine the minimum SNR and the Fade Margin compared to transmission over an Additive White Gaussian (AWGN) channel.</p>
+<p class="marks">(12 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 讲义 Ch2 p.39 的图，两组比较：<br>• <b>信号带宽 B<sub>s</sub> vs 相干带宽 B<sub>c</sub></b>（多径时延扩展引起）：B<sub>s</sub> &lt; B<sub>c</sub> → <b>平坦衰落</b>，整个信号带宽内衰落相关、频谱失真小；B<sub>s</sub> &gt; B<sub>c</sub> → <b>频率选择性衰落</b>，不同频率衰落不同，时域上产生 ISI。<br>• <b>信号带宽 B<sub>s</sub> vs 多普勒扩展 B<sub>D</sub></b>（移动引起）：B<sub>s</sub> ≫ B<sub>D</sub>（等价于符号时长 ≪ 相干时间 T<sub>c</sub> ≈ 1/B<sub>D</sub>）→ <b>慢衰落</b>，一个符号内信道几乎不变；B<sub>s</sub> 与 B<sub>D</sub> 相当或更小 → <b>快衰落</b>，符号内幅度相位就在变。<br>两组判断组合成四类：平坦慢、平坦快、频选慢、频选快。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> LCR = 每秒穿越门限（进入深衰落）的次数：<div class="calc">LCR = 40 次 / 10 s = 4 次/秒</div>每次深衰落平均持续 20 ms，覆盖 20/5 = 4 个符号，即每次产生约 4 个<b>连续</b>错符号：<div class="calc">每秒误符号数 = 4 次/秒 × 4 个/次 = 16 个/秒</div>（错误成串出现，每秒 4 串、每串 4 个。）</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> γ̄<sub>R</sub> = 25 dB = 316.2。达到 C<sub>ε</sub> 所需的最小（即和 AWGN 等效的）SNR：<div class="calc">γ<sub>min</sub> = γ̄<sub>R</sub> ln(1/(1−ε)) = 316.2 × ln(1/0.995) = 316.2 × 0.005013 = 1.585 → 2.0 dB</div>衰落余量 = 平均 SNR − 等效 AWGN SNR：<div class="calc">FM = 25 − 2.0 = 23.0 dB（= 10 log₁₀[1/0.005013]）</div></div></div><div class="wans">(ii) LCR = 4 /s；每秒约 16 个错符号（每次衰落 4 个连续错误）　(iii) γ<sub>min</sub> ≈ 2.0 dB，FM ≈ 23 dB</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch2">→ 回到讲解：Part 2 第二章 无线信道：信号在路上会遇到三种麻烦</a></div>
+</div>
+<div class="pastq" id="y2526s2-q1b1">
+  <div class="pq-head"><span class="pq-paper">2025-26 S2</span><span class="pq-q">Q1(b)(i)</span><span>(b) 共 13 分</span></div>
+  <div class="pq-topic"><b>考点</b>：由输入/输出 SNR 求阵列增益 · 由分集增益求误码率</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) (i) Consider a receiver diversity combining technique. If the average input Signal-to-Noise Ratio (SNR) is 12dB, the average combiner output SNR is 15dB, and the diversity gain is 3.7, determine the gain array and the probability of error.</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>阵列增益</b>（题中的 "gain array"）g = γ̄<sub>Σ</sub>/γ̄（讲义 Ch4 p.27）：<div class="calc">g = 15 − 12 = 3 dB → 10<sup>0.3</sup> ≈ 2</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>误码率</b>：P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>，γ̄ 用合并器<b>输入</b>平均 SNR，12 dB = 15.85：<div class="calc">P̄<sub>e</sub> ≈ 15.85<sup>−3.7</sup> = 10<sup>−1.2×3.7</sup> = 10<sup>−4.44</sup> ≈ 3.6×10⁻⁵</div></div></div><div class="wans">阵列增益 ≈ 2（3 dB）；P̄<sub>e</sub> ≈ 3.6×10⁻⁵</div><div class="pq-note">注：如果误用输出 SNR（15 dB）代入，会得到 2.8×10⁻⁶。讲义和 Practice 4 的官方答案都用输入 SNR。</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch4">→ 回到讲解：Part 2 第四章 分集：别把鸡蛋放在一个篮子里</a></div>
+</div>
+<div class="pastq" id="y2526s2-q1b2">
+  <div class="pq-head"><span class="pq-paper">2025-26 S2</span><span class="pq-q">Q1(b)(ii)(iii)</span><span>(b) 共 13 分</span></div>
+  <div class="pq-topic"><b>考点</b>：平坦衰落 MIMO 的 y = Hx + v · 2×1 Alamouti 检测信号的均值与方差</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(ii) A MIMO system uses 4 transmitter antennas and 6 receiver antennas and operates in a flat fading channel. Denote x, y, v and H as the transmitted signal vector, received signal vector, channel noise vector and the channel matrix, respectively. Explain why there is only channel gain for each channel. Express the input-output relationship of the MIMO system with an equation and the channel matrix as a function of the channel gains {h<sub>i,j</sub>}, where h<sub>ij</sub> is the channel gain between the j<sup>th</sup> transmitter antenna and the i<sup>th</sup> receiver antenna.</p>
+<p>(iii) In a 2 × 1 MIMO system, the detected signal vector can be expressed as,
+<span class="eq">ŝ = s + (1/‖h‖<sup>2</sup>) Gw</span>
+where s is the transmitted signal vector, h is the channel gain vector, G is a suitable matrix, and w is a Gaussian noise vector with zero mean. Given that, the variance of Gw is,
+<span class="eq">σ<sup>2</sup>‖h‖<sup>2</sup> (1 ; 1)</span>
+Derive the expected value and variance of the detected signal.</p>
+<p class="marks">(13 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(ii) 为什么每条信道只有一个增益</b>：平坦衰落意味着信号带宽小于相干带宽（时延扩展远小于符号时长），每对发收天线之间的多径在一个符号内叠加成<b>一个复数增益 h<sub>ij</sub></b>，没有可分辨的多个抽头，也就没有 ISI。<br><b>输入输出关系</b>：<div class="calc">y = Hx + v，y、v 为 6×1，x 为 4×1，H 为 6×4</div><div class="calc">H = [h<sub>ij</sub>]，i = 1…6（行，接收天线），j = 1…4（列，发射天线）</div>逐个写：y<sub>i</sub> = Σ<sub>j=1</sub><sup>4</sup> h<sub>ij</sub>x<sub>j</sub> + v<sub>i</sub>，每根接收天线收到 4 根发射天线信号的加权和。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(iii) 均值</b>：s 是确定的发送信号，噪声零均值：<div class="calc">E[ŝ] = s + (1/‖h‖²)·G·E[w] = s</div>检测是<b>无偏</b>的。<br><b>方差</b>：常数 s 不贡献方差；随机项乘了常数 1/‖h‖²，方差乘 1/‖h‖⁴：<div class="calc">Var[ŝ] = (1/‖h‖⁴)·σ²‖h‖²·(1, 1)<sup>T</sup> = (σ²/‖h‖²)·(1, 1)<sup>T</sup></div>两个符号的噪声方差都是 σ²/‖h‖² = σ²/(|h₁|² + |h₂|²)：两条路径的增益相加，噪声就被压低，这就是 Alamouti 的分集作用。</div></div><div class="wans">(ii) y = Hx + v，H 为 6×4 的 [h<sub>ij</sub>]　(iii) E[ŝ] = s；Var = σ²/‖h‖²（每个分量）</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch5">→ 回到讲解：Part 2 第五章 MIMO：多根天线，既抗衰落又提速</a></div>
+</div>
+<div class="pastq" id="y2526s2-q2a">
+  <div class="pq-head"><span class="pq-paper">2025-26 S2</span><span class="pq-q">Q2(a)</span><span>12 分</span></div>
+  <div class="pq-topic"><b>考点</b>：ISI 离散模型 · Nyquist 无 ISI 准则 · 均衡器输出噪声功率 · 残余 ISI 误码率</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>2. (a) A system transmits message symbols, {m[n]}, over an Additive White Gaussian Noise (AWGN) Inter-Symbol Interference (ISI) channel. The symbol m[n] is equally likely to be +1 or −1, the Gaussian noise, w(n), is a random variable with zero mean and a variance of 0.25, the channel impulse response is denoted as {h[i]}, i = 1, 2, …, L.</p>
+<p>(i) Express the received signal, r[n], as a discrete time function of {m[n]}, {w[n]}, and {h[i]}. Explain the Nyquist ISI criterion.</p>
+<p>(ii) The receiver uses a linear equalizer to reduce the ISI effect. The equalizer is designed with tap coefficients, {c<sub>j</sub>}, j = 1,2, …, M, where Σ<sub>j=1</sub><sup>M</sup> c<sub>j</sub><sup>2</sup> = 2.56. Determine the noise power at the equalizer output.</p>
+<p>(iii) The equalizer output can be derived to be,
+<span class="eq">y[n] = m(n) + 0.2m(n − 1) + w′(n)</span>
+where w′(n) is the noise at the equalizer output. Using the decision rule of m̂(n) = sgn[y(n)], determine the average probability of error of this system.</p>
+<p class="marks">(12 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b><div class="calc">r[n] = Σ<sub>i=1</sub><sup>L</sup> h[i] m[n − i + 1] + w[n]</div><b>Nyquist 准则</b>（讲义 Ch6 p.12）：采样后 y(nT) = m[n]g<sub>e</sub>(0) + Σ<sub>i≠n</sub> m[i]g<sub>e</sub>(nT − iT) + w(nT)，中间那一项就是 ISI。若等效脉冲在采样时刻满足 g<sub>e</sub>(nT − iT) = 1（n = i）、0（n ≠ i），即每个脉冲在别的符号的采样点上都恰好为零，则传输<b>无 ISI</b>。对上式就是 h[1] = 1、其余 h[i] = 0。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 输出噪声 w′ = Σ c<sub>j</sub>w[n − j + 1]，各 w 独立同方差：<div class="calc">σ′² = σ² Σ c<sub>j</sub>² = 0.25 × 2.56 = 0.64</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> σ′ = 0.8。发 m(n) = +1，0.2m(n−1) 等概为 ±0.2：<br>• +0.2：均值 1.2 → Q(1.2/0.8) = Q(1.5) = 0.0668<br>• −0.2：均值 0.8 → Q(0.8/0.8) = Q(1) = 0.1587<div class="calc">P<sub>e</sub> = ½(0.1587 + 0.0668) ≈ 0.113</div></div></div><div class="wans">(ii) 0.64　(iii) P<sub>e</sub> ≈ 0.113</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch6">→ 回到讲解：Part 2 第六章 均衡：把拖进下一个符号的回声抵消掉</a></div>
+</div>
+<div class="pastq" id="y2526s2-q2b">
+  <div class="pq-head"><span class="pq-paper">2025-26 S2</span><span class="pq-q">Q2(b)</span><span>13 分</span></div>
+  <div class="pq-topic"><b>考点</b>：4 子载波的信道增益 · OFDM 即 IDFT · 循环前缀与功率损失</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) An OFDM system uses 4 sub-carriers to transmit a baseband signal that has a symbol duration of 2 μs. The fading channel has a Z-transform of 1 + 0.3Z<sup>−1</sup>. The baseband signal can be organized into N signals {s<sub>k</sub>(t)} to form the transmitted OFDM signal,
+<span class="eq">x(t) = (1/√T) Σ<sub>k=0</sub><sup>N−1</sup> s<sub>k</sub>(t)e<sup>j2π(k/T)t</sup>,　nT ≤ t ≤ (n + 1)T</span></p>
+<p>(i) Determine the channel gain coefficients of the OFDM system.</p>
+<p>(ii) Explain why the transformation of the signal, {s<sub>k</sub>(t)}, into the OFDM signal, x(t), can be viewed as an inverse Discrete Fourier transform process.</p>
+<p>(iii) If the OFDM system uses a cyclic prefix of 20 μs, determine the OFDM symbol duration and the power loss due to the addition of the cyclic prefix.</p>
+<p class="marks">(13 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> h = {1, 0.3}，N = 4，H<sub>k</sub> = 1 + 0.3e<sup>−j2πk/4</sup>：<div class="calc">H₁ = 1 − 0.3j；H₂ = 0.7；H₃ = 1 + 0.3j；H₄ (= H₀) = 1.3</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 在一个块内按 t = iT/N（i = 0…N−1）采样（讲义 Ch7 p.19）：<div class="calc">x<sub>i</sub> = (1/√T) Σ<sub>k=0</sub><sup>N−1</sup> s<sub>k</sub> e<sup>j2πki/N</sup></div>这正是 N 点 IDFT 的形式（只差一个常数比例）：频域的 N 个符号 {s<sub>k</sub>} 被变换成时域的 N 个采样。所以发射端可以用 IFFT 实现，接收端用 FFT 解调，不需要 N 个独立的振荡器。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 4 个基带符号并行，每个 OFDM 块长 NT<sub>s</sub> = 4 × 2 = 8 µs；加 20 µs 循环前缀：<div class="calc">T<sub>OFDM</sub> = 8 + 20 = 28 µs</div><div class="calc">功率损失 = 10 log₁₀(28/8) ≈ 5.44 dB</div>CP 比数据部分还长，损失很大。实际设计会增加 N，让 NT<sub>s</sub> 远大于 CP。</div></div><div class="wans">(i) {1−0.3j, 0.7, 1+0.3j, 1.3}　(iii) 28 µs，≈ 5.44 dB</div></div></div></details>
+  <div class="pq-links"><a href="p2-learn.html#ch7">→ 回到讲解：Part 2 第七章 OFDM：把一条坑洼的宽路，改成很多条平整的窄路</a></div>
+</div>
+<div class="pastq" id="y2526s2-q3a">
+  <div class="pq-head"><span class="pq-paper">2025-26 S2</span><span class="pq-q">Q3(a)</span><span>6 分</span></div>
+  <div class="pq-topic"><b>考点</b>：每小区信道 · 簇面积 · 簇复制次数 · 系统容量</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>3. (a) A new operator B is designing the cellular network for a city in South China which has a total of 1071 radio channels available for handling the traffic. Suppose the area of each cell is 6 km<sup>2</sup> and the total area of the entire system is 2100 km<sup>2</sup>. Let the cluster size of the design be 7. Determine the following results.</p>
+<p>(i) Number of channels per cell and the total coverage area of each cluster.</p>
+<p>(ii) Number of times to replicate this cluster to cover the entire system.</p>
+<p>(iii) System capacity for this network.</p>
+<p class="marks">(6 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 每小区 1071/7 = <b>153</b> 条；每簇面积 7 × 6 = <b>42 km²</b>。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 复制次数 = 2100/42 = <b>50</b> 次（共 350 个小区）。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 系统容量 = 每簇信道 × 复制次数 = 1071 × 50 = <b>53 550</b> 条信道（也等于 153 × 350）。同一组 1071 条信道被重复用了 50 次，这就是频率复用带来的容量。</div></div><div class="wans">153 条/小区，42 km²/簇；复制 50 次；系统容量 53 550 条信道</div></div></div></details>
+  <div class="pq-links"><a href="partA.html#ch6">→ 回到讲解：Part A 第六章 频率复用：把六边形的秘密用起来</a></div>
+</div>
+<div class="pastq" id="y2526s2-q3bc">
+  <div class="pq-head"><span class="pq-paper">2025-26 S2</span><span class="pq-q">Q3(b)(c)</span><span>19 分</span></div>
+  <div class="pq-topic"><b>考点</b>：Erlang C（5% 延迟）· 每 km² 用户 · 平均通话时长 · M/M/m 状态转移图与 P<sub>k</sub></div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) For the cluster size of 7 in the cellular network in Part 3(a), the operator obtained the survey results that it has traffic load per user of 0.03 Erlangs and an average number of 1.2 calls per hour per user for an Erlang C system, with a probability of delaying a call being 5%. Determine the following results.</p>
+<p>(i) Traffic load per cell.</p>
+<p>(ii) The number of users per km<sup>2</sup> that can be supported by the cellular system.</p>
+<p>(iii) The mean duration of a call in seconds.</p>
+<p class="marks">(8 Marks)</p>
+<p>(c) The traffic performance of cellular network can be modeled using a simple Markovian queueing model such as M/M/m with m servers representing each channel in the cell.</p>
+<p>(i) Draw the state transition diagram for the M/M/m model with the various arrival rates λ<sub>k</sub> and service rates μ<sub>k</sub> given by the following recursive equations,
+<span class="eq">λ<sub>k</sub> = λ for k = 0, 1, 2, …;　μ<sub>k</sub> = kμ for k = 1, 2, … m−1;　μ<sub>k</sub> = mμ for k = m, m+1, m+2, …</span>
+<span class="eq">k μ P<sub>k</sub> = λ P<sub>k−1</sub> for k ≤ m;　m μ P<sub>k</sub> = λ P<sub>k</sub> for k ≥ m</span>
+where P<sub>k</sub> represents the state probability of the system state being at k and system utilization ρ = λ/μ.</p>
+<p>(ii) Derive the probability P<sub>k</sub> in terms of m, ρ, and the probability of state zero P<sub>0</sub> for the two cases where k ≤ m and k ≥ m, respectively.</p>
+<p class="marks">(11 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(b)(i)</b> 每小区 153 条，查 Erlang C 表（延迟概率 5%）：<div class="calc">A ≈ 132.2 Erlang / 小区</div>（表在 150 与 155 之间线性插值，附录给了插值公式。）</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(b)(ii)</b> 每小区用户 = 132.2/0.03 ≈ 4408，小区面积 6 km²：<div class="calc">4408/6 ≈ 735 用户/km²</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(b)(iii)</b> H = A<sub>u</sub>/λ<sub>u</sub> = 0.03/1.2 小时 = 0.025 h = <b>90 s</b>。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(c)(i) 状态转移图</b>：状态 k = 系统中的呼叫数。向右（k → k+1）的速率都是 λ；向左（k → k−1）的速率是 kμ（k ≤ m，k 条信道都在服务），k ≥ m 后封顶为 mμ（只有 m 条信道，其余在排队）。<div class="figwrap"><svg viewBox="0 0 560 150" role="img" aria-label="M/M/m 状态转移图：状态 0 到 m+1，向右的箭头都是 λ，向左的箭头依次是 μ、2μ、…、mμ，状态 m 以后都是 mμ">
+<defs><marker id="mmm-ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" style="fill:var(--ink)"/></marker></defs>
+<g style="stroke:var(--accent);fill:var(--accent-soft)" stroke-width="1.6">
+<circle cx="40" cy="75" r="22"/><circle cx="130" cy="75" r="22"/><circle cx="220" cy="75" r="22"/><circle cx="340" cy="75" r="22"/><circle cx="430" cy="75" r="22"/><circle cx="520" cy="75" r="22"/></g>
+<g font-size="13" text-anchor="middle" style="fill:var(--ink)"><text x="40" y="80">0</text><text x="130" y="80">1</text><text x="220" y="80">2</text><text x="340" y="80">m−1</text><text x="430" y="80">m</text><text x="520" y="80">m+1</text><text x="280" y="80">⋯</text></g>
+<g style="stroke:var(--ink);fill:none" stroke-width="1.3" marker-end="url(#mmm-ar)">
+<path d="M58 62 Q85 40 112 62"/><path d="M148 62 Q175 40 202 62"/><path d="M358 62 Q385 40 412 62"/><path d="M448 62 Q475 40 502 62"/>
+<path d="M112 88 Q85 110 58 88"/><path d="M202 88 Q175 110 148 88"/><path d="M412 88 Q385 110 358 88"/><path d="M502 88 Q475 110 448 88"/></g>
+<g font-size="12" text-anchor="middle" style="fill:var(--ink)"><text x="85" y="38">λ</text><text x="175" y="38">λ</text><text x="385" y="38">λ</text><text x="475" y="38">λ</text>
+<text x="85" y="124">μ</text><text x="175" y="124">2μ</text><text x="385" y="124">mμ</text><text x="475" y="124">mμ</text></g>
+<text x="280" y="145" font-size="11" text-anchor="middle" style="fill:var(--ink-soft)">到达率恒为 λ；服务率 = 忙着的信道数 × μ，最多 mμ</text>
+</svg><div class="cap">M/M/m 的生灭过程。状态 k = 系统里的呼叫数（含排队）。</div></div></div></div><div class="wstep"><div class="wn">5</div><div class="wtext"><b>(c)(ii) k ≤ m</b>：由 kμP<sub>k</sub> = λP<sub>k−1</sub> 得 P<sub>k</sub> = (ρ/k)P<sub>k−1</sub>，一路递推到 P₀：<div class="calc">P<sub>k</sub> = P₀ · ρ<sup>k</sup>/k!，　k ≤ m</div><b>k ≥ m</b>：mμP<sub>k</sub> = λP<sub>k−1</sub>（题中写成 λP<sub>k</sub> 是笔误，讲义 p.106 是 P<sub>k−1</sub>），即 P<sub>k</sub> = (ρ/m)P<sub>k−1</sub>，从 P<sub>m</sub> = P₀ρ<sup>m</sup>/m! 出发再乘 (k − m) 次 ρ/m：<div class="calc">P<sub>k</sub> = P₀ · ρ<sup>k</sup>/(m! · m<sup>k−m</sup>)，　k ≥ m</div>两式在 k = m 处一致。P₀ 由 ΣP<sub>k</sub> = 1 求出（要求 ρ/m &lt; 1），再由此得到 Erlang C 公式。</div></div><div class="wans">(b) ≈ 132.2 E/小区；≈ 735 用户/km²；90 s　(c) P<sub>k</sub> = P₀ρ<sup>k</sup>/k!（k ≤ m），P₀ρ<sup>k</sup>/(m!m<sup>k−m</sup>)（k ≥ m）</div></div></div></details>
+  <div class="pq-links"><a href="partA.html#ch8">→ 回到讲解：Part A 第八章 话务工程：用排队论算清楚"够不够用"</a></div>
+</div>
+<div class="pastq" id="y2526s2-q4a">
+  <div class="pq-head"><span class="pq-paper">2025-26 S2</span><span class="pq-q">Q4(a)</span><span>4 分</span></div>
+  <div class="pq-topic"><b>考点</b>：硬切换与软切换及各自使用的系统</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>4. (a) For terrestrial cellular systems there are two types of handovers. Describe the basic mechanisms of these two handovers and identify the types of cellular systems that deploy each of these two handovers respectively.</p>
+<p class="marks">(4 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>硬切换（break before make，先断后连）</b>（讲义 Part A p.154）：先释放与旧基站的信道，再建立与新基站的信道。实现简单，但有短暂中断，可能掉话。用于 <b>FDMA/TDMA 系统</b>，如 GSM、IS-136（以及 AMPS）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>软切换（make before break，先连后断）</b>（p.155）：先和新基站建立信道，新旧两条同时使用，确认后再断开旧的。边界处有分集增益，通话不中断。用于 <b>CDMA 系统</b>，如 IS-95、WCDMA、cdma2000。</div></div><div class="wans">硬切换：先断后连，GSM/IS-136；软切换：先连后断，IS-95/WCDMA/cdma2000</div></div></div></details>
+  <div class="pq-links"><a href="partA.html#ch10">→ 回到讲解：Part A 第十章 切换与功率控制：让你在移动中感觉不到任何变化</a></div>
+</div>
+<div class="pastq" id="y2526s2-q4b">
+  <div class="pq-head"><span class="pq-paper">2025-26 S2</span><span class="pq-q">Q4(b)</span><span>8 分</span></div>
+  <div class="pq-topic"><b>考点</b>：MEO/LEO 卫星系统的四种切换</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) In a satellite system with Medium Earth Orbit (MEO) or Low Earth Orbit (LEO) satellites, there could also be handovers in the system if the satellite acts as a base station. Briefly describe the 4 different types of handovers that can occur in this type of satellite system.</p>
+<p class="marks">(8 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>星内切换（Intra-satellite）</b>（讲义 Part C p.40）：用户在同一颗卫星的覆盖区内，从一个扇区（点波束）移到另一个扇区。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>星间切换（Inter-satellite）</b>：用户从一颗卫星的覆盖区移到另一颗卫星的覆盖区，或者卫星自己飞走了。LEO 卫星每次只可见 15–20 分钟，这种切换很频繁。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>网关切换（Gateway）</b>：卫星移动后离开了当前连接的地面网关，需要换一个网关。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>系统间切换（Inter-system）</b>：卫星系统和地面蜂窝系统之间，根据信号强度和 QoS 进行的<b>垂直切换</b>。</div></div><div class="wans">星内、星间、网关、系统间（垂直）切换</div></div></div></details>
+  <div class="pq-links"><a href="partC.html#ch6">→ 回到讲解：Part C 第六章 卫星网络：数据怎么路由，用户怎么切换</a></div>
+</div>
+<div class="pastq" id="y2526s2-q4c">
+  <div class="pq-head"><span class="pq-paper">2025-26 S2</span><span class="pq-q">Q4(c)</span><span>5 分</span></div>
+  <div class="pq-topic"><b>考点</b>：传感器网络的通信架构：节点多跳 → sink → 任务管理节点</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(c) A sensor network is composed of many sensor nodes which are densely distributed to sense the environment. Briefly describe the communication architecture in the sensor networks to support the network operations. Describe briefly the communication architecture and show how the sensor nodes can relay the information back to the manager of the sensor network.</p>
+<p class="marks">(5 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>架构</b>（讲义 Part B p.56–57）：传感器节点散布在传感区域里，每个节点都能采集数据并把数据路由回<b>汇聚节点（sink）</b>。数据以<b>多跳、无基础设施</b>的方式，一个节点接一个节点地转发到 sink；sink 再经<b>互联网或卫星</b>与<b>任务管理节点（task manager）</b>通信，管理者在那里获取数据、下发任务。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>设计影响因素</b>：可靠性、可扩展性、生产成本、工作环境、网络拓扑、硬件约束、传输介质和功耗。协议栈分为物理层、数据链路层、网络层、传输层、应用层，外加功耗管理、移动性管理、任务管理三个平面（p.59）。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>示意</b>：传感器 A → 传感器 B → 传感器 C → … → Sink → Internet/卫星 → 任务管理节点（用户）。</div></div><div class="wans">传感器节点多跳转发 → Sink → Internet/卫星 → Task manager</div></div></div></details>
+  <div class="pq-links"><a href="partB.html#ch5">→ 回到讲解：Part B 第五章 把节点缩到极限：无线传感器网络</a></div>
+</div>
+<div class="pastq" id="y2526s2-q4d">
+  <div class="pq-head"><span class="pq-paper">2025-26 S2</span><span class="pq-q">Q4(d)</span><span>8 分</span></div>
+  <div class="pq-topic"><b>考点</b>：IoT 通信网络层的四个子层（同 2024-25 Q4(b)）</div>
+  <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(d) In the core Internet of Things (IoT) functional stack, the communication network layer is structured with four sublayers. Describe the features of each of the sublayers.</p>
+<p class="marks">(8 Marks)</p></div></details>
+  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext">和 2024-25 Q4(b) 是同一道题，答案见那里。四个子层：接入网（最后一公里无线接入：802.11ah、802.15.4g、LoRa）、网关与回传（汇聚后用长距离介质送往中心）、网络传输（IP + UDP/TCP，开放标准、可扩展、安全）、IoT 网络管理（HTTP、WebSocket 等应用协议，负责物体与头端应用的数据交换）。</div></div><div class="wans">Access network / Gateways &amp; backhaul / Network transport / IoT network management</div></div></div></details>
+  <div class="pq-links"><a href="partB.html#ch7">→ 回到讲解：Part B 第七章 物联网：把前面所有招数用在海量设备上</a><a href="#y2425s2-q4b">→ 同一道题：2024-25 S2 Q4(b)</a></div>
+</div>
+
+    </section>
+  </main>
+</div>
+<script>
+const chapters = [...document.querySelectorAll('.chapter')].map(el=>({
+  id: el.id,
+  title: el.querySelector('.chapter-head h2')?.textContent || el.id,
+  num: el.querySelector('.chapter-num')?.textContent || ''
+}));
+
+const railList = document.getElementById('railList');
+railList.innerHTML = chapters.map(c=>`<li><a href="#${c.id}" data-id="${c.id}">${c.num} ${c.title}</a></li>`).join('');
+
+const mobNav = document.getElementById('mobNav');
+mobNav.innerHTML = chapters.map(c=>`<option value="${c.id}">${c.num} · ${c.title}</option>`).join('');
+mobNav.addEventListener('change', ()=>{
+  document.getElementById(mobNav.value)?.scrollIntoView({behavior:'smooth', block:'start'});
+});
+
+const railLinks = [...railList.querySelectorAll('a')];
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    const link = railLinks.find(a=>a.dataset.id===entry.target.id);
+    if(!link) return;
+    if(entry.isIntersecting){
+      railLinks.forEach(a=>a.classList.remove('active'));
+      link.classList.add('active');
+      mobNav.value = entry.target.id;
+    }
+  });
+}, {rootMargin:'-10% 0px -70% 0px', threshold:0});
+chapters.forEach(c=>{ const el=document.getElementById(c.id); if(el) observer.observe(el); });
+</script>
+</body>
+</html>
