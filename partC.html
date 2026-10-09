@@ -1,4 +1,8 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>从三万五千公里外看地球</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700;9..144,500&family=Literata:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Serif+SC:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
@@ -74,6 +78,7 @@ p{margin:0 0 1.15em;}
 .mono{font-family:var(--f-mono);}
 a{color:var(--accent-ink);}
 
+/* ---------- shell ---------- */
 .shell{display:flex;justify-content:center;gap:48px;max-width:1160px;margin:0 auto;padding:0 24px;}
 .rail{width:220px;flex:none;display:none;}
 @media (min-width:1040px){.rail{display:block;}}
@@ -90,18 +95,15 @@ a{color:var(--accent-ink);}
 
 .main{max-width:680px;width:100%;padding:64px 0 140px;min-width:0;}
 
+/* ---------- header ---------- */
 .masthead{margin-bottom:64px;}
 .masthead .kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
 .masthead h1{font-size:44px;font-weight:700;line-height:1.18;margin-bottom:20px;letter-spacing:-.01em;}
 .masthead .lede{font-size:18px;color:var(--ink-soft);line-height:1.7;font-style:italic;max-width:58ch;}
 .masthead .meta{display:flex;gap:18px;flex-wrap:wrap;margin-top:28px;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-faint);}
 .masthead .meta span{display:flex;align-items:center;gap:6px;}
-.prev-link{
-  display:inline-flex;align-items:center;gap:8px;font-family:var(--f-mono);font-size:12px;color:var(--ink-faint);
-  text-decoration:none;margin-bottom:22px;
-}
-.prev-link:hover{color:var(--accent-ink);}
 
+/* ---------- chapter structure ---------- */
 .chapter{margin-bottom:76px;scroll-margin-top:40px;}
 .chapter-head{display:flex;align-items:baseline;gap:16px;margin-bottom:28px;padding-bottom:18px;border-bottom:2px solid var(--ink);}
 .chapter-num{font-family:var(--f-display);font-size:15px;font-weight:600;color:var(--accent);letter-spacing:.02em;flex:none;}
@@ -110,12 +112,14 @@ a{color:var(--accent-ink);}
 .chapter h3{font-size:20px;font-weight:600;margin:34px 0 14px;color:var(--ink);}
 .chapter h3 .zh-num{color:var(--accent);margin-right:8px;font-family:var(--f-mono);font-size:15px;}
 
+/* ---------- prose helpers ---------- */
 .chapter p b{font-weight:700;color:var(--ink);background:linear-gradient(to bottom, transparent 62%, var(--accent-soft) 62%);}
 .dropcap:first-letter{
   font-family:var(--f-display);font-size:3.6em;font-weight:700;float:left;line-height:.85;
   margin:.03em .09em -.05em 0;color:var(--accent-ink);
 }
 
+/* Analogy callout */
 .analogy{
   background:var(--gold-soft);border-radius:4px;padding:18px 22px;margin:24px 0;
   border-left:3px solid var(--gold);position:relative;
@@ -124,6 +128,7 @@ a{color:var(--accent-ink);}
 .analogy p{margin-bottom:0;color:var(--ink);font-style:italic;}
 .analogy p+p{margin-top:.8em;}
 
+/* Formula card */
 .formula-card{
   background:var(--card);border:1px solid var(--line-strong);border-radius:10px;
   padding:20px 24px;margin:24px 0;box-shadow:var(--shadow);
@@ -133,11 +138,13 @@ a{color:var(--accent-ink);}
   background-size:16px 16px;background-position:-1px -1px;
   background-color:var(--card);
 }
+:root[data-theme="dark"] .formula-card, @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]) .formula-card{ opacity:1; } }
 .formula-card .flbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-ink);font-weight:700;margin-bottom:10px;}
 .formula-card .fexpr{font-family:var(--f-mono);font-size:18px;color:var(--ink);overflow-x:auto;padding:4px 0;font-weight:500;}
 .formula-card .fmeaning{margin-top:12px;padding-top:12px;border-top:1px dashed var(--line-strong);font-size:14.5px;color:var(--ink-soft);font-family:var(--f-body);}
 .formula-card .fmeaning b{color:var(--ink);}
 
+/* Worked example */
 .worked{
   border:1px solid var(--line);border-radius:10px;margin:28px 0;overflow:hidden;background:var(--card);
 }
@@ -165,15 +172,18 @@ a{color:var(--accent-ink);}
   font-weight:700;font-family:var(--f-mono);font-size:14.5px;
 }
 
+/* lists */
 .chapter ul, .chapter ol{padding-left:1.4em;margin:0 0 1.15em;}
 .chapter li{margin-bottom:.5em;}
 
+/* table */
 .tblwrap{overflow-x:auto;margin:22px 0;border:1px solid var(--line);border-radius:8px;}
 table{width:100%;border-collapse:collapse;font-size:14px;}
 table th{text-align:left;font-family:var(--f-mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-soft);background:var(--paper-2);padding:9px 14px;}
 table td{padding:8px 14px;border-top:1px solid var(--line);font-family:var(--f-mono);font-size:13px;}
 table td:first-child{font-family:var(--f-body);}
 
+/* quiz-check (light self-check, not a review tool) */
 .checkpoint{
   border:1.5px dashed var(--accent);border-radius:10px;padding:18px 22px;margin:30px 0;background:var(--accent-soft);
 }
@@ -183,6 +193,8 @@ table td:first-child{font-family:var(--f-body);}
 .checkpoint .reveal summary{cursor:pointer;color:var(--accent-ink);font-weight:600;font-size:14px;font-family:var(--f-body);}
 .checkpoint .reveal .ans{margin-top:10px;padding-top:10px;border-top:1px solid var(--line-strong);font-size:15px;}
 
+/* nav footer between chapters / end */
+.chapter-nav{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:24px;border-top:1px solid var(--line);}
 .next-up{
   background:var(--card);border:1px solid var(--line);border-radius:12px;padding:24px 26px;margin-top:64px;
   display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);
@@ -191,6 +203,7 @@ table td:first-child{font-family:var(--f-body);}
 .next-up h4{font-size:19px;}
 .next-up p{color:var(--ink-soft);font-size:14.5px;margin-bottom:0;}
 
+/* mobile toc */
 .mobtoc{display:block;position:sticky;top:0;z-index:5;background:var(--paper);border-bottom:1px solid var(--line);padding:12px 20px;}
 @media (min-width:1040px){.mobtoc{display:none;}}
 .mobtoc select{
@@ -203,9 +216,49 @@ table td:first-child{font-family:var(--f-body);}
   .masthead h1{font-size:32px;}
   .chapter-head h2{font-size:23px;}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none !important;}}
-</style>
 
+/* 课外补充框 */
+:root{--extra:#7a4fc4;--extra-soft:#f2ecfb;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--extra:#b79cf0;--extra-soft:rgba(183,156,240,.12);}}
+:root[data-theme="dark"]{--extra:#b79cf0;--extra-soft:rgba(183,156,240,.12);}
+.extra{border:1.5px solid var(--extra);border-radius:10px;padding:16px 20px 18px;margin:30px 0;background:var(--extra-soft);}
+.extra > .lbl{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;color:var(--extra);font-weight:700;margin-bottom:8px;}
+.extra .worked{margin:16px 0 4px;}
+.extra > p:last-child{margin-bottom:0;}
+.chapter h4{font-family:var(--f-display);font-size:17px;font-weight:600;margin:26px 0 10px;color:var(--ink);}
+/* 示意图 */
+.figwrap{margin:26px 0;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 14px 12px;}
+.figwrap svg{display:block;width:100%;height:auto;margin:0 auto;}
+.figwrap svg.sectfig{max-width:440px;}
+.figwrap .cap{font-size:13.5px;color:var(--ink-soft);margin-top:8px;line-height:1.65;}
+.figwrap svg text{font-family:var(--f-body);fill:var(--ink);}
+.nl-axis{stroke:var(--line-strong);stroke-width:2;}
+.nl-bs{fill:var(--ink);} .nl-int{fill:var(--gold);} .nl-ms{fill:var(--accent);stroke:var(--card);stroke-width:2;}
+.nl-dim{stroke:var(--ink-soft);stroke-width:1;fill:none;}
+.figwrap svg .nl-t{font-size:12.5px;font-weight:600;}
+.figwrap svg .nl-d{font-family:var(--f-mono);font-size:11.5px;fill:var(--ink-soft);}
+.figwrap svg .nl-d.near{fill:var(--gold);font-weight:700;}
+.sf-cell{fill:var(--card);stroke:var(--line-strong);stroke-width:1;}
+.sf-cell.home{stroke:var(--ink);stroke-width:1.5;}
+.sf-sec{fill:var(--accent-soft);}
+.sf-sec.on{fill:var(--accent);fill-opacity:.3;}
+.sf-line{stroke:var(--ink-faint);stroke-width:1.2;stroke-dasharray:4 3;}
+.sf-line.on{stroke:var(--gold);stroke-width:2.2;stroke-dasharray:none;}
+.figwrap svg .sf-lab{font-family:var(--f-mono);font-size:9px;fill:var(--ink-faint);paint-order:stroke;stroke:var(--card);stroke-width:3px;}
+.figwrap svg .sf-lab.on{fill:var(--gold);font-weight:700;font-size:9.5px;}
+.sf-bs{fill:var(--ink);}
+.sf-ms{fill:var(--accent);stroke:var(--card);stroke-width:1.5;}
+.figwrap svg .sf-mslab{font-size:11px;font-weight:700;fill:var(--accent-ink);}
+
+@media (prefers-reduced-motion:reduce){*{transition:none !important;}}
+
+/* Part B/C additions */
+.worked .wtext{min-width:0;}
+.calc{overflow-x:auto;}
+.figwrap svg text{fill:var(--ink);font-family:var(--f-body);}
+</style>
+</head>
+<body>
 <div class="mobtoc">
   <select id="mobNav" aria-label="跳转到章节"></select>
 </div>
@@ -219,164 +272,444 @@ table td:first-child{font-family:var(--f-body);}
   </aside>
 
   <main class="main">
-    <a class="prev-link" href="partB.html">← Part B · 无线系统</a>
     <header class="masthead">
       <div class="kicker">EE6129 · Part C 讲解 · 卫星通信</div>
       <h1>从三万五千公里外看地球</h1>
-      <p class="lede">前两篇讲的基站，天线杆最高也就几十米。这一篇要把"基站"搬到天上去——搬多高、放几颗、怎么让它们互相配合，会牵出一整套跟地面蜂窝网络既相似又不同的设计逻辑。</p>
+      <p class="lede">把"基站"搬到天上：放多高（LEO、MEO、GEO）、能看到多大一片地球、信号路上损失多少、一颗卫星的容量怎么分给许多地面站，以及卫星飞走时怎么切换。几何和链路部分都用讲义的数字验算了一遍，假设你零基础。</p>
       <div class="meta">
-        <span>◆ 承接Part A / B</span>
-        <span>◆ 全程用类比讲</span>
-        <span>◆ 共6章</span>
+        <span>◆ 对应 Part C 讲义 p.1–41</span>
+        <span>◆ 共 6 章</span>
+        <span>◆ 每节标讲义页码</span>
+        <span>◆ 紫色框 = 课外补充</span>
       </div>
     </header>
-
     <!-- ================= CH 0 ================= -->
     <section class="chapter" id="ch0">
       <div class="chapter-head"><span class="chapter-num">开篇</span><h2>把基站放到天上，能不能一劳永逸？</h2></div>
-      <p class="dropcap">Part A讲蜂窝网络的时候，我们花了很大力气去解决一个问题：地面基站覆盖范围有限，所以要设计成蜂窝状、精心安排频率复用。那如果把基站架得足够高——高到能同时"看见"大半个地球——是不是就不用这么麻烦了？</p>
-      <p>这正是卫星通信最早的动机：地球是个球体，无线电波沿直线传播，两个隔得很远的地面站之间会被地球自身的曲率挡住，中间需要一个"中继站"。而卫星恰好是安放这个中继站的绝佳位置——飞得足够高，就能同时看见地面上一大片区域，通信成本几乎不随距离远近而变化，这一点跟地面蜂窝网络"越远衰减越厉害"的逻辑完全不同。但"飞得多高"本身是一个需要认真权衡的设计问题——飞太高，信号覆盖是广了，可信号也会因为传播距离太远而变弱，还会带来一个地面系统完全不用担心的新麻烦：<b>延迟</b>。这一篇就从"卫星应该飞多高"这个问题展开。</p>
+      <p class="dropcap">地球是圆的，无线电波走直线，地面上相距很远的两点"看不见"对方，中间必须有中继站（p.5）。把中继站放到天上，一颗卫星就能覆盖很大一片地区，这是卫星通信的出发点。</p>
+      <p>卫星最初是为了替代跨洋电话电缆、提供长途电话（p.4）；现在用于电信、遥感、气象、导航与 GPS、侦察、移动卫星电话等。业务重心已经从电话转向<b>视频和数据</b>：电视广播、导航、移动卫星通信最有前景（p.5）。</p>
+      <p>卫星通信的几个独特优势（p.6）：</p>
+      <ul>
+        <li>能到达地球上任何地方；大多数通信卫星在 35,863 km 高的地球静止轨道（GEO），<b>3 颗 GEO 卫星就能覆盖几乎全球</b>；</li>
+        <li>新增一个通信点又快又便宜，不用大规模施工；<b>通信成本对距离不敏感</b>；</li>
+        <li>天然适合广播：一个发射机对地面上无数接收机。</li>
+      </ul>
+      <p>p.7 是 Inmarsat 的 GEO 覆盖图：四颗卫星分别覆盖太平洋、大西洋西、大西洋东、印度洋区域，拼起来几乎覆盖全球，只有两极附近空白。</p>
+      <p>本页按讲义顺序讲六部分：术语和轨道、几何、三种轨道的权衡、链路性能、多址接入、路由和切换。这部分讲义的计算题不多，本页用讲义的图表和 Part A 学过的公式补了几道可以算的例题，讲义以外的推导放在紫色框里。</p>
     </section>
 
     <!-- ================= CH 1 ================= -->
     <section class="chapter" id="ch1">
-      <div class="chapter-head"><span class="chapter-num">第一章</span><h2>卫星飞多高：三种轨道与基本几何</h2></div>
+      <div class="chapter-head"><span class="chapter-num">第一章</span><h2>基本术语与三种轨道</h2></div>
 
-      <h3><span class="zh-num">1.1</span>三档轨道高度</h3>
-      <p>按照飞行高度，卫星轨道分成三档，课程里会反复用到这三个名字：</p>
-      <div class="tblwrap"><table><thead><tr><th>轨道类型</th><th>高度</th><th>一句话特点</th></tr></thead><tbody>
-        <tr><td>GEO 地球静止轨道</td><td>35,863 km</td><td>飞得最高，绕地球一圈的时间恰好等于地球自转一圈</td></tr>
-        <tr><td>MEO 中轨道</td><td>8,000–18,000 km</td><td>折中，GPS用的就是这一档</td></tr>
-        <tr><td>LEO 低轨道</td><td>500–1,500 km</td><td>飞得最低、贴地球最近</td></tr>
+      <h3><span class="zh-num">1.1</span>术语（p.8）</h3>
+      <div class="tblwrap"><table><thead><tr><th>术语</th><th>含义</th></tr></thead><tbody>
+        <tr><td>地面站 Earth Station</td><td>地面上或地面附近的天线系统</td></tr>
+        <tr><td>上行 Uplink</td><td>地面站 → 卫星</td></tr>
+        <tr><td>下行 Downlink</td><td>卫星 → 地面站</td></tr>
+        <tr><td>转发器 Transponder</td><td>卫星上把上行信号转换成下行信号的电子设备</td></tr>
+        <tr><td>FSS 固定卫星业务</td><td>卫星和固定地面站之间</td></tr>
+        <tr><td>BSS 广播卫星业务</td><td>电视、广播直播</td></tr>
+        <tr><td>MSS 移动卫星业务</td><td>和飞机、船、陆地车辆通信</td></tr>
+        <tr><td>覆盖区</td><td>全球、区域、国家</td></tr>
       </tbody></table></div>
-      <p>除了高度，轨道还有形状（圆形——圆心在地心；椭圆形——地心是其中一个焦点）和倾角（赤道轨道、极地轨道、或介于两者之间的倾斜轨道）两个维度，但这门课主要围绕高度带来的三档权衡展开，形状和倾角先有个印象即可。</p>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>转发器就像山顶上的回音壁：你从山脚喊一声（上行），它换个调子再喊回山下的另一个人（下行）。卫星本身一般不"理解"内容，只负责接收、变频、放大、转发。</p>
+      </div>
 
-      <h3><span class="zh-num">1.2</span>为什么GEO会"静止不动"</h3>
-      <p>GEO这个名字里的"静止"二字，是这一章最值得咀嚼的一个细节。卫星本身当然一直在飞，但它的轨道周期（绕地球一圈所需的时间）恰好被设计得跟地球自转一圈的时间完全一致，而且轨道平面正好落在赤道上方——这意味着从地面上看，这颗卫星会一直"悬停"在同一个经度、同一个位置上方，不会像月亮那样在天空中缓慢移动。这个特性直接带来一个巨大的工程便利：<b>地面天线一旦对准了这颗卫星，就永远不用再重新调整方向</b>，跟踪变得极其简单。这也是GEO被最广泛用于电视直播、固定通信业务的原因之一。</p>
-
-      <h3><span class="zh-num">1.3</span>两个角度：仰角与覆盖角</h3>
-      <p>描述一颗卫星在天上的位置，用两个角度就够了：</p>
+      <h3><span class="zh-num">1.2</span>三种卫星和它们的用途（p.9）</h3>
       <ul>
-        <li><b>仰角θ</b>——从地面站所在处的水平面往上看，到卫星主波束方向之间的夹角。仰角为0°，理论上意味着这颗卫星能覆盖到它"视线所及"的最远范围（一直到地平线），覆盖面积最大。</li>
-        <li><b>覆盖角β</b>——在卫星实际可用的最小仰角下，它能"看见"的地球表面所占的角度范围。</li>
+        <li><b>GEO</b>：承担了大部分通信业务，因为固定地面站可以用高增益天线，把卫星的容量用到最大；</li>
+        <li><b>LEO</b>：话音和数据的移动通信、对地成像、监视；</li>
+        <li><b>MEO</b>：导航，GPS 用了 <b>24 颗 MEO 卫星</b>。</li>
+      </ul>
+
+      <h3><span class="zh-num">1.3</span>轨道的三个维度（p.10–11）</h3>
+      <div class="tblwrap"><table><thead><tr><th>维度</th><th>分类</th></tr></thead><tbody>
+        <tr><td>高度</td><td>GEO：35,863 km；MEO：8,000–18,000 km；LEO：500–1,500 km</td></tr>
+        <tr><td>形状</td><td>圆轨道（圆心在地心）；椭圆轨道（一个焦点在地心）</td></tr>
+        <tr><td>倾角</td><td>赤道轨道（在赤道正上方）；极轨道（经过两极）；其他统称倾斜轨道</td></tr>
+      </tbody></table></div>
+      <div class="extra">
+        <div class="lbl">课外补充 · 为什么 GEO 必须是 35,863 km</div>
+        <p>卫星绕地球转得多快由高度决定：越高越慢。开普勒第三定律给出周期 T = 2π√(a³/μ)（a 是轨道半径 = 地球半径 + 高度，μ = 398,600 km³/s²）。要让周期正好等于地球自转一圈（约 24 小时），a 只能是约 42,233 km，减去地球半径 6,370 km 就是 35,863 km。所以"静止"轨道只有一个高度，而且必须在赤道上空，否则卫星会南北摆动。</p>
+      </div>
+    </section>
+    <!-- ================= CH 2 ================= -->
+    <section class="chapter" id="ch2">
+      <div class="chapter-head"><span class="chapter-num">第二章</span><h2>几何：仰角、覆盖角和轨道参数</h2></div>
+
+      <h3><span class="zh-num">2.1</span>两个角度（p.12–13）</h3>
+      <ul>
+        <li><b>仰角 θ</b>（elevation angle）：在地面站处，从<b>水平线</b>（地表在天线位置的切线）到天线主瓣中心的夹角，天线正对卫星时测量。</li>
+        <li><b>覆盖角 β</b>（coverage angle）：在最小仰角下，卫星能看到的那部分地球表面有多大，用地心张开的角度衡量。</li>
+      </ul>
+      <p>为了覆盖最大，理想的最小仰角取 <b>0°</b>，覆盖范围一直延伸到卫星的光学地平线（p.12）。但第四章会看到，仰角越低，信号穿过的大气越厚，衰减越大，所以实际一般取 5°–10°。</p>
+      <div class="figwrap">
+        <svg viewBox="0 0 520 450" role="img" aria-label="几何示意：地心 O、地面站 E、卫星 S；仰角 θ 在 E 处，覆盖角 β 在 O 处">
+          <circle cx="260" cy="420" r="200" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+          <line x1="55.2" y1="319.3" x2="235.4" y2="193.1" stroke="var(--ink-faint)" stroke-width="1.2" stroke-dasharray="5 4"/>
+          <line x1="260" y1="420" x2="260" y2="30" stroke="var(--ink)" stroke-width="1.5"/>
+          <line x1="260" y1="420" x2="145.3" y2="256.2" stroke="var(--ink)" stroke-width="1.5"/>
+          <line x1="145.3" y1="256.2" x2="260" y2="30" stroke="var(--gold)" stroke-width="2.4"/>
+          <path d="M178.1 233.3 A40 40 0 0 0 163.4 220.5" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+          <path d="M260 375 A45 45 0 0 0 234.2 383.1" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+          <circle cx="260" cy="420" r="4" fill="var(--ink)"/>
+          <circle cx="145.3" cy="256.2" r="5" fill="var(--accent)"/>
+          <rect x="252" y="22" width="16" height="12" fill="var(--gold)"/>
+          <text x="270" y="438" font-size="13" font-weight="700">O 地心</text>
+          <text x="66" y="252" font-size="13" font-weight="700">E 地面站</text>
+          <text x="276" y="34" font-size="13" font-weight="700">S 卫星</text>
+          <text x="184" y="352" font-size="12">R</text>
+          <text x="268" y="230" font-size="12">R + h</text>
+          <text x="150" y="140" font-size="12" font-weight="700" fill="var(--gold)">d（斜距）</text>
+          <text x="181" y="215" font-size="14" font-weight="700" fill="var(--accent-ink)">θ</text>
+          <text x="238" y="360" font-size="14" font-weight="700" fill="var(--accent-ink)">β</text>
+          <text x="20" y="338" font-size="11" fill="var(--ink-faint)">E 处的水平线（地表切线）</text>
+        </svg>
+        <div class="cap">按讲义 p.13 的图重画，不按比例。地面站 E 到地心是 R，卫星到地心是 R + h。仰角 θ 在 E 处，从水平线量到卫星方向；覆盖角 β 在地心 O 处。</div>
+      </div>
+      <div class="extra">
+        <div class="lbl">课外补充 · 由图推出 β 的公式</div>
+        <p>三角形 O–E–S 里，E 处的内角是 90° + θ（半径和切线垂直，再加上仰角），O 处是 β，S 处是剩下的 90° − θ − β。由正弦定理：R / sin(90° − θ − β) = (R + h) / sin(90° + θ)，整理得</p>
+        <div class="calc">cos(θ + β) = R·cos θ / (R + h)　→　β = arccos(R·cos θ / (R + h)) − θ</div>
+        <p>覆盖区的地面直径约为 2βR（β 用弧度）。斜距 d 用余弦定理：d² = R² + (R + h)² − 2R(R + h)·cos β。讲义只给了图，这几个式子是从图里推出来的。</p>
+      </div>
+
+      <h3><span class="zh-num">2.2</span>三种轨道的参数表（p.14）</h3>
+      <div class="tblwrap"><table><thead><tr><th>参数</th><th>LEO</th><th>MEO</th><th>GEO</th></tr></thead><tbody>
+        <tr><td>轨道周期</td><td>1.5–2 h</td><td>5–10 h</td><td>24 h</td></tr>
+        <tr><td>高度</td><td>500–1,500 km</td><td>8,000–18,000 km</td><td>35,863 km</td></tr>
+        <tr><td>每次可见时长</td><td>15–20 分钟/次</td><td>2–8 小时/次</td><td>永久</td></tr>
+        <tr><td>仰角</td><td>变化快，有高有低</td><td>变化慢，有高有低</td><td>不变；高纬度地区仰角低</td></tr>
+        <tr><td>往返传播时延</td><td>几毫秒</td><td>几十毫秒</td><td>约 250 ms</td></tr>
+        <tr><td>瞬时地面覆盖直径（仰角 10°）</td><td>约 6,000 km</td><td>约 12,000–15,000 km</td><td>16,000 km</td></tr>
+        <tr><td>系统举例</td><td>Iridium、Globalstar、Teledesic、Skybridge、Orbcomm</td><td>Odyssey、Inmarsat</td><td>Intelsat、Interspoutnik、Inmarsat</td></tr>
+      </tbody></table></div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>用几何公式验证表里的覆盖直径</summary>
+        <div class="wbody">
+          <p>已知条件：地球半径 R = 6,370 km，最小仰角 θ = 10°。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext"><b>GEO</b>（h = 35,863 km）：<div class="calc">R cos θ / (R + h) = 6370 × 0.9848 / 42233 = 0.1485 → θ + β = 81.46° → β = 71.46°</div><div class="calc">直径 ≈ 2 × 1.247 rad × 6370 = 15,890 km</div>和表里的 16,000 km 吻合。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext"><b>LEO</b>（取高度上限 h = 1,500 km）：<div class="calc">6370 × 0.9848 / 7870 = 0.7971 → θ + β = 37.15° → β = 27.15° → 直径 ≈ 6,040 km</div>和表里的"约 6,000 km"吻合。h = 1,000 km 时只有约 4,800 km。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">GEO 仰角 0° 时：cos β = 6370 / 42233 = 0.1508，β = 81.3°，直径约 18,000 km，接近地球周长（约 40,000 km）的一半。</div></div>
+          <div class="wans">GEO 10° 仰角覆盖约 16,000 km、LEO（1,500 km）约 6,000 km，与讲义 p.14 一致</div>
+          <p style="margin-top:12px">这也解释了"3 颗 GEO 相隔 120° 覆盖几乎全球"（p.15）：每颗覆盖直径约 16,000–18,000 km，三颗拼起来绕赤道一圈；两极离赤道最远，仰角太低，覆盖不到。</p>
+        </div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>GEO 的传播时延（p.16）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">两个地面站都在卫星正下方附近：信号上去 35,863 km、下来 35,863 km：<div class="calc">71,726 km / 300,000 km/s = 0.239 s</div>这就是讲义 p.16 说的 "round-trip propagation delay … is 0.24 s"：经卫星往返一趟。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">地面站在覆盖边缘（仰角 10°）时斜距更长。由余弦定理：<div class="calc">d² = 6370² + 42233² − 2 × 6370 × 42233 × cos 71.46° → d ≈ 40,660 km</div>上下行都这么远时，时延 2 × 40,660 / 300,000 ≈ 0.27 s。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">对比 LEO（h = 1,000 km、仰角 10°）：斜距约 2,760 km，上下行合计约 18 ms；卫星正下方只有约 7 ms，所以表里写"几毫秒"。</div></div>
+          <div class="wans">GEO 经卫星一趟 0.24–0.27 s；打电话一问一答要经过两趟，约半秒，能感觉到明显的停顿</div>
+        </div>
+      </div>
+      <div class="extra">
+        <div class="lbl">课外补充 · 用开普勒定律验证轨道周期</div>
+        <p>T = 2π√(a³/μ)，a = 6,370 km + h，μ = 398,600 km³/s²：</p>
+        <div class="tblwrap"><table><thead><tr><th>高度</th><th>周期</th><th>速度</th><th>表里的范围</th></tr></thead><tbody>
+          <tr><td>LEO 500 km</td><td>1.57 h</td><td>7.6 km/s</td><td rowspan="2">1.5–2 h ✓</td></tr>
+          <tr><td>LEO 1,500 km</td><td>1.93 h</td><td>7.1 km/s</td></tr>
+          <tr><td>MEO 8,000 km</td><td>4.8 h</td><td>5.3 km/s</td><td rowspan="2">5–10 h（基本吻合）</td></tr>
+          <tr><td>MEO 18,000 km</td><td>10.5 h</td><td>4.0 km/s</td></tr>
+          <tr><td>GEO 35,863 km</td><td>24.0 h</td><td>3.1 km/s</td><td>24 h ✓</td></tr>
+        </tbody></table></div>
+        <p>LEO 每 1.5–2 小时绕地球一圈、速度约 7 km/s，所以每次只能看到 15–20 分钟，这正是第三章说 LEO 要不停切换的原因。</p>
+      </div>
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>(1) 为什么最小仰角越小，覆盖越大？(2) 新加坡（纬度约 1°）和赫尔辛基（纬度约 60°）看同一颗赤道上的 GEO 卫星，谁的仰角高？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">(1) 仰角下限放低，地面站可以离星下点更远还能看到卫星，覆盖边界就往外扩，直到 0° 时到达光学地平线。(2) 新加坡几乎在赤道上，只要卫星经度相差不大，就接近头顶，仰角很高；赫尔辛基纬度高，卫星贴近地平线，仰角很低（p.16 说 GEO 对极地和南北高纬度地区服务差）。</div>
+        </details>
+      </div>
+    </section>
+    <!-- ================= CH 3 ================= -->
+    <section class="chapter" id="ch3">
+      <div class="chapter-head"><span class="chapter-num">第三章</span><h2>GEO、LEO、MEO：一场关于高度的权衡</h2></div>
+
+      <h3><span class="zh-num">3.1</span>GEO：覆盖广、好跟踪，但信号弱、时延大（p.15–16）</h3>
+      <p>GEO 卫星在赤道上空 35,863 km 的圆轨道上，转速和地球自转一样，始终停在赤道某一点的正上方（p.15）。</p>
+      <div class="tblwrap"><table><thead><tr><th>优点（p.15）</th><th>缺点（p.16）</th></tr></thead><tbody>
+        <tr><td>相对地面几乎不动，多普勒频移对通信影响不大</td><td>走了 35,000 多公里，信号很弱</td></tr>
+        <tr><td>地面站跟踪很简单，天线对准后基本不用动</td><td>极地和南北高纬度地区服务差（仰角太低）</td></tr>
+        <tr><td>一颗覆盖约 1/4 的地球表面；3 颗相隔 120° 覆盖几乎全球</td><td>传播时延大：正下方两点之间经卫星往返 0.24 s</td></tr>
+        <tr><td>—</td><td>一个频率覆盖很大的区域：适合广播，做点对点通信就浪费频谱</td></tr>
+      </tbody></table></div>
+
+      <h3><span class="zh-num">3.2</span>LEO：信号强、时延低，但要一大群卫星接力（p.17–19）</h3>
+      <p>麻烦（p.17）：</p>
+      <ul>
+        <li>相对地面运动很快，<b>多普勒频移大</b>，接收机要能跟上频率的变化；</li>
+        <li>高层大气还有阻力，轨道会<b>逐渐衰减</b>；</li>
+        <li>要用<b>多个轨道面、每个面多颗卫星</b>才能连续覆盖；</li>
+        <li>两个地面站通信时，经常要把信号从一颗卫星<b>切换</b>到另一颗。</li>
+      </ul>
+      <p>优点（p.18）：同样的发射功率下，<b>收到的 LEO 信号比 GEO 强得多</b>；覆盖更局部，频谱可以更好地复用；适合需要强信号的手持终端。但要 24 小时全覆盖，需要很多颗卫星。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>LEO 比 GEO 信号强多少</summary>
+        <div class="wbody">
+          <p>已知条件：同样的频率和发射功率，比较卫星在正下方时 LEO（1,000 km）和 GEO（35,863 km）的自由空间损耗。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">自由空间损耗随 20 log d 变化（Part A 第五章）。只比较两者之差：<div class="calc">20 log₁₀(35,863 / 1,000) = 20 × 1.555 = 31.1 dB</div></div></div>
+          <div class="wans">LEO 的信号强约 31 dB，也就是 1,300 倍左右，所以手机这类小天线终端能直接连 LEO</div>
+        </div>
+      </div>
+      <div class="extra">
+        <div class="lbl">课外补充 · LEO 的多普勒有多大</div>
+        <p>1,000 km 高的 LEO 速度约 7.35 km/s（第二章补充框）。以 2 GHz 载频算，相对运动全部指向地面站时的最大多普勒频移 = f·v/c = 2×10⁹ × 7.35 / 300,000 ≈ 49 kHz。实际视线方向只取速度的一部分，但仍有几十 kHz，而且在一次过顶的十几分钟里从正变到负。对照 Part 2 第二章：手机在 120 km/h 时多普勒只有几百 Hz。</p>
+      </div>
+      <div class="tblwrap"><table><thead><tr><th></th><th>Little LEO（p.19）</th><th>Big LEO（p.19）</th></tr></thead><tbody>
+        <tr><td>频率</td><td>1 GHz 以下</td><td>1 GHz 以上</td></tr>
+        <tr><td>带宽 / 速率</td><td>带宽小于 5 MHz，速率最高 10 kbps</td><td>速率可达几 Mbps</td></tr>
+        <tr><td>业务</td><td>寻呼、跟踪、低速消息</td><td>Little LEO 的全部业务，加上话音和定位</td></tr>
+      </tbody></table></div>
+
+      <h3><span class="zh-num">3.3</span>MEO：夹在中间的折中（p.20）</h3>
+      <ul>
+        <li>切换比 LEO <b>少得多</b>（每次可见 2–8 小时）；</li>
+        <li>到地面的传播时延和所需功率比 LEO 大；</li>
+        <li>需要的卫星数比 LEO 少；</li>
+        <li>拟用于数字话音、数据、传真、消息业务；GPS 就是 MEO（p.9）。</li>
+      </ul>
+      <div class="tblwrap"><table><thead><tr><th>一句话对比</th><th>LEO</th><th>MEO</th><th>GEO</th></tr></thead><tbody>
+        <tr><td>信号强度</td><td>最强</td><td>中</td><td>最弱</td></tr>
+        <tr><td>时延</td><td>几 ms</td><td>几十 ms</td><td>约 250 ms</td></tr>
+        <tr><td>需要卫星数</td><td>很多</td><td>中</td><td>3 颗覆盖全球</td></tr>
+        <tr><td>切换</td><td>频繁</td><td>较少</td><td>几乎没有</td></tr>
+        <tr><td>典型用途</td><td>手持移动通信、成像</td><td>导航（GPS）</td><td>广播电视、固定业务</td></tr>
+      </tbody></table></div>
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>要给远洋渔船提供广播天气预报，和给徒步者的手持终端提供双向短信，分别选哪种轨道？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">天气广播：GEO，一颗卫星覆盖整个大洋，船上天线对准就不用动，广播业务不在乎 0.24 s 时延。手持短信：LEO（Little LEO 就够），手持终端天线小、功率低，需要 LEO 那样强的信号；低速消息正是 Little LEO 的典型业务。</div>
+        </details>
+      </div>
+    </section>
+    <!-- ================= CH 4 ================= -->
+    <section class="chapter" id="ch4">
+      <div class="chapter-head"><span class="chapter-num">第四章</span><h2>信号从天上到地面：链路、配置、地面站和频段</h2></div>
+
+      <h3><span class="zh-num">4.1</span>影响链路质量的三大因素（p.21–23）</h3>
+      <ol>
+        <li><b>卫星天线和地面站天线之间的距离</b>：频率越高、卫星越高，信号功率损失越大。</li>
+        <li><b>下行时，地面站离卫星"瞄准点"的地面距离</b>：卫星信号对准地面某一点，覆盖区中心收到的功率最高，越往外越弱。</li>
+        <li><b>大气衰减</b>：受氧气、水汽、仰角和频率影响。<b>仰角越小，信号要穿过的大气越厚</b>。</li>
+      </ol>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>读 p.22 的路径损耗图：频率和高度各贡献多少</summary>
+        <div class="wbody">
+          <p>已知条件：用 Part A 第五章的自由空间损耗 L(dB) = 32.44 + 20 log f(MHz) + 20 log d(km)。p.22 的图画了 1、4、10、40 GHz 四条线，横轴是轨道高度。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">GEO 高度（d = 35,863 km，20 log d = 91.1）：<div class="calc">1 GHz：32.44 + 60.0 + 91.1 = 183.5 dB</div><div class="calc">4 GHz：195.6 dB；10 GHz：203.5 dB；40 GHz：215.6 dB</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">LEO 高度（d = 1,000 km，20 log d = 60）：4 GHz 时 164.5 dB，比 GEO 少 31 dB。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">规律：频率每高 10 倍多 20 dB；距离每远 10 倍也多 20 dB。图上四条线平行，间距正好是 20 log(频率比)。</div></div>
+          <div class="wans">GEO、4 GHz 的损耗约 196 dB，和 p.22 图上的读数一致</div>
+          <p style="margin-top:12px">Part A 讲义写的常数是 32（不是 32.44），算出来小 0.44 dB，两种都可以。</p>
+        </div>
+      </div>
+      <p>p.23 的图：<b>大气吸收、雾、雨</b>三种衰减都随仰角升高而迅速下降。仰角低于 10° 时衰减急剧增大，雨的影响最大，其次是雾。这就是实际不用 0° 最小仰角的原因（第二章）。</p>
+      <div class="extra">
+        <div class="lbl">课外补充 · 为什么雨对高频段影响特别大</div>
+        <p>频率越高、波长越短，就越接近雨滴的尺寸（几毫米），雨滴对电磁波的吸收和散射越强。Ku、Ka 频段的波长只有约 1–2.4 cm，受雨影响明显；C 波段（约 4–7 cm）就小得多。所以热带多雨地区常用 C 波段，或者给 Ku/Ka 链路留出较大的雨衰余量。</p>
+      </div>
+
+      <h3><span class="zh-num">4.2</span>三种通信配置（p.24–25）</h3>
+      <div class="tblwrap"><table><thead><tr><th>配置</th><th>怎么通信</th><th>例子</th></tr></thead><tbody>
+        <tr><td>点对点</td><td>卫星连接两个相距很远的地面站</td><td>跨洋干线</td></tr>
+        <tr><td>广播</td><td>一个发射站对许多只有接收机的地面站</td><td>卫星电视</td></tr>
+        <tr><td>双向星形</td><td>一个中心站（hub）和许多远端站：远端站共享卫星容量发给 hub，hub 和各站交换消息并在远端站之间转发</td><td>VSAT 网（银行网点、加油站）</td></tr>
+      </tbody></table></div>
+
+      <h3><span class="zh-num">4.3</span>地面站（p.26）</h3>
+      <p>地面站由天线、跟踪系统、接收机、发射机、复用器和经调制解调器连接的地面链路组成。区分地面站主要看<b>天线大小</b>：</p>
+      <div class="tblwrap"><table><thead><tr><th>类型</th><th>天线直径</th></tr></thead><tbody>
+        <tr><td>大型地面站</td><td>10–60 m</td></tr>
+        <tr><td>小型地面站</td><td>1–10 m</td></tr>
+        <tr><td>甚小口径终端 VSAT</td><td>0.3–0.9 m</td></tr>
+      </tbody></table></div>
+      <p><b>天线越大，地面站的业务容量越大</b>：大天线增益高，"嗓门"大、"耳朵"灵。</p>
+      <div class="extra">
+        <div class="lbl">课外补充 · 天线大一倍，增益多多少</div>
+        <p>抛物面天线的增益和口径面积成正比，也就是和直径的平方成正比。直径加倍，增益增加 4 倍，即 +6 dB；从 0.6 m 的 VSAT 换成 6 m 的天线，直径大 10 倍，增益多 20 dB，正好抵消 LEO 和 GEO 之间约 2/3 的路径损耗差。</p>
+      </div>
+
+      <h3><span class="zh-num">4.4</span>卫星通信频段（p.27）</h3>
+      <div class="tblwrap"><table><thead><tr><th>频段</th><th>频率范围</th><th>总带宽</th><th>主要用途</th></tr></thead><tbody>
+        <tr><td>L</td><td>1–2 GHz</td><td>1 GHz</td><td>移动卫星业务 MSS</td></tr>
+        <tr><td>S</td><td>2–4 GHz</td><td>2 GHz</td><td>MSS、NASA、深空研究</td></tr>
+        <tr><td>C</td><td>4–8 GHz</td><td>4 GHz</td><td>固定卫星业务 FSS</td></tr>
+        <tr><td>X</td><td>8–12.5 GHz</td><td>4.5 GHz</td><td>FSS 军用、地面探测、气象卫星</td></tr>
+        <tr><td>Ku</td><td>12.5–18 GHz</td><td>5.5 GHz</td><td>FSS、广播卫星业务 BSS</td></tr>
+        <tr><td>K</td><td>18–26.5 GHz</td><td>8.5 GHz</td><td>BSS、FSS</td></tr>
+        <tr><td>Ka</td><td>26.5–40 GHz</td><td>13.5 GHz</td><td>FSS</td></tr>
+      </tbody></table></div>
+      <p>规律：频段越高，可用带宽越大（Ka 有 13.5 GHz），但路径损耗和雨衰也越大。移动业务用低频段（L、S），因为手持终端天线小、需要信号穿透力强。</p>
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>同一颗 GEO 卫星，C 波段（4 GHz）下行和 Ku 波段（12 GHz）下行，自由空间损耗差多少？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">距离相同，只差频率项：20 log(12/4) = 20 × 0.477 ≈ 9.5 dB，Ku 多损耗约 9.5 dB，还不算雨衰。</div>
+        </details>
+      </div>
+    </section>
+    <!-- ================= CH 5 ================= -->
+    <section class="chapter" id="ch5">
+      <div class="chapter-head"><span class="chapter-num">第五章</span><h2>卫星版的"分蛋糕"：容量分配</h2></div>
+
+      <h3><span class="zh-num">5.1</span>先按频率切一刀（p.28）</h3>
+      <p>和地面系统一样，卫星也用 FDMA、TDMA、CDMA 分配容量（Part A 第一章）。卫星的总容量<b>先用 FDMA 切成若干物理信道</b>，每个信道里面再进一步分配。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>C 波段卫星的信道划分（p.28）</summary>
+        <div class="wbody">
+          <p>已知条件：C 波段卫星总带宽 500 MHz，用频率复用技术分成 24 个 40 MHz 信道，每个信道含 4 MHz 保护带。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">每个信道实际可用：40 − 4 = <b>36 MHz</b>，保护带占 10%。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">24 × 40 = 960 MHz，比 500 MHz 多出近一倍，这就是讲义说的"靠频率复用"：同一段频率用了两次。</div></div>
+          <div class="wans">每信道可用 36 MHz；24 个信道共占 960 MHz 的"等效带宽"，靠复用装进 500 MHz</div>
+        </div>
+      </div>
+      <div class="extra">
+        <div class="lbl">课外补充 · 卫星上的"频率复用"是怎么做的</div>
+        <p>常见做法是用两种正交极化（水平/垂直，或左旋/右旋圆极化）：500 MHz 里放 12 个 40 MHz 信道（480 MHz），两种极化各用一遍，就是 24 个。地面站天线只接收一种极化，两组信道互不干扰。另一种做法是窄的点波束：不同地区用同一频率（p.35 讲 Ku、K 频段时提到）。</p>
+      </div>
+
+      <h3><span class="zh-num">5.2</span>固定分配 vs 按需分配（p.29–30）</h3>
+      <div class="tblwrap"><table><thead><tr><th></th><th>FAMA（固定分配）</th><th>DAMA（按需分配）</th></tr></thead><tbody>
+        <tr><td>怎么分</td><td>容量以固定方式分给各站</td><td>根据各站需求的变化随时调整</td></tr>
+        <tr><td>问题</td><td>需求波动时，大量容量闲置</td><td>需要信令和调度</td></tr>
+        <tr><td>FDMA 版本</td><td>FAMA-FDMA：各站的链路带宽预先分好，靠不同频段接入</td><td>DAMA-FDMA：子信道组成一个池，按需分配</td></tr>
+      </tbody></table></div>
+      <p><b>DAMA-FDMA 怎么分配</b>（p.30）：一个信道里的子信道当作"可用链路池"。两个地面站要全双工通信时，动态分给它们一对子信道。分配由各地面站<b>分布式</b>完成，靠一条<b>公共信令信道 CSC</b>：</p>
+      <ul>
+        <li>CSC 上反复发送一个 TDMA 帧，共 <b>50 个时隙</b>；</li>
+        <li>第 1 个时隙用于同步，其余 <b>49 个</b>永久分给 49 个地面站；</li>
+        <li>某站选好子信道后，在自己的时隙里广播所选子信道的编号，别的站就不再选它们；</li>
+        <li>为了公平使用子信道，还需要一个集中调度器。</li>
       </ul>
       <div class="analogy">
         <div class="lbl">类比</div>
-        <p>站在一座山顶往四周看，仰角就是你抬头看向远方灯塔的角度，越接近平视（仰角趋近0°），你能看到的地平线范围越广；但现实中低角度看太远的东西，中间隔着的空气、地面遮挡物太多，反而看不清——这跟下一章要讲的"大气衰减"是同一个道理，所以实际系统不会真的把最小仰角设成0°，而是留一个安全余量。</p>
+        <p>CSC 像会议室门口的预约白板：每个部门在白板上有固定的一格（时隙），想用哪间会议室（子信道）就写在自己那格里，别的部门看到就不会再订同一间。</p>
       </div>
-    </section>
 
-    <!-- ================= CH 2 ================= -->
-    <section class="chapter" id="ch2">
-      <div class="chapter-head"><span class="chapter-num">第二章</span><h2>GEO、MEO、LEO：一场高度的权衡</h2></div>
-
-      <h3><span class="zh-num">2.1</span>GEO：覆盖广、跟踪简单，但延迟是硬伤</h3>
-      <p>GEO飞得最高，一颗卫星就能覆盖大约地球表面的四分之一，<b>3颗GEO卫星按120°均匀分布，几乎就能覆盖整个地球</b>（除了极地附近服务较差）——这跟Part A里"3个120°扇区覆盖一整个蜂窝"的思路，在几何直觉上其实有点像，只不过这里"扇区"覆盖的是整个星球。</p>
-      <p>但飞这么高要付出两个明显的代价：第一，信号要传播35,000多公里，到地面时已经非常微弱；第二，也是更致命的一点——<b>传播本身需要时间</b>。光速是有限的，35,863公里的距离，单程传播就要花上百毫秒，算上上行加下行的往返，<b>两个地面站之间通过GEO转发一次通话，往返延迟大约是0.24秒</b>。</p>
-      <div class="analogy">
-        <div class="lbl">类比</div>
-        <p>0.24秒听起来很短，但你可以自己感受一下：正常对话里，如果对方每次回应都要迟疑将近四分之一秒才开口，交流会明显变得不自然，甚至会出现"我刚说完，你也刚好开始说，两人声音撞在一起"的尴尬——这在电话会议里很常见。这也是为什么早期跨洋卫星电话总是带着一种独特的、略显迟钝的对话节奏。</p>
+      <h3><span class="zh-num">5.3</span>TDMA：轮流用上行（p.31–34）</h3>
+      <p>TDMA 把传输分成重复的帧，每帧分成若干时隙，每个时隙专门给某个用户（p.31）。地面站轮流在分配给自己的时隙里发上行；卫星把收到的内容转发并<b>广播给所有站</b>，各站要知道用哪个时隙发、哪个时隙收。</p>
+      <p>p.32 的帧结构：</p>
+      <ul>
+        <li>帧开头是<b>参考突发</b>：载波与比特定时恢复、协调数据；</li>
+        <li>然后是各站的<b>数据突发</b>，突发之间留<b>保护时间</b>；</li>
+        <li>每个站的突发 = <b>前导</b>（载波与比特定时恢复、唯一字、站识别码、网络控制与请求）+ <b>信息</b>。</li>
+      </ul>
+      <p>p.33–34 的图：上行时各站在不同时隙发送；下行时卫星把整帧广播回去，每个站从中挑出发给自己的那部分。</p>
+      <div class="formula-card">
+        <div class="flbl">为什么卫星上 TDMA 通常比 FDMA 高效（p.35）</div>
+        <div class="fexpr">TDMA 的保护时间 + 控制比特 &lt; FDMA 的保护带</div>
+        <div class="fmeaning">讲义原话：TDMA 的保护时间和控制比特占用的容量，比 FDMA 的保护带少。在 Ku、K 等高频段还能更高效：卫星波束可以聚得很窄，同一频率用多个波束分别照不同地区。</div>
       </div>
-      <p>正因为宽波束、广覆盖，GEO天然适合"一对多"的广播类业务（电视直播），但如果只是两个用户之间的点对点通话，等于是拿一整片大范围的频谱资源去服务一条链路，效率并不高。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>比一比两种开销</summary>
+        <div class="wbody">
+          <p>已知条件：TDMA 帧长 2 ms，参考突发 20 µs，10 个站，每站前导 10 µs、保护时间 2 µs。FDMA 用上面的 40 MHz 信道、4 MHz 保护带。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">TDMA 开销：20 + 10 × (10 + 2) = 140 µs，效率 1 − 140/2000 = <b>93%</b>。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">FDMA：36/40 = <b>90%</b>。</div></div>
+          <div class="wans">在这组数字下 TDMA 效率更高；而且帧越长、站越少，TDMA 的开销比例越小</div>
+          <p style="margin-top:12px">课外补充：TDMA 的参数是举例用的，讲义只给定性结论。</p>
+        </div>
+      </div>
 
-      <h3><span class="zh-num">2.2</span>LEO：信号强、延迟低，但"身边"的卫星总在换</h3>
-      <p>LEO飞得离地面最近，带来两个明显的好处：同样的发射功率下，<b>接收到的信号比GEO强得多</b>；覆盖范围更集中、局部化，意味着<b>频谱可以被更精细地复用</b>——这跟Part A里"蜂窝越小、频率复用越密集"是同一套逻辑，只不过这里"蜂窝"变成了卫星在地面投下的覆盖区。</p>
-      <p>但LEO也有两个GEO完全不用操心的新麻烦：第一，卫星相对地面的运动速度非常快，会产生明显的<b>多普勒频移</b>（就像救护车呼啸而过时警笛声调会突然变化一样）；第二，轨道太低，还会受到稀薄大气层的阻力影响，导致轨道逐渐衰减，需要定期修正。更关键的是，一颗LEO卫星飞过头顶的时间很短，实际系统必须部署<b>多个轨道面、每个轨道面上排布多颗卫星</b>，才能保证任意时刻头顶总有一颗能用的卫星——这也意味着，一通持续几分钟的通话，很可能要在通话过程中，把连接从一颗卫星接力交给下一颗，这正是第五章要讲的卫星切换问题的根源。</p>
-      <p>LEO商用系统通常分两档：<b>小型LEO</b>工作在1 GHz以下，带宽很窄（不到5 MHz），速率也很低（最高10 kbps），专门用来做寻呼、位置跟踪、低速率消息这类"数据量很小、但要求随时能收发"的业务；<b>大型LEO</b>频率更高（1 GHz以上），速率能到几个Mbps，在小型LEO的基础上还能支持语音通话和定位服务。</p>
-
-      <h3><span class="zh-num">2.3</span>MEO：夹在中间的折中选择</h3>
-      <p>MEO恰好卡在GEO和LEO之间，切换频率比LEO低得多（毕竟飞得更高、覆盖更久），但传播延迟和所需的发射功率又都比LEO大。它最经典的应用是<b>GPS</b>——用24颗MEO卫星组成的星座，来实现全球定位；此外也有方案提议把MEO用在语音、数据、传真这类业务上，只是实际部署不如GEO和LEO普遍。</p>
-
+      <h3><span class="zh-num">5.4</span>SS/TDMA：卫星在天上当交换机（p.35–37）</h3>
+      <p>同一个波束覆盖区里的站之间，用普通的 FAMA-TDMA 就行。<b>不同波束区</b>的站要通信，卫星就得把某个上行波束的时隙<b>交换</b>到另一个下行波束上，这叫<b>卫星交换 TDMA（SS/TDMA）</b>，是 DAMA-TDMA 的一种（p.35–36）。</p>
+      <ul>
+        <li>卫星服务 N 个区域，有 N 路 TDMA 上行；</li>
+        <li>任一时刻，星上开关按某种方式把 N 个上行波束接到 N 个下行波束，每一种接法叫一个<b>模式（mode）</b>；</li>
+        <li>要完全连通，需要 <b>N!</b> 种模式；</li>
+        <li>卫星周期性地换模式，最多每个时隙换一次；模式的顺序和时长可以由地面指令调整，以适应业务变化。</li>
+      </ul>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>3 个区域需要几种模式</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">上行 A、B、C 三个波束，每种模式把它们一一接到三个下行波束上，就是 A、B、C 的一个排列。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">列出来：ABC、ACB、BAC、BCA、CAB、CBA，共 3! = 6 种。比如模式 "BCA" 表示 A 区上行送到 B 区下行、B 送到 C、C 送到 A。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">N = 4 时 4! = 24 种；N = 5 时 120 种。区域多了模式数增长极快。</div></div>
+          <div class="wans">N = 3：6 种模式；N = 4：24 种</div>
+        </div>
+      </div>
+      <p>p.37 的图：两个区域 A、B，各有两个站。上行时不同周期（Period 1、2、3）里，各站的数据目标不同；下行时卫星按当前模式把时隙送到对应的区域。</p>
       <div class="checkpoint">
         <div class="lbl">停下来想一想</div>
-        <p>如果LEO信号更强、延迟更低、频谱复用效率也更高，为什么电视直播这种业务，行业里几乎清一色还是用GEO，而不是效率更高的LEO？</p>
+        <p>(1) DAMA-FDMA 的 CSC 最多支持多少个地面站？(2) 为什么说 FAMA 在需求波动时浪费容量？</p>
         <details class="reveal"><summary>点击看提示</summary>
-          <div class="ans">回到这一章最开始的分析——电视直播是典型的"一对多广播"业务：一颗卫星覆盖的范围越大，能触达的观众就越多，运营效率反而越高，GEO"覆盖整个地区甚至半个地球"的宽波束特性正好对上这个需求；而且GEO静止不动，地面接收天线（你家屋顶那口"锅"）一旦对准了就永远不用再动，这对普通家庭用户极其友好。LEO的优势（信号强、延迟低、复用效率高）恰恰是为"点对点、双向、实时交互"的通信业务（比如卫星电话）量身定做的——两种轨道解决的是不同的问题，谁也没有全面碾压谁。</div>
+          <div class="ans">(1) 49 个：50 个时隙里 1 个用于同步。(2) 每个站固定占一份容量，不管当下有没有数据要发。某站空闲时，它那份容量别人也用不上；而忙的站却可能不够用。</div>
+        </details>
+      </div>
+    </section>
+    <!-- ================= CH 6 ================= -->
+    <section class="chapter" id="ch6">
+      <div class="chapter-head"><span class="chapter-num">第六章</span><h2>卫星网络：数据怎么路由，用户怎么切换</h2></div>
+
+      <h3><span class="zh-num">6.1</span>两颗卫星之间要不要"抄近路"（p.39）</h3>
+      <div class="tblwrap"><table><thead><tr><th></th><th>有星间链路（ISL）</th><th>没有星间链路</th></tr></thead><tbody>
+        <tr><td>怎么走</td><td>信息在太空中直接从一颗卫星转到另一颗</td><td>卫星先下传给网关，经地面网络路由到负责另一颗卫星的网关，再上传</td></tr>
+        <tr><td>需要的链路</td><td><b>1 条上行 + 1 条下行</b></td><td><b>2 条上行 + 2 条下行</b></td></tr>
+        <tr><td>地面网关</td><td>需要的少</td><td>需要更多</td></tr>
+      </tbody></table></div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>数一数链路，算一算时延</summary>
+        <div class="wbody">
+          <p>已知条件：两个 LEO 卫星（高度 1,000 km），用户 A 在卫星 1 下面、用户 B 在卫星 2 下面，两颗卫星相距 4,000 km。为简单起见，都按卫星在正下方算。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext"><b>有 ISL</b>：A → 卫星 1（上行）→ 卫星 2（星间）→ B（下行）。<div class="calc">1,000 + 4,000 + 1,000 = 6,000 km → 20 ms</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext"><b>无 ISL</b>：A → 卫星 1 → 网关 1（上行 + 下行）→ 地面网络 → 网关 2 → 卫星 2 → B（上行 + 下行）。光卫星部分就是 4 × 1,000 km = 4,000 km（13 ms），再加上地面网络约 4,000 km 的光纤（光纤里光速约 2×10⁵ km/s，约 20 ms）。</div></div>
+          <div class="wans">有 ISL：1 上 1 下，约 20 ms；无 ISL：2 上 2 下，还要经过地面网关和地面网络，约 33 ms</div>
+          <p style="margin-top:12px">课外补充：时延数字是举例用的，讲义只比较链路数和网关数。</p>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">6.2</span>四种切换（p.40）</h3>
+      <p>用 MEO 或 LEO 的系统都有切换问题。如果卫星本身带着"基站"，卫星一动，就会多出一些切换。四种切换：</p>
+      <div class="tblwrap"><table><thead><tr><th>切换</th><th>原因</th></tr></thead><tbody>
+        <tr><td>星内切换 Intra-satellite</td><td>用户在同一颗卫星覆盖区内，从一个扇区（波束）移到另一个</td></tr>
+        <tr><td>星间切换 Inter-satellite</td><td>用户移到另一颗卫星的覆盖区，或者卫星飞走了</td></tr>
+        <tr><td>网关切换 Gateway</td><td>卫星离开了当前的网关</td></tr>
+        <tr><td>系统间切换 Inter-system</td><td>卫星系统和地面蜂窝系统之间，因信号强度和 QoS 发生的<b>垂直切换</b></td></tr>
+      </tbody></table></div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>判断是哪一种切换</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">你站着不动打卫星电话，头顶的 LEO 卫星十几分钟后飞到地平线下，电话转到下一颗卫星 → <b>星间切换</b>（卫星飞走了）。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">你开车穿过同一颗卫星的两个点波束交界 → <b>星内切换</b>。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">卫星飞离了原来连接的地面网关，改连另一个网关 → <b>网关切换</b>。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">你从野外开进城市，手机从卫星网络转到 4G 蜂窝网 → <b>系统间（垂直）切换</b>。</div></div>
+          <div class="wans">关键看"谁变了"：波束变 → 星内；卫星变 → 星间；网关变 → 网关；系统变 → 系统间</div>
+        </div>
+      </div>
+      <div class="extra">
+        <div class="lbl">课外补充 · 和 Part A 第十章的切换对照</div>
+        <p>地面蜂窝里，切换几乎都是"人在动"引起的；LEO 卫星系统里，即使人不动，卫星以约 7 km/s 的速度飞过，也会不停地引起星间切换（第二章：每颗卫星只可见 15–20 分钟）。所以 LEO 系统的切换频率远高于地面蜂窝，GEO 几乎没有切换。Part A 第十章讲的切换裕量、软切换、信道预留等思路，在卫星系统里同样适用。</p>
+      </div>
+
+      <h3><span class="zh-num">6.3</span>讲义的考试建议（p.41）</h3>
+      <ul>
+        <li>仔细读题，留够时间，答案写上<b>单位</b>；</li>
+        <li>先做熟悉、有把握的题；</li>
+        <li>考试有附录，已经给了公式；</li>
+        <li>复习简单的解题技巧：几何论证、解二次方程、简单微积分和化简、线性图像等。</li>
+      </ul>
+      <p>"几何论证"正好对应本页第二章的仰角、覆盖角问题；"线性图像"对应 p.22 那张损耗随高度、频率变化的对数坐标图。</p>
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>为什么 GEO 系统几乎不用考虑星间切换？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">GEO 卫星相对地面静止，地面站一直看得到同一颗卫星，不会因为"卫星飞走了"而切换；只有当用户移出这颗卫星的覆盖区（大约 1/4 个地球）时才会换卫星，这对一般用户极少发生。</div>
         </details>
       </div>
     </section>
 
-    <!-- ================= CH 3 ================= -->
-    <section class="chapter" id="ch3">
-      <div class="chapter-head"><span class="chapter-num">第三章</span><h2>信号从天上到地面，一路经历了什么</h2></div>
-
-      <h3><span class="zh-num">3.1</span>决定链路质量的三个因素</h3>
-      <p>回忆一下Part A第五章讲的地面传播模型——距离越远、频率越高，损耗越大。卫星链路面对的是同一套物理规律，只不过多了两层新的复杂性：</p>
-      <ul>
-        <li><b>距离</b>——收发天线之间的距离，同样是频率越高、轨道越高，路径损耗越大，这跟地面传播的逻辑完全一致。</li>
-        <li><b>偏离波束中心的程度</b>——卫星的天线波束是瞄准地面上某一个特定点打过去的，正对着这个"瞄准点"的地方信号最强，离瞄准点越远（哪怕还在覆盖范围内），信号也会逐渐减弱——这跟蜂窝基站的天线方向图有点像，只是尺度大了几个数量级。</li>
-        <li><b>大气衰减</b>——信号要穿过大气层，会被氧气、水汽吸收一部分能量。仰角越低，信号穿过大气层的路径就越倾斜、越长，衰减也就越严重（回忆第一章的类比：贴近地平线看远处的东西，中间"挡"的空气最多）。这也是为什么系统设计时不会把最小可用仰角设为理论上限的0°，而是留出安全余量。</li>
-      </ul>
-
-      <h3><span class="zh-num">3.2</span>三种业务类型</h3>
-      <p>按照服务对象的不同，卫星业务分成三类：<b>FSS（固定卫星业务）</b>连接的是固定不动的地面站；<b>BSS（广播卫星业务）</b>专门做电视、广播的直播分发；<b>MSS（移动卫星业务）</b>服务飞机、船舶、陆地车辆这类会移动的终端。三者往往对应不同的轨道选择——FSS和BSS大多用GEO（覆盖广、天线不用动），MSS则更常搭配LEO或MEO（信号强、适合移动终端接收）。</p>
-
-      <h3><span class="zh-num">3.3</span>地面站：天线越大，"嗓门"和"耳朵"越好</h3>
-      <p>地面站是卫星链路在地面这一端的出口，按天线口径大小分成三类：</p>
-      <div class="tblwrap"><table><thead><tr><th>类型</th><th>天线直径</th></tr></thead><tbody>
-        <tr><td>大型地面站</td><td>10–60 m</td></tr>
-        <tr><td>小型地面站</td><td>1–10 m</td></tr>
-        <tr><td>VSAT 甚小口径终端</td><td>0.3–0.9 m</td></tr>
-      </tbody></table></div>
-      <p>天线越大，能收集/汇聚的信号能量越多，能承载的话务容量也就越大——这跟Part A里"信道数越多的蜂窝，规模效应越明显"背后的道理是相通的：资源池越大，单位资源的利用效率往往越高。VSAT这种小型终端虽然容量有限，但成本低、部署灵活，广泛用在加油站、连锁店这类需要大量分布式接入点、但每个点数据量不大的场景。</p>
-      <p>实际组网时，卫星通信主要有三种配置：一是<b>点对点</b>，两个地面站之间建一条专线；二是<b>点对多点</b>，一个发射站对多个接收站广播（典型如电视直播）；三是<b>枢纽-辐射式</b>，一个中心枢纽站和一大群分散的远程客户端站通信，客户端之间要互相"说话"，都得经过枢纽站中转——这种结构常见于连锁企业的VSAT组网。</p>
-    </section>
-
-    <!-- ================= CH 4 ================= -->
-    <section class="chapter" id="ch4">
-      <div class="chapter-head"><span class="chapter-num">第四章</span><h2>卫星版的"分蛋糕"：多址接入</h2></div>
-
-      <h3><span class="zh-num">4.1</span>先按频率切一刀</h3>
-      <p>还记得第一篇开头讲的FDMA/TDMA/CDMA吗？卫星通信同样要解决"很多个地面站怎么共用同一颗卫星的转发能力"这个问题，用的思路完全是同一套。第一步通常先用<b>FDMA</b>把卫星的总容量切成若干个物理信道——比如把C波段500 MHz的带宽，通过频率复用技术切成24个40 MHz的信道，每个信道之间留4 MHz的保护带防止相邻信道互相串扰，之后再在每个物理信道内部做进一步的细分。</p>
-
-      <h3><span class="zh-num">4.2</span>固定分配 vs 按需分配</h3>
-      <p>信道切好之后，还有一个问题：这些信道是永久分配给固定的地面站，还是可以按需动态调配？两种思路，跟Part A讲的FCA/DCA其实是同一对矛盾在卫星场景里的翻版：</p>
-      <ul>
-        <li><b>固定分配多址（FAMA）</b>——容量永久划给各个站，实现简单，但如果某个站话务量忽高忽低，分给它的固定容量要么经常闲置、要么经常不够用，效率不高。</li>
-        <li><b>按需分配多址（DAMA）</b>——容量根据实际需求动态重新分配，效率更高，但需要一套协调机制来决定"这一刻该把资源分给谁"。</li>
-      </ul>
-      <p>以<b>DAMA-FDMA</b>为例，具体的协调方式是：把一批子信道当成一个公共资源池，哪个地面站需要建立一条全双工链路，就临时从池子里申请一对子信道；这个申请过程靠一条专门的<b>公共信令信道（CSC）</b>来协调——CSC本身用一个不断重复的、含50个时隙的TDMA帧，第一个时隙用来同步，其余49个时隙固定分给49个地面站，每个站在自己的时隙里广播"我要用哪些子信道"，别的站听到之后就知道这些信道已经被占用，不会再去抢。</p>
-
-      <h3><span class="zh-num">4.3</span>TDMA：为什么在卫星上格外划算</h3>
-      <p>TDMA的基本逻辑跟第一篇讲的完全一样——大家共用同一个频率，轮流分时隙发送，卫星收到之后把信号转发/广播给所有地面站，每个站只在自己的时隙里发、在约定的时隙里收。总体而言，<b>TDMA在卫星通信里比FDMA更划算</b>，原因是TDMA需要预留的"保护时间"和控制开销，占用的容量比FDMA需要预留的"保护频带"更小；如果卫星天线做得足够精细（窄波束、多波束），在更高的Ku/K波段，这个效率优势还能进一步放大。</p>
-      <div class="formula-card">
-        <div class="flbl">SS-TDMA（星上交换TDMA）</div>
-        <div class="fexpr">要实现N个覆盖区域间的全连通，需要 N! 种切换模式</div>
-        <div class="fmeaning">这是DAMA-TDMA的一种高级形式：卫星本身具备"交换"能力，能动态地把上行波束和下行波束按需配对——比如让区域1的上行信号被转发到区域3的下行波束里。每一种配对方式叫一个<b>模式</b>，卫星按地面指令，最快每个时隙切换一次模式。这跟Part A第七章"合法簇大小N=i²+ij+j²"那种组合数学的味道很像——都是在给定约束下，穷举所有可能的资源配对方式。</div>
-      </div>
-    </section>
-
-    <!-- ================= CH 5 ================= -->
-    <section class="chapter" id="ch5">
-      <div class="chapter-head"><span class="chapter-num">第五章</span><h2>卫星网络：数据怎么路由，用户怎么切换</h2></div>
-
-      <h3><span class="zh-num">5.1</span>两颗卫星之间要不要"抄近路"</h3>
-      <p>如果通话的两个人分别在两颗不同卫星的覆盖范围内，数据该怎么传？取决于这两颗卫星之间有没有<b>星间链路（ISL）</b>——一条直接连接两颗卫星、不经过地面的链路：</p>
-      <ul>
-        <li><b>有ISL</b>：数据可以直接在太空中从一颗卫星传给另一颗，全程只需要1个上行链路加1个下行链路，地面需要的网关数量也更少——相当于抄了一条近路。</li>
-        <li><b>没有ISL</b>：数据必须先从源地面站上行到第一颗卫星，下行到一个地面网关，经过地面网络传输，再上行到第二颗卫星，最后下行到目的地面站——全程需要2个上行链路加2个下行链路，多绕了地面这一大圈。</li>
-      </ul>
-
-      <h3><span class="zh-num">5.2</span>四种切换：不只是"人在动"这么简单</h3>
-      <p>Part A第十章讲过的切换，触发原因只有一个——用户移动，信号变弱。但在MEO/LEO系统里，<b>卫星自己也在飞</b>，这就多出了好几种切换不是由用户移动触发的、而是由卫星运动触发的场景：</p>
-      <div class="worked">
-        <summary><span class="wtag">分类</span>卫星系统里的四种切换</summary>
-        <div class="wbody">
-          <div class="wstep"><div class="wn">1</div><div class="wtext"><b>星内切换</b>——用户在同一颗卫星覆盖范围内的不同扇区之间移动，触发的切换。这跟地面蜂窝网络里"小区内切换"的概念几乎一模一样。</div></div>
-          <div class="wstep"><div class="wn">2</div><div class="wtext"><b>星间切换</b>——用户在两颗卫星的覆盖范围之间移动，或者卫星本身飞走了、移出了用户所在的覆盖范围。这跟地面网络的"小区间切换"类似，但触发原因多了"卫星自己飞走"这一条，是地面系统完全不会遇到的新情况。</div></div>
-          <div class="wstep"><div class="wn">3</div><div class="wtext"><b>网关切换</b>——卫星飞行导致它离开了当前所连接的地面网关的覆盖范围，即便用户本身完全没动，这次切换也照样会发生。</div></div>
-          <div class="wstep"><div class="wn">4</div><div class="wtext"><b>系统间切换</b>——用户设备在卫星系统和地面蜂窝系统之间来回切换（比如手机走出地面网络覆盖区，自动接上卫星信号，或反过来），由信号强度和QoS表现驱动，属于一种"垂直切换"。</div></div>
-        </div>
-      </div>
-      <p>把这四种切换和Part A的软/硬切换对照着看会更清楚：卫星系统同样需要在"先断后连"和"先连后断"之间做选择，只是多了"卫星自己也在移动"这个变量，使得切换发生的频率和触发原因，比纯地面系统丰富得多。</p>
-    </section>
-
     <div class="next-up">
-      <div class="lbl">三部曲讲完了</div>
-      <h4>蜂窝、无线、卫星——一条完整的逻辑线</h4>
-      <p>从"一个大塔不够用"到"切成蜂窝、复用频率"，从"没有基站怎么组网"到"把基站搬到天上要付出什么代价"——三篇文章其实一直在回答同一个问题的不同版本：<b>怎么用有限的资源，服务尽可能多、尽可能分散的用户</b>。接下来如果想考前刷题、查公式、翻记忆卡片，可以打开同一个仓库里的 <a href="app.html">互动学习小程序</a> 去练习巩固。</p>
+      <div class="lbl">接下来</div>
+      <h4><a href="bc-practice.html">Part B/C 练习：概念题、计算题和随机出题</a></h4>
+      <p>每题都链接回本页对应章节，答错了可以直接回来看。</p>
     </div>
-
   </main>
 </div>
 
@@ -410,5 +743,5 @@ const observer = new IntersectionObserver((entries)=>{
 }, {rootMargin:'-10% 0px -70% 0px', threshold:0});
 chapters.forEach(c=>{ const el=document.getElementById(c.id); if(el) observer.observe(el); });
 </script>
-
-</body></html>
+</body>
+</html>
