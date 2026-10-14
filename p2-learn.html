@@ -456,7 +456,7 @@ window.MathJax = {
           <div class="wstep"><div class="wn">2</div><div class="wtext">余量：−113.06 − (−118) = 4.94 dB。</div></div>
           <div class="wstep"><div class="wn">3</div><div class="wtext">阴影方差 \(\sigma_\psi^2\) = MSE = 3.36，<b>标准差</b> \(\sigma_\psi=\sqrt{3.36}=1.833\)。<div class="calc">P_out = Q(4.94 / 1.833) = Q(2.69) ≈ 0.0036</div></div></div>
           <div class="wans">中断概率约 0.36%，低于 1% 的目标</div>
-          <p style="margin-top:12px">易错：讲义算式里分母写的是 "3.36"，实际要用它的平方根 1.833。MSE 是方差，Q 函数里除的是标准差。</p>
+          <p style="margin-top:12px">易错：分母是 \(\sqrt{3.36}=1.833\)（讲义 p.16 写的就是 √3.36），不是 3.36。题目给的 MSE 是<b>方差</b> σ²，单位 dB²；Q 函数里要除的是<b>标准差</b> σ，单位 dB，这样"余量 ÷ σ"才是没有单位的"几个标准差"。错除 3.36 会得到 Q(1.47) ≈ 0.071，比正确答案大 20 倍。</p>
         </div>
       </div>
 
