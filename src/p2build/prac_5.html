@@ -1,0 +1,65 @@
+  <div class="group" id="P5"><h2>Practice 5 · MIMO</h2><span>讲义第 4 章 p.30–34、第 5 章 · 第 12 周</span></div>
+
+  <article class="ex" id="p5q1">
+    <header><span class="pg">P5 · Q1</span><h3>三个子信道的注水容量</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 5</span></div>
+      <p>Consider a 3-channel MIMO system. The SNRs for the three channels are 80, 40, and 40. The channel bandwidth is 10MHz. Assume informed transmitter and find the channel capacity using the Water-filling method.</p>
+    </div>
+    <div class="chips"><span class="chip">注水法</span><span class="chip">informed transmitter</span><span class="chip src">讲义第 2 章 p.54–57；第 5 章 p.40</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>先假设三个都分到功率：\(\sum_{i=1}^{3}\big(\tfrac1{\gamma_0}-\tfrac1{\gamma_i}\big)=1\Rightarrow\dfrac3{\gamma_0}=1+\dfrac1{80}+\dfrac1{40}+\dfrac1{40}=1.0625\)。</li>
+        <li>\(\gamma_0=3/1.0625=2.82\)。三个 SNR（80、40、40）都大于 2.82，假设成立，不用去掉任何子信道。</li>
+        <li>功率：\(P_1/P=1/2.82-1/80=0.342\)，\(P_2/P=P_3/P=1/2.82-1/40=0.329\)。</li>
+        <li>容量：\(C=B\sum\log_2(\gamma_i/\gamma_0)=10\text{ MHz}\times[\log_2(28.33)+2\log_2(14.17)]=10\times(4.82+7.65)\)。</li>
+      </ol>
+      <div class="ans">C ≈ 124.7 Mbps ≈ 125 Mbps</div>
+      <div class="official"><b>官方答案：</b>125 Mbps ✓</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p5q2">
+    <header><span class="pg">P5 · Q2</span><h3>推导 Alamouti 码的判决变量</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 5</span></div>
+      <p>An Alamouti scheme transmits two complex-value symbols, \(u_1\) and \(u_2\), over 2 symbol duration using 2 antennas A and B. The transmitted symbols for the first symbol duration are \(x_A(1)=u_1\) and \(x_B(1)=u_2\), and for the second symbol duration are \(x_A(2)=-u_2^*\) and \(x_B(2)=u_1^*\). Let the channel gains be, \(h_A(1)=h_A(2)=h_A\) and \(h_B(1)=h_B(2)=h_B\), \(h_A,h_B\sim\mathcal N(0,1)\). Assume channel noise \(\sim\mathcal N(0,N_0)\). Derive the decision variable.</p>
+    </div>
+    <div class="chips"><span class="chip">Alamouti STBC</span><span class="chip">共轭技巧</span><span class="chip">正交矩阵 F</span><span class="chip src">讲义第 5 章 p.21–26</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>两个时隙收到：\(y_1=h_Au_1+h_Bu_2+w_1\)，\(y_2=-h_Au_2^*+h_Bu_1^*+w_2\)。</li>
+        <li>对 \(y_2\) 取共轭，让未知量都以 \(u_1,u_2\)（不带共轭）出现：\(y_2^*=h_B^*u_1-h_A^*u_2+w_2^*\)。</li>
+        <li>写成矩阵：\(\begin{bmatrix}y_1\\y_2^*\end{bmatrix}=\underbrace{\begin{bmatrix}h_A&h_B\\h_B^*&-h_A^*\end{bmatrix}}_{\mathbf F}\begin{bmatrix}u_1\\u_2\end{bmatrix}+\begin{bmatrix}w_1\\w_2^*\end{bmatrix}\)，且 \(\mathbf F^H\mathbf F=(|h_A|^2+|h_B|^2)\mathbf I\)。</li>
+        <li>左乘 \(\mathbf F^H\)，两个符号完全分开：<div class="calc">z₁ = h_A* y₁ + h_B y₂* = (|h_A|² + |h_B|²)u₁ + h_A* w₁ + h_B w₂*</div><div class="calc">z₂ = h_B* y₁ − h_A y₂* = (|h_A|² + |h_B|²)u₂ + h_B* w₁ − h_A w₂*</div></li>
+        <li>噪声项方差 \((|h_A|^2+|h_B|^2)N_0\)。除以 \(\|\mathbf h\|=\sqrt{|h_A|^2+|h_B|^2}\) 归一化，噪声方差回到 \(N_0\)。</li>
+      </ol>
+      <div class="ans">z₁ = ‖h‖u₁ + w̃₁，z₂ = ‖h‖u₂ + w̃₂，‖h‖² = |h_A|² + |h_B|²，w̃₁, w̃₂ ~ N(0, N₀)</div>
+      <div class="official"><b>官方答案：</b>z₁ = ‖h₁‖u₁ + w̃₁，z₂ = ‖h₂‖u₂ + w̃₂（两个范数其实是同一个 ‖h‖）✓</div>
+      <div class="note">每个符号的有效 SNR ∝ |h_A|² + |h_B|²，两路衰落同时很小的概率很低，所以有二阶分集；发射端完全不需要知道信道。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p5q3">
+    <header><span class="pg">P5 · Q3</span><h3>分集-复用折中：8 × 4 MIMO 最高速率</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 5</span></div>
+      <p>Consider an 8 x 4 MIMO system. The diversity-multiplexing trade-off formula is given as, \(d(r)=(N-r)(M-r)\), where r and d are integers.</p>
+      <p>a) What is the maximum transmission rate per Hz for this channel if \(P_e=\gamma^{-d}\le10^{-3}\), where the SNR, γ = 10dB?</p>
+      <p>b) Given the r in part (a), what is the resulting \(P_e\)?</p>
+    </div>
+    <div class="chips"><span class="chip">分集增益 d</span><span class="chip">复用增益 r</span><span class="chip">R = r·log₂SNR</span><span class="chip src">讲义第 4 章 p.31–34</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>γ = 10 dB = 10。\(10^{-d}\le10^{-3}\) → d ≥ 3。</li>
+        <li>N = 8、M = 4，逐个试 r：<div class="tw"><table class="mini"><thead><tr><th>r</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead><tbody><tr><td>d = (8−r)(4−r)</td><td>32</td><td>21</td><td>12</td><td>5</td><td>0</td></tr></tbody></table></div>满足 d ≥ 3 的最大 r 是 3。</li>
+        <li>复用增益的定义 \(r=R/\log_2\mathrm{SNR}\)，所以 \(R=r\log_2\gamma=3\times\log_210=3\times3.32=9.97\) bit/s/Hz。</li>
+        <li>(b) r = 3 → d = 5 → \(P_e=10^{-5}\)。</li>
+      </ol>
+      <div class="ans">(a) ≈ 9.96 bit/s/Hz；(b) Pe = 10⁻⁵</div>
+      <div class="official"><b>官方答案：</b>9.96 bits/s/Hz；10⁻⁵ ✓</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>

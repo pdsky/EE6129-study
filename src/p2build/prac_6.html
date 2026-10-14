@@ -1,0 +1,77 @@
+  <div class="group" id="P6"><h2>Practice 6 · 均衡</h2><span>讲义第 6 章 · 第 13 周</span></div>
+
+  <article class="ex" id="p6q1">
+    <header><span class="pg">P6 · Q1</span><h3>二进制 PAM：加不加这个均衡器</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 6</span></div>
+      <p>Figure 1 shows a discrete-time model of a binary PAM communication system: \(a(n)\sqrt{E_b}\to H(z)\to(+w(n))\to U(z)\to z(n)\to\) Detector \(\to\hat a(n)\).</p>
+      <p>In the Figure, w(n) is a white Gaussian noise with the autocorrelation function, \(R_w(k)=\dfrac{N_0}{2}\delta(k)\).</p>
+      <p>The channel, H(Z), introduces Inter-Symbol Interference (ISI) and is modelled as, \(H(Z)=1+\alpha Z^{-1},\ 0<\alpha<\tfrac12\).</p>
+      <p>The transmitted data is modelled as a sequence of independent and identically distributed symbols, \(\{a_n\}\), where \(a_n\) is equally likely to be ±1. The detector detects the transmitted data according to the following rule, \(\hat a(n)=1\) if \(z(n)\ge0\), −1 if \(z(n)<0\).</p>
+      <p>Consider an equalizer design, where \(U(z)=1-\alpha z^{-1}\).</p>
+      <p>(a) Derive the expressions for the average bit error probability when no equalizer is used and when the above equalizer is used.</p>
+      <p>(b) The system is to operate at high signal-to-noise ratio. Will it be better for the system to operate with or without the above equalizer? Explain your answer.</p>
+    </div>
+    <div class="chips"><span class="chip">ISI 条件误码率</span><span class="chip">滤波后噪声方差</span><span class="chip">高 SNR 看最坏项</span><span class="chip src">讲义第 6 章 p.22–28</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>记 \(A=\sqrt{2E_b/N_0}\)。没有 ISI 时 \(P_e=Q(A)\)：信号幅度 \(\sqrt{E_b}\)，噪声标准差 \(\sqrt{N_0/2}\)。</li>
+        <li>(a) 不均衡：\(z(n)=\sqrt{E_b}(a_n+\alpha a_{n-1})+w(n)\)。前一个符号同号时幅度 \((1+\alpha)\sqrt{E_b}\)，异号时 \((1-\alpha)\sqrt{E_b}\)，各一半：<div class="calc">Pe = ½Q((1 − α)A) + ½Q((1 + α)A)</div></li>
+        <li>加均衡：总响应 \(H(z)U(z)=(1+\alpha z^{-1})(1-\alpha z^{-1})=1-\alpha^2z^{-2}\)，ISI 从 α 降到 α²，但噪声也经过 U(z)：方差变成 \(\tfrac{N_0}{2}(1+\alpha^2)\)（系数平方和）。</li>
+        <li>\(z(n)=\sqrt{E_b}(a_n-\alpha^2a_{n-2})+w'(n)\)，幅度 \((1\pm\alpha^2)\sqrt{E_b}\)，标准差放大 \(\sqrt{1+\alpha^2}\)：<div class="calc">Pe = ½Q( (1 − α²)/√(1 + α²) · A ) + ½Q( (1 + α²)/√(1 + α²) · A )</div></li>
+        <li>(b) 高 SNR 时误码率由 Q 参数<b>最小</b>的那一项决定。比较：不均衡 \(1-\alpha\)；均衡 \((1-\alpha^2)/\sqrt{1+\alpha^2}\)。</li>
+        <li>\(\dfrac{1-\alpha^2}{\sqrt{1+\alpha^2}}>1-\alpha\ \Leftrightarrow\ \dfrac{1+\alpha}{\sqrt{1+\alpha^2}}>1\ \Leftrightarrow\ (1+\alpha)^2>1+\alpha^2\ \Leftrightarrow\ 2\alpha>0\)，对 α &gt; 0 总成立。</li>
+      </ol>
+      <div class="ans">(b) 加均衡器更好：最坏情况的"有效距离"更大。例 α = 0.4：不均衡 0.6，均衡 0.78</div>
+      <div class="official"><b>官方答案：</b>表达式同上；(b) Better to operate with the proposed equalizer ✓</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p6q2">
+    <header><span class="pg">P6 · Q2</span><h3>ISI 信道：直接判决 vs 理想迫零</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 6</span></div>
+      <p>Consider the following discrete time model for binary transmission over an ISI channel. \(y_n=b_n+a\cdot b_{n-1}+w_n\), where \(b_n\in\{\pm1\}\) is the nth transmitted bit, a is a fixed real coefficient, 0 &lt; a &lt; 1 and \(w_n\) is i.i.d. zero-mean Gaussian with variance 0.1. \(\{b_n\}\) are equally likely and independent in n.</p>
+      <p>(a) Find the bit error probability \(P(\hat b_n\ne b_n)\) if \(\hat b_n=\mathrm{sgn}(y_n)\).</p>
+      <p>(b) Find the resulting BER if an ideal zero-forcing equalizer is used and the decision is made based on the sign of the equalizer output.</p>
+    </div>
+    <div class="chips"><span class="chip">条件误码率求平均</span><span class="chip">迫零噪声放大</span><span class="chip">等比级数</span><span class="chip src">讲义第 6 章 p.23–28</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>(a) 设 \(b_n=+1\)：\(b_{n-1}=+1\) 时幅度 1 + a，\(b_{n-1}=-1\) 时幅度 1 − a，噪声标准差 √0.1：<div class="calc">Pe = ½Q((1 + a)/√0.1) + ½Q((1 − a)/√0.1)</div></li>
+        <li>(b) 理想迫零：\(C(z)=\dfrac{1}{1+az^{-1}}=\sum_{k\ge0}(-a)^kz^{-k}\)（|a| &lt; 1 收敛），输出 \(b_n\) + 滤波后的噪声。</li>
+        <li>噪声方差 = 0.1 × 系数平方和 = \(0.1\sum_k a^{2k}=\dfrac{0.1}{1-a^2}\)。</li>
+        <li>\(P_e=Q\!\left(\dfrac{1}{\sqrt{0.1/(1-a^2)}}\right)=Q\!\left(\sqrt{\dfrac{1-a^2}{0.1}}\right)\)。</li>
+      </ol>
+      <div class="ans">(a) ½Q((1+a)/√0.1) + ½Q((1−a)/√0.1)；(b) Q(√((1−a²)/0.1))</div>
+      <div class="official"><b>官方答案：</b>同上 ✓</div>
+      <div class="note">比较：ZF 的 Q 参数是 √(1−a²)/√0.1，不均衡最坏项是 (1−a)/√0.1。√(1−a²) = √((1−a)(1+a)) &gt; 1−a，所以高 SNR 时 ZF 更好；但 a 接近 1 时 ZF 把噪声放大很多。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p6q3">
+    <header><span class="pg">P6 · Q3</span><h3>MMSE 线性均衡 vs 判决反馈均衡</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 6</span></div>
+      <p>Consider transmitting i.i.d. and equally likely binary amplitudes \(A_n\in\{\pm1\}\) over a 2-tap discrete-time ISI channel. The received samples can be expressed as, \(y_n=A_nx_0+A_{n-1}x_1+z_n\), where \(\{z_n\}\) is i.i.d. zero mean Gaussian noise, with variance \(\sigma^2\). Assume \(x_0=1\), \(x_1=1/2\), and \(\sigma^2=1\).</p>
+      <p>(a) Consider a linear equalizer, that has a parameter q and the decision variable, \(u_n=y_n+qy_{n+1}\). Determine q such that \(E[(u_n-A_n)^2]\) is minimized. With decisions based on the sign of \(u_n\), i.e. \(\hat A_n=\mathrm{sgn}(u_n)\), what is the resulting error probability?</p>
+      <p>(b) Consider a simple decision-feedback equalizer, that forms the decision variable, \(u_n=y_n-\hat A_{n-1}x_1\). \(\hat A_n\) is determined based on the sign of \(u_n\), \(\hat A_{n-1}\) is determined based on the sign of \(u_{n-1}\), etc. Assume that "time" starts at n = 1 and that \(A_0=0\). Determine the resulting error probability for large n (n → ∞).</p>
+    </div>
+    <div class="chips"><span class="chip">MMSE 求最优系数</span><span class="chip">DFE 错误传播</span><span class="chip">马尔可夫稳态</span><span class="chip src">讲义第 6 章 p.26–34</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>(a) 展开：\(u_n=A_n+\tfrac12A_{n-1}+z_n+q\big(A_{n+1}+\tfrac12A_n+z_{n+1}\big)\)，所以 \(u_n-A_n=\tfrac q2A_n+\tfrac12A_{n-1}+qA_{n+1}+z_n+qz_{n+1}\)。</li>
+        <li>各项独立、均值 0，均方值相加：\(E[(u_n-A_n)^2]=\tfrac{q^2}4+\tfrac14+q^2+1+q^2=1.25+2.25q^2\)，q = 0 最小。</li>
+        <li>q = 0 时 \(u_n=y_n\)，幅度 1.5 或 0.5：<div class="calc">Pe = ½Q(1.5) + ½Q(0.5) = ½(0.0668) + ½(0.3085) = 0.188</div></li>
+        <li>(b) 上一次判对：ISI 完全减掉，\(u_n=A_n+z_n\)，出错概率 \(Q(1)=0.159\)。</li>
+        <li>上一次判错（\(\hat A_{n-1}=-A_{n-1}\)）：\(u_n=A_n+A_{n-1}+z_n\)，幅度 2 或 0 各一半，出错概率 \(\tfrac12Q(2)+\tfrac12\cdot\tfrac12=0.261\)。</li>
+        <li>设长期误码率 p：\(p=(1-p)\times0.159+p\times0.261\) → \(p=\dfrac{0.159}{1-0.261+0.159}=0.177\)。</li>
+      </ol>
+      <div class="ans">(a) q = 0，Pe ≈ 0.19；(b) Pe ≈ 0.18</div>
+      <div class="official"><b>官方答案：</b>(a) q = 0，Pe ≈ 0.19；(b) Pe ≈ 0.18 ✓</div>
+      <div class="note">如果没有错误传播，DFE 的误码率就是 Q(1) = 0.159；错误传播让它升到 0.177，但仍比线性均衡的 0.188 好。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>

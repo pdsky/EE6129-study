@@ -1,0 +1,115 @@
+    <!-- ================= CH 4 ================= -->
+    <section class="chapter" id="ch4">
+      <div class="chapter-head"><span class="chapter-num">第四章</span><h2>连接入点都不要了：自组网 MANET</h2></div>
+
+      <h3><span class="zh-num">4.1</span>什么是自组网（p.42–43）</h3>
+      <p>移动自组网（MANET）是一群无线移动节点，在<b>没有任何基础设施</b>的地方，自由、动态地组织成临时网络（p.42）。几个关键词：</p>
+      <ul>
+        <li><b>没有固定控制器</b>：需要的话，控制器由节点动态选出来，或者把控制功能分散到所有节点；</li>
+        <li><b>三个"自"</b>：自建立、自组织、自管理（p.43）；</li>
+        <li><b>单跳和多跳</b>：802.11 简单，适合做单跳自组网，也能做覆盖几平方公里的多跳网；更小的范围用蓝牙组成身体域网、个域网（半径约 10 m）。</li>
+      </ul>
+
+      <h3><span class="zh-num">4.2</span>每个节点都是路由器（p.44–46）</h3>
+      <div class="figwrap">
+        <svg viewBox="0 0 460 200" role="img" aria-label="五个节点：A 与 B、D 相连；B 与 C 相连；D 与 E 相连；C 与 E 相连">
+          <path d="M80 150 L170 50 L300 50 L380 150 L240 150 Z" fill="none" stroke="var(--line-strong)" stroke-width="2"/>
+          <g font-weight="700" text-anchor="middle">
+            <circle cx="80" cy="150" r="13" fill="var(--accent)"/><text x="80" y="155" fill="#fff">A</text>
+            <circle cx="170" cy="50" r="13" fill="var(--ink-soft)"/><text x="170" y="55" fill="#fff">B</text>
+            <circle cx="300" cy="50" r="13" fill="var(--gold)"/><text x="300" y="55" fill="#fff">C</text>
+            <circle cx="240" cy="150" r="13" fill="var(--ink-soft)"/><text x="240" y="155" fill="#fff">D</text>
+            <circle cx="380" cy="150" r="13" fill="var(--gold)"/><text x="380" y="155" fill="#fff">E</text>
+          </g>
+          <text x="235" y="40" text-anchor="middle" font-size="12">A → C：经 B 中转</text>
+          <text x="310" y="180" text-anchor="middle" font-size="12">A → E：经 D 中转</text>
+        </svg>
+        <div class="cap">按讲义 p.44 的图重画。连线表示两个节点之间有足够好的无线信道。A 和 C、A 和 E 之间没有直达信道，B、D 必须充当路由器。</div>
+      </div>
+      <p>讲义 p.45：两个节点之间信道够好就<b>单跳</b>直连；否则就要<b>多跳</b>，由中间节点中继。自组网最大的特点是<b>所有节点都必须能随时充当路由器</b>。选出来的路径不能有环路，这样的路径才叫一条"路由"（route）。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>新节点 C 加入时，路由表怎么建起来（p.46）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">网络最开始至少有两个节点 A、B，各自广播信标，告诉别人自己的地址和位置。A、B 交换控制消息确认能直通，双方更新路由表。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">C 加入并广播信标。<b>情况一</b>：A 和 B 都能直接听到 C，三者之间全是单跳直连。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext"><b>情况二</b>：只有 B 听到 C。路由更新依次是：B 与 C 之间 → B 与 A 之间 → 再一次 B 与 C 之间。</div></div>
+          <div class="wans">情况二结束时，A 和 C 都知道"对方可以经 B 到达"，互相可达性得到确认</div>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">4.3</span>拓扑总在变：组合稳定性（p.47）</h3>
+      <p>节点会移动、电池会耗尽、软硬件会出故障，所以"谁能直通谁"一直在变，路由要跟着更新。拓扑更新本身要占带宽，留给用户数据的就少了。</p>
+      <div class="formula-card">
+        <div class="flbl">组合稳定性（p.47）</div>
+        <div class="fexpr">在给定时间窗内：拓扑变化的速度 ≤ 拓扑更新传遍全网的速度</div>
+        <div class="fmeaning">拓扑变化足够慢，所有必要的更新都能成功传播，网络就是组合稳定的。是否稳定不仅取决于网络的连通性，还取决于<b>路由协议的复杂度</b>和<b>节点的瞬时计算能力</b>。</div>
+      </div>
+      <p>隐藏节点问题在自组网里同样存在，会降低利用率（p.48），原理见第二章 2.7。</p>
+
+      <h3><span class="zh-num">4.4</span>自组网怎么选路（p.50–55）</h3>
+      <p>所有路由协议都要做两件事（p.50）：<b>路由识别</b>（通信前先找到一条路）和<b>路由重构</b>（节点或链路故障、拥塞时恢复）。按依据分两大类：</p>
+      <div class="tblwrap"><table><thead><tr><th>类别</th><th>协议</th><th>怎么做</th><th>优缺点</th></tr></thead><tbody>
+        <tr><td rowspan="3">基于拓扑（p.51–52）</td><td>周期性（表驱动）</td><td>不管用不用，定期交换路由信息，维护到每个节点的路由</td><td>要用时马上有路；平时开销大</td></tr>
+        <tr><td>按需</td><td>有数据要发时才做路由发现，通信期间维护</td><td>省开销；第一次发送要等路由发现</td></tr>
+        <tr><td>混合</td><td>本地区域内用周期性协议，全局用按需</td><td>折中</td></tr>
+        <tr><td>基于位置（p.52–54）</td><td>—</td><td>只需要自己、目的和邻居的位置；源节点通过位置服务查到目的位置写进消息</td><td>不用路由表和路由更新；但必须有准确、及时的位置信息，要有节点当位置服务器</td></tr>
+      </tbody></table></div>
+      <p>基于位置的协议里，邻居靠广播有限范围的信标发现；信标带着距离限制，收到的节点如果超出这个距离就丢弃（p.53）。</p>
+      <p><b>QoS 路由</b>（p.55）：QoS 是网络对用户承诺的一组可测指标：端到端时延、时延抖动、可用带宽、丢包率、吞吐量。自组网资源有限、拓扑多变，既要满足不同业务的 QoS、又要路由高效很难，所以需要专门的 QoS 路由。</p>
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>一个救灾现场的自组网，大部分时间没什么数据，偶尔有人要传一张照片。周期性协议和按需协议哪个更合适？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">按需协议。周期性协议会不停交换路由信息，在数据很少时纯属浪费带宽和电量；按需协议只在要传照片时才找路，多等一下路由发现可以接受。</div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ================= CH 5 ================= -->
+    <section class="chapter" id="ch5">
+      <div class="chapter-head"><span class="chapter-num">第五章</span><h2>把节点缩到极限：无线传感器网络</h2></div>
+
+      <h3><span class="zh-num">5.1</span>传感器网络和自组网有什么不同（p.56、p.76）</h3>
+      <p>传感器网络要靠自组网技术来实现，但自组网的协议不能直接照搬，因为有四点不同（p.56）：</p>
+      <div class="tblwrap"><table><thead><tr><th></th><th>传感器网络</th><th>一般自组网</th></tr></thead><tbody>
+        <tr><td>节点数量</td><td>多几个数量级</td><td>较少</td></tr>
+        <tr><td>部署与可靠性</td><td>密集部署，容易失效，拓扑变化非常频繁</td><td>相对稳定</td></tr>
+        <tr><td>通信方式</td><td>广播</td><td>点对点</td></tr>
+        <tr><td>资源</td><td>电量、计算能力、内存都很有限</td><td>相对充裕</td></tr>
+      </tbody></table></div>
+      <p>p.76 补充：传感器节点小、便宜、低功耗，集感知、处理、通信于一身；部署在被测现象内部或附近，可以随机撒在人进不去的地方或灾区，所以协议必须能<b>自组织</b>，节点之间要有效协作。</p>
+
+      <h3><span class="zh-num">5.2</span>通信结构和节点组成（p.57–58）</h3>
+      <p>节点散布在"传感区"里，各自采集数据，经<b>多跳、无基础设施</b>的方式传回<b>汇聚节点（sink）</b>；sink 再通过 Internet 或卫星连到任务管理节点，用户在那里看结果（p.57）。</p>
+      <p>p.58 的节点结构：</p>
+      <ul>
+        <li><b>感知单元</b>：传感器 + 模数转换器 ADC；</li>
+        <li><b>处理单元</b>：处理器 + 存储；</li>
+        <li><b>收发器</b>；</li>
+        <li><b>电源单元</b>（可以配发电装置，如太阳能）；</li>
+        <li>可选：<b>定位系统</b>、<b>移动装置</b>。</li>
+      </ul>
+      <p>设计时要考虑的因素（p.57）：可靠性、可扩展性、生产成本、工作环境、网络拓扑、硬件限制、传输介质、功耗。</p>
+
+      <h3><span class="zh-num">5.3</span>协议栈：五层 + 三个管理平面（p.59）</h3>
+      <div class="tblwrap"><table><thead><tr><th>层 / 平面</th><th>要求</th></tr></thead><tbody>
+        <tr><td>物理层</td><td>简单但稳健的调制、发射和接收技术</td></tr>
+        <tr><td>MAC 层</td><td>必须<b>省电</b>，并尽量减少和邻居广播的冲突</td></tr>
+        <tr><td>网络层</td><td>为传输层送来的数据选路</td></tr>
+        <tr><td>传输层</td><td>维持数据流</td></tr>
+        <tr><td>应用层</td><td>在上面构建各种应用</td></tr>
+        <tr><td>功率 / 移动 / 任务管理平面</td><td>监控各节点的电量、移动情况和任务分配</td></tr>
+      </tbody></table></div>
+      <p>整个协议栈要兼顾功率和路由，把数据和网络协议结合起来，省电地通信，并促进节点之间的协作。</p>
+      <div class="extra">
+        <div class="lbl">课外补充 · 为什么传感器网络特别在乎省电</div>
+        <p>节点通常靠一节电池工作几个月甚至几年，撒出去以后很难换电池。无线收发是最耗电的部分，所以 MAC 层常让节点大部分时间"睡觉"，只定期醒来收发；数据也尽量在中间节点合并（比如只报平均值），减少发送次数。这和第七章 IoT 里"在边缘先处理数据"的思路一样。</p>
+      </div>
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>为什么说传感器网络"用广播"会让自组网的点对点路由协议不太适用？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">传感器常常是"谁在附近谁收到"的广播式通信，而且关心的是"某片区域的温度"这类数据本身，而不是"把消息送给某个特定节点"。点对点协议要为每对节点维护路由，在节点极多、拓扑频繁变化的传感网里开销太大。</div>
+        </details>
+      </div>
+    </section>

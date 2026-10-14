@@ -1,0 +1,212 @@
+    <!-- ================= CH 0 ================= -->
+    <section class="chapter" id="ch0">
+      <div class="chapter-head"><span class="chapter-num">开篇</span><h2>Part 2 讲什么：从"信号怎么变坏"到"怎么救回来"</h2></div>
+      <p class="dropcap">Part 1 站在网络的高度看问题：小区怎么排、频率怎么复用、能装多少用户。Part 2 把镜头拉近到<b>一条无线链路</b>：信号从天线发出去，路上会变弱、会抖动、会叠出回声，接收机要怎样把原来的比特找回来。</p>
+      <p>整门课就是一条"先找毛病、再开药方"的逻辑线：</p>
+      <div class="tblwrap"><table><thead><tr><th>章</th><th>回答的问题</th><th>周次</th><th>练习</th></tr></thead><tbody>
+        <tr><td>第 1 章 概述 + 概率复习</td><td>无线系统有哪些；后面要用的概率工具</td><td>Week 7</td><td>—</td></tr>
+        <tr><td>第 2 章 无线信道</td><td>信号在路上怎么变坏：路径损耗、阴影、多径衰落；信道最多能传多快</td><td>Week 8–9</td><td>Practice 1、2</td></tr>
+        <tr><td>第 3 章 信号检测</td><td>收到一堆带噪声的波形，怎么判断发的是哪个符号；衰落让误码率变差多少</td><td>Week 9</td><td>Practice 3</td></tr>
+        <tr><td>第 4 章 分集</td><td>药方一：同一份信息走好几条独立的路</td><td>Week 10</td><td>Practice 4</td></tr>
+        <tr><td>第 5 章 MIMO</td><td>药方二：多根天线，既能分集又能并行传多路</td><td>Week 11</td><td>Practice 5</td></tr>
+        <tr><td>第 6 章 均衡</td><td>药方三：在接收端抵消码间干扰（ISI）</td><td>Week 12</td><td>Practice 6</td></tr>
+        <tr><td>第 7 章 OFDM</td><td>药方四：把宽带信道切成很多条平坦的窄带信道</td><td>Week 13</td><td>Practice 7</td></tr>
+      </tbody></table></div>
+      <p>考核（课程概览 p.2 和课上公告）：<b>CA 2 小测</b> 10%，10 月 23 日（周五，第 10 周）15:00–15:30，LT23，闭卷，范围 <b>Ch1b、Ch2、Practice 1–2</b>；<b>CA 3 作业</b> 15%，第 13 周交；<b>期末考试</b>中 Part 2 占 30%，期末卷的 Q1、Q2 两道大题都是 Part 2。</p>
+
+      <h3><span class="zh-num">0.1</span>重点地图：先抓什么</h3>
+      <p>每一节标题后面都有星级。星级是按 2023–2026 四份期末卷、Practice 1–7 和 Quiz 范围排出来的：</p>
+      <div class="legend"><span class="imp">★★★ 必考</span>历年卷反复出现，或 Quiz 必考<span class="imp i2">★★ 常考</span>出现过 1–2 次，或是必考题的前置知识<span class="imp i1">★ 了解</span>只考概念或没考过</div>
+      <p>正文里<mark class="hl">这样标出来的句子</mark>是要背下来或者一定要会算的结论；<b>橙色框</b>是每节的"考试重点"清单，<b>橙色虚线框</b>是易错点。</p>
+      <div class="tblwrap"><table><thead><tr><th>章</th><th>必须会的（★★★）</th><th>历年期末</th></tr></thead><tbody>
+        <tr><td>1 概率</td><td>期望、方差的性质（aX + b、独立变量相加）；高斯变量标准化后查 Q 表</td><td>每道算误码率的题都要用</td></tr>
+        <tr><td>2 信道</td><td>路径损耗 dB 式和图；阴影中断概率 Q(余量/σ)；平坦/选择性、快/慢判别；LCR 和 AFD 数错误；衰落余量；注水</td><td>Q1(a) 四年三次</td></tr>
+        <tr><td>3 检测</td><td>二进制 AWGN：星座维数、距离、P<sub>b</sub> = Q(d/2σ)</td><td>2025-26 S1 Q1(a)</td></tr>
+        <tr><td>4 分集</td><td>离散 SNR 分布下的 SD / MRC；阵列增益 g、分集增益 d；SD 中断概率；分集-复用折中</td><td>Q1(b)(i) 四年都考</td></tr>
+        <tr><td>5 MIMO</td><td>y = Hx + v；复用增益 min(N, M)、最大分集 N×M；容量 = 并行信道之和；不知道信道时的容量；Alamouti 正交性</td><td>Q1(b) 后半四年都考</td></tr>
+        <tr><td>6 均衡</td><td><mark class="hl">有残余 ISI 时的误码率 ½[Q((1−a)/σ)+Q((1+a)/σ)]</mark>；迫零长除法；均衡器输出噪声方差 σ²Σc²</td><td>Q2(a) 四年都考</td></tr>
+        <tr><td>7 OFDM</td><td>子载波数（B/N &lt; B<sub>c</sub>）；H<sub>k</sub> 的计算；CP 功率损失 10 log((NT<sub>s</sub>+T<sub>G</sub>)/NT<sub>s</sub>)；速率划分</td><td>Q2(b) 四年都考</td></tr>
+      </tbody></table></div>
+      <div class="extra">
+        <div class="lbl">课外补充 · 怎么读这一页</div>
+        <p>每一节都标了讲义页码，比如"第 2 章 p.16"就是 Chapter 2 PDF 的第 16 页。紫色框里是讲义以外的补充（直觉解释、讲义笔误、多算一步的验证），考试以讲义为准。每章末尾有"自测"，再往后是这一章的历年期末题。</p>
+      </div>
+    </section>
+
+    <!-- ================= CH 1 ================= -->
+    <section class="chapter" id="ch1">
+      <div class="chapter-head"><span class="chapter-num">第一章</span><h2>无线系统一览与概率复习</h2></div>
+
+      <h3><span class="zh-num">1.1</span>现有的无线系统（第 1a 章）<span class="imp i1">★ 了解</span></h3>
+      <p>这部分是背景知识，四份期末卷都没有出过题，Quiz 范围也只有 Ch1b，扫一眼即可。把讲义 p.3–12 压成一张表：</p>
+      <div class="tblwrap"><table><thead><tr><th>系统</th><th>关键数字</th><th>一句话</th></tr></thead><tbody>
+        <tr><td>蜂窝 1G→5G</td><td>2G 9.6–14.4 kbps；3G 384 kbps–2 Mbps；4G 1 Gbps；5G 20 Gbps</td><td>每一代都要在"速率 × 移动性"上有突破（p.3–4）</td></tr>
+        <tr><td>WiFi</td><td>802.11b 11 Mbps（DSSS）、802.11a/g 54 Mbps（OFDM）、802.11n 600 Mbps（MIMO-OFDM）</td><td>免授权 ISM 频段，随机接入（p.7–8）</td></tr>
+        <tr><td>蓝牙</td><td>2.4 GHz，BR 1 Mbps / EDR 2 Mbps，跳频</td><td>短距离；LE 版本给物联网用（p.9）</td></tr>
+        <tr><td>ZigBee（802.15.4）</td><td>250 kbps，低功耗，CSMA-CA</td><td>低速个域网（p.10）</td></tr>
+        <tr><td>卫星</td><td>GEO 约 39000 km vs LEO 约 2000 km</td><td>覆盖大，适合单向广播（p.11）</td></tr>
+        <tr><td>UWB</td><td>皮秒到纳秒级脉冲，GHz 带宽</td><td>不需要载波，测距能力强，多径可分辨（p.12）</td></tr>
+      </tbody></table></div>
+      <p>讲义 p.16 提出一个有意思的问题：<b>干扰是敌人还是朋友？</b></p>
+      <ul>
+        <li>当成噪声处理 → 敌人，用 <b>SINR</b> = P / (N + I) 衡量；</li>
+        <li>能把它解码出来（多用户检测 MUD）→ 不敌不友，Practice 2 第 3 题就是这个情形；</li>
+        <li>通过协作、认知加以利用 → 朋友（网络 MIMO、认知无线电）。</li>
+      </ul>
+      <p>认知无线电有三种工作方式（p.19）：<b>Overlay</b>（偷听并帮助原有用户的传输）、<b>Interweave</b>（找频谱空洞，见缝插针）、<b>Underlay</b>（和原有用户同时用，但把对它的干扰压到很低）。p.21–24 讲 M2M（机器对机器）通信和人打电话的区别：设备数量巨大、消息很短、对时延不敏感、对能耗非常敏感。</p>
+
+      <h3><span class="zh-num">1.2</span>事件的概率：四条规则<span class="imp i2">★★ 常考</span></h3>
+      <p>第 2–7 章几乎每个公式都是"某件坏事发生的概率"：中断概率、误码率、深衰落的概率。第 1b 章（Quiz 范围）就是把算这些概率要用的工具捋一遍。先从最简单的"事件"讲起。</p>
+      <p><b>几个名词</b>：做一次随机试验（掷一次骰子），所有可能结果的集合叫<b>样本空间</b>（{1, 2, 3, 4, 5, 6}，讲义叫 Universe）；样本空间里的一部分叫<b>事件</b>（"出偶数" = {2, 4, 6}）。每个结果等可能时，事件的概率 = 它包含的结果数 ÷ 总结果数。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>掷骰子与摸弹珠（第 1b 章 p.3–4）</summary>
+        <div class="wbody">
+          <p>事件 A：骰子出偶数 {2, 4, 6}；事件 B：出质数 {2, 3, 5}。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">各自概率：\(P(A) = 3/6\)，\(P(B) = 3/6\)，整个样本空间 \(P(\text{Universe}) = 6/6 = 1\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">"A 且 B"（交集 ∩，两件事同时发生）：既是偶数又是质数，只有 2 一个数：\(P(A\cap B) = 1/6\)。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">"A 或 B"（并集 ∪，至少一件发生）：{2, 3, 4, 5, 6}，共 5 个：\(P(A\cup B) = 5/6\)。用加法规则验证：\(3/6 + 3/6 - 1/6 = 5/6\)。减去的 1/6 就是 2 被数了两遍。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext"><b>条件概率</b> \(P(A\mid B)\) 读作"已知 B 发生了，A 发生的概率"。弹珠：袋里 3 红 4 蓝。B = 先摸出一个蓝的，\(P(B) = 4/7\)。B 发生以后袋里剩 3 红 3 蓝，这时 A = 摸出红的，\(P(A\mid B) = 3/6 = 1/2\)。已知条件改变了袋子里的情况，所以条件概率和原来的 \(P(A)=3/7\) 不一样。</div></div>
+          <div class="wans">P(A∪B) = 5/6，P(A∩B) = 1/6；摸弹珠 P(B) = 4/7，P(A|B) = 1/2</div>
+        </div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">四条规则（第 1b 章 p.5–9）</div>
+        <div class="fexpr">加法：\(P(A\cup B)=P(A)+P(B)-P(A\cap B)\)<br>乘法：\(P(A\cap B)=P(A)\,P(B\mid A)=P(B)\,P(A\mid B)\)<br>全概率：\(P(B)=\sum_i P(A_i)\,P(B\mid A_i)\)<br>贝叶斯：\(P(A_i\mid B)=\dfrac{P(A_i)P(B\mid A_i)}{\sum_j P(A_j)P(B\mid A_j)}\)</div>
+        <div class="fmeaning"><b>加法</b>算"或"；A、B 互斥（不可能同时发生）时交集为 0，直接相加。<b>乘法</b>算"且"：先 A 发生，再在 A 发生的条件下 B 发生。<b>全概率</b>是"分情况讨论再加起来"：把所有可能的情况 \(A_1, A_2,\dots\)（互斥、合起来是全部）各自算一遍再加权。<b>贝叶斯</b>反过来：已经看到结果 B，问是哪种情况造成的。</div>
+      </div>
+      <p><b>独立</b>：如果 A 发不发生完全不影响 B，即 \(P(B\mid A)=P(B)\)，乘法规则就简化成 <mark class="hl">\(P(A\cap B)=P(A)P(B)\)，独立事件同时发生的概率等于各自概率相乘</mark>（p.6）。这一条是第 4 章分集的全部基础：两条独立的路各有 10% 的时间中断，同时中断只有 0.1 × 0.1 = 1%。Practice 2 第 2 题"两个基站同时收不到"也是这个道理：\(P_{out}=[Q(\Delta/\sigma)]^2\)。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>全概率与贝叶斯：信道好坏与误码（自编）</summary>
+        <div class="wbody">
+          <p>已知条件：信道有 80% 的时间是"好"状态，误码率 10⁻⁴；20% 的时间是"深衰落"状态，误码率 10⁻²。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext"><b>全概率</b>：平均误码率 = 分两种情况再加权。<div class="calc">P(错) = 0.8 × 10⁻⁴ + 0.2 × 10⁻² = 0.00008 + 0.002 = 0.00208</div>平均误码率几乎全由那 20% 的深衰落决定。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext"><b>贝叶斯</b>：收到一个错比特，它发生在深衰落期间的概率是多少？<div class="calc">P(衰落 | 错) = 0.2 × 10⁻² / 0.00208 = 0.002 / 0.00208 ≈ 96%</div></div></div>
+          <div class="wans">平均误码率 2.08×10⁻³；出错时 96% 是在深衰落里</div>
+          <p style="margin-top:12px">这个例子正是第 4 章"离散 SNR 分布求平均误码率"的套路：期末 2023-24 Q1(b)(i)、2025-26 S1 Q1(b)(i) 都是先列出每种 SNR 的概率，算出各自的误码率，再按概率加权。</p>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">1.3</span>随机变量、期望和方差<span class="imp">★★★ 必考</span></h3>
+      <p><b>随机变量</b>就是"取值随机的数"，比如信噪比 γ、噪声 w、接收功率的 dB 值。描述它最重要的两个数：</p>
+      <ul>
+        <li><b>期望（均值）</b> \(E[X]\)：按概率加权的平均值，"平均来说是多少"；</li>
+        <li><b>方差</b> \(\mathrm{Var}(X)=\sigma^2\)：偏离平均值的平方的平均，"抖得有多厉害"。<b>标准差</b> σ = √方差，和 X 同单位。</li>
+      </ul>
+      <div class="formula-card">
+        <div class="flbl">定义（第 1b 章 p.10–11）</div>
+        <div class="fexpr">\(E[X]=\sum_x x\,P_X(x)\)　　\(\mathrm{Var}(X)=E\big[(X-E[X])^2\big]=E[X^2]-(E[X])^2\)</div>
+        <div class="fmeaning">第二个等号最常用：先算平方的平均，再减去平均的平方。</div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">必须记住的五条性质（p.10–11、p.14）</div>
+        <div class="fexpr">\(E[aX+b]=aE[X]+b\)　　\(\mathrm{Var}(aX+b)=a^2\,\mathrm{Var}(X)\)<br>\(E[X+Y]=E[X]+E[Y]\)（任何时候都成立）<br>X、Y 独立：\(\mathrm{Var}(X+Y)=\mathrm{Var}(X)+\mathrm{Var}(Y)\)，\(E[XY]=E[X]E[Y]\)</div>
+        <div class="fmeaning">记忆方法：<b>加常数只挪位置、不改变抖动</b>（方差不变）；<b>乘 a 把抖动放大 a 倍，方差放大 a² 倍</b>；<b>独立的抖动叠在一起，方差相加</b>（标准差不相加）。</div>
+      </div>
+      <p>这几条性质在期末卷里反复出现：</p>
+      <ul>
+        <li><b>y = s + w</b>（2025-26 S1 Q1(a)）：s = +1 固定时，<mark class="hl">E[y] = 1 + E[w] = 1，Var[y] = Var[w]</mark>。加常数不改变方差。</li>
+        <li><b>均衡器输出噪声</b>（2025-26 S1 Q2(a)、S2 Q2(a)）：w′ = c₁w₁ + c₂w₂ + …，各 w 独立、方差 σ²，于是 <mark class="hl">Var[w′] = σ²(c₁² + c₂² + …)</mark>：系数要平方，再相加。</li>
+        <li><b>Alamouti 检测</b>（2025-26 S2 Q1(b)(iii)）：ŝ = s + Gw/‖h‖²，乘常数 1/‖h‖²，方差乘 1/‖h‖⁴。</li>
+      </ul>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>离散 SNR 分布的均值、方差和 aX + b（自编，Quiz 题型）</summary>
+        <div class="wbody">
+          <p>已知条件：某链路的 SNR（线性值）X 以 1/3 的概率是 8，2/3 的概率是 11（Practice 4 第 2 题的数）。另有 Y = 2X + 3。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">均值：<div class="calc">E[X] = 8 × 1/3 + 11 × 2/3 = 2.667 + 7.333 = 10</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">方差先算平方的平均：<div class="calc">E[X²] = 64 × 1/3 + 121 × 2/3 = 21.33 + 80.67 = 102</div><div class="calc">Var(X) = 102 − 10² = 2，σ = √2 = 1.414</div></div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">Y = 2X + 3：<div class="calc">E[Y] = 2 × 10 + 3 = 23；Var(Y) = 2² × 2 = 8</div>"+3"对方差没有影响。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">两条独立链路的 SNR 相加（MRC，第 4 章）：<div class="calc">E[X₁ + X₂] = 20；Var(X₁ + X₂) = 2 + 2 = 4</div></div></div>
+          <div class="wans">E[X] = 10，Var(X) = 2；E[Y] = 23，Var(Y) = 8；两路之和均值 20、方差 4</div>
+        </div>
+      </div>
+      <div class="pitfall">
+        <div class="lbl">⚠ 易错</div>
+        <ul>
+          <li><b>方差和标准差搞混</b>：题目给"variance"、"MSE"、"σ²"时，进 Q 函数之前一定要先开根号。</li>
+          <li><b>Var(aX) 写成 a·Var(X)</b>：系数要平方。Var(−X) = Var(X)，减号也会被平方掉。</li>
+          <li><b>独立变量相加时把标准差相加</b>：要加的是方差。</li>
+          <li><b>SNR 用 dB 求平均</b>：要先把 dB 换成线性值再平均，最后再换回 dB（期末 2023-24 Q1(b)(i) 就考这个）。</li>
+        </ul>
+      </div>
+
+      <h3><span class="zh-num">1.4</span>连续随机变量：PDF 和 CDF<span class="imp i2">★★ 常考</span></h3>
+      <p>噪声、衰落这类量可以取任意实数，叫<b>连续随机变量</b>。它取"某一个确切值"的概率是 0，只能问"落在某个区间里"的概率，所以要用<b>概率密度函数（PDF）</b> \(p_X(x)\) 来描述（p.12）：</p>
+      <div class="formula-card">
+        <div class="flbl">PDF 与 CDF（第 1b 章 p.12–13）</div>
+        <div class="fexpr">\(P(a\le X\le b)=\displaystyle\int_a^b p_X(x)\,dx\)　　\(\displaystyle\int_{-\infty}^{\infty}p_X(x)\,dx=1\)<br>\(F_X(x)=P(X\le x)=\displaystyle\int_{-\infty}^{x}p_X(t)\,dt\)　　\(E[X]=\displaystyle\int x\,p_X(x)\,dx\)</div>
+        <div class="fmeaning"><b>概率 = PDF 曲线下的面积</b>。PDF 的值本身不是概率，可以大于 1；整条曲线下的总面积是 1。<b>CDF</b> \(F_X(x)\) 是"X 不超过 x 的概率"，从 0 单调涨到 1；PDF 是 CDF 的导数。离散变量把积分换成求和。</div>
+      </div>
+      <p>后面会用到的三个连续分布：</p>
+      <div class="tblwrap"><table><thead><tr><th>分布</th><th>PDF</th><th>均值 / 方差</th><th>用在哪</th></tr></thead><tbody>
+        <tr><td>均匀 U(0, a)</td><td>1/a，0 ≤ x ≤ a</td><td>a/2，a²/12</td><td>Practice 1 第 3 题的功率时延分布（a = 10 µs → 5 µs、σ = 2.89 µs）</td></tr>
+        <tr><td>指数</td><td>\(\frac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}\)</td><td>\(\bar\gamma\)，\(\bar\gamma^2\)</td><td>瑞利衰落下的 SNR（第 2 章）：<mark class="hl">\(P(\gamma\lt \gamma_0)=1-e^{-\gamma_0/\bar\gamma}\)</mark></td></tr>
+        <tr><td>高斯 N(μ, σ²)</td><td>\(\frac{1}{\sigma\sqrt{2\pi}}e^{-(x-\mu)^2/2\sigma^2}\)</td><td>μ，σ²</td><td>噪声、阴影衰落的 dB 值（下一节）</td></tr>
+      </tbody></table></div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>由 PDF 求 CDF：瑞利衰落下 SNR 低于门限的概率</summary>
+        <div class="wbody">
+          <p>已知条件：SNR 服从指数分布，平均 \(\bar\gamma\) = 100（20 dB）。求 SNR 低于 10（10 dB）的概率。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">CDF 就是 PDF 从 0 积到门限：<div class="calc">P(γ &lt; γ₀) = ∫₀^γ₀ (1/γ̄) e^(−γ/γ̄) dγ = 1 − e^(−γ₀/γ̄)</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">代入 γ₀/γ̄ = 10/100 = 0.1：<div class="calc">P = 1 − e^(−0.1) = 0.095</div></div></div>
+          <div class="wans">约 9.5%：平均 20 dB 的瑞利信道，近一成时间比平均低 10 dB 以上</div>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">1.5</span>高斯分布和 Q 函数：本课最常用的一张表<span class="imp">★★★ 必考</span></h3>
+      <p>噪声、阴影衰落的 dB 值，都服从高斯（正态）分布 \(\mathcal N(\mu,\sigma^2)\)（p.14）。μ 决定钟形曲线的中心在哪，σ 决定它有多胖。我们最常问的问题是：<b>它比平均值低（或高）超过一定量的概率是多少？</b>这个概率没有初等公式，要查 <b>Q 函数表</b>（考试附录会给）。</p>
+      <div class="formula-card">
+        <div class="flbl">Q 函数（第 2 章 p.15；考卷 Appendix A 给 Q 函数表）</div>
+        <div class="fexpr">\(Q(x)=\displaystyle\int_x^{\infty}\frac{1}{\sqrt{2\pi}}e^{-u^2/2}\,du=P(Z>x),\quad Z\sim\mathcal N(0,1)\)</div>
+        <div class="fmeaning">Q(x) 是<b>标准</b>正态变量 Z（均值 0、方差 1）大于 x 的概率，也就是钟形曲线右边那条"尾巴"的面积。x 越大，尾巴越小。</div>
+      </div>
+      <div class="key">
+        <div class="lbl">★ 考试重点 · 任何高斯概率都三步转成 Q 函数</div>
+        <ol class="steps">
+          <li><b>找距离</b>：门限离均值多远？距离 = |门限 − μ|。</li>
+          <li><b>除以标准差</b>：k = 距离 / σ，意思是"离均值 k 个标准差"。σ 一定是<b>标准差</b>，给的是方差要先开根号。</li>
+          <li><b>查表</b>：<mark class="hl">\(P(X>\mu+k\sigma)=Q(k)\)，由对称性 \(P(X\lt \mu-k\sigma)=Q(k)\)</mark>。问的是"靠近均值那一侧"时用 \(1-Q(k)\)。</li>
+        </ol>
+        <p>还有两个常用关系：\(Q(0)=0.5\)；\(Q(-x)=1-Q(x)\)。反过来用（已知概率求 k）要会倒查表：Q(k) = 0.01 → k ≈ 2.33。</p>
+      </div>
+      <div class="tblwrap"><table><thead><tr><th>x</th><th>0</th><th>0.5</th><th>1</th><th>1.5</th><th>2</th><th>2.33</th><th>2.69</th><th>3</th><th>3.09</th></tr></thead><tbody>
+        <tr><td>Q(x)</td><td>0.5</td><td>0.309</td><td>0.159</td><td>0.0668</td><td>0.0228</td><td>0.0099</td><td>0.0036</td><td>0.00135</td><td>0.001</td></tr>
+      </tbody></table></div>
+      <p>这张小表里的数在历年卷中反复出现：Q(0.5)、Q(1)、Q(1.5)、Q(2) 是"残余 ISI 误码率"题的常客，Q(2.33) ≈ 0.01 用于"中断概率 1%"，Q(3) = 1.35×10⁻³ 用于"P<sub>b</sub> = 1.35×10⁻³"（2024-25 Q1(b)(i)）。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>Practice 1 第 2 题：正着用和倒着用 Q 函数</summary>
+        <div class="wbody">
+          <p>已知条件：接收功率（dBm）服从对数正态分布，即 dB 值 \(\sim\mathcal N(\mu_\psi,\sigma_\psi^2)\)，要高于 10 dBm 才不中断。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">(a) μ = 15 dBm、σ = 8 dB。门限比均值低 15 − 10 = 5 dB，是 5/8 = 0.625 个标准差：<div class="calc">P_out = P(X &lt; μ − 0.625σ) = Q(0.625) ≈ 0.266</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">(b) σ = 4 dB，要 P<sub>out</sub> &lt; 1%，求 μ。倒着查表：Q(k) = 0.01 → k = 2.33。门限要比均值低 2.33 个标准差以上：<div class="calc">μ − 10 &gt; 2.33 × 4 = 9.3 → μ &gt; 19.3 dBm</div></div></div>
+          <div class="wans">(a) 约 26%；(b) μ &gt; 19.3 dBm（官方答案 19.32）</div>
+          <p style="margin-top:12px">2023-24 期末 Q1(a)(ii) 是同一个方程换了未知数：已知余量 10 dB、P<sub>out</sub> &lt; 1%，求方差上限：10/σ &gt; 2.33 → σ &lt; 4.3 dB → σ² &lt; 18.5 dB²。</p>
+        </div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>区间概率与 Y = aX + b（第 1b 章 p.14 留的问题）</summary>
+        <div class="wbody">
+          <p>已知条件：X ~ N(2, 9)，Y = 3X − 1。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">σ = 3。P(X &gt; 8)：(8 − 2)/3 = 2 个标准差 → Q(2) ≈ 0.0228。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">P(−1 &lt; X &lt; 5)：两端都离均值 3 = 1 个标准差，中间部分 = 1 − 两条尾巴：<div class="calc">1 − 2Q(1) = 1 − 2 × 0.159 = 0.683</div></div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">高斯变量做线性变换仍是高斯：<div class="calc">E[Y] = 3 × 2 − 1 = 5；Var(Y) = 3² × 9 = 81 → Y ~ N(5, 81)</div></div></div>
+          <div class="wans">0.0228；0.683；Y ~ N(5, 81)</div>
+        </div>
+      </div>
+      <p>最后一条（p.14）：两个<b>独立</b>的随机变量，联合 PDF 等于各自 PDF 相乘：\(p_{X,Y}(x,y)=p_X(x)\,p_Y(y)\)。这和"独立事件概率相乘"是同一件事。</p>
+      <div class="key">
+        <div class="lbl">★ 第一章考试重点</div>
+        <ul>
+          <li>独立 → 概率相乘；全概率 → 分情况加权（离散 SNR 分布题的骨架）。</li>
+          <li>E[aX + b] = aE[X] + b，Var(aX + b) = a²Var(X)；独立变量相加方差相加。</li>
+          <li>高斯概率：减均值 → 除<b>标准差</b> → 查 Q 表；会倒查（Q(k) = 0.01 → k = 2.33）。</li>
+          <li>指数分布 CDF：P(γ &lt; γ₀) = 1 − e<sup>−γ₀/γ̄</sup>。</li>
+        </ul>
+      </div>
+      <div class="checkpoint">
+        <div class="lbl">自测</div>
+        <p>(1) X ~ N(2, 9)，求 P(X &lt; −4)。(2) 两条独立链路各有 5% 的时间中断，两条同时中断的概率是多少？(3) w 的方差是 0.36，w′ = w₁ − 0.5w₂（w₁、w₂ 独立同分布），Var(w′) = ？</p>
+        <details class="reveal"><summary>点击看答案</summary>
+          <div class="ans">(1) (2 − (−4))/3 = 2 个标准差，在均值左侧，P = Q(2) ≈ 0.0228。(2) 独立 → 相乘：0.05 × 0.05 = 0.0025。(3) 0.36 × (1² + 0.5²) = 0.36 × 1.25 = 0.45。</div>
+        </details>
+      </div>
+    </section>

@@ -1,0 +1,85 @@
+    <!-- ================= CH 3 ================= -->
+    <section class="chapter" id="ch3">
+      <div class="chapter-head"><span class="chapter-num">第三章</span><h2>需要准时的时候：PCF、超帧、入网和帧格式</h2></div>
+
+      <h3><span class="zh-num">3.1</span>PCF：由 AP 点名（p.26–27）</h3>
+      <p>DCF 是"抢"，谁也不能保证多久能发出去，对语音这类有时限的业务不友好。PCF 是可选方案：AP 逐个轮询，被点到才发，不会冲突（p.26）。轮询期间 AP 霸占信道，DCF 的异步业务暂停。</p>
+      <p>p.27 的轮询步骤：</p>
+      <ol>
+        <li>AP 给某个节点发 <b>CF-Poll</b>；如果 AP 自己也有数据要给它，就把数据和 CF-Poll 合在一帧（Data + CF-Poll，"捎带"）。</li>
+        <li>被点名的节点回 <b>Data + CF-ACK</b>（有数据）或只回 <b>CF-ACK</b>（没数据）。</li>
+        <li>AP 接着点下一个节点。</li>
+        <li>所有节点都点完，或者无竞争期的时间用完，AP 广播 <b>CF-End</b>，宣布无竞争期结束。</li>
+      </ol>
+
+      <h3><span class="zh-num">3.2</span>超帧：把"排队说"和"抢着说"缝在一起（p.28–30）</h3>
+      <div class="formula-card">
+        <div class="flbl">超帧（p.28）</div>
+        <div class="fexpr">超帧 = 无竞争期 CFP + 竞争期 CP</div>
+        <div class="fmeaning">两个 DTIM 信标帧之间是一个超帧。AP 用 DTIM 信标表示 CFP 开始，并提供同步和定时。CFP 里 AP 轮询，CP 里大家用 DCF 竞争。CFP 的长度随业务量变化，因为各站发的帧长短不一。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>读懂 p.30 的超帧时间线</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext"><b>CP 末尾</b>：AP 给 B 发数据，B 等 SIFS 回 ACK。AP 等到目标信标时刻 TBTT 后，再等一个 PIFS，抢到信道。PIFS 比 DIFS 短，所以 AP 总比普通站先拿到信道。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext"><b>CFP 开始</b>：AP 发信标（Beacon），所有站把 NAV 设到最大值，整个 CFP 都不竞争。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">AP 隔 SIFS 发 Data + CF-Poll 给 A；A 隔 SIFS 回 Data + CF-Ack。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">AP 发 CF-Poll 给下一个站，但隔了 SIFS 都<b>没有回应</b>；AP 再等一个 PIFS 就收回信道，接着点 B。</div></div>
+          <div class="wstep"><div class="wn">5</div><div class="wtext">B 回 CF-Ack（没有数据要发）。AP 广播 CF-End，所有站把 NAV 清零，回到竞争期 CP。</div></div>
+          <div class="wans">CFP 里帧与帧之间只隔 SIFS 或 PIFS，都比 DIFS 短，普通站根本插不进来，所以 CFP 不会被 CP 打断</div>
+        </div>
+      </div>
+      <p>p.29 的其他规则：CFP 要等每个站都被轮询一次才结束；CP 的长度由 AP 作为系统参数调整；CP 结束时，如果信道正忙，AP 只能等它空闲，<b>下一个超帧就被缩短</b>（foreshortened superframe）；AP 在信标里广播 CFP 的实际长度，各站据此更新 NAV。</p>
+
+      <h3><span class="zh-num">3.3</span>新设备怎么加入 WLAN（p.31–32）</h3>
+      <div class="tblwrap"><table><thead><tr><th>步骤</th><th>做什么</th></tr></thead><tbody>
+        <tr><td>① 扫描</td><td><b>被动扫描</b>：等 AP 发的信标帧；<b>主动扫描</b>：自己发探测请求（Probe Request），等 AP 回探测响应（Probe Response）</td></tr>
+        <tr><td>② 认证</td><td>AP 和节点互相证明自己知道某个密码</td></tr>
+        <tr><td>③ 关联</td><td>交换节点和 BSS 的能力信息，告诉分布系统（所有 AP）这个节点现在在哪</td></tr>
+      </tbody></table></div>
+      <p>只有关联完成后，节点才能收发数据帧。</p>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>去酒店入住：先找到酒店（扫描，可以看招牌，也可以问路人），在前台出示证件（认证），登记入住、拿到房卡，前台系统记下你住哪间（关联）。登记完才能用酒店的服务。</p>
+      </div>
+
+      <h3><span class="zh-num">3.4</span>MAC 帧的类型和格式（p.33–36）</h3>
+      <p>三类帧（p.33）：<b>数据帧</b>传数据；<b>控制帧</b>做信道预约（RTS/CTS）和接收确认（ACK）；<b>管理帧</b>做关联和解除关联、定时同步、安全控制。</p>
+      <p>数据帧格式（p.34–35，单位：字节）：</p>
+      <div class="tblwrap"><table><thead><tr><th>字段</th><th>帧控制</th><th>时长/ID</th><th>地址 1</th><th>地址 2</th><th>地址 3</th><th>序号控制</th><th>地址 4</th><th>帧体</th><th>FCS</th></tr></thead><tbody>
+        <tr><td>长度</td><td>2</td><td>2</td><td>6</td><td>6</td><td>6</td><td>2</td><td>6</td><td>0–2312</td><td>4</td></tr>
+      </tbody></table></div>
+      <ul>
+        <li><b>帧控制</b>：说明这是控制帧、数据帧还是管理帧，还有协议版本、类型/子类型、To DS/From DS、更多分片、重试、功率管理、WEP 等标志位；</li>
+        <li><b>时长/ID</b>：这一帧要占用信道多少微秒，旁人据此设置 NAV；</li>
+        <li><b>地址</b>：目的、源、BSS、发送方或接收方的地址；</li>
+        <li><b>序号控制</b>：用于分片和重组；</li>
+        <li><b>帧体</b>：MAC 服务数据单元 MSDU 或它的一个分片；</li>
+        <li><b>FCS</b>：32 位 CRC。</li>
+      </ul>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>一个数据帧有多少开销</summary>
+        <div class="wbody">
+          <p>已知条件：按 p.35 的格式，帧体装 1500 字节数据。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">帧头 + FCS：<div class="calc">2 + 2 + 6 + 6 + 6 + 2 + 6 + 4 = 34 字节</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">效率：1500 / (1500 + 34) = 97.8%。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">对照 p.36：ACK 帧只有帧控制 2 + 时长 2 + 目的地址 6 + CRC 4 = <b>14 字节</b>；管理帧是帧控制、时长、目的地址、源地址、BSS-ID、序号控制、帧体、CRC，帧头加 CRC 共 28 字节。</div></div>
+          <div class="wans">数据帧开销 34 字节，装 1500 字节时效率约 97.8%；ACK 帧 14 字节</div>
+          <p style="margin-top:12px">课外补充：这只是 MAC 层开销。实际吞吐还要扣掉 DIFS、退避、SIFS、ACK 和物理层前导的时间，所以 54 Mbps 的 802.11a 实际吞吐一般只有 20–30 Mbps。</p>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">3.5</span>802.11e：给业务分优先级（p.39–40）</h3>
+      <p>原始 802.11 对所有数据一视同仁。802.11e 为 QoS 加了两种新模式，适用于所有物理层（802.11、a、b、g）：</p>
+      <ul>
+        <li><b>EDCA</b>（增强分布式信道接入）：定义 <b>8 个业务类</b>，每类有自己的退避参数，并引入仲裁帧间间隔 <b>AIFS</b>。每个节点里每类业务有独立队列，先在节点内部竞争"虚拟信道"，胜出的帧再按 DCF 去竞争真实信道。语音类的 AIFS 短、CW 小，更容易抢到。</li>
+        <li><b>HCCA</b>（混合协调信道接入）：类似 PCF，由<b>混合协调器 HC</b> 维护各节点状态，按各站每类业务的负载，智能地分配无竞争发送机会。</li>
+      </ul>
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>(1) PCF 里 AP 发出 CF-Poll 后被点的站没回应，AP 等多久收回信道？(2) EDCA 里，语音和网页下载同时有数据要发，谁更可能先发出去？为什么？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">(1) 等一个 PIFS（p.30 的图）：比 DIFS 短，别的站来不及插进来。(2) 语音。它所属的业务类 AIFS 更短、退避窗口更小，在节点内部和信道上竞争都占优。</div>
+        </details>
+      </div>
+    </section>

@@ -1,0 +1,68 @@
+  <div class="group" id="P7"><h2>Practice 7 · OFDM</h2><span>讲义第 7 章 · 第 13 周</span></div>
+
+  <article class="ex" id="p7q1">
+    <header><span class="pg">P7 · Q1</span><h3>两径信道上的 OFDM：选 N、算 H_k、分功率</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 7</span></div>
+      <p>An OFDM signal x(t) is transmitted through a multi-path channel. The received signals can be expressed as, \(y(t)=h_0x(t)+h_1x(t-\tau)+w(t)\), where \(h_0,h_1\) are independent channel gains, τ is the time delay, and w(t) is the AWGN with zero-mean and variance \(\sigma^2=1\). The Doppler spread and Coherence bandwidth have been measured to be \(B_d\) and \(B_C\) respectively.</p>
+      <p>(a) Given a fixed total bandwidth B Hz, the number of sub-carriers N needs to be carefully selected so that each sub-channel could be regarded as experiencing slow flat fading. Explain the principle of how the value of N is selected.</p>
+      <p>(b) For N = 4, \(h_0\) = 0.8, and \(h_1\) = 0.6, find the values of the channel gain coefficients \(H_k\) for each sub-channel.</p>
+      <p>(c) Given the value of \(H_k\) from (b), the transmitter allocates power \(P_k\) to the kth sub-channel such that each sub-channel has the same capacity. Under the sum-power constraint, \(\sum_{k=1}^{N}P_k=10\), find the value of \(P_k\) for each sub-channel.</p>
+      <p>(d) Given the same value of \(H_k\) and the sum-power constraint from (c), find the maximum sum capacity in bits per second per Hertz.</p>
+    </div>
+    <div class="chips"><span class="chip">慢平坦衰落条件</span><span class="chip">H_k = DFT{h}</span><span class="chip">等容量分配</span><span class="chip">注水</span><span class="chip src">讲义第 7 章 p.5、p.15、p.24</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>(a) 平坦：子信道宽 B/N 要远小于相干带宽 → \(N\gg B/B_C\)。慢衰落：OFDM 符号时长约 N/B，要远小于相干时间 1/B_d → \(N\ll B/B_d\)。所以 \(B/B_C\ll N\ll B/B_d\)。</li>
+        <li>(b) \(H_k=h_0+h_1e^{-j2\pi k/N}=0.8+0.6e^{-j\pi k/2}\)：<div class="calc">H₀ = H₄ = 1.4，H₁ = 0.8 − 0.6j，H₂ = 0.2，H₃ = 0.8 + 0.6j</div>功率增益 |H_k|²（k = 1, 2, 3, 4）：1、0.04、1、1.96。</li>
+        <li>(c) 容量 \(\log_2(1+|H_k|^2P_k)\) 相等 ⇔ \(|H_k|^2P_k=c\) 相同：\(P_k=c/|H_k|^2\)。<div class="calc">c(1/1 + 1/0.04 + 1/1 + 1/1.96) = c × 27.51 = 10 → c = 0.3635</div><div class="calc">P₁ = 0.36，P₂ = 9.09，P₃ = 0.36，P₄ = 0.19</div></li>
+        <li>(d) 注水：池底 \(1/|H_k|^2\) = 1、25、1、0.51。四个都放水：水面 (10 + 27.51)/4 = 9.38 &lt; 25，第 2 个子信道去掉。</li>
+        <li>剩三个：水面 μ = (10 + 1 + 1 + 0.51)/3 = 4.17，功率 3.17、3.17、3.66（都为正）。<div class="calc">C = log₂(4.17 × 1) + log₂(4.17 × 1) + log₂(4.17 × 1.96) = 2.06 + 2.06 + 3.03 = 7.15 bit</div></li>
+        <li>这是 4 个子载波一起传的，每个子载波只占 B/4 带宽，所以每赫兹：7.15/4 = 1.79 bit/s/Hz。</li>
+      </ol>
+      <div class="ans">(a) B/B_C ≪ N ≪ B/B_d；(b) 1.4, 0.8−0.6j, 0.2, 0.8+0.6j；(c) 0.36, 9.09, 0.36, 0.19；(d) ≈ 1.8 bit/s/Hz</div>
+      <div class="official"><b>官方答案：</b>完全一致 ✓（官方把 k = 1…4 记为 H₁…H₄，H₄ = H₀ = 1.4）</div>
+      <div class="note">对比 (c) 和 (d)：为了"人人平等"，(c) 把 91% 的功率砸在最差的子信道上；注水 (d) 干脆放弃最差的那个，总容量高得多。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p7q2">
+    <header><span class="pg">P7 · Q2</span><h3>设计一个 2 Mbps 的 OFDM 系统</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 7</span></div>
+      <p>Consider the design of an OFDM system. The goal is to transmit data at a rate of 2 Mbps using 16-QAM with an available bandwidth of 600 kHz. It is known that the delay spread of the channel is up to a maximum of 20 μs. You can assume the cyclic prefix to be equal to the maximum delay spread. Find the total number of sub-carriers and the OFDM symbol duration.</p>
+    </div>
+    <div class="chips"><span class="chip">Δf = B/N</span><span class="chip">循环前缀开销</span><span class="chip src">讲义第 7 章 p.8、p.17–18</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>16-QAM 每符号 4 bit：需要的总符号速率 2 Mbps / 4 = 500 k 符号/秒。</li>
+        <li>N 个子载波：有用符号时长 T = N/B = N/600k，加 CP 后一个 OFDM 符号长 T + 20 µs，期间 N 个子载波各发一个符号。</li>
+        <li>\(\dfrac{N}{N/600\text{k}+20\,\mu s}=500\text{k}\) → \(N=0.8333N+10\) → N = 60。</li>
+        <li>T = 60/600 kHz = 100 µs；OFDM 符号总长 100 + 20 = 120 µs = 0.12 ms。</li>
+      </ol>
+      <div class="ans">N = 60，OFDM 符号时长 0.12 ms</div>
+      <div class="official"><b>官方答案：</b>60；0.12 ms ✓</div>
+      <div class="note">如果不加 CP，600 kHz 本来就够发 500 k 符号/秒，N 取多少都行，题目就没有唯一解。正是 CP 的开销决定了 N：N 越大，CP 占的比例越小。CP 占 20/120 = 1/6 的时间，所以带宽必须比 500 k 多出 1/5，正好是 600 kHz。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p7q3">
+    <header><span class="pg">P7 · Q3</span><h3>最短的循环前缀</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 7</span></div>
+      <p>The Z–transform of a mobile channel is \(H(Z)=1+0.9Z^{-1}\). In order to mitigate the ISI of this channel, the system is now designed with OFDM. What is the minimum cyclic-prefix required. Explain your answer.</p>
+    </div>
+    <div class="chips"><span class="chip">信道长度</span><span class="chip">CP ≥ L − 1</span><span class="chip src">讲义第 7 章 p.17–22</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>冲激响应 h = [1, 0.9]：一条直射，加一条晚一个采样到达的回波，信道长度 L = 2，最大时延扩展 = 1 个采样。</li>
+        <li>上一个 OFDM 块的最后一个采样，会通过 0.9z⁻¹ 漏进下一个块的第一个采样。CP 至少要盖住这 1 个采样，才能把 ISI 挡在 CP 里（接收端丢掉 CP）。</li>
+        <li>CP 用块尾的复制品，线性卷积在接收窗口里等价于循环卷积，DFT 后正好得到 \(H_ks_k\)，子载波保持正交。</li>
+      </ol>
+      <div class="ans">最短 CP = 1 个采样（符号）长度 = L − 1</div>
+      <div class="official"><b>官方答案：</b>1 symbol length ✓</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>

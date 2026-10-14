@@ -1,0 +1,60 @@
+    <!-- ================= CH 6 ================= -->
+    <section class="chapter" id="ch6">
+      <div class="chapter-head"><span class="chapter-num">第六章</span><h2>卫星网络：数据怎么路由，用户怎么切换</h2></div>
+
+      <h3><span class="zh-num">6.1</span>两颗卫星之间要不要"抄近路"（p.39）</h3>
+      <div class="tblwrap"><table><thead><tr><th></th><th>有星间链路（ISL）</th><th>没有星间链路</th></tr></thead><tbody>
+        <tr><td>怎么走</td><td>信息在太空中直接从一颗卫星转到另一颗</td><td>卫星先下传给网关，经地面网络路由到负责另一颗卫星的网关，再上传</td></tr>
+        <tr><td>需要的链路</td><td><b>1 条上行 + 1 条下行</b></td><td><b>2 条上行 + 2 条下行</b></td></tr>
+        <tr><td>地面网关</td><td>需要的少</td><td>需要更多</td></tr>
+      </tbody></table></div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>数一数链路，算一算时延</summary>
+        <div class="wbody">
+          <p>已知条件：两个 LEO 卫星（高度 1,000 km），用户 A 在卫星 1 下面、用户 B 在卫星 2 下面，两颗卫星相距 4,000 km。为简单起见，都按卫星在正下方算。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext"><b>有 ISL</b>：A → 卫星 1（上行）→ 卫星 2（星间）→ B（下行）。<div class="calc">1,000 + 4,000 + 1,000 = 6,000 km → 20 ms</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext"><b>无 ISL</b>：A → 卫星 1 → 网关 1（上行 + 下行）→ 地面网络 → 网关 2 → 卫星 2 → B（上行 + 下行）。光卫星部分就是 4 × 1,000 km = 4,000 km（13 ms），再加上地面网络约 4,000 km 的光纤（光纤里光速约 2×10⁵ km/s，约 20 ms）。</div></div>
+          <div class="wans">有 ISL：1 上 1 下，约 20 ms；无 ISL：2 上 2 下，还要经过地面网关和地面网络，约 33 ms</div>
+          <p style="margin-top:12px">课外补充：时延数字是举例用的，讲义只比较链路数和网关数。</p>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">6.2</span>四种切换（p.40）</h3>
+      <p>用 MEO 或 LEO 的系统都有切换问题。如果卫星本身带着"基站"，卫星一动，就会多出一些切换。四种切换：</p>
+      <div class="tblwrap"><table><thead><tr><th>切换</th><th>原因</th></tr></thead><tbody>
+        <tr><td>星内切换 Intra-satellite</td><td>用户在同一颗卫星覆盖区内，从一个扇区（波束）移到另一个</td></tr>
+        <tr><td>星间切换 Inter-satellite</td><td>用户移到另一颗卫星的覆盖区，或者卫星飞走了</td></tr>
+        <tr><td>网关切换 Gateway</td><td>卫星离开了当前的网关</td></tr>
+        <tr><td>系统间切换 Inter-system</td><td>卫星系统和地面蜂窝系统之间，因信号强度和 QoS 发生的<b>垂直切换</b></td></tr>
+      </tbody></table></div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>判断是哪一种切换</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">你站着不动打卫星电话，头顶的 LEO 卫星十几分钟后飞到地平线下，电话转到下一颗卫星 → <b>星间切换</b>（卫星飞走了）。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">你开车穿过同一颗卫星的两个点波束交界 → <b>星内切换</b>。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">卫星飞离了原来连接的地面网关，改连另一个网关 → <b>网关切换</b>。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">你从野外开进城市，手机从卫星网络转到 4G 蜂窝网 → <b>系统间（垂直）切换</b>。</div></div>
+          <div class="wans">关键看"谁变了"：波束变 → 星内；卫星变 → 星间；网关变 → 网关；系统变 → 系统间</div>
+        </div>
+      </div>
+      <div class="extra">
+        <div class="lbl">课外补充 · 和 Part A 第十章的切换对照</div>
+        <p>地面蜂窝里，切换几乎都是"人在动"引起的；LEO 卫星系统里，即使人不动，卫星以约 7 km/s 的速度飞过，也会不停地引起星间切换（第二章：每颗卫星只可见 15–20 分钟）。所以 LEO 系统的切换频率远高于地面蜂窝，GEO 几乎没有切换。Part A 第十章讲的切换裕量、软切换、信道预留等思路，在卫星系统里同样适用。</p>
+      </div>
+
+      <h3><span class="zh-num">6.3</span>讲义的考试建议（p.41）</h3>
+      <ul>
+        <li>仔细读题，留够时间，答案写上<b>单位</b>；</li>
+        <li>先做熟悉、有把握的题；</li>
+        <li>考试有附录，已经给了公式；</li>
+        <li>复习简单的解题技巧：几何论证、解二次方程、简单微积分和化简、线性图像等。</li>
+      </ul>
+      <p>"几何论证"正好对应本页第二章的仰角、覆盖角问题；"线性图像"对应 p.22 那张损耗随高度、频率变化的对数坐标图。</p>
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>为什么 GEO 系统几乎不用考虑星间切换？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">GEO 卫星相对地面静止，地面站一直看得到同一颗卫星，不会因为"卫星飞走了"而切换；只有当用户移出这颗卫星的覆盖区（大约 1/4 个地球）时才会换卫星，这对一般用户极少发生。</div>
+        </details>
+      </div>
+    </section>

@@ -1,0 +1,69 @@
+  <div class="group" id="P4"><h2>Practice 4 · 分集</h2><span>讲义第 4 章 · 第 11 周</span></div>
+
+  <article class="ex" id="p4q1">
+    <header><span class="pg">P4 · Q1</span><h3>宏分集为什么能降低中断概率</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 4</span></div>
+      <p>One common technique used to reduce outage probability is Macro-diversity, where the signal transmitted by a Mobile Station is received and processed by multiple Base Stations. Explain why this might reduce outage probability.</p>
+    </div>
+    <div class="chips"><span class="chip">宏分集</span><span class="chip">阴影衰落</span><span class="chip src">讲义第 4 章 p.3–4</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>中断主要由<b>阴影衰落</b>（大尺度）造成：手机和某个基站之间被楼房、地形挡住，信号长时间偏低。</li>
+        <li>几个基站在<b>不同位置</b>，手机到它们的传播路径不同，被同一障碍物同时挡住的可能性小，各条链路的阴影近似独立。</li>
+        <li>宏分集选最强的基站（或合并多个基站的信号）。只有<b>所有</b>链路同时低于门限才会中断，独立时 \(P_{out}=\prod_iP_{out,i}\)，比单条链路小得多。</li>
+        <li>例：单链路中断 10%，两个独立基站同时中断只有 1%（Practice 2 第 2 题的 [Q(Δ/σ)]²）。链路相关时效果打折扣。</li>
+      </ol>
+      <div class="ans">多个基站的阴影衰落近似独立，所有链路同时深衰落的概率 = 各自概率之积，远小于单一链路</div>
+      <div class="official"><b>官方答案：</b>参见讲义（第 4 章 p.3–4）</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p4q2">
+    <header><span class="pg">P4 · Q2</span><h3>离散 SNR 分布下的 DPSK 与 MRC</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 4</span></div>
+      <p>Consider a DPSK transmission system, where the transmit signal power and noise power are 1W each. The symbol error probability for DPSK is \(\tfrac12e^{-\gamma}\), where γ is the signal to noise ratio.</p>
+      <p>(a) If the SNR γ has a distribution given as, \(\gamma=\dfrac{\alpha P_T}{\sigma_n^2}\), \(\alpha=\begin{cases}8 & \text{with a probability of }\tfrac13\\ 11 & \text{with a probability of }\tfrac23\end{cases}\), where \(P_T\) and \(\alpha P_T\) are the transmitted and received signal powers respectively, and \(\sigma_n^2\) is the noise power. Find the average SNR \(\bar\gamma\) and average symbol error probability \(\bar P_s\).</p>
+      <p>(b) If the receiver employs a 2-branch MRC technique, and the SNR for each branch has the distribution given in part (a), find the output SNR \(\bar\gamma_\Sigma\), average symbol error probability \(\bar P_s\), array gain g and diversity gain d.</p>
+      <p>(c) The paths are now not independent. Specifically, \(\gamma_1=r_1+\beta\) and \(\gamma_2=r_2+\beta\), and the shadowing term β has the following distribution, \(\beta=\begin{cases}7 & \text{with a probability of }\tfrac13\\ 10 & \text{with a probability of }\tfrac23\end{cases}\), where β is independent of \(r_1\) and \(r_2\), and \(r_1\) and \(r_2\) have the following distribution, \(r_i=\begin{cases}0.6 & \text{with a probability of }\tfrac13\\ 1.2 & \text{with a probability of }\tfrac23\end{cases}\); for i = 1, 2. Find \(\bar\gamma_\Sigma\), \(\bar P_{s,diversity}\), g and d.</p>
+    </div>
+    <div class="chips"><span class="chip">离散分布求期望</span><span class="chip">MRC：SNR 相加</span><span class="chip">阵列增益 g / 分集增益 d</span><span class="chip">相关削弱分集</span><span class="chip src">讲义第 4 章 p.16、p.21、p.27</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>(a) \(P_T=\sigma_n^2=1\)，所以 γ = α。\(\bar\gamma=8\cdot\tfrac13+11\cdot\tfrac23=10\)。<div class="calc">P̄s = ⅓·½e⁻⁸ + ⅔·½e⁻¹¹ = 5.59×10⁻⁵ + 0.56×10⁻⁵ = 6.15×10⁻⁵</div></li>
+        <li>(b) MRC 输出 SNR = 两路之和。两路独立，组合：8+8 = 16（1/9），8+11 = 19（2 × 1/3 × 2/3 = 4/9），11+11 = 22（4/9）。<div class="calc">γ̄_Σ = (16 + 76 + 88)/9 = 20</div><div class="calc">P̄s = ½[e⁻¹⁶·1/9 + e⁻¹⁹·4/9 + e⁻²²·4/9] = 7.56×10⁻⁹</div></li>
+        <li>\(g=\bar\gamma_\Sigma/\bar\gamma=20/10=2\)；\(d=-\log_{10}\bar P_s/\log_{10}\bar\gamma=8.12/1=8.1\)（γ̄ 用单路输入的 10）。</li>
+        <li>(c) \(E[\gamma_i]=E[r_i]+E[\beta]=(0.2+0.8)+(7/3+20/3)=1+9=10\)，\(\bar\gamma_\Sigma=20\)，g = 2。</li>
+        <li>\(\gamma_\Sigma=r_1+r_2+2\beta\)，三者独立，指数可以拆开：\(E[e^{-\gamma_\Sigma}]=E[e^{-r_1}]\,E[e^{-r_2}]\,E[e^{-2\beta}]\)。<div class="calc">E[e^{−r}] = ⅓e^{−0.6} + ⅔e^{−1.2} = 0.1829 + 0.2008 = 0.3837</div><div class="calc">E[e^{−2β}] = ⅓e^{−14} + ⅔e^{−20} = 2.786×10⁻⁷</div><div class="calc">P̄s = ½ × 0.3837² × 2.786×10⁻⁷ = 2.05×10⁻⁸，d = 8 − log₁₀2.05 = 7.7</div></li>
+      </ol>
+      <div class="ans">(a) γ̄ = 10，P̄s = 6.15×10⁻⁵；(b) γ̄Σ = 20，P̄s = 7.6×10⁻⁹，g = 2，d = 8.1；(c) γ̄Σ = 20，P̄s = 2.05×10⁻⁸，g = 2，d = 7.7</div>
+      <div class="official"><b>官方答案：</b>完全一致 ✓</div>
+      <div class="note">(b)(c) 平均 SNR 一样，(c) 误码率却高了 2.7 倍、d 从 8.1 降到 7.7：两路共享阴影 β，一起变差，分集被削弱（讲义 p.21）。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p4q3">
+    <header><span class="pg">P4 · Q3</span><h3>高斯衰落因子下的 BPSK 与等增益合并</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 4</span></div>
+      <p>A BPSK system uses M antennas to transmit a message {b} over a fading channel, where b is equally likely to be +1 or −1. The signal received from the kth transmit antenna can be expressed as \(y_k=\alpha_kb\sqrt E+w_k,\ k=1,2,\dots,M\), where E is the transmitted signal energy, \(\alpha_k\) is a real-value multiplicative dampening factor, and \(w_k\) is an additive white Gaussian noise with zero mean and a variance of \(\sigma_2^2\). The damping factor, \(\alpha_k\) can be modelled as a Gaussian process with mean \(\alpha_0\) and variance \(\sigma_1^2\). The receiver uses its output, z, as the decision variable. The decision rule is, \(\hat b=+1\) when z &gt; 0, −1 when z ≤ 0.</p>
+      <p>(a) Derive an expression for the average bit error probability when M = 1.</p>
+      <p>(b) Derive the average bit error probability for the case when the receiver uses an equal weight combining scheme.</p>
+    </div>
+    <div class="chips"><span class="chip">高斯随机变量之和</span><span class="chip">等增益合并</span><span class="chip src">讲义第 4 章 p.19；第 1b 章 p.11</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>(a) 设 b = +1（对称，另一种情况一样）。\(z=y=\alpha\sqrt E+w\)：两个独立高斯之和还是高斯。<div class="calc">均值 α₀√E，方差 σ₁²E + σ₂²</div></li>
+        <li>出错 = z ≤ 0：\(P_b=P(z\le0)=Q\!\left(\dfrac{\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\)。</li>
+        <li>(b) 等权相加：\(z=\sum_ky_k=b\sqrt E\sum_k\alpha_k+\sum_kw_k\)。各 \(\alpha_k\)、\(w_k\) 独立：<div class="calc">均值 Mα₀√E，方差 M(σ₁²E + σ₂²)</div></li>
+        <li>\(P_b=Q\!\left(\dfrac{M\alpha_0\sqrt E}{\sqrt{M(\sigma_1^2E+\sigma_2^2)}}\right)=Q\!\left(\dfrac{\sqrt M\,\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\)。</li>
+      </ol>
+      <div class="ans">(a) Q(α₀√E / √(σ₁²E + σ₂²))；(b) Q(√M·α₀√E / √(σ₁²E + σ₂²))</div>
+      <div class="official"><b>官方答案：</b>同上 ✓</div>
+      <div class="note">均值按 M 增长、标准差按 √M 增长，所以 Q 函数的参数放大 √M 倍，这就是合并的好处。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>

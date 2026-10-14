@@ -1,0 +1,76 @@
+    <!-- ================= CH 0 ================= -->
+    <section class="chapter" id="ch0">
+      <div class="chapter-head"><span class="chapter-num">开篇</span><h2>蜂窝网络之外，还有另一套逻辑</h2></div>
+      <p class="dropcap">Part A 讲的蜂窝网络有一个默认前提：总有一个基站在附近，由它统一安排谁在什么时候、用哪个频率说话。Part B 要回答的是：<b>如果没有这样一个中心，或者中心要重新设计，网络怎么运转？</b></p>
+      <p>讲义 p.4 列了四个主题，正好是"中心"越来越弱、规模越来越大的四步：</p>
+      <div class="tblwrap"><table><thead><tr><th>主题</th><th>讲义页</th><th>"中心"是什么</th><th>本页章节</th></tr></thead><tbody>
+        <tr><td>无线局域网 WLAN（802.11）</td><td>p.5–40</td><td>一个接入点 AP，但大家抢着说话</td><td>第一、二、三章</td></tr>
+        <tr><td>自组网与传感器网络</td><td>p.41–59、p.76</td><td>没有中心，每个节点都帮别人转发</td><td>第四、五章</td></tr>
+        <tr><td>4G LTE</td><td>p.60–75</td><td>基站重新设计：全 IP、扁平化</td><td>第六章</td></tr>
+        <tr><td>物联网 IoT</td><td>p.77–114</td><td>数以亿计的设备，计算分散到边缘</td><td>第七章</td></tr>
+      </tbody></table></div>
+      <p>参考书（p.2）：Stallings《Wireless Communications and Networks》、Schiller《Mobile Communications》、Cisco Press《IoT Fundamentals》。这部分讲义几乎没有计算题，考试多为概念题和简答题；本页把能算的地方都配了例题，讲义以外的内容放在紫色框里。</p>
+    </section>
+
+    <!-- ================= CH 1 ================= -->
+    <section class="chapter" id="ch1">
+      <div class="chapter-head"><span class="chapter-num">第一章</span><h2>WLAN 是怎么搭起来的</h2></div>
+
+      <h3><span class="zh-num">1.1</span>WLAN 的基本样子（p.6–9）</h3>
+      <p>无线局域网就是把有线局域网的"最后几米"换成无线：笔记本、平板通过天线连到局域网的集线设备（p.6）。讲义给的几个关键数字：</p>
+      <ul>
+        <li><b>覆盖</b>：中等范围，50–500 m；</li>
+        <li><b>一个小区只有一个物理信道</b>：所有收发方、上行和下行共用同一个频率；</li>
+        <li><b>速率</b>：1 Mbps 到 54 Mbps。</li>
+      </ul>
+      <p>"一个小区只有一个信道"是理解后面所有 MAC 协议的钥匙。蜂窝系统给每个用户分配自己的信道（FDMA/TDMA/CDMA），WLAN 却让所有人挤在同一个频率上，所以必须有一套"谁先说"的规矩，这就是第二、三章的 CSMA/CA 和轮询。</p>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>蜂窝系统像电话会议，每个人有自己的线路；WLAN 像一间会议室里只有一支麦克风，谁想说话得先看看有没有人在用，没人用才能拿起来。</p>
+      </div>
+      <p>讲义 p.7–8 的四类应用：</p>
+      <div class="tblwrap"><table><thead><tr><th>应用</th><th>做什么</th><th>例子</th></tr></thead><tbody>
+        <tr><td>LAN 扩展</td><td>在已有有线局域网的场所，用无线覆盖布线困难的大空间</td><td>厂房、证券交易大厅、仓库</td></tr>
+        <tr><td>楼间互联</td><td>用点对点无线链路连接相邻两栋楼的局域网，两端通常是网桥或路由器</td><td>校园里的两栋楼</td></tr>
+        <tr><td>游牧接入</td><td>在中等范围内边走边上网</td><td>在校园里拿着笔记本移动</td></tr>
+        <tr><td>自组网</td><td>临时的对等网络，满足当下的需求</td><td>几个同事开会时把笔记本直接连起来</td></tr>
+      </tbody></table></div>
+      <p>p.9 的图是一个多小区 WLAN：三个小区各用不同频率（Frequency 1、2、3），每个小区中间是控制模块 CM，周围是用户模块 UM，三个 CM 通过 100 Mbps 以太网交换机连到有线网。相邻小区用不同频率，和 Part A 的频率复用是同一个思路。</p>
+
+      <h3><span class="zh-num">1.2</span>802.11 的架构：BSS、ESS、AP、DS（p.10–11）</h3>
+      <div class="tblwrap"><table><thead><tr><th>名词</th><th>全称</th><th>是什么</th></tr></thead><tbody>
+        <tr><td>STA</td><td>Station</td><td>一台无线终端（笔记本、手机）</td></tr>
+        <tr><td>BSS</td><td>Basic Service Set</td><td>一群竞争同一无线信道的站点，就是"一个小区"；可以孤立存在，也可以通过 AP 接到骨干</td></tr>
+        <tr><td>AP</td><td>Access Point</td><td>相当于网桥，负责 BSS 和外界的连接，并提供中心协调功能</td></tr>
+        <tr><td>DS</td><td>Distribution System</td><td>把多个 AP 连起来的交换机、有线或无线网络</td></tr>
+        <tr><td>ESS</td><td>Extended Service Set</td><td>两个以上的 BSS 通过 DS 互联</td></tr>
+      </tbody></table></div>
+      <p>p.11 的图：两个 BSS（STA1–4 一个、STA5–7 一个）各有一个 AP，两个 AP 接在同一个分布系统上，分布系统再通过门户（portal）接到其他 802.x 局域网。手机从一个 BSS 走到另一个 BSS，只要两者属于同一个 ESS，对外看起来还是同一个网络。</p>
+      <div class="extra">
+        <div class="lbl">课外补充 · 和日常 WiFi 对应起来</div>
+        <p>家里一台路由器就是一个 BSS，路由器是 AP；商场里很多台 AP 用同一个 WiFi 名字（SSID），连成一个 ESS，你走动时手机会自动换到信号更好的 AP。讲义里的 "Ad Hoc Networking"（p.8）就是没有 AP、终端直接互连的模式，第四章会详细讲。</p>
+      </div>
+
+      <h3><span class="zh-num">1.3</span>物理层和 802.11 家族（p.12–15、p.37–38）</h3>
+      <p>p.19 的协议结构图：最上面是 LLC，中间是 MAC 层（PCF 叠在 DCF 上面，第二、三章讲），最下面是多种可选的物理层：</p>
+      <div class="tblwrap"><table><thead><tr><th>标准</th><th>频段</th><th>物理层技术</th><th>速率</th></tr></thead><tbody>
+        <tr><td>802.11（1997）</td><td>2.4 GHz</td><td>跳频扩频 FHSS</td><td>1、2 Mbps</td></tr>
+        <tr><td>802.11（1997）</td><td>2.4 GHz</td><td>直接序列扩频 DSSS</td><td>1、2 Mbps</td></tr>
+        <tr><td>802.11（1997）</td><td>红外，波长 850–950 nm</td><td>IR</td><td>1、2 Mbps</td></tr>
+        <tr><td>802.11b</td><td>2.4 GHz（2.400–2.4835 GHz）</td><td>DSSS 扩展（CCK 码）</td><td>5.5、11 Mbps</td></tr>
+        <tr><td>802.11a</td><td>5 GHz（5.725–5.850 GHz）</td><td>OFDM</td><td>6–54 Mbps</td></tr>
+      </tbody></table></div>
+      <p>p.37–38 列了 802.11 家族的各个"字母"：a（5 GHz 高速）、b（2.4 GHz、CCK、抗多径）、d（全球漫游）、e（QoS，第三章）、g（短距离、最高 54 Mbps）、h（解决 802.11a 的干扰：动态频率选择 DFS、发射功率控制 TPC）、i（安全）、j（日本 4.9–5.0 GHz）、k（无线资源测量）、m（标准维护）、x（泛指整个家族）。</p>
+      <p><b>Wi-Fi</b> 是对所有 802.11 局域网的统称；Wi-Fi 联盟是非营利组织，认证不同厂商产品之间能互通（p.15）。</p>
+      <div class="extra">
+        <div class="lbl">课外补充 · 和 Part 2 的联系</div>
+        <p>802.11a 用的 OFDM，就是 Part 2 第七章讲的多载波技术：把 20 MHz 切成很多窄子载波，每个子载波平坦衰落。802.11b 用的 DSSS，是 Part A 第一章 CDMA 用到的扩频。现在的 WiFi 6/7 在 OFDM 基础上加了 OFDMA 和 MIMO（Part 2 第五章）。</p>
+      </div>
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>(1) 802.11b 和 802.11a 哪个更怕障碍物、覆盖更小？(2) 为什么讲义特别强调"上下行共用一个频率"？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">(1) 802.11a：5 GHz 比 2.4 GHz 频率高，自由空间损耗大（Part A 第五章：损耗随 20 log f 增长），穿墙能力也差。(2) 因为上下行不分开，同一时间一个小区里只能有一个人在发，否则就冲突。这决定了 WLAN 必须用"先听后说"的随机接入（第二章）。</div>
+        </details>
+      </div>
+    </section>

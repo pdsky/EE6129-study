@@ -1,0 +1,91 @@
+    <!-- ================= CH 2 ================= -->
+    <section class="chapter" id="ch2">
+      <div class="chapter-head"><span class="chapter-num">第二章</span><h2>几何：仰角、覆盖角和轨道参数</h2></div>
+
+      <h3><span class="zh-num">2.1</span>两个角度（p.12–13）</h3>
+      <ul>
+        <li><b>仰角 θ</b>（elevation angle）：在地面站处，从<b>水平线</b>（地表在天线位置的切线）到天线主瓣中心的夹角，天线正对卫星时测量。</li>
+        <li><b>覆盖角 β</b>（coverage angle）：在最小仰角下，卫星能看到的那部分地球表面有多大，用地心张开的角度衡量。</li>
+      </ul>
+      <p>为了覆盖最大，理想的最小仰角取 <b>0°</b>，覆盖范围一直延伸到卫星的光学地平线（p.12）。但第四章会看到，仰角越低，信号穿过的大气越厚，衰减越大，所以实际一般取 5°–10°。</p>
+      <div class="figwrap">
+        <svg viewBox="0 0 520 450" role="img" aria-label="几何示意：地心 O、地面站 E、卫星 S；仰角 θ 在 E 处，覆盖角 β 在 O 处">
+          <circle cx="260" cy="420" r="200" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+          <line x1="55.2" y1="319.3" x2="235.4" y2="193.1" stroke="var(--ink-faint)" stroke-width="1.2" stroke-dasharray="5 4"/>
+          <line x1="260" y1="420" x2="260" y2="30" stroke="var(--ink)" stroke-width="1.5"/>
+          <line x1="260" y1="420" x2="145.3" y2="256.2" stroke="var(--ink)" stroke-width="1.5"/>
+          <line x1="145.3" y1="256.2" x2="260" y2="30" stroke="var(--gold)" stroke-width="2.4"/>
+          <path d="M178.1 233.3 A40 40 0 0 0 163.4 220.5" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+          <path d="M260 375 A45 45 0 0 0 234.2 383.1" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+          <circle cx="260" cy="420" r="4" fill="var(--ink)"/>
+          <circle cx="145.3" cy="256.2" r="5" fill="var(--accent)"/>
+          <rect x="252" y="22" width="16" height="12" fill="var(--gold)"/>
+          <text x="270" y="438" font-size="13" font-weight="700">O 地心</text>
+          <text x="66" y="252" font-size="13" font-weight="700">E 地面站</text>
+          <text x="276" y="34" font-size="13" font-weight="700">S 卫星</text>
+          <text x="184" y="352" font-size="12">R</text>
+          <text x="268" y="230" font-size="12">R + h</text>
+          <text x="150" y="140" font-size="12" font-weight="700" fill="var(--gold)">d（斜距）</text>
+          <text x="181" y="215" font-size="14" font-weight="700" fill="var(--accent-ink)">θ</text>
+          <text x="238" y="360" font-size="14" font-weight="700" fill="var(--accent-ink)">β</text>
+          <text x="20" y="338" font-size="11" fill="var(--ink-faint)">E 处的水平线（地表切线）</text>
+        </svg>
+        <div class="cap">按讲义 p.13 的图重画，不按比例。地面站 E 到地心是 R，卫星到地心是 R + h。仰角 θ 在 E 处，从水平线量到卫星方向；覆盖角 β 在地心 O 处。</div>
+      </div>
+      <div class="extra">
+        <div class="lbl">课外补充 · 由图推出 β 的公式</div>
+        <p>三角形 O–E–S 里，E 处的内角是 90° + θ（半径和切线垂直，再加上仰角），O 处是 β，S 处是剩下的 90° − θ − β。由正弦定理：R / sin(90° − θ − β) = (R + h) / sin(90° + θ)，整理得</p>
+        <div class="calc">cos(θ + β) = R·cos θ / (R + h)　→　β = arccos(R·cos θ / (R + h)) − θ</div>
+        <p>覆盖区的地面直径约为 2βR（β 用弧度）。斜距 d 用余弦定理：d² = R² + (R + h)² − 2R(R + h)·cos β。讲义只给了图，这几个式子是从图里推出来的。</p>
+      </div>
+
+      <h3><span class="zh-num">2.2</span>三种轨道的参数表（p.14）</h3>
+      <div class="tblwrap"><table><thead><tr><th>参数</th><th>LEO</th><th>MEO</th><th>GEO</th></tr></thead><tbody>
+        <tr><td>轨道周期</td><td>1.5–2 h</td><td>5–10 h</td><td>24 h</td></tr>
+        <tr><td>高度</td><td>500–1,500 km</td><td>8,000–18,000 km</td><td>35,863 km</td></tr>
+        <tr><td>每次可见时长</td><td>15–20 分钟/次</td><td>2–8 小时/次</td><td>永久</td></tr>
+        <tr><td>仰角</td><td>变化快，有高有低</td><td>变化慢，有高有低</td><td>不变；高纬度地区仰角低</td></tr>
+        <tr><td>往返传播时延</td><td>几毫秒</td><td>几十毫秒</td><td>约 250 ms</td></tr>
+        <tr><td>瞬时地面覆盖直径（仰角 10°）</td><td>约 6,000 km</td><td>约 12,000–15,000 km</td><td>16,000 km</td></tr>
+        <tr><td>系统举例</td><td>Iridium、Globalstar、Teledesic、Skybridge、Orbcomm</td><td>Odyssey、Inmarsat</td><td>Intelsat、Interspoutnik、Inmarsat</td></tr>
+      </tbody></table></div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>用几何公式验证表里的覆盖直径</summary>
+        <div class="wbody">
+          <p>已知条件：地球半径 R = 6,370 km，最小仰角 θ = 10°。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext"><b>GEO</b>（h = 35,863 km）：<div class="calc">R cos θ / (R + h) = 6370 × 0.9848 / 42233 = 0.1485 → θ + β = 81.46° → β = 71.46°</div><div class="calc">直径 ≈ 2 × 1.247 rad × 6370 = 15,890 km</div>和表里的 16,000 km 吻合。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext"><b>LEO</b>（取高度上限 h = 1,500 km）：<div class="calc">6370 × 0.9848 / 7870 = 0.7971 → θ + β = 37.15° → β = 27.15° → 直径 ≈ 6,040 km</div>和表里的"约 6,000 km"吻合。h = 1,000 km 时只有约 4,800 km。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">GEO 仰角 0° 时：cos β = 6370 / 42233 = 0.1508，β = 81.3°，直径约 18,000 km，接近地球周长（约 40,000 km）的一半。</div></div>
+          <div class="wans">GEO 10° 仰角覆盖约 16,000 km、LEO（1,500 km）约 6,000 km，与讲义 p.14 一致</div>
+          <p style="margin-top:12px">这也解释了"3 颗 GEO 相隔 120° 覆盖几乎全球"（p.15）：每颗覆盖直径约 16,000–18,000 km，三颗拼起来绕赤道一圈；两极离赤道最远，仰角太低，覆盖不到。</p>
+        </div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>GEO 的传播时延（p.16）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">两个地面站都在卫星正下方附近：信号上去 35,863 km、下来 35,863 km：<div class="calc">71,726 km / 300,000 km/s = 0.239 s</div>这就是讲义 p.16 说的 "round-trip propagation delay … is 0.24 s"：经卫星往返一趟。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">地面站在覆盖边缘（仰角 10°）时斜距更长。由余弦定理：<div class="calc">d² = 6370² + 42233² − 2 × 6370 × 42233 × cos 71.46° → d ≈ 40,660 km</div>上下行都这么远时，时延 2 × 40,660 / 300,000 ≈ 0.27 s。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">对比 LEO（h = 1,000 km、仰角 10°）：斜距约 2,760 km，上下行合计约 18 ms；卫星正下方只有约 7 ms，所以表里写"几毫秒"。</div></div>
+          <div class="wans">GEO 经卫星一趟 0.24–0.27 s；打电话一问一答要经过两趟，约半秒，能感觉到明显的停顿</div>
+        </div>
+      </div>
+      <div class="extra">
+        <div class="lbl">课外补充 · 用开普勒定律验证轨道周期</div>
+        <p>T = 2π√(a³/μ)，a = 6,370 km + h，μ = 398,600 km³/s²：</p>
+        <div class="tblwrap"><table><thead><tr><th>高度</th><th>周期</th><th>速度</th><th>表里的范围</th></tr></thead><tbody>
+          <tr><td>LEO 500 km</td><td>1.57 h</td><td>7.6 km/s</td><td rowspan="2">1.5–2 h ✓</td></tr>
+          <tr><td>LEO 1,500 km</td><td>1.93 h</td><td>7.1 km/s</td></tr>
+          <tr><td>MEO 8,000 km</td><td>4.8 h</td><td>5.3 km/s</td><td rowspan="2">5–10 h（基本吻合）</td></tr>
+          <tr><td>MEO 18,000 km</td><td>10.5 h</td><td>4.0 km/s</td></tr>
+          <tr><td>GEO 35,863 km</td><td>24.0 h</td><td>3.1 km/s</td><td>24 h ✓</td></tr>
+        </tbody></table></div>
+        <p>LEO 每 1.5–2 小时绕地球一圈、速度约 7 km/s，所以每次只能看到 15–20 分钟，这正是第三章说 LEO 要不停切换的原因。</p>
+      </div>
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>(1) 为什么最小仰角越小，覆盖越大？(2) 新加坡（纬度约 1°）和赫尔辛基（纬度约 60°）看同一颗赤道上的 GEO 卫星，谁的仰角高？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">(1) 仰角下限放低，地面站可以离星下点更远还能看到卫星，覆盖边界就往外扩，直到 0° 时到达光学地平线。(2) 新加坡几乎在赤道上，只要卫星经度相差不大，就接近头顶，仰角很高；赫尔辛基纬度高，卫星贴近地平线，仰角很低（p.16 说 GEO 对极地和南北高纬度地区服务差）。</div>
+        </details>
+      </div>
+    </section>

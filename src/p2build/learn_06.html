@@ -1,0 +1,136 @@
+    <!-- ================= CH 6 ================= -->
+    <section class="chapter" id="ch6">
+      <div class="chapter-head"><span class="chapter-num">第六章</span><h2>均衡：把拖进下一个符号的回声抵消掉</h2></div>
+      <p>第 2 章说过，信号带宽超过相干带宽时会出现频率选择性衰落，在时域表现为<b>码间干扰 ISI</b>：前一个符号的回波拖进了后一个符号（p.4）。<b>均衡器</b>放在接收端，在采样时刻把 ISI 压下去（p.2）。</p>
+
+      <h3><span class="zh-num">6.1</span>ISI 从哪来：奈奎斯特准则<span class="imp">★★★ 必考</span></h3>
+      <p>发射信号 \(s(t)=\sum_n m_n\psi(t-nT)\)。如果 \(\psi(t)\) 和它平移 nT 后的版本正交，采样时就互不干扰。两种做法（p.6–7）：</p>
+      <ul>
+        <li>\(\psi(t)\) 只在 [0, T] 内非零（矩形脉冲）：带宽无限大，不现实；</li>
+        <li>\(\psi(t)=\frac{1}{\sqrt T}\mathrm{sinc}(t/T)\)：在自己的采样时刻是 1，在别的采样时刻都是 0，带宽只要 1/T。</li>
+      </ul>
+      <p>可是信道本身也是个滤波器。即使发射脉冲正交，经过信道 h(t) 以后的<b>等效脉冲</b> \(p(t)=\psi(t)*h(t)\) 就未必正交了（p.8–9）。例：\(\psi(t)=\mathrm{sinc}(t)\)，\(h(t)=\delta(t)+\delta(t-1)\)，T = 1，则 \(p(t)=\mathrm{sinc}(t)+\mathrm{sinc}(t-1)\)，相邻脉冲的内积是 1 ≠ 0，解调输出变成 \(\hat m_1=m_0+m_1\)。</p>
+      <div class="formula-card">
+        <div class="flbl">奈奎斯特无 ISI 准则（p.12）</div>
+        <div class="fexpr">\(y(nT)=m[n]g_e(0)+\displaystyle\sum_{i\ne n}m[i]\,g_e(nT-iT)+w(nT)\)，要求 \(g_e(nT-iT)=\begin{cases}1&n=i\\0&n\ne i\end{cases}\)</div>
+        <div class="fmeaning">\(g_e=g_T*g_C*g_R\) 是"发送滤波 × 信道 × 接收滤波"的总冲激响应。中间那个求和就是 ISI。只要总响应在其他采样点上都为 0，就没有 ISI。最优接收滤波是<b>匹配滤波</b> \(p^*(-t)\)（p.11）。</div>
+      </div>
+      <p>对付 ISI 有三类办法（p.13）：最优检测（MAP / MLSE）、均衡、多载波（OFDM，第 7 章）。</p>
+
+      <!-- ENR:learn_06.html:6.1 -->
+      <div class="key"><div class="lbl">★ 先学会读 Z 变换（Q2(a) 四年都要用）</div>
+<ul><li><b>Z⁻¹ 就是"晚一个符号"</b>。H(Z) = 1 + 0.3Z⁻¹ 的意思是：收到的 = 1 × 当前符号 + 0.3 × 上一个符号，即 h = {1, 0.3}，信道长度 L = 2（2025-26 S1 Q2(a)(i)）。</li>
+<li>Z 的次数就是延迟几个符号：H(Z) = 1 + 0.6Z⁻² → 只有当前符号和前<b>两个</b>符号有关，中间那个系数是 0（2023-24 Q2(a)(ii)：按 r[i] = Σ h[n]m[i−n+1] 的编号，h[1] = 1、h[2] = 0、h[3] = 0.6）。</li>
+<li><b>两个滤波器串起来 = 多项式相乘</b>：(1 − 0.6Z⁻²)(1 + 0.6Z⁻²) = 1 − 0.36Z⁻⁴。噪声只经过后一个滤波器。</li>
+<li>写离散模型：<mark class="hl">r[n] = Σ<sub>i=1..L</sub> h[i] m[n − i + 1] + w[n]</mark>，除 i = 1 以外的项都是 ISI。</li></ul></div>
+      <!-- /ENR:learn_06.html:6.1 -->
+      <h3><span class="zh-num">6.2</span>最优：最大似然序列估计 MLSE 和维特比算法<span class="imp i1">★ 了解</span></h3>
+      <p>ISI 把相邻符号绑在一起，单独判每个符号不再最优。MLSE 把整个序列当成一个整体，找最可能的那一串（p.16）：</p>
+      <div class="formula-card">
+        <div class="flbl">MLSE（p.16–17）</div>
+        <div class="fexpr">\(\hat{\mathbf m}=\arg\max_{\mathbf m}p(\mathbf r\mid\mathbf m)\)　　穷举 \(M^K\) 种 → 维特比算法只需跟踪 \(M^L\) 个状态</div>
+        <div class="fmeaning">K 个 M 进制符号共有 \(M^K\) 种可能的序列，穷举不现实。如果 ISI 只涉及最近 L 个符号（L ≪ K），用<b>维特比算法</b>只需要跟踪 \(M^L\) 个"状态"（最近 L 个符号的组合）。例：QPSK（M = 4）、信道记忆 L = 2，状态数 4² = 16（p.35）。但复杂度仍随 L 指数增长。</div>
+      </div>
+
+      <h3><span class="zh-num">6.3</span>线性均衡：迫零与 MMSE<span class="imp">★★★ 必考</span></h3>
+      <p>线性均衡器就是一个横向（FIR）滤波器，逐个符号判决，复杂度随信道长度线性增长（p.19–20）。离散模型：\(r_n=\sum_{i=0}^{L-1}m_{n-i}h_i+w_n\)，信道和均衡器级联后 \(Q(z)=H(z)C(z)\)（p.22）。</p>
+      <div class="formula-card">
+        <div class="flbl">迫零均衡 ZFE（p.23）</div>
+        <div class="fexpr">\(C(z)=\dfrac{1}{H(z)}\ \Longrightarrow\ Q(z)=1\)</div>
+        <div class="fmeaning">直接把信道"除掉"，输出完全没有 ISI。名字里的"迫零"就是强迫所有 ISI 项为零。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>用长除法求迫零均衡器的系数（第 6 章 p.24）</summary>
+        <div class="wbody">
+          <p>已知条件：\(H(z)=1+0.3z^{-1}+0.1z^{-2}\)，求 ZFE 的前两个系数。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">\(C(z)=1/H(z)\)，用多项式长除法求 1 ÷ (1 + 0.3z⁻¹ + 0.1z⁻²)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">商的第一项是 1：1 − (1 + 0.3z⁻¹ + 0.1z⁻²) = −0.3z⁻¹ − 0.1z⁻²。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">第二项是 −0.3z⁻¹：余数 −0.3z⁻¹ − 0.1z⁻² − (−0.3z⁻¹ − 0.09z⁻² − 0.03z⁻³) = −0.01z⁻² + 0.03z⁻³。</div></div>
+          <div class="wans">C(z) = 1 − 0.3z⁻¹ − 0.01z⁻² + …，前两个系数是 1 和 −0.3</div>
+        </div>
+      </div>
+      <p><b>迫零的毛病：放大噪声</b>（p.25）。信道在某些频率上很弱时，1/H 在那里就很大，把那些频率上的噪声也一起放大。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>迫零均衡把噪声放大多少（第 6 章 p.25）</summary>
+        <div class="wbody">
+          <p>已知条件：\(h_n=\sqrt{1-a^2}\,a^n\)（n ≥ 0，|a| &lt; 1），噪声方差 σ²。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">等比数列求和：\(H(z)=\dfrac{\sqrt{1-a^2}}{1-az^{-1}}\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">\(C(z)=\dfrac{1-az^{-1}}{\sqrt{1-a^2}}=\dfrac{1}{\sqrt{1-a^2}}-\dfrac{a}{\sqrt{1-a^2}}z^{-1}\)，只有两个系数。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">白噪声通过 FIR 滤波器后的方差 = σ² × 系数平方和：<div class="calc">σ_n² = σ² · (1 + a²)/(1 − a²)</div></div></div>
+          <div class="wans">a = 0.9 时噪声放大 (1 + 0.81)/(1 − 0.81) = 9.5 倍，约 9.8 dB</div>
+        </div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">线性 MMSE（p.26）与性能分析（p.27–28）</div>
+        <div class="fexpr">\(\min_{c}E\Big[\big|s-\textstyle\sum_ic_ir_i\big|^2\Big]\)　　\(P_e\mid\mathbf m_l=Q\!\left(\dfrac{q_0+\sum_{i\ne0}m_{n+i}q_i}{\sqrt{\sigma^2\|\mathbf c\|^2}}\right)\)，\(P_e=E[P_e\mid\mathbf m_l]\)</div>
+        <div class="fmeaning">MMSE 不追求 ISI 为零，而是让"残余 ISI + 放大后的噪声"总和最小，噪声大时比 ZF 好。误码率的算法：先固定其他符号的取值（ISI 是确定的），算条件误码率，再对各种 ISI 组合求平均。Practice 6 的三道题都用这个套路。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>有 ISI 时的误码率（Practice 6 第 2 题）</summary>
+        <div class="wbody">
+          <p>已知条件：\(y_n=b_n+a\,b_{n-1}+w_n\)，\(b_n=\pm1\) 等概独立，0 &lt; a &lt; 1，噪声方差 0.1。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">(a) 直接判 sgn(y)。设发 \(b_n=+1\)：若 \(b_{n-1}=+1\)，信号幅度 1 + a；若 \(b_{n-1}=-1\)，幅度 1 − a，各占一半：<div class="calc">P_e = ½Q((1 + a)/√0.1) + ½Q((1 − a)/√0.1)</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">(b) 理想迫零：\(C(z)=1/(1+az^{-1})=\sum_k(-a)^kz^{-k}\)，ISI 消失，但噪声方差变成 \(0.1\sum_ka^{2k}=0.1/(1-a^2)\)：<div class="calc">P_e = Q( 1 / √(0.1/(1 − a²)) ) = Q( √((1 − a²)/0.1) )</div></div></div>
+          <div class="wans">(a) ½Q((1+a)/√0.1) + ½Q((1−a)/√0.1)；(b) Q(√((1−a²)/0.1))</div>
+        </div>
+      </div>
+
+      <!-- ENR:learn_06.html:6.3 -->
+      <div class="key"><div class="lbl">★ 考试重点 · 有残余 ISI 时的误码率（期末 Q2(a) 四年四次）</div>
+<p>判决变量 y = m[n] + a·m[n−1] + w′，m = ±1 等概，w′ ~ N(0, σ′²)，按 sgn(y) 判决：</p>
+<ol class="steps"><li><b>先算 σ′</b>：均衡器输出噪声方差 <mark class="hl">σ′² = σ²(c₀² + c₁² + …)</mark>（系数平方和），再开根号。</li>
+<li><b>分两种情况</b>：发 +1 时，前一个符号同号 → 信号离门限 1 + a；异号 → 1 − a，各占一半。</li>
+<li><b>平均</b>：<mark class="hl">P<sub>e</sub> = ½Q((1 − a)/σ′) + ½Q((1 + a)/σ′)</mark>。发 −1 对称，结果一样。</li></ol>
+<div class="tblwrap" style="margin:8px 0"><table><thead><tr><th>期末</th><th>残余 ISI a</th><th>σ′</th><th>P<sub>e</sub></th></tr></thead><tbody>
+<tr><td>2023-24 S2</td><td>0.36（滞后 4 个符号）</td><td>√(0.3 × 1.36) = 0.639</td><td>½[Q(1.00) + Q(2.13)] ≈ 0.087</td></tr>
+<tr><td>2024-25 S2</td><td>0.6</td><td>0.8</td><td>½[Q(0.5) + Q(2)] ≈ 0.166</td></tr>
+<tr><td>2025-26 S1</td><td>0.3（不均衡）</td><td>0.6</td><td>½[Q(1.17) + Q(2.17)] ≈ 0.068</td></tr>
+<tr><td>2025-26 S2</td><td>0.2</td><td>√(0.25 × 2.56) = 0.8</td><td>½[Q(1) + Q(1.5)] ≈ 0.113</td></tr></tbody></table></div>
+<p><b>迫零系数</b>：C(Z) = 1/H(Z)，用长除法展开取前几项；1/(1 + hZ⁻¹) = 1 − hZ⁻¹ + h²Z⁻² − …（2024-25：h = 0.2 → 1、−0.2、0.04）。<b>噪声增强</b>：任何 c₁、c₂ 不全为 0 的线性均衡器，输出噪声方差 σ²(1 + c₁² + c₂²) &gt; σ²（2025-26 S1 Q2(a)(iii)）。</p></div>
+<div class="pitfall"><div class="lbl">⚠ 易错</div><ul>
+<li>Q 函数里除的是<b>标准差</b> σ′，题目给的 0.25、0.36、0.64 都是方差。</li>
+<li>只算 Q((1 − a)/σ) 一项、忘了另一半；或者忘了乘 ½。</li>
+<li>噪声方差用系数和的平方 (Σc)²：应该是系数平方和 Σc²。</li></ul></div>
+      <!-- /ENR:learn_06.html:6.3 -->
+      <h3><span class="zh-num">6.4</span>判决反馈均衡 DFE<span class="imp i2">★★ 常考</span></h3>
+      <p>线性均衡的缺点是放大噪声（p.29）。DFE 换个思路：<b>过去的符号已经判决过了，直接把它们造成的 ISI 减掉</b>。</p>
+      <ul>
+        <li><b>前馈滤波器</b>：线性地压制<b>未来</b>符号的 ISI；</li>
+        <li><b>反馈滤波器</b>：用已判决的<b>过去</b>符号 \(\hat m[n-1],\hat m[n-2],\dots\) 重构并减去它们的 ISI（p.32–33）。</li>
+      </ul>
+      <p>如果过去的判决都对，减掉 ISI 不放大任何噪声，性能接近最优。问题是<b>错误传播</b>（p.34）：一旦判错一个，减的就是错误的 ISI，反而加大干扰，后面可能连着错，直到连续判对几个以后才恢复。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>线性均衡 vs DFE（Practice 6 第 3 题）</summary>
+        <div class="wbody">
+          <p>已知条件：\(y_n=A_n+\tfrac12A_{n-1}+z_n\)，\(A_n=\pm1\)，噪声方差 1。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">(a) 线性：\(u_n=y_n+qy_{n+1}=(1+\tfrac q2)A_n+\tfrac12A_{n-1}+qA_{n+1}+z_n+qz_{n+1}\)。<div class="calc">E[(u_n − A_n)²] = (q/2)² + ¼ + q² + 1 + q² = 1.25 + 2.25q²</div>q = 0 时最小，均衡器什么都不做。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">于是 \(u_n=y_n\)，幅度是 1.5 或 0.5，各占一半：<div class="calc">P_e = ½Q(1.5) + ½Q(0.5) = ½(0.0668) + ½(0.3085) = 0.188</div></div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">(b) DFE：\(u_n=y_n-\tfrac12\hat A_{n-1}\)。上一个判对时，ISI 被完全抵消，\(u_n=A_n+z_n\)，出错概率 Q(1) = 0.159。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">上一个判错时，\(u_n=A_n+A_{n-1}+z_n\)，幅度 2 或 0：出错概率 ½Q(2) + ½ × ½ = 0.261。</div></div>
+          <div class="wstep"><div class="wn">5</div><div class="wtext">长期误码率 p 满足"本次错 = 上次对 × 0.159 + 上次错 × 0.261"：<div class="calc">p = (1 − p)(0.159) + p(0.261) → p = 0.159 / (1 − 0.261 + 0.159) = 0.177</div></div></div>
+          <div class="wans">(a) q = 0，Pe ≈ 0.19；(b) Pe ≈ 0.18：DFE 更好，但错误传播吃掉了一部分好处（无错误传播时是 0.159）</div>
+        </div>
+      </div>
+      <p>三种方法的对比（p.35、p.41）：MLSE 最优但复杂；线性均衡简单但放大噪声；DFE 非线性、接近最优、复杂度中等，有错误传播。</p>
+
+      <h3><span class="zh-num">6.5</span>信道估计：均衡器需要先知道信道<span class="imp i1">★ 了解</span></h3>
+      <div class="formula-card">
+        <div class="flbl">最小二乘信道估计（p.38–40）</div>
+        <div class="fexpr">\(\mathbf Y=\mathbf H\mathbf X+\mathbf V\)，\(\hat{\mathbf H}_{LS}=\mathbf Y\mathbf X^\dagger,\ \mathbf X^\dagger=\mathbf X^H(\mathbf X\mathbf X^H)^{-1}\)　　最优训练：\(\mathbf X\mathbf X^H=\dfrac PN\mathbf I\)</div>
+        <div class="fmeaning">发一段双方都知道的训练序列 X，收到 Y，反解出 H 使 \(\|\mathbf Y-\mathbf H\mathbf X\|^2\) 最小。训练矩阵各行正交、功率平均分时最好，此时 \(\hat{\mathbf H}_{LS}=\frac NP\mathbf Y\mathbf X^H=\mathbf H+\frac NP\mathbf V\mathbf X^H\)，估计误差的 MSE 和 N² 成正比。</div>
+      </div>
+      <!-- ENR:learn_06.html:summary -->
+      <div class="key"><div class="lbl">★ 第六章考试重点</div><ul>
+<li>由 H(Z) 读抽头和 L；写出 r[n] = Σ h[i]m[n − i + 1] + w[n]；Nyquist 准则：等效脉冲在其他采样点为 0。</li>
+<li>迫零 C = 1/H，长除法；噪声增强 σ²Σc²。</li>
+<li>残余 ISI 误码率 ½[Q((1 − a)/σ′) + Q((1 + a)/σ′)]。</li>
+<li>DFE：用已判决符号减掉过去的 ISI，不放大噪声，代价是错误传播。</li></ul></div>
+      <!-- /ENR:learn_06.html:summary -->
+      <div class="checkpoint">
+        <div class="lbl">自测</div>
+        <p>(1) 信道 H(z) = 1 + 0.5z⁻¹，迫零均衡器的前三个系数？(2) 为什么说 DFE 不放大噪声？它的代价是什么？(3) 8PSK、信道记忆 L = 2，维特比算法有多少个状态？</p>
+        <details class="reveal"><summary>点击看答案</summary>
+          <div class="ans">(1) 1/(1 + 0.5z⁻¹) = 1 − 0.5z⁻¹ + 0.25z⁻² − …，系数 1、−0.5、0.25。(2) 过去的 ISI 是用已判决的符号直接减掉，不经过会放大噪声的滤波；代价是判错时会错误传播。(3) 8² = 64。</div>
+        </details>
+      </div>
+    </section>

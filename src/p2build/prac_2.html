@@ -1,0 +1,72 @@
+  <div class="group" id="P2"><h2>Practice 2 · 无线信道 2</h2><span>讲义第 2 章 p.40–49 · 第 9 周</span></div>
+
+  <article class="ex" id="p2q1">
+    <header><span class="pg">P2 · Q1</span><h3>平均衰落时长</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 2</span></div>
+      <p>For Rayleigh fading channels, the average fade duration can be expressed as,</p>
+      <p class="eq">\(AFD=\dfrac{e^{\rho^2}-1}{\sqrt{2\pi}f_D\rho}\)</p>
+      <p>The maximum Doppler shift is 50 Hz. The minimum signal strength, for acceptable performance is 0.1 of the rms value of the signal strength. Determine the average time duration when the signal strength is below the acceptable value.</p>
+    </div>
+    <div class="chips"><span class="chip">AFD</span><span class="chip">ρ = Z_min / Z_rms</span><span class="chip src">讲义第 2 章 p.42–43</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>ρ = 0.1，\(e^{\rho^2}-1=e^{0.01}-1=0.01005\)。</li>
+        <li>分母：\(\sqrt{2\pi}\times50\times0.1=2.5066\times5=12.53\)。</li>
+        <li>\(AFD=0.01005/12.53=8.0\times10^{-4}\) s。</li>
+      </ol>
+      <div class="ans">AFD ≈ 0.8 ms</div>
+      <div class="official"><b>官方答案：</b>0.8 ms ✓</div>
+      <div class="note">顺便算 LCR：\(\sqrt{2\pi}\times50\times0.1\times e^{-0.01}=12.4\) 次/秒。两者相乘 = 0.00995 ≈ 1%，就是信号低于 rms 值 20 dB 的时间比例。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p2q2">
+    <header><span class="pg">P2 · Q2</span><h3>两个基站的宏分集：独立与相关阴影</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 2</span></div>
+      <p>Consider a mobile station located between two base stations in a cellular network. The received signal powers (in dBm) from the base stations are given by</p>
+      <p class="eq">\(P_{r,1}=W+Z_1;\quad P_{r,2}=W+Z_2\)</p>
+      <p>where \(Z_1\) and \(Z_2\) are random variables \(\sim\mathcal N(0,\sigma^2)\). Outage is defined to have occurred when both \(P_{r,1}\) and \(P_{r,2}\) fall below a threshold T, where T is smaller than W by Δ.</p>
+      <p>(a) Interpret the terms W, \(Z_1\), \(Z_2\).</p>
+      <p>(b) If \(Z_1\) and \(Z_2\) are statistically independent, show that the outage probability is, \(P_{out}=[Q(\Delta/\sigma)]^2\)</p>
+      <p>(c) Now suppose \(Z_1\) and \(Z_2\) are correlated in the following way: \(Z_1=aY_1+bY\), \(Z_2=aY_2+bY\), where Y, \(Y_1\), \(Y_2\) are independent random variables \(\sim\mathcal N(0,\sigma^2)\). Show that</p>
+      <p class="eq">\(P_{out}=\displaystyle\int_{-\infty}^{\infty}\frac{1}{\sqrt{2\pi}}Q\!\left[\frac{\Delta+by\sigma}{|a|\sigma}\right]^2e^{-y^2/2}dy\)</p>
+    </div>
+    <div class="chips"><span class="chip">宏分集</span><span class="chip">独立 → 概率相乘</span><span class="chip">条件概率 + 全概率</span><span class="chip src">讲义第 2 章 p.12–15；第 4 章 p.4</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>(a) W：只考虑路径损耗时的<b>平均接收功率</b>（两个基站到手机的平均值相同）；\(Z_1,Z_2\)：两条链路各自的<b>阴影衰落</b>分量（dB）。</li>
+        <li>(b) 中断 = 两条都低于 T = W − Δ，即 \(Z_1<-\Delta\) 且 \(Z_2<-\Delta\)。每个的概率 \(P(Z_i<-\Delta)=Q(\Delta/\sigma)\)（对称性）。独立 → 相乘：\(P_{out}=[Q(\Delta/\sigma)]^2\)。</li>
+        <li>(c) 两条链路共享 bY，所以相关。技巧：<b>先固定 Y</b>，此时 \(Z_1,Z_2\) 只剩独立的 \(aY_1,aY_2\)。</li>
+        <li>为了和答案的形式一致，令 \(Y=\sigma u\)，\(u\sim\mathcal N(0,1)\)。给定 u：\(Z_i\sim\mathcal N(b\sigma u,\ a^2\sigma^2)\)，<div class="calc">P(Z_i &lt; −Δ | u) = Q( (Δ + bσu) / (|a|σ) )</div></li>
+        <li>给定 u 时两者独立：\(P(\text{中断}\mid u)=Q\big(\tfrac{\Delta+b\sigma u}{|a|\sigma}\big)^2\)。</li>
+        <li>再按 u 的标准正态密度 \(\tfrac{1}{\sqrt{2\pi}}e^{-u^2/2}\) 求平均（全概率定理），即得结果。</li>
+      </ol>
+      <div class="ans">(b) [Q(Δ/σ)]²；(c) ∫ (1/√(2π)) Q[(Δ + bσu)/(|a|σ)]² e^{−u²/2} du</div>
+      <div class="official"><b>官方答案：</b>与上面一致 ✓（题目里写成 byσ，积分变量 y 指的是归一化后的 u）</div>
+      <div class="note">直觉：b = 0 时退化成 (b) 的独立情况；a = 0 时两条链路完全一样，Pout = Q(Δ/σ)，分集完全没用。相关性越强，宏分集效果越差。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p2q3">
+    <header><span class="pg">P2 · Q3</span><h3>两个用户：干扰当噪声 vs 多用户检测</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 2</span></div>
+      <p>Two users transmit simultaneously to a single receiver over an AWGN channel. The power received from each transmitter is 10mW. The total received noise power is 0.1mW. The channel bandwidth for each user is 20MHz.</p>
+      <p>(a) The receiver decodes user 1's signal first. In this decoding, user 2's signal behaves like noise (assume it is AWGN). What is the capacity of user 1's channel?</p>
+      <p>(b) After applying MUD, the decoder removes user 1's signal completely from the received signal. What is the capacity of user 2's channel?</p>
+    </div>
+    <div class="chips"><span class="chip">香农容量</span><span class="chip">SINR</span><span class="chip">MUD</span><span class="chip src">讲义第 1a 章 p.16；第 2 章 p.48</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>(a) 用户 2 当噪声：SINR = 10 / (10 + 0.1) = 0.990。<div class="calc">C₁ = 20×10⁶ × log₂(1 + 0.990) = 20×10⁶ × 0.993 = 19.86 Mbps</div></li>
+        <li>(b) 用户 1 被完全减掉，只剩噪声：SNR = 10 / 0.1 = 100。<div class="calc">C₂ = 20×10⁶ × log₂(101) = 20×10⁶ × 6.658 = 133.16 Mbps</div></li>
+      </ol>
+      <div class="ans">(a) 19.86 Mbps；(b) 133.16 Mbps</div>
+      <div class="official"><b>官方答案：</b>19.86 Mbps；133.16 Mbps ✓</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>

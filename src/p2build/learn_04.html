@@ -1,0 +1,156 @@
+    <!-- ================= CH 4 ================= -->
+    <section class="chapter" id="ch4">
+      <div class="chapter-head"><span class="chapter-num">第四章</span><h2>分集：别把鸡蛋放在一个篮子里</h2></div>
+      <p>第 3 章的坏消息是：瑞利衰落下误码率只按 1/SNR 下降，靠加功率很不划算。根本原因是信道偶尔会掉进深衰落，掉进去以后加多少功率都救不回来。第 4 章的思路是：<b>同一份信息走几条独立衰落的路，几条路同时掉进深衰落的概率很小</b>（p.2–3）。</p>
+      <div class="formula-card">
+        <div class="flbl">分集的核心公式（p.3）</div>
+        <div class="fexpr">\(P_{\mathrm{out,diversity}}=P(\text{M 条路的 SNR 同时}\lt \gamma_{\min})=P_{\mathrm{out}}^M\)</div>
+        <div class="fmeaning">前提是各条路<b>独立</b>。一条路中断 10%，两条独立的路同时中断只有 1%，三条只有 0.1%。</div>
+      </div>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>重要文件同时用快递、邮件、U 盘三种方式寄出。任何一种出问题的概率都不小，但三种同时出问题的概率很小。前提是三种方式"不相关"：如果都要经过同一个已经被淹的仓库，就没用了。</p>
+      </div>
+
+      <h3><span class="zh-num">4.1</span>宏分集与微分集<span class="imp i2">★★ 常考</span></h3>
+      <ul>
+        <li><b>宏分集（macroscopic，p.4）</b>：一个手机同时连几个<b>不同位置的基站</b>，选信号最强的。用来对付<b>阴影衰落</b>：阴影是大尺度的，同一个基站方向上被楼挡住了，换个方向的基站很可能没被挡。Practice 4 第 1 题、Practice 2 第 2 题就是这个。</li>
+        <li><b>微分集（microscopic，p.5）</b>：对付<b>多径衰落</b>（小尺度）。几根天线隔开几个波长，衰落就基本独立了。</li>
+      </ul>
+      <div class="tblwrap"><table><thead><tr><th>分集方式（p.6）</th><th>怎么做</th><th>优点</th></tr></thead><tbody>
+        <tr><td>路径</td><td>利用信道里本来就有的多条独立路径</td><td>不用多天线，不多占功率和带宽</td></tr>
+        <tr><td>空间</td><td>基站上放几根隔开的天线</td><td>分支数可选，不多占功率和带宽</td></tr>
+        <tr><td>频率</td><td>同一数据在两个以上载频上发</td><td>分支数可选</td></tr>
+        <tr><td>时间</td><td>同一信息在不同时间重复发</td><td>分支数可选，不需要额外空间</td></tr>
+        <tr><td>极化</td><td>利用信号在多径中发生的去极化</td><td>不需要额外空间和带宽</td></tr>
+      </tbody></table></div>
+
+      <h3><span class="zh-num">4.2</span>三种合并方法<span class="imp">★★★ 必考</span></h3>
+      <p>系统模型（p.8）：第 i 路收到 \(r_i(t)=A_ie^{j\theta_i}s(t)+w_i(t)\)，\(A_ie^{j\theta_i}\) 是这一路的衰落增益。理想分集时各路增益独立同分布。</p>
+      <div class="formula-card">
+        <div class="flbl">选择分集 SD（p.10–12）</div>
+        <div class="fexpr">\(\gamma_{SD}=\max(\gamma_1,\dots,\gamma_M)\)　　\(P_{\mathrm{out}}(\gamma_0)=\left(1-e^{-\gamma_0/\bar\gamma}\right)^M\)　　\(\bar\gamma_{SD}=\bar\gamma\displaystyle\sum_{i=1}^{M}\frac1i\)</div>
+        <div class="fmeaning">只挑 SNR 最高的那一路。中断要求<b>每一路</b>都低于门限，独立时概率相乘。平均 SNR 只按 1 + 1/2 + 1/3 + … 增长：M = 2 时 1.5 倍，M = 3 时 1.83 倍。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>选择分集的中断概率（第 4 章 p.13）</summary>
+        <div class="wbody">
+          <p>已知条件：BPSK，要求 \(P_b=10^{-3}\)，瑞利衰落，每路平均 SNR 15 dB，比较 M = 1、2、3。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">AWGN 下 \(Q(\sqrt{2\gamma_0})=10^{-3}\) → \(\sqrt{2\gamma_0}=3.09\) → \(\gamma_0=4.77\) = 6.8 dB，这就是最低 SNR。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">\(\gamma_0/\bar\gamma=10^{0.68}/10^{1.5}=4.79/31.6=0.151\)，\(1-e^{-0.151}=0.140\)。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">M = 1：0.140；M = 2：0.140² = 0.020；M = 3：0.140³ = 0.003。</div></div>
+          <div class="wans">中断概率 14% → 2% → 0.3%，每多一路就降约 7 倍</div>
+        </div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">最大比合并 MRC（p.15–16）</div>
+        <div class="fexpr">\(y(t)=\displaystyle\sum_iA_ie^{-j\theta_i}r_i(t)\)　　\(\gamma_{MRC}=\dfrac{\sum_iA_i^2E_b}{N_0}=\sum_i\gamma_i\)</div>
+        <div class="fmeaning">每一路先乘上自己增益的共轭：<b>相位对齐</b>（\(e^{-j\theta_i}\)），<b>按信号强度加权</b>（\(A_i\)，强的路说话分量重）。结果是<b>输出 SNR 等于各路 SNR 之和</b>，这是线性合并能达到的最优。代价：每一路都要估计信道（p.17）。</div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">等增益合并 EGC（p.19–20）</div>
+        <div class="fexpr">\(y(t)=\displaystyle\sum_ie^{-j\theta_i}r_i(t)\)　　\(\gamma_{EGC}=\dfrac{\left(\sum_iA_i\right)^2E_b}{MN_0}\)</div>
+        <div class="fmeaning">只对齐相位、不加权，所有路等权相加。不需要估计幅度 \(A_i\)，性能和 MRC 非常接近（p.20 的图）。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">小例子</span>三种合并方法比一比</summary>
+        <div class="wbody">
+          <p>两路某一时刻的增益 \(A_1=1\)、\(A_2=0.5\)，\(E_b/N_0=1\)，即两路 SNR 分别为 1 和 0.25。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">SD：选大的，γ = 1。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">MRC：相加，γ = 1 + 0.25 = 1.25。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">EGC：\((1+0.5)^2/2=1.125\)。</div></div>
+          <div class="wans">MRC 1.25 ≥ EGC 1.125 ≥ SD 1：MRC 最好，EGC 接近，SD 最简单</div>
+        </div>
+      </div>
+      <p><b>相关性的影响（p.21）</b>：两路如果相关，一路掉进深衰落时另一路也倾向于掉进去，\(P(\text{两路都深衰落})\ge P(\text{一路})\times P(\text{另一路})\)。只有不相关时才取等号，分集效果最好。Practice 4 第 2(c) 题就是"两路共享同一个阴影项 β"的相关情况。</p>
+
+      <!-- ENR:learn_04.html:4.2 -->
+      <div class="key"><div class="lbl">★ 考试重点 · 离散 SNR 分布下的 SD 和 MRC（期末 4 年考了 3 次）</div>
+<ol class="steps">
+<li><b>dB 全部换成线性值</b>。</li>
+<li><b>列出两个支路的所有组合</b>和概率（独立 → 概率相乘）。两个取值就是 4 种组合，三个取值就是 9 种。</li>
+<li><b>每种组合的输出 SNR</b>：SD 取较大的 max(γ₁, γ₂)；MRC 取和 γ₁ + γ₂。</li>
+<li><b>加权平均</b>：平均输出 SNR = Σ 概率 × 输出 SNR；平均误码率 = Σ 概率 × P<sub>e</sub>(输出 SNR)，比如 DPSK 的 ½e<sup>−γ</sup>。</li></ol>
+<p>捷径：<mark class="hl">MRC 的平均输出 SNR = 各支路平均 SNR 之和</mark>，不用列组合；但平均误码率仍要列组合（e<sup>−γ</sup> 不是线性的）。</p></div>
+<div class="worked"><summary><span class="wtag">例题</span>SD 和 MRC 同一组数比一比（自编）</summary><div class="wbody">
+<p>已知条件：两支路独立，每支路 SNR 以 0.5 的概率是 4、0.5 的概率是 9（线性值），DPSK，P<sub>s</sub> = ½e<sup>−γ</sup>。</p>
+<div class="wstep"><div class="wn">1</div><div class="wtext">组合和概率：(4,4) 0.25，(4,9) 0.25，(9,4) 0.25，(9,9) 0.25。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>SD</b>：输出 4（只有两支都是 4 时，0.25）或 9（0.75）。<div class="calc">平均 = 0.25 × 4 + 0.75 × 9 = 7.75；P̄_s = 0.25 × ½e⁻⁴ + 0.75 × ½e⁻⁹ = 2.29×10⁻³ + 4.6×10⁻⁵ ≈ 2.3×10⁻³</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>MRC</b>：输出 8（0.25）、13（0.5）、18（0.25）。<div class="calc">平均 = 2 + 6.5 + 4.5 = 13（= 6.5 + 6.5）；P̄_s = 0.25 × ½e⁻⁸ + 0.5 × ½e⁻¹³ + 0.25 × ½e⁻¹⁸ ≈ 4.3×10⁻⁵</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext">单支路：P̄<sub>s</sub> = 0.5 × ½e⁻⁴ + 0.5 × ½e⁻⁹ ≈ 4.6×10⁻³。</div></div><div class="wans">误码率：单支路 4.6×10⁻³ → SD 2.3×10⁻³ → MRC 4.3×10⁻⁵；MRC 好得多，因为它把两路能量加起来</div></div></div>
+      <!-- /ENR:learn_04.html:4.2 -->
+      <h3><span class="zh-num">4.3</span>分集后的误码率<span class="imp">★★★ 必考</span></h3>
+      <p>平均误码率还是"按 SNR 的分布加权平均"：\(\bar P_s=\int P_s(\gamma)p_\gamma(\gamma)d\gamma\)（p.23）。以 DPSK + 选择分集为例（p.24–26）：</p>
+      <div class="formula-card">
+        <div class="flbl">DPSK + 选择分集（p.25–26）</div>
+        <div class="fexpr">\(\bar P_b=\dfrac M2\displaystyle\sum_{n=0}^{M-1}(-1)^n\binom{M-1}{n}\frac{1}{\bar\gamma+n+1}\)　　M = 1：\(\dfrac{1}{2(1+\bar\gamma)}\approx\dfrac{1}{2\bar\gamma}\)　　M = 2：\(\dfrac{1}{(\bar\gamma+1)(\bar\gamma+2)}\approx\dfrac{1}{\bar\gamma^2}\)</div>
+        <div class="fmeaning">一路时误码率和 \(\bar\gamma\) 成反比；两路时和 \(\bar\gamma^2\) 成反比。SNR 提高 10 dB，一路只降 10 倍，两路降 100 倍。<b>指数 M 就是"分集阶数"</b>。</div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">阵列增益与分集增益（p.27–28）</div>
+        <div class="fexpr">\(g\approx\dfrac{\bar\gamma_\Sigma}{\bar\gamma}\)　　\(\bar P_e\approx\bar\gamma^{-d}\ \Longrightarrow\ d\approx\dfrac{-\log_{10}\bar P_e}{\log_{10}\bar\gamma}\)</div>
+        <div class="fmeaning"><b>阵列增益 g</b>：合并后平均 SNR 比单路高多少倍，是曲线的"平移"。<b>分集增益 d</b>：误码率曲线在高 SNR 时的"斜率"，d ≤ M；N 发 M 收的 MIMO，d ≤ N × M，满分集时取等号。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>离散 SNR 分布下的 MRC（Practice 4 第 2 题）</summary>
+        <div class="wbody">
+          <p>已知条件：DPSK，\(P_s=\tfrac12e^{-\gamma}\)；单路 SNR γ = 8（概率 1/3）或 11（概率 2/3）；发射功率和噪声都是 1 W。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">(a) 单路：\(\bar\gamma=8\cdot\tfrac13+11\cdot\tfrac23=10\)；\(\bar P_s=\tfrac13\cdot\tfrac12e^{-8}+\tfrac23\cdot\tfrac12e^{-11}=6.15\times10^{-5}\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">(b) 两路 MRC，输出 \(\gamma_\Sigma=\gamma_1+\gamma_2\)。两路独立，四种组合：16（1/9）、19（4/9）、22（4/9）。<div class="calc">γ̄_Σ = 16/9 + 19·4/9 + 22·4/9 = 20</div><div class="calc">P̄_s = ½[e⁻¹⁶/9 + 4e⁻¹⁹/9 + 4e⁻²²/9] = 7.56 × 10⁻⁹</div></div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">阵列增益 g = 20/10 = 2；分集增益 \(d=-\log_{10}(7.56\times10^{-9})/\log_{10}10=8.1\)。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">(c) 两路共享阴影项：\(\gamma_i=r_i+\beta\)。平均仍是 2 × (1 + 9) = 20。因为 \(e^{-\gamma_\Sigma}=e^{-r_1}e^{-r_2}e^{-2\beta}\) 且三者独立：<div class="calc">E[e^{−r}] = ⅓e^{−0.6} + ⅔e^{−1.2} = 0.3837</div><div class="calc">E[e^{−2β}] = ⅓e^{−14} + ⅔e^{−20} = 2.786 × 10⁻⁷</div><div class="calc">P̄_s = ½ × 0.3837² × 2.786 × 10⁻⁷ = 2.05 × 10⁻⁸，d = 7.7</div></div></div>
+          <div class="wans">(a) γ̄ = 10，P̄s = 6.15×10⁻⁵；(b) γ̄Σ = 20，P̄s = 7.6×10⁻⁹，g = 2，d = 8.1；(c) γ̄Σ = 20，P̄s = 2.05×10⁻⁸，g = 2，d = 7.7</div>
+          <p style="margin-top:12px">(b) 和 (c) 平均 SNR 一样，但 (c) 的误码率高了近 3 倍：两路共享阴影 β，一起变差，这就是"相关性削弱分集"。</p>
+        </div>
+      </div>
+
+      <!-- ENR:learn_04.html:4.3 -->
+      <div class="key"><div class="lbl">★ 考试重点 · 阵列增益 g 和分集增益 d（2025-26 两次期末都考）</div>
+<ul><li><mark class="hl">g = γ̄<sub>Σ</sub> / γ̄</mark>：合并器<b>输出</b>平均 SNR ÷ <b>输入</b>平均 SNR；dB 下就是两者相减（15 dB − 12 dB = 3 dB → g = 2）。</li>
+<li><mark class="hl">P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>，d ≈ −log₁₀P̄<sub>e</sub> / log₁₀γ̄</mark>，这里的 γ̄ 是合并器<b>输入</b>的平均 SNR（Practice 4 官方答案 d = 8.1 就是用输入 γ̄ = 10 算的）。</li>
+<li>已知 d 求误码率：P̄<sub>e</sub> = γ̄<sup>−d</sup>（2025-26 S2：12 dB、d = 3.7 → 15.85<sup>−3.7</sup> ≈ 3.6×10⁻⁵）。</li>
+<li>理论上 d ≤ M（M 支路），MIMO 满分集 d = N × M。由单个误码率点反算的 d 可能超过 M，这是高 SNR 近似的结果，按公式写即可。</li></ul></div>
+<div class="pitfall"><div class="lbl">⚠ 易错</div><ul>
+<li>用输出 SNR 代 d 的公式；或者 g 用 dB 值相除（应该相减，或者先换线性再相除）。</li>
+<li>DPSK 的误码率是 ½e<sup>−γ</sup>，BPSK 是 Q(√(2γ))，题目会给，别混。</li></ul></div>
+      <!-- /ENR:learn_04.html:4.3 -->
+      <h3><span class="zh-num">4.4</span>空间复用与分集-复用折中<span class="imp">★★★ 必考</span></h3>
+      <p><b>空间复用（p.30）</b>：N 根发射天线各发<b>不同</b>的数据，速率变成 N 倍，但没有分集增益，衰落下性能可能很差；接收天线数 M ≥ N 才解得开。</p>
+      <p>多天线能不能同时要分集（误码率低）和复用（速率高）？p.31–33 定义了两个量：</p>
+      <div class="formula-card">
+        <div class="flbl">分集-复用折中（p.32–33）</div>
+        <div class="fexpr">\(d=\lim\dfrac{-\log_2P_e}{\log_2\mathrm{SNR}}\)　　\(r=\lim\dfrac{R}{\log_2\mathrm{SNR}}\)　　\(d(r)=(N-r)(M-r),\ r=0,1,\dots,\min(N,M)\)</div>
+        <div class="fmeaning">d：SNR 每翻一倍，误码率降多快，最大 N × M。r：SNR 每翻一倍，速率多几 bit/s/Hz，最大 min(N, M)。两者此消彼长：r = 0 时分集最大 N × M；r = min(N, M) 时分集为 0。高 SNR 时容量 \(\approx\min(N,M)\log_2\mathrm{SNR}\)（p.31）。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>8 × 4 MIMO 能传多快（Practice 5 第 3 题）</summary>
+        <div class="wbody">
+          <p>已知条件：\(d(r)=(N-r)(M-r)\)，N = 8，M = 4，r、d 取整数；要求 \(P_e=\gamma^{-d}\le10^{-3}\)，γ = 10 dB。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">γ = 10，\(10^{-d}\le10^{-3}\) → d ≥ 3。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">列表：r = 0 → 32；r = 1 → 21；r = 2 → 12；r = 3 → 5；r = 4 → 0。满足 d ≥ 3 的最大 r 是 3（d = 5）。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">速率 \(R=r\log_2\gamma=3\times\log_210=9.97\) bit/s/Hz；误码率 \(P_e=10^{-5}\)。</div></div>
+          <div class="wans">(a) 9.96 bit/s/Hz；(b) Pe = 10⁻⁵</div>
+        </div>
+      </div>
+      <p>p.34 的例子：\(P_e=2^{2R}/\mathrm{SNR}\)，把 \(R=r\log_2\mathrm{SNR}\) 代入：\(2^{2R}=\mathrm{SNR}^{2r}\)，所以 \(P_e=\mathrm{SNR}^{-(1-2r)}\)，\(d(r)=1-2r\)。</p>
+      <!-- ENR:learn_04.html:4.4 -->
+      <div class="key"><div class="lbl">★ 考试重点 · 分集-复用折中的计算（2024-25 Q1(b)(ii)、Practice 5 第 3 题）</div>
+<ol class="steps">
+<li>最大分集 d<sub>max</sub> = N × M；最大复用 r<sub>max</sub> = min(N, M)；空间复用要 M ≥ N。</li>
+<li>由误码率和 d 求 SNR：P<sub>e</sub> = SNR<sup>−d</sup> → SNR = P<sub>e</sub><sup>−1/d</sup>（10⁻³ 和 d = 3 → SNR = 10）。</li>
+<li>速率 R = r · log₂SNR（r = 2 → 2 × log₂10 = 6.64 bit/s/Hz）。</li>
+<li>检查 (r, d) 是否在最优曲线上：d(r) = (N − r)(M − r)。</li></ol></div>
+      <!-- /ENR:learn_04.html:4.4 -->
+      <!-- ENR:learn_04.html:summary -->
+      <div class="key"><div class="lbl">★ 第四章考试重点</div><ul>
+<li>独立分支：P<sub>out</sub> = P<sub>out,单支</sub><sup>M</sup>；SD 中断 (1 − e<sup>−γ₀/γ̄</sup>)<sup>M</sup>，会反求 M。</li>
+<li>SD 取最大、MRC 取和、EGC 只对齐相位；MRC 平均输出 = 各支路平均之和。</li>
+<li>离散 SNR 分布：列组合 → 输出 SNR → 加权平均。</li>
+<li>g = 输出/输入；d 用输入 SNR；P<sub>e</sub> ≈ γ̄<sup>−d</sup>。</li>
+<li>d(r) = (N − r)(M − r)，R = r log₂SNR。</li></ul></div>
+      <!-- /ENR:learn_04.html:summary -->
+      <div class="checkpoint">
+        <div class="lbl">自测</div>
+        <p>(1) 3 路选择分集，每路平均 SNR 相同，平均输出 SNR 是单路的几倍？(2) MRC 两路 SNR 分别为 3 和 5，输出 SNR？(3) 4 × 2 MIMO 的最大分集增益和最大复用增益？</p>
+        <details class="reveal"><summary>点击看答案</summary>
+          <div class="ans">(1) 1 + 1/2 + 1/3 = 1.83 倍。(2) 3 + 5 = 8。(3) d_max = 4 × 2 = 8，r_max = min(4, 2) = 2。</div>
+        </details>
+      </div>
+    </section>

@@ -1,0 +1,89 @@
+    <!-- ================= CH 5 ================= -->
+    <section class="chapter" id="ch5">
+      <div class="chapter-head"><span class="chapter-num">第五章</span><h2>卫星版的"分蛋糕"：容量分配</h2></div>
+
+      <h3><span class="zh-num">5.1</span>先按频率切一刀（p.28）</h3>
+      <p>和地面系统一样，卫星也用 FDMA、TDMA、CDMA 分配容量（Part A 第一章）。卫星的总容量<b>先用 FDMA 切成若干物理信道</b>，每个信道里面再进一步分配。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>C 波段卫星的信道划分（p.28）</summary>
+        <div class="wbody">
+          <p>已知条件：C 波段卫星总带宽 500 MHz，用频率复用技术分成 24 个 40 MHz 信道，每个信道含 4 MHz 保护带。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">每个信道实际可用：40 − 4 = <b>36 MHz</b>，保护带占 10%。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">24 × 40 = 960 MHz，比 500 MHz 多出近一倍，这就是讲义说的"靠频率复用"：同一段频率用了两次。</div></div>
+          <div class="wans">每信道可用 36 MHz；24 个信道共占 960 MHz 的"等效带宽"，靠复用装进 500 MHz</div>
+        </div>
+      </div>
+      <div class="extra">
+        <div class="lbl">课外补充 · 卫星上的"频率复用"是怎么做的</div>
+        <p>常见做法是用两种正交极化（水平/垂直，或左旋/右旋圆极化）：500 MHz 里放 12 个 40 MHz 信道（480 MHz），两种极化各用一遍，就是 24 个。地面站天线只接收一种极化，两组信道互不干扰。另一种做法是窄的点波束：不同地区用同一频率（p.35 讲 Ku、K 频段时提到）。</p>
+      </div>
+
+      <h3><span class="zh-num">5.2</span>固定分配 vs 按需分配（p.29–30）</h3>
+      <div class="tblwrap"><table><thead><tr><th></th><th>FAMA（固定分配）</th><th>DAMA（按需分配）</th></tr></thead><tbody>
+        <tr><td>怎么分</td><td>容量以固定方式分给各站</td><td>根据各站需求的变化随时调整</td></tr>
+        <tr><td>问题</td><td>需求波动时，大量容量闲置</td><td>需要信令和调度</td></tr>
+        <tr><td>FDMA 版本</td><td>FAMA-FDMA：各站的链路带宽预先分好，靠不同频段接入</td><td>DAMA-FDMA：子信道组成一个池，按需分配</td></tr>
+      </tbody></table></div>
+      <p><b>DAMA-FDMA 怎么分配</b>（p.30）：一个信道里的子信道当作"可用链路池"。两个地面站要全双工通信时，动态分给它们一对子信道。分配由各地面站<b>分布式</b>完成，靠一条<b>公共信令信道 CSC</b>：</p>
+      <ul>
+        <li>CSC 上反复发送一个 TDMA 帧，共 <b>50 个时隙</b>；</li>
+        <li>第 1 个时隙用于同步，其余 <b>49 个</b>永久分给 49 个地面站；</li>
+        <li>某站选好子信道后，在自己的时隙里广播所选子信道的编号，别的站就不再选它们；</li>
+        <li>为了公平使用子信道，还需要一个集中调度器。</li>
+      </ul>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>CSC 像会议室门口的预约白板：每个部门在白板上有固定的一格（时隙），想用哪间会议室（子信道）就写在自己那格里，别的部门看到就不会再订同一间。</p>
+      </div>
+
+      <h3><span class="zh-num">5.3</span>TDMA：轮流用上行（p.31–34）</h3>
+      <p>TDMA 把传输分成重复的帧，每帧分成若干时隙，每个时隙专门给某个用户（p.31）。地面站轮流在分配给自己的时隙里发上行；卫星把收到的内容转发并<b>广播给所有站</b>，各站要知道用哪个时隙发、哪个时隙收。</p>
+      <p>p.32 的帧结构：</p>
+      <ul>
+        <li>帧开头是<b>参考突发</b>：载波与比特定时恢复、协调数据；</li>
+        <li>然后是各站的<b>数据突发</b>，突发之间留<b>保护时间</b>；</li>
+        <li>每个站的突发 = <b>前导</b>（载波与比特定时恢复、唯一字、站识别码、网络控制与请求）+ <b>信息</b>。</li>
+      </ul>
+      <p>p.33–34 的图：上行时各站在不同时隙发送；下行时卫星把整帧广播回去，每个站从中挑出发给自己的那部分。</p>
+      <div class="formula-card">
+        <div class="flbl">为什么卫星上 TDMA 通常比 FDMA 高效（p.35）</div>
+        <div class="fexpr">TDMA 的保护时间 + 控制比特 &lt; FDMA 的保护带</div>
+        <div class="fmeaning">讲义原话：TDMA 的保护时间和控制比特占用的容量，比 FDMA 的保护带少。在 Ku、K 等高频段还能更高效：卫星波束可以聚得很窄，同一频率用多个波束分别照不同地区。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>比一比两种开销</summary>
+        <div class="wbody">
+          <p>已知条件：TDMA 帧长 2 ms，参考突发 20 µs，10 个站，每站前导 10 µs、保护时间 2 µs。FDMA 用上面的 40 MHz 信道、4 MHz 保护带。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">TDMA 开销：20 + 10 × (10 + 2) = 140 µs，效率 1 − 140/2000 = <b>93%</b>。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">FDMA：36/40 = <b>90%</b>。</div></div>
+          <div class="wans">在这组数字下 TDMA 效率更高；而且帧越长、站越少，TDMA 的开销比例越小</div>
+          <p style="margin-top:12px">课外补充：TDMA 的参数是举例用的，讲义只给定性结论。</p>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">5.4</span>SS/TDMA：卫星在天上当交换机（p.35–37）</h3>
+      <p>同一个波束覆盖区里的站之间，用普通的 FAMA-TDMA 就行。<b>不同波束区</b>的站要通信，卫星就得把某个上行波束的时隙<b>交换</b>到另一个下行波束上，这叫<b>卫星交换 TDMA（SS/TDMA）</b>，是 DAMA-TDMA 的一种（p.35–36）。</p>
+      <ul>
+        <li>卫星服务 N 个区域，有 N 路 TDMA 上行；</li>
+        <li>任一时刻，星上开关按某种方式把 N 个上行波束接到 N 个下行波束，每一种接法叫一个<b>模式（mode）</b>；</li>
+        <li>要完全连通，需要 <b>N!</b> 种模式；</li>
+        <li>卫星周期性地换模式，最多每个时隙换一次；模式的顺序和时长可以由地面指令调整，以适应业务变化。</li>
+      </ul>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>3 个区域需要几种模式</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">上行 A、B、C 三个波束，每种模式把它们一一接到三个下行波束上，就是 A、B、C 的一个排列。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">列出来：ABC、ACB、BAC、BCA、CAB、CBA，共 3! = 6 种。比如模式 "BCA" 表示 A 区上行送到 B 区下行、B 送到 C、C 送到 A。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">N = 4 时 4! = 24 种；N = 5 时 120 种。区域多了模式数增长极快。</div></div>
+          <div class="wans">N = 3：6 种模式；N = 4：24 种</div>
+        </div>
+      </div>
+      <p>p.37 的图：两个区域 A、B，各有两个站。上行时不同周期（Period 1、2、3）里，各站的数据目标不同；下行时卫星按当前模式把时隙送到对应的区域。</p>
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>(1) DAMA-FDMA 的 CSC 最多支持多少个地面站？(2) 为什么说 FAMA 在需求波动时浪费容量？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">(1) 49 个：50 个时隙里 1 个用于同步。(2) 每个站固定占一份容量，不管当下有没有数据要发。某站空闲时，它那份容量别人也用不上；而忙的站却可能不够用。</div>
+        </details>
+      </div>
+    </section>

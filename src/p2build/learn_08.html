@@ -1,0 +1,48 @@
+    <!-- ================= TOOLS ================= -->
+    <section class="chapter" id="ch8">
+      <div class="chapter-head"><span class="chapter-num">工具箱</span><h2>四个计算器：做题时拿来核对</h2></div>
+      <p>考试要手算，这些计算器只用来核对自己的结果。每个都预填了讲义或练习里的数字。</p>
+
+      <div class="tool" id="t-q">
+        <h4>Q 函数与反函数</h4>
+        <div class="trow">
+          <label for="q-x">x<input id="q-x" type="number" step="0.01" value="2.69"></label>
+          <label for="q-p">概率 p（求 Q⁻¹）<input id="q-p" type="number" step="0.0001" value="0.01"></label>
+        </div>
+        <div class="tout"><div><span>Q(x)</span><b id="q-out">—</b></div><div><span>Q⁻¹(p)</span><b id="qi-out">—</b></div></div>
+        <div class="thint">Q(2.69) 是第 2 章 p.16 的中断概率；Q⁻¹(0.01) = 2.33 是 Practice 1 第 2(b) 题要用的。</div>
+      </div>
+
+      <div class="tool" id="t-wf">
+        <h4>注水法（第 2 章 p.54；Practice 5、7）</h4>
+        <div class="trow">
+          <label for="wf-g">各子信道 SNR γ（逗号分隔）<input id="wf-g" type="text" value="17.77, 2.63, 0.087" style="width:16em"></label>
+          <label for="wf-b">带宽 B（MHz，填 1 则结果是 bit/s/Hz）<input id="wf-b" type="number" step="0.1" value="1"></label>
+        </div>
+        <div class="tout"><div><span>截止值 γ₀</span><b id="wf-g0">—</b></div><div><span>功率分配 Pⱼ / P</span><b id="wf-p">—</b></div><div><span>容量</span><b id="wf-c">—</b></div></div>
+        <div class="thint">试试 80, 40, 40 和 B = 10，应该得到约 124.7 Mbps（Practice 5 第 1 题）。</div>
+      </div>
+
+      <div class="tool" id="t-lcr">
+        <h4>多普勒、LCR 与 AFD（第 2 章 p.34–47）</h4>
+        <div class="trow">
+          <label for="l-v">车速（km/h）<input id="l-v" type="number" value="120"></label>
+          <label for="l-f">载频（GHz）<input id="l-f" type="number" step="0.1" value="5"></label>
+          <label for="l-r">ρ = Z_min / Z_rms<input id="l-r" type="number" step="0.01" value="0.1"></label>
+          <label for="l-rs">符号速率（ksps）<input id="l-rs" type="number" value="1000"></label>
+        </div>
+        <div class="tout"><div><span>f_m（Hz）</span><b id="l-fm">—</b></div><div><span>T_C ≈ 1/f_m</span><b id="l-tc">—</b></div><div><span>LCR（次/秒）</span><b id="l-lcr">—</b></div><div><span>AFD</span><b id="l-afd">—</b></div><div><span>每次衰落连错符号</span><b id="l-n">—</b></div></div>
+      </div>
+
+      <div class="tool" id="t-ofdm">
+        <h4>OFDM 系统设计（Practice 7 第 2 题）</h4>
+        <div class="trow">
+          <label for="o-r">目标速率（Mbps）<input id="o-r" type="number" step="0.1" value="2"></label>
+          <label for="o-b">每符号比特数<input id="o-b" type="number" value="4"></label>
+          <label for="o-w">带宽（kHz）<input id="o-w" type="number" value="600"></label>
+          <label for="o-g">CP 长度（µs）<input id="o-g" type="number" value="20"></label>
+        </div>
+        <div class="tout"><div><span>子载波数 N</span><b id="o-n">—</b></div><div><span>有用符号时长</span><b id="o-t">—</b></div><div><span>OFDM 符号总长</span><b id="o-tt">—</b></div><div><span>CP 功率损失</span><b id="o-loss">—</b></div></div>
+        <div class="thint">解的是 N / (N/B + T_G) = R / b。结果不是整数时取上整。</div>
+      </div>
+    </section>

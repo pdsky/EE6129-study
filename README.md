@@ -38,3 +38,21 @@ sudo apt install fonts-noto-cjk
 ```bash
 git pull
 ```
+
+## 源文件（src/）
+
+页面是用脚本从片段拼出来的，改内容请改 `src/` 里的源文件再重新生成：
+
+| 目录 | 内容 |
+|---|---|
+| `src/p2build/` | Part 2 讲解（`learn_01–08.html`）、Practice 详解（`prac_1–7.html`）、Part B/C 讲解（`pb_*.html`、`pc_*.html`）的章节片段和构建脚本；`enrich_p2.py` 给第 3–7 章加星级和重点框；`rayleigh_svg.py`、`rician_svg.py`、`doppler_svg.py`、`gauss_svg.txt` 生成第 2、3 章的示意图 |
+| `src/exams/` | 四份期末卷的题目与解答数据（`data_*.py`）、数值核对脚本 `verify.py`、生成 `exams.html` 并把真题插进各讲解页章末的 `build_exams.py` |
+| `src/tools/` | Part A、HW1、例题手册当初改写时用过的一次性脚本 |
+
+重新生成（在 `src/p2build/` 下）：
+
+```bash
+/usr/bin/python3 enrich_p2.py && /usr/bin/python3 build_learn.py && /usr/bin/python3 build_bc_learn.py && /usr/bin/python3 build_bc.py
+```
+
+`build_learn.py` 和 `build_bc_learn.py` 结束时会自动调用 `../exams/build_exams.py --inject`，把历年真题重新插回章末。脚本同时会往仓库外的 `EE6129_artifacts/` 写一份网页版副本，那个目录不在仓库里。

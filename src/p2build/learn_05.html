@@ -1,0 +1,132 @@
+    <!-- ================= CH 5 ================= -->
+    <section class="chapter" id="ch5">
+      <div class="chapter-head"><span class="chapter-num">第五章</span><h2>MIMO：多根天线，既抗衰落又提速</h2></div>
+      <p>MIMO（Multiple-Input Multiple-Output）就是发射端 N 根天线、接收端 M 根天线。第 4 章已经提到它能提供空间分集，这一章讲四件事：信号模型、用 MIMO 做分集、空时编码、MIMO 容量（p.2）。</p>
+
+      <h3><span class="zh-num">5.1</span>信号模型：y = Hx + v<span class="imp">★★★ 必考</span></h3>
+      <div class="formula-card">
+        <div class="flbl">平坦、时不变 MIMO 信道（p.5–6）</div>
+        <div class="fexpr">\(y_m=\displaystyle\sum_{n=1}^{N}h_{m,n}x_n+v_m\quad\Longleftrightarrow\quad\mathbf y=\mathbf H\mathbf x+\mathbf v\)</div>
+        <div class="fmeaning">第 m 根接收天线收到的，是 N 根发射天线信号的加权和，再加噪声。\(h_{m,n}\) 是"第 n 根发射天线到第 m 根接收天线"的信道增益，排成 M 行 N 列的矩阵 \(\mathbf H\)。噪声在各天线间独立、方差 \(\sigma^2\)。</div>
+      </div>
+      <p>多个时刻叠起来就是块模型 \(\mathbf Y=\mathbf H\mathbf X+\mathbf V\)（p.7）。频率选择性信道会有记忆：\(\mathbf y_i=\sum_{l=0}^{L}\mathbf H_l\mathbf x_{i-l}+\mathbf v_i\)，当前输出受前面 L 个输入影响，这就是 ISI（p.8，第 6 章的主题）。</p>
+
+      <!-- ENR:learn_05.html:5.1 -->
+      <div class="key"><div class="lbl">★ 考试重点 · 写出 MIMO 模型（2025-26 S2 Q1(b)(ii)）</div>
+<ul><li>N 根发射、M 根接收：y（M×1）= H（M×N）x（N×1）+ v（M×1）。<mark class="hl">H 的行对应接收天线、列对应发射天线</mark>，h<sub>ij</sub> 是第 j 根发射到第 i 根接收的增益。</li>
+<li>为什么每对天线只有一个增益：<b>平坦衰落</b>下各条回波在一个符号内叠成一个复数，没有可分辨的多个抽头，也就没有 ISI。频率选择性时才会出现 H<sub>0</sub>, H<sub>1</sub>, … 多个矩阵（p.8）。</li>
+<li>例：4 发 6 收 → H 是 6×4，y<sub>i</sub> = Σ<sub>j=1..4</sub> h<sub>ij</sub>x<sub>j</sub> + v<sub>i</sub>。</li></ul></div>
+      <!-- /ENR:learn_05.html:5.1 -->
+      <h3><span class="zh-num">5.2</span>接收分集 SIMO：最大比合并的推导<span class="imp">★★★ 必考</span></h3>
+      <p>1 发 2 收（p.12–15）：\(y_1=h_1x+v_1\)，\(y_2=h_2x+v_2\)，写成 \(\mathbf y=x\mathbf h+\mathbf v\)。接收端用权重线性合并：\(\hat x=\mathbf w^H\mathbf y=x\,\mathbf w^H\mathbf h+\mathbf w^H\mathbf v\)。</p>
+      <div class="worked">
+        <summary><span class="wtag">推导</span>权重怎么选，SNR 最大（第 5 章 p.13–15）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">信噪比：\(\mathrm{SNR}=\dfrac{E\{|x|^2\}\,|\mathbf w^H\mathbf h|^2}{\sigma^2\,\mathbf w^H\mathbf w}\)（噪声空间白，\(E\{\mathbf v\mathbf v^H\}=\sigma^2\mathbf I\)）。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">分子是两个向量内积的平方。由柯西-施瓦茨不等式，\(|\mathbf w^H\mathbf h|^2\le\|\mathbf w\|^2\|\mathbf h\|^2\)，当 \(\mathbf w\) 和 \(\mathbf h\) 同方向时取等号：\(\mathbf w=\alpha\mathbf h\)。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">代回：<div class="calc">SNR_max = E{|x|²}/σ² · ‖h‖² = E{|x|²}/σ² · (|h₁|² + |h₂|²)</div></div></div>
+          <div class="wans">w ∝ h，就是第 4 章的 MRC；SNR 正比于 |h₁|² + |h₂|²</div>
+          <p style="margin-top:12px">直觉：只要 h₁、h₂ 不同时很小，SNR 就不会太差。两者独立时，同时很小的概率远低于其中一个很小的概率（p.15）。</p>
+        </div>
+      </div>
+
+      <!-- ENR:learn_05.html:5.2 -->
+      <div class="key"><div class="lbl">★ 答题模板 · SIMO 为什么能得到分集（2025-26 S1 Q1(b)(ii)）</div>
+<ol class="steps"><li><b>为什么是 SIMO</b>：只有一个发送符号 s（单输入），收到两个信号 y₁、y₂（多输出）。</li>
+<li><b>独立</b>：两根接收天线隔开足够远，h₁、h₂ 独立衰落，同时深衰落的概率是各自概率的乘积。</li>
+<li><b>合并</b>：MRC 用 h₁*、h₂* 加权相加，有效增益 |h₁|² + |h₂|²，只要有一路好，输出 SNR 就不会太差 → 分集阶数 2。</li></ol></div>
+      <!-- /ENR:learn_05.html:5.2 -->
+      <h3><span class="zh-num">5.3</span>发射分集 MISO：知不知道信道很关键<span class="imp i2">★★ 常考</span></h3>
+      <p>2 发 1 收（p.16–18），两根天线发同一个 x，各乘一个权重：\(y=x\,\mathbf w^H\mathbf h+v\)。</p>
+      <ul>
+        <li><b>发射端知道信道（informed）</b>：取 \(\mathbf w=\alpha\mathbf h\)，SNR ∝ \(|h_1|^2+|h_2|^2\)，有分集（p.17）。相当于发射端提前把两路信号的相位对齐，让它们在接收端同相相加，叫波束成形。</li>
+        <li><b>发射端不知道信道（uninformed）</b>：权重是固定的，\(|w_1^*h_1+w_2^*h_2|^2\) 和单个 \(|h|^2\) 分布一样（只差一个比例），<b>没有分集</b>（p.18）。两路信号随机地时而相加、时而抵消，和一根天线没区别。</li>
+      </ul>
+      <p>发射端不知道信道时怎么办？答案是下面的空时编码。</p>
+      <div class="formula-card">
+        <div class="flbl">特征子信道（p.19）</div>
+        <div class="fexpr">\(\mathbf H=\mathbf U\boldsymbol\Sigma\mathbf G^H\)，发端乘 \(\mathbf G\)、收端乘 \(\mathbf U^H\)：\(\tilde{\mathbf y}=\mathbf U^H\mathbf H\mathbf G\mathbf x=\boldsymbol\Sigma\mathbf x\)</div>
+        <div class="fmeaning">奇异值分解（SVD）把 MIMO 信道拆成几条互不干扰的并行 SISO "特征子信道"，增益就是奇异值。前提是发射端知道 \(\mathbf H\)。这是 5.5 节 MIMO 容量公式的来历。</div>
+      </div>
+
+      <h3><span class="zh-num">5.4</span>Alamouti 空时块码：发射端不知道信道也能分集<span class="imp">★★★ 必考</span></h3>
+      <p>空时块码（STBC）把符号同时在<b>空间</b>（哪根天线）和<b>时间</b>（哪个时隙）上编排（p.20）。最经典的是 Alamouti 码：2 根发射天线、2 个时隙、发 2 个符号（p.21）：</p>
+      <div class="formula-card">
+        <div class="flbl">Alamouti 编码矩阵（p.21–22）</div>
+        <div class="fexpr">\(\mathbf X(\mathbf s)=\begin{bmatrix}s_1 & s_2\\ -s_2^* & s_1^*\end{bmatrix}\)（行：时隙 1、2；列：天线 1、2）　　\(\mathbf X\mathbf X^H=\|\mathbf s\|^2\mathbf I\)</div>
+        <div class="fmeaning">时隙 1：天线 1 发 \(s_1\)、天线 2 发 \(s_2\)；时隙 2：天线 1 发 \(-s_2^*\)、天线 2 发 \(s_1^*\)。码率 R = K/T = 2 个符号 / 2 个时隙 = 1（全速率，p.29）。关键性质是<b>正交</b>：\(\mathbf X\mathbf X^H=(|s_1|^2+|s_2|^2)\mathbf I\)，正是这个性质让接收端能用很简单的线性运算把两个符号分开。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">推导</span>Alamouti 的判决变量（Practice 5 第 2 题）</summary>
+        <div class="wbody">
+          <p>已知条件：符号 \(u_1,u_2\)；时隙 1：A 发 \(u_1\)、B 发 \(u_2\)；时隙 2：A 发 \(-u_2^*\)、B 发 \(u_1^*\)。两个时隙信道不变（\(h_A,h_B\)），1 根接收天线，噪声 \(\mathcal N(0,N_0)\)。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">两个时隙收到：<div class="calc">y₁ = h_A u₁ + h_B u₂ + w₁</div><div class="calc">y₂ = −h_A u₂* + h_B u₁* + w₂</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">第二式取共轭：\(y_2^*=-h_A^*u_2+h_B^*u_1+w_2^*\)。现在两个式子都是 \(u_1,u_2\) 的线性组合：<div class="calc">[y₁, y₂*]ᵀ = F [u₁, u₂]ᵀ + [w₁, w₂*]ᵀ，F = [[h_A, h_B], [h_B*, −h_A*]]</div></div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">F 的两列正交：\(\mathbf F^H\mathbf F=(|h_A|^2+|h_B|^2)\mathbf I\)。两边左乘 \(\mathbf F^H\)：<div class="calc">z₁ = h_A* y₁ + h_B y₂* = (|h_A|² + |h_B|²) u₁ + h_A* w₁ + h_B w₂*</div><div class="calc">z₂ = h_B* y₁ − h_A y₂* = (|h_A|² + |h_B|²) u₂ + h_B* w₁ − h_A w₂*</div></div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">除以 \(\|\mathbf h\|=\sqrt{|h_A|^2+|h_B|^2}\) 归一化，噪声方差回到 \(N_0\)。</div></div>
+          <div class="wans">z₁ = ‖h‖u₁ + w̃₁，z₂ = ‖h‖u₂ + w̃₂，w̃ ~ N(0, N₀)：两个符号完全分开，每个都得到 |h_A|² + |h_B|² 的二阶分集</div>
+          <p style="margin-top:12px">官方答案写成 ‖h₁‖、‖h₂‖，其实两个都是同一个 ‖h‖ = √(|h_A|² + |h_B|²)。</p>
+        </div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">SNR 对比（p.26、p.30）</div>
+        <div class="fexpr">MRC（1 发 2 收）：\(\dfrac{\|\mathbf h\|^2E_b}{\sigma^2}\)　　OSTBC：\(\dfrac{T\|\mathbf h\|^2E_b}{KN\sigma^2}\)　　Alamouti：\(\dfrac12\dfrac{\|\mathbf h\|^2E_b}{\sigma^2}\)</div>
+        <div class="fmeaning">Alamouti 和 MRC 的分集阶数一样（都是 2），但 SNR 低 3 dB：发射端的总功率要分给两根天线，每根只有一半。所以 MRC 比 Alamouti 多一个"阵列增益"。</div>
+      </div>
+      <p><b>正交空时块码 OSTBC</b>（Tarokh 1998，p.27–28）把 Alamouti 推广到 N &gt; 2 根天线：元素是符号及其共轭的线性组合，且满足 \(\mathbf X\mathbf X^H=\|\mathbf s\|^2\mathbf I\)，能达到满分集 d = N × M。p.28 的 3 天线例子用 8 个时隙发 4 个符号，码率只有 1/2。p.29 的对角码 \(\mathrm{diag}(s_1,s_2)\) 不满足正交条件，不是 OSTBC。WiMAX、802.11n、LTE 都采用了 OSTBC（p.27）。</p>
+
+      <!-- ENR:learn_05.html:5.4 -->
+      <div class="key"><div class="lbl">★ 考试重点 · Alamouti 三件事</div>
+<ul><li><b>验证正交</b>（2023-24 Q1(b)(iii)）：算 X X<sup>H</sup>。逐行做内积：同一行和自己的内积 = |s₁|² + |s₂|²；不同两行的内积要<b>抵消为 0</b>。成立就是 <mark class="hl">X X<sup>H</sup> = (|s₁|² + |s₂|²) I，正交 STBC</mark>。行列交换（转置）不影响结论。</li>
+<li><b>有没有分集</b>（2023-24 Q1(b)(iv)）：有，2 发 1 收是 2 阶，2 发 M 收是 2M 阶（满分集），而且发射端不需要知道信道；代价是比 MRC 少 3 dB 阵列增益（p.30）。</li>
+<li><b>检测后的统计量</b>（2025-26 S2 Q1(b)(iii)）：ŝ = s + Gw/‖h‖²。均值 E[ŝ] = s（噪声零均值，<b>无偏</b>）；方差乘了 1/‖h‖⁴：σ²‖h‖²/‖h‖⁴ = <mark class="hl">σ²/‖h‖²</mark>。两路增益相加让噪声变小，这就是分集。</li></ul></div>
+      <!-- /ENR:learn_05.html:5.4 -->
+      <h3><span class="zh-num">5.5</span>MIMO 容量：几根天线 = 几条并行的数据管道<span class="imp">★★★ 必考</span></h3>
+      <div class="formula-card">
+        <div class="flbl">MIMO 容量（Telatar 1999，p.32–36）</div>
+        <div class="fexpr">\(C(\mathbf H)=B\log_2\det\!\Big(\mathbf I+\dfrac{1}{\sigma^2}\mathbf H\mathbf P\mathbf H^H\Big)=B\displaystyle\sum_{i=1}^{r}\log_2\!\Big(1+\frac{\lambda_i}{\sigma^2}\Big)\)</div>
+        <div class="fmeaning">第二个等号的推导（p.34–35）：对 \(\mathbf H\mathbf P\mathbf H^H\) 做特征分解 \(\mathbf U\boldsymbol\Lambda\mathbf U^H\)，再用 \(\det(\mathbf I+\mathbf A\mathbf B)=\det(\mathbf I+\mathbf B\mathbf A)\) 和 \(\mathbf U^H\mathbf U=\mathbf I\)，行列式变成对角线元素之积，log 把积变成和。r 是矩阵的秩，\(\lambda_i\) 是特征值。<b>MIMO 容量 = r 条并行 SISO 信道容量之和</b>。</div>
+      </div>
+      <ul>
+        <li><b>SISO</b>（N = M = 1）：退化成 \(B\log_2(1+P|h|^2/\sigma^2)\)，就是香农公式（p.33）。</li>
+        <li><b>SIMO / MISO</b>（p.38–39）：只有 1 条空间管道，加天线只让 SNR 变大，容量按 <b>log</b> 增长。</li>
+        <li><b>MIMO</b>：秩 r 可以到 min(N, M)，容量按 <b>min(N, M) 倍</b>线性增长，这是 MIMO 最大的价值。</li>
+        <li><b>发射端不知道信道</b>（p.37）：每根天线平均分功率，\(\mathbf P=\frac PN\mathbf I\)，\(C=B\log_2\det(\mathbf I+\frac{P}{N\sigma^2}\mathbf H\mathbf H^H)\)。</li>
+        <li><b>发射端知道信道</b>（p.40）：用第 2 章的注水法给各特征子信道分功率。</li>
+        <li><b>遍历容量</b>（p.41–42）：H 随机时对 H 取平均。高 SNR 时知不知道信道差别很小。</li>
+        <li><b>慢衰落的中断</b>（p.43）：\(P_{\mathrm{out}}(R)=P(C(\mathbf H)\lt R)\)，有效速率 \((1-P_{\mathrm{out}})R\)。</li>
+      </ul>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>3 个子信道注水求容量（Practice 5 第 1 题）</summary>
+        <div class="wbody">
+          <p>已知条件：三个子信道的 SNR 为 80、40、40，带宽 10 MHz，发射端知道信道。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">假设三个都分功率：\(3/\gamma_0=1+1/80+1/40+1/40=1.0625\) → \(\gamma_0=2.82\)。三个 SNR 都大于 2.82，成立。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">\(C=B\sum\log_2(\gamma_i/\gamma_0)=10\text{ MHz}\times[\log_2(28.3)+2\log_2(14.2)]=10\times(4.82+2\times3.82)\)。</div></div>
+          <div class="wans">C ≈ 124.7 Mbps ≈ 125 Mbps</div>
+        </div>
+      </div>
+      <div class="extra">
+        <div class="lbl">课外补充 · 一个 2 × 2 的小算例</div>
+        <p>设 \(\mathbf H=\begin{bmatrix}1&0\\0&0.5\end{bmatrix}\)，每根天线功率 P/2，\(P/\sigma^2=10\)。\(\mathbf H\mathbf H^H=\mathrm{diag}(1,0.25)\)，容量 \(\log_2(1+5)+\log_2(1+1.25)=2.58+1.17=3.75\) bit/s/Hz。如果只有 1 根天线、全部功率 \(P|h|^2/\sigma^2=10\)：\(\log_2 11=3.46\)。两条管道即使一条较弱，总容量也更高；SNR 越高，这个差距越大（两条管道时容量随 SNR 的增长速度是一条的两倍）。</p>
+      </div>
+      <!-- ENR:learn_05.html:5.5 -->
+      <div class="key"><div class="lbl">★ 考试重点 · MIMO 容量的三种写法</div>
+<ul><li><b>并行信道</b>（2025-26 S1 Q1(b)(iii)）：Λ 是对角阵 → det(I + Λ/σ²) = Π(1 + λ<sub>i</sub>/σ²) → <mark class="hl">C = B Σ log₂(1 + λ<sub>i</sub>/σ²)</mark>：r 条互不干扰的 SISO 信道容量之和。</li>
+<li><b>发射端不知道信道</b>（2024-25 Q1(b)(iii)）：功率平分，P = (P/N)I → C = B log₂det(I + (P/(Nσ²))HH<sup>H</sup>)。N = M = 1、h = 2、P = 1、σ² = 0.25 时 C/B = log₂(1 + 4/0.25) = log₂17 ≈ 4.09。</li>
+<li><b>高 SNR</b>：C/B ≈ min(N, M) log₂SNR，容量随天线数<b>线性</b>增长；SIMO / MISO 只按 log 增长。</li></ul></div>
+      <!-- /ENR:learn_05.html:5.5 -->
+      <!-- ENR:learn_05.html:summary -->
+      <div class="key"><div class="lbl">★ 第五章考试重点</div><ul>
+<li>y = Hx + v，H 是 M×N；平坦衰落 → 每对天线一个复增益。</li>
+<li>SIMO/MRC：w ∝ h，SNR ∝ ‖h‖²；MISO 不知道信道时没有分集。</li>
+<li>Alamouti：X X<sup>H</sup> = ‖s‖² I；满分集 2M；检测量无偏、方差 σ²/‖h‖²。</li>
+<li>容量 = Σ log₂(1 + λ<sub>i</sub>/σ²)；不知道信道时 P/N 平分；复用增益 min(N, M)。</li></ul></div>
+      <!-- /ENR:learn_05.html:summary -->
+      <div class="checkpoint">
+        <div class="lbl">自测</div>
+        <p>(1) Alamouti 码的码率是多少？为什么叫"全速率"？(2) 发射端不知道信道时，两根天线发同一个信号有没有分集？(3) 4 × 4 MIMO 在高 SNR 时容量大约是 SISO 的几倍？</p>
+        <details class="reveal"><summary>点击看答案</summary>
+          <div class="ans">(1) R = K/T = 2/2 = 1，每个时隙平均发一个新符号，和单天线一样快。(2) 没有（p.18），相位随机地相加或抵消；要用 Alamouti 这类空时码。(3) 约 min(4, 4) = 4 倍。</div>
+        </details>
+      </div>
+    </section>

@@ -1,0 +1,152 @@
+    <!-- ================= CH 7 ================= -->
+    <section class="chapter" id="ch7">
+      <div class="chapter-head"><span class="chapter-num">第七章</span><h2>OFDM：把一条坑洼的宽路，改成很多条平整的窄路</h2></div>
+      <p>单载波系统速率越高，符号越短，ISI 拖的符号越多，时域均衡器越复杂（p.3）。OFDM 换个思路：<b>不把一条高速数据流塞进一个宽带信道，而是拆成 N 条低速子流，每条用一个窄带子载波发</b>（p.2、p.4）。</p>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>一辆卡车在坑洼的宽马路上飞驰，颠得厉害（频率选择性衰落、ISI）；把货分给 N 辆小推车，每辆走一条很窄、很平整的小道，每辆都慢慢走，但加起来运量一样。每条小道窄到"路面平整"（平坦衰落），每辆车慢到"颠簸的回声来不及影响下一趟"（无 ISI）。</p>
+      </div>
+
+      <h3><span class="zh-num">7.1</span>两条设计原则<span class="imp">★★★ 必考</span></h3>
+      <div class="formula-card">
+        <div class="flbl">OFDM 设计（p.5）</div>
+        <div class="fexpr">\(\dfrac1T\lt B_C\)（每个子载波上平坦衰落）　　\(T_G>T_D\)（保护间隔长于最大时延扩展）</div>
+        <div class="fmeaning">T 是 OFDM 符号时长，1/T 约等于子载波宽度，要小于相干带宽，每个子信道才是平坦的。再在每个 OFDM 符号前加一段保护间隔 \(T_G\)，长度超过最大时延扩展 \(T_D\)，上一个符号的回声就全落在保护间隔里，不影响下一个符号。</div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">子载波数与速率（p.8）</div>
+        <div class="fexpr">\(\Delta f=\dfrac BN\)　　\(T=NT_S\)　　每个子载波的符号速率 \(R=\dfrac1T=\dfrac{R_S}{N}\)</div>
+        <div class="fmeaning">总带宽 B 分成 N 份，每份 Δf。原来单载波的符号时长是 \(T_S\)，现在每个子载波上的符号拉长 N 倍。N 越大，子信道越窄越平坦、符号越长，越不怕 ISI。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>N 该怎么选（Practice 7 第 1(a) 题）</summary>
+        <div class="wbody">
+          <p>已知条件：总带宽 B，多普勒扩展 \(B_d\)，相干带宽 \(B_C\)；要求每个子信道都是<b>慢平坦衰落</b>。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">平坦：子信道宽度远小于相干带宽：\(B/N\ll B_C\) → \(N\gg B/B_C\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">慢衰落：子载波符号时长 \(N/B\) 远小于相干时长 \(1/B_d\) → \(N\ll B/B_d\)。</div></div>
+          <div class="wans">B/B_C ≪ N ≪ B/B_d：N 太小，子信道不平坦；N 太大，符号太长，一个符号内信道就变了</div>
+        </div>
+      </div>
+
+      <!-- ENR:learn_07.html:7.1 -->
+      <div class="key"><div class="lbl">★ 考试重点 · 子载波数和速率（期末每年都有一问）</div>
+<ul><li><b>平坦条件</b>：每个子载波带宽 B/N 要小于相干带宽：<mark class="hl">N &gt; B/B<sub>C</sub></mark>，取整往上（2025-26 S1：500/30 = 16.7 → 17；2023-24：子载波带宽取 B<sub>C</sub>/2 → N = 1 MHz / 250 kHz = 4）。</li>
+<li><b>时间关系</b>：原始符号时长 T<sub>s</sub> = 1/B；一个 OFDM 块 T = N T<sub>s</sub>（N 个符号并行，每个拉长 N 倍）。</li>
+<li><b>速率</b>：每个 OFDM 块传 N log₂M 比特。不加保护间隔速率 = N log₂M / T；<mark class="hl">加了 T<sub>G</sub> 后有效速率 = N log₂M / (T + T<sub>G</sub>)</mark>（2025-26 S1：100 bit / 110 µs ≈ 909 kbit/s）。每个子载波的速率 = 总速率 / N（2024-25：10 Mbit/s → 每个 2.5 Mbit/s）。</li></ul></div>
+      <!-- /ENR:learn_07.html:7.1 -->
+      <h3><span class="zh-num">7.2</span>子载波为什么能挤在一起而不干扰：正交<span class="imp">★★★ 必考</span></h3>
+      <div class="formula-card">
+        <div class="flbl">子载波正交（p.7）与 OFDM 信号（p.9）</div>
+        <div class="fexpr">\(\dfrac1T\displaystyle\int_0^Te^{j2\pi(f_j-f_k)t}dt=\begin{cases}1&j=k\\0&j\ne k\end{cases}\)　　\(x(t)=\dfrac{1}{\sqrt T}\sum_{k=0}^{N-1}s_ke^{j2\pi kt/T}\)</div>
+        <div class="fmeaning">子载波间隔正好是 1/T，任意两个子载波在一个符号周期内都相差整数个周期，相乘积分为 0。所以虽然各子载波的频谱（sinc 形状）互相重叠，在每个子载波的中心频率处，其他子载波正好过零（p.10–11）。接收端在 \(f=k/T\) 处采样频谱，就能把 \(s_k\) 单独取出来。</div>
+      </div>
+      <p>频谱互相重叠，所以 OFDM 比传统频分复用（各子载波之间要留保护带）省带宽（p.27）。功率谱 \(\sum_n\mathrm{sinc}^2(fT-n)\)，N 很大时总带宽趋于 N/T（p.11）。</p>
+      <p><b>实现</b>：发射端的"N 个子载波相加"在离散时间就是 <b>IDFT</b>，接收端的"N 个相关器"就是 <b>DFT</b>（p.19–20），都用 FFT 快速计算。</p>
+
+      <!-- ENR:learn_07.html:7.2 -->
+      <div class="key"><div class="lbl">★ 两个证明题的答题要点</div>
+<ul><li><b>相关器输出 = s<sub>n</sub></b>（2025-26 S1 Q2(b)(iii)）：乘 (1/√T)e<sup>−j2πnt/T</sup> 在 [0, T] 积分，得 (1/T)Σ<sub>k</sub> s<sub>k</sub>∫e<sup>j2π(k−n)t/T</sup>dt。k = n 时被积函数为 1，积分 = T；k ≠ n 时是整数个周期的复指数，积分 = 0。所以只剩 s<sub>n</sub>。</li>
+<li><b>为什么是 IDFT</b>（2025-26 S2 Q2(b)(ii)）：在一个块内按 t = iT/N 采样，x<sub>i</sub> = (1/√T)Σ s<sub>k</sub>e<sup>j2πki/N</sup>，和 N 点 IDFT 的式子只差一个常数。频域的 N 个符号变成时域的 N 个采样，发端用 IFFT、收端用 FFT。</li></ul></div>
+      <!-- /ENR:learn_07.html:7.2 -->
+      <h3><span class="zh-num">7.3</span>多径信道下：子信道增益 H_k<span class="imp">★★★ 必考</span></h3>
+      <div class="formula-card">
+        <div class="flbl">子信道增益（p.15）</div>
+        <div class="fexpr">\(H_k=\displaystyle\sum_{i=0}^{L-1}h_i\,e^{-j2\pi ik/N}\)</div>
+        <div class="fmeaning">\(h_i\) 是信道冲激响应的第 i 个抽头。\(H_k\) 就是冲激响应的 DFT 在第 k 个子载波上的值。不同子载波的增益不同，这就是"频率选择性"；但每个子载波内部增益是一个常数，所以是平坦的。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>4 个子载波的信道增益（Practice 7 第 1(b) 题）</summary>
+        <div class="wbody">
+          <p>已知条件：\(y(t)=h_0x(t)+h_1x(t-\tau)+w(t)\)，\(h_0=0.8\)，\(h_1=0.6\)，N = 4，延迟正好一个采样。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">\(H_k=0.8+0.6e^{-j2\pi k/4}=0.8+0.6e^{-j\pi k/2}\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">逐个代入：\(e^{-j\pi k/2}\) 依次是 1、−j、−1、j：<div class="calc">H₀ = 0.8 + 0.6 = 1.4；H₁ = 0.8 − 0.6j；H₂ = 0.8 − 0.6 = 0.2；H₃ = 0.8 + 0.6j；H₄ = H₀ = 1.4</div></div></div>
+          <div class="wans">|H|²：H₁、H₃ 为 1，H₂ 只有 0.04（深衰落），H₄ 为 1.96</div>
+          <p style="margin-top:12px">直观看：子载波 2 上，直射和延迟两路正好反相相减，只剩 0.2；子载波 0（= 4）上同相相加，有 1.4。</p>
+        </div>
+      </div>
+
+      <!-- ENR:learn_07.html:7.3 -->
+      <div class="key"><div class="lbl">★ 考试重点 · 手算 H<sub>k</sub>（N = 4 的速算表）</div>
+<p><mark class="hl">H<sub>k</sub> = Σ<sub>i</sub> h<sub>i</sub> e<sup>−j2πik/N</sup></mark>，k = 1…N，H<sub>N</sub> = H<sub>0</sub>。N = 4 时 e<sup>−j2πk/4</sup> 依次是：</p>
+<div class="tblwrap" style="margin:6px 0"><table><thead><tr><th>k</th><th>1</th><th>2</th><th>3</th><th>4（= 0）</th></tr></thead><tbody>
+<tr><td>e<sup>−j2πk/4</sup>（乘 h₁）</td><td>−j</td><td>−1</td><td>j</td><td>1</td></tr>
+<tr><td>e<sup>−j2π·2k/4</sup>（乘 h₂）</td><td>−1</td><td>1</td><td>−1</td><td>1</td></tr></tbody></table></div>
+<p>例：h = {1, 0.3}（2025-26 S2）→ H₁ = 1 − 0.3j，H₂ = 0.7，H₃ = 1 + 0.3j，H₄ = 1.3。h = {1, −0.6, 0.2}（2023-24）→ 0.8 + 0.6j、1.8、0.8 − 0.6j、0.6。<b>自检</b>：H₄ = 所有抽头之和；H₁ 和 H₃ 互为共轭（抽头是实数时）。</p></div>
+      <!-- /ENR:learn_07.html:7.3 -->
+      <h3><span class="zh-num">7.4</span>保护间隔与循环前缀<span class="imp">★★★ 必考</span></h3>
+      <p>多径会带来两种干扰（p.16）：上一个 OFDM 符号的回声（时延扩展），和子载波之间失去正交（子载波间干扰 ICI）。</p>
+      <ul>
+        <li><b>保护间隔</b>（p.17–18）：每个 OFDM 块前面延长 \(T_G\ge T_D\)，接收端把这段丢掉，只看后面的 N 个采样，上一块的回声就进不来。代价是多花了时间和功率，<b>功率损失</b> \(=10\log_{10}\dfrac{NT_S+T_G}{NT_S}\) dB。</li>
+        <li><b>循环前缀 CP</b>（p.21–22）：保护间隔里放的不是空白，而是把这个块<b>最后 G 个采样复制到最前面</b>。这样信道的线性卷积在接收窗口里等价于循环卷积，DFT 以后正好变成相乘：\(r_k=H_ks_k+w_k\)。子载波之间保持正交，没有 ICI。</li>
+      </ul>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>最短需要多长的循环前缀（Practice 7 第 3 题）</summary>
+        <div class="wbody">
+          <p>已知条件：信道 \(H(z)=1+0.9z^{-1}\)。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">冲激响应只有两个抽头：当前采样，加上晚一个采样的回声（系数 0.9）。最大时延扩展 = 1 个采样。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">CP 长度要 ≥ 信道长度 − 1 = 2 − 1 = 1，才能把上一个块的回声挡住。</div></div>
+          <div class="wans">最短 CP = 1 个采样（符号）长度</div>
+        </div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>设计一个 OFDM 系统（Practice 7 第 2 题）</summary>
+        <div class="wbody">
+          <p>已知条件：速率 2 Mbps，16-QAM，可用带宽 600 kHz，最大时延扩展 20 µs，CP 等于最大时延扩展。求子载波数和 OFDM 符号时长。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">16-QAM 每符号 4 bit，需要的总符号速率：2 Mbps ÷ 4 = 500 k 符号/秒。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">N 个子载波，每个宽 600k/N Hz，有用符号时长 \(T=N/600\text{k}\)；加上 CP，一个 OFDM 符号总长 \(T+20\) µs，期间发出 N 个符号：<div class="calc">N / (N/600k + 20 µs) = 500k</div></div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">解方程：N = 500k × (N/600k + 2×10⁻⁵) = 0.8333N + 10 → 0.1667N = 10 → N = 60。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">有用部分 T = 60/600k = 100 µs，加 CP 20 µs，总长 120 µs。</div></div>
+          <div class="wans">N = 60 个子载波，OFDM 符号时长 0.12 ms（其中 0.1 ms 有用 + 0.02 ms CP）</div>
+          <p style="margin-top:12px">检验：每秒 1/120 µs = 8333 个 OFDM 符号 × 60 个子载波 × 4 bit = 2 Mbps ✓。CP 占 1/6 的时间，功率损失 10 log(120/100) = 0.79 dB。</p>
+        </div>
+      </div>
+
+      <!-- ENR:learn_07.html:7.4 -->
+      <div class="key"><div class="lbl">★ 考试重点 · 循环前缀</div>
+<ul><li><b>表达式</b>（2024-25 Q2(b)(ii)）：式子不变，只把时间范围往前延长 T<sub>G</sub>：x(t) = (1/√T)Σ s<sub>k</sub>e<sup>j2πkt/T</sup>，<mark class="hl">nT − T<sub>G</sub> ≤ t &lt; (n+1)T</mark>。e<sup>j2πkt/T</sup> 以 T 为周期，所以前面多出来的一段正好是块尾的复制。</li>
+<li><b>功率损失</b>：<mark class="hl">10 log₁₀[(NT<sub>s</sub> + T<sub>G</sub>)/(NT<sub>s</sub>)]</mark> dB（2023-24：4 µs + 1 µs → 0.97 dB；2025-26 S2：8 µs + 20 µs → 5.44 dB）。</li>
+<li><b>长度</b>：T<sub>G</sub> ≥ 最大时延扩展；离散时 CP ≥ 信道长度 − 1 个采样（Practice 7 第 3 题）。</li></ul></div>
+      <!-- /ENR:learn_07.html:7.4 -->
+      <h3><span class="zh-num">7.5</span>OFDM 的容量和均衡<span class="imp i2">★★ 常考</span></h3>
+      <div class="formula-card">
+        <div class="flbl">OFDM 容量（p.24）</div>
+        <div class="fexpr">\(C(\mathbf P)=\displaystyle\sum_{k=1}^{N}\log_2\!\left(1+\frac{|H_k|^2P_k}{N_k}\right)\)</div>
+        <div class="fmeaning">N 个独立的平行高斯信道，最优功率分配还是第 2 章的注水法。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>等容量分配 vs 注水（Practice 7 第 1(c)(d) 题）</summary>
+        <div class="wbody">
+          <p>已知条件：沿用上面的 \(|H_k|^2=\{1,\ 0.04,\ 1,\ 1.96\}\)，噪声 1，总功率 10。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">(c) 要每个子信道容量相等，就要 \(|H_k|^2P_k\) 都相等，记为 c：\(P_k=c/|H_k|^2\)。<div class="calc">c(1 + 25 + 1 + 0.510) = 10 → c = 0.3635</div><div class="calc">P₁ = 0.36，P₂ = 9.09，P₃ = 0.36，P₄ = 0.19</div>为了"拉平"，最差的子信道吃掉了 91% 的功率。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">(d) 求最大总容量用注水。把"噪声/增益" \(1/|H_k|^2=\{1,25,1,0.51\}\) 当池底，水面 μ 满足 \(\sum(\mu-1/|H_k|^2)=10\)。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">四个都放水：μ = (10 + 27.51)/4 = 9.38 &lt; 25，子信道 2 的池底高过水面，去掉。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">剩三个：μ = (10 + 1 + 1 + 0.51)/3 = 4.17，功率 3.17、3.17、3.66。<div class="calc">C = log₂(4.17) + log₂(4.17) + log₂(4.17 × 1.96) = 2.06 + 2.06 + 3.03 = 7.15 bit/OFDM 符号</div></div></div>
+          <div class="wans">每个子载波占 B/N 的带宽，所以按 bit/s/Hz 算要除以 N = 4：C ≈ 1.79 ≈ 1.8 bit/s/Hz</div>
+        </div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">频域均衡（p.25–26）</div>
+        <div class="fexpr">\(R_k=s_kH_k+W_k\ \Longrightarrow\ \hat s_k=\dfrac{R_k}{H_k}\)</div>
+        <div class="fmeaning">每个子载波只要除以一个复数（估计出的信道增益），比第 6 章的时域均衡器简单得多。这是 OFDM 能做高速率的根本原因（p.27）：把频率选择性信道变成 N 条平行的平坦信道，不需要复杂的时域均衡。</div>
+      </div>
+      <!-- ENR:learn_07.html:7.5 -->
+      <div class="pitfall"><div class="lbl">⚠ 易错 · 等容量分配（2024-25 Q2(b)(iii)）</div><ul>
+<li>C<sub>k</sub> = ¼log₂(1 + P<sub>k</sub>|H<sub>k</sub>|²) = 0.9 → 1 + P<sub>k</sub>|H<sub>k</sub>|² = 2<sup>3.6</sup>，别忘了先乘回 4。</li>
+<li>给的是 |H<sub>k</sub>|，公式里要平方：|H₂| = 0.2 → |H₂|² = 0.04。</li></ul></div>
+      <!-- /ENR:learn_07.html:7.5 -->
+      <!-- ENR:learn_07.html:summary -->
+      <div class="key"><div class="lbl">★ 第七章考试重点</div><ul>
+<li>N &gt; B/B<sub>C</sub>；T = NT<sub>s</sub>；速率 N log₂M/(T + T<sub>G</sub>)。</li>
+<li>子载波正交 → 相关器输出 s<sub>n</sub>；发端是 IDFT。</li>
+<li>H<sub>k</sub> = Σ h<sub>i</sub>e<sup>−j2πik/N</sup>，N = 4 速算。</li>
+<li>CP 表达式（nT − T<sub>G</sub> ≤ t）和功率损失 10 log((NT<sub>s</sub> + T<sub>G</sub>)/NT<sub>s</sub>)。</li>
+<li>OFDM 容量 = Σ log₂(1 + |H<sub>k</sub>|²P<sub>k</sub>/N<sub>k</sub>)，最优是注水；频域均衡 ŝ<sub>k</sub> = R<sub>k</sub>/H<sub>k</sub>。</li></ul></div>
+      <!-- /ENR:learn_07.html:summary -->
+      <div class="checkpoint">
+        <div class="lbl">自测</div>
+        <p>(1) 为什么 OFDM 的子载波频谱重叠也不会互相干扰？(2) CP 为什么要复制块尾，而不是放一段空白？(3) 带宽 1 MHz、64 个子载波，子载波间隔和有用符号时长各是多少？</p>
+        <details class="reveal"><summary>点击看答案</summary>
+          <div class="ans">(1) 间隔正好 1/T，在每个子载波的采样频率上其他子载波都过零（正交）。(2) 复制块尾让线性卷积在接收窗口内等价于循环卷积，DFT 后正好是 H_k s_k，子载波保持正交、没有 ICI；空白只能挡住上一块的回声。(3) Δf = 1 MHz/64 = 15.625 kHz，T = 1/Δf = 64 µs。</div>
+        </details>
+      </div>
+    </section>

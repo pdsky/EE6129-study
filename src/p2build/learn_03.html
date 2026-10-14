@@ -1,0 +1,183 @@
+    <!-- ================= CH 3 ================= -->
+    <section class="chapter" id="ch3">
+      <div class="chapter-head"><span class="chapter-num">第三章</span><h2>信号检测：从一堆带噪声的波形里认出符号</h2></div>
+      <p>发射端把比特变成波形（调制），接收端反过来：先把收到的波形变成几个数（<b>解调</b>，得到"判决变量"），再根据这几个数判断发的是哪个符号（<b>检测</b>）（p.2、p.13）。</p>
+
+      <h3><span class="zh-num">3.1</span>用"坐标"表示波形<span class="imp i2">★★ 常考</span></h3>
+      <p>关键想法：波形虽然是连续的函数，但调制用的那一组波形，往往只需要两三个"基本波形"就能拼出来，就像平面上任何一点都能用 x、y 两个坐标表示。</p>
+      <div class="formula-card">
+        <div class="flbl">正交基展开（p.4）</div>
+        <div class="fexpr">\(s_i(t)=\displaystyle\sum_{j=1}^{D}s_{ij}\psi_j(t),\qquad s_{ij}=\int_0^T s_i(t)\psi_j(t)dt,\qquad \int_0^T\psi_i\psi_j\,dt=\begin{cases}1&i=j\\0&i\ne j\end{cases}\)</div>
+        <div class="fmeaning">\(\psi_j(t)\) 叫<b>正交归一基函数</b>（orthonormal basis），互相"垂直"、各自能量为 1。D 是基函数个数，叫信号空间的<b>维数</b>，D ≤ M（M 是信号个数）。\(s_{ij}\) 就是第 i 个信号在第 j 个方向上的"坐标"，用内积（相乘再积分）求出来。</div>
+      </div>
+      <p>最常用的一对基（p.6）：\(\psi_1=\sqrt{2/T}\cos(2\pi f_ct)\)，\(\psi_2=\sqrt{2/T}\sin(2\pi f_ct)\)。前面的 \(\sqrt{2/T}\) 是为了让能量正好等于 1。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>找正交基和维数（Practice 3 第 1 题）</summary>
+        <div class="wbody">
+          <p>已知条件：信号 \(A_i\cos(2\pi t/T+\phi_j)\)，0 &lt; t &lt; T，信息同时调制在幅度 \(A_i\) 和相位 \(\phi_j\) 上。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">用和角公式拆开：\(A_i\cos(2\pi t/T+\phi_j)=A_i\cos\phi_j\cos(2\pi t/T)-A_i\sin\phi_j\sin(2\pi t/T)\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">所有信号都是 \(\cos(2\pi t/T)\) 和 \(\sin(2\pi t/T)\) 的线性组合。它们在 [0, T] 上正交，能量都是 T/2，所以乘上 \(\sqrt{2/T}\) 归一化。</div></div>
+          <div class="wans">基：{ √(2/T)·cos(2πt/T), √(2/T)·sin(2πt/T) }，维数 D = 2</div>
+        </div>
+      </div>
+      <p>把每个信号的坐标画在平面上，就是<b>星座图</b>（constellation，p.8）：</p>
+      <div class="tblwrap"><table><thead><tr><th>调制</th><th>信号</th><th>维数</th><th>星座</th></tr></thead><tbody>
+        <tr><td>PAM（p.9）</td><td>\(A_ip(t)\cos2\pi f_ct\)，\(A_i=2i-1-M\)</td><td>1</td><td>4-PAM：−3, −1, +1, +3 排在一条线上</td></tr>
+        <tr><td>PSK（p.10）</td><td>\(Ap(t)\cos(2\pi f_ct+\phi_i)\)，\(\phi_i=2\pi(i-1)/M\)</td><td>2</td><td>M 个点均匀排在一个圆上</td></tr>
+        <tr><td>QAM（p.11）</td><td>幅度和相位都变</td><td>2</td><td>16-QAM：4×4 方阵</td></tr>
+      </tbody></table></div>
+
+      <!-- ENR:learn_03.html:3.1 -->
+      <div class="key"><div class="lbl">★ 考试重点 · 星座的维数和距离</div>
+<ul><li><mark class="hl">维数 = 拼出所有信号需要的正交基函数个数</mark>：只用一个 cos（PAM、二进制 ±A）是 1 维；cos 和 sin 都用（PSK、QPSK、QAM）是 2 维。</li>
+<li>两点间的距离就是坐标差的长度：±1 两点距离 2；QPSK 四点 (±1, ±1) 相邻点距离 2、对角距离 2√2。</li>
+<li>期末 2025-26 S1 Q1(a)(i) 原题：画 ±1 的星座，求维数（1）和距离（2）。</li></ul></div>
+      <!-- /ENR:learn_03.html:3.1 -->
+      <h3><span class="zh-num">3.2</span>AWGN 信道：每个坐标上加一点高斯噪声<span class="imp i2">★★ 常考</span></h3>
+      <p>收到的信号 \(x(t)=s_i(t)+w(t)\)，\(w(t)\) 是加性高斯白噪声，双边功率谱密度 \(N_0/2\)（p.12）。把 \(x(t)\) 分别和各个基函数做内积，得到 D 个判决变量（p.14–15）：</p>
+      <div class="formula-card">
+        <div class="flbl">向量信道（p.15）</div>
+        <div class="fexpr">\(\mathbf y=\mathbf s_i+\mathbf w,\qquad \mathbf w\sim\mathcal N\!\left(\mathbf 0,\tfrac{N_0}{2}\mathbf I\right)\)</div>
+        <div class="fmeaning">每个坐标上的噪声独立、均值 0、方差 \(N_0/2\)。这 D 个数是<b>充分统计量</b>：判断发了哪个符号需要的信息全在里面，不会因为只看这几个数而损失性能。</div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">SNR 的几种写法（p.16–17）</div>
+        <div class="fexpr">\(\mathrm{SNR}=\dfrac{P_r}{N_0B}=\dfrac{E_s}{N_0BT_s}=\dfrac{E_b}{N_0BT_b}\)　　\(\gamma_s=\dfrac{E_s}{N_0}\)　\(\gamma_b=\dfrac{E_b}{N_0}=\dfrac{\gamma_s}{\log_2M}\)</div>
+        <div class="fmeaning">\(E_s\)：每个符号的能量；\(E_b\)：每个比特的能量。一个 M 进制符号装 \(\log_2M\) 个比特，所以 \(E_s=E_b\log_2M\)。比较不同调制方式时用每比特 SNR \(\gamma_b\) 和误比特率 \(P_b\)，因为"比特"是共同单位。</div>
+      </div>
+
+      <h3><span class="zh-num">3.3</span>最优检测：选离收到的点最近的那个<span class="imp">★★★ 必考</span></h3>
+      <ul>
+        <li><b>MAP（最大后验，p.18）</b>：选"收到 y 以后，最可能被发送"的符号，最大化 \(p(\mathbf s_i\mid\mathbf y)\)。理论最优，但需要先验概率。</li>
+        <li><b>ML（最大似然，p.19）</b>：选"发了它以后，最可能收到 y"的符号，最大化 \(p(\mathbf y\mid\mathbf s_i)\)。各符号等概时，ML 和 MAP 一样。</li>
+      </ul>
+      <div class="formula-card">
+        <div class="flbl">AWGN 下 ML = 最小距离（p.19–20）</div>
+        <div class="fexpr">\(p(\mathbf y\mid\mathbf s_i)\propto\exp\!\left(-\dfrac{\|\mathbf y-\mathbf s_i\|^2}{N_0}\right)\ \Longrightarrow\ \hat{\mathbf s}=\arg\min_{\mathbf s_i}\|\mathbf y-\mathbf s_i\|^2\)</div>
+        <div class="fmeaning">高斯噪声下，概率随距离的平方指数下降，所以"最可能"就是"最近"。在星座图上，每个星座点"管"离它最近的一块区域（判决区域 \(Z_i\)），收到的点落在哪块就判成哪个符号。</div>
+      </div>
+      <div class="formula-card">
+        <div class="flbl">误符号率的上界与 BPSK（p.20–21）</div>
+        <div class="fexpr">\(P_s\le(M-1)\,Q\!\left(\dfrac{d_{\min}}{\sqrt{2N_0}}\right)\)　　BPSK：\(P_b=Q\!\left(\dfrac{d_{\min}}{\sqrt{2N_0}}\right)=Q\!\left(\sqrt{\dfrac{2E_b}{N_0}}\right)=Q(\sqrt{2\gamma_b})\)</div>
+        <div class="fmeaning">BPSK 两个点在 ±A，\(E_b=A^2\)，\(d_{\min}=2A\)，代入 \(2A/\sqrt{2N_0}=\sqrt{2A^2/N_0}=\sqrt{2E_b/N_0}\)。<b>星座点之间的最小距离决定误码率</b>：M 越大，点越挤，距离越小，误码越多，但每个符号装的比特越多（p.22）。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>噪声方差不同时的 ML 判决（Practice 3 第 2 题）</summary>
+        <div class="wbody">
+          <p>已知条件：\(y_n=x_n+w_n\)，\(x_n\in\{0,1\}\) 等概；发 0 时噪声方差 \(\sigma_0^2\)，发 1 时 \(\sigma_1^2\)，且 \(\sigma_1^2>\sigma_0^2\)。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">ML：比较两个似然。判 1 的条件是 \(\dfrac{1}{\sigma_1}e^{-(y-1)^2/2\sigma_1^2}>\dfrac{1}{\sigma_0}e^{-y^2/2\sigma_0^2}\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">两边取对数整理：<div class="calc">g(y) = y²/(2σ₀²) − (y−1)²/(2σ₁²) + ln(σ₀/σ₁) &gt; 0 → 判 1</div>令 g(ỹ) = 0，在 0 和 1 之间解出门限 ỹ。方差相等时门限就是 0.5；σ₁ 更大时门限往 0 那边移，因为发 1 时噪声大，需要给它更宽的判决区。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">规则：\(y_n>\tilde y\) 判 1，\(y_n\lt \tilde y\) 判 0。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">误码率：发 0 却超过门限的概率 \(Q(\tilde y/\sigma_0)\)，发 1 却低于门限的概率 \(Q((1-\tilde y)/\sigma_1)\)，各占一半：<div class="calc">P_e = ½ [ Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀) ]</div></div></div>
+          <div class="wans">y &gt; ỹ 判 1，否则判 0；P_e = ½[Q((1−ỹ)/σ₁) + Q(ỹ/σ₀)]</div>
+          <p style="margin-top:12px" class="extra-inline">课外补充：g(y) 是开口向上的二次函数，严格说在很负的 y 处还有第二个根（y 极小时也会判 1，因为发 1 的噪声更宽）。那个区域概率极小，讲义答案忽略了它。</p>
+        </div>
+      </div>
+
+      <!-- ENR:learn_03.html:3.3 -->
+      <h4>二进制检测：一张图看懂 P<sub>b</sub> = Q(d/2σ)</h4>
+<p>这是第 3 章最常考的计算，也是第 4、6 章所有误码率题的底子。设发 s = +A 或 −A（等概），收到 y = s + w，w ~ N(0, σ²)：</p>
+<div class="figwrap"><svg viewBox="0 0 520 210" role="img" aria-label="二进制检测：发 −1 和 +1 时 y 的两个高斯分布，门限在 0，发 +1 却落到 0 左边的那块尾巴就是误码概率 Q(1/σ)">
+<path d="M30.0 170 L30.0 170.0 L31.9 170.0 L33.8 170.0 L35.8 170.0 L37.7 170.0 L39.6 170.0 L41.5 170.0 L43.4 170.0 L45.3 170.0 L47.3 170.0 L49.2 170.0 L51.1 170.0 L53.0 170.0 L54.9 170.0 L56.8 170.0 L58.7 170.0 L60.7 170.0 L62.6 170.0 L64.5 170.0 L66.4 170.0 L68.3 170.0 L70.2 170.0 L72.2 170.0 L74.1 170.0 L76.0 170.0 L77.9 170.0 L79.8 170.0 L81.8 170.0 L83.7 170.0 L85.6 170.0 L87.5 170.0 L89.4 170.0 L91.3 170.0 L93.2 170.0 L95.2 170.0 L97.1 170.0 L99.0 170.0 L100.9 170.0 L102.8 170.0 L104.8 170.0 L106.7 170.0 L108.6 170.0 L110.5 170.0 L112.4 170.0 L114.3 170.0 L116.3 170.0 L118.2 170.0 L120.1 170.0 L122.0 170.0 L123.9 170.0 L125.8 170.0 L127.8 170.0 L129.7 170.0 L131.6 170.0 L133.5 170.0 L135.4 170.0 L137.3 170.0 L139.2 170.0 L141.2 170.0 L143.1 170.0 L145.0 170.0 L146.9 170.0 L148.8 170.0 L150.8 170.0 L152.7 170.0 L154.6 170.0 L156.5 170.0 L158.4 170.0 L160.3 170.0 L162.2 170.0 L164.2 170.0 L166.1 170.0 L168.0 170.0 L169.9 170.0 L171.8 170.0 L173.8 170.0 L175.7 170.0 L177.6 170.0 L179.5 170.0 L181.4 170.0 L183.3 170.0 L185.2 170.0 L187.2 170.0 L189.1 170.0 L191.0 169.9 L192.9 169.9 L194.8 169.9 L196.8 169.9 L198.7 169.9 L200.6 169.8 L202.5 169.8 L204.4 169.8 L206.3 169.7 L208.2 169.7 L210.2 169.6 L212.1 169.5 L214.0 169.4 L215.9 169.3 L217.8 169.2 L219.8 169.1 L221.7 168.9 L223.6 168.7 L225.5 168.5 L227.4 168.2 L229.3 168.0 L231.2 167.6 L233.2 167.2 L235.1 166.8 L237.0 166.3 L238.9 165.8 L240.8 165.2 L242.8 164.5 L244.7 163.7 L246.6 162.8 L248.5 161.9 L250.4 160.8 L252.3 159.7 L254.2 158.4 L256.2 157.0 L258.1 155.5 L260.0 153.8 L260.0 170 Z" style="fill:var(--key);opacity:.35"/>
+<path d="M30.0 170.0 L31.9 170.0 L33.8 170.0 L35.8 170.0 L37.7 170.0 L39.6 170.0 L41.5 170.0 L43.4 170.0 L45.3 170.0 L47.3 169.9 L49.2 169.9 L51.1 169.9 L53.0 169.9 L54.9 169.9 L56.8 169.8 L58.7 169.8 L60.7 169.8 L62.6 169.7 L64.5 169.7 L66.4 169.6 L68.3 169.5 L70.2 169.4 L72.2 169.3 L74.1 169.2 L76.0 169.1 L77.9 168.9 L79.8 168.7 L81.8 168.5 L83.7 168.2 L85.6 168.0 L87.5 167.6 L89.4 167.2 L91.3 166.8 L93.2 166.3 L95.2 165.8 L97.1 165.2 L99.0 164.5 L100.9 163.7 L102.8 162.8 L104.8 161.9 L106.7 160.8 L108.6 159.7 L110.5 158.4 L112.4 157.0 L114.3 155.5 L116.3 153.8 L118.2 152.0 L120.1 150.1 L122.0 148.0 L123.9 145.7 L125.8 143.4 L127.8 140.8 L129.7 138.1 L131.6 135.3 L133.5 132.3 L135.4 129.2 L137.3 125.9 L139.2 122.5 L141.2 119.0 L143.1 115.4 L145.0 111.7 L146.9 108.0 L148.8 104.2 L150.8 100.3 L152.7 96.4 L154.6 92.6 L156.5 88.7 L158.4 85.0 L160.3 81.2 L162.2 77.6 L164.2 74.2 L166.1 70.8 L168.0 67.7 L169.9 64.7 L171.8 62.0 L173.8 59.5 L175.7 57.3 L177.6 55.4 L179.5 53.7 L181.4 52.4 L183.3 51.4 L185.2 50.7 L187.2 50.4 L189.1 50.4 L191.0 50.7 L192.9 51.4 L194.8 52.4 L196.8 53.7 L198.7 55.4 L200.6 57.3 L202.5 59.5 L204.4 62.0 L206.3 64.7 L208.2 67.7 L210.2 70.8 L212.1 74.2 L214.0 77.6 L215.9 81.2 L217.8 85.0 L219.8 88.7 L221.7 92.6 L223.6 96.4 L225.5 100.3 L227.4 104.2 L229.3 108.0 L231.2 111.7 L233.2 115.4 L235.1 119.0 L237.0 122.5 L238.9 125.9 L240.8 129.2 L242.8 132.3 L244.7 135.3 L246.6 138.1 L248.5 140.8 L250.4 143.4 L252.3 145.7 L254.2 148.0 L256.2 150.1 L258.1 152.0 L260.0 153.8 L261.9 155.5 L263.8 157.0 L265.8 158.4 L267.7 159.7 L269.6 160.8 L271.5 161.9 L273.4 162.8 L275.3 163.7 L277.2 164.5 L279.2 165.2 L281.1 165.8 L283.0 166.3 L284.9 166.8 L286.8 167.2 L288.8 167.6 L290.7 168.0 L292.6 168.2 L294.5 168.5 L296.4 168.7 L298.3 168.9 L300.2 169.1 L302.2 169.2 L304.1 169.3 L306.0 169.4 L307.9 169.5 L309.8 169.6 L311.8 169.7 L313.7 169.7 L315.6 169.8 L317.5 169.8 L319.4 169.8 L321.3 169.9 L323.2 169.9 L325.2 169.9 L327.1 169.9 L329.0 169.9 L330.9 170.0 L332.8 170.0 L334.8 170.0 L336.7 170.0 L338.6 170.0 L340.5 170.0 L342.4 170.0 L344.3 170.0 L346.2 170.0 L348.2 170.0 L350.1 170.0 L352.0 170.0 L353.9 170.0 L355.8 170.0 L357.8 170.0 L359.7 170.0 L361.6 170.0 L363.5 170.0 L365.4 170.0 L367.3 170.0 L369.2 170.0 L371.2 170.0 L373.1 170.0 L375.0 170.0 L376.9 170.0 L378.8 170.0 L380.8 170.0 L382.7 170.0 L384.6 170.0 L386.5 170.0 L388.4 170.0 L390.3 170.0 L392.3 170.0 L394.2 170.0 L396.1 170.0 L398.0 170.0 L399.9 170.0 L401.8 170.0 L403.8 170.0 L405.7 170.0 L407.6 170.0 L409.5 170.0 L411.4 170.0 L413.3 170.0 L415.2 170.0 L417.2 170.0 L419.1 170.0 L421.0 170.0 L422.9 170.0 L424.8 170.0 L426.8 170.0 L428.7 170.0 L430.6 170.0 L432.5 170.0 L434.4 170.0 L436.3 170.0 L438.3 170.0 L440.2 170.0 L442.1 170.0 L444.0 170.0 L445.9 170.0 L447.8 170.0 L449.8 170.0 L451.7 170.0 L453.6 170.0 L455.5 170.0 L457.4 170.0 L459.3 170.0 L461.2 170.0 L463.2 170.0 L465.1 170.0 L467.0 170.0 L468.9 170.0 L470.8 170.0 L472.8 170.0 L474.7 170.0 L476.6 170.0 L478.5 170.0 L480.4 170.0 L482.3 170.0 L484.3 170.0 L486.2 170.0 L488.1 170.0 L490.0 170.0" style="fill:none;stroke:var(--ink-faint)" stroke-width="2"/>
+<path d="M30.0 170.0 L31.9 170.0 L33.8 170.0 L35.8 170.0 L37.7 170.0 L39.6 170.0 L41.5 170.0 L43.4 170.0 L45.3 170.0 L47.3 170.0 L49.2 170.0 L51.1 170.0 L53.0 170.0 L54.9 170.0 L56.8 170.0 L58.7 170.0 L60.7 170.0 L62.6 170.0 L64.5 170.0 L66.4 170.0 L68.3 170.0 L70.2 170.0 L72.2 170.0 L74.1 170.0 L76.0 170.0 L77.9 170.0 L79.8 170.0 L81.8 170.0 L83.7 170.0 L85.6 170.0 L87.5 170.0 L89.4 170.0 L91.3 170.0 L93.2 170.0 L95.2 170.0 L97.1 170.0 L99.0 170.0 L100.9 170.0 L102.8 170.0 L104.8 170.0 L106.7 170.0 L108.6 170.0 L110.5 170.0 L112.4 170.0 L114.3 170.0 L116.3 170.0 L118.2 170.0 L120.1 170.0 L122.0 170.0 L123.9 170.0 L125.8 170.0 L127.8 170.0 L129.7 170.0 L131.6 170.0 L133.5 170.0 L135.4 170.0 L137.3 170.0 L139.2 170.0 L141.2 170.0 L143.1 170.0 L145.0 170.0 L146.9 170.0 L148.8 170.0 L150.8 170.0 L152.7 170.0 L154.6 170.0 L156.5 170.0 L158.4 170.0 L160.3 170.0 L162.2 170.0 L164.2 170.0 L166.1 170.0 L168.0 170.0 L169.9 170.0 L171.8 170.0 L173.8 170.0 L175.7 170.0 L177.6 170.0 L179.5 170.0 L181.4 170.0 L183.3 170.0 L185.2 170.0 L187.2 170.0 L189.1 170.0 L191.0 169.9 L192.9 169.9 L194.8 169.9 L196.8 169.9 L198.7 169.9 L200.6 169.8 L202.5 169.8 L204.4 169.8 L206.3 169.7 L208.2 169.7 L210.2 169.6 L212.1 169.5 L214.0 169.4 L215.9 169.3 L217.8 169.2 L219.8 169.1 L221.7 168.9 L223.6 168.7 L225.5 168.5 L227.4 168.2 L229.3 168.0 L231.2 167.6 L233.2 167.2 L235.1 166.8 L237.0 166.3 L238.9 165.8 L240.8 165.2 L242.8 164.5 L244.7 163.7 L246.6 162.8 L248.5 161.9 L250.4 160.8 L252.3 159.7 L254.2 158.4 L256.2 157.0 L258.1 155.5 L260.0 153.8 L261.9 152.0 L263.8 150.1 L265.8 148.0 L267.7 145.7 L269.6 143.4 L271.5 140.8 L273.4 138.1 L275.3 135.3 L277.2 132.3 L279.2 129.2 L281.1 125.9 L283.0 122.5 L284.9 119.0 L286.8 115.4 L288.8 111.7 L290.7 108.0 L292.6 104.2 L294.5 100.3 L296.4 96.4 L298.3 92.6 L300.2 88.7 L302.2 85.0 L304.1 81.2 L306.0 77.6 L307.9 74.2 L309.8 70.8 L311.8 67.7 L313.7 64.7 L315.6 62.0 L317.5 59.5 L319.4 57.3 L321.3 55.4 L323.2 53.7 L325.2 52.4 L327.1 51.4 L329.0 50.7 L330.9 50.4 L332.8 50.4 L334.8 50.7 L336.7 51.4 L338.6 52.4 L340.5 53.7 L342.4 55.4 L344.3 57.3 L346.2 59.5 L348.2 62.0 L350.1 64.7 L352.0 67.7 L353.9 70.8 L355.8 74.2 L357.8 77.6 L359.7 81.2 L361.6 85.0 L363.5 88.7 L365.4 92.6 L367.3 96.4 L369.2 100.3 L371.2 104.2 L373.1 108.0 L375.0 111.7 L376.9 115.4 L378.8 119.0 L380.8 122.5 L382.7 125.9 L384.6 129.2 L386.5 132.3 L388.4 135.3 L390.3 138.1 L392.3 140.8 L394.2 143.4 L396.1 145.7 L398.0 148.0 L399.9 150.1 L401.8 152.0 L403.8 153.8 L405.7 155.5 L407.6 157.0 L409.5 158.4 L411.4 159.7 L413.3 160.8 L415.2 161.9 L417.2 162.8 L419.1 163.7 L421.0 164.5 L422.9 165.2 L424.8 165.8 L426.8 166.3 L428.7 166.8 L430.6 167.2 L432.5 167.6 L434.4 168.0 L436.3 168.2 L438.3 168.5 L440.2 168.7 L442.1 168.9 L444.0 169.1 L445.9 169.2 L447.8 169.3 L449.8 169.4 L451.7 169.5 L453.6 169.6 L455.5 169.7 L457.4 169.7 L459.3 169.8 L461.2 169.8 L463.2 169.8 L465.1 169.9 L467.0 169.9 L468.9 169.9 L470.8 169.9 L472.8 169.9 L474.7 170.0 L476.6 170.0 L478.5 170.0 L480.4 170.0 L482.3 170.0 L484.3 170.0 L486.2 170.0 L488.1 170.0 L490.0 170.0" style="fill:none;stroke:var(--accent)" stroke-width="2.4"/>
+<line x1="30.0" y1="170" x2="490.0" y2="170" style="stroke:var(--ink)" stroke-width="1.2"/>
+<line x1="260.0" y1="20" x2="260.0" y2="176" style="stroke:var(--key)" stroke-width="1.6" stroke-dasharray="5 3"/>
+<text x="266.0" y="30" font-size="12" style="fill:var(--key)">门限 0</text>
+<text x="140.1" y="52" font-size="12" style="fill:var(--ink-soft)">p(y | s = −1)</text>
+<text x="345.9" y="52" font-size="12" style="fill:var(--accent-ink)">p(y | s = +1)</text>
+<text x="182.1" y="188" font-size="12" style="fill:var(--ink)">−1</text>
+<text x="325.9" y="188" font-size="12" style="fill:var(--ink)">+1</text>
+<text x="255.0" y="188" font-size="12" style="fill:var(--ink)">0</text>
+<text x="92.0" y="152" font-size="11.5" style="fill:var(--key)">发 +1 却落在左边 → 判错</text>
+<text x="425.3" y="188" font-size="12" style="fill:var(--ink-soft)">y</text>
+</svg><div class="cap">σ = 0.5 时的示意。阴影是"发 +1、噪声把 y 拉到 0 以下"的概率：距离门限 1，等于 2 个标准差，面积 = Q(1/0.5) = Q(2)。</div></div>
+
+<ol class="steps">
+<li><b>条件分布</b>：s 固定时 y 只是把噪声平移了 s，所以 y | s = +A ~ N(+A, σ²)，y | s = −A ~ N(−A, σ²)（第 1 章：加常数只改均值，方差不变）。</li>
+<li><b>判决门限</b>：两个钟形曲线一样胖、一样高（等概），ML 判决就是"离谁近判谁"，门限在中点 0：y &gt; 0 判 +A，y ≤ 0 判 −A。</li>
+<li><b>误码率</b>：发 +A 却判成 −A，要噪声把 y 拉到 0 以下，即 w &lt; −A。A 是 A/σ 个标准差：<mark class="hl">P<sub>b</sub> = Q(A/σ) = Q(d/(2σ))</mark>，d = 2A 是两点距离。发 −A 由对称性一样。</li>
+<li><b>换成 E<sub>b</sub>/N<sub>0</sub></b>：E<sub>b</sub> = A²，σ² = N<sub>0</sub>/2，得到 BPSK 的 Q(√(2E<sub>b</sub>/N<sub>0</sub>))。</li>
+</ol>
+<div class="worked"><summary><span class="wtag">例题</span>噪声方差 0.25 的 ±1 系统</summary><div class="wbody">
+<div class="wstep"><div class="wn">1</div><div class="wtext">σ = √0.25 = 0.5。门限 0，信号到门限的距离 1 = 2σ。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><div class="calc">P_b = Q(1/0.5) = Q(2) ≈ 0.0228</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext">噪声方差降到 0.09（σ = 0.3）：Q(1/0.3) = Q(3.33) ≈ 4×10⁻⁴。噪声标准差减小 40%，误码率降了 50 多倍：AWGN 下误码率随 SNR <b>指数</b>下降。</div></div><div class="wans">P_b = Q(2) ≈ 0.023（期末 2025-26 S1 Q1(a)(iii) 就是这组数）</div></div></div>
+<div class="pitfall"><div class="lbl">⚠ 易错</div><ul>
+<li>Q 里放的是"<b>信号到门限的距离 ÷ 标准差</b>"，是 d/2，不是整个距离 d。</li>
+<li>先验概率不等或两边噪声方差不同时，门限不在中点（Practice 3 第 2 题），要用 ML / MAP 条件重新解门限。</li>
+<li>有 ISI 时信号到门限的距离会随前一个符号变化，要分情况算再平均（第 6 章）。</li></ul></div>
+      <!-- /ENR:learn_03.html:3.3 -->
+      <h3><span class="zh-num">3.4</span>功率效率 vs 带宽效率<span class="imp i1">★ 了解</span></h3>
+      <p>讲义 p.23–30 讨论怎么公平地比较不同系统：</p>
+      <ul>
+        <li><b>功率效率</b>：在发射功率有限时，误码率能做到多低。卫星、蓝牙、GSM 看重这个。</li>
+        <li><b>带宽效率</b>：在带宽有限时，速率能做到多高。WiFi（802.11g）、WiMAX 看重这个。</li>
+      </ul>
+      <div class="formula-card">
+        <div class="flbl">比较用的三个量（p.24–27）</div>
+        <div class="fexpr">\(D=2BT\)　　\(\eta=\dfrac{R}{B}=\dfrac{2b}{D}\)　　\(\bar b=\dfrac bD=\dfrac\eta2\)　　\(\bar\varepsilon_x=\dfrac{\varepsilon_x}{D}\)　　\(\bar P_s=\dfrac{P_s}{D}\)</div>
+        <div class="fmeaning">D：一个符号周期 T、带宽 B 内可用的维数；b：每符号比特数；\(\bar b\)：每维比特数（衡量带宽效率）；\(\bar\varepsilon_x\)：每维平均能量（衡量功率效率）；\(\bar P_s\)：每维误符号率。经验法则：给定误码率和 \(\bar b\)，\(\bar\varepsilon_x\) 越小越好。</div>
+      </div>
+      <p>p.28–30 的例子：系统 I（D = 1）\(\bar b=1\)、\(\bar P_s=Q(1/\sigma)\)；系统 II（D = 2）\(\bar b=1/2\)、\(\bar P_s=\tfrac12Q(\sqrt2/\sigma)\)，两者每维能量都是 1。系统 II 误码率更好，但多用了一倍带宽：<b>用带宽效率换功率效率</b>。</p>
+
+      <h3><span class="zh-num">3.5</span>衰落信道里的误码率<span class="imp i2">★★ 常考</span></h3>
+      <p>衰落时 SNR 是随机的，误码率也跟着随机。两种看法（p.31）：</p>
+      <div class="formula-card">
+        <div class="flbl">平均误码率与中断概率（p.31）</div>
+        <div class="fexpr">\(\bar P_s=\displaystyle\int_0^\infty P_s(\gamma)\,p_\gamma(\gamma)\,d\gamma\)　　\(P_{\mathrm{out}}=P(\gamma\lt \gamma_0)=1-e^{-\gamma_0/\bar\gamma}\)（瑞利）</div>
+        <div class="fmeaning">平均误码率：把 AWGN 下的误码率按 SNR 的概率加权平均。中断概率：SNR 低于最低要求的时间比例。p.32 的结论很重要：<b>AWGN 中误码率随 SNR 指数下降，瑞利衰落中只按线性（1/SNR）下降</b>，要达到同样误码率需要多几十 dB 功率。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>BPSK 在瑞利衰落下需要多大平均 SNR（第 3 章 p.33–34）</summary>
+        <div class="wbody">
+          <p>已知条件：要求 95% 的时间 SNR 高于最低需要的 8.5 dB。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">中断概率 \(P_{\mathrm{out}}=1-0.95=0.05\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">由 \(P_{\mathrm{out}}=1-e^{-\gamma_0/\bar\gamma}\) 解出 \(\bar\gamma=\dfrac{\gamma_0}{-\ln(1-P_{\mathrm{out}})}\)。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">\(\gamma_0=10^{0.85}=7.08\)，\(-\ln0.95=0.0513\)：<div class="calc">γ̄ = 7.08 / 0.0513 = 138 → 21.4 dB</div></div></div>
+          <div class="wans">平均 SNR 需要 21.4 dB，衰落余量 = 21.4 − 8.5 = 12.9 dB</div>
+        </div>
+      </div>
+      <p><b>不可消除的误码平台（error floor，p.35）</b>：衰落太快（多普勒）或时延扩展太大时，即使 SNR 趋于无穷，误码率也降不到零，停在一个"地板"上。讲义的两个近似公式：</p>
+      <div class="formula-card">
+        <div class="flbl">误码平台（第 3 章 p.35；Practice 3）</div>
+        <div class="fexpr">多普勒（DPSK）：\(P_{\mathrm{floor}}\approx\tfrac12(\pi f_DT_b)^2\)　　时延扩展（BPSK）：\(P_{\mathrm{floor}}\approx\left(\dfrac{\sigma_{T_m}}{T_b}\right)^2\)</div>
+        <div class="fmeaning">多普勒平台：符号越长，一个符号内信道变化越大，所以要<b>速率足够高</b>。时延扩展平台：符号越短，回声占的比例越大，所以要<b>速率足够低</b>。两者正好方向相反。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>多普勒平台下的最低速率（第 3 章 p.36）</summary>
+        <div class="wbody">
+          <p>已知条件：瑞利衰落、均匀散射，\(f_D\) = 80 Hz，要求 DPSK 的误码平台低于 10⁻⁴。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">\(\tfrac12(\pi\cdot80\cdot T_b)^2\le10^{-4}\Rightarrow\pi\cdot80\cdot T_b\le\sqrt{2\times10^{-4}}=0.01414\)。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">\(T_b\le0.01414/251.3=5.63\times10^{-5}\) s。</div></div>
+          <div class="wans">R = 1/T_b ≥ 17.77 kbps（讲义算式里 π 在 PDF 转文字时丢了，原式有 π）</div>
+        </div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>时延扩展平台下的最高速率（Practice 3 第 3 题）</summary>
+        <div class="wbody">
+          <p>已知条件：\(\sigma_{T_m}\) = 3 µs，要求平台 10⁻³，用 QPSK。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">\((3\,\mu s/T)^2\le10^{-3}\Rightarrow T\ge3/0.03162=94.9\) µs。这个 T 是<b>符号</b>时长：ISI 取决于回声相对于一个符号有多长。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">BPSK 每符号 1 bit：10.54 kbps；QPSK 每符号 2 bit：<div class="calc">R = 2 / 94.9 µs = 21.08 kbps</div></div></div>
+          <div class="wans">QPSK 最高约 21.08 kbps</div>
+        </div>
+      </div>
+      <!-- ENR:learn_03.html:3.5 -->
+      <div class="key"><div class="lbl">★ 考试重点 · 衰落下的误码率</div><ul>
+<li>平均误码率 = 把 AWGN 误码率按 SNR 的分布加权平均：连续分布用积分，<b>离散分布直接按概率加权求和</b>（第 4 章期末题都是离散的）。</li>
+<li>瑞利衰落中断：P<sub>out</sub> = 1 − e<sup>−γ₀/γ̄</sup>，反求 γ̄ = γ₀ / (−ln(1 − P<sub>out</sub>))。</li>
+<li>误码平台：多普勒要速率<b>高</b>，时延扩展要速率<b>低</b>，两个公式方向相反。</li></ul></div>
+      <!-- /ENR:learn_03.html:3.5 -->
+      <!-- ENR:learn_03.html:summary -->
+      <div class="key"><div class="lbl">★ 第三章考试重点</div><ul>
+<li>正交基、维数、星座图；两点距离。</li>
+<li>AWGN 下 ML = 最小距离；二进制 P<sub>b</sub> = Q(d/2σ)，BPSK = Q(√(2γ<sub>b</sub>))。</li>
+<li>y = s + w 的条件均值、方差和条件 PDF（第 1 章性质的直接应用）。</li>
+<li>衰落下平均误码率 = 加权平均；瑞利中断概率；两种误码平台。</li></ul></div>
+      <!-- /ENR:learn_03.html:summary -->
+      <div class="checkpoint">
+        <div class="lbl">自测</div>
+        <p>(1) 8-PSK 的信号空间是几维？(2) 为什么 AWGN 下 ML 检测等于"最小距离"检测？(3) 瑞利信道里平均 SNR 每提高 10 dB，BPSK 的平均误码率大约降多少？</p>
+        <details class="reveal"><summary>点击看答案</summary>
+          <div class="ans">(1) 2 维（cos 和 sin 两个基）。(2) 高斯似然 ∝ exp(−‖y − s‖²/N₀)，距离越小似然越大。(3) 只降约 10 倍（线性），而 AWGN 中会降很多个数量级。</div>
+        </details>
+      </div>
+    </section>

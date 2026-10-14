@@ -1,0 +1,67 @@
+  <div class="group" id="P3"><h2>Practice 3 · 信号检测</h2><span>讲义第 3 章 · 第 10 周</span></div>
+
+  <article class="ex" id="p3q1">
+    <header><span class="pg">P3 · Q1</span><h3>正交基与信号空间维数</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 3</span></div>
+      <p>Consider the following modulated signal, where the message signals are modulated in \(A_i\) and \(\phi_j\).</p>
+      <p class="eq">\(A_i\cos\!\left(\dfrac{2\pi t}{T}+\phi_j\right),\quad 0<t<T\)</p>
+      <p>(a) Find an orthonormal basis for the signal.</p>
+      <p>(b) Find the dimension of the space spanned by the signal.</p>
+    </div>
+    <div class="chips"><span class="chip">正交归一基</span><span class="chip">和角公式</span><span class="chip src">讲义第 3 章 p.4–11</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>拆开：\(A_i\cos(2\pi t/T+\phi_j)=(A_i\cos\phi_j)\cos(2\pi t/T)+(-A_i\sin\phi_j)\sin(2\pi t/T)\)。所有信号都在 cos 和 sin 这两个方向上。</li>
+        <li>正交：\(\int_0^T\cos(2\pi t/T)\sin(2\pi t/T)dt=\tfrac12\int_0^T\sin(4\pi t/T)dt=0\)。</li>
+        <li>归一：\(\int_0^T\cos^2(2\pi t/T)dt=T/2\)，所以乘 \(\sqrt{2/T}\) 使能量为 1。</li>
+      </ol>
+      <div class="ans">(a) { √(2/T)·cos(2πt/T), √(2/T)·sin(2πt/T) }；(b) 维数 2</div>
+      <div class="official"><b>官方答案：</b>同上 ✓</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p3q2">
+    <header><span class="pg">P3 · Q2</span><h3>噪声方差不相等时的 ML 判决</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 3</span></div>
+      <p>A particular binary disc storage channel can be approximated as a discrete-time AWGN channel with inputs \(x_n\in\{0,1\}\) and output \(y_n=x_n+w_n\), where \(y_n\) is also the decision variable in the disc reading device at time n. The noise variance depends on the value of \(x_n\) in that \(w_n\) has the conditional Gaussian pdf given below, where \(\sigma_1^2>\sigma_0^2\).</p>
+      <p class="eq">\(f(w_n\mid x_n)=\begin{cases}\dfrac{1}{\sqrt{2\pi\sigma_0^2}}e^{-w_n^2/2\sigma_0^2} & x_n=0\\[2mm] \dfrac{1}{\sqrt{2\pi\sigma_1^2}}e^{-w_n^2/2\sigma_1^2} & x_n=1\end{cases}\)</p>
+      <p>Assume \(P(x_n=0)=P(x_n=1)=\tfrac12\) for all n.</p>
+      <p>(a) Find a decision rule for a ML detector that will decide \(\hat x_n\in\{0,1\}\) based on the value of \(y_n\), and formulate it in terms of \(\sigma_0^2\) and \(\sigma_1^2\).</p>
+      <p>(b) Find the corresponding bit error probability \(P_e\).</p>
+    </div>
+    <div class="chips"><span class="chip">ML 检测</span><span class="chip">似然比</span><span class="chip">判决门限</span><span class="chip src">讲义第 3 章 p.18–20</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>发 0 时 \(y\sim\mathcal N(0,\sigma_0^2)\)，发 1 时 \(y\sim\mathcal N(1,\sigma_1^2)\)。ML：哪个似然大判哪个。</li>
+        <li>判 1 当 \(\dfrac{1}{\sigma_1}e^{-(y-1)^2/2\sigma_1^2}>\dfrac{1}{\sigma_0}e^{-y^2/2\sigma_0^2}\)，取对数：<div class="calc">g(y) = y²/(2σ₀²) − (y − 1)²/(2σ₁²) + ln(σ₀/σ₁) &gt; 0</div></li>
+        <li>g(y) = 0 是关于 y 的二次方程，取在 0 与 1 之间的根作为门限 ỹ：y &gt; ỹ 判 1，y &lt; ỹ 判 0。方差相等时 ỹ = 0.5；σ₁ &gt; σ₀ 时 ỹ 往 0 那边移。</li>
+        <li>(b) 两种错误：发 0、噪声把 y 推过 ỹ，概率 \(Q(\tilde y/\sigma_0)\)；发 1、y 掉到 ỹ 以下，概率 \(Q((1-\tilde y)/\sigma_1)\)。等概各乘 ½。</li>
+      </ol>
+      <div class="ans">x̂ₙ = 1 当 yₙ &gt; ỹ，否则 0；Pe = ½[Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀)]</div>
+      <div class="official"><b>官方答案：</b>同上 ✓</div>
+      <div class="note">数字感受：σ₀² = 0.1、σ₁² = 0.4 时，g(y) = 3.75y² + 2.5y − 1.943，ỹ ≈ 0.46。严格说二次方程在很负的 y 处还有第二个根（那里也会判 1），概率极小，答案忽略。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p3q3">
+    <header><span class="pg">P3 · Q3</span><h3>时延扩展造成的误码平台与最高速率</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 3</span></div>
+      <p>Using the approximation \(P_{floor}\approx\left(\dfrac{\sigma_{T_m}}{T_b}\right)^2\) for a BPSK system, determine the data rate of a QPSK system that can be transmitted through a channel with delay spread \(\sigma_{T_m}\) = 3 µs, such that the irreducible error floor is \(10^{-3}\).</p>
+    </div>
+    <div class="chips"><span class="chip">误码平台</span><span class="chip">符号时长 vs 比特时长</span><span class="chip src">讲义第 3 章 p.35–36</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>平台公式里起作用的是"回声长度 / 符号长度"。BPSK 一个符号就是一个比特，所以公式写 \(T_b\)；换成 QPSK 要用<b>符号</b>时长 \(T_s\)。</li>
+        <li>\((3\,\mu s/T_s)^2=10^{-3}\) → \(3/T_s=0.0316\) → \(T_s=94.9\) µs。</li>
+        <li>QPSK 每符号 2 bit：\(R_b=2/T_s=2/94.9\,\mu s=21.08\) kbps。（同样条件下 BPSK 只有 10.54 kbps。）</li>
+      </ol>
+      <div class="ans">R ≈ 21.08 kbps</div>
+      <div class="official"><b>官方答案：</b>21.08 kbps ✓</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>

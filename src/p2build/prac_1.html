@@ -1,0 +1,73 @@
+  <div class="group" id="P1"><h2>Practice 1 · 无线信道 1</h2><span>讲义第 2 章 p.8–33 · 第 8 周</span></div>
+
+  <article class="ex" id="p1q1">
+    <header><span class="pg">P1 · Q1</span><h3>拟合路径损耗模型，再求中断概率</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 1</span></div>
+      <p>A set of empirical path loss measurements is given in Table 1, where \(P_t\) and \(P_r\) are the transmitted power and received power respectively.</p>
+      <div class="tw"><table class="mini"><thead><tr><th>Distance from Transmitter \(d_i\) (m)</th><th>\((P_r/P_t)_{dB}\)</th></tr></thead><tbody>
+        <tr><td>5</td><td>−60</td></tr><tr><td>25</td><td>−80</td></tr><tr><td>65</td><td>−105</td></tr><tr><td>110</td><td>−115</td></tr><tr><td>400</td><td>−130</td></tr><tr><td>1,000</td><td>−150</td></tr>
+      </tbody></table></div>
+      <p>(a) Using the path loss model, \(P_r=P_tK[1/d]^{\gamma}\), find the values of K in dB and γ that best fit the data shown in the Table.</p>
+      <p>(b) Assuming the presence of shadowing and that the received power at a distance d due to path loss alone is 10 dB above the required minimum power for non-outage, find the outage probability at d.</p>
+    </div>
+    <div class="chips"><span class="chip">简化路径损耗模型</span><span class="chip">最小二乘拟合</span><span class="chip">阴影方差 = MSE</span><span class="chip">中断概率 Q 函数</span><span class="chip src">讲义第 2 章 p.8、12–15</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <p class="idea"><b>思路：</b>取 dB 后模型变成一条直线 \(y=K_{dB}-\gamma x\)，其中 \(x=10\log_{10}d\)（\(d_0\) = 1 m）。用最小二乘找最贴近 6 个点的直线；剩下的均方误差就是阴影方差。</p>
+      <ol class="steps">
+        <li>把距离换成 \(x_i=10\log_{10}d_i\)：6.99、13.98、18.13、20.41、26.02、30.00（平均 \(\bar x=19.26\)）；\(y_i\) 平均 \(\bar y=-106.67\)。</li>
+        <li>直线斜率 \(=\dfrac{\sum(x_i-\bar x)(y_i-\bar y)}{\sum(x_i-\bar x)^2}=-3.94\)，所以 \(\gamma=3.94\)。</li>
+        <li>截距 \(K_{dB}=\bar y+\gamma\bar x=-106.67+3.94\times19.26=-30.8\) dB。</li>
+        <li>(b) 残差依次为 −1.67、5.88、−2.77、−3.77、3.32、−0.99，均方误差 \(\sigma_\psi^2=11.87\)，\(\sigma_\psi=3.45\) dB。</li>
+        <li>平均功率比门限高 10 dB：\(P_{out}=Q(10/\sigma_\psi)=Q(2.90)=1.85\times10^{-3}\)。</li>
+      </ol>
+      <div class="ans"><b>按标准最小二乘：</b>K ≈ −30.8 dB，γ ≈ 3.94，σ²_ψ ≈ 11.9 dB²，P_out ≈ 1.85 × 10⁻³</div>
+      <div class="official"><b>官方答案：</b>(a) K_dB = −31.4 dB，γ = 3.86；(b) 6.19 × 10⁻⁴</div>
+      <div class="note">我按题目数据无法复现官方答案：把官方的 K = −31.4、γ = 3.86 代回 6 个点，均方误差是 13.1，中断概率约 2.9 × 10⁻³；官方 6.19 × 10⁻⁴ 对应 σ ≈ 3.10 dB。可能是课上用了别的拟合方法或计算有误。<b>考试写清楚方法（最小二乘、σ² = MSE、Pout = Q(10/σ)）即可</b>，有疑问可以问老师。</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p1q2">
+    <header><span class="pg">P1 · Q2</span><h3>对数正态阴影下的中断概率</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 1</span></div>
+      <p>Consider a cellular system where the received signal power has a log-normal distribution with mean \(\mu_\psi\) dBm and standard deviation \(\sigma_\psi\) dBm. In order to avoid outage, the received signal power is required to be above 10 dBm.</p>
+      <p>(a) What is the outage probability when \(\mu_\psi\) = 15 dBm and \(\sigma_\psi\) = 8 dBm?</p>
+      <p>(b) For \(\sigma_\psi\) = 4 dBm, what value of \(\mu_\psi\) is required such that the outage probability is less than 1%?</p>
+    </div>
+    <div class="chips"><span class="chip">对数正态 = dB 值高斯</span><span class="chip">Q 函数与反函数</span><span class="chip src">讲义第 2 章 p.11–15</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <p class="idea"><b>思路：</b>dBm 值服从高斯分布。"低于门限"的概率 = 先减均值、再除标准差，查 Q 表。</p>
+      <ol class="steps">
+        <li>(a) 门限比均值低 15 − 10 = 5 dB，是 5/8 = 0.625 个标准差：\(P_{out}=Q(0.625)=0.266\)。</li>
+        <li>(b) 要求 \(Q\big((\mu_\psi-10)/4\big)<0.01\)。查表 \(Q(2.326)=0.01\)，Q 是减函数，所以 \((\mu_\psi-10)/4>2.326\)。</li>
+        <li>\(\mu_\psi>10+4\times2.326=19.3\) dBm。</li>
+      </ol>
+      <div class="ans">(a) ≈ 26%；(b) μ_ψ &gt; 19.3 dBm</div>
+      <div class="official"><b>官方答案：</b>(a) 26%；(b) μ_ψ &gt; 19.32 dB ✓</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p1q3">
+    <header><span class="pg">P1 · Q3</span><h3>均匀功率时延分布的时延扩展</h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 1</span></div>
+      <p>Consider a channel with the following power delay profile.</p>
+      <p class="eq">\(P_r(\tau)=\begin{cases}1 & 0\le\tau\le10\,\mu s\\ 0 & \text{Otherwise}\end{cases}\)</p>
+      <p>(a) Compute the mean delay spread and rms delay spread of the channel.</p>
+      <p>(b) What should the symbol rate, \(R_s\), be for this channel to exhibit flat fading? Assume \(R_s=1/T_s\), where \(T_s\) is the signal symbol duration.</p>
+    </div>
+    <div class="chips"><span class="chip">平均时延 / rms 时延扩展</span><span class="chip">平坦衰落条件 σ/Ts &lt; 0.1</span><span class="chip src">讲义第 2 章 p.30–33</span></div>
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol">
+      <ol class="steps">
+        <li>把 \(P_r(\tau)\) 当成 0–10 µs 上的均匀分布：\(\mu_{T_m}=\dfrac{\int_0^{10}\tau\,d\tau}{\int_0^{10}d\tau}=\dfrac{50}{10}=5\) µs。</li>
+        <li>\(E[\tau^2]=\dfrac{\int_0^{10}\tau^2d\tau}{10}=\dfrac{1000/3}{10}=33.33\)；\(\sigma_{T_m}=\sqrt{33.33-5^2}=\sqrt{8.33}=2.89\) µs。（均匀分布的标准差 = 宽度/√12 = 10/3.46。）</li>
+        <li>(b) 平坦衰落：\(\sigma_{T_m}/T_s<0.1\) → \(T_s>28.9\) µs → \(R_s<1/28.9\,\mu s=34.6\) ksps。</li>
+      </ol>
+      <div class="ans">μ = 5 µs，σ = 2.89 µs；R_s &lt; 34.6 ksps</div>
+      <div class="official"><b>官方答案：</b>5 µs，2.89 µs；34.6 ksps ✓</div>
+    </div>
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>

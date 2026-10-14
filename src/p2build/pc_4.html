@@ -1,0 +1,66 @@
+    <!-- ================= CH 4 ================= -->
+    <section class="chapter" id="ch4">
+      <div class="chapter-head"><span class="chapter-num">第四章</span><h2>信号从天上到地面：链路、配置、地面站和频段</h2></div>
+
+      <h3><span class="zh-num">4.1</span>影响链路质量的三大因素（p.21–23）</h3>
+      <ol>
+        <li><b>卫星天线和地面站天线之间的距离</b>：频率越高、卫星越高，信号功率损失越大。</li>
+        <li><b>下行时，地面站离卫星"瞄准点"的地面距离</b>：卫星信号对准地面某一点，覆盖区中心收到的功率最高，越往外越弱。</li>
+        <li><b>大气衰减</b>：受氧气、水汽、仰角和频率影响。<b>仰角越小，信号要穿过的大气越厚</b>。</li>
+      </ol>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>读 p.22 的路径损耗图：频率和高度各贡献多少</summary>
+        <div class="wbody">
+          <p>已知条件：用 Part A 第五章的自由空间损耗 L(dB) = 32.44 + 20 log f(MHz) + 20 log d(km)。p.22 的图画了 1、4、10、40 GHz 四条线，横轴是轨道高度。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">GEO 高度（d = 35,863 km，20 log d = 91.1）：<div class="calc">1 GHz：32.44 + 60.0 + 91.1 = 183.5 dB</div><div class="calc">4 GHz：195.6 dB；10 GHz：203.5 dB；40 GHz：215.6 dB</div></div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">LEO 高度（d = 1,000 km，20 log d = 60）：4 GHz 时 164.5 dB，比 GEO 少 31 dB。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">规律：频率每高 10 倍多 20 dB；距离每远 10 倍也多 20 dB。图上四条线平行，间距正好是 20 log(频率比)。</div></div>
+          <div class="wans">GEO、4 GHz 的损耗约 196 dB，和 p.22 图上的读数一致</div>
+          <p style="margin-top:12px">Part A 讲义写的常数是 32（不是 32.44），算出来小 0.44 dB，两种都可以。</p>
+        </div>
+      </div>
+      <p>p.23 的图：<b>大气吸收、雾、雨</b>三种衰减都随仰角升高而迅速下降。仰角低于 10° 时衰减急剧增大，雨的影响最大，其次是雾。这就是实际不用 0° 最小仰角的原因（第二章）。</p>
+      <div class="extra">
+        <div class="lbl">课外补充 · 为什么雨对高频段影响特别大</div>
+        <p>频率越高、波长越短，就越接近雨滴的尺寸（几毫米），雨滴对电磁波的吸收和散射越强。Ku、Ka 频段的波长只有约 1–2.4 cm，受雨影响明显；C 波段（约 4–7 cm）就小得多。所以热带多雨地区常用 C 波段，或者给 Ku/Ka 链路留出较大的雨衰余量。</p>
+      </div>
+
+      <h3><span class="zh-num">4.2</span>三种通信配置（p.24–25）</h3>
+      <div class="tblwrap"><table><thead><tr><th>配置</th><th>怎么通信</th><th>例子</th></tr></thead><tbody>
+        <tr><td>点对点</td><td>卫星连接两个相距很远的地面站</td><td>跨洋干线</td></tr>
+        <tr><td>广播</td><td>一个发射站对许多只有接收机的地面站</td><td>卫星电视</td></tr>
+        <tr><td>双向星形</td><td>一个中心站（hub）和许多远端站：远端站共享卫星容量发给 hub，hub 和各站交换消息并在远端站之间转发</td><td>VSAT 网（银行网点、加油站）</td></tr>
+      </tbody></table></div>
+
+      <h3><span class="zh-num">4.3</span>地面站（p.26）</h3>
+      <p>地面站由天线、跟踪系统、接收机、发射机、复用器和经调制解调器连接的地面链路组成。区分地面站主要看<b>天线大小</b>：</p>
+      <div class="tblwrap"><table><thead><tr><th>类型</th><th>天线直径</th></tr></thead><tbody>
+        <tr><td>大型地面站</td><td>10–60 m</td></tr>
+        <tr><td>小型地面站</td><td>1–10 m</td></tr>
+        <tr><td>甚小口径终端 VSAT</td><td>0.3–0.9 m</td></tr>
+      </tbody></table></div>
+      <p><b>天线越大，地面站的业务容量越大</b>：大天线增益高，"嗓门"大、"耳朵"灵。</p>
+      <div class="extra">
+        <div class="lbl">课外补充 · 天线大一倍，增益多多少</div>
+        <p>抛物面天线的增益和口径面积成正比，也就是和直径的平方成正比。直径加倍，增益增加 4 倍，即 +6 dB；从 0.6 m 的 VSAT 换成 6 m 的天线，直径大 10 倍，增益多 20 dB，正好抵消 LEO 和 GEO 之间约 2/3 的路径损耗差。</p>
+      </div>
+
+      <h3><span class="zh-num">4.4</span>卫星通信频段（p.27）</h3>
+      <div class="tblwrap"><table><thead><tr><th>频段</th><th>频率范围</th><th>总带宽</th><th>主要用途</th></tr></thead><tbody>
+        <tr><td>L</td><td>1–2 GHz</td><td>1 GHz</td><td>移动卫星业务 MSS</td></tr>
+        <tr><td>S</td><td>2–4 GHz</td><td>2 GHz</td><td>MSS、NASA、深空研究</td></tr>
+        <tr><td>C</td><td>4–8 GHz</td><td>4 GHz</td><td>固定卫星业务 FSS</td></tr>
+        <tr><td>X</td><td>8–12.5 GHz</td><td>4.5 GHz</td><td>FSS 军用、地面探测、气象卫星</td></tr>
+        <tr><td>Ku</td><td>12.5–18 GHz</td><td>5.5 GHz</td><td>FSS、广播卫星业务 BSS</td></tr>
+        <tr><td>K</td><td>18–26.5 GHz</td><td>8.5 GHz</td><td>BSS、FSS</td></tr>
+        <tr><td>Ka</td><td>26.5–40 GHz</td><td>13.5 GHz</td><td>FSS</td></tr>
+      </tbody></table></div>
+      <p>规律：频段越高，可用带宽越大（Ka 有 13.5 GHz），但路径损耗和雨衰也越大。移动业务用低频段（L、S），因为手持终端天线小、需要信号穿透力强。</p>
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>同一颗 GEO 卫星，C 波段（4 GHz）下行和 Ku 波段（12 GHz）下行，自由空间损耗差多少？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">距离相同，只差频率项：20 log(12/4) = 20 × 0.477 ≈ 9.5 dB，Ku 多损耗约 9.5 dB，还不算雨衰。</div>
+        </details>
+      </div>
+    </section>

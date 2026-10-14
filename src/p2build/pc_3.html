@@ -1,0 +1,62 @@
+    <!-- ================= CH 3 ================= -->
+    <section class="chapter" id="ch3">
+      <div class="chapter-head"><span class="chapter-num">第三章</span><h2>GEO、LEO、MEO：一场关于高度的权衡</h2></div>
+
+      <h3><span class="zh-num">3.1</span>GEO：覆盖广、好跟踪，但信号弱、时延大（p.15–16）</h3>
+      <p>GEO 卫星在赤道上空 35,863 km 的圆轨道上，转速和地球自转一样，始终停在赤道某一点的正上方（p.15）。</p>
+      <div class="tblwrap"><table><thead><tr><th>优点（p.15）</th><th>缺点（p.16）</th></tr></thead><tbody>
+        <tr><td>相对地面几乎不动，多普勒频移对通信影响不大</td><td>走了 35,000 多公里，信号很弱</td></tr>
+        <tr><td>地面站跟踪很简单，天线对准后基本不用动</td><td>极地和南北高纬度地区服务差（仰角太低）</td></tr>
+        <tr><td>一颗覆盖约 1/4 的地球表面；3 颗相隔 120° 覆盖几乎全球</td><td>传播时延大：正下方两点之间经卫星往返 0.24 s</td></tr>
+        <tr><td>—</td><td>一个频率覆盖很大的区域：适合广播，做点对点通信就浪费频谱</td></tr>
+      </tbody></table></div>
+
+      <h3><span class="zh-num">3.2</span>LEO：信号强、时延低，但要一大群卫星接力（p.17–19）</h3>
+      <p>麻烦（p.17）：</p>
+      <ul>
+        <li>相对地面运动很快，<b>多普勒频移大</b>，接收机要能跟上频率的变化；</li>
+        <li>高层大气还有阻力，轨道会<b>逐渐衰减</b>；</li>
+        <li>要用<b>多个轨道面、每个面多颗卫星</b>才能连续覆盖；</li>
+        <li>两个地面站通信时，经常要把信号从一颗卫星<b>切换</b>到另一颗。</li>
+      </ul>
+      <p>优点（p.18）：同样的发射功率下，<b>收到的 LEO 信号比 GEO 强得多</b>；覆盖更局部，频谱可以更好地复用；适合需要强信号的手持终端。但要 24 小时全覆盖，需要很多颗卫星。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>LEO 比 GEO 信号强多少</summary>
+        <div class="wbody">
+          <p>已知条件：同样的频率和发射功率，比较卫星在正下方时 LEO（1,000 km）和 GEO（35,863 km）的自由空间损耗。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">自由空间损耗随 20 log d 变化（Part A 第五章）。只比较两者之差：<div class="calc">20 log₁₀(35,863 / 1,000) = 20 × 1.555 = 31.1 dB</div></div></div>
+          <div class="wans">LEO 的信号强约 31 dB，也就是 1,300 倍左右，所以手机这类小天线终端能直接连 LEO</div>
+        </div>
+      </div>
+      <div class="extra">
+        <div class="lbl">课外补充 · LEO 的多普勒有多大</div>
+        <p>1,000 km 高的 LEO 速度约 7.35 km/s（第二章补充框）。以 2 GHz 载频算，相对运动全部指向地面站时的最大多普勒频移 = f·v/c = 2×10⁹ × 7.35 / 300,000 ≈ 49 kHz。实际视线方向只取速度的一部分，但仍有几十 kHz，而且在一次过顶的十几分钟里从正变到负。对照 Part 2 第二章：手机在 120 km/h 时多普勒只有几百 Hz。</p>
+      </div>
+      <div class="tblwrap"><table><thead><tr><th></th><th>Little LEO（p.19）</th><th>Big LEO（p.19）</th></tr></thead><tbody>
+        <tr><td>频率</td><td>1 GHz 以下</td><td>1 GHz 以上</td></tr>
+        <tr><td>带宽 / 速率</td><td>带宽小于 5 MHz，速率最高 10 kbps</td><td>速率可达几 Mbps</td></tr>
+        <tr><td>业务</td><td>寻呼、跟踪、低速消息</td><td>Little LEO 的全部业务，加上话音和定位</td></tr>
+      </tbody></table></div>
+
+      <h3><span class="zh-num">3.3</span>MEO：夹在中间的折中（p.20）</h3>
+      <ul>
+        <li>切换比 LEO <b>少得多</b>（每次可见 2–8 小时）；</li>
+        <li>到地面的传播时延和所需功率比 LEO 大；</li>
+        <li>需要的卫星数比 LEO 少；</li>
+        <li>拟用于数字话音、数据、传真、消息业务；GPS 就是 MEO（p.9）。</li>
+      </ul>
+      <div class="tblwrap"><table><thead><tr><th>一句话对比</th><th>LEO</th><th>MEO</th><th>GEO</th></tr></thead><tbody>
+        <tr><td>信号强度</td><td>最强</td><td>中</td><td>最弱</td></tr>
+        <tr><td>时延</td><td>几 ms</td><td>几十 ms</td><td>约 250 ms</td></tr>
+        <tr><td>需要卫星数</td><td>很多</td><td>中</td><td>3 颗覆盖全球</td></tr>
+        <tr><td>切换</td><td>频繁</td><td>较少</td><td>几乎没有</td></tr>
+        <tr><td>典型用途</td><td>手持移动通信、成像</td><td>导航（GPS）</td><td>广播电视、固定业务</td></tr>
+      </tbody></table></div>
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>要给远洋渔船提供广播天气预报，和给徒步者的手持终端提供双向短信，分别选哪种轨道？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">天气广播：GEO，一颗卫星覆盖整个大洋，船上天线对准就不用动，广播业务不在乎 0.24 s 时延。手持短信：LEO（Little LEO 就够），手持终端天线小、功率低，需要 LEO 那样强的信号；低速消息正是 Little LEO 的典型业务。</div>
+        </details>
+      </div>
+    </section>

@@ -1,0 +1,105 @@
+    <!-- ================= CH 2 ================= -->
+    <section class="chapter" id="ch2">
+      <div class="chapter-head"><span class="chapter-num">第二章</span><h2>没有基站调度，大家怎么不抢着说话：DCF</h2></div>
+
+      <h3><span class="zh-num">2.1</span>先保证"送到了"：两帧和四帧交换（p.16–17）</h3>
+      <p>无线信道不可靠，802.11 定义了帧交换协议来保证数据可靠送达：</p>
+      <ul>
+        <li><b>两帧交换</b>：源站发数据 → 目的站检查帧校验序列（CRC），没错就回 ACK → 源站收不到 ACK 就重传。</li>
+        <li><b>四帧交换</b>：源站发 <b>RTS</b>（请求发送）→ 目的站回 <b>CTS</b>（允许发送）→ 源站发数据 → 目的站回 ACK。多出来的两帧是为了更稳健，并解决<b>隐藏节点问题</b>。</li>
+      </ul>
+      <p>RTS 和 CTS 里都写着接下来这次传输（数据 + ACK）要占用多长时间。周围的节点听到后，把这个时长记在一个叫 <b>NAV</b>（Network Allocation Vector，网络分配向量）的计时器里，计时器归零之前都不发送。关键一点（p.17）：<b>就算某个节点听不到源站的 RTS，它也能听到目的站的 CTS</b>，照样会让路。</p>
+
+      <h3><span class="zh-num">2.2</span>MAC 的两种工作方式：DCF 与 PCF（p.18–19）</h3>
+      <p>802.11 的 MAC 叫 DFWMAC，分两层：</p>
+      <div class="tblwrap"><table><thead><tr><th></th><th>DCF（分布式协调）</th><th>PCF（点协调）</th></tr></thead><tbody>
+        <tr><td>地位</td><td>基本方案，必须有</td><td>可选，建立在 DCF 之上并与之共存</td></tr>
+        <tr><td>怎么接入</td><td>竞争：CSMA/CA（带冲突避免的载波侦听多址）</td><td>集中：AP 逐个轮询</td></tr>
+        <tr><td>适合</td><td>异步、突发的数据</td><td>面向连接、无冲突、有时限的业务（如语音）</td></tr>
+      </tbody></table></div>
+
+      <h3><span class="zh-num">2.3</span>三种"客气程度"：帧间间隔 IFS（p.20）</h3>
+      <p>每次信道空下来，不同的帧要等不同长短的时间才能发。等得越短，越先发，优先级越高：</p>
+      <div class="formula-card">
+        <div class="flbl">帧间间隔（p.20、p.29）</div>
+        <div class="fexpr">SIFS &lt; PIFS &lt; DIFS</div>
+        <div class="fmeaning"><b>SIFS</b>（最短）：立即响应用，ACK、CTS、轮询应答。<b>PIFS</b>：PCF 的中心控制器（AP）发轮询用，优先于普通竞争。<b>DIFS</b>（最长）：普通异步数据竞争前的最短等待。所以优先级是 ACK &gt; 有时限的分组 &gt; 无时限的数据（p.29）。</div>
+      </div>
+      <div class="analogy">
+        <div class="lbl">类比</div>
+        <p>会议室里有人刚说完话：被点名回答的人（ACK、CTS）等 1 秒就开口；主持人（AP）等 2 秒；其他想发言的普通人（DIFS）要等 3 秒。等得短的人自然先说，不会和别人撞上。</p>
+      </div>
+
+      <h3><span class="zh-num">2.4</span>DCF 的流程（p.21）</h3>
+      <p>p.21 的流程图按步骤翻译：</p>
+      <ol>
+        <li>有分组要发 → 侦听信道。</li>
+        <li><b>信道空闲</b>：再等一个 DIFS，期间仍然空闲就<b>直接发送</b>；发完等 SIFS 看有没有 ACK，有就成功，没有就重发。</li>
+        <li><b>信道忙</b>：一直侦听到它空闲 → 再等 DIFS → 随机选一个<b>退避时间</b> τ 存进退避计时器。</li>
+        <li>信道每空闲一个时隙，计时器减一；信道一忙就<b>暂停</b>，空闲 DIFS 后接着减。</li>
+        <li>计时器减到 0 → 发送。</li>
+      </ol>
+      <p>为什么要随机退避？如果好几个站都在等同一个人说完，信道一空它们同时开口就会撞车。各自随机等一段时间，大概率能错开。</p>
+
+      <h3><span class="zh-num">2.5</span>二进制指数退避（p.22）</h3>
+      <div class="formula-card">
+        <div class="flbl">二进制指数退避（p.22）</div>
+        <div class="fexpr">退避时间 ∈ {0, 1, …, CW − 1} 个时隙（均匀随机）　　CW：32 → 64 → 128 → 256（封顶）</div>
+        <div class="fmeaning">第一次尝试 CW = CW_min = 32；每失败一次 CW 翻倍；到 CW_max = 256 后不再增长。网络越忙、冲突越多，大家等得越久，自动"降温"。</div>
+      </div>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>连续冲突后，平均要退避多久</summary>
+        <div class="wbody">
+          <p>已知条件：CW_min = 32，CW_max = 256，退避时间在 0 到 CW − 1 之间均匀选。某站第 1 次发送冲突，之后又连续冲突。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">每次尝试的 CW：第 1 次 32，第 2 次 64，第 3 次 128，第 4 次 256，第 5 次以后还是 256。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">均匀分布在 0…CW − 1 的平均值是 (CW − 1)/2：<div class="calc">15.5 → 31.5 → 63.5 → 127.5 → 127.5 个时隙</div></div></div>
+          <div class="wans">第 4 次尝试起平均退避 127.5 个时隙，不再增加</div>
+          <p style="margin-top:12px">易错：CW 是"可选范围的大小"，退避值本身最大只能到 CW − 1。</p>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">2.6</span>RTS/CTS 预约信道：一个完整的时间线（p.23–25）</h3>
+      <p>讲义 p.24 分三种角色说明：</p>
+      <div class="tblwrap"><table><thead><tr><th>角色</th><th>做什么</th></tr></thead><tbody>
+        <tr><td>发送方</td><td>信道空闲 DIFS → 发 RTS 预约 → 收到 CTS 后等 SIFS → 发数据</td></tr>
+        <tr><td>接收方</td><td>收到 RTS 等 SIFS → 回 CTS → 收完数据等 SIFS → 回 ACK</td></tr>
+        <tr><td>其他站</td><td>监听，读出帧里的持续时间设置 NAV → 推迟 NAV + DIFS → 再继续退避</td></tr>
+      </tbody></table></div>
+      <p>NAV 实现的是<b>虚拟载波侦听</b>（p.23）：不用真的听到信号，看计时器就知道信道还要忙多久。发送前先检查 NAV 是否为 0。</p>
+      <div class="worked">
+        <summary><span class="wtag">例题</span>读懂 p.25 的时间线：退避的冻结与恢复</summary>
+        <div class="wbody">
+          <p>讲义 p.25 的图：STA D 刚给 C 发完数据，C 回了 ACK。之后 STA A 和 STA C 都有数据要发，A 抽到 8 个时隙的退避，C 抽到 12 个。</p>
+          <div class="wstep"><div class="wn">1</div><div class="wtext">信道空闲 DIFS 后，A 和 C 同时开始倒数。8 个时隙后 A 先数到 0，发出 RTS（给 B）。</div></div>
+          <div class="wstep"><div class="wn">2</div><div class="wtext">C 这时数到 12 − 8 = 4，听到信道忙，<b>冻结</b>计数器，剩下 4 个时隙先不用。</div></div>
+          <div class="wstep"><div class="wn">3</div><div class="wtext">C 听到 A 的 RTS，设置 NAV；B 回 CTS 后，C 和 D 都按 CTS 设置 NAV。A 的两个数据分片、B 的两个 ACK 期间，大家都不动，帧之间都只隔 SIFS，别人插不进来。</div></div>
+          <div class="wstep"><div class="wn">4</div><div class="wtext">最后一个 ACK 之后信道空闲 DIFS，C 从冻结处<b>继续倒数 4 个时隙</b>，然后发数据给 D，D 回 ACK。</div></div>
+          <div class="wstep"><div class="wn">5</div><div class="wtext">A 刚发完，要发下一个分组时重新抽退避（15 个时隙），比 C 剩下的 4 个长，所以这轮让 C 先发。</div></div>
+          <div class="wans">退避计时器只在信道空闲时减；被打断就冻结，下次接着减。等得越久的站剩得越少，越容易轮到，这样比较公平</div>
+        </div>
+      </div>
+
+      <h3><span class="zh-num">2.7</span>隐藏节点问题（p.48–49）</h3>
+      <div class="figwrap">
+        <svg viewBox="0 0 520 220" role="img" aria-label="隐藏节点：A 和 C 都在 B 的范围内，但 A 和 C 互相听不到">
+          <circle cx="170" cy="110" r="95" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <circle cx="350" cy="110" r="95" fill="none" stroke="var(--gold)" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <circle cx="170" cy="110" r="9" fill="var(--accent)"/><text x="170" y="92" text-anchor="middle" font-weight="700">A</text>
+          <circle cx="260" cy="110" r="9" fill="var(--ink)"/><text x="260" y="92" text-anchor="middle" font-weight="700">B</text>
+          <circle cx="350" cy="110" r="9" fill="var(--gold)"/><text x="350" y="92" text-anchor="middle" font-weight="700">C</text>
+          <text x="110" y="200" font-size="12" fill="var(--accent)">A 的覆盖范围</text>
+          <text x="330" y="200" font-size="12" fill="var(--gold)">C 的覆盖范围</text>
+          <path d="M180 120 L250 120" stroke="var(--ink)" stroke-width="1.5"/><path d="M340 120 L270 120" stroke="var(--ink)" stroke-width="1.5"/>
+          <text x="260" y="145" text-anchor="middle" font-size="12">两个信号在 B 处撞上</text>
+        </svg>
+        <div class="cap">A 要发给 B。C 在 B 的范围内，却在 A 的范围外：C 听不到 A，以为信道空闲，也开始发，在 B 处造成冲突。C 就是 A 的"隐藏节点"。</div>
+      </div>
+      <p>讲义定义（p.48）：隐藏节点是<b>在目的站范围内、但在发送站范围外</b>的节点。它会造成数据冲突，降低信道利用率。<b>RTS/CTS 怎么解决</b>：A 发 RTS，C 听不到；但 B 回的 CTS，C 听得到，C 据此设置 NAV，在 A 传输期间保持安静。</p>
+      <div class="checkpoint">
+        <div class="lbl">停下来想一想</div>
+        <p>(1) ACK 为什么用 SIFS 而不是 DIFS？(2) 站点 X 第 3 次尝试发送，它的退避值可能是 150 吗？</p>
+        <details class="reveal"><summary>点击看提示</summary>
+          <div class="ans">(1) ACK 要紧接着数据，必须抢在别人之前发出，否则别的站等完 DIFS 就可能插进来，打断这次交换。(2) 不可能。第 3 次尝试 CW = 128，退避值只能在 0–127 之间。</div>
+        </details>
+      </div>
+    </section>
