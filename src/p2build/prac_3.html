@@ -21,6 +21,9 @@
       </ol>
       <div class="ans">(a) { √(2/T)·cos(2πt/T), √(2/T)·sin(2πt/T) }；(b) 维数 2</div>
       <div class="official"><b>官方答案：</b>同上 ✓</div>
+      <!-- PKP:p3q1 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>信号空间：正交归一基和维数（第 3 章 p.4–11）。</dd><dt>前置知识</dt><dd>和角公式 cos(a + b) = cos a cos b − sin a sin b；∫₀<sup>T</sup> cos²(2πt/T) dt = T/2；内积 = 相乘再积分。</dd><dt>解题套路</dt><dd>① 把信号展开成几个固定波形的线性组合；② 验证这些波形两两正交；③ 每个除以 √能量做归一化；④ 基函数的个数就是维数。</dd><dt>关键结果</dt><dd>ψ₁ = √(2/T) cos(2πt/T)，ψ₂ = √(2/T) sin(2πt/T)。坐标 (A<sub>i</sub>cosφ<sub>j</sub>√(T/2), −A<sub>i</sub>sinφ<sub>j</sub>√(T/2))，到原点的距离 A<sub>i</sub>√(T/2) = √E。</dd><dt>易错</dt><dd>忘了归一化系数 √(2/T)；以为 A<sub>i</sub>、φ<sub>j</sub> 取值多维数就多：维数只看需要几个基函数，与信号个数无关（D ≤ M）；sin 前面的负号放进坐标里。</dd><dt>举一反三</dt><dd>只调幅度（φ 固定）→ 1 维（PAM）；只调相位 → 2 维（PSK）；幅度、相位都调 → 2 维（QAM，本题就是）。期末 2025-26 S1 Q1(a)(i)：画 ±1 的星座，维数 1、距离 2。</dd></dl></div>
+      <!-- /PKP:p3q1 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -50,6 +53,9 @@
       <div class="ans">x̂ₙ = 1 当 yₙ &gt; ỹ，否则 0；Pe = ½[Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀)]</div>
       <div class="official"><b>官方答案：</b>同上 ✓</div>
       <div class="note">数字感受：σ₀² = 0.1、σ₁² = 0.4 时，g(y) = 3.75y² + 2.5y − 1.943，ỹ ≈ 0.46。严格说二次方程在很负的 y 处还有第二个根（那里也会判 1），概率极小，答案忽略。</div>
+      <!-- PKP:p3q2 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>非标准情况下的 ML 检测：两种假设的噪声方差不同（第 3 章 p.18–20）。</dd><dt>前置知识</dt><dd>高斯 PDF（前面的系数 1/(√(2π)σ) 不能丢）；ln 是增函数，比大小时可以取对数；二次方程求根；Q 函数。</dd><dt>解题套路</dt><dd>① 写出两个条件 PDF；② 比较似然并取对数，整理成 g(y) &gt; 0；③ 解 g(ỹ) = 0 得门限；④ 两种错误分别算；⑤ 按先验概率（各 ½）加权。</dd><dt>关键公式</dt><dd>g(y) = y²/(2σ₀²) − (y − 1)²/(2σ₁²) + ln(σ₀/σ₁)；P<sub>e</sub> = ½[Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀)]。</dd><dt>数值例</dt><dd>σ₀² = 0.1、σ₁² = 0.4：ỹ ≈ 0.46，P<sub>e</sub> = ½[Q(0.54/0.632) + Q(0.46/0.316)] = ½[Q(0.85) + Q(1.46)] ≈ 0.135。</dd><dt>易错</dt><dd>只比较指数、忘了系数 1/σ，会得到错误的门限；两种错误要用各自的 σ；二次方程有两个根，取 0 和 1 之间的那个。</dd><dt>举一反三</dt><dd>方差相等 → ỹ = 0.5，P<sub>e</sub> = Q(0.5/σ)；先验不等 → 用 MAP，对数里再加 ln P(x)，门限往先验小的一边移。</dd></dl></div>
+      <!-- /PKP:p3q2 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -70,6 +76,9 @@
       </ol>
       <div class="ans">R ≈ 21.08 kbps</div>
       <div class="official"><b>官方答案：</b>21.08 kbps ✓</div>
+      <!-- PKP:p3q3 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>时延扩展造成的不可消除误码平台；比特时长和符号时长的换算（第 3 章 p.35）。</dd><dt>前置知识</dt><dd>M 进制每符号 log₂M bit：R<sub>b</sub> = log₂M / T<sub>s</sub>；QPSK 的 M = 4。</dd><dt>解题套路</dt><dd>由平台要求求最短符号时长 T = σ<sub>Tm</sub>/√P<sub>floor</sub>，再换成比特速率。</dd><dt>关键公式</dt><dd>(σ<sub>Tm</sub>/T)² = P<sub>floor</sub> → T = 3 µs / √10⁻³ = 3/0.0316 = 94.9 µs → R<sub>b</sub> = 2/94.9 µs = 21.08 kbps。</dd><dt>易错</dt><dd>公式里的 T 是<b>符号</b>时长（ISI 取决于回声相对一个符号多长）；直接当成比特时长会得到 10.54 kbps；σ<sub>Tm</sub> 是 rms 时延扩展，不是最大时延。</dd><dt>对比</dt><dd>多普勒平台 ½(πf<sub>D</sub>T<sub>b</sub>)² 要求符号<b>短</b>（速率下限），时延扩展平台要求符号<b>长</b>（速率上限），两者同时存在时速率要落在两者之间。</dd><dt>物理意义</dt><dd>"平台"是指 SNR 再高误码率也降不下去：误码来自信号自己的回声，不是噪声。解决办法是均衡（第 6 章）或 OFDM（第 7 章）。</dd></dl></div>
+      <!-- /PKP:p3q3 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>

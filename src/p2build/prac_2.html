@@ -20,6 +20,9 @@
       <div class="ans">AFD ≈ 0.8 ms</div>
       <div class="official"><b>官方答案：</b>0.8 ms ✓</div>
       <div class="note">顺便算 LCR：\(\sqrt{2\pi}\times50\times0.1\times e^{-0.01}=12.4\) 次/秒。两者相乘 = 0.00995 ≈ 1%，就是信号低于 rms 值 20 dB 的时间比例。</div>
+      <!-- PKP:p2q1 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>瑞利衰落的平均衰落持续时间 AFD（第 2 章 p.42–43）。</dd><dt>前置知识</dt><dd>ρ = Z<sub>min</sub>/Z<sub>rms</sub> 是<b>幅度</b>比；瑞利 P(z &lt; Z<sub>min</sub>) = 1 − e<sup>−ρ²</sup>；多普勒 f<sub>D</sub> = v f<sub>c</sub>/c。</dd><dt>解题套路</dt><dd>算 ρ → e<sup>ρ²</sup> − 1 → 分母 √(2π) f<sub>D</sub> ρ → 相除。</dd><dt>关键公式</dt><dd>AFD = (e<sup>ρ²</sup> − 1)/(√(2π) f<sub>D</sub> ρ)；LCR = √(2π) f<sub>D</sub> ρ e<sup>−ρ²</sup>；AFD × LCR = 1 − e<sup>−ρ²</sup>（低于门限的时间比例）。</dd><dt>易错</dt><dd>"rms 值的 0.1"是幅度，ρ = 0.1（功率低 20 dB）；若题目说"功率的 0.1"，则 ρ = √0.1 = 0.316。</dd><dt>举一反三</dt><dd>已知车速和载频，先求 f<sub>D</sub>。一次衰落连错几个符号 = AFD × 符号速率：1 Msps 时 0.8 ms ≈ 800 个符号（讲解页 2.6 节例题）。</dd><dt>直觉</dt><dd>ρ 很小时 AFD ≈ ρ/(√(2π) f<sub>D</sub>)：门限越低，跌到门限以下的时间越短；车越快（f<sub>D</sub> 越大），衰落越短但越频繁。</dd></dl></div>
+      <!-- /PKP:p2q1 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -54,6 +57,9 @@
       <div class="ans">(b) [Q(Δ/σ)]²；(c) ∫ (1/√(2π)) Q[(Δ + bσu)/(|a|σ)]² e^{−u²/2} du</div>
       <div class="official"><b>官方答案：</b>与上面一致 ✓（题目里写成 byσ，积分变量 y 指的是归一化后的 u）</div>
       <div class="note">直觉：b = 0 时退化成 (b) 的独立情况；a = 0 时两条链路完全一样，Pout = Q(Δ/σ)，分集完全没用。相关性越强，宏分集效果越差。</div>
+      <!-- PKP:p2q2 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>宏分集的中断概率：独立阴影和相关阴影两种情况；条件概率 + 全概率（第 2 章 p.12–15；第 4 章 p.3–4、p.21）。</dd><dt>前置知识</dt><dd>独立事件概率相乘；独立高斯的线性组合仍是高斯，aY₁ + bY ~ N(0, (a² + b²)σ²)；全概率的连续形式 P(A) = ∫P(A | y)p(y)dy。</dd><dt>解题套路</dt><dd>(b) 每个基站单独中断 P(Z<sub>i</sub> &lt; −Δ) = Q(Δ/σ)，独立 → 平方。(c) 先固定两条链路共享的 Y（"条件化"），这时两条链路独立 → 条件中断概率相乘 → 再按 Y 的 PDF 积分。</dd><dt>关键一步</dt><dd>令 Y = σu，u ~ N(0, 1)。给定 u：Z<sub>i</sub> ~ N(bσu, a²σ²)，P(Z<sub>i</sub> &lt; −Δ | u) = Q((Δ + bσu)/(|a|σ))。</dd><dt>隐含条件</dt><dd>要和"Z<sub>i</sub> ~ N(0, σ²)"一致，需要 a² + b² = 1。此时 Z₁、Z₂ 的相关系数等于 b²：b 越大，两条链路越像。</dd><dt>自检</dt><dd>b = 0 时退化成 (b) 的 [Q(Δ/σ)]²；a = 0（完全相关）时两条链路一模一样，P<sub>out</sub> = Q(Δ/σ)，分集完全没用。</dd><dt>联系</dt><dd>Practice 4 第 1 题用文字解释同一件事；第 4 章 p.21"相关削弱分集"；Practice 4 第 2(c) 题是离散版本的共享阴影。</dd></dl></div>
+      <!-- /PKP:p2q2 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -77,6 +83,9 @@
       </ol>
       <div class="ans">(a) 19.86 Mbps；(b) 133.16 Mbps</div>
       <div class="official"><b>官方答案：</b>19.86 Mbps；133.16 Mbps ✓</div>
+      <!-- PKP:p2q3 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>香农容量、SINR（把干扰当噪声）、多用户检测 MUD / 连续干扰消除（第 1a 章 p.16；第 2 章 p.48）。</dd><dt>前置知识</dt><dd>C = B log₂(1 + SNR)，SNR 用线性值；log₂x = ln x / ln 2 = log₁₀x / 0.301。</dd><dt>解题套路</dt><dd>(a) SINR₁ = P₁/(P₂ + N)；(b) 用户 1 已被减掉，SNR₂ = P₂/N；分别代入香农公式。</dd><dt>检验</dt><dd>C₁ + C₂ = 19.86 + 133.16 = 153.02 Mbps = 20 log₂(1 + (10 + 10)/0.1)：<mark class="hl">连续消除的总容量等于两个用户功率合起来的单用户容量</mark>，和解码顺序无关。</dd><dt>易错</dt><dd>SINR 0.990 是线性值，不是 dB；log₂1.99 = 0.993；别忘了乘带宽 20 MHz；两个功率的单位要一致（都用 mW）。</dd><dt>举一反三</dt><dd>反过来先解用户 2，两个结果对调，总和不变。如果不用 MUD，两个用户都把对方当噪声，总容量只有 2 × 19.86 = 39.7 Mbps，不到 MUD 的 1/3，这就是多用户检测的价值。</dd></dl></div>
+      <!-- /PKP:p2q3 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>

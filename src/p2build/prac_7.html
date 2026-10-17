@@ -28,6 +28,9 @@
       <div class="ans">(a) B/B_C ≪ N ≪ B/B_d；(b) 1.4, 0.8−0.6j, 0.2, 0.8+0.6j；(c) 0.36, 9.09, 0.36, 0.19；(d) ≈ 1.8 bit/s/Hz</div>
       <div class="official"><b>官方答案：</b>完全一致 ✓（官方把 k = 1…4 记为 H₁…H₄，H₄ = H₀ = 1.4）</div>
       <div class="note">对比 (c) 和 (d)：为了"人人平等"，(c) 把 91% 的功率砸在最差的子信道上；注水 (d) 干脆放弃最差的那个，总容量高得多。</div>
+      <!-- PKP:p7q1 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>OFDM 的四个核心计算：N 的选择、H<sub>k</sub>、等容量功率分配、注水容量（第 7 章 p.5、p.15、p.24；第 2 章注水）。</dd><dt>前置知识</dt><dd>相干带宽 / 相干时间；欧拉公式 e<sup>−jπk/2</sup> 依次为 1、−j、−1、j；注水公式；log₂。</dd><dt>解题套路</dt><dd>(a) 平坦 N ≫ B/B<sub>C</sub>，慢衰落 N ≪ B/B<sub>d</sub>；(b) H<sub>k</sub> = h₀ + h₁e<sup>−j2πk/N</sup>；(c) |H<sub>k</sub>|²P<sub>k</sub> = c，由 ΣP<sub>k</sub> = 10 求 c；(d) 池底 1/|H<sub>k</sub>|²，水面 μ，去掉池底高过水面的子信道。</dd><dt>关键数字</dt><dd>|H<sub>k</sub>|² = 1、0.04、1、1.96；c = 10/27.51 = 0.3635；注水水面 4.17，功率 3.17、0、3.17、3.66；7.15 bit / 4 = 1.79 bit/s/Hz。</dd><dt>自检</dt><dd>Σ|H<sub>k</sub>|² = N Σh<sub>i</sub>² = 4 × (0.64 + 0.36) = 4；(c)(d) 的功率加起来都是 10；被去掉的子信道 2 的池底 25 高于水面。</dd><dt>易错</dt><dd>编号 k = 1…4（H₄ = H₀）；用 |H<sub>k</sub>|² 不是 |H<sub>k</sub>|；噪声 σ² = 1；最后除以 N 换成 bit/s/Hz。</dd><dt>对比结论</dt><dd>等容量把 91% 的功率砸在最差的子信道上；注水干脆放弃它。要公平用 (c)，要总容量最大用 (d)。</dd></dl></div>
+      <!-- /PKP:p7q1 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -50,6 +53,9 @@
       <div class="ans">N = 60，OFDM 符号时长 0.12 ms</div>
       <div class="official"><b>官方答案：</b>60；0.12 ms ✓</div>
       <div class="note">如果不加 CP，600 kHz 本来就够发 500 k 符号/秒，N 取多少都行，题目就没有唯一解。正是 CP 的开销决定了 N：N 越大，CP 占的比例越小。CP 占 20/120 = 1/6 的时间，所以带宽必须比 500 k 多出 1/5，正好是 600 kHz。</div>
+      <!-- PKP:p7q2 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>OFDM 系统设计：子载波数、OFDM 符号时长、CP 开销（第 7 章 p.8、p.17–18）。</dd><dt>前置知识</dt><dd>有用符号时长 T = N/B = 1/Δf；一个 OFDM 块 = T + T<sub>G</sub>，期间每个子载波发一个符号。</dd><dt>解题套路</dt><dd>① 比特速率 ÷ log₂M = 需要的符号速率；② 列方程 N / (N/B + T<sub>G</sub>) = 符号速率；③ 解 N；④ T = N/B，总时长 T + T<sub>G</sub>。</dd><dt>关键数字</dt><dd>2 Mbps / 4 = 500 k 符号/秒；N = 0.8333N + 10 → N = 60；T = 100 µs，总长 120 µs。</dd><dt>检验</dt><dd>60 × 4 bit / 120 µs = 2 Mbps；CP 占 1/6 的时间，功率损失 10 log(120/100) = 0.79 dB。</dd><dt>举一反三</dt><dd>时延扩展变成 40 µs：N = 0.8333N + 20 → N = 120，T = 200 µs，总长 240 µs。时延扩展越大，需要的 N 越大，CP 的占比才不至于太高。</dd><dt>易错</dt><dd>没有 CP 时 N 取多少都行，题目就没有唯一解，所以一定要把 CP 算进时长；速率是比特速率，要先除以 4。</dd></dl></div>
+      <!-- /PKP:p7q2 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -70,6 +76,9 @@
       </ol>
       <div class="ans">最短 CP = 1 个采样（符号）长度 = L − 1</div>
       <div class="official"><b>官方答案：</b>1 symbol length ✓</div>
+      <!-- PKP:p7q3 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>循环前缀的最短长度（第 7 章 p.17–22）。</dd><dt>前置知识</dt><dd>Z 变换：Z⁻¹ 表示晚一个采样；L 个抽头的信道，最长回波晚 L − 1 个采样。</dd><dt>解题套路</dt><dd>由 H(Z) 读出冲激响应 h = [1, 0.9] → L = 2 → CP ≥ L − 1 = 1 个采样。</dd><dt>为什么够</dt><dd>CP ≥ L − 1 时，接收端保留的 N 个采样只含本块的数据，线性卷积变成循环卷积，DFT 后 r<sub>k</sub> = H<sub>k</sub>s<sub>k</sub> + w<sub>k</sub>（讲解页 7.4 节推导框）。</dd><dt>为什么复制块尾</dt><dd>只放一段空白也能挡住上一块的回声，但接收窗口里看到的不再是完整的周期信号，子载波失去正交，会有 ICI；复制块尾才能保持循环结构。</dd><dt>易错</dt><dd>是 L − 1 = 1 个，不是 L = 2 个；系数 0.9 的大小不影响 CP 长度，只看延迟几个采样。</dd><dt>举一反三</dt><dd>H(Z) = 1 + 0.5Z⁻³ → 延迟 3 个采样 → CP ≥ 3；换成时间就是 T<sub>G</sub> ≥ 最大时延扩展 T<sub>D</sub>。CP 每多 1 个采样，效率降为 N/(N + G)。</dd></dl></div>
+      <!-- /PKP:p7q3 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>

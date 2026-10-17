@@ -17,6 +17,9 @@
       </ol>
       <div class="ans">C ≈ 124.7 Mbps ≈ 125 Mbps</div>
       <div class="official"><b>官方答案：</b>125 Mbps ✓</div>
+      <!-- PKP:p5q1 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>发射端知道信道（informed）时的 MIMO 容量：特征子信道 + 注水（第 5 章 p.19、p.40；第 2 章 p.54–57）。</dd><dt>前置知识</dt><dd>SVD 把 MIMO 信道拆成互不干扰的并行子信道；注水公式。</dd><dt>解题套路</dt><dd>① 假设全部子信道都分功率，由 Σ(1/γ₀ − 1/γ<sub>i</sub>) = 1 求 γ₀；② 检查最差的 γ<sub>i</sub> ≥ γ₀，不满足就去掉重算；③ P<sub>i</sub>/P = 1/γ₀ − 1/γ<sub>i</sub>；④ C = B Σ log₂(γ<sub>i</sub>/γ₀)。</dd><dt>关键数字</dt><dd>γ₀ = 3/1.0625 = 2.82；功率 0.342、0.329、0.329（和为 1）；C = 10 MHz × (4.82 + 7.65) = 124.7 Mbps。</dd><dt>对比 1</dt><dd>功率平分（发射端不知道信道）：每路 SNR 变为 80/3、40/3、40/3，C = 122.1 Mbps，只少 2%。高 SNR 时知不知道信道差别很小（p.41–42）。</dd><dt>对比 2</dt><dd>低 SNR 时差别就大了：三个 SNR 都除以 100（0.8、0.4、0.4），注水只用第一个子信道，0.85 bit/s/Hz；平分只有 0.70 bit/s/Hz，差 21%。</dd><dt>易错</dt><dd>注水公式里的 γ<sub>i</sub> 是"全部功率都给这个子信道"时的 SNR；平分时每个只分到 P/3；B 最后再乘。</dd></dl></div>
+      <!-- /PKP:p5q1 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -40,6 +43,9 @@
       <div class="ans">z₁ = ‖h‖u₁ + w̃₁，z₂ = ‖h‖u₂ + w̃₂，‖h‖² = |h_A|² + |h_B|²，w̃₁, w̃₂ ~ N(0, N₀)</div>
       <div class="official"><b>官方答案：</b>z₁ = ‖h₁‖u₁ + w̃₁，z₂ = ‖h₂‖u₂ + w̃₂（两个范数其实是同一个 ‖h‖）✓</div>
       <div class="note">每个符号的有效 SNR ∝ |h_A|² + |h_B|²，两路衰落同时很小的概率很低，所以有二阶分集；发射端完全不需要知道信道。</div>
+      <!-- PKP:p5q2 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>Alamouti 空时块码的接收、判决变量和分集阶数（第 5 章 p.21–26）。</dd><dt>前置知识</dt><dd>复数共轭 (ab)* = a*b*；2 × 2 矩阵乘法；噪声乘以复数 c 后方差变成 |c|²N₀。</dd><dt>解题套路</dt><dd>① 写出两个时隙的 y₁、y₂；② 对 y₂ 取共轭，让 u₁、u₂ 都不带共轭；③ 写成 ỹ = Fu + ṽ；④ 左乘 F<sup>H</sup>；⑤ 除以 ‖h‖ 归一化。</dd><dt>关键性质</dt><dd>X X<sup>H</sup> = ‖s‖²I（编码正交）→ F<sup>H</sup>F = (|h<sub>A</sub>|² + |h<sub>B</sub>|²)I（接收端能把两个符号完全分开）。</dd><dt>易错</dt><dd>第二时隙天线 A 发的是 −u₂*（负号和共轭都要有）；z₁ 的噪声项是 h<sub>A</sub>*w₁ + h<sub>B</sub>w₂*，方差 (|h<sub>A</sub>|² + |h<sub>B</sub>|²)N₀。</dd><dt>为什么是 2 阶分集</dt><dd>有效增益 |h<sub>A</sub>|² + |h<sub>B</sub>|² 是两个独立衰落之和，两个同时很小的概率远小于一个很小的概率；而且发射端不需要知道信道。</dd><dt>举一反三</dt><dd>2 发 M 收：增益是 2M 个 |h|² 之和，分集 2M（满分集）。2025-26 S2 问 ŝ 的统计量：无偏，方差 σ²/‖h‖²。和 1 发 2 收 MRC 比，分集相同，但少 3 dB（功率分给两根天线，p.30）。</dd></dl></div>
+      <!-- /PKP:p5q2 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -65,6 +71,9 @@
       </ol>
       <div class="ans">(a) ≈ 9.96 bit/s/Hz；(b) Pe = 10⁻⁵</div>
       <div class="official"><b>官方答案：</b>9.96 bits/s/Hz；10⁻⁵ ✓</div>
+      <!-- PKP:p5q3 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>分集-复用折中：d(r) = (N − r)(M − r)，速率 R = r log₂SNR（第 4 章 p.31–34）。</dd><dt>前置知识</dt><dd>分集增益 d：SNR 翻倍时误码率降多快，最大 N × M；复用增益 r：SNR 翻倍时速率多几 bit/s/Hz，最大 min(N, M)。</dd><dt>解题套路</dt><dd>① 由 P<sub>e</sub> = γ<sup>−d</sup> ≤ 目标求 d 的下限；② 列 r = 0 … min(N, M) 对应的 d；③ 找满足条件的最大 r；④ R = r log₂γ，P<sub>e</sub> = γ<sup>−d(r)</sup>。</dd><dt>关键数字</dt><dd>γ = 10 → d ≥ 3；d(3) = 5 ≥ 3，d(4) = 0 &lt; 3 → r = 3；R = 3 × 3.32 = 9.97 bit/s/Hz，P<sub>e</sub> = 10⁻⁵。</dd><dt>易错</dt><dd>SNR 用线性值（10 dB → 10，20 dB → 100）；d 必须是整数，向上取；r 不能超过 min(N, M) = 4。</dd><dt>举一反三</dt><dd>SNR = 20 dB（100）时：100<sup>−d</sup> ≤ 10⁻³ → d ≥ 1.5 → 取 2；r = 3 的 d = 5 仍满足，r = 4 不行 → R = 3 log₂100 = 19.9 bit/s/Hz。已知 P<sub>e</sub> 和 d 求 SNR：SNR = P<sub>e</sub><sup>−1/d</sup>。</dd><dt>物理意义</dt><dd>r 是同时传输的独立数据流个数，d 是抗衰落能力；天线资源要么用来"多传"，要么用来"传得稳"。</dd></dl></div>
+      <!-- /PKP:p5q3 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>

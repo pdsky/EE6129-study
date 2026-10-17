@@ -101,6 +101,12 @@ ol.steps>li::before{content:counter(s);position:absolute;left:0;top:8px;width:22
 .official b{color:var(--ok)}
 .note{margin-top:8px;border-radius:10px;padding:8px 14px;font-size:.86rem;background:var(--extra-soft);border:1px solid var(--extra)}
 .note::before{content:'补充　';font-weight:700;color:var(--extra)}
+.pkp{margin-top:12px;border:1px solid var(--accent);border-left-width:5px;border-radius:10px;background:var(--surface);padding:10px 16px 8px}
+.pkp > .lbl{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.08em;color:var(--accent-strong);font-weight:700;margin-bottom:4px}
+.pkp dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:5px 14px}
+.pkp dt{font-weight:700;font-size:.84rem;color:var(--accent-strong);padding-top:1px}
+.pkp dd{margin:0;font-size:.88rem;line-height:1.65}
+@media (max-width:560px){.pkp dl{grid-template-columns:1fr;gap:0}.pkp dt{margin-top:6px}}
 .done{display:flex;justify-content:flex-end;margin-top:10px}
 .done label{font-size:.8rem;color:var(--muted);display:flex;gap:6px;align-items:center;cursor:pointer}
 .done input{accent-color:var(--ok)}

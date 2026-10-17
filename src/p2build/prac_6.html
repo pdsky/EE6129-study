@@ -31,6 +31,9 @@
       </ol>
       <div class="ans">(b) 加均衡器更好：最坏情况的"有效距离"更大。例 α = 0.4：不均衡 0.6，均衡 0.78</div>
       <div class="official"><b>官方答案：</b>表达式同上；(b) Better to operate with the proposed equalizer ✓</div>
+      <!-- PKP:p6q1 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>ISI 信道的误码率；均衡器的权衡：ISI 减小 vs 噪声放大；高 SNR 下的比较（第 6 章 p.22–28）。</dd><dt>前置知识</dt><dd>Z 变换相乘 = 滤波器串联；白噪声过 FIR 后方差 σ²Σc²；条件误码率再平均；高 SNR 时误码率由 Q 参数最小的那一项决定。</dd><dt>解题套路</dt><dd>不均衡：ISI 前一个符号同号 / 异号两种情况，各 ½。加均衡：信号经过 H(z)U(z) = 1 − α²z⁻²，噪声只经过 U(z)，方差变成 (N₀/2)(1 + α²)，再分两种情况。</dd><dt>关键比较</dt><dd>(1 − α²)/√(1 + α²) &gt; 1 − α ⇔ (1 + α)/√(1 + α²) &gt; 1 ⇔ (1 + α)² &gt; 1 + α² ⇔ 2α &gt; 0，对 α &gt; 0 总成立。</dd><dt>易错</dt><dd>噪声只经过 U(z)，不经过 H(z)；均衡后残余 ISI 是 −α²，位置在 n − 2，不是 0；Q 里除的是 √(1 + α²) 倍的标准差。</dd><dt>数值例</dt><dd>α = 0.4：最坏项参数不均衡 0.6，均衡 0.84/1.077 = 0.78，所以加均衡器更好。</dd><dt>联系</dt><dd>期末 Q2(a) 四年考了四次，都是"残余 ISI a + 放大后的噪声 σ′"，公式 ½[Q((1 − a)/σ′) + Q((1 + a)/σ′)]。</dd></dl></div>
+      <!-- /PKP:p6q1 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -57,6 +60,9 @@
       <div class="ans">(a) ½Q((1+a)/√0.1) + ½Q((1−a)/√0.1)；(b) Q(√((1−a²)/0.1))</div>
       <div class="official"><b>官方答案：</b>同上 ✓</div>
       <div class="note">比较：ZF 的 Q 参数是 √(1−a²)/√0.1，不均衡最坏项是 (1−a)/√0.1。√(1−a²) = √((1−a)(1+a)) &gt; 1−a，所以高 SNR 时 ZF 更好；但 a 接近 1 时 ZF 把噪声放大很多。</div>
+      <!-- PKP:p6q2 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>直接判决（不均衡）和理想迫零均衡下的误码率（第 6 章 p.23–28）。</dd><dt>前置知识</dt><dd>条件误码率再平均；ZF：C(z) = 1/H(z)；等比级数 Σa<sup>2k</sup> = 1/(1 − a²)；滤波后噪声方差 σ²Σc²。</dd><dt>解题套路</dt><dd>(a) b<sub>n−1</sub> = ±1 两种情况，信号离门限 1 ± a，标准差 √0.1；(b) 1/(1 + az⁻¹) = Σ(−a)<sup>k</sup>z<sup>−k</sup>，ISI 消失，噪声方差 0.1/(1 − a²)，只剩一项 Q。</dd><dt>数值例</dt><dd>a = 0.5：(a) ½[Q(4.74) + Q(1.58)] ≈ 0.028；(b) Q(√7.5) = Q(2.74) ≈ 0.0031，ZF 好约 9 倍。</dd><dt>比较</dt><dd>高 SNR 时比较最坏的 Q 参数：ZF 是 √(1 − a²)，不均衡是 1 − a；√(1 − a²) = √((1 − a)(1 + a)) &gt; 1 − a，所以 ZF 更好。但 a → 1 时噪声放大 1/(1 − a²) 趋于无穷。</dd><dt>易错</dt><dd>√0.1 是标准差，0.1 是方差；ZF 后没有 ISI，不要再分情况；不均衡时别只算 Q((1 − a)/σ) 一项。</dd></dl></div>
+      <!-- /PKP:p6q2 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -85,6 +91,9 @@
       <div class="ans">(a) q = 0，Pe ≈ 0.19；(b) Pe ≈ 0.18</div>
       <div class="official"><b>官方答案：</b>(a) q = 0，Pe ≈ 0.19；(b) Pe ≈ 0.18 ✓</div>
       <div class="note">如果没有错误传播，DFE 的误码率就是 Q(1) = 0.159；错误传播让它升到 0.177，但仍比线性均衡的 0.188 好。</div>
+      <!-- PKP:p6q3 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>MMSE 线性均衡和判决反馈均衡 DFE 的误码率；DFE 的错误传播（第 6 章 p.26–34）。</dd><dt>前置知识</dt><dd>独立零均值随机变量的均方值相加；A<sub>n</sub>² = 1；全概率公式；线性方程求稳态。</dd><dt>解题套路</dt><dd>(a) 把 u<sub>n</sub> − A<sub>n</sub> 拆成独立项 → 均方误差 1.25 + 2.25q² → 求导得 q = 0 → u<sub>n</sub> = y<sub>n</sub>，幅度 1.5 或 0.5 → 平均。(b) 列条件误码率：上次对 → Q(1)；上次错 → ½Q(2) + ½ × ½ → 解稳态方程。</dd><dt>为什么 q = 0</dt><dd>用未来样本 y<sub>n+1</sub> 能多拿到 ½A<sub>n</sub> 的有用信号，但同时带进 A<sub>n+1</sub> 的干扰和 z<sub>n+1</sub> 的噪声，得不偿失，所以最优是不用它。</dd><dt>关键公式</dt><dd>DFE 稳态：p = (1 − p)·0.159 + p·0.261 → p = 0.159/(1 − 0.261 + 0.159) = 0.177。</dd><dt>易错</dt><dd>展开时漏了 (q/2)A<sub>n</sub> 项；上次判错时幅度是 2 或 0（ISI 加倍），幅度 0 时误码 ½；稳态方程别解错。</dd><dt>结论</dt><dd>线性 0.188 &gt; DFE 0.177 &gt; 无错误传播的 DFE 0.159：DFE 不放大噪声，但错误传播吃掉了一部分优势（p.34）。</dd></dl></div>
+      <!-- /PKP:p6q3 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>

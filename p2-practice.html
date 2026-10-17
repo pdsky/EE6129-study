@@ -97,6 +97,12 @@ ol.steps>li::before{content:counter(s);position:absolute;left:0;top:8px;width:22
 .official b{color:var(--ok)}
 .note{margin-top:8px;border-radius:10px;padding:8px 14px;font-size:.86rem;background:var(--extra-soft);border:1px solid var(--extra)}
 .note::before{content:'补充　';font-weight:700;color:var(--extra)}
+.pkp{margin-top:12px;border:1px solid var(--accent);border-left-width:5px;border-radius:10px;background:var(--surface);padding:10px 16px 8px}
+.pkp > .lbl{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.08em;color:var(--accent-strong);font-weight:700;margin-bottom:4px}
+.pkp dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:5px 14px}
+.pkp dt{font-weight:700;font-size:.84rem;color:var(--accent-strong);padding-top:1px}
+.pkp dd{margin:0;font-size:.88rem;line-height:1.65}
+@media (max-width:560px){.pkp dl{grid-template-columns:1fr;gap:0}.pkp dt{margin-top:6px}}
 .done{display:flex;justify-content:flex-end;margin-top:10px}
 .done label{font-size:.8rem;color:var(--muted);display:flex;gap:6px;align-items:center;cursor:pointer}
 .done input{accent-color:var(--ok)}
@@ -206,6 +212,9 @@ window.MathJax = {
       <div class="ans"><b>按标准最小二乘：</b>K ≈ −30.8 dB，γ ≈ 3.94，σ²_ψ ≈ 11.9 dB²，P_out ≈ 1.85 × 10⁻³</div>
       <div class="official"><b>官方答案：</b>(a) K_dB = −31.4 dB，γ = 3.86；(b) 6.19 × 10⁻⁴</div>
       <div class="note">我按题目数据无法复现官方答案：把官方的 K = −31.4、γ = 3.86 代回 6 个点，均方误差是 13.1，中断概率约 2.9 × 10⁻³；官方 6.19 × 10⁻⁴ 对应 σ ≈ 3.10 dB。可能是课上用了别的拟合方法或计算有误。<b>考试写清楚方法（最小二乘、σ² = MSE、Pout = Q(10/σ)）即可</b>，有疑问可以问老师。</div>
+      <!-- PKP:p1q1 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>用最小二乘从测量数据拟合简化路径损耗模型的 K、γ，再把拟合的均方误差当作阴影方差，求中断概率（第 2 章 p.8、p.12–15）。</dd><dt>前置知识</dt><dd>dB 运算；最小二乘（对 K、γ 求偏导令其为 0，讲解页 2.1 节的推导框）；Q 函数（第 1b 章）。</dd><dt>解题套路</dt><dd>① x<sub>i</sub> = 10 log₁₀(d<sub>i</sub>/d₀)；② 列 x、M、x²、xM 四列并求和；③ 解两个正规方程得 K、γ；④ 逐点算残差 e<sub>i</sub> = 实测 − 预测，MSE = σ<sub>ψ</sub>²；⑤ P<sub>out</sub> = Q(余量/σ<sub>ψ</sub>)。</dd><dt>关键公式</dt><dd>γ = −Σ(x<sub>i</sub> − x̄)(M<sub>i</sub> − M̄) / Σ(x<sub>i</sub> − x̄)²；K<sub>dB</sub> = M̄ + γx̄；σ<sub>ψ</sub>² = (1/n)Σe<sub>i</sub>²；P<sub>out</sub> = Q(10/σ<sub>ψ</sub>)。</dd><dt>易错</dt><dd>直线斜率是 −γ，别丢负号；x 用 10 log₁₀d，只用 log₁₀d 会让 γ 大 10 倍；MSE 是方差，Q 里要用开根号后的 σ；"高 10 dB"就是余量 10 dB。</dd><dt>自检</dt><dd>残差之和为 0；拟合直线经过平均点 (19.26, −106.67)；上面的步骤 4 有逐点残差，Σe² = 71.23。</dd><dt>举一反三</dt><dd>已知 K、γ、σ，求某距离的中断概率，或给定中断概率求最大覆盖距离（讲义 p.16 例题，讲解页 2.2 节）。官方答案无法复现，原因见上面的补充框。</dd></dl></div>
+      <!-- /PKP:p1q1 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -231,6 +240,9 @@ window.MathJax = {
       </ol>
       <div class="ans">(a) ≈ 26%；(b) μ_ψ &gt; 19.3 dBm</div>
       <div class="official"><b>官方答案：</b>(a) 26%；(b) μ_ψ &gt; 19.32 dB ✓</div>
+      <!-- PKP:p1q2 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>对数正态阴影 = dB 值服从高斯；中断概率的正算和反算（第 2 章 p.11–15）。</dd><dt>前置知识</dt><dd>标准化：(门限 − 均值)/标准差；Q 函数的单调性（减函数）和对称性 Q(−x) = 1 − Q(x)；常用值 Q(1.645) = 0.05、Q(2.326) = 0.01、Q(3.09) = 10⁻³。</dd><dt>解题套路</dt><dd>(a) 门限离均值几个标准差 → 查 Q；(b) 把 μ 当未知数，列 Q((μ − 10)/σ) &lt; 0.01，反查得 (μ − 10)/σ &gt; 2.326。</dd><dt>关键公式</dt><dd>P<sub>out</sub> = P(P<sub>r</sub> &lt; P<sub>min</sub>) = Q((μ<sub>ψ</sub> − P<sub>min</sub>)/σ<sub>ψ</sub>)。μ − P<sub>min</sub> 叫阴影余量。</dd><dt>易错</dt><dd>Q 是减函数，"概率 &lt; 1%"要翻成"参数 &gt; 2.326"；σ 和 σ² 别混；两个 dBm 相减得到的是 dB。</dd><dt>举一反三</dt><dd>σ 越大，同样的中断概率要求的余量越大：σ = 8 dB 时 μ 要 &gt; 10 + 8 × 2.326 = 28.6 dBm，比 σ = 4 dB 时多 9.3 dB。</dd><dt>物理意义</dt><dd>阴影是大尺度、慢变化的衰落（被楼房、地形挡住），所以用余量来对付；多径是小尺度衰落，靠分集来对付（第 4 章）。</dd></dl></div>
+      <!-- /PKP:p1q2 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -256,6 +268,9 @@ window.MathJax = {
       </ol>
       <div class="ans">μ = 5 µs，σ = 2.89 µs；R_s &lt; 34.6 ksps</div>
       <div class="official"><b>官方答案：</b>5 µs，2.89 µs；34.6 ksps ✓</div>
+      <!-- PKP:p1q3 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>由功率时延谱求平均时延和 rms 时延扩展，再判断平坦 / 频率选择性衰落（第 2 章 p.29–33）。</dd><dt>前置知识</dt><dd>把 P(τ) 归一化后当概率密度；E[τ]、E[τ²]、方差 = E[τ²] − (E[τ])²（第 1b 章）。</dd><dt>解题套路</dt><dd>① μ = ∫τP(τ)dτ / ∫P(τ)dτ；② E[τ²] = ∫τ²P(τ)dτ / ∫P(τ)dτ；③ σ = √(E[τ²] − μ²)；④ 平坦条件 σ/T<sub>s</sub> &lt; 0.1 → 求 T<sub>s</sub> 下限 → R<sub>s</sub> 上限。</dd><dt>关键公式</dt><dd>[0, a] 上均匀分布：μ = a/2，σ = a/√12。本题 a = 10 µs → 5 µs、2.89 µs。</dd><dt>易错</dt><dd>分母是 ∫P = 10，不是 1；平坦衰落要求符号长、速率低，不等号别反；34.6 ksps 是上限。</dd><dt>举一反三</dt><dd>问"信号带宽 1 MHz（T<sub>s</sub> = 1 µs）是否平坦"：σ/T<sub>s</sub> = 2.89 &gt; 0.1 → 频率选择性衰落，需要均衡或 OFDM。离散时延谱（几条回波）用加权求和代替积分，见讲解页 2.4 节例题。</dd><dt>联系</dt><dd>时延扩展越大，相干带宽越小（B<sub>C</sub> ∝ 1/σ<sub>Tm</sub>）；第 3 章的时延扩展误码平台 (σ<sub>Tm</sub>/T<sub>b</sub>)² 用的也是这个 σ。</dd></dl></div>
+      <!-- /PKP:p1q3 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -281,6 +296,9 @@ window.MathJax = {
       <div class="ans">AFD ≈ 0.8 ms</div>
       <div class="official"><b>官方答案：</b>0.8 ms ✓</div>
       <div class="note">顺便算 LCR：\(\sqrt{2\pi}\times50\times0.1\times e^{-0.01}=12.4\) 次/秒。两者相乘 = 0.00995 ≈ 1%，就是信号低于 rms 值 20 dB 的时间比例。</div>
+      <!-- PKP:p2q1 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>瑞利衰落的平均衰落持续时间 AFD（第 2 章 p.42–43）。</dd><dt>前置知识</dt><dd>ρ = Z<sub>min</sub>/Z<sub>rms</sub> 是<b>幅度</b>比；瑞利 P(z &lt; Z<sub>min</sub>) = 1 − e<sup>−ρ²</sup>；多普勒 f<sub>D</sub> = v f<sub>c</sub>/c。</dd><dt>解题套路</dt><dd>算 ρ → e<sup>ρ²</sup> − 1 → 分母 √(2π) f<sub>D</sub> ρ → 相除。</dd><dt>关键公式</dt><dd>AFD = (e<sup>ρ²</sup> − 1)/(√(2π) f<sub>D</sub> ρ)；LCR = √(2π) f<sub>D</sub> ρ e<sup>−ρ²</sup>；AFD × LCR = 1 − e<sup>−ρ²</sup>（低于门限的时间比例）。</dd><dt>易错</dt><dd>"rms 值的 0.1"是幅度，ρ = 0.1（功率低 20 dB）；若题目说"功率的 0.1"，则 ρ = √0.1 = 0.316。</dd><dt>举一反三</dt><dd>已知车速和载频，先求 f<sub>D</sub>。一次衰落连错几个符号 = AFD × 符号速率：1 Msps 时 0.8 ms ≈ 800 个符号（讲解页 2.6 节例题）。</dd><dt>直觉</dt><dd>ρ 很小时 AFD ≈ ρ/(√(2π) f<sub>D</sub>)：门限越低，跌到门限以下的时间越短；车越快（f<sub>D</sub> 越大），衰落越短但越频繁。</dd></dl></div>
+      <!-- /PKP:p2q1 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -315,6 +333,9 @@ window.MathJax = {
       <div class="ans">(b) [Q(Δ/σ)]²；(c) ∫ (1/√(2π)) Q[(Δ + bσu)/(|a|σ)]² e^{−u²/2} du</div>
       <div class="official"><b>官方答案：</b>与上面一致 ✓（题目里写成 byσ，积分变量 y 指的是归一化后的 u）</div>
       <div class="note">直觉：b = 0 时退化成 (b) 的独立情况；a = 0 时两条链路完全一样，Pout = Q(Δ/σ)，分集完全没用。相关性越强，宏分集效果越差。</div>
+      <!-- PKP:p2q2 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>宏分集的中断概率：独立阴影和相关阴影两种情况；条件概率 + 全概率（第 2 章 p.12–15；第 4 章 p.3–4、p.21）。</dd><dt>前置知识</dt><dd>独立事件概率相乘；独立高斯的线性组合仍是高斯，aY₁ + bY ~ N(0, (a² + b²)σ²)；全概率的连续形式 P(A) = ∫P(A | y)p(y)dy。</dd><dt>解题套路</dt><dd>(b) 每个基站单独中断 P(Z<sub>i</sub> &lt; −Δ) = Q(Δ/σ)，独立 → 平方。(c) 先固定两条链路共享的 Y（"条件化"），这时两条链路独立 → 条件中断概率相乘 → 再按 Y 的 PDF 积分。</dd><dt>关键一步</dt><dd>令 Y = σu，u ~ N(0, 1)。给定 u：Z<sub>i</sub> ~ N(bσu, a²σ²)，P(Z<sub>i</sub> &lt; −Δ | u) = Q((Δ + bσu)/(|a|σ))。</dd><dt>隐含条件</dt><dd>要和"Z<sub>i</sub> ~ N(0, σ²)"一致，需要 a² + b² = 1。此时 Z₁、Z₂ 的相关系数等于 b²：b 越大，两条链路越像。</dd><dt>自检</dt><dd>b = 0 时退化成 (b) 的 [Q(Δ/σ)]²；a = 0（完全相关）时两条链路一模一样，P<sub>out</sub> = Q(Δ/σ)，分集完全没用。</dd><dt>联系</dt><dd>Practice 4 第 1 题用文字解释同一件事；第 4 章 p.21"相关削弱分集"；Practice 4 第 2(c) 题是离散版本的共享阴影。</dd></dl></div>
+      <!-- /PKP:p2q2 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -338,6 +359,9 @@ window.MathJax = {
       </ol>
       <div class="ans">(a) 19.86 Mbps；(b) 133.16 Mbps</div>
       <div class="official"><b>官方答案：</b>19.86 Mbps；133.16 Mbps ✓</div>
+      <!-- PKP:p2q3 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>香农容量、SINR（把干扰当噪声）、多用户检测 MUD / 连续干扰消除（第 1a 章 p.16；第 2 章 p.48）。</dd><dt>前置知识</dt><dd>C = B log₂(1 + SNR)，SNR 用线性值；log₂x = ln x / ln 2 = log₁₀x / 0.301。</dd><dt>解题套路</dt><dd>(a) SINR₁ = P₁/(P₂ + N)；(b) 用户 1 已被减掉，SNR₂ = P₂/N；分别代入香农公式。</dd><dt>检验</dt><dd>C₁ + C₂ = 19.86 + 133.16 = 153.02 Mbps = 20 log₂(1 + (10 + 10)/0.1)：<mark class="hl">连续消除的总容量等于两个用户功率合起来的单用户容量</mark>，和解码顺序无关。</dd><dt>易错</dt><dd>SINR 0.990 是线性值，不是 dB；log₂1.99 = 0.993；别忘了乘带宽 20 MHz；两个功率的单位要一致（都用 mW）。</dd><dt>举一反三</dt><dd>反过来先解用户 2，两个结果对调，总和不变。如果不用 MUD，两个用户都把对方当噪声，总容量只有 2 × 19.86 = 39.7 Mbps，不到 MUD 的 1/3，这就是多用户检测的价值。</dd></dl></div>
+      <!-- /PKP:p2q3 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -364,6 +388,9 @@ window.MathJax = {
       </ol>
       <div class="ans">(a) { √(2/T)·cos(2πt/T), √(2/T)·sin(2πt/T) }；(b) 维数 2</div>
       <div class="official"><b>官方答案：</b>同上 ✓</div>
+      <!-- PKP:p3q1 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>信号空间：正交归一基和维数（第 3 章 p.4–11）。</dd><dt>前置知识</dt><dd>和角公式 cos(a + b) = cos a cos b − sin a sin b；∫₀<sup>T</sup> cos²(2πt/T) dt = T/2；内积 = 相乘再积分。</dd><dt>解题套路</dt><dd>① 把信号展开成几个固定波形的线性组合；② 验证这些波形两两正交；③ 每个除以 √能量做归一化；④ 基函数的个数就是维数。</dd><dt>关键结果</dt><dd>ψ₁ = √(2/T) cos(2πt/T)，ψ₂ = √(2/T) sin(2πt/T)。坐标 (A<sub>i</sub>cosφ<sub>j</sub>√(T/2), −A<sub>i</sub>sinφ<sub>j</sub>√(T/2))，到原点的距离 A<sub>i</sub>√(T/2) = √E。</dd><dt>易错</dt><dd>忘了归一化系数 √(2/T)；以为 A<sub>i</sub>、φ<sub>j</sub> 取值多维数就多：维数只看需要几个基函数，与信号个数无关（D ≤ M）；sin 前面的负号放进坐标里。</dd><dt>举一反三</dt><dd>只调幅度（φ 固定）→ 1 维（PAM）；只调相位 → 2 维（PSK）；幅度、相位都调 → 2 维（QAM，本题就是）。期末 2025-26 S1 Q1(a)(i)：画 ±1 的星座，维数 1、距离 2。</dd></dl></div>
+      <!-- /PKP:p3q1 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -393,6 +420,9 @@ window.MathJax = {
       <div class="ans">x̂ₙ = 1 当 yₙ &gt; ỹ，否则 0；Pe = ½[Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀)]</div>
       <div class="official"><b>官方答案：</b>同上 ✓</div>
       <div class="note">数字感受：σ₀² = 0.1、σ₁² = 0.4 时，g(y) = 3.75y² + 2.5y − 1.943，ỹ ≈ 0.46。严格说二次方程在很负的 y 处还有第二个根（那里也会判 1），概率极小，答案忽略。</div>
+      <!-- PKP:p3q2 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>非标准情况下的 ML 检测：两种假设的噪声方差不同（第 3 章 p.18–20）。</dd><dt>前置知识</dt><dd>高斯 PDF（前面的系数 1/(√(2π)σ) 不能丢）；ln 是增函数，比大小时可以取对数；二次方程求根；Q 函数。</dd><dt>解题套路</dt><dd>① 写出两个条件 PDF；② 比较似然并取对数，整理成 g(y) &gt; 0；③ 解 g(ỹ) = 0 得门限；④ 两种错误分别算；⑤ 按先验概率（各 ½）加权。</dd><dt>关键公式</dt><dd>g(y) = y²/(2σ₀²) − (y − 1)²/(2σ₁²) + ln(σ₀/σ₁)；P<sub>e</sub> = ½[Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀)]。</dd><dt>数值例</dt><dd>σ₀² = 0.1、σ₁² = 0.4：ỹ ≈ 0.46，P<sub>e</sub> = ½[Q(0.54/0.632) + Q(0.46/0.316)] = ½[Q(0.85) + Q(1.46)] ≈ 0.135。</dd><dt>易错</dt><dd>只比较指数、忘了系数 1/σ，会得到错误的门限；两种错误要用各自的 σ；二次方程有两个根，取 0 和 1 之间的那个。</dd><dt>举一反三</dt><dd>方差相等 → ỹ = 0.5，P<sub>e</sub> = Q(0.5/σ)；先验不等 → 用 MAP，对数里再加 ln P(x)，门限往先验小的一边移。</dd></dl></div>
+      <!-- /PKP:p3q2 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -413,6 +443,9 @@ window.MathJax = {
       </ol>
       <div class="ans">R ≈ 21.08 kbps</div>
       <div class="official"><b>官方答案：</b>21.08 kbps ✓</div>
+      <!-- PKP:p3q3 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>时延扩展造成的不可消除误码平台；比特时长和符号时长的换算（第 3 章 p.35）。</dd><dt>前置知识</dt><dd>M 进制每符号 log₂M bit：R<sub>b</sub> = log₂M / T<sub>s</sub>；QPSK 的 M = 4。</dd><dt>解题套路</dt><dd>由平台要求求最短符号时长 T = σ<sub>Tm</sub>/√P<sub>floor</sub>，再换成比特速率。</dd><dt>关键公式</dt><dd>(σ<sub>Tm</sub>/T)² = P<sub>floor</sub> → T = 3 µs / √10⁻³ = 3/0.0316 = 94.9 µs → R<sub>b</sub> = 2/94.9 µs = 21.08 kbps。</dd><dt>易错</dt><dd>公式里的 T 是<b>符号</b>时长（ISI 取决于回声相对一个符号多长）；直接当成比特时长会得到 10.54 kbps；σ<sub>Tm</sub> 是 rms 时延扩展，不是最大时延。</dd><dt>对比</dt><dd>多普勒平台 ½(πf<sub>D</sub>T<sub>b</sub>)² 要求符号<b>短</b>（速率下限），时延扩展平台要求符号<b>长</b>（速率上限），两者同时存在时速率要落在两者之间。</dd><dt>物理意义</dt><dd>"平台"是指 SNR 再高误码率也降不下去：误码来自信号自己的回声，不是噪声。解决办法是均衡（第 6 章）或 OFDM（第 7 章）。</dd></dl></div>
+      <!-- /PKP:p3q3 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -435,6 +468,9 @@ window.MathJax = {
       </ol>
       <div class="ans">多个基站的阴影衰落近似独立，所有链路同时深衰落的概率 = 各自概率之积，远小于单一链路</div>
       <div class="official"><b>官方答案：</b>参见讲义（第 4 章 p.3–4）</div>
+      <!-- PKP:p4q1 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>宏分集的原理（论述题，第 4 章 p.3–6）。</dd><dt>答题要点</dt><dd>① 中断主要由<b>阴影衰落</b>造成（大尺度、变化慢，加功率不划算）；② 几个基站位置不同，传播路径不同，阴影近似独立；③ 选最强的基站或合并，只有<b>所有</b>链路同时变差才中断，P<sub>out</sub> = ΠP<sub>out,i</sub>；④ 条件：链路相关时效果下降（p.21）。</dd><dt>区分</dt><dd>宏分集对付阴影，基站之间相距很远；微分集对付多径，天线只需相隔几个波长（p.4–5）。</dd><dt>数字例</dt><dd>单条链路中断 10%，两个独立基站同时中断只有 1%，三个只有 0.1%。</dd><dt>联系</dt><dd>Practice 2 第 2 题给出了定量公式：独立时 [Q(Δ/σ)]²，相关时要先条件化再积分。</dd><dt>写作提示</dt><dd>论述题按"原因 → 机制 → 公式 → 条件"四句写，每句一个要点，比长段落更容易拿分。</dd></dl></div>
+      <!-- /PKP:p4q1 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -464,6 +500,9 @@ window.MathJax = {
       <div class="ans">(a) γ̄ = 10，P̄s = 6.15×10⁻⁵；(b) γ̄Σ = 20，P̄s = 7.6×10⁻⁹，g = 2，d = 8.1；(c) γ̄Σ = 20，P̄s = 2.05×10⁻⁸，g = 2，d = 7.7</div>
       <div class="official"><b>官方答案：</b>完全一致 ✓</div>
       <div class="note">(b)(c) 平均 SNR 一样，(c) 误码率却高了 2.7 倍、d 从 8.1 降到 7.7：两路共享阴影 β，一起变差，分集被削弱（讲义 p.21）。</div>
+      <!-- PKP:p4q2 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>离散 SNR 分布下的平均 SNR、平均误码率；MRC；阵列增益 g、分集增益 d；相关支路（第 4 章 p.16、p.21、p.27–28）。</dd><dt>前置知识</dt><dd>离散期望 Σx·p；独立事件概率相乘；E[f(X)] ≠ f(E[X])；独立变量 E[g(X)h(Y)] = E[g(X)]E[h(Y)]。</dd><dt>解题套路</dt><dd>(a) 直接求期望；(b) 列 2 × 2 组合表 → 输出 SNR = 两路之和 → 按概率加权；(c) 把 e<sup>−γ<sub>Σ</sub></sup> 拆成独立因子的乘积，分别求期望。</dd><dt>关键公式</dt><dd>g = γ̄<sub>Σ</sub>/γ̄；d = −log₁₀P̄<sub>s</sub> / log₁₀γ̄（γ̄ 是合并器<b>输入</b>的平均 SNR）。</dd><dt>捷径</dt><dd>(b) 也可以不列表：两路独立，E[e<sup>−(γ₁+γ₂)</sup>] = (E[e<sup>−γ</sup>])²，而 (a) 已经算出 E[e<sup>−γ</sup>] = 2 × 6.15×10⁻⁵ = 1.23×10⁻⁴，所以 P̄<sub>s</sub> = ½ × (1.23×10⁻⁴)² = 7.56×10⁻⁹。</dd><dt>易错</dt><dd>8 + 11 有 (8, 11)、(11, 8) 两种，概率 4/9；e⁻¹⁶ 这类极小数要保留有效数字；d 用输入的 10，不是输出的 20；(c) 共享的 β 进指数是 2β。</dd><dt>结论</dt><dd>(b)(c) 平均 SNR 都是 20、g 都是 2，但相关让误码率高 2.7 倍、d 从 8.1 降到 7.7。</dd></dl></div>
+      <!-- /PKP:p4q2 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -490,6 +529,9 @@ window.MathJax = {
       <div class="ans">(a) Q(α₀√E / √(σ₁²E + σ₂²))；(b) Q(√M·α₀√E / √(σ₁²E + σ₂²))</div>
       <div class="official"><b>官方答案：</b>同上 ✓</div>
       <div class="note">均值按 M 增长、标准差按 √M 增长，所以 Q 函数的参数放大 √M 倍，这就是合并的好处。</div>
+      <!-- PKP:p4q3 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>衰落因子是高斯随机变量时的 BPSK 误码率；等权合并（第 4 章 p.19；第 1b 章独立高斯相加）。</dd><dt>前置知识</dt><dd>独立高斯之和仍是高斯，均值相加、方差相加；Var(cX) = c²Var(X)，所以 Var(α√E) = σ₁²E。</dd><dt>解题套路</dt><dd>设 b = +1（对称）→ 求判决变量 z 的均值和方差 → 出错 = z ≤ 0 → P = Q(均值 / 标准差)。</dd><dt>关键结论</dt><dd>M 路等权相加：均值 × M，方差 × M，标准差 × √M → Q 的参数放大 √M 倍。</dd><dt>易错</dt><dd>方差项 σ₁²E 别漏乘 E；标准差是 √(σ₁²E + σ₂²)，不是 σ₁√E + σ₂。</dd><dt>物理意义</dt><dd>即使没有噪声（σ₂ = 0），误码率也是 Q(α₀/σ₁) ≠ 0：衰落因子本身可能变成负数，把符号翻过来，这是衰落造成的"平台"；合并 M 路后变成 Q(√M α₀/σ₁)，平台降低。</dd><dt>举一反三</dt><dd>如果接收端知道每个 α<sub>k</sub>，可以按 α<sub>k</sub> 加权（MRC，p.15）；这里不知道 α<sub>k</sub>，所以只能等权。</dd></dl></div>
+      <!-- /PKP:p4q3 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -512,6 +554,9 @@ window.MathJax = {
       </ol>
       <div class="ans">C ≈ 124.7 Mbps ≈ 125 Mbps</div>
       <div class="official"><b>官方答案：</b>125 Mbps ✓</div>
+      <!-- PKP:p5q1 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>发射端知道信道（informed）时的 MIMO 容量：特征子信道 + 注水（第 5 章 p.19、p.40；第 2 章 p.54–57）。</dd><dt>前置知识</dt><dd>SVD 把 MIMO 信道拆成互不干扰的并行子信道；注水公式。</dd><dt>解题套路</dt><dd>① 假设全部子信道都分功率，由 Σ(1/γ₀ − 1/γ<sub>i</sub>) = 1 求 γ₀；② 检查最差的 γ<sub>i</sub> ≥ γ₀，不满足就去掉重算；③ P<sub>i</sub>/P = 1/γ₀ − 1/γ<sub>i</sub>；④ C = B Σ log₂(γ<sub>i</sub>/γ₀)。</dd><dt>关键数字</dt><dd>γ₀ = 3/1.0625 = 2.82；功率 0.342、0.329、0.329（和为 1）；C = 10 MHz × (4.82 + 7.65) = 124.7 Mbps。</dd><dt>对比 1</dt><dd>功率平分（发射端不知道信道）：每路 SNR 变为 80/3、40/3、40/3，C = 122.1 Mbps，只少 2%。高 SNR 时知不知道信道差别很小（p.41–42）。</dd><dt>对比 2</dt><dd>低 SNR 时差别就大了：三个 SNR 都除以 100（0.8、0.4、0.4），注水只用第一个子信道，0.85 bit/s/Hz；平分只有 0.70 bit/s/Hz，差 21%。</dd><dt>易错</dt><dd>注水公式里的 γ<sub>i</sub> 是"全部功率都给这个子信道"时的 SNR；平分时每个只分到 P/3；B 最后再乘。</dd></dl></div>
+      <!-- /PKP:p5q1 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -535,6 +580,9 @@ window.MathJax = {
       <div class="ans">z₁ = ‖h‖u₁ + w̃₁，z₂ = ‖h‖u₂ + w̃₂，‖h‖² = |h_A|² + |h_B|²，w̃₁, w̃₂ ~ N(0, N₀)</div>
       <div class="official"><b>官方答案：</b>z₁ = ‖h₁‖u₁ + w̃₁，z₂ = ‖h₂‖u₂ + w̃₂（两个范数其实是同一个 ‖h‖）✓</div>
       <div class="note">每个符号的有效 SNR ∝ |h_A|² + |h_B|²，两路衰落同时很小的概率很低，所以有二阶分集；发射端完全不需要知道信道。</div>
+      <!-- PKP:p5q2 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>Alamouti 空时块码的接收、判决变量和分集阶数（第 5 章 p.21–26）。</dd><dt>前置知识</dt><dd>复数共轭 (ab)* = a*b*；2 × 2 矩阵乘法；噪声乘以复数 c 后方差变成 |c|²N₀。</dd><dt>解题套路</dt><dd>① 写出两个时隙的 y₁、y₂；② 对 y₂ 取共轭，让 u₁、u₂ 都不带共轭；③ 写成 ỹ = Fu + ṽ；④ 左乘 F<sup>H</sup>；⑤ 除以 ‖h‖ 归一化。</dd><dt>关键性质</dt><dd>X X<sup>H</sup> = ‖s‖²I（编码正交）→ F<sup>H</sup>F = (|h<sub>A</sub>|² + |h<sub>B</sub>|²)I（接收端能把两个符号完全分开）。</dd><dt>易错</dt><dd>第二时隙天线 A 发的是 −u₂*（负号和共轭都要有）；z₁ 的噪声项是 h<sub>A</sub>*w₁ + h<sub>B</sub>w₂*，方差 (|h<sub>A</sub>|² + |h<sub>B</sub>|²)N₀。</dd><dt>为什么是 2 阶分集</dt><dd>有效增益 |h<sub>A</sub>|² + |h<sub>B</sub>|² 是两个独立衰落之和，两个同时很小的概率远小于一个很小的概率；而且发射端不需要知道信道。</dd><dt>举一反三</dt><dd>2 发 M 收：增益是 2M 个 |h|² 之和，分集 2M（满分集）。2025-26 S2 问 ŝ 的统计量：无偏，方差 σ²/‖h‖²。和 1 发 2 收 MRC 比，分集相同，但少 3 dB（功率分给两根天线，p.30）。</dd></dl></div>
+      <!-- /PKP:p5q2 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -560,6 +608,9 @@ window.MathJax = {
       </ol>
       <div class="ans">(a) ≈ 9.96 bit/s/Hz；(b) Pe = 10⁻⁵</div>
       <div class="official"><b>官方答案：</b>9.96 bits/s/Hz；10⁻⁵ ✓</div>
+      <!-- PKP:p5q3 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>分集-复用折中：d(r) = (N − r)(M − r)，速率 R = r log₂SNR（第 4 章 p.31–34）。</dd><dt>前置知识</dt><dd>分集增益 d：SNR 翻倍时误码率降多快，最大 N × M；复用增益 r：SNR 翻倍时速率多几 bit/s/Hz，最大 min(N, M)。</dd><dt>解题套路</dt><dd>① 由 P<sub>e</sub> = γ<sup>−d</sup> ≤ 目标求 d 的下限；② 列 r = 0 … min(N, M) 对应的 d；③ 找满足条件的最大 r；④ R = r log₂γ，P<sub>e</sub> = γ<sup>−d(r)</sup>。</dd><dt>关键数字</dt><dd>γ = 10 → d ≥ 3；d(3) = 5 ≥ 3，d(4) = 0 &lt; 3 → r = 3；R = 3 × 3.32 = 9.97 bit/s/Hz，P<sub>e</sub> = 10⁻⁵。</dd><dt>易错</dt><dd>SNR 用线性值（10 dB → 10，20 dB → 100）；d 必须是整数，向上取；r 不能超过 min(N, M) = 4。</dd><dt>举一反三</dt><dd>SNR = 20 dB（100）时：100<sup>−d</sup> ≤ 10⁻³ → d ≥ 1.5 → 取 2；r = 3 的 d = 5 仍满足，r = 4 不行 → R = 3 log₂100 = 19.9 bit/s/Hz。已知 P<sub>e</sub> 和 d 求 SNR：SNR = P<sub>e</sub><sup>−1/d</sup>。</dd><dt>物理意义</dt><dd>r 是同时传输的独立数据流个数，d 是抗衰落能力；天线资源要么用来"多传"，要么用来"传得稳"。</dd></dl></div>
+      <!-- /PKP:p5q3 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -596,6 +647,9 @@ window.MathJax = {
       </ol>
       <div class="ans">(b) 加均衡器更好：最坏情况的"有效距离"更大。例 α = 0.4：不均衡 0.6，均衡 0.78</div>
       <div class="official"><b>官方答案：</b>表达式同上；(b) Better to operate with the proposed equalizer ✓</div>
+      <!-- PKP:p6q1 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>ISI 信道的误码率；均衡器的权衡：ISI 减小 vs 噪声放大；高 SNR 下的比较（第 6 章 p.22–28）。</dd><dt>前置知识</dt><dd>Z 变换相乘 = 滤波器串联；白噪声过 FIR 后方差 σ²Σc²；条件误码率再平均；高 SNR 时误码率由 Q 参数最小的那一项决定。</dd><dt>解题套路</dt><dd>不均衡：ISI 前一个符号同号 / 异号两种情况，各 ½。加均衡：信号经过 H(z)U(z) = 1 − α²z⁻²，噪声只经过 U(z)，方差变成 (N₀/2)(1 + α²)，再分两种情况。</dd><dt>关键比较</dt><dd>(1 − α²)/√(1 + α²) &gt; 1 − α ⇔ (1 + α)/√(1 + α²) &gt; 1 ⇔ (1 + α)² &gt; 1 + α² ⇔ 2α &gt; 0，对 α &gt; 0 总成立。</dd><dt>易错</dt><dd>噪声只经过 U(z)，不经过 H(z)；均衡后残余 ISI 是 −α²，位置在 n − 2，不是 0；Q 里除的是 √(1 + α²) 倍的标准差。</dd><dt>数值例</dt><dd>α = 0.4：最坏项参数不均衡 0.6，均衡 0.84/1.077 = 0.78，所以加均衡器更好。</dd><dt>联系</dt><dd>期末 Q2(a) 四年考了四次，都是"残余 ISI a + 放大后的噪声 σ′"，公式 ½[Q((1 − a)/σ′) + Q((1 + a)/σ′)]。</dd></dl></div>
+      <!-- /PKP:p6q1 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -622,6 +676,9 @@ window.MathJax = {
       <div class="ans">(a) ½Q((1+a)/√0.1) + ½Q((1−a)/√0.1)；(b) Q(√((1−a²)/0.1))</div>
       <div class="official"><b>官方答案：</b>同上 ✓</div>
       <div class="note">比较：ZF 的 Q 参数是 √(1−a²)/√0.1，不均衡最坏项是 (1−a)/√0.1。√(1−a²) = √((1−a)(1+a)) &gt; 1−a，所以高 SNR 时 ZF 更好；但 a 接近 1 时 ZF 把噪声放大很多。</div>
+      <!-- PKP:p6q2 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>直接判决（不均衡）和理想迫零均衡下的误码率（第 6 章 p.23–28）。</dd><dt>前置知识</dt><dd>条件误码率再平均；ZF：C(z) = 1/H(z)；等比级数 Σa<sup>2k</sup> = 1/(1 − a²)；滤波后噪声方差 σ²Σc²。</dd><dt>解题套路</dt><dd>(a) b<sub>n−1</sub> = ±1 两种情况，信号离门限 1 ± a，标准差 √0.1；(b) 1/(1 + az⁻¹) = Σ(−a)<sup>k</sup>z<sup>−k</sup>，ISI 消失，噪声方差 0.1/(1 − a²)，只剩一项 Q。</dd><dt>数值例</dt><dd>a = 0.5：(a) ½[Q(4.74) + Q(1.58)] ≈ 0.028；(b) Q(√7.5) = Q(2.74) ≈ 0.0031，ZF 好约 9 倍。</dd><dt>比较</dt><dd>高 SNR 时比较最坏的 Q 参数：ZF 是 √(1 − a²)，不均衡是 1 − a；√(1 − a²) = √((1 − a)(1 + a)) &gt; 1 − a，所以 ZF 更好。但 a → 1 时噪声放大 1/(1 − a²) 趋于无穷。</dd><dt>易错</dt><dd>√0.1 是标准差，0.1 是方差；ZF 后没有 ISI，不要再分情况；不均衡时别只算 Q((1 − a)/σ) 一项。</dd></dl></div>
+      <!-- /PKP:p6q2 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -650,6 +707,9 @@ window.MathJax = {
       <div class="ans">(a) q = 0，Pe ≈ 0.19；(b) Pe ≈ 0.18</div>
       <div class="official"><b>官方答案：</b>(a) q = 0，Pe ≈ 0.19；(b) Pe ≈ 0.18 ✓</div>
       <div class="note">如果没有错误传播，DFE 的误码率就是 Q(1) = 0.159；错误传播让它升到 0.177，但仍比线性均衡的 0.188 好。</div>
+      <!-- PKP:p6q3 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>MMSE 线性均衡和判决反馈均衡 DFE 的误码率；DFE 的错误传播（第 6 章 p.26–34）。</dd><dt>前置知识</dt><dd>独立零均值随机变量的均方值相加；A<sub>n</sub>² = 1；全概率公式；线性方程求稳态。</dd><dt>解题套路</dt><dd>(a) 把 u<sub>n</sub> − A<sub>n</sub> 拆成独立项 → 均方误差 1.25 + 2.25q² → 求导得 q = 0 → u<sub>n</sub> = y<sub>n</sub>，幅度 1.5 或 0.5 → 平均。(b) 列条件误码率：上次对 → Q(1)；上次错 → ½Q(2) + ½ × ½ → 解稳态方程。</dd><dt>为什么 q = 0</dt><dd>用未来样本 y<sub>n+1</sub> 能多拿到 ½A<sub>n</sub> 的有用信号，但同时带进 A<sub>n+1</sub> 的干扰和 z<sub>n+1</sub> 的噪声，得不偿失，所以最优是不用它。</dd><dt>关键公式</dt><dd>DFE 稳态：p = (1 − p)·0.159 + p·0.261 → p = 0.159/(1 − 0.261 + 0.159) = 0.177。</dd><dt>易错</dt><dd>展开时漏了 (q/2)A<sub>n</sub> 项；上次判错时幅度是 2 或 0（ISI 加倍），幅度 0 时误码 ½；稳态方程别解错。</dd><dt>结论</dt><dd>线性 0.188 &gt; DFE 0.177 &gt; 无错误传播的 DFE 0.159：DFE 不放大噪声，但错误传播吃掉了一部分优势（p.34）。</dd></dl></div>
+      <!-- /PKP:p6q3 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -683,6 +743,9 @@ window.MathJax = {
       <div class="ans">(a) B/B_C ≪ N ≪ B/B_d；(b) 1.4, 0.8−0.6j, 0.2, 0.8+0.6j；(c) 0.36, 9.09, 0.36, 0.19；(d) ≈ 1.8 bit/s/Hz</div>
       <div class="official"><b>官方答案：</b>完全一致 ✓（官方把 k = 1…4 记为 H₁…H₄，H₄ = H₀ = 1.4）</div>
       <div class="note">对比 (c) 和 (d)：为了"人人平等"，(c) 把 91% 的功率砸在最差的子信道上；注水 (d) 干脆放弃最差的那个，总容量高得多。</div>
+      <!-- PKP:p7q1 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>OFDM 的四个核心计算：N 的选择、H<sub>k</sub>、等容量功率分配、注水容量（第 7 章 p.5、p.15、p.24；第 2 章注水）。</dd><dt>前置知识</dt><dd>相干带宽 / 相干时间；欧拉公式 e<sup>−jπk/2</sup> 依次为 1、−j、−1、j；注水公式；log₂。</dd><dt>解题套路</dt><dd>(a) 平坦 N ≫ B/B<sub>C</sub>，慢衰落 N ≪ B/B<sub>d</sub>；(b) H<sub>k</sub> = h₀ + h₁e<sup>−j2πk/N</sup>；(c) |H<sub>k</sub>|²P<sub>k</sub> = c，由 ΣP<sub>k</sub> = 10 求 c；(d) 池底 1/|H<sub>k</sub>|²，水面 μ，去掉池底高过水面的子信道。</dd><dt>关键数字</dt><dd>|H<sub>k</sub>|² = 1、0.04、1、1.96；c = 10/27.51 = 0.3635；注水水面 4.17，功率 3.17、0、3.17、3.66；7.15 bit / 4 = 1.79 bit/s/Hz。</dd><dt>自检</dt><dd>Σ|H<sub>k</sub>|² = N Σh<sub>i</sub>² = 4 × (0.64 + 0.36) = 4；(c)(d) 的功率加起来都是 10；被去掉的子信道 2 的池底 25 高于水面。</dd><dt>易错</dt><dd>编号 k = 1…4（H₄ = H₀）；用 |H<sub>k</sub>|² 不是 |H<sub>k</sub>|；噪声 σ² = 1；最后除以 N 换成 bit/s/Hz。</dd><dt>对比结论</dt><dd>等容量把 91% 的功率砸在最差的子信道上；注水干脆放弃它。要公平用 (c)，要总容量最大用 (d)。</dd></dl></div>
+      <!-- /PKP:p7q1 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -705,6 +768,9 @@ window.MathJax = {
       <div class="ans">N = 60，OFDM 符号时长 0.12 ms</div>
       <div class="official"><b>官方答案：</b>60；0.12 ms ✓</div>
       <div class="note">如果不加 CP，600 kHz 本来就够发 500 k 符号/秒，N 取多少都行，题目就没有唯一解。正是 CP 的开销决定了 N：N 越大，CP 占的比例越小。CP 占 20/120 = 1/6 的时间，所以带宽必须比 500 k 多出 1/5，正好是 600 kHz。</div>
+      <!-- PKP:p7q2 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>OFDM 系统设计：子载波数、OFDM 符号时长、CP 开销（第 7 章 p.8、p.17–18）。</dd><dt>前置知识</dt><dd>有用符号时长 T = N/B = 1/Δf；一个 OFDM 块 = T + T<sub>G</sub>，期间每个子载波发一个符号。</dd><dt>解题套路</dt><dd>① 比特速率 ÷ log₂M = 需要的符号速率；② 列方程 N / (N/B + T<sub>G</sub>) = 符号速率；③ 解 N；④ T = N/B，总时长 T + T<sub>G</sub>。</dd><dt>关键数字</dt><dd>2 Mbps / 4 = 500 k 符号/秒；N = 0.8333N + 10 → N = 60；T = 100 µs，总长 120 µs。</dd><dt>检验</dt><dd>60 × 4 bit / 120 µs = 2 Mbps；CP 占 1/6 的时间，功率损失 10 log(120/100) = 0.79 dB。</dd><dt>举一反三</dt><dd>时延扩展变成 40 µs：N = 0.8333N + 20 → N = 120，T = 200 µs，总长 240 µs。时延扩展越大，需要的 N 越大，CP 的占比才不至于太高。</dd><dt>易错</dt><dd>没有 CP 时 N 取多少都行，题目就没有唯一解，所以一定要把 CP 算进时长；速率是比特速率，要先除以 4。</dd></dl></div>
+      <!-- /PKP:p7q2 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -725,6 +791,9 @@ window.MathJax = {
       </ol>
       <div class="ans">最短 CP = 1 个采样（符号）长度 = L − 1</div>
       <div class="official"><b>官方答案：</b>1 symbol length ✓</div>
+      <!-- PKP:p7q3 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>循环前缀的最短长度（第 7 章 p.17–22）。</dd><dt>前置知识</dt><dd>Z 变换：Z⁻¹ 表示晚一个采样；L 个抽头的信道，最长回波晚 L − 1 个采样。</dd><dt>解题套路</dt><dd>由 H(Z) 读出冲激响应 h = [1, 0.9] → L = 2 → CP ≥ L − 1 = 1 个采样。</dd><dt>为什么够</dt><dd>CP ≥ L − 1 时，接收端保留的 N 个采样只含本块的数据，线性卷积变成循环卷积，DFT 后 r<sub>k</sub> = H<sub>k</sub>s<sub>k</sub> + w<sub>k</sub>（讲解页 7.4 节推导框）。</dd><dt>为什么复制块尾</dt><dd>只放一段空白也能挡住上一块的回声，但接收窗口里看到的不再是完整的周期信号，子载波失去正交，会有 ICI；复制块尾才能保持循环结构。</dd><dt>易错</dt><dd>是 L − 1 = 1 个，不是 L = 2 个；系数 0.9 的大小不影响 CP 长度，只看延迟几个采样。</dd><dt>举一反三</dt><dd>H(Z) = 1 + 0.5Z⁻³ → 延迟 3 个采样 → CP ≥ 3；换成时间就是 T<sub>G</sub> ≥ 最大时延扩展 T<sub>D</sub>。CP 每多 1 个采样，效率降为 N/(N + G)。</dd></dl></div>
+      <!-- /PKP:p7q3 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>

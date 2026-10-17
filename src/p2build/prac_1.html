@@ -36,6 +36,9 @@
       <div class="ans"><b>按标准最小二乘：</b>K ≈ −30.8 dB，γ ≈ 3.94，σ²_ψ ≈ 11.9 dB²，P_out ≈ 1.85 × 10⁻³</div>
       <div class="official"><b>官方答案：</b>(a) K_dB = −31.4 dB，γ = 3.86；(b) 6.19 × 10⁻⁴</div>
       <div class="note">我按题目数据无法复现官方答案：把官方的 K = −31.4、γ = 3.86 代回 6 个点，均方误差是 13.1，中断概率约 2.9 × 10⁻³；官方 6.19 × 10⁻⁴ 对应 σ ≈ 3.10 dB。可能是课上用了别的拟合方法或计算有误。<b>考试写清楚方法（最小二乘、σ² = MSE、Pout = Q(10/σ)）即可</b>，有疑问可以问老师。</div>
+      <!-- PKP:p1q1 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>用最小二乘从测量数据拟合简化路径损耗模型的 K、γ，再把拟合的均方误差当作阴影方差，求中断概率（第 2 章 p.8、p.12–15）。</dd><dt>前置知识</dt><dd>dB 运算；最小二乘（对 K、γ 求偏导令其为 0，讲解页 2.1 节的推导框）；Q 函数（第 1b 章）。</dd><dt>解题套路</dt><dd>① x<sub>i</sub> = 10 log₁₀(d<sub>i</sub>/d₀)；② 列 x、M、x²、xM 四列并求和；③ 解两个正规方程得 K、γ；④ 逐点算残差 e<sub>i</sub> = 实测 − 预测，MSE = σ<sub>ψ</sub>²；⑤ P<sub>out</sub> = Q(余量/σ<sub>ψ</sub>)。</dd><dt>关键公式</dt><dd>γ = −Σ(x<sub>i</sub> − x̄)(M<sub>i</sub> − M̄) / Σ(x<sub>i</sub> − x̄)²；K<sub>dB</sub> = M̄ + γx̄；σ<sub>ψ</sub>² = (1/n)Σe<sub>i</sub>²；P<sub>out</sub> = Q(10/σ<sub>ψ</sub>)。</dd><dt>易错</dt><dd>直线斜率是 −γ，别丢负号；x 用 10 log₁₀d，只用 log₁₀d 会让 γ 大 10 倍；MSE 是方差，Q 里要用开根号后的 σ；"高 10 dB"就是余量 10 dB。</dd><dt>自检</dt><dd>残差之和为 0；拟合直线经过平均点 (19.26, −106.67)；上面的步骤 4 有逐点残差，Σe² = 71.23。</dd><dt>举一反三</dt><dd>已知 K、γ、σ，求某距离的中断概率，或给定中断概率求最大覆盖距离（讲义 p.16 例题，讲解页 2.2 节）。官方答案无法复现，原因见上面的补充框。</dd></dl></div>
+      <!-- /PKP:p1q1 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -61,6 +64,9 @@
       </ol>
       <div class="ans">(a) ≈ 26%；(b) μ_ψ &gt; 19.3 dBm</div>
       <div class="official"><b>官方答案：</b>(a) 26%；(b) μ_ψ &gt; 19.32 dB ✓</div>
+      <!-- PKP:p1q2 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>对数正态阴影 = dB 值服从高斯；中断概率的正算和反算（第 2 章 p.11–15）。</dd><dt>前置知识</dt><dd>标准化：(门限 − 均值)/标准差；Q 函数的单调性（减函数）和对称性 Q(−x) = 1 − Q(x)；常用值 Q(1.645) = 0.05、Q(2.326) = 0.01、Q(3.09) = 10⁻³。</dd><dt>解题套路</dt><dd>(a) 门限离均值几个标准差 → 查 Q；(b) 把 μ 当未知数，列 Q((μ − 10)/σ) &lt; 0.01，反查得 (μ − 10)/σ &gt; 2.326。</dd><dt>关键公式</dt><dd>P<sub>out</sub> = P(P<sub>r</sub> &lt; P<sub>min</sub>) = Q((μ<sub>ψ</sub> − P<sub>min</sub>)/σ<sub>ψ</sub>)。μ − P<sub>min</sub> 叫阴影余量。</dd><dt>易错</dt><dd>Q 是减函数，"概率 &lt; 1%"要翻成"参数 &gt; 2.326"；σ 和 σ² 别混；两个 dBm 相减得到的是 dB。</dd><dt>举一反三</dt><dd>σ 越大，同样的中断概率要求的余量越大：σ = 8 dB 时 μ 要 &gt; 10 + 8 × 2.326 = 28.6 dBm，比 σ = 4 dB 时多 9.3 dB。</dd><dt>物理意义</dt><dd>阴影是大尺度、慢变化的衰落（被楼房、地形挡住），所以用余量来对付；多径是小尺度衰落，靠分集来对付（第 4 章）。</dd></dl></div>
+      <!-- /PKP:p1q2 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -86,6 +92,9 @@
       </ol>
       <div class="ans">μ = 5 µs，σ = 2.89 µs；R_s &lt; 34.6 ksps</div>
       <div class="official"><b>官方答案：</b>5 µs，2.89 µs；34.6 ksps ✓</div>
+      <!-- PKP:p1q3 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>由功率时延谱求平均时延和 rms 时延扩展，再判断平坦 / 频率选择性衰落（第 2 章 p.29–33）。</dd><dt>前置知识</dt><dd>把 P(τ) 归一化后当概率密度；E[τ]、E[τ²]、方差 = E[τ²] − (E[τ])²（第 1b 章）。</dd><dt>解题套路</dt><dd>① μ = ∫τP(τ)dτ / ∫P(τ)dτ；② E[τ²] = ∫τ²P(τ)dτ / ∫P(τ)dτ；③ σ = √(E[τ²] − μ²)；④ 平坦条件 σ/T<sub>s</sub> &lt; 0.1 → 求 T<sub>s</sub> 下限 → R<sub>s</sub> 上限。</dd><dt>关键公式</dt><dd>[0, a] 上均匀分布：μ = a/2，σ = a/√12。本题 a = 10 µs → 5 µs、2.89 µs。</dd><dt>易错</dt><dd>分母是 ∫P = 10，不是 1；平坦衰落要求符号长、速率低，不等号别反；34.6 ksps 是上限。</dd><dt>举一反三</dt><dd>问"信号带宽 1 MHz（T<sub>s</sub> = 1 µs）是否平坦"：σ/T<sub>s</sub> = 2.89 &gt; 0.1 → 频率选择性衰落，需要均衡或 OFDM。离散时延谱（几条回波）用加权求和代替积分，见讲解页 2.4 节例题。</dd><dt>联系</dt><dd>时延扩展越大，相干带宽越小（B<sub>C</sub> ∝ 1/σ<sub>Tm</sub>）；第 3 章的时延扩展误码平台 (σ<sub>Tm</sub>/T<sub>b</sub>)² 用的也是这个 σ。</dd></dl></div>
+      <!-- /PKP:p1q3 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>

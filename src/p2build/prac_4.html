@@ -17,6 +17,9 @@
       </ol>
       <div class="ans">多个基站的阴影衰落近似独立，所有链路同时深衰落的概率 = 各自概率之积，远小于单一链路</div>
       <div class="official"><b>官方答案：</b>参见讲义（第 4 章 p.3–4）</div>
+      <!-- PKP:p4q1 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>宏分集的原理（论述题，第 4 章 p.3–6）。</dd><dt>答题要点</dt><dd>① 中断主要由<b>阴影衰落</b>造成（大尺度、变化慢，加功率不划算）；② 几个基站位置不同，传播路径不同，阴影近似独立；③ 选最强的基站或合并，只有<b>所有</b>链路同时变差才中断，P<sub>out</sub> = ΠP<sub>out,i</sub>；④ 条件：链路相关时效果下降（p.21）。</dd><dt>区分</dt><dd>宏分集对付阴影，基站之间相距很远；微分集对付多径，天线只需相隔几个波长（p.4–5）。</dd><dt>数字例</dt><dd>单条链路中断 10%，两个独立基站同时中断只有 1%，三个只有 0.1%。</dd><dt>联系</dt><dd>Practice 2 第 2 题给出了定量公式：独立时 [Q(Δ/σ)]²，相关时要先条件化再积分。</dd><dt>写作提示</dt><dd>论述题按"原因 → 机制 → 公式 → 条件"四句写，每句一个要点，比长段落更容易拿分。</dd></dl></div>
+      <!-- /PKP:p4q1 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -46,6 +49,9 @@
       <div class="ans">(a) γ̄ = 10，P̄s = 6.15×10⁻⁵；(b) γ̄Σ = 20，P̄s = 7.6×10⁻⁹，g = 2，d = 8.1；(c) γ̄Σ = 20，P̄s = 2.05×10⁻⁸，g = 2，d = 7.7</div>
       <div class="official"><b>官方答案：</b>完全一致 ✓</div>
       <div class="note">(b)(c) 平均 SNR 一样，(c) 误码率却高了 2.7 倍、d 从 8.1 降到 7.7：两路共享阴影 β，一起变差，分集被削弱（讲义 p.21）。</div>
+      <!-- PKP:p4q2 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>离散 SNR 分布下的平均 SNR、平均误码率；MRC；阵列增益 g、分集增益 d；相关支路（第 4 章 p.16、p.21、p.27–28）。</dd><dt>前置知识</dt><dd>离散期望 Σx·p；独立事件概率相乘；E[f(X)] ≠ f(E[X])；独立变量 E[g(X)h(Y)] = E[g(X)]E[h(Y)]。</dd><dt>解题套路</dt><dd>(a) 直接求期望；(b) 列 2 × 2 组合表 → 输出 SNR = 两路之和 → 按概率加权；(c) 把 e<sup>−γ<sub>Σ</sub></sup> 拆成独立因子的乘积，分别求期望。</dd><dt>关键公式</dt><dd>g = γ̄<sub>Σ</sub>/γ̄；d = −log₁₀P̄<sub>s</sub> / log₁₀γ̄（γ̄ 是合并器<b>输入</b>的平均 SNR）。</dd><dt>捷径</dt><dd>(b) 也可以不列表：两路独立，E[e<sup>−(γ₁+γ₂)</sup>] = (E[e<sup>−γ</sup>])²，而 (a) 已经算出 E[e<sup>−γ</sup>] = 2 × 6.15×10⁻⁵ = 1.23×10⁻⁴，所以 P̄<sub>s</sub> = ½ × (1.23×10⁻⁴)² = 7.56×10⁻⁹。</dd><dt>易错</dt><dd>8 + 11 有 (8, 11)、(11, 8) 两种，概率 4/9；e⁻¹⁶ 这类极小数要保留有效数字；d 用输入的 10，不是输出的 20；(c) 共享的 β 进指数是 2β。</dd><dt>结论</dt><dd>(b)(c) 平均 SNR 都是 20、g 都是 2，但相关让误码率高 2.7 倍、d 从 8.1 降到 7.7。</dd></dl></div>
+      <!-- /PKP:p4q2 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
@@ -72,6 +78,9 @@
       <div class="ans">(a) Q(α₀√E / √(σ₁²E + σ₂²))；(b) Q(√M·α₀√E / √(σ₁²E + σ₂²))</div>
       <div class="official"><b>官方答案：</b>同上 ✓</div>
       <div class="note">均值按 M 增长、标准差按 √M 增长，所以 Q 函数的参数放大 √M 倍，这就是合并的好处。</div>
+      <!-- PKP:p4q3 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>衰落因子是高斯随机变量时的 BPSK 误码率；等权合并（第 4 章 p.19；第 1b 章独立高斯相加）。</dd><dt>前置知识</dt><dd>独立高斯之和仍是高斯，均值相加、方差相加；Var(cX) = c²Var(X)，所以 Var(α√E) = σ₁²E。</dd><dt>解题套路</dt><dd>设 b = +1（对称）→ 求判决变量 z 的均值和方差 → 出错 = z ≤ 0 → P = Q(均值 / 标准差)。</dd><dt>关键结论</dt><dd>M 路等权相加：均值 × M，方差 × M，标准差 × √M → Q 的参数放大 √M 倍。</dd><dt>易错</dt><dd>方差项 σ₁²E 别漏乘 E；标准差是 √(σ₁²E + σ₂²)，不是 σ₁√E + σ₂。</dd><dt>物理意义</dt><dd>即使没有噪声（σ₂ = 0），误码率也是 Q(α₀/σ₁) ≠ 0：衰落因子本身可能变成负数，把符号翻过来，这是衰落造成的"平台"；合并 M 路后变成 Q(√M α₀/σ₁)，平台降低。</dd><dt>举一反三</dt><dd>如果接收端知道每个 α<sub>k</sub>，可以按 α<sub>k</sub> 加权（MRC，p.15）；这里不知道 α<sub>k</sub>，所以只能等权。</dd></dl></div>
+      <!-- /PKP:p4q3 -->
     </div>
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
