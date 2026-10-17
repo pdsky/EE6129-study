@@ -377,3 +377,7 @@ if learn_url:
 ART.mkdir(exist_ok=True)
 (ART / 'p2-practice.html').write_text(page(False), encoding='utf-8')
 print('ok', (REPO / 'p2-practice.html').stat().st_size)
+
+# lecturer's in-class emphasis boxes (src/teacher)
+import subprocess
+subprocess.run([sys.executable, str(pathlib.Path(__file__).resolve().parents[1] / 'teacher' / 'inject_teacher.py')], check=True)

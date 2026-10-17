@@ -172,6 +172,9 @@ def inject_all():
         n1 = inject_file(REPO / repo, page, False, titles)
         n2 = inject_file(ART / artf, page, True, titles)
         print(f'inject {page}: repo {n1}, artifact {n2}')
+    # lecturer's in-class emphasis boxes (src/teacher) go in after the exam questions
+    import subprocess
+    subprocess.run([sys.executable, str(E.parent / 'teacher' / 'inject_teacher.py')], check=True)
 
 # ---------------------------------------------------------------- overview page
 MATRIX = {

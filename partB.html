@@ -337,6 +337,19 @@ table td:first-child{font-family:var(--f-body);}
       </div>
 
       <h3><span class="zh-num">1.3</span>物理层和 802.11 家族（p.12–15、p.37–38）</h3>
+<!-- TEACH:begin 38 --><style id="teach-css">
+:root{--teach:#a3214f;--teach-soft:#fcebf1;--teach-line:#eba3bd;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--teach:#f58db4;--teach-soft:rgba(245,141,180,.11);--teach-line:rgba(245,141,180,.4);}}
+:root[data-theme="dark"]{--teach:#f58db4;--teach-soft:rgba(245,141,180,.11);--teach-line:rgba(245,141,180,.4);}
+.teach{border:1px solid var(--teach-line);border-left:5px solid var(--teach);border-radius:10px;background:var(--teach-soft);padding:10px 16px 6px;margin:14px 0 22px;font-size:14.5px;line-height:1.7;}
+.teach > .lbl{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--teach);margin-bottom:4px;}
+.teach > .lbl span{font-weight:500;opacity:.8;}
+.teach.big > .lbl{font-size:15px;}
+.teach ul{margin:0 0 .4em;padding-left:1.25em;}
+.teach li{margin-bottom:.35em;}
+.teach mark.hl{background:linear-gradient(to bottom,transparent 45%,var(--teach-line) 45%);color:inherit;font-weight:600;}
+.exam .ex:not(.open) .teach{display:none;}
+</style><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>老师说 802.11 家族里<b>要记住 802.11a 和 802.11b</b>：b 在 2.4 GHz、用直接序列扩频（DSSS）；a 在 5 GHz、用 OFDM。</li><li>WLAN 用的 ISM 频段<b>免许可</b>，不用交频谱费；蜂窝频段运营商必须付费。</li><li>Wi-Fi 认证的意义：保证不同厂家、不同国家生产的设备能互通。</li></ul></div><!-- TEACH:end 38 -->
       <p>p.19 的协议结构图：最上面是 LLC，中间是 MAC 层（PCF 叠在 DCF 上面，第二、三章讲），最下面是多种可选的物理层：</p>
       <div class="tblwrap"><table><thead><tr><th>标准</th><th>频段</th><th>物理层技术</th><th>速率</th></tr></thead><tbody>
         <tr><td>802.11（1997）</td><td>2.4 GHz</td><td>跳频扩频 FHSS</td><td>1、2 Mbps</td></tr>
@@ -392,6 +405,7 @@ table td:first-child{font-family:var(--f-body);}
       </div>
 
       <h3><span class="zh-num">2.4</span>DCF 的流程（p.21）</h3>
+<!-- TEACH:begin 39 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>老师说 <b>DCF 的流程图非常重要</b>，要弄懂每一步；二进制指数退避用来应对重负载。</li></ul></div><!-- TEACH:end 39 -->
       <p>p.21 的流程图按步骤翻译：</p>
       <ol>
         <li>有分组要发 → 侦听信道。</li>
@@ -420,6 +434,7 @@ table td:first-child{font-family:var(--f-body);}
       </div>
 
       <h3><span class="zh-num">2.6</span>RTS/CTS 预约信道：一个完整的时间线（p.23–25）</h3>
+<!-- TEACH:begin 40 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>RTS/CTS 的时间线老师说<b>不会让画</b>，理解过程即可。</li></ul></div><!-- TEACH:end 40 -->
       <p>讲义 p.24 分三种角色说明：</p>
       <div class="tblwrap"><table><thead><tr><th>角色</th><th>做什么</th></tr></thead><tbody>
         <tr><td>发送方</td><td>信道空闲 DIFS → 发 RTS 预约 → 收到 CTS 后等 SIFS → 发数据</td></tr>
@@ -441,6 +456,7 @@ table td:first-child{font-family:var(--f-body);}
       </div>
 
       <h3><span class="zh-num">2.7</span>隐藏节点问题（p.48–49）</h3>
+<!-- TEACH:begin 41 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>关键：C 收不到 A 的 RTS（在 A 的范围外），但能收到 B 回的 CTS，于是知道信道被占用而不发送。</li></ul></div><!-- TEACH:end 41 -->
       <div class="figwrap">
         <svg viewBox="0 0 520 220" role="img" aria-label="隐藏节点：A 和 C 都在 B 的范围内，但 A 和 C 互相听不到">
           <circle cx="170" cy="110" r="95" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 4"/>
@@ -469,6 +485,7 @@ table td:first-child{font-family:var(--f-body);}
       <div class="chapter-head"><span class="chapter-num">第三章</span><h2>需要准时的时候：PCF、超帧、入网和帧格式</h2></div>
 
       <h3><span class="zh-num">3.1</span>PCF：由 AP 点名（p.26–27）</h3>
+<!-- TEACH:begin 42 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>PCF 的关键词是<b>无竞争（contention-free）</b>：由 AP 轮询，切换到 PCF 后所有站点都听 AP 的。</li></ul></div><!-- TEACH:end 42 -->
       <p>DCF 是"抢"，谁也不能保证多久能发出去，对语音这类有时限的业务不友好。PCF 是可选方案：AP 逐个轮询，被点到才发，不会冲突（p.26）。轮询期间 AP 霸占信道，DCF 的异步业务暂停。</p>
       <p>p.27 的轮询步骤：</p>
       <ol>
@@ -498,6 +515,7 @@ table td:first-child{font-family:var(--f-body);}
       <p>p.29 的其他规则：CFP 要等每个站都被轮询一次才结束；CP 的长度由 AP 作为系统参数调整；CP 结束时，如果信道正忙，AP 只能等它空闲，<b>下一个超帧就被缩短</b>（foreshortened superframe）；AP 在信标里广播 CFP 的实际长度，各站据此更新 NAV。</p>
 
       <h3><span class="zh-num">3.3</span>新设备怎么加入 WLAN（p.31–32）</h3>
+<!-- TEACH:begin 43 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>老师特别提到认证这一步，提醒大家一定要设置密码。这一题 2025-26 S1 Q4(a) 考了。</li></ul></div><!-- TEACH:end 43 -->
       <div class="tblwrap"><table><thead><tr><th>步骤</th><th>做什么</th></tr></thead><tbody>
         <tr><td>① 扫描</td><td><b>被动扫描</b>：等 AP 发的信标帧；<b>主动扫描</b>：自己发探测请求（Probe Request），等 AP 回探测响应（Probe Response）</td></tr>
         <tr><td>② 认证</td><td>AP 和节点互相证明自己知道某个密码</td></tr>
@@ -510,6 +528,7 @@ table td:first-child{font-family:var(--f-body);}
       </div>
 
       <h3><span class="zh-num">3.4</span>MAC 帧的类型和格式（p.33–36）</h3>
+<!-- TEACH:begin 44 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>帧格式的字段很多，老师说不用全记；他点到的是地址字段（谁发、谁收）和 duration 字段（其他节点据此设置 NAV）。</li></ul></div><!-- TEACH:end 44 -->
       <p>三类帧（p.33）：<b>数据帧</b>传数据；<b>控制帧</b>做信道预约（RTS/CTS）和接收确认（ACK）；<b>管理帧</b>做关联和解除关联、定时同步、安全控制。</p>
       <p>数据帧格式（p.34–35，单位：字节）：</p>
       <div class="tblwrap"><table><thead><tr><th>字段</th><th>帧控制</th><th>时长/ID</th><th>地址 1</th><th>地址 2</th><th>地址 3</th><th>序号控制</th><th>地址 4</th><th>帧体</th><th>FCS</th></tr></thead><tbody>
@@ -608,6 +627,7 @@ table td:first-child{font-family:var(--f-body);}
       <p>隐藏节点问题在自组网里同样存在，会降低利用率（p.48），原理见第二章 2.7。</p>
 
       <h3><span class="zh-num">4.4</span>自组网怎么选路（p.50–55）</h3>
+<!-- TEACH:begin 45 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>按需路由：只在需要时做路由发现，只激活相关的节点，不浪费带宽。自组网的 QoS 指标里，时延和时延抖动对实时控制（机器人、自动驾驶）最重要。</li></ul></div><!-- TEACH:end 45 -->
       <p>所有路由协议都要做两件事（p.50）：<b>路由识别</b>（通信前先找到一条路）和<b>路由重构</b>（节点或链路故障、拥塞时恢复）。按依据分两大类：</p>
       <div class="tblwrap"><table><thead><tr><th>类别</th><th>协议</th><th>怎么做</th><th>优缺点</th></tr></thead><tbody>
         <tr><td rowspan="3">基于拓扑（p.51–52）</td><td>周期性（表驱动）</td><td>不管用不用，定期交换路由信息，维护到每个节点的路由</td><td>要用时马上有路；平时开销大</td></tr>
@@ -653,6 +673,7 @@ table td:first-child{font-family:var(--f-body);}
       <p>设计时要考虑的因素（p.57）：可靠性、可扩展性、生产成本、工作环境、网络拓扑、硬件限制、传输介质、功耗。</p>
 
       <h3><span class="zh-num">5.3</span>协议栈：五层 + 三个管理平面（p.59）</h3>
+<!-- TEACH:begin 46 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>协议栈记住<b>五层</b>就行；功耗是最关键的因素，因为节点大多靠电池。</li></ul></div><!-- TEACH:end 46 -->
       <div class="tblwrap"><table><thead><tr><th>层 / 平面</th><th>要求</th></tr></thead><tbody>
         <tr><td>物理层</td><td>简单但稳健的调制、发射和接收技术</td></tr>
         <tr><td>MAC 层</td><td>必须<b>省电</b>，并尽量减少和邻居广播的冲突</td></tr>
@@ -717,6 +738,7 @@ table td:first-child{font-family:var(--f-body);}
       </div>
 
       <h3><span class="zh-num">6.3</span>E-UTRA 的主要指标（p.65）</h3>
+<!-- TEACH:begin 47 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>LTE 的带宽可以在 1.4–20 MHz 之间灵活选择，不像 1G 每个信道带宽固定；物理层用 OFDMA，每个资源块 12 个子载波。</li></ul></div><!-- TEACH:end 47 -->
       <div class="tblwrap"><table><thead><tr><th>项目</th><th>指标</th></tr></thead><tbody>
         <tr><td>带宽</td><td>1.4 MHz 到 20 MHz 可伸缩</td></tr>
         <tr><td>峰值速率</td><td>下行用 4×4 MIMO 时超过 300 Mbps；上行可达 86 Mbps</td></tr>
@@ -747,6 +769,7 @@ table td:first-child{font-family:var(--f-body);}
       </div>
 
       <h3><span class="zh-num">6.5</span>QoS：承载、QCI 和 ARP（p.68–75）</h3>
+<!-- TEACH:begin 48 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>承载记住分<b>两类</b>：GBR（保证最低码率，用于语音、VoIP 这类传统业务）和 non-GBR。</li></ul></div><!-- TEACH:end 48 -->
       <p>LTE 所有业务都走 IP，QoS 很关键（p.68）。EPS 用<b>承载（bearer）</b>把 IP 流量从 PDN 的网关送到 UE：一个承载就是网关和 UE 之间一条有特定 QoS 的 IP 分组流，是一条逻辑连接。E-UTRAN 和 EPC 根据应用需要建立和释放承载；空口上由 eNodeB 保证承载的 QoS。</p>
       <div class="tblwrap"><table><thead><tr><th></th><th>GBR 承载</th><th>non-GBR 承载</th></tr></thead><tbody>
         <tr><td>速率保证</td><td>有最低保证速率 GBR；资源富余时可以更高，上限是 MBR</td><td>不保证任何速率</td></tr>
@@ -811,6 +834,7 @@ table td:first-child{font-family:var(--f-body);}
       </tbody></table></div>
 
       <h3><span class="zh-num">7.2</span>架构：两个标准，一个简化框架（p.84–90）</h3>
+<!-- TEACH:begin 49 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>学习时用 Cisco 的<b>简化框架</b>（两个并行栈），比另外两个标准好理解。网关通常是固定的；mesh 拓扑有多条备选路由，更可靠。</li></ul></div><!-- TEACH:end 49 -->
       <ul>
         <li><b>oneM2M</b>（p.84）：ETSI 的 M2M 技术委员会提出，2012 年各方达成一致。目标是一个通用的<b>服务层</b>，嵌入现场设备里，方便它们和应用服务器通信；关注智能抄表、智能电网、智慧城市、电子健康、车联网等。</li>
         <li><b>IoTWF</b>（p.85）：IoT 世界论坛 2014 年提出的 <b>7 层</b>参考模型，包括边缘计算、数据存储和访问。控制从云端流向边缘，数据从边缘向上（"北向"）流向中心。</li>
@@ -873,6 +897,7 @@ table td:first-child{font-family:var(--f-body);}
       </ul>
 
       <h3><span class="zh-num">7.6</span>数据不一定都送到云端：雾计算和边缘计算（p.103–113）</h3>
+<!-- TEACH:begin 50 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>雾计算的好处：分布式处理，不用等中心服务器 → 快；上传前先做数据精简；能实时处理；雾节点和终端之间用无线连接。</li></ul></div><!-- TEACH:end 50 -->
       <p>把所有数据送到云端集中处理，好处是简单（p.103）；但数据量一大，问题就来了（p.104–105）：</p>
       <ul>
         <li>最后一公里的 IoT 网络带宽很小；</li>

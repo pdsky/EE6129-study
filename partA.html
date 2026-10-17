@@ -277,6 +277,19 @@ table td:first-child{font-family:var(--f-body);}
     <!-- ================= CH 0 ================= -->
     <section class="chapter" id="ch0">
       <div class="chapter-head"><span class="chapter-num">开篇</span><h2>为什么手机能同时给几万人打电话？</h2></div>
+<!-- TEACH:begin 29 --><style id="teach-css">
+:root{--teach:#a3214f;--teach-soft:#fcebf1;--teach-line:#eba3bd;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--teach:#f58db4;--teach-soft:rgba(245,141,180,.11);--teach-line:rgba(245,141,180,.4);}}
+:root[data-theme="dark"]{--teach:#f58db4;--teach-soft:rgba(245,141,180,.11);--teach-line:rgba(245,141,180,.4);}
+.teach{border:1px solid var(--teach-line);border-left:5px solid var(--teach);border-radius:10px;background:var(--teach-soft);padding:10px 16px 6px;margin:14px 0 22px;font-size:14.5px;line-height:1.7;}
+.teach > .lbl{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--teach);margin-bottom:4px;}
+.teach > .lbl span{font-weight:500;opacity:.8;}
+.teach.big > .lbl{font-size:15px;}
+.teach ul{margin:0 0 .4em;padding-left:1.25em;}
+.teach li{margin-bottom:.35em;}
+.teach mark.hl{background:linear-gradient(to bottom,transparent 45%,var(--teach-line) 45%);color:inherit;font-weight:600;}
+.exam .ex:not(.open) .teach{display:none;}
+</style><div class="teach big"><div class="lbl">▶ Part A 老师上课强调（考试与作业） <span>· Part A 课堂录音</span></div><ul><li><b>总评</b>：CA 40%，期末 60%。期末 3 小时 4 题，Part A、Part 2 各 2 题（顺序可能调换）。老师建议每题约 30 多分钟作答，留 5–10 分钟检查。</li><li><b>附录会给</b>：一部分公式、Q 函数表、Erlang B 表和 Erlang C 表。没给的公式都只需要简单的代数，要自己记住。<b>答案要写单位</b>，不要只写数字。</li><li><b>作业 HW1</b>：必须手写（可以用电子笔写好再打印），题目和期末题几乎一样，目的是练习考场上的书写速度。可以用 AI 查资料，但要注明并附参考文献；短文<b>限一页 A4</b>。交给指定的 PhD 学生，<b>不退还</b>，自己先拍照留底。</li><li><b>平时多练手写</b>：老师说监考时见过学生紧张到只把题目抄了一遍。</li><li><b>复习建议</b>：做作业、看往年卷、自己给讲义写要点总结。老师自己说 Part A 比 Part 2 容易。</li></ul></div><!-- TEACH:end 29 -->
       <p class="dropcap">想象一下最原始的做法：在城市中心造一根超大功率的天线，一次性把信号打到全城，所有人的手机都直接和它说话。这个办法哪里不对？</p>
       <p>问题不在信号能不能传那么远——功率开得足够大，物理上当然可以。问题在于<b>无线电频率是一种资源，而且是有限的资源</b>。你可以把它想象成一条马路：车道数是固定的，同一条车道同一时刻只能有一辆车通过。如果全城只有一座信号塔，能同时使用的"车道"（频率信道）就那么多，比如同时只能有1000条通话在跑，第1001个人打电话，系统会告诉他："线路忙，请稍后再拨"。</p>
       <p>这就是<b>蜂窝（cellular）</b>这个概念要解决的核心问题：怎么用有限的频率资源，服务数量几乎无限增长的用户。答案出奇地朴素——<b>不要用一个大塔，改用很多个小塔，每个小塔只负责很小的一块区域</b>。这一个改动，牵出了这门课第一部分几乎所有的内容：小塔怎么分布（六边形几何）、相邻小塔怎么防止互相干扰（频率复用与同频干扰）、频率不够用时还能怎么挤（小区分裂、扇区化）、以及手机从一个小塔的范围走到另一个的时候怎么保证通话不断（切换）。</p>
@@ -345,6 +358,7 @@ table td:first-child{font-family:var(--f-body);}
       </div>
 
       <h3><span class="zh-num">2.3</span>系统里都有什么"角色"</h3>
+<!-- TEACH:begin 30 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>每个基站都连到 MTSO（移动交换中心），老师说它是整个蜂窝系统的"大脑"。</li></ul></div><!-- TEACH:end 30 -->
       <p>把一个真实的蜂窝网络拆开看，主要有这么几个角色：</p>
       <ul>
         <li><b>移动台（Mobile Station, MS）</b> —— 也就是你的手机。</li>
@@ -358,6 +372,7 @@ table td:first-child{font-family:var(--f-body);}
       </ul>
 
       <h3><span class="zh-num">2.4</span>打一通电话，系统在背后做了什么</h3>
+<!-- TEACH:begin 31 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>通话建立流程这一段老师上课说"大家自己读，不太重要"，了解步骤即可。</li></ul></div><!-- TEACH:end 31 -->
       <p>理解了角色分工之后，一次完整的打电话过程其实就是这几个角色之间来回"打招呼"的流程：</p>
       <div class="worked">
         <summary><span class="wtag">流程</span>从开机到接通，手机经历了什么</summary>
@@ -424,6 +439,7 @@ table td:first-child{font-family:var(--f-body);}
       </ul>
 
       <h3><span class="zh-num">4.2</span>频谱效率：一MHz能撑起多少通话</h3>
+<!-- TEACH:begin 32 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>频谱效率（channels/MHz/km²）的公式老师说"要试着记住"；2025-26 S1 Q3(a)(iv) 就考了。</li></ul></div><!-- TEACH:end 32 -->
       <p>频谱是运营商真金白银买来的稀缺资源，那么很自然会问：<b>同样一段频谱，到底能撑起多少通话？</b>这个指标叫<b>频谱效率</b>，课程里把它拆成两个相互独立的部分，一个管"调制怎么切信道"，一个管"多址方式怎么分资源"：</p>
       <div class="formula-card">
         <div class="flbl">总频谱效率</div>
@@ -548,6 +564,7 @@ table td:first-child{font-family:var(--f-body);}
       <div class="chapter-head"><span class="chapter-num">第六章</span><h2>频率复用：把六边形的秘密用起来</h2></div>
 
       <h3><span class="zh-num">6.1</span>簇——频率复用的基本单位</h3>
+<!-- TEACH:begin 33 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>相邻小区必须用不同频率，隔开复用距离以后才能重复使用同一组信道。</li></ul></div><!-- TEACH:end 33 -->
       <p>现在把第二章埋下的伏笔捡回来。既然蜂窝已经做得又小又低功率了，那能不能让相隔足够远的两个蜂窝，重复使用同一组频率？答案是可以，而且这正是整个蜂窝系统"用有限频谱服务无限用户"的关键一招。</p>
       <p>把一组蜂窝拼在一起、刚好用完整个分配到的频谱、这一组称为一个<b>簇（cluster）</b>，簇里含有的蜂窝数记作<b>N</b>。整个服务区就由这样的簇一块接一块地铺开，同一组频率每隔N个蜂窝重复出现一次。</p>
       <div class="analogy">
@@ -734,6 +751,7 @@ table td:first-child{font-family:var(--f-body);}
       </div>
 
       <h3><span class="zh-num">7.4</span>信道怎么分给每个蜂窝：固定 vs 动态</h3>
+<!-- TEACH:begin 34 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>固定分配简单但不灵活；动态分配和信道借用更灵活。借用的信道通话结束后要还回原小区，借用时仍要满足复用距离，不能造成同频干扰。</li></ul></div><!-- TEACH:end 34 -->
       <p>算出了每个蜂窝该有多少个信道之后，还有一个问题：具体是<b>哪些</b>信道分给哪个蜂窝？两种思路：</p>
       <ul>
         <li><b>固定信道分配（FCA）</b>：每个蜂窝提前分配好一组固定信道，用完了就是用完了，哪怕隔壁蜂窝的信道还空着一大把，你也借不到——话务分布不均匀时会很浪费。</li>
@@ -781,6 +799,7 @@ table td:first-child{font-family:var(--f-body);}
       </div>
 
       <h3><span class="zh-num">8.3</span>Erlang B：呼损制——打不通就是打不通</h3>
+<!-- TEACH:begin 35 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>Erlang B 公式附录虽然会给，但老师说<b>从没见过考试真正用它算</b>（要递推，计算器做不了），实际都<b>查表</b>。</li><li>查表前确认：<mark class="hl">用对了表（B 还是 C）</mark>，阻塞率对应的列（如 2% = 0.02）也要找对。</li><li>表里没有的信道数用<b>线性插值</b>，老师说这个要会。</li></ul></div><!-- TEACH:end 35 -->
       <p>这是蜂窝系统里最常用的模型：所有信道被占满时，新呼叫会被直接阻塞、挂断，用户需要自己重新再拨一次（系统不会帮你排队）。这个模型给出的核心指标叫<b>服务等级（Grade of Service, GoS）</b>——也就是"你打电话恰好赶上信道全忙、被拒绝服务"的概率。行业惯例是把GoS控制在1–2%（100次通话大概有1到2次会打不通），超过5%就会让用户明显感到烦躁。</p>
       <div class="formula-card">
         <div class="flbl">Erlang B 公式</div>
@@ -803,6 +822,7 @@ table td:first-child{font-family:var(--f-body);}
       <p>上面这道例题已经悄悄展示了一个很有意思的现象：把信道数从20提高到100（涨了5倍），能服务的用户数却从52涨到360（涨了近7倍）——涨得比信道数本身还快。这就是<b>集群增益（trunking gain）</b>：信道池越大，在同样的服务等级下，平均每个信道能撑起的用户数越多。直觉上很好理解——信道池越大，个别用户的通话高峰更容易被其他空闲信道"匀掉"，类似于大池子比小池子更能吸收波动。这也是为什么运营商总是倾向于把信道集中在大蜂窝里统一调度，而不是拆成很多份各自为政。</p>
 
       <h3><span class="zh-num">8.5</span>Erlang C：排队制——愿意等就有机会接通</h3>
+<!-- TEACH:begin 36 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>M/M/m 的<b>状态转移图要会画</b>，会按"流过边界的概率流相等"列平衡方程、递推求 P<sub>k</sub> 和 P₀（求和时要用等比数列公式）。老师说这部分也是作业内容；2025-26 S2 Q3(c) 就考了。</li><li>复杂的排队公式（平均等待时间等）一般会给，不要求背；知道 P₀ 以后其他量都是代公式。</li></ul></div><!-- TEACH:end 36 -->
       <p>如果系统允许把打不通的呼叫暂存到一个队列里排队（而不是直接拒绝），这时候用的是<b>Erlang C</b>模型。它给出的不是"被拒绝的概率"，而是<b>需要排队等待的概率 P_D</b>，以及排上队之后<b>平均要等多久 W</b>——这套逻辑在数据业务里比在语音通话里更常见，因为数据包本来就可以缓冲，语音通话对实时性要求太高，等不起。</p>
     
 <!-- PASTQ:begin --><style id="pastq-css">
@@ -965,6 +985,7 @@ where P<sub>k</sub> represents the state probability of the system state being a
       </div>
 
       <h3><span class="zh-num">9.2</span>扇区化——同一个基站，换一副"眼睛"</h3>
+<!-- TEACH:begin 37 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>扇区化提高 SIR（干扰源变少），但每个扇区分到的信道变少，集群效率下降，这一点要会讲。</li></ul></div><!-- TEACH:end 37 -->
       <p>另一条路是<b>扇区化（sectoring）</b>：不新建基站，把全向天线换成几个指向不同方向的定向天线，最常见是 3 个 120° 扇区或 6 个 60° 扇区（p.143）。</p>
       <div class="analogy">
         <div class="lbl">类比</div>

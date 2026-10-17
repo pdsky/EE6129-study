@@ -286,6 +286,19 @@ table td:first-child{font-family:var(--f-body);}
     <!-- ================= CH 0 ================= -->
     <section class="chapter" id="ch0">
       <div class="chapter-head"><span class="chapter-num">开篇</span><h2>把基站放到天上，能不能一劳永逸？</h2></div>
+<!-- TEACH:begin 51 --><style id="teach-css">
+:root{--teach:#a3214f;--teach-soft:#fcebf1;--teach-line:#eba3bd;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--teach:#f58db4;--teach-soft:rgba(245,141,180,.11);--teach-line:rgba(245,141,180,.4);}}
+:root[data-theme="dark"]{--teach:#f58db4;--teach-soft:rgba(245,141,180,.11);--teach-line:rgba(245,141,180,.4);}
+.teach{border:1px solid var(--teach-line);border-left:5px solid var(--teach);border-radius:10px;background:var(--teach-soft);padding:10px 16px 6px;margin:14px 0 22px;font-size:14.5px;line-height:1.7;}
+.teach > .lbl{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--teach);margin-bottom:4px;}
+.teach > .lbl span{font-weight:500;opacity:.8;}
+.teach.big > .lbl{font-size:15px;}
+.teach ul{margin:0 0 .4em;padding-left:1.25em;}
+.teach li{margin-bottom:.35em;}
+.teach mark.hl{background:linear-gradient(to bottom,transparent 45%,var(--teach-line) 45%);color:inherit;font-weight:600;}
+.exam .ex:not(.open) .teach{display:none;}
+</style><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>卫星是 Part A 老师最后一周讲的，时间很短，但他认为这是未来很重要的方向。期末考过一题（2025-26 S2 Q4(b) 四种切换）。</li></ul></div><!-- TEACH:end 51 -->
       <p class="dropcap">地球是圆的，无线电波走直线，地面上相距很远的两点"看不见"对方，中间必须有中继站（p.5）。把中继站放到天上，一颗卫星就能覆盖很大一片地区，这是卫星通信的出发点。</p>
       <p>卫星最初是为了替代跨洋电话电缆、提供长途电话（p.4）；现在用于电信、遥感、气象、导航与 GPS、侦察、移动卫星电话等。业务重心已经从电话转向<b>视频和数据</b>：电视广播、导航、移动卫星通信最有前景（p.5）。</p>
       <p>卫星通信的几个独特优势（p.6）：</p>
@@ -303,6 +316,7 @@ table td:first-child{font-family:var(--f-body);}
       <div class="chapter-head"><span class="chapter-num">第一章</span><h2>基本术语与三种轨道</h2></div>
 
       <h3><span class="zh-num">1.1</span>术语（p.8）</h3>
+<!-- TEACH:begin 52 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>老师说即使只是为了求职面试，也要知道卫星通信的基本术语（地面站、转发等）。</li></ul></div><!-- TEACH:end 52 -->
       <div class="tblwrap"><table><thead><tr><th>术语</th><th>含义</th></tr></thead><tbody>
         <tr><td>地面站 Earth Station</td><td>地面上或地面附近的天线系统</td></tr>
         <tr><td>上行 Uplink</td><td>地面站 → 卫星</td></tr>
@@ -432,6 +446,7 @@ table td:first-child{font-family:var(--f-body);}
       <div class="chapter-head"><span class="chapter-num">第三章</span><h2>GEO、LEO、MEO：一场关于高度的权衡</h2></div>
 
       <h3><span class="zh-num">3.1</span>GEO：覆盖广、好跟踪，但信号弱、时延大（p.15–16）</h3>
+<!-- TEACH:begin 53 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>GEO 离地约 36,000 km，传播距离长，所以必须用高增益天线。</li></ul></div><!-- TEACH:end 53 -->
       <p>GEO 卫星在赤道上空 35,863 km 的圆轨道上，转速和地球自转一样，始终停在赤道某一点的正上方（p.15）。</p>
       <div class="tblwrap"><table><thead><tr><th>优点（p.15）</th><th>缺点（p.16）</th></tr></thead><tbody>
         <tr><td>相对地面几乎不动，多普勒频移对通信影响不大</td><td>走了 35,000 多公里，信号很弱</td></tr>
@@ -494,6 +509,7 @@ table td:first-child{font-family:var(--f-body);}
       <div class="chapter-head"><span class="chapter-num">第四章</span><h2>信号从天上到地面：链路、配置、地面站和频段</h2></div>
 
       <h3><span class="zh-num">4.1</span>影响链路质量的三大因素（p.21–23）</h3>
+<!-- TEACH:begin 54 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>老师原话的意思是"这三个因素非常重要，我必须强调"：卫星与地面站之间的距离（频率越高、距离越远，损耗越大）、地面站离瞄准点的距离、大气衰减。</li></ul></div><!-- TEACH:end 54 -->
       <ol>
         <li><b>卫星天线和地面站天线之间的距离</b>：频率越高、卫星越高，信号功率损失越大。</li>
         <li><b>下行时，地面站离卫星"瞄准点"的地面距离</b>：卫星信号对准地面某一点，覆盖区中心收到的功率最高，越往外越弱。</li>
@@ -537,6 +553,7 @@ table td:first-child{font-family:var(--f-body);}
       </div>
 
       <h3><span class="zh-num">4.4</span>卫星通信频段（p.27）</h3>
+<!-- TEACH:begin 55 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>Ku、Ka 频段很常用，但受雨衰影响大，因为雨滴的尺寸接近波长。</li></ul></div><!-- TEACH:end 55 -->
       <div class="tblwrap"><table><thead><tr><th>频段</th><th>频率范围</th><th>总带宽</th><th>主要用途</th></tr></thead><tbody>
         <tr><td>L</td><td>1–2 GHz</td><td>1 GHz</td><td>移动卫星业务 MSS</td></tr>
         <tr><td>S</td><td>2–4 GHz</td><td>2 GHz</td><td>MSS、NASA、深空研究</td></tr>
@@ -576,6 +593,7 @@ table td:first-child{font-family:var(--f-body);}
       </div>
 
       <h3><span class="zh-num">5.2</span>固定分配 vs 按需分配（p.29–30）</h3>
+<!-- TEACH:begin 56 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part A 课堂录音</span></div><ul><li>固定分配（FAMA）：预先分好、不能改；按需分配（DAMA）：把一部分链路当公共池，按各站的需求分配，更灵活。</li></ul></div><!-- TEACH:end 56 -->
       <div class="tblwrap"><table><thead><tr><th></th><th>FAMA（固定分配）</th><th>DAMA（按需分配）</th></tr></thead><tbody>
         <tr><td>怎么分</td><td>容量以固定方式分给各站</td><td>根据各站需求的变化随时调整</td></tr>
         <tr><td>问题</td><td>需求波动时，大量容量闲置</td><td>需要信令和调度</td></tr>

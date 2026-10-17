@@ -306,6 +306,19 @@ table td:first-child{font-family:var(--f-body);}
 
     <section class="chapter" id="overview">
       <div class="chapter-head"><span class="chapter-num">总览</span><h2>先看出题规律</h2></div>
+<!-- TEACH:begin 57 --><style id="teach-css">
+:root{--teach:#a3214f;--teach-soft:#fcebf1;--teach-line:#eba3bd;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--teach:#f58db4;--teach-soft:rgba(245,141,180,.11);--teach-line:rgba(245,141,180,.4);}}
+:root[data-theme="dark"]{--teach:#f58db4;--teach-soft:rgba(245,141,180,.11);--teach-line:rgba(245,141,180,.4);}
+.teach{border:1px solid var(--teach-line);border-left:5px solid var(--teach);border-radius:10px;background:var(--teach-soft);padding:10px 16px 6px;margin:14px 0 22px;font-size:14.5px;line-height:1.7;}
+.teach > .lbl{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--teach);margin-bottom:4px;}
+.teach > .lbl span{font-weight:500;opacity:.8;}
+.teach.big > .lbl{font-size:15px;}
+.teach ul{margin:0 0 .4em;padding-left:1.25em;}
+.teach li{margin-bottom:.35em;}
+.teach mark.hl{background:linear-gradient(to bottom,transparent 45%,var(--teach-line) 45%);color:inherit;font-weight:600;}
+.exam .ex:not(.open) .teach{display:none;}
+</style><div class="teach big"><div class="lbl">▶ 老师上课讲的答题要求 <span>· 两位老师的课堂录音</span></div><ul><li>期末 3 小时 4 题，每题约 45 分钟。Part 2 老师说他的两题最难，平均分通常比较低；Part A 老师说他的部分比较容易。</li><li>附录会给部分公式、Q 函数表、Erlang B/C 表。Part 2 讲义里<b>蓝框公式要自己背</b>，没框的考试会给。</li><li>按步骤给分：粗心错误只扣一部分，但<b>不做 dB 换算、不写单位会扣分</b>；问衰落类型要两个维度都答。</li><li>先读题、把已知量写下来，再写出对应的公式。</li></ul></div><!-- TEACH:end 57 -->
       <p>四份卷子的结构完全一样：3 小时、闭卷、4 道题全做、每题 25 分。附录给了傅里叶变换表、常用公式（高斯概率密度、Q 函数、SIR 与扇区化 SIR、Erlang B/C 公式、线性插值）、Erlang B 表、Erlang C 表和 Q 函数表，所以<b>这些公式不用背，但要会用、会查表</b>。</p>
       <div class="tblwrap"><table class="pq-table"><thead><tr><th>试卷</th><th>Q1 · Part 2</th><th>Q2 · Part 2</th><th>Q3 · Part A 计算</th><th>Q4 · 论述</th></tr></thead><tbody><tr><td><a href="#y2324s2"><b>2023-24 S2</b></a><br><span style="font-size:11px">April / May 2024</span></td><td><a href="#y2324s2-q1a">Q1</a> 信道（路径损耗、阴影中断、衰落类型、衰落余量）＋ SD 分集 ＋ 空间复用、Alamouti</td><td><a href="#y2324s2-q2a">Q2</a> ISI 与线性均衡 ＋ OFDM（H<sub>k</sub>、保护间隔损失）</td><td><a href="#y2324s2-q3a">Q3</a> Erlang B 反推小区半径、集群增益、扇区化 ＋ 三种多址</td><td><a href="#y2324s2-q4ab">Q4</a> IoT 两个栈、雾计算 ＋ 推导 SIR = 1.76 + 20 log N</td></tr><tr><td><a href="#y2425s2"><b>2024-25 S2</b></a><br><span style="font-size:11px">April / May 2025</span></td><td><a href="#y2425s2-q1a">Q1</a> 信道（路径损耗图、AFD/LCR、注水）＋ SD 支路数 ＋ 分集复用折中、MIMO 容量</td><td><a href="#y2425s2-q2a">Q2</a> 迫零均衡、残余 ISI ＋ OFDM（速率、CP 表达式、等容量功率）</td><td><a href="#y2425s2-q3">Q3</a> FDD-TDMA 选簇、Erlang B、小区分裂、三扇区</td><td><a href="#y2425s2-q4a">Q4</a> HLR/VLR ＋ IoT 四子层 ＋ Erlang B 中继效率</td></tr><tr><td><a href="#y2526s1"><b>2025-26 S1</b></a><br><span style="font-size:11px">November / December 2025</span></td><td><a href="#y2526s1-q1a">Q1</a> 二进制检测（星座、高斯、Q(2)）＋ MRC 分集增益 ＋ SIMO、并行信道容量</td><td><a href="#y2526s1-q2a">Q2</a> ISI 误码率、均衡器噪声增强 ＋ OFDM（子载波数、速率、相关器）</td><td><a href="#y2526s1-q3a">Q3</a> 小区数、信道数、频谱效率 ＋ Erlang C ＋ FCA/DCA</td><td><a href="#y2526s1-q4a">Q4</a> WLAN 入网过程 ＋ IoT 五难点 ＋ 雾计算特征</td></tr><tr><td><a href="#y2526s2"><b>2025-26 S2</b></a><br><span style="font-size:11px">April / May 2026</span></td><td><a href="#y2526s2-q1a">Q1</a> 衰落类型、LCR、衰落余量 ＋ 阵列增益 ＋ MIMO 模型、Alamouti 检测方差</td><td><a href="#y2526s2-q2a">Q2</a> Nyquist 准则、均衡器噪声、残余 ISI ＋ OFDM（H<sub>k</sub>、IDFT、CP 损失）</td><td><a href="#y2526s2-q3a">Q3</a> 簇与系统容量 ＋ Erlang C ＋ M/M/m 推导</td><td><a href="#y2526s2-q4a">Q4</a> 硬/软切换 ＋ 卫星四种切换 ＋ WSN 架构 ＋ IoT 四子层</td></tr></tbody></table></div>
       <h3><span class="zh-num">1</span>每年都考的固定套路</h3>
