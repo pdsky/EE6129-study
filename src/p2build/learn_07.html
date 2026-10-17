@@ -27,6 +27,9 @@
           <div class="wans">B/B_C ≪ N ≪ B/B_d：N 太小，子信道不平坦；N 太大，符号太长，一个符号内信道就变了</div>
         </div>
       </div>
+      <!-- KP:nsel -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>子载波数的选取原则（p.5、p.8、p.14，Practice 7 第 1(a) 题）。</dd><dt>用到的知识</dt><dd>平坦衰落：子载波带宽 &lt; 相干带宽；慢衰落：符号时长 &lt; 相干时间 ≈ 1/B<sub>d</sub>。</dd><dt>关键一步</dt><dd>Δf = B/N 和 T = N/B 都由 N 决定：N 大 → 子信道更平坦，但符号更长，信道在一个符号内来不及保持不变。所以 N 有上下两个界。</dd><dt>期末计算</dt><dd>N &gt; B/B<sub>C</sub>，往上取整：B = 500 kHz、B<sub>C</sub> = 30 kHz → N = 17（2025-26 S1）。</dd><dt>易错</dt><dd>平坦比较的是"子载波带宽 vs 相干带宽"，慢衰落比较的是"符号时长 vs 相干时间"，别交叉。</dd></dl></div>
+      <!-- /KP:nsel -->
 
       <!-- ENR:learn_07.html:7.1 -->
       <div class="key"><div class="lbl">★ 考试重点 · 子载波数和速率（期末每年都有一问）</div>
@@ -40,10 +43,28 @@
         <div class="fexpr">\(\dfrac1T\displaystyle\int_0^Te^{j2\pi(f_j-f_k)t}dt=\begin{cases}1&j=k\\0&j\ne k\end{cases}\)　　\(x(t)=\dfrac{1}{\sqrt T}\sum_{k=0}^{N-1}s_ke^{j2\pi kt/T}\)</div>
         <div class="fmeaning">子载波间隔正好是 1/T，任意两个子载波在一个符号周期内都相差整数个周期，相乘积分为 0。所以虽然各子载波的频谱（sinc 形状）互相重叠，在每个子载波的中心频率处，其他子载波正好过零（p.10–11）。接收端在 \(f=k/T\) 处采样频谱，就能把 \(s_k\) 单独取出来。</div>
       </div>
-      <p>频谱互相重叠，所以 OFDM 比传统频分复用（各子载波之间要留保护带）省带宽（p.27）。功率谱 \(\sum_n\mathrm{sinc}^2(fT-n)\)，N 很大时总带宽趋于 N/T（p.11）。</p>
+      <!-- DRV:ortho -->
+      <div class="worked">
+        <summary><span class="wtag">推导</span>子载波为什么正交、频谱为什么是 sinc（p.7、p.9–11）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">\(\dfrac1T\int_0^Te^{j2\pi(j-k)t/T}dt\)。j = k 时被积函数恒为 1，结果 1。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext">j ≠ k 时记 m = j − k（非零整数）：<div class="calc">(1/T) · [ e^(j2πmt/T) / (j2πm/T) ]₀^T = (e^(j2πm) − 1) / (j2πm) = 0</div>因为 \(e^{j2\pi m}=1\)。物理意义：两个子载波的差频在 T 秒内正好转整数圈，正负面积抵消。子载波间隔必须正好是 1/T 的整数倍。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>频谱</b>：每个子载波只持续 T 秒，相当于乘了一个宽 T 的矩形窗。矩形窗的傅里叶变换是 sinc，所以第 k 个子载波的频谱幅度 ∝ \(\mathrm{sinc}(fT-k)\)，主瓣中心在 f = k/T（p.9）。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext">\(\mathrm{sinc}(x)=\dfrac{\sin\pi x}{\pi x}\) 在所有非零整数 x 处为 0。在 f = k/T 处，其他子载波的值 \(\mathrm{sinc}(k-m)=0\)，只剩 \(s_k\)：<b>频谱重叠但在采样点上互不干扰</b>（p.10 的图）。</div></div><div class="wstep"><div class="wn">5</div><div class="wtext">N 个子载波的主瓣铺满约 N/T 的宽度，N 很大时总带宽 \(B\approx N/T=1/T_s\)（p.11）。</div></div>
+          <div class="wans">间隔 1/T → 差频整数圈 → 积分为 0；频域里每个 sinc 的峰正好落在其他 sinc 的零点上</div>
+        </div>
+      </div>
+      <!-- /DRV:ortho -->
+            <p>频谱互相重叠，所以 OFDM 比传统频分复用（各子载波之间要留保护带）省带宽（p.27）。功率谱 \(\sum_n\mathrm{sinc}^2(fT-n)\)，N 很大时总带宽趋于 N/T（p.11）。</p>
       <p><b>实现</b>：发射端的"N 个子载波相加"在离散时间就是 <b>IDFT</b>，接收端的"N 个相关器"就是 <b>DFT</b>（p.19–20），都用 FFT 快速计算。</p>
 
-      <!-- ENR:learn_07.html:7.2 -->
+      <!-- DRV:idft -->
+      <div class="worked">
+        <summary><span class="wtag">推导</span>发端是 IDFT、收端是 DFT（p.19–20）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">一个块内 \(x(t)=\frac{1}{\sqrt T}\sum_ks_ke^{j2\pi kt/T}\)。每 \(T_s=T/N\) 采样一次，\(t=iT/N\)：\(x_i=\frac{1}{\sqrt T}\sum_{k=0}^{N-1}s_ke^{j2\pi ki/N}\)，i = 0 … N − 1。和 N 点 IDFT \(x_i=\frac1N\sum_ks_ke^{j2\pi ki/N}\) 只差一个常数（讲义 p.19 写的是 1/N 版本）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext">收端对 N 个采样做 DFT：<div class="calc">Σ<sub>i</sub> x<sub>i</sub> e^(−j2πik/N) = (1/N) Σ<sub>m</sub> s<sub>m</sub> Σ<sub>i</sub> e^(j2π(m−k)i/N)</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext">里面的和是等比数列，公比 \(q=e^{j2\pi(m-k)/N}\)。m = k 时 q = 1，和为 N；m ≠ k 时 \(\sum_{i=0}^{N-1}q^i=\dfrac{1-q^N}{1-q}=\dfrac{1-e^{j2\pi(m-k)}}{1-q}=0\)。所以结果正好是 \(s_k\)：这是上面积分正交的<b>离散版本</b>。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext">p.20 的相关器 \(\frac1T\int_0^Tx(t)e^{-j2\pi kt/T}dt\) 用 N 个采样求和近似，就是 DFT。N 个相关器 = 一次 FFT，运算量 N log N，而不是 N² 次乘法。</div></div>
+          <div class="wans">x = IDFT{s}，s = DFT{x}；离散正交 Σ<sub>i</sub> e<sup>j2π(m−k)i/N</sup> = Nδ[m − k]</div>
+        </div>
+      </div>
+      <!-- /DRV:idft -->
+            <!-- ENR:learn_07.html:7.2 -->
       <div class="key"><div class="lbl">★ 两个证明题的答题要点</div>
 <ul><li><b>相关器输出 = s<sub>n</sub></b>（2025-26 S1 Q2(b)(iii)）：乘 (1/√T)e<sup>−j2πnt/T</sup> 在 [0, T] 积分，得 (1/T)Σ<sub>k</sub> s<sub>k</sub>∫e<sup>j2π(k−n)t/T</sup>dt。k = n 时被积函数为 1，积分 = T；k ≠ n 时是整数个周期的复指数，积分 = 0。所以只剩 s<sub>n</sub>。</li>
 <li><b>为什么是 IDFT</b>（2025-26 S2 Q2(b)(ii)）：在一个块内按 t = iT/N 采样，x<sub>i</sub> = (1/√T)Σ s<sub>k</sub>e<sup>j2πki/N</sup>，和 N 点 IDFT 的式子只差一个常数。频域的 N 个符号变成时域的 N 个采样，发端用 IFFT、收端用 FFT。</li></ul></div>
@@ -64,6 +85,9 @@
           <p style="margin-top:12px">直观看：子载波 2 上，直射和延迟两路正好反相相减，只剩 0.2；子载波 0（= 4）上同相相加，有 1.4。</p>
         </div>
       </div>
+      <!-- KP:hk4 -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>子信道增益 H<sub>k</sub> = Σh<sub>i</sub>e<sup>−j2πik/N</sup>（p.15），期末每年 Q2(b)。</dd><dt>用到的知识</dt><dd>欧拉公式：e<sup>−jπ/2</sup> = −j，e<sup>−jπ</sup> = −1，e<sup>−j3π/2</sup> = j；|a + jb|² = a² + b²。</dd><dt>关键一步</dt><dd>每个 k 只是把第二个抽头转 k × 90°，再和第一个抽头相加。</dd><dt>自检</dt><dd>H<sub>N</sub> = H₀ = 所有抽头之和；实系数时 H₁ 和 H₃ 共轭；Σ|H<sub>k</sub>|² = N Σh<sub>i</sub>²：1 + 0.04 + 1 + 1.96 = 4 = 4 × (0.64 + 0.36)。</dd><dt>为什么是 DFT</dt><dd>加了循环前缀后，线性卷积变成循环卷积，DFT 后变成乘法（7.4 节的推导框）。</dd></dl></div>
+      <!-- /KP:hk4 -->
 
       <!-- ENR:learn_07.html:7.3 -->
       <div class="key"><div class="lbl">★ 考试重点 · 手算 H<sub>k</sub>（N = 4 的速算表）</div>
@@ -79,7 +103,16 @@
         <li><b>保护间隔</b>（p.17–18）：每个 OFDM 块前面延长 \(T_G\ge T_D\)，接收端把这段丢掉，只看后面的 N 个采样，上一块的回声就进不来。代价是多花了时间和功率，<b>功率损失</b> \(=10\log_{10}\dfrac{NT_S+T_G}{NT_S}\) dB。</li>
         <li><b>循环前缀 CP</b>（p.21–22）：保护间隔里放的不是空白，而是把这个块<b>最后 G 个采样复制到最前面</b>。这样信道的线性卷积在接收窗口里等价于循环卷积，DFT 以后正好变成相乘：\(r_k=H_ks_k+w_k\)。子载波之间保持正交，没有 ICI。</li>
       </ul>
+      <!-- DRV:circ -->
       <div class="worked">
+        <summary><span class="wtag">推导</span>为什么加了循环前缀以后 r<sub>k</sub> = H<sub>k</sub>s<sub>k</sub> + w<sub>k</sub>（p.15–22）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">采样后的多径信道是离散卷积：\(r_i=\sum_{l=0}^{L-1}h_lx_{i-l}+w_i\)，L 个抽头，最长的回波晚 L − 1 个采样。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>没有 CP</b>：块内前几个采样（i &lt; L − 1）里，\(x_{i-l}\) 的下标是负的，取到的是<b>上一个块</b>的数据 → 块间干扰（p.16 的 Delay Spread 项）；接收窗口里看到的也不是完整的周期信号，子载波失去正交 → ICI。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>有 CP</b>：发送 \(x_{-G},\dots,x_{-1},x_0,\dots,x_{N-1}\)，其中 \(x_{-m}=x_{N-m}\)（块尾复制到块头，p.21）。只要 <mark class="hl">G ≥ L − 1</mark>，接收端保留的 i = 0 … N − 1 用到的 \(x_{i-l}\) 下标都 ≥ −G，全在本块里，而且 \(x_{i-l}=x_{(i-l)\bmod N}\)：<div class="calc">r<sub>i</sub> = Σ<sub>l</sub> h<sub>l</sub> x<sub>(i−l) mod N</sub> + w<sub>i</sub>　← 循环卷积</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext">代入 \(x_n=\frac1N\sum_ks_ke^{j2\pi kn/N}\)。\(e^{j2\pi kn/N}\) 以 N 为周期，mod N 不影响它：<div class="calc">r<sub>i</sub> = (1/N) Σ<sub>k</sub> s<sub>k</sub> e^(j2πki/N) · Σ<sub>l</sub> h<sub>l</sub> e^(−j2πkl/N) + w<sub>i</sub> = (1/N) Σ<sub>k</sub> (H<sub>k</sub>s<sub>k</sub>) e^(j2πki/N) + w<sub>i</sub></div>中间那个求和正是 \(H_k=\sum_lh_le^{-j2\pi lk/N}\)（p.15）。</div></div><div class="wstep"><div class="wn">5</div><div class="wtext">上式说明 \(\{r_i\}\) 是 \(\{H_ks_k\}\) 的 IDFT。收端做 DFT：<mark class="hl">\(R_k=H_ks_k+W_k\)</mark>（p.22）。每个子载波只乘一个复数，频域均衡就是除以 \(H_k\)（p.25）。</div></div><div class="wstep"><div class="wn">6</div><div class="wtext">代价：每块多发 G 个采样，效率 N/(N + G)，功率损失 \(10\log_{10}\frac{N+G}{N}=10\log_{10}\frac{NT_s+T_G}{NT_s}\) dB（p.18）。</div></div>
+          <div class="wans">CP ≥ L − 1 → 线性卷积变循环卷积 → DFT 后变乘法：r<sub>k</sub> = H<sub>k</sub>s<sub>k</sub> + w<sub>k</sub>（用 h = {0.8, 0.6}、N = 4、G = 1 数值验证过）</div>
+        </div>
+      </div>
+      <!-- /DRV:circ -->
+            <div class="worked">
         <summary><span class="wtag">例题</span>最短需要多长的循环前缀（Practice 7 第 3 题）</summary>
         <div class="wbody">
           <p>已知条件：信道 \(H(z)=1+0.9z^{-1}\)。</p>
@@ -88,6 +121,9 @@
           <div class="wans">最短 CP = 1 个采样（符号）长度</div>
         </div>
       </div>
+      <!-- KP:cpmin -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>循环前缀的长度要求（p.17–22，Practice 7 第 3 题）。</dd><dt>用到的知识</dt><dd>Z⁻¹ = 延迟一个采样；L 个抽头的信道，最长延迟 L − 1 个采样。</dd><dt>关键一步</dt><dd>CP ≥ L − 1 = 1 个采样：接收窗口里的 N 个采样都只含本块的数据，线性卷积变成循环卷积。</dd><dt>换成时间</dt><dd>连续时间里就是 T<sub>G</sub> ≥ 最大时延扩展 T<sub>D</sub>（p.5、p.17）。</dd><dt>易错</dt><dd>是 L − 1 个（1 个），不是 L 个（2 个）；CP 太长浪费时间和功率，损失 10 log((N + G)/N) dB。</dd></dl></div>
+      <!-- /KP:cpmin -->
       <div class="worked">
         <summary><span class="wtag">例题</span>设计一个 OFDM 系统（Practice 7 第 2 题）</summary>
         <div class="wbody">
@@ -100,6 +136,9 @@
           <p style="margin-top:12px">检验：每秒 1/120 µs = 8333 个 OFDM 符号 × 60 个子载波 × 4 bit = 2 Mbps ✓。CP 占 1/6 的时间，功率损失 10 log(120/100) = 0.79 dB。</p>
         </div>
       </div>
+      <!-- KP:design -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>OFDM 参数设计：子载波数、符号时长、CP 开销（Practice 7 第 2 题；期末每年一问）。</dd><dt>用到的知识</dt><dd>有用符号时长 T = N/B = 1/Δf；块时长 T + T<sub>G</sub>；速率 = N log₂M / (T + T<sub>G</sub>)。</dd><dt>关键一步</dt><dd>列方程 4N / (N/600k + 20 µs) = 2 M，解出 N = 60。</dd><dt>检验</dt><dd>60 × 4 bit / 120 µs = 2 Mbps；CP 功率损失 10 log(120/100) = 0.79 dB。</dd><dt>易错</dt><dd>题目给的是比特速率，要除以 log₂M = 4 得符号速率；CP 不传数据但占时间。</dd></dl></div>
+      <!-- /KP:design -->
 
       <!-- ENR:learn_07.html:7.4 -->
       <div class="key"><div class="lbl">★ 考试重点 · 循环前缀</div>
@@ -124,6 +163,9 @@
           <div class="wans">每个子载波占 B/N 的带宽，所以按 bit/s/Hz 算要除以 N = 4：C ≈ 1.79 ≈ 1.8 bit/s/Hz</div>
         </div>
       </div>
+      <!-- KP:eqcap -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>OFDM 的功率分配：等容量 vs 注水（p.24，Practice 7 第 1(c)(d) 题；期末 2024-25 Q2(b)(iii)）。</dd><dt>用到的知识</dt><dd>子载波容量 log₂(1 + |H<sub>k</sub>|²P<sub>k</sub>/N<sub>k</sub>)；注水 P<sub>k</sub> = μ − N<sub>k</sub>/|H<sub>k</sub>|²（不能为负）。</dd><dt>关键一步</dt><dd>等容量 ⇔ |H<sub>k</sub>|²P<sub>k</sub> 都相同 → P<sub>k</sub> ∝ 1/|H<sub>k</sub>|²，越差的子载波给越多功率；注水正好相反，越差的给越少，太差的不给。</dd><dt>单位</dt><dd>4 个子载波各占 B/4：总共 7.15 bit 对应每 Hz 7.15/4 = 1.79 bit/s/Hz。</dd><dt>易错</dt><dd>题目给 |H<sub>k</sub>| 时要先平方；池底是 N<sub>k</sub>/|H<sub>k</sub>|²（噪声 ÷ 增益），不是 |H<sub>k</sub>|²。</dd></dl></div>
+      <!-- /KP:eqcap -->
       <div class="formula-card">
         <div class="flbl">频域均衡（p.25–26）</div>
         <div class="fexpr">\(R_k=s_kH_k+W_k\ \Longrightarrow\ \hat s_k=\dfrac{R_k}{H_k}\)</div>

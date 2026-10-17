@@ -69,6 +69,9 @@
           <div class="wans">P(A∪B) = 5/6，P(A∩B) = 1/6；摸弹珠 P(B) = 4/7，P(A|B) = 1/2</div>
         </div>
       </div>
+      <!-- KP:dice -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>事件的交、并和条件概率，第 1b 章 p.3–9 的四条规则。</dd><dt>用到的知识</dt><dd>等可能时 P = 有利结果数 / 总数；加法规则要减去被数了两遍的交集；条件概率 P(A|B) = P(A∩B)/P(B)：已知 B 发生，样本空间缩小到 B。</dd><dt>关键一步</dt><dd>摸弹珠直接数"剩下的袋子"：3 红 3 蓝 → 1/2。用乘法规则核对：P(先蓝后红) = 4/7 × 3/6 = 2/7，除以 P(B) = 4/7 正好是 1/2。</dd><dt>独立 ≠ 互斥</dt><dd>骰子的 A、B 独立吗？P(A∩B) = 1/6，P(A)P(B) = 1/4，不相等 → 不独立。互斥是"不能同时发生"（P(A∩B) = 0），独立是"互不影响"（P(A∩B) = P(A)P(B)）；概率都不为 0 的两个互斥事件一定不独立。</dd><dt>后面在哪用</dt><dd>第 4 章分集：M 条独立支路同时中断的概率 = 各自概率相乘（p.3、p.11）。</dd></dl></div>
+      <!-- /KP:dice -->
       <div class="formula-card">
         <div class="flbl">四条规则（第 1b 章 p.5–9）</div>
         <div class="fexpr">加法：\(P(A\cup B)=P(A)+P(B)-P(A\cap B)\)<br>乘法：\(P(A\cap B)=P(A)\,P(B\mid A)=P(B)\,P(A\mid B)\)<br>全概率：\(P(B)=\sum_i P(A_i)\,P(B\mid A_i)\)<br>贝叶斯：\(P(A_i\mid B)=\dfrac{P(A_i)P(B\mid A_i)}{\sum_j P(A_j)P(B\mid A_j)}\)</div>
@@ -85,6 +88,9 @@
           <p style="margin-top:12px">这个例子正是第 4 章"离散 SNR 分布求平均误码率"的套路：期末 2023-24 Q1(b)(i)、2025-26 S1 Q1(b)(i) 都是先列出每种 SNR 的概率，算出各自的误码率，再按概率加权。</p>
         </div>
       </div>
+      <!-- KP:bayes -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>全概率公式（分情况加权）和贝叶斯公式（由结果反推原因）。</dd><dt>用到的知识</dt><dd>全概率要求各种情况<b>互斥且完备</b>（概率加起来等于 1，这里 0.8 + 0.2）；贝叶斯 P(A<sub>i</sub>|B) = P(A<sub>i</sub>)P(B|A<sub>i</sub>)/P(B)，分母就是全概率算出的 P(B)。</dd><dt>关键一步</dt><dd>0.00208 里有 0.002 来自深衰落：<mark class="hl">平均误码率由最差的状态主导</mark>。这是第 3 章"衰落下误码率只按 1/SNR 下降"的直观原因，也是第 4 章分集的动机。</dd><dt>和检测的关系</dt><dd>第 3 章 MAP 检测（p.18–19）就是贝叶斯：先验 P(s<sub>i</sub>) × 似然 p(y|s<sub>i</sub>)，再比大小。</dd><dt>举一反三</dt><dd>好状态占 95%：0.95 × 10⁻⁴ + 0.05 × 10⁻² = 5.95 × 10⁻⁴。深衰落时间减为 1/4，平均误码率降约 3.5 倍。</dd></dl></div>
+      <!-- /KP:bayes -->
 
       <h3><span class="zh-num">1.3</span>随机变量、期望和方差<span class="imp">★★★ 必考</span></h3>
       <p><b>随机变量</b>就是"取值随机的数"，比如信噪比 γ、噪声 w、接收功率的 dB 值。描述它最重要的两个数：</p>
@@ -119,6 +125,9 @@
           <div class="wans">E[X] = 10，Var(X) = 2；E[Y] = 23，Var(Y) = 8；两路之和均值 20、方差 4</div>
         </div>
       </div>
+      <!-- KP:meanvar -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>离散随机变量的期望、方差，aX + b 的性质（Quiz 范围 Ch1b）。</dd><dt>用到的知识</dt><dd>E[X] = Σx·p(x)；Var(X) = E[X²] − (E[X])²；E[aX + b] = aE[X] + b；Var(aX + b) = a²Var(X)。</dd><dt>关键一步</dt><dd>E[X²] = 64 × ⅓ + 121 × ⅔ = 102，Var(X) = 102 − 10² = 2；Y = 2X + 3：E[Y] = 23，Var(Y) = 4 × 2 = 8。加 3 只平移，不改变方差。</dd><dt>易错</dt><dd><mark class="hl">E[f(X)] ≠ f(E[X])</mark>。Practice 4 第 2 题要算 E[½e<sup>−X</sup>] = 6.15 × 10⁻⁵，用 ½e<sup>−E[X]</sup> = ½e<sup>−10</sup> = 2.27 × 10⁻⁵ 就错了近 3 倍。</dd><dt>后面在哪用</dt><dd>第 4 章 MRC：平均输出 SNR = 各支路平均之和（期望的线性性，连独立都不需要）；平均误码率则必须列组合。</dd></dl></div>
+      <!-- /KP:meanvar -->
       <div class="pitfall">
         <div class="lbl">⚠ 易错</div>
         <ul>
@@ -151,6 +160,9 @@
           <div class="wans">约 9.5%：平均 20 dB 的瑞利信道，近一成时间比平均低 10 dB 以上</div>
         </div>
       </div>
+      <!-- KP:cdf -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>由 PDF 积分得 CDF；指数分布（瑞利衰落下功率 / SNR 的分布，第 2 章 p.26）。</dd><dt>用到的知识</dt><dd>P(γ &lt; γ₀) = ∫₀<sup>γ₀</sup> p(γ)dγ；指数 PDF (1/γ̄)e<sup>−γ/γ̄</sup> 积分得 1 − e<sup>−γ₀/γ̄</sup>。</dd><dt>关键一步</dt><dd>先把 dB 换成线性：γ₀/γ̄ = 10/100 = 0.1，P = 1 − e<sup>−0.1</sup> = 0.095，约 10%。</dd><dt>近似</dt><dd>x 小时 1 − e<sup>−x</sup> ≈ x，所以中断概率 ≈ γ₀/γ̄：平均 SNR 提高 10 dB，中断概率只降到 1/10。</dd><dt>后面在哪用</dt><dd>第 3 章 p.31 中断概率和 p.33 例题反求 γ̄；第 4 章选择分集 (1 − e<sup>−γ₀/γ̄</sup>)<sup>M</sup>；第 2 章衰落余量。</dd></dl></div>
+      <!-- /KP:cdf -->
 
       <h3><span class="zh-num">1.5</span>高斯分布和 Q 函数：本课最常用的一张表<span class="imp">★★★ 必考</span></h3>
       <p>噪声、阴影衰落的 dB 值，都服从高斯（正态）分布 \(\mathcal N(\mu,\sigma^2)\)（p.14）。μ 决定钟形曲线的中心在哪，σ 决定它有多胖。我们最常问的问题是：<b>它比平均值低（或高）超过一定量的概率是多少？</b>这个概率没有初等公式，要查 <b>Q 函数表</b>（考试附录会给）。</p>
@@ -182,6 +194,9 @@
           <p style="margin-top:12px">2023-24 期末 Q1(a)(ii) 是同一个方程换了未知数：已知余量 10 dB、P<sub>out</sub> &lt; 1%，求方差上限：10/σ &gt; 2.33 → σ &lt; 4.3 dB → σ² &lt; 18.5 dB²。</p>
         </div>
       </div>
+      <!-- KP:qfun -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>高斯尾概率：正着用（已知门限求概率）和倒着用（已知概率求门限或均值）。</dd><dt>用到的知识</dt><dd>X ~ N(μ, σ²) 时 P(X &lt; μ − kσ) = P(X &gt; μ + kσ) = Q(k)，k = |门限 − 均值| / 标准差。</dd><dt>关键一步</dt><dd>(b) 倒查 Q(2.326) = 0.01。Q 是减函数："概率 &lt; 1%"等价于"相距 &gt; 2.326 个标准差"。常用值：Q(1.645) = 0.05，Q(2.326) = 0.01，Q(3.09) = 10⁻³。</dd><dt>易错</dt><dd>除的是标准差 σ，不是方差；左尾、右尾都用对称性写成 Q(正数)；Q(−x) = 1 − Q(x)。</dd><dt>后面在哪用</dt><dd>第 2 章阴影中断 Q(余量/σ)（p.15）；第 3 章 P<sub>b</sub> = Q(d/2σ)；第 6 章残余 ISI 误码率。</dd></dl></div>
+      <!-- /KP:qfun -->
       <div class="worked">
         <summary><span class="wtag">例题</span>区间概率与 Y = aX + b（第 1b 章 p.14 留的问题）</summary>
         <div class="wbody">
@@ -192,6 +207,9 @@
           <div class="wans">0.0228；0.683；Y ~ N(5, 81)</div>
         </div>
       </div>
+      <!-- KP:interval -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>高斯区间概率、线性变换后的分布（第 1b 章 p.14）。</dd><dt>用到的知识</dt><dd>对称区间 P(μ − kσ &lt; X &lt; μ + kσ) = 1 − 2Q(k)；一般区间 P(a &lt; X &lt; b) = Q((a − μ)/σ) − Q((b − μ)/σ)。</dd><dt>关键一步</dt><dd>高斯做线性变换仍是高斯，只要算新的均值和方差：Y = 3X − 1 ~ N(5, 81)，标准差 9。</dd><dt>常用数字</dt><dd>±1σ 内 68.3%，±2σ 内 95.4%，±3σ 内 99.7%。</dd><dt>后面在哪用</dt><dd>第 3 章 y = s + w：s 是常数，y ~ N(s, σ²)，"加常数只挪均值"；第 6 章滤波后的噪声仍是高斯。</dd></dl></div>
+      <!-- /KP:interval -->
       <p>最后一条（p.14）：两个<b>独立</b>的随机变量，联合 PDF 等于各自 PDF 相乘：\(p_{X,Y}(x,y)=p_X(x)\,p_Y(y)\)。这和"独立事件概率相乘"是同一件事。</p>
       <div class="key">
         <div class="lbl">★ 第一章考试重点</div>

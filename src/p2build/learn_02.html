@@ -65,6 +65,9 @@
           <div class="wans">约 −113 dBm</div>
         </div>
       </div>
+      <!-- KP:pl150 -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>简化路径损耗模型的 dB 形式（p.8–10）。</dd><dt>用到的知识</dt><dd>P<sub>r</sub>(dBm) = P<sub>t</sub>(dBm) + K<sub>dB</sub> − 10γ log₁₀(d/d₀)；dBm = 10 log₁₀(P / 1 mW)。</dd><dt>关键一步</dt><dd>10γ log₁₀150 = 39.7 × 2.176 = 86.39 dB；P<sub>r</sub> = 0 − 26.67 − 86.39 = −113.06 dBm。</dd><dt>易错</dt><dd>K<sub>dB</sub> 本身是负数，直接相加；d 先除以 d₀ 再取对数；0 dBW = 30 dBm，单位别混。</dd><dt>举一反三</dt><dd>距离加倍，损耗多 10γ log₁₀2 = 3.01γ dB（γ = 3.97 时约 12 dB）。反求最大距离：令 P<sub>r</sub> = 门限，解出 log₁₀(d/d₀)。</dd></dl></div>
+      <!-- /KP:pl150 -->
       <h4>用实测数据拟合 K 和 γ（p.13，Practice 1 第 1 题）</h4>
       <p>实测了几组"距离 d<sub>i</sub>、损耗 M<sub>i</sub> = (P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub>"，要找一条直线 \(M=K_{\mathrm{dB}}-10\gamma\log_{10}d\) 最贴近这些点。讲义的做法是<b>最小二乘</b>：让误差平方的平均（MSE）最小。令 \(x_i=10\log_{10}d_i\)，就是普通的直线拟合：</p>
       <div class="formula-card">
@@ -94,6 +97,9 @@
           <p style="margin-top:12px" class="extra-inline">课外补充：官方答案是 K = −31.4 dB、γ = 3.86、P<sub>out</sub> = 6.19×10⁻⁴，用题目数据算不出来（代入官方的 K、γ，MSE 反而更大）。考试时写清楚方法和步骤，数值按自己算的写。</p>
         </div>
       </div>
+      <!-- KP:ls6 -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>用最小二乘拟合 K、γ，再把 MSE 当作阴影方差（p.12–15，Practice 1 第 1 题）。</dd><dt>用到的知识</dt><dd>两个正规方程（上面的"推导"框）；σ<sub>ψ</sub>² = MSE = (1/n)Σe<sub>i</sub>²。</dd><dt>关键一步</dt><dd>残差 e<sub>i</sub> = 实测 − 拟合直线的预测。练习页 P1Q1 解答里有逐点残差表：Σe² = 71.23，σ² = 11.87，σ = 3.45 dB，再 P<sub>out</sub> = Q(10/3.45)。</dd><dt>易错</dt><dd>x 用 10 log₁₀d，不是 d；MSE 按讲义除以 n；官方答案（K = −31.4、γ = 3.86）按题目数据算不出来，考试写清楚方法即可。</dd><dt>自检</dt><dd>最小二乘的残差之和为 0；拟合直线经过平均点 (x̄, M̄) = (19.26, −106.67)。</dd></dl></div>
+      <!-- /KP:ls6 -->
 
       <h3><span class="zh-num">2.2</span>阴影衰落与中断概率<span class="imp">★★★ 必考</span></h3>
       <p>信号在路上要穿过 M 个障碍物，每个都把功率乘上一个衰减因子 \(A_i\)，总衰减 \(\psi=\prod A_i\)（p.11）。取对数以后乘法变成加法：\(\log\psi=\sum\log A_i\)。很多个随机量相加，按中心极限定理近似服从<b>高斯分布</b>，所以 <mark class="hl">ψ 的 dB 值是高斯的，ψ 本身叫对数正态（log-normal）分布</mark>。讲义给的典型值：均值 0，方差 4–12 dB²。</p>
@@ -139,6 +145,9 @@
           <p style="margin-top:12px">易错：分母是 \(\sqrt{3.36}=1.833\)（讲义 p.16 写的就是 √3.36），不是 3.36。题目给的 MSE 是<b>方差</b> σ²，单位 dB²；Q 函数里要除的是<b>标准差</b> σ，单位 dB，这样"余量 ÷ σ"才是没有单位的"几个标准差"。错除 3.36 会得到 Q(1.47) ≈ 0.071，比正确答案大 20 倍。</p>
         </div>
       </div>
+      <!-- KP:out150 -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>路径损耗 + 对数正态阴影下的中断概率 P<sub>out</sub> = Q(余量/σ)（p.14–16）。</dd><dt>用到的知识</dt><dd>P<sub>r</sub>(dB) ~ N(平均接收功率, σ<sub>ψ</sub>²)；余量 = 平均接收功率 − 门限。</dd><dt>关键一步</dt><dd>余量 4.94 dB ÷ σ 1.833 dB = 2.69 个标准差 → Q(2.69) ≈ 0.0036。</dd><dt>易错</dt><dd>MSE 3.36 是方差，要开根号；余量为负（平均功率低于门限）时 P<sub>out</sub> = Q(负数) &gt; 50%。</dd><dt>举一反三</dt><dd>四个量知三求一。要 P<sub>out</sub> = 1%：余量 ≥ 2.326σ = 4.26 dB → 平均功率 ≥ −113.74 dBm → 再反解最大距离。</dd></dl></div>
+      <!-- /KP:out150 -->
       <div class="key">
         <div class="lbl">★ 考试重点 · 一个方程，四种问法</div>
         <p>P<sub>out</sub> = Q(余量 / σ) 里有三个量，题目给两个求第三个：</p>
@@ -266,6 +275,9 @@
           <div class="wans">μ ≈ 0.57 µs，σ ≈ 0.73 µs；符号速率低于约 137 ksps 才是平坦衰落</div>
         </div>
       </div>
+      <!-- KP:pdp3 -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>离散功率时延分布的平均时延和 rms 时延扩展（p.29–31）。</dd><dt>用到的知识</dt><dd>以功率为权重的加权平均：μ = ΣP<sub>i</sub>τ<sub>i</sub>/ΣP<sub>i</sub>，E[τ²] = ΣP<sub>i</sub>τ<sub>i</sub>²/ΣP<sub>i</sub>，σ = √(E[τ²] − μ²)。</dd><dt>关键一步</dt><dd>权重必须是线性功率（1、0.5、0.25），不能用 dB 值；μ = 0.571 µs，σ = 0.73 µs。</dd><dt>用途</dt><dd>平坦衰落 σ/T<sub>s</sub> &lt; 0.1 → T<sub>s</sub> &gt; 7.3 µs → 符号速率 &lt; 137 ksps；σ 越大，相干带宽越小（B<sub>C</sub> ∝ 1/σ）。</dd><dt>易错</dt><dd>时延从第一条到达的路径算起；"均方根"要减去均值的平方再开根号，不是直接 √E[τ²]。</dd></dl></div>
+      <!-- /KP:pdp3 -->
       <div class="worked">
         <summary><span class="wtag">例题</span>均匀功率时延分布（Practice 1 第 3 题）</summary>
         <div class="wbody">
@@ -276,6 +288,9 @@
           <div class="wans">μ = 5 µs，σ = 2.89 µs；R_s &lt; 34.6 ksps 时是平坦衰落</div>
         </div>
       </div>
+      <!-- KP:pdpu -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>连续功率时延分布的 μ、σ（Practice 1 第 3 题）和平坦衰落的符号速率条件（p.33）。</dd><dt>用到的知识</dt><dd>把 P<sub>r</sub>(τ) 归一化后当作概率密度；[0, a] 上均匀分布的均值 a/2、标准差 a/√12。</dd><dt>关键一步</dt><dd>σ = 10/√12 = 2.89 µs；σ/T<sub>s</sub> &lt; 0.1 → T<sub>s</sub> &gt; 28.9 µs → R<sub>s</sub> &lt; 34.6 ksps。</dd><dt>易错</dt><dd>平坦衰落要求符号"长"、速率低，不等号别反；R<sub>s</sub> 是符号速率，比特速率要乘 log₂M。</dd><dt>举一反三</dt><dd>指数型时延分布 e<sup>−τ/τ₀</sup>：μ = σ = τ₀。</dd></dl></div>
+      <!-- /KP:pdpu -->
 <!-- DRV:bc -->
       <div class="formula-card">
         <div class="flbl">相干带宽的定义（p.31）</div>
@@ -367,6 +382,9 @@
           <div class="wans">每次衰落连错约 72 个符号；每秒约 9950 个错误，SER ≈ 1%</div>
         </div>
       </div>
+      <!-- KP:afdsym -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>LCR、AFD 的计算和物理意义：一次衰落多长、连错几个符号（p.42–47）。</dd><dt>用到的知识</dt><dd>f<sub>m</sub> = v f<sub>c</sub>/c；L<sub>Z</sub> = √(2π) f<sub>m</sub> ρ e<sup>−ρ²</sup>；AFD = (e<sup>ρ²</sup> − 1)/(√(2π) f<sub>m</sub> ρ)。</dd><dt>关键一步</dt><dd>连错符号数 = AFD × 符号速率；每秒错误数 = 每次连错数 × LCR = 低于门限的时间比例 × 符号速率 = (1 − e<sup>−ρ²</sup>)R<sub>s</sub>。</dd><dt>易错</dt><dd>速度换成 m/s（120 km/h = 33.33 m/s）；ρ 是幅度比，门限低 20 dB 对应 ρ = 0.1，不是 0.01。</dd><dt>物理意义</dt><dd>AFD 远大于符号时长时，错误成串出现（突发错误），这就是慢衰落的特点。</dd></dl></div>
+      <!-- /KP:afdsym -->
       <div class="extra">
         <div class="lbl">课外补充 · 讲义数值和公式对不上</div>
         <p>讲义 p.47 写的是 AFD = 71.17 µs、每秒 9812 个错误。按讲义自己的公式精确算是 <b>72.17 µs</b>，每秒 <b>9950</b> 个。可以用另一个办法核对：每秒错误数 = 低于门限的时间比例 × 符号速率 = \((1-e^{-0.01})\times10^6=9950\)，和 72.17 µs 的结果一致。考试按公式自己算即可，差别不大。</p>
@@ -396,6 +414,9 @@
           <div class="wans">用户 1：19.86 Mbps；用户 2：133.16 Mbps。这就是第 1 章 p.16 "干扰能解码就不再是敌人"的例子</div>
         </div>
       </div>
+      <!-- KP:mud -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>香农容量、SINR（干扰当噪声）和多用户检测 MUD（p.48；第 1a 章 p.16）。</dd><dt>用到的知识</dt><dd>C = B log₂(1 + SINR)，SINR = 信号 / (干扰 + 噪声)，全部用线性值。</dd><dt>关键一步</dt><dd>先解用户 1（用户 2 当噪声），解出后从接收信号中减掉，再解用户 2（只剩噪声）。</dd><dt>检验</dt><dd>19.86 + 133.16 = 153.02 Mbps = 20 log₂(1 + 20/0.1)：连续消除后的总容量，等于把两个用户功率合起来的单用户容量。</dd><dt>易错</dt><dd>功率统一成 mW；log₂x = log₁₀x / 0.301；先解的用户容量低，后解的高。</dd></dl></div>
+      <!-- /KP:mud -->
       <p><b>衰落信道</b>里 SNR 是随机的。讲义给了两种容量：</p>
       <ul>
         <li><b>遍历容量（ergodic，p.49）</b>：\(C_E=E[B\log_2(1+\gamma)]\)，对 SNR 的分布求平均。由 Jensen 不等式，\(C_E\le B\log_2(1+\bar\gamma)\)：<b>平均 SNR 相同时，衰落信道的容量不会超过 AWGN 信道</b>。</li>
@@ -429,6 +450,9 @@
           <div class="wans">γ_min ≈ 2.0 dB，FM ≈ 23 dB</div>
         </div>
       </div>
+      <!-- KP:fm -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>中断概率 ε 对应的最小 SNR 和衰落余量（p.50–51），2025-26 S2 Q1(a)(iii)。</dd><dt>用到的知识</dt><dd>瑞利：1 − e<sup>−γ<sub>min</sub>/γ̄</sup> = ε → γ<sub>min</sub> = γ̄ ln(1/(1 − ε))；FM = γ̄/γ<sub>min</sub>。</dd><dt>关键一步</dt><dd><mark class="hl">衰落余量只取决于 ε，与 γ̄ 无关</mark>：10 log₁₀(1/ln(1/(1 − ε)))。ε = 0.005 → 23.0 dB；0.01 → 20.0 dB；0.05 → 12.9 dB（和第 3 章 p.34 例题一致）。</dd><dt>易错</dt><dd>ln 是自然对数；ε 小时 ln(1/(1 − ε)) ≈ ε；中断容量 C<sub>ε</sub> = B log₂(1 + γ<sub>min</sub>)，平均无错速率还要乘 (1 − ε)。</dd></dl></div>
+      <!-- /KP:fm -->
 
       <h3><span class="zh-num">2.8</span>注水法：功率该怎么分<span class="imp i2">★★ 常考</span></h3>
       <p>频率选择性信道可以切成很多段子带，每段宽度约等于相干带宽，各自近似平坦（p.52–53）。每段是一个增益不同的 AWGN 信道。总功率有限时怎么分？答案是<b>注水（water-filling）</b>：好的子信道多分，太差的干脆不给。</p>
@@ -473,6 +497,9 @@
           <div class="wans">P₁ = 0.66P，P₂ = 0.34P，P₃ = 0；C ≈ 4.59 bit/s/Hz</div>
         </div>
       </div>
+      <!-- KP:wf3 -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>注水法分功率并求容量（p.54–57）。</dd><dt>用到的知识</dt><dd>P<sub>j</sub>/P = 1/γ₀ − 1/γ<sub>j</sub>（γ<sub>j</sub> ≥ γ₀），Σ(1/γ₀ − 1/γ<sub>j</sub>) = 1 定 γ₀；C = B Σ log₂(γ<sub>j</sub>/γ₀)。</dd><dt>关键一步</dt><dd>先假设全部子信道都分功率算 γ₀，有 γ<sub>j</sub> &lt; γ₀ 就去掉最差的重算，直到剩下的都 ≥ γ₀。</dd><dt>自检</dt><dd>分到的功率加起来等于 P；被去掉的子信道 γ<sub>j</sub> &lt; γ₀。</dd><dt>易错</dt><dd>γ<sub>j</sub> 是"全部功率给第 j 个子信道时的 SNR"；dB 先换线性；容量只对分到功率的子信道求和。</dd></dl></div>
+      <!-- /KP:wf3 -->
       <p>Practice 5 第 1 题、Practice 7 第 1 题、期末 2024-25 Q1(a)(iii)（18、10、3 dB 三个子带）都用这个方法。</p>
 
       <div class="key">

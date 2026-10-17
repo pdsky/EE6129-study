@@ -20,6 +20,9 @@
           <div class="wans">基：{ √(2/T)·cos(2πt/T), √(2/T)·sin(2πt/T) }，维数 D = 2</div>
         </div>
       </div>
+      <!-- KP:basis -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>正交归一基、维数、坐标（p.4–11），期末 2025-26 S1 Q1(a)(i) 同类。</dd><dt>用到的知识</dt><dd>和角公式 cos(a + b) = cos a cos b − sin a sin b；正交 ∫ψ<sub>i</sub>ψ<sub>j</sub> = 0；归一 ∫ψ² = 1。</dd><dt>关键一步</dt><dd>cos 和 sin 在 [0, T] 上各走整数个周期，所以正交；能量 T/2，乘 √(2/T) 归一。</dd><dt>坐标</dt><dd>信号的坐标是 (A<sub>i</sub>cosφ<sub>j</sub>√(T/2), −A<sub>i</sub>sinφ<sub>j</sub>√(T/2))，都在一个平面上 → 维数 2。</dd><dt>举一反三</dt><dd>只调幅度（φ 固定）→ 1 维（PAM）；只调相位（A 固定）→ 2 维（PSK）；维数 D ≤ 信号个数 M。</dd></dl></div>
+      <!-- /KP:basis -->
       <p>把每个信号的坐标画在平面上，就是<b>星座图</b>（constellation，p.8）：</p>
       <div class="tblwrap"><table><thead><tr><th>调制</th><th>信号</th><th>维数</th><th>星座</th></tr></thead><tbody>
         <tr><td>PAM（p.9）</td><td>\(A_ip(t)\cos2\pi f_ct\)，\(A_i=2i-1-M\)</td><td>1</td><td>4-PAM：−3, −1, +1, +3 排在一条线上</td></tr>
@@ -40,7 +43,17 @@
         <div class="fexpr">\(\mathbf y=\mathbf s_i+\mathbf w,\qquad \mathbf w\sim\mathcal N\!\left(\mathbf 0,\tfrac{N_0}{2}\mathbf I\right)\)</div>
         <div class="fmeaning">每个坐标上的噪声独立、均值 0、方差 \(N_0/2\)。这 D 个数是<b>充分统计量</b>：判断发了哪个符号需要的信息全在里面，不会因为只看这几个数而损失性能。</div>
       </div>
-      <div class="formula-card">
+      <!-- DRV:noise -->
+      <div class="worked">
+        <summary><span class="wtag">推导</span>为什么每个坐标上的噪声都是 \(\mathcal N(0,N_0/2)\)，而且互相独立（p.12、p.15）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">第 j 个判决变量是收到的信号和第 j 个基函数做内积（p.14）：\(y_j=\int_0^Tx(t)\psi_j(t)dt=\int_0^Ts_i(t)\psi_j(t)dt+\int_0^Tw(t)\psi_j(t)dt=s_{ij}+w_j\)。前一项正是 p.4 定义的坐标 \(s_{ij}\)，后一项 \(w_j=\int_0^Tw(t)\psi_j(t)dt\) 就是这个坐标上的噪声。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>均值</b>：期望和积分可以交换顺序，\(E[w_j]=\int_0^TE[w(t)]\psi_j(t)dt=0\)（p.12：\(E[w(t)]=0\)）。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>协方差</b>：两个积分相乘写成二重积分，再代入白噪声的自相关 \(E[w(t)w(s)]=\frac{N_0}{2}\delta(t-s)\)（p.12）：<div class="calc">E[w_j w_k] = ∫∫ E[w(t)w(s)] ψ_j(t) ψ_k(s) dt ds = (N₀/2) ∫ ψ_j(t) ψ_k(t) dt</div>δ 函数的"筛选"作用：对 s 积分时只留下 s = t 那一点。最后的积分由基函数正交归一（p.4）得到：j = k 时为 1，j ≠ k 时为 0。所以 \(E[w_j^2]=N_0/2\)，\(E[w_jw_k]=0\)。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>高斯、独立</b>：积分是"加权求和"的极限，高斯过程经过线性运算仍是高斯；联合高斯的变量不相关就等于独立（第 2 章 I/Q 推导用过同一个结论）。</div></div>
+          <div class="wans">w ~ N(0, (N₀/2)I)：每个坐标的噪声方差都是 N₀/2，和基函数怎么选无关；这就是 p.15 的向量信道 y = s<sub>i</sub> + w</div>
+          <p style="margin-top:12px">"白"的作用在第 3 步：自相关是 δ 函数，不同时刻的噪声不相关，投影到互相垂直的基函数上以后，各坐标的噪声也就不相关。</p>
+        </div>
+      </div>
+      <!-- /DRV:noise -->
+            <div class="formula-card">
         <div class="flbl">SNR 的几种写法（p.16–17）</div>
         <div class="fexpr">\(\mathrm{SNR}=\dfrac{P_r}{N_0B}=\dfrac{E_s}{N_0BT_s}=\dfrac{E_b}{N_0BT_b}\)　　\(\gamma_s=\dfrac{E_s}{N_0}\)　\(\gamma_b=\dfrac{E_b}{N_0}=\dfrac{\gamma_s}{\log_2M}\)</div>
         <div class="fmeaning">\(E_s\)：每个符号的能量；\(E_b\)：每个比特的能量。一个 M 进制符号装 \(\log_2M\) 个比特，所以 \(E_s=E_b\log_2M\)。比较不同调制方式时用每比特 SNR \(\gamma_b\) 和误比特率 \(P_b\)，因为"比特"是共同单位。</div>
@@ -56,12 +69,34 @@
         <div class="fexpr">\(p(\mathbf y\mid\mathbf s_i)\propto\exp\!\left(-\dfrac{\|\mathbf y-\mathbf s_i\|^2}{N_0}\right)\ \Longrightarrow\ \hat{\mathbf s}=\arg\min_{\mathbf s_i}\|\mathbf y-\mathbf s_i\|^2\)</div>
         <div class="fmeaning">高斯噪声下，概率随距离的平方指数下降，所以"最可能"就是"最近"。在星座图上，每个星座点"管"离它最近的一块区域（判决区域 \(Z_i\)），收到的点落在哪块就判成哪个符号。</div>
       </div>
-      <div class="formula-card">
+      <!-- DRV:mlmd -->
+      <div class="worked">
+        <summary><span class="wtag">推导</span>MAP → ML → 最小距离，一步一步（p.18–19）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext"><b>贝叶斯</b>（第 1 章）：\(p(\mathbf s_i\mid\mathbf y)=\dfrac{p(\mathbf y\mid\mathbf s_i)P(\mathbf s_i)}{p(\mathbf y)}\)。分母 \(p(\mathbf y)\) 对所有候选符号都一样，比大小时可以不管：MAP = \(\arg\max_i p(\mathbf y\mid\mathbf s_i)P(\mathbf s_i)\)。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>等概</b>：\(P(\mathbf s_i)=1/M\) 也和 i 无关，再去掉，只剩似然：MAP = ML = \(\arg\max_i p(\mathbf y\mid\mathbf s_i)\)。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>写出似然</b>：D 个坐标独立，每个 \(y_j\sim\mathcal N(s_{ij},N_0/2)\)。把方差 \(\sigma^2=N_0/2\) 代入高斯 PDF，\(2\sigma^2=N_0\)：每个坐标 \(\frac{1}{\sqrt{\pi N_0}}e^{-(y_j-s_{ij})^2/N_0}\)。独立 → 相乘，指数相加：<div class="calc">p(y | s<sub>i</sub>) = (πN₀)<sup>−D/2</sup> exp( −Σ<sub>j</sub>(y<sub>j</sub> − s<sub>ij</sub>)² / N₀ ) = (πN₀)<sup>−D/2</sup> exp( −‖y − s<sub>i</sub>‖² / N₀ )</div>这就是 p.19 的式子。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext">前面的系数和 i 无关，exp 是增函数，指数前面是负号：<mark class="hl">似然最大 ⇔ \(\|\mathbf y-\mathbf s_i\|^2\) 最小</mark>，即选离 y 最近的星座点。</div></div><div class="wstep"><div class="wn">5</div><div class="wtext"><b>相关器形式</b>（p.19 Note）：展开 \(\|\mathbf y-\mathbf s_i\|^2=\|\mathbf y\|^2-2\langle\mathbf y,\mathbf s_i\rangle+\|\mathbf s_i\|^2\)，第一项和 i 无关，所以等价于 \(\arg\max_i\big(2\langle\mathbf y,\mathbf s_i\rangle-\|\mathbf s_i\|^2\big)\)。各点能量相同（如 PSK）时连 \(\|\mathbf s_i\|^2\) 也可以去掉，只比内积。</div></div>
+          <div class="wans">等概 + 高斯白噪声：MAP = ML = 最小距离 = 最大相关（能量相同时）</div>
+        </div>
+      </div>
+      <!-- /DRV:mlmd -->
+            <div class="formula-card">
         <div class="flbl">误符号率的上界与 BPSK（p.20–21）</div>
         <div class="fexpr">\(P_s\le(M-1)\,Q\!\left(\dfrac{d_{\min}}{\sqrt{2N_0}}\right)\)　　BPSK：\(P_b=Q\!\left(\dfrac{d_{\min}}{\sqrt{2N_0}}\right)=Q\!\left(\sqrt{\dfrac{2E_b}{N_0}}\right)=Q(\sqrt{2\gamma_b})\)</div>
         <div class="fmeaning">BPSK 两个点在 ±A，\(E_b=A^2\)，\(d_{\min}=2A\)，代入 \(2A/\sqrt{2N_0}=\sqrt{2A^2/N_0}=\sqrt{2E_b/N_0}\)。<b>星座点之间的最小距离决定误码率</b>：M 越大，点越挤，距离越小，误码越多，但每个符号装的比特越多（p.22）。</div>
       </div>
+      <!-- DRV:union -->
       <div class="worked">
+        <summary><span class="wtag">推导</span>两点之间的误码率 Q(d/√(2N₀)) 和 (M − 1) 上界（p.20–21）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">先只看两个点 \(\mathbf s_i\)、\(\mathbf s_k\)，距离 \(d_{ik}\)。发 \(\mathbf s_i\) 却判成 \(\mathbf s_k\)，当且仅当 y 跑到两点连线的中垂线另一边，即噪声沿 \(\mathbf s_i\to\mathbf s_k\) 方向的分量超过 \(d_{ik}/2\)。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext">噪声在任意单位方向 \(\mathbf u\) 上的投影 \(n=\langle\mathbf w,\mathbf u\rangle=\sum_ju_jw_j\)，方差 \(\sum_ju_j^2\cdot\frac{N_0}{2}=\frac{N_0}{2}\)（\(\|\mathbf u\|=1\)，各坐标独立）：<b>白噪声在每个方向上一样大</b>。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext">所以 \(P(\mathbf s_i\to\mathbf s_k)=P\big(n>d_{ik}/2\big)=Q\!\left(\dfrac{d_{ik}/2}{\sqrt{N_0/2}}\right)=Q\!\left(\dfrac{d_{ik}}{\sqrt{2N_0}}\right)\)。和 3.3 节图里的 Q(d/2σ) 是同一个式子，σ = √(N₀/2)。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext">M 个点时，出错 = "比 \(\mathbf s_i\) 更靠近某个别的点"，是 M − 1 个事件的并集。并集的概率 ≤ 各概率之和（联合界）：<div class="calc">P_s ≤ Σ<sub>k≠i</sub> Q(d<sub>ik</sub>/√(2N₀)) ≤ (M − 1) Q(d<sub>min</sub>/√(2N₀))</div>最后一步：Q 是减函数，每个 \(d_{ik}\ge d_{\min}\)。</div></div><div class="wstep"><div class="wn">5</div><div class="wtext">BPSK 只有两个点，M − 1 = 1，上界就是精确值：\(d_{\min}=2A\)，\(E_b=A^2\)，\(\dfrac{2A}{\sqrt{2N_0}}=\sqrt{\dfrac{2A^2}{N_0}}=\sqrt{\dfrac{2E_b}{N_0}}\)（p.21）。</div></div>
+          <div class="wans">P(s<sub>i</sub> → s<sub>k</sub>) = Q(d<sub>ik</sub>/√(2N₀))；P<sub>s</sub> ≤ (M − 1)Q(d<sub>min</sub>/√(2N₀))；BPSK 取等号</div>
+        </div>
+      </div>
+      <div class="extra">
+        <div class="lbl">课外补充 · MPSK 的最小距离：M 越大越吃亏多少</div>
+        <p>MPSK 的 M 个点均匀排在半径 \(\sqrt{E_s}\) 的圆上，相邻两点夹角 2π/M，弦长 \(d_{\min}=2\sqrt{E_s}\sin(\pi/M)\)。M = 2：\(2\sqrt{E_s}\)；M = 4（QPSK）：\(1.414\sqrt{E_s}\)；M = 8：\(0.765\sqrt{E_s}\)。代入上界：\(P_s\le(M-1)\,Q\big(\sqrt{2\gamma_s}\sin(\pi/M)\big)\)。实际上每个点只有 2 个最近邻，所以常用近似 \(2Q\big(\sqrt{2\gamma_s}\sin(\pi/M)\big)\)。M 再翻倍（8 → 16），sin(π/M) 约减半，要多花约 6 dB 的 SNR 才能保持同样误码率，这就是 p.22 说的"点越挤，误码越多"。</p>
+      </div>
+      <!-- /DRV:union -->
+            <div class="worked">
         <summary><span class="wtag">例题</span>噪声方差不同时的 ML 判决（Practice 3 第 2 题）</summary>
         <div class="wbody">
           <p>已知条件：\(y_n=x_n+w_n\)，\(x_n\in\{0,1\}\) 等概；发 0 时噪声方差 \(\sigma_0^2\)，发 1 时 \(\sigma_1^2\)，且 \(\sigma_1^2>\sigma_0^2\)。</p>
@@ -73,6 +108,9 @@
           <p style="margin-top:12px" class="extra-inline">课外补充：g(y) 是开口向上的二次函数，严格说在很负的 y 处还有第二个根（y 极小时也会判 1，因为发 1 的噪声更宽）。那个区域概率极小，讲义答案忽略了它。</p>
         </div>
       </div>
+      <!-- KP:mlvar -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>非标准情况下 ML 判决门限和误码率（p.18–20，Practice 3 第 2 题）。</dd><dt>用到的知识</dt><dd>ML 比较似然 p(y|x)；取对数把指数变成二次式；Q 函数算尾概率。</dd><dt>关键一步</dt><dd>方差不同时两个高斯前面的系数 1/σ 也不同，对数里多出 ln(σ₀/σ₁)，门限不再在中点。σ₀² = 0.1、σ₁² = 0.4 时 ỹ ≈ 0.46。</dd><dt>误码率的结构</dt><dd>两种错误各用自己的 σ：Q(ỹ/σ₀) 和 Q((1 − ỹ)/σ₁)，再按先验（各 ½）加权：全概率公式。</dd><dt>举一反三</dt><dd>方差相同、先验不等 → 用 MAP，门限往先验小的一边移；方差、先验都相等 → 中点 = 最小距离。</dd></dl></div>
+      <!-- /KP:mlvar -->
 
       <!-- ENR:learn_03.html:3.3 -->
       <h4>二进制检测：一张图看懂 P<sub>b</sub> = Q(d/2σ)</h4>
@@ -101,6 +139,9 @@
 </ol>
 <div class="worked"><summary><span class="wtag">例题</span>噪声方差 0.25 的 ±1 系统</summary><div class="wbody">
 <div class="wstep"><div class="wn">1</div><div class="wtext">σ = √0.25 = 0.5。门限 0，信号到门限的距离 1 = 2σ。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><div class="calc">P_b = Q(1/0.5) = Q(2) ≈ 0.0228</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext">噪声方差降到 0.09（σ = 0.3）：Q(1/0.3) = Q(3.33) ≈ 4×10⁻⁴。噪声标准差减小 40%，误码率降了 50 多倍：AWGN 下误码率随 SNR <b>指数</b>下降。</div></div><div class="wans">P_b = Q(2) ≈ 0.023（期末 2025-26 S1 Q1(a)(iii) 就是这组数）</div></div></div>
+      <!-- KP:pm1 -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>二进制 AWGN 误码率 P<sub>b</sub> = Q(d/2σ)，期末 2025-26 S1 Q1(a)(iii)。</dd><dt>用到的知识</dt><dd>y | s ~ N(s, σ²)；门限在中点；P<sub>b</sub> = Q(到门限的距离 / 标准差)。</dd><dt>关键一步</dt><dd>σ = √0.25 = 0.5（方差开根号），P<sub>b</sub> = Q(1/0.5) = Q(2) ≈ 0.0228。</dd><dt>换算核对</dt><dd>E<sub>b</sub> = 1，σ² = N₀/2 = 0.25 → N₀ = 0.5，γ<sub>b</sub> = 2，Q(√(2γ<sub>b</sub>)) = Q(2)，两种写法一致。</dd><dt>规律</dt><dd>AWGN 下误码率随 SNR <b>指数</b>下降（σ 从 0.5 到 0.3，误码率降约 50 倍），瑞利衰落下只<b>线性</b>下降（3.5 节）。</dd></dl></div>
+      <!-- /KP:pm1 -->
 <div class="pitfall"><div class="lbl">⚠ 易错</div><ul>
 <li>Q 里放的是"<b>信号到门限的距离 ÷ 标准差</b>"，是 d/2，不是整个距离 d。</li>
 <li>先验概率不等或两边噪声方差不同时，门限不在中点（Practice 3 第 2 题），要用 ML / MAP 条件重新解门限。</li>
@@ -126,7 +167,20 @@
         <div class="fexpr">\(\bar P_s=\displaystyle\int_0^\infty P_s(\gamma)\,p_\gamma(\gamma)\,d\gamma\)　　\(P_{\mathrm{out}}=P(\gamma\lt \gamma_0)=1-e^{-\gamma_0/\bar\gamma}\)（瑞利）</div>
         <div class="fmeaning">平均误码率：把 AWGN 下的误码率按 SNR 的概率加权平均。中断概率：SNR 低于最低要求的时间比例。p.32 的结论很重要：<b>AWGN 中误码率随 SNR 指数下降，瑞利衰落中只按线性（1/SNR）下降</b>，要达到同样误码率需要多几十 dB 功率。</div>
       </div>
+      <!-- DRV:fadeavg -->
       <div class="worked">
+        <summary><span class="wtag">推导</span>衰落下的平均误码率为什么只按 1/SNR 下降（p.31–32）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">公式 \(\bar P=\int_0^\infty P(\gamma)\,p(\gamma)\,d\gamma\)，瑞利衰落下 SNR 是指数分布 \(p(\gamma)=\frac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}\)（第 2 章 p.26）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext">DPSK 的 \(P(\gamma)=\tfrac12e^{-\gamma}\) 最好积分：两个指数相乘还是指数，用 \(\int_0^\infty e^{-a\gamma}d\gamma=1/a\)：<div class="calc">P̄ = (1/2γ̄) ∫₀^∞ e^(−γ(1 + 1/γ̄)) dγ = (1/2γ̄) · 1/(1 + 1/γ̄) = 1 / (2(1 + γ̄))</div>这正是第 4 章 p.25 中 M = 1 的结果。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext">高 SNR 时 \(\bar P\approx\dfrac{1}{2\bar\gamma}\)：γ̄ 提高 10 倍，误码率只降 10 倍。对比 AWGN 下 \(\tfrac12e^{-\gamma}\)：γ 从 10 到 20，误码率从 2.3×10⁻⁵ 降到 1.0×10⁻⁹。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext">原因：平均误码率几乎全部来自"掉进深衰落"的那段时间。SNR 低于 1 的概率 \(1-e^{-1/\bar\gamma}\approx1/\bar\gamma\)，这段时间里误码率接近 ½，所以 \(\bar P\) 正比于 1/γ̄。</div></div><div class="wstep"><div class="wn">5</div><div class="wtext">中断概率是同一个 PDF 积到门限：\(P_{\mathrm{out}}=\int_0^{\gamma_0}\frac1{\bar\gamma}e^{-\gamma/\bar\gamma}d\gamma=1-e^{-\gamma_0/\bar\gamma}\)（p.31，第 1 章"由 PDF 求 CDF"）。</div></div>
+          <div class="wans">瑞利 + DPSK：P̄ = 1/(2(1 + γ̄)) ≈ 1/(2γ̄)，线性下降；深衰落决定平均误码率，这正是第 4 章分集要解决的问题</div>
+        </div>
+      </div>
+      <div class="extra">
+        <div class="lbl">课外补充 · BPSK 的结果</div>
+        <p>BPSK 的 \(Q(\sqrt{2\gamma})\) 积分要分部积分，结果是 \(\bar P_b=\tfrac12\Big(1-\sqrt{\tfrac{\bar\gamma}{1+\bar\gamma}}\Big)\approx\dfrac{1}{4\bar\gamma}\)。γ̄ = 100（20 dB）时 2.48×10⁻³，而 AWGN 下 20 dB 的 BPSK 误码率小到可以忽略。讲义只要求 p.32 的结论（衰落下线性下降），不要求这个积分。</p>
+      </div>
+      <!-- /DRV:fadeavg -->
+            <div class="worked">
         <summary><span class="wtag">例题</span>BPSK 在瑞利衰落下需要多大平均 SNR（第 3 章 p.33–34）</summary>
         <div class="wbody">
           <p>已知条件：要求 95% 的时间 SNR 高于最低需要的 8.5 dB。</p>
@@ -136,6 +190,9 @@
           <div class="wans">平均 SNR 需要 21.4 dB，衰落余量 = 21.4 − 8.5 = 12.9 dB</div>
         </div>
       </div>
+      <!-- KP:ray214 -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>瑞利中断概率的反用：已知 P<sub>out</sub> 和最低 SNR，求平均 SNR 与衰落余量（p.31–34）。</dd><dt>用到的知识</dt><dd>P<sub>out</sub> = 1 − e<sup>−γ₀/γ̄</sup> → γ̄ = γ₀ / (−ln(1 − P<sub>out</sub>))。</dd><dt>关键一步</dt><dd>γ₀ = 8.5 dB = 7.08（先换线性），−ln 0.95 = 0.0513，γ̄ = 138 = 21.4 dB；衰落余量 21.4 − 8.5 = 12.9 dB。</dd><dt>联系</dt><dd>和第 2 章 2.7 节的衰落余量公式 10 log₁₀(1/ln(1/(1 − ε))) 是同一个式子（ε = 0.05 → 12.9 dB）。</dd><dt>易错</dt><dd>"95% 的时间够用" → P<sub>out</sub> = 5%；dB 相减等于线性相除。</dd></dl></div>
+      <!-- /KP:ray214 -->
       <p><b>不可消除的误码平台（error floor，p.35）</b>：衰落太快（多普勒）或时延扩展太大时，即使 SNR 趋于无穷，误码率也降不到零，停在一个"地板"上。讲义的两个近似公式：</p>
       <div class="formula-card">
         <div class="flbl">误码平台（第 3 章 p.35；Practice 3）</div>
@@ -151,6 +208,9 @@
           <div class="wans">R = 1/T_b ≥ 17.77 kbps（讲义算式里 π 在 PDF 转文字时丢了，原式有 π）</div>
         </div>
       </div>
+      <!-- KP:dopfloor -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>多普勒造成的不可消除误码平台（p.35–36）。</dd><dt>用到的知识</dt><dd>DPSK：P<sub>floor</sub> ≈ ½(πf<sub>D</sub>T<sub>b</sub>)²；f<sub>D</sub> = v f<sub>c</sub>/c。</dd><dt>关键一步</dt><dd>平台要低 → T<sub>b</sub> 要短 → 速率要高：T<sub>b</sub> ≤ √(2P<sub>floor</sub>)/(πf<sub>D</sub>) = 56.3 µs → R ≥ 17.8 kbps。</dd><dt>物理意义</dt><dd>DPSK 用前一个符号的相位做参考。一个符号内信道相位转得越多（f<sub>D</sub>T<sub>b</sub> 越大），参考越不准，加 SNR 也救不回来。</dd><dt>易错</dt><dd>讲义算式在转文字时丢了 π，计算要带 π。</dd></dl></div>
+      <!-- /KP:dopfloor -->
       <div class="worked">
         <summary><span class="wtag">例题</span>时延扩展平台下的最高速率（Practice 3 第 3 题）</summary>
         <div class="wbody">
@@ -160,6 +220,9 @@
           <div class="wans">QPSK 最高约 21.08 kbps</div>
         </div>
       </div>
+      <!-- KP:dsfloor -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>时延扩展造成的误码平台和最高速率（p.35，Practice 3 第 3 题）。</dd><dt>用到的知识</dt><dd>BPSK：P<sub>floor</sub> ≈ (σ<sub>Tm</sub>/T<sub>b</sub>)²。</dd><dt>关键一步</dt><dd>起作用的是<b>符号</b>时长：QPSK 的 T<sub>s</sub> = 94.9 µs，每符号 2 bit → R<sub>b</sub> = 21.08 kbps。</dd><dt>对比</dt><dd>多普勒平台要速率高，时延扩展平台要速率低；两者同时存在时，速率只能在一个区间里选。</dd><dt>易错</dt><dd>把 94.9 µs 当成比特时长会得到 10.54 kbps；σ<sub>Tm</sub> 是 rms 时延扩展，不是最大时延。</dd></dl></div>
+      <!-- /KP:dsfloor -->
       <!-- ENR:learn_03.html:3.5 -->
       <div class="key"><div class="lbl">★ 考试重点 · 衰落下的误码率</div><ul>
 <li>平均误码率 = 把 AWGN 误码率按 SNR 的分布加权平均：连续分布用积分，<b>离散分布直接按概率加权求和</b>（第 4 章期末题都是离散的）。</li>

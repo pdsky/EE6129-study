@@ -56,6 +56,13 @@ mark.hl{background:linear-gradient(to bottom,transparent 45%,var(--key-soft) 45%
 mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%;}
 .formula-card .fexpr mjx-container{max-width:100%;}
 .worked .wtext{min-width:0;}
+/* knowledge-point box under each worked example */
+.kp{border:1px solid var(--accent);border-left-width:5px;border-radius:10px;background:var(--accent-soft);padding:12px 18px 8px;margin:-16px 0 30px;}
+.kp > .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--accent-ink);font-weight:700;margin-bottom:4px;}
+.kp dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;}
+.kp dt{font-weight:700;font-size:14px;color:var(--accent-ink);padding-top:1px;}
+.kp dd{margin:0;font-size:14.5px;color:var(--ink);line-height:1.65;}
+@media (max-width:560px){.kp dl{grid-template-columns:1fr;gap:0;}.kp dt{margin-top:6px;}}
 '''
 
 MATHJAX = '''<script>

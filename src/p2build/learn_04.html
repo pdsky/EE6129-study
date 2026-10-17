@@ -32,7 +32,16 @@
         <div class="fexpr">\(\gamma_{SD}=\max(\gamma_1,\dots,\gamma_M)\)　　\(P_{\mathrm{out}}(\gamma_0)=\left(1-e^{-\gamma_0/\bar\gamma}\right)^M\)　　\(\bar\gamma_{SD}=\bar\gamma\displaystyle\sum_{i=1}^{M}\frac1i\)</div>
         <div class="fmeaning">只挑 SNR 最高的那一路。中断要求<b>每一路</b>都低于门限，独立时概率相乘。平均 SNR 只按 1 + 1/2 + 1/3 + … 增长：M = 2 时 1.5 倍，M = 3 时 1.83 倍。</div>
       </div>
+      <!-- DRV:sdpdf -->
       <div class="worked">
+        <summary><span class="wtag">推导</span>选择分集的 CDF、PDF 和平均输出 SNR（p.11–12）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext"><b>CDF</b>："最大值小于 γ" ⇔ "每一路都小于 γ"。独立 → 相乘：\(F(\gamma)=P(\gamma_{SD}\lt\gamma)=\prod_iP(\gamma_i\lt\gamma)=\big(1-e^{-\gamma/\bar\gamma}\big)^M\)。把 γ 换成门限 γ₀ 就是中断概率。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>PDF</b>：对 CDF 求导（链式法则，外层 \(u^M\)，内层 \(u=1-e^{-\gamma/\bar\gamma}\)，\(u^{\prime}=\frac1{\bar\gamma}e^{-\gamma/\bar\gamma}\)）：<div class="calc">p(γ) = (M/γ̄) (1 − e^(−γ/γ̄))^(M−1) e^(−γ/γ̄)　← p.12</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>M = 2 的平均值</b>：\(p(\gamma)=\frac2{\bar\gamma}\big(e^{-\gamma/\bar\gamma}-e^{-2\gamma/\bar\gamma}\big)\)。用 \(\int_0^\infty\gamma e^{-b\gamma}d\gamma=1/b^2\)：<div class="calc">E[γ_SD] = (2/γ̄)(γ̄² − γ̄²/4) = 2γ̄ − γ̄/2 = 1.5γ̄ = γ̄(1 + 1/2)</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext">一般 M：把 \((1-e^{-\gamma/\bar\gamma})^{M-1}\) 用二项式展开、逐项积分，结果整理成 \(\bar\gamma\sum_{i=1}^M\frac1i\)（讲义直接给结果）。第 M 路只多贡献 γ̄/M：<b>收益递减</b>，2 路 1.5 倍，3 路 1.83 倍，6 路 2.45 倍。</div></div><div class="wstep"><div class="wn">5</div><div class="wtext">通信成功的概率 = 1 − 中断概率 = \(1-(1-e^{-\gamma_0/\bar\gamma})^M\)（p.12）。</div></div>
+          <div class="wans">F(γ) = (1 − e<sup>−γ/γ̄</sup>)<sup>M</sup>；p(γ) = 求导；γ̄<sub>SD</sub> = γ̄ Σ 1/i</div>
+        </div>
+      </div>
+      <!-- /DRV:sdpdf -->
+            <div class="worked">
         <summary><span class="wtag">例题</span>选择分集的中断概率（第 4 章 p.13）</summary>
         <div class="wbody">
           <p>已知条件：BPSK，要求 \(P_b=10^{-3}\)，瑞利衰落，每路平均 SNR 15 dB，比较 M = 1、2、3。</p>
@@ -42,6 +51,9 @@
           <div class="wans">中断概率 14% → 2% → 0.3%，每多一路就降约 7 倍</div>
         </div>
       </div>
+      <!-- KP:sd13 -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>选择分集的中断概率 (1 − e<sup>−γ₀/γ̄</sup>)<sup>M</sup>（p.11–13），期末常考反求 M。</dd><dt>用到的知识</dt><dd>AWGN 门限反查 Q(√(2γ₀)) = 10⁻³ → √(2γ₀) = 3.09 → γ₀ = 4.77（6.8 dB）；独立支路概率相乘。</dd><dt>关键一步</dt><dd>γ₀/γ̄ 用线性值：10<sup>0.68</sup>/10<sup>1.5</sup> = 0.151，单路中断 0.140。</dd><dt>反求 M</dt><dd>要 P<sub>out</sub> ≤ 10⁻³：0.14<sup>M</sup> ≤ 10⁻³ → M ≥ 3/0.854 = 3.5 → 取 M = 4（往上取整）。</dd><dt>易错</dt><dd>γ̄ 是每一路的平均 SNR；SD 的平均输出 SNR 是 γ̄Σ1/i，不是 Mγ̄。</dd></dl></div>
+      <!-- /KP:sd13 -->
       <div class="formula-card">
         <div class="flbl">最大比合并 MRC（p.15–16）</div>
         <div class="fexpr">\(y(t)=\displaystyle\sum_iA_ie^{-j\theta_i}r_i(t)\)　　\(\gamma_{MRC}=\dfrac{\sum_iA_i^2E_b}{N_0}=\sum_i\gamma_i\)</div>
@@ -52,7 +64,16 @@
         <div class="fexpr">\(y(t)=\displaystyle\sum_ie^{-j\theta_i}r_i(t)\)　　\(\gamma_{EGC}=\dfrac{\left(\sum_iA_i\right)^2E_b}{MN_0}\)</div>
         <div class="fmeaning">只对齐相位、不加权，所有路等权相加。不需要估计幅度 \(A_i\)，性能和 MRC 非常接近（p.20 的图）。</div>
       </div>
+      <!-- DRV:mrcsnr -->
       <div class="worked">
+        <summary><span class="wtag">推导</span>MRC 和 EGC 的输出 SNR，以及为什么 MRC 最好（p.15–16、p.19）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext"><b>MRC 合并</b>：把 \(r_i=A_ie^{j\theta_i}s+w_i\) 代进 \(y=\sum_iA_ie^{-j\theta_i}r_i\)：<div class="calc">y = (Σ A<sub>i</sub>²) s + Σ A<sub>i</sub>e<sup>−jθ<sub>i</sub></sup> w<sub>i</sub></div>\(e^{-j\theta_i}e^{j\theta_i}=1\)：所有支路的相位都转到 0，信号同相相加（p.16）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>信号功率</b>：\((\sum A_i^2)^2E_b\)。<b>噪声功率</b>：各 \(w_i\) 独立、方差 \(N_0\)；乘 \(A_ie^{-j\theta_i}\) 后方差 \(A_i^2N_0\)（\(|e^{-j\theta}|=1\) 不改变功率）；独立相加，方差相加 → \(\sum A_i^2N_0\)。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext">相除：\(\gamma_{MRC}=\dfrac{(\sum A_i^2)^2E_b}{\sum A_i^2N_0}=\dfrac{\sum A_i^2E_b}{N_0}=\sum_i\gamma_i\)，\(\gamma_i=A_i^2E_b/N_0\) 是第 i 路单独的 SNR。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>EGC</b>：权重只有 \(e^{-j\theta_i}\)。信号 \((\sum A_i)s\)，功率 \((\sum A_i)^2E_b\)；噪声 M 路各 \(N_0\)，共 \(MN_0\)：\(\gamma_{EGC}=\dfrac{(\sum A_i)^2E_b}{MN_0}\)（p.19）。</div></div><div class="wstep"><div class="wn">5</div><div class="wtext"><b>为什么 MRC 最好</b>：任意权重 \(\beta_i\) 时 \(\mathrm{SNR}=\dfrac{|\sum\beta_iA_ie^{j\theta_i}|^2E_b}{\sum|\beta_i|^2N_0}\)。由柯西-施瓦茨 \(|\sum\beta_ia_i|^2\le\sum|\beta_i|^2\sum|a_i|^2\)，SNR ≤ \(\sum A_i^2E_b/N_0\)，当 \(\beta_i\propto A_ie^{-j\theta_i}\)（增益的共轭）时取等号。EGC、SD 都是某种特殊的权重，所以都不超过 MRC。第 5 章 p.13–15 是同一个推导的矩阵写法。</div></div>
+          <div class="wans">γ<sub>MRC</sub> = Σγ<sub>i</sub>（最优）；γ<sub>EGC</sub> = (ΣA<sub>i</sub>)²E<sub>b</sub>/(MN₀)；γ<sub>SD</sub> = max γ<sub>i</sub></div>
+        </div>
+      </div>
+      <!-- /DRV:mrcsnr -->
+            <div class="worked">
         <summary><span class="wtag">小例子</span>三种合并方法比一比</summary>
         <div class="wbody">
           <p>两路某一时刻的增益 \(A_1=1\)、\(A_2=0.5\)，\(E_b/N_0=1\)，即两路 SNR 分别为 1 和 0.25。</p>
@@ -62,6 +83,9 @@
           <div class="wans">MRC 1.25 ≥ EGC 1.125 ≥ SD 1：MRC 最好，EGC 接近，SD 最简单</div>
         </div>
       </div>
+      <!-- KP:comb3 -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>SD、MRC、EGC 的输出 SNR 公式和大小关系（p.10–20）。</dd><dt>用到的知识</dt><dd>SD = max γ<sub>i</sub>；MRC = Σγ<sub>i</sub>；EGC = (ΣA<sub>i</sub>)²E<sub>b</sub>/(MN₀)。</dd><dt>关键一步</dt><dd>EGC 分母里的 M：M 路噪声等权相加，噪声功率变成 M 倍。</dd><dt>大小关系</dt><dd>总有 MRC ≥ EGC、MRC ≥ SD（柯西-施瓦茨，见上面的推导框）；EGC 和 SD 谁大不一定：A = 1、0.1 时 EGC = 1.1²/2 = 0.605 &lt; SD = 1，弱的一路给 EGC 带来的噪声比信号多。</dd><dt>实现代价</dt><dd>SD 只需比较 SNR；EGC 要知道相位；MRC 要知道幅度和相位，每一路都要信道估计（p.17）。</dd></dl></div>
+      <!-- /KP:comb3 -->
       <p><b>相关性的影响（p.21）</b>：两路如果相关，一路掉进深衰落时另一路也倾向于掉进去，\(P(\text{两路都深衰落})\ge P(\text{一路})\times P(\text{另一路})\)。只有不相关时才取等号，分集效果最好。Practice 4 第 2(c) 题就是"两路共享同一个阴影项 β"的相关情况。</p>
 
       <!-- ENR:learn_04.html:4.2 -->
@@ -75,6 +99,9 @@
 <div class="worked"><summary><span class="wtag">例题</span>SD 和 MRC 同一组数比一比（自编）</summary><div class="wbody">
 <p>已知条件：两支路独立，每支路 SNR 以 0.5 的概率是 4、0.5 的概率是 9（线性值），DPSK，P<sub>s</sub> = ½e<sup>−γ</sup>。</p>
 <div class="wstep"><div class="wn">1</div><div class="wtext">组合和概率：(4,4) 0.25，(4,9) 0.25，(9,4) 0.25，(9,9) 0.25。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>SD</b>：输出 4（只有两支都是 4 时，0.25）或 9（0.75）。<div class="calc">平均 = 0.25 × 4 + 0.75 × 9 = 7.75；P̄_s = 0.25 × ½e⁻⁴ + 0.75 × ½e⁻⁹ = 2.29×10⁻³ + 4.6×10⁻⁵ ≈ 2.3×10⁻³</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>MRC</b>：输出 8（0.25）、13（0.5）、18（0.25）。<div class="calc">平均 = 2 + 6.5 + 4.5 = 13（= 6.5 + 6.5）；P̄_s = 0.25 × ½e⁻⁸ + 0.5 × ½e⁻¹³ + 0.25 × ½e⁻¹⁸ ≈ 4.3×10⁻⁵</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext">单支路：P̄<sub>s</sub> = 0.5 × ½e⁻⁴ + 0.5 × ½e⁻⁹ ≈ 4.6×10⁻³。</div></div><div class="wans">误码率：单支路 4.6×10⁻³ → SD 2.3×10⁻³ → MRC 4.3×10⁻⁵；MRC 好得多，因为它把两路能量加起来</div></div></div>
+      <!-- KP:sdmrc -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>离散 SNR 分布下 SD 和 MRC 的平均 SNR、平均误码率（期末四年考了三次）。</dd><dt>用到的知识</dt><dd>独立 → 组合概率相乘；全概率加权平均。</dd><dt>关键一步</dt><dd>列 2 × 2 = 4 种组合，分别取 max（SD）或和（MRC），再加权；SD 输出为 4 只有 (4, 4) 一种情况，概率 0.25。</dd><dt>捷径与陷阱</dt><dd>MRC 平均 SNR = 6.5 + 6.5 = 13，不用列组合；但平均误码率不能用平均 SNR 代入，e<sup>−γ</sup> 是非线性的（第 1 章 E[f(X)] ≠ f(E[X])）。</dd><dt>结论</dt><dd>SD 只能"挑"，MRC 能"加"：同样两路，MRC 的误码率比 SD 低约 50 倍。</dd></dl></div>
+      <!-- /KP:sdmrc -->
       <!-- /ENR:learn_04.html:4.2 -->
       <h3><span class="zh-num">4.3</span>分集后的误码率<span class="imp">★★★ 必考</span></h3>
       <p>平均误码率还是"按 SNR 的分布加权平均"：\(\bar P_s=\int P_s(\gamma)p_\gamma(\gamma)d\gamma\)（p.23）。以 DPSK + 选择分集为例（p.24–26）：</p>
@@ -83,7 +110,16 @@
         <div class="fexpr">\(\bar P_b=\dfrac M2\displaystyle\sum_{n=0}^{M-1}(-1)^n\binom{M-1}{n}\frac{1}{\bar\gamma+n+1}\)　　M = 1：\(\dfrac{1}{2(1+\bar\gamma)}\approx\dfrac{1}{2\bar\gamma}\)　　M = 2：\(\dfrac{1}{(\bar\gamma+1)(\bar\gamma+2)}\approx\dfrac{1}{\bar\gamma^2}\)</div>
         <div class="fmeaning">一路时误码率和 \(\bar\gamma\) 成反比；两路时和 \(\bar\gamma^2\) 成反比。SNR 提高 10 dB，一路只降 10 倍，两路降 100 倍。<b>指数 M 就是"分集阶数"</b>。</div>
       </div>
-      <div class="formula-card">
+      <!-- DRV:dpsksd -->
+      <div class="worked">
+        <summary><span class="wtag">推导</span>DPSK + 选择分集的积分（p.24–26）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">代入 \(P_b(\gamma)=\tfrac12e^{-\gamma}\) 和上面推出的 SD 的 PDF：<div class="calc">P̄ = ∫₀^∞ ½e^(−γ) · (M/γ̄)(1 − e^(−γ/γ̄))^(M−1) e^(−γ/γ̄) dγ</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext">二项式展开 \((1-x)^{M-1}=\sum_{n=0}^{M-1}\binom{M-1}{n}(-1)^nx^n\)，\(x=e^{-\gamma/\bar\gamma}\)。每一项都只是一个指数：\(e^{-\gamma}\cdot e^{-n\gamma/\bar\gamma}\cdot e^{-\gamma/\bar\gamma}=e^{-\gamma(1+(n+1)/\bar\gamma)}\)。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext">逐项用 \(\int_0^\infty e^{-a\gamma}d\gamma=1/a\)，\(a=1+\frac{n+1}{\bar\gamma}\)：<div class="calc">(M/2γ̄)(−1)ⁿ C(M−1, n) · 1/(1 + (n+1)/γ̄) = (M/2)(−1)ⁿ C(M−1, n) / (γ̄ + n + 1)</div>求和就是讲义 p.25 的公式。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext">M = 1：\(\dfrac{1}{2(\bar\gamma+1)}\)。M = 2：\(\dfrac{1}{\bar\gamma+1}-\dfrac{1}{\bar\gamma+2}=\dfrac{1}{(\bar\gamma+1)(\bar\gamma+2)}\approx\dfrac1{\bar\gamma^2}\)。数值：γ̄ = 10 时 0.045 → 0.0076；γ̄ = 100 时 4.95×10⁻³ → 9.7×10⁻⁵。</div></div>
+          <div class="wans">高 SNR 时 P̄ ∝ γ̄<sup>−M</sup>：log-log 图上斜率 = −M，这个 M 就是分集阶数 d</div>
+        </div>
+      </div>
+      <!-- /DRV:dpsksd -->
+            <div class="formula-card">
         <div class="flbl">阵列增益与分集增益（p.27–28）</div>
         <div class="fexpr">\(g\approx\dfrac{\bar\gamma_\Sigma}{\bar\gamma}\)　　\(\bar P_e\approx\bar\gamma^{-d}\ \Longrightarrow\ d\approx\dfrac{-\log_{10}\bar P_e}{\log_{10}\bar\gamma}\)</div>
         <div class="fmeaning"><b>阵列增益 g</b>：合并后平均 SNR 比单路高多少倍，是曲线的"平移"。<b>分集增益 d</b>：误码率曲线在高 SNR 时的"斜率"，d ≤ M；N 发 M 收的 MIMO，d ≤ N × M，满分集时取等号。</div>
@@ -100,6 +136,9 @@
           <p style="margin-top:12px">(b) 和 (c) 平均 SNR 一样，但 (c) 的误码率高了近 3 倍：两路共享阴影 β，一起变差，这就是"相关性削弱分集"。</p>
         </div>
       </div>
+      <!-- KP:p4q2 -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>离散分布 + MRC + 阵列增益 g + 分集增益 d + 相关支路（Practice 4 第 2 题）。</dd><dt>用到的知识</dt><dd>MRC 输出 = 和；g = γ̄<sub>Σ</sub>/γ̄；d = −log₁₀P̄/log₁₀γ̄（γ̄ 用输入）；独立时 E[e<sup>−(X+Y)</sup>] = E[e<sup>−X</sup>]E[e<sup>−Y</sup>]。</dd><dt>关键一步</dt><dd>(c) γ<sub>Σ</sub> = r₁ + r₂ + 2β：β 两路共享，指数里是 2β，不能当成两个独立的 β 分别平均。</dd><dt>易错</dt><dd>8 + 11 有 (8, 11)、(11, 8) 两种排列，概率 2 × ⅓ × ⅔ = 4/9；d 用输入 SNR 10，不是输出 20。</dd><dt>结论</dt><dd>平均 SNR 相同，相关让误码率变高、d 变小（8.1 → 7.7）：分集要求支路独立（p.21）。</dd></dl></div>
+      <!-- /KP:p4q2 -->
 
       <!-- ENR:learn_04.html:4.3 -->
       <div class="key"><div class="lbl">★ 考试重点 · 阵列增益 g 和分集增益 d（2025-26 两次期末都考）</div>
@@ -129,6 +168,9 @@
           <div class="wans">(a) 9.96 bit/s/Hz；(b) Pe = 10⁻⁵</div>
         </div>
       </div>
+      <!-- KP:dmt84 -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>分集-复用折中 d(r) = (N − r)(M − r) 和速率 R = r log₂SNR（p.31–34，Practice 5 第 3 题）。</dd><dt>用到的知识</dt><dd>P<sub>e</sub> ≈ SNR<sup>−d</sup>；复用增益的定义 r = R / log₂SNR。</dd><dt>关键一步</dt><dd>先由误码要求求 d 的下限（d ≥ 3），再在表里找满足条件的最大 r（r = 3，d = 5），最后 R = 3 log₂10。</dd><dt>易错</dt><dd>SNR 用线性值（10 dB → 10，20 dB → 100）；r 不超过 min(N, M) = 4，r = 4 时 d = 0。</dd><dt>举一反三</dt><dd>已知 P<sub>e</sub> = 10⁻³ 和 d = 3，求 SNR：SNR = P<sub>e</sub><sup>−1/d</sup> = 10（2024-25 Q1(b)(ii) 题型）。</dd></dl></div>
+      <!-- /KP:dmt84 -->
       <p>p.34 的例子：\(P_e=2^{2R}/\mathrm{SNR}\)，把 \(R=r\log_2\mathrm{SNR}\) 代入：\(2^{2R}=\mathrm{SNR}^{2r}\)，所以 \(P_e=\mathrm{SNR}^{-(1-2r)}\)，\(d(r)=1-2r\)。</p>
       <!-- ENR:learn_04.html:4.4 -->
       <div class="key"><div class="lbl">★ 考试重点 · 分集-复用折中的计算（2024-25 Q1(b)(ii)、Practice 5 第 3 题）</div>

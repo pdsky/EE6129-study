@@ -56,7 +56,16 @@
         <div class="fexpr">\(\mathbf X(\mathbf s)=\begin{bmatrix}s_1 & s_2\\ -s_2^* & s_1^*\end{bmatrix}\)（行：时隙 1、2；列：天线 1、2）　　\(\mathbf X\mathbf X^H=\|\mathbf s\|^2\mathbf I\)</div>
         <div class="fmeaning">时隙 1：天线 1 发 \(s_1\)、天线 2 发 \(s_2\)；时隙 2：天线 1 发 \(-s_2^*\)、天线 2 发 \(s_1^*\)。码率 R = K/T = 2 个符号 / 2 个时隙 = 1（全速率，p.29）。关键性质是<b>正交</b>：\(\mathbf X\mathbf X^H=(|s_1|^2+|s_2|^2)\mathbf I\)，正是这个性质让接收端能用很简单的线性运算把两个符号分开。</div>
       </div>
+      <!-- DRV:xxh -->
       <div class="worked">
+        <summary><span class="wtag">推导</span>验证 Alamouti 码正交：逐项算 X X<sup>H</sup>（p.22；2023-24 Q1(b)(iii)）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">\(\mathbf X=\begin{bmatrix}s_1&s_2\\-s_2^*&s_1^*\end{bmatrix}\)，共轭转置 \(\mathbf X^H=\begin{bmatrix}s_1^*&-s_2\\s_2^*&s_1\end{bmatrix}\)（先转置，再每个元素取共轭）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext">(1,1)：\(s_1s_1^*+s_2s_2^*=|s_1|^2+|s_2|^2\)；(2,2)：\((-s_2^*)(-s_2)+s_1^*s_1=|s_1|^2+|s_2|^2\)。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext">(1,2)：\(s_1(-s_2)+s_2s_1=0\)；(2,1)：\((-s_2^*)s_1^*+s_1^*s_2^*=0\)。交叉项正好抵消。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext">所以 \(\mathbf X\mathbf X^H=(|s_1|^2+|s_2|^2)\mathbf I=\|\mathbf s\|^2\mathbf I\)，满足 OSTBC 的定义（p.27）。同样可以验证 \(\mathbf X^H\mathbf X=\|\mathbf s\|^2\mathbf I\)。</div></div>
+          <div class="wans">第二行 = 两个符号<b>对调</b> + <b>取共轭</b> + <b>一个负号</b>，三者缺一不可，交叉项才会抵消</div>
+        </div>
+      </div>
+      <!-- /DRV:xxh -->
+            <div class="worked">
         <summary><span class="wtag">推导</span>Alamouti 的判决变量（Practice 5 第 2 题）</summary>
         <div class="wbody">
           <p>已知条件：符号 \(u_1,u_2\)；时隙 1：A 发 \(u_1\)、B 发 \(u_2\)；时隙 2：A 发 \(-u_2^*\)、B 发 \(u_1^*\)。两个时隙信道不变（\(h_A,h_B\)），1 根接收天线，噪声 \(\mathcal N(0,N_0)\)。</p>
@@ -68,7 +77,19 @@
           <p style="margin-top:12px">官方答案写成 ‖h₁‖、‖h₂‖，其实两个都是同一个 ‖h‖ = √(|h_A|² + |h_B|²)。</p>
         </div>
       </div>
-      <div class="formula-card">
+      <!-- KP:alam -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>Alamouti 码的接收模型、判决变量和分集（p.21–26，Practice 5 第 2 题；2025-26 S2 Q1(b)(iii)）。</dd><dt>用到的知识</dt><dd>共轭 (ab)* = a*b*；F<sup>H</sup>F = ‖h‖²I；滤波后的噪声方差。</dd><dt>关键一步</dt><dd>对第二个时隙的接收信号取共轭，让 u₁、u₂ 都以"不带共轭"的形式出现，才能写成 ỹ = Fu + ṽ。</dd><dt>结论</dt><dd>两个符号互不干扰，各自得到 |h<sub>A</sub>|² + |h<sub>B</sub>|² 的增益（2 阶分集），发射端不需要知道信道。取共轭不改变噪声的统计性质。</dd><dt>易错</dt><dd>F 的第二行是 [h<sub>B</sub>*, −h<sub>A</sub>*]，负号别放错；除以 ‖h‖ 后噪声方差是 N₀，除以 ‖h‖² 后是 N₀/‖h‖²。</dd></dl></div>
+      <!-- /KP:alam -->
+      <!-- DRV:alaml -->
+      <div class="worked">
+        <summary><span class="wtag">推导</span>Alamouti 的 ML 检测和每个符号的 SNR（p.23–26）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">接收模型 \(\tilde{\mathbf y}=\mathbf F\mathbf s+\tilde{\mathbf v}\)，噪声白、高斯 → ML = 最小化 \(\|\tilde{\mathbf y}-\mathbf F\mathbf s\|^2\)（第 3 章：ML = 最小距离）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext">展开：\(\|\tilde{\mathbf y}-\mathbf F\mathbf s\|^2=\|\tilde{\mathbf y}\|^2-2\mathrm{Re}\{\mathbf s^H\mathbf F^H\tilde{\mathbf y}\}+\mathbf s^H\mathbf F^H\mathbf F\mathbf s\)，而 \(\mathbf F^H\mathbf F=\|\mathbf h\|^2\mathbf I\)，最后一项 = \(\|\mathbf h\|^2\|\mathbf s\|^2\)。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext">配方（p.23）：上式 \(=\dfrac{1}{\|\mathbf h\|^2}\big\|\mathbf F^H\tilde{\mathbf y}-\|\mathbf h\|^2\mathbf s\big\|^2+\Big[\|\tilde{\mathbf y}\|^2-\dfrac{\|\mathbf F^H\tilde{\mathbf y}\|^2}{\|\mathbf h\|^2}\Big]\)。展开第一项就能验证；方括号和 s 无关（\(\mathbf F\mathbf F^H=\|\mathbf h\|^2\mathbf I\) 时它等于 0）。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext">第一项为 0 时最小：\(\hat{\mathbf s}=\dfrac{1}{\|\mathbf h\|^2}\mathbf F^H\tilde{\mathbf y}=\mathbf s+\dfrac{1}{\|\mathbf h\|^2}\mathbf F^H\tilde{\mathbf v}\)（p.24）。<b>两个符号各自独立判决</b>，不用联合搜索 M² 种组合。</div></div><div class="wstep"><div class="wn">5</div><div class="wtext">噪声协方差：\(\dfrac{1}{\|\mathbf h\|^4}\mathbf F^HE[\tilde{\mathbf v}\tilde{\mathbf v}^H]\mathbf F=\dfrac{\sigma^2}{\|\mathbf h\|^4}\mathbf F^H\mathbf F=\dfrac{\sigma^2}{\|\mathbf h\|^2}\mathbf I\)，所以 \(\hat{\mathbf s}\sim\mathcal N\big(\mathbf s,\frac{\sigma^2}{\|\mathbf h\|^2}\mathbf I\big)\)；每个符号的 SNR \(=\dfrac{E\{|s_n|^2\}}{\sigma^2}(|h_1|^2+|h_2|^2)\)（p.25）。</div></div><div class="wstep"><div class="wn">6</div><div class="wtext">和 MRC 比：总功率相同时两根天线各发一半，\(E\{|s_n|^2\}=E_b/2\)，SNR = \(\tfrac12\|\mathbf h\|^2E_b/\sigma^2\)；1 发 2 收 MRC 是 \(\|\mathbf h\|^2E_b/\sigma^2\)。分集阶数相同（都是 2），Alamouti 少 3 dB 阵列增益（p.30）。</div></div>
+          <div class="wans">ŝ = F<sup>H</sup>ỹ/‖h‖² = s + 噪声，噪声方差 σ²/‖h‖²；SNR ∝ |h₁|² + |h₂|²</div>
+        </div>
+      </div>
+      <!-- /DRV:alaml -->
+            <div class="formula-card">
         <div class="flbl">SNR 对比（p.26、p.30）</div>
         <div class="fexpr">MRC（1 发 2 收）：\(\dfrac{\|\mathbf h\|^2E_b}{\sigma^2}\)　　OSTBC：\(\dfrac{T\|\mathbf h\|^2E_b}{KN\sigma^2}\)　　Alamouti：\(\dfrac12\dfrac{\|\mathbf h\|^2E_b}{\sigma^2}\)</div>
         <div class="fmeaning">Alamouti 和 MRC 的分集阶数一样（都是 2），但 SNR 低 3 dB：发射端的总功率要分给两根天线，每根只有一半。所以 MRC 比 Alamouti 多一个"阵列增益"。</div>
@@ -87,7 +108,16 @@
         <div class="fexpr">\(C(\mathbf H)=B\log_2\det\!\Big(\mathbf I+\dfrac{1}{\sigma^2}\mathbf H\mathbf P\mathbf H^H\Big)=B\displaystyle\sum_{i=1}^{r}\log_2\!\Big(1+\frac{\lambda_i}{\sigma^2}\Big)\)</div>
         <div class="fmeaning">第二个等号的推导（p.34–35）：对 \(\mathbf H\mathbf P\mathbf H^H\) 做特征分解 \(\mathbf U\boldsymbol\Lambda\mathbf U^H\)，再用 \(\det(\mathbf I+\mathbf A\mathbf B)=\det(\mathbf I+\mathbf B\mathbf A)\) 和 \(\mathbf U^H\mathbf U=\mathbf I\)，行列式变成对角线元素之积，log 把积变成和。r 是矩阵的秩，\(\lambda_i\) 是特征值。<b>MIMO 容量 = r 条并行 SISO 信道容量之和</b>。</div>
       </div>
-      <ul>
+      <!-- DRV:cap -->
+      <div class="worked">
+        <summary><span class="wtag">推导</span>MIMO 容量化成"r 条管道之和"，以及 SIMO / MISO（p.33–38）</summary>
+        <div class="wbody">
+          <div class="wstep"><div class="wn">1</div><div class="wtext">\(\mathbf H\mathbf P\mathbf H^H\) 是 M×M 的半正定厄米矩阵，可以特征分解 \(\mathbf U\boldsymbol\Lambda\mathbf U^H\)，\(\mathbf U^H\mathbf U=\mathbf I\)，\(\boldsymbol\Lambda=\mathrm{diag}(\lambda_1,\dots,\lambda_r,0,\dots)\)（p.33）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext">取 \(\mathbf A=\mathbf U\)、\(\mathbf B=\frac{1}{\sigma^2}\boldsymbol\Lambda\mathbf U^H\)，用 \(\det(\mathbf I+\mathbf A\mathbf B)=\det(\mathbf I+\mathbf B\mathbf A)\)：<div class="calc">det(I + UΛU<sup>H</sup>/σ²) = det(I + ΛU<sup>H</sup>U/σ²) = det(I + Λ/σ²)</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext">对角矩阵的行列式 = 对角元素之积 \(\prod_i(1+\lambda_i/\sigma^2)\)（\(\lambda_i=0\) 的项是 1）。log 把积变成和：\(C=B\sum_{i=1}^r\log_2(1+\lambda_i/\sigma^2)\)（p.34）。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>SIMO</b>（N = 1，h 是 M×1，P 是一个数）：\(\mathbf H\mathbf P\mathbf H^H=P\mathbf h\mathbf h^H\)，秩 1，唯一的非零特征值是 \(P\mathbf h^H\mathbf h=P\|\mathbf h\|^2\)：\(C=B\log_2(1+P\|\mathbf h\|^2/\sigma^2)\)（p.37）。加接收天线只是让 \(\|\mathbf h\|^2\) 变大，容量按 log 增长。</div></div><div class="wstep"><div class="wn">5</div><div class="wtext"><b>MISO</b>（M = 1，h 是 1×N）：\(\mathbf h\mathbf P\mathbf h^H\) 是一个数。讲义 p.38 写成 \(P\|\mathbf h\|^2\)，对应把全部功率沿 h 的方向发（发射端知道信道）；不知道信道、功率平分 \(\mathbf P=\frac PN\mathbf I\) 时是 \(\frac PN\|\mathbf h\|^2\)。两种情况都只有 1 条管道。</div></div><div class="wstep"><div class="wn">6</div><div class="wtext"><b>高 SNR</b>：\(\log_2(1+x)\approx\log_2x\)，各 \(\lambda_i\) 都和总功率成正比，所以 \(C\approx r\,B\log_2\mathrm{SNR}+\)常数：SNR 每翻一倍，容量多 r bit/s/Hz，r 最大 min(N, M)（第 4 章 p.31 的复用增益）。</div></div>
+          <div class="wans">C = B Σ log₂(1 + λ<sub>i</sub>/σ²)：r 条并行 SISO 管道；SIMO/MISO 只有 1 条，r = 1</div>
+        </div>
+      </div>
+      <!-- /DRV:cap -->
+            <ul>
         <li><b>SISO</b>（N = M = 1）：退化成 \(B\log_2(1+P|h|^2/\sigma^2)\)，就是香农公式（p.33）。</li>
         <li><b>SIMO / MISO</b>（p.38–39）：只有 1 条空间管道，加天线只让 SNR 变大，容量按 <b>log</b> 增长。</li>
         <li><b>MIMO</b>：秩 r 可以到 min(N, M)，容量按 <b>min(N, M) 倍</b>线性增长，这是 MIMO 最大的价值。</li>
@@ -105,6 +135,9 @@
           <div class="wans">C ≈ 124.7 Mbps ≈ 125 Mbps</div>
         </div>
       </div>
+      <!-- KP:wf80 -->
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>MIMO 发射端知道信道时的容量：特征子信道 + 注水（p.19、p.40；第 2 章 p.54）。</dd><dt>用到的知识</dt><dd>Σ(1/γ₀ − 1/γ<sub>i</sub>) = 1 定 γ₀；C = B Σ log₂(γ<sub>i</sub>/γ₀)。</dd><dt>关键一步</dt><dd>三个 SNR 都 ≥ γ₀ = 2.82，一次成立；功率 0.342、0.329、0.329，加起来为 1。</dd><dt>对比</dt><dd>功率平分（不知道信道）时每路 SNR 是 80/3、40/3、40/3，C = 122.1 Mbps，只比注水的 124.7 Mbps 少 2%：高 SNR 时知不知道信道差别很小（p.41–42）。</dd><dt>易错</dt><dd>B = 10 MHz 乘在最后；log₂ 不是 ln。</dd></dl></div>
+      <!-- /KP:wf80 -->
       <div class="extra">
         <div class="lbl">课外补充 · 一个 2 × 2 的小算例</div>
         <p>设 \(\mathbf H=\begin{bmatrix}1&0\\0&0.5\end{bmatrix}\)，每根天线功率 P/2，\(P/\sigma^2=10\)。\(\mathbf H\mathbf H^H=\mathrm{diag}(1,0.25)\)，容量 \(\log_2(1+5)+\log_2(1+1.25)=2.58+1.17=3.75\) bit/s/Hz。如果只有 1 根天线、全部功率 \(P|h|^2/\sigma^2=10\)：\(\log_2 11=3.46\)。两条管道即使一条较弱，总容量也更高；SNR 越高，这个差距越大（两条管道时容量随 SNR 的增长速度是一条的两倍）。</p>
