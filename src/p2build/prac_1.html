@@ -15,7 +15,7 @@
     </div>
     <div class="chips"><span class="chip">简化路径损耗模型</span><span class="chip">最小二乘拟合</span><span class="chip">阴影方差 = MSE</span><span class="chip">中断概率 Q 函数</span><span class="chip src">讲义第 2 章 p.8、12–15</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>取 dB 后模型变成一条直线 \(y=K_{dB}-\gamma x\)，其中 \(x=10\log_{10}d\)（\(d_0\) = 1 m）。用最小二乘找最贴近 6 个点的直线；剩下的均方误差就是阴影方差。</p>
       <ol class="steps">
         <li>把距离换成 \(x_i=10\log_{10}d_i\)：6.99、13.98、18.13、20.41、26.02、30.00（平均 \(\bar x=19.26\)）；\(y_i\) 平均 \(\bar y=-106.67\)。</li>
@@ -40,6 +40,29 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>用最小二乘从测量数据拟合简化路径损耗模型的 K、γ，再把拟合的均方误差当作阴影方差，求中断概率（第 2 章 p.8、p.12–15）。</dd><dt>前置知识</dt><dd>dB 运算；最小二乘（对 K、γ 求偏导令其为 0，讲解页 2.1 节的推导框）；Q 函数（第 1b 章）。</dd><dt>解题套路</dt><dd>① x<sub>i</sub> = 10 log₁₀(d<sub>i</sub>/d₀)；② 列 x、M、x²、xM 四列并求和；③ 解两个正规方程得 K、γ；④ 逐点算残差 e<sub>i</sub> = 实测 − 预测，MSE = σ<sub>ψ</sub>²；⑤ P<sub>out</sub> = Q(余量/σ<sub>ψ</sub>)。</dd><dt>关键公式</dt><dd>γ = −Σ(x<sub>i</sub> − x̄)(M<sub>i</sub> − M̄) / Σ(x<sub>i</sub> − x̄)²；K<sub>dB</sub> = M̄ + γx̄；σ<sub>ψ</sub>² = (1/n)Σe<sub>i</sub>²；P<sub>out</sub> = Q(10/σ<sub>ψ</sub>)。</dd><dt>易错</dt><dd>直线斜率是 −γ，别丢负号；x 用 10 log₁₀d，只用 log₁₀d 会让 γ 大 10 倍；MSE 是方差，Q 里要用开根号后的 σ；"高 10 dB"就是余量 10 dB。</dd><dt>自检</dt><dd>残差之和为 0；拟合直线经过平均点 (19.26, −106.67)；上面的步骤 4 有逐点残差，Σe² = 71.23。</dd><dt>举一反三</dt><dd>已知 K、γ、σ，求某距离的中断概率，或给定中断概率求最大覆盖距离（讲义 p.16 例题，讲解页 2.2 节）。官方答案无法复现，原因见上面的补充框。</dd></dl></div>
       <!-- /PKP:p1q1 -->
     </div>
+    <!-- EN:p1q1 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> In dB the model is a straight line \(y=K_{dB}-\gamma x\) with \(x=10\log_{10}d\) (\(d_0\) = 1 m). Least squares finds the line closest to the 6 points; the remaining mean squared error is the shadowing variance.</p>
+      <ol class="steps">
+        <li>Convert the distances to \(x_i=10\log_{10}d_i\): 6.99, 13.98, 18.13, 20.41, 26.02, 30.00 (mean \(\bar x=19.26\)); the mean of \(y_i\) is \(\bar y=-106.67\).</li>
+        <li>Slope \(=\dfrac{\sum(x_i-\bar x)(y_i-\bar y)}{\sum(x_i-\bar x)^2}=-3.94\), so \(\gamma=3.94\).</li>
+        <li>Intercept \(K_{dB}=\bar y+\gamma\bar x=-106.67+3.94\times19.26=-30.8\) dB.</li>
+        <li>(b) Residual \(e_i=M_i-\hat y_i\): first compute the fitted prediction \(\hat y_i=K_{dB}-\gamma x_i=-30.79-3.94\,x_i\), then subtract it from the measurement \(M_i\).<div class="tw"><table class="mini"><thead><tr><th>d (m)</th><th>\(x_i\)</th><th>\(\gamma x_i\)</th><th>prediction \(\hat y_i\)</th><th>measured \(M_i\)</th><th>residual \(e_i\)</th><th>\(e_i^2\)</th></tr></thead><tbody>
+            <tr><td>5</td><td>6.99</td><td>27.54</td><td>−58.33</td><td>−60</td><td>−1.67</td><td>2.78</td></tr>
+            <tr><td>25</td><td>13.98</td><td>55.09</td><td>−85.88</td><td>−80</td><td>+5.88</td><td>34.53</td></tr>
+            <tr><td>65</td><td>18.13</td><td>71.44</td><td>−102.23</td><td>−105</td><td>−2.77</td><td>7.68</td></tr>
+            <tr><td>110</td><td>20.41</td><td>80.44</td><td>−111.23</td><td>−115</td><td>−3.77</td><td>14.20</td></tr>
+            <tr><td>400</td><td>26.02</td><td>102.53</td><td>−133.32</td><td>−130</td><td>+3.32</td><td>11.05</td></tr>
+            <tr><td>1000</td><td>30.00</td><td>118.22</td><td>−149.01</td><td>−150</td><td>−0.99</td><td>0.99</td></tr>
+          </tbody></table></div>\(\sum e_i^2=71.23\), so the MSE is \(\sigma_\psi^2=71.23/6=11.87\) and \(\sigma_\psi=3.45\) dB. (Least-squares residuals always sum to 0, a quick arithmetic check.)</li>
+        <li>The mean received power is 10 dB above the threshold: \(P_{out}=Q(10/\sigma_\psi)=Q(2.90)=1.85\times10^{-3}\).</li>
+      </ol>
+      <div class="ans"><b>Standard least squares:</b> K ≈ −30.8 dB, γ ≈ 3.94, σ²<sub>ψ</sub> ≈ 11.9 dB², P<sub>out</sub> ≈ 1.85 × 10⁻³</div>
+      <div class="official"><b>Official answer:</b> (a) K<sub>dB</sub> = −31.4 dB, γ = 3.86; (b) 6.19 × 10⁻⁴</div>
+      <div class="note">The official answer cannot be reproduced from the given data. Substituting the official K = −31.4 and γ = 3.86 back into the 6 points gives an MSE of 13.1 and P<sub>out</sub> ≈ 2.9 × 10⁻³; the official 6.19 × 10⁻⁴ corresponds to σ ≈ 3.10 dB. A different fitting method or an arithmetic slip may have been used. <b>In the exam, state the method clearly (least squares, σ² = MSE, P<sub>out</sub> = Q(10/σ))</b>, and ask the lecturer if in doubt.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Fitting K and γ of the simplified path-loss model to measured data by least squares, then using the fitted MSE as the shadowing variance to find the outage probability (Ch 2 p.8, p.12–15).</dd><dt>Background</dt><dd>dB arithmetic; least squares (set the partial derivatives with respect to K and γ to zero, see the derivation box in Section 2.1 of the learning page); the Q function (Ch 1b).</dd><dt>Method</dt><dd>① x<sub>i</sub> = 10 log₁₀(d<sub>i</sub>/d₀); ② tabulate x, M, x², xM and sum each column; ③ solve the two normal equations for K and γ; ④ compute the residuals e<sub>i</sub> = measured − predicted, MSE = σ<sub>ψ</sub>²; ⑤ P<sub>out</sub> = Q(margin/σ<sub>ψ</sub>).</dd><dt>Key formulas</dt><dd>γ = −Σ(x<sub>i</sub> − x̄)(M<sub>i</sub> − M̄) / Σ(x<sub>i</sub> − x̄)²; K<sub>dB</sub> = M̄ + γx̄; σ<sub>ψ</sub>² = (1/n)Σe<sub>i</sub>²; P<sub>out</sub> = Q(10/σ<sub>ψ</sub>).</dd><dt>Common mistakes</dt><dd>The slope of the line is −γ, so keep the minus sign. Use 10 log₁₀d, not log₁₀d (otherwise γ comes out 10 times too large). The MSE is a variance: take the square root before putting it in Q. "10 dB above" means a 10 dB margin.</dd><dt>Check</dt><dd>The residuals sum to 0; the fitted line passes through the mean point (19.26, −106.67); Σe² = 71.23 from the table in step 4.</dd><dt>Variations</dt><dd>Given K, γ and σ, find the outage probability at some distance, or the maximum coverage distance for a target outage (lecture p.16 example, Section 2.2 of the learning page). See the note above on why the official answer cannot be reproduced.</dd></dl></div>
+    </div>
+    <!-- /EN:p1q1 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -55,7 +78,7 @@
     </div>
     <div class="chips"><span class="chip">对数正态 = dB 值高斯</span><span class="chip">Q 函数与反函数</span><span class="chip src">讲义第 2 章 p.11–15</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>dBm 值服从高斯分布。"低于门限"的概率 = 先减均值、再除标准差，查 Q 表。</p>
       <ol class="steps">
         <li>(a) 门限比均值低 15 − 10 = 5 dB，是 5/8 = 0.625 个标准差：\(P_{out}=Q(0.625)=0.266\)。</li>
@@ -68,6 +91,19 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>对数正态阴影 = dB 值服从高斯；中断概率的正算和反算（第 2 章 p.11–15）。</dd><dt>前置知识</dt><dd>标准化：(门限 − 均值)/标准差；Q 函数的单调性（减函数）和对称性 Q(−x) = 1 − Q(x)；常用值 Q(1.645) = 0.05、Q(2.326) = 0.01、Q(3.09) = 10⁻³。</dd><dt>解题套路</dt><dd>(a) 门限离均值几个标准差 → 查 Q；(b) 把 μ 当未知数，列 Q((μ − 10)/σ) &lt; 0.01，反查得 (μ − 10)/σ &gt; 2.326。</dd><dt>关键公式</dt><dd>P<sub>out</sub> = P(P<sub>r</sub> &lt; P<sub>min</sub>) = Q((μ<sub>ψ</sub> − P<sub>min</sub>)/σ<sub>ψ</sub>)。μ − P<sub>min</sub> 叫阴影余量。</dd><dt>易错</dt><dd>Q 是减函数，"概率 &lt; 1%"要翻成"参数 &gt; 2.326"；σ 和 σ² 别混；两个 dBm 相减得到的是 dB。</dd><dt>举一反三</dt><dd>σ 越大，同样的中断概率要求的余量越大：σ = 8 dB 时 μ 要 &gt; 10 + 8 × 2.326 = 28.6 dBm，比 σ = 4 dB 时多 9.3 dB。</dd><dt>物理意义</dt><dd>阴影是大尺度、慢变化的衰落（被楼房、地形挡住），所以用余量来对付；多径是小尺度衰落，靠分集来对付（第 4 章）。</dd></dl></div>
       <!-- /PKP:p1q2 -->
     </div>
+    <!-- EN:p1q2 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> The received power in dBm is Gaussian. Probability of falling below the threshold: subtract the mean, divide by the standard deviation, look up the Q table.</p>
+      <ol class="steps">
+        <li>(a) The threshold is 15 − 10 = 5 dB below the mean, i.e. 5/8 = 0.625 standard deviations: \(P_{out}=Q(0.625)=0.266\).</li>
+        <li>(b) Require \(Q\big((\mu_\psi-10)/4\big)\lt0.01\). From the table \(Q(2.326)=0.01\); Q is decreasing, so \((\mu_\psi-10)/4>2.326\).</li>
+        <li>\(\mu_\psi>10+4\times2.326=19.3\) dBm.</li>
+      </ol>
+      <div class="ans">(a) ≈ 26%; (b) μ<sub>ψ</sub> &gt; 19.3 dBm</div>
+      <div class="official"><b>Official answer:</b> (a) 26%; (b) μ<sub>ψ</sub> &gt; 19.32 dB ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Log-normal shadowing means the dB value is Gaussian; outage probability computed forwards and backwards (Ch 2 p.11–15).</dd><dt>Background</dt><dd>Standardisation: (threshold − mean)/standard deviation; Q is decreasing and Q(−x) = 1 − Q(x); common values Q(1.645) = 0.05, Q(2.326) = 0.01, Q(3.09) = 10⁻³.</dd><dt>Method</dt><dd>(a) How many standard deviations is the threshold from the mean → Q. (b) Treat μ as unknown, write Q((μ − 10)/σ) &lt; 0.01 and invert: (μ − 10)/σ &gt; 2.326.</dd><dt>Key formula</dt><dd>P<sub>out</sub> = P(P<sub>r</sub> &lt; P<sub>min</sub>) = Q((μ<sub>ψ</sub> − P<sub>min</sub>)/σ<sub>ψ</sub>). The difference μ − P<sub>min</sub> is the shadowing margin.</dd><dt>Common mistakes</dt><dd>Q is decreasing, so "probability &lt; 1%" becomes "argument &gt; 2.326". Do not confuse σ with σ². The difference of two dBm values is in dB.</dd><dt>Variations</dt><dd>A larger σ needs a larger margin for the same outage: with σ = 8 dB, μ must exceed 10 + 8 × 2.326 = 28.6 dBm, 9.3 dB more than with σ = 4 dB.</dd><dt>Physical meaning</dt><dd>Shadowing is large-scale, slowly varying fading (blocking by buildings and terrain), so it is handled with a margin; small-scale multipath fading is handled with diversity (Ch 4).</dd></dl></div>
+    </div>
+    <!-- /EN:p1q2 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -84,7 +120,7 @@
     </div>
     <div class="chips"><span class="chip">平均时延 / rms 时延扩展</span><span class="chip">平坦衰落条件 σ/Ts &lt; 0.1</span><span class="chip src">讲义第 2 章 p.30–33</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>把 \(P_r(\tau)\) 当成 0–10 µs 上的均匀分布：\(\mu_{T_m}=\dfrac{\int_0^{10}\tau\,d\tau}{\int_0^{10}d\tau}=\dfrac{50}{10}=5\) µs。</li>
         <li>\(E[\tau^2]=\dfrac{\int_0^{10}\tau^2d\tau}{10}=\dfrac{1000/3}{10}=33.33\)；\(\sigma_{T_m}=\sqrt{33.33-5^2}=\sqrt{8.33}=2.89\) µs。（均匀分布的标准差 = 宽度/√12 = 10/3.46。）</li>
@@ -96,5 +132,17 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>由功率时延谱求平均时延和 rms 时延扩展，再判断平坦 / 频率选择性衰落（第 2 章 p.29–33）。</dd><dt>前置知识</dt><dd>把 P(τ) 归一化后当概率密度；E[τ]、E[τ²]、方差 = E[τ²] − (E[τ])²（第 1b 章）。</dd><dt>解题套路</dt><dd>① μ = ∫τP(τ)dτ / ∫P(τ)dτ；② E[τ²] = ∫τ²P(τ)dτ / ∫P(τ)dτ；③ σ = √(E[τ²] − μ²)；④ 平坦条件 σ/T<sub>s</sub> &lt; 0.1 → 求 T<sub>s</sub> 下限 → R<sub>s</sub> 上限。</dd><dt>关键公式</dt><dd>[0, a] 上均匀分布：μ = a/2，σ = a/√12。本题 a = 10 µs → 5 µs、2.89 µs。</dd><dt>易错</dt><dd>分母是 ∫P = 10，不是 1；平坦衰落要求符号长、速率低，不等号别反；34.6 ksps 是上限。</dd><dt>举一反三</dt><dd>问"信号带宽 1 MHz（T<sub>s</sub> = 1 µs）是否平坦"：σ/T<sub>s</sub> = 2.89 &gt; 0.1 → 频率选择性衰落，需要均衡或 OFDM。离散时延谱（几条回波）用加权求和代替积分，见讲解页 2.4 节例题。</dd><dt>联系</dt><dd>时延扩展越大，相干带宽越小（B<sub>C</sub> ∝ 1/σ<sub>Tm</sub>）；第 3 章的时延扩展误码平台 (σ<sub>Tm</sub>/T<sub>b</sub>)² 用的也是这个 σ。</dd></dl></div>
       <!-- /PKP:p1q3 -->
     </div>
+    <!-- EN:p1q3 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>Treat \(P_r(\tau)\) as a uniform distribution on 0–10 µs: \(\mu_{T_m}=\dfrac{\int_0^{10}\tau\,d\tau}{\int_0^{10}d\tau}=\dfrac{50}{10}=5\) µs.</li>
+        <li>\(E[\tau^2]=\dfrac{\int_0^{10}\tau^2d\tau}{10}=\dfrac{1000/3}{10}=33.33\); \(\sigma_{T_m}=\sqrt{33.33-5^2}=\sqrt{8.33}=2.89\) µs. (Standard deviation of a uniform distribution = width/√12 = 10/3.46.)</li>
+        <li>(b) Flat fading: \(\sigma_{T_m}/T_s\lt0.1\) → \(T_s>28.9\) µs → \(R_s\lt1/28.9\,\mu s=34.6\) ksps.</li>
+      </ol>
+      <div class="ans">μ = 5 µs, σ = 2.89 µs; R<sub>s</sub> &lt; 34.6 ksps</div>
+      <div class="official"><b>Official answer:</b> 5 µs, 2.89 µs; 34.6 ksps ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Mean delay and rms delay spread from a power delay profile, and the flat / frequency-selective decision (Ch 2 p.29–33).</dd><dt>Background</dt><dd>Normalise P(τ) and treat it as a probability density; E[τ], E[τ²] and variance = E[τ²] − (E[τ])² (Ch 1b).</dd><dt>Method</dt><dd>① μ = ∫τP(τ)dτ / ∫P(τ)dτ; ② E[τ²] = ∫τ²P(τ)dτ / ∫P(τ)dτ; ③ σ = √(E[τ²] − μ²); ④ flat if σ/T<sub>s</sub> &lt; 0.1 → lower bound on T<sub>s</sub> → upper bound on R<sub>s</sub>.</dd><dt>Key formula</dt><dd>Uniform on [0, a]: μ = a/2, σ = a/√12. Here a = 10 µs → 5 µs and 2.89 µs.</dd><dt>Common mistakes</dt><dd>The denominator is ∫P = 10, not 1. Flat fading needs long symbols (low rate), so keep the inequality the right way round; 34.6 ksps is an upper limit.</dd><dt>Variations</dt><dd>"Is a 1 MHz signal (T<sub>s</sub> = 1 µs) flat?" σ/T<sub>s</sub> = 2.89 &gt; 0.1 → frequency-selective, needs equalisation or OFDM. For a discrete profile (a few echoes) replace the integrals by weighted sums (Section 2.4 example on the learning page).</dd><dt>Link</dt><dd>Larger delay spread means smaller coherence bandwidth (B<sub>C</sub> ∝ 1/σ<sub>Tm</sub>); the same σ appears in the Ch 3 error floor (σ<sub>Tm</sub>/T<sub>b</sub>)².</dd></dl></div>
+    </div>
+    <!-- /EN:p1q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>

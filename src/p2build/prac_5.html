@@ -8,7 +8,7 @@
     </div>
     <div class="chips"><span class="chip">注水法</span><span class="chip">informed transmitter</span><span class="chip src">讲义第 2 章 p.54–57；第 5 章 p.40</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>先假设三个都分到功率：\(\sum_{i=1}^{3}\big(\tfrac1{\gamma_0}-\tfrac1{\gamma_i}\big)=1\Rightarrow\dfrac3{\gamma_0}=1+\dfrac1{80}+\dfrac1{40}+\dfrac1{40}=1.0625\)。</li>
         <li>\(\gamma_0=3/1.0625=2.82\)。三个 SNR（80、40、40）都大于 2.82，假设成立，不用去掉任何子信道。</li>
@@ -21,6 +21,19 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>发射端知道信道（informed）时的 MIMO 容量：特征子信道 + 注水（第 5 章 p.19、p.40；第 2 章 p.54–57）。</dd><dt>前置知识</dt><dd>SVD 把 MIMO 信道拆成互不干扰的并行子信道；注水公式。</dd><dt>解题套路</dt><dd>① 假设全部子信道都分功率，由 Σ(1/γ₀ − 1/γ<sub>i</sub>) = 1 求 γ₀；② 检查最差的 γ<sub>i</sub> ≥ γ₀，不满足就去掉重算；③ P<sub>i</sub>/P = 1/γ₀ − 1/γ<sub>i</sub>；④ C = B Σ log₂(γ<sub>i</sub>/γ₀)。</dd><dt>关键数字</dt><dd>γ₀ = 3/1.0625 = 2.82；功率 0.342、0.329、0.329（和为 1）；C = 10 MHz × (4.82 + 7.65) = 124.7 Mbps。</dd><dt>对比 1</dt><dd>功率平分（发射端不知道信道）：每路 SNR 变为 80/3、40/3、40/3，C = 122.1 Mbps，只少 2%。高 SNR 时知不知道信道差别很小（p.41–42）。</dd><dt>对比 2</dt><dd>低 SNR 时差别就大了：三个 SNR 都除以 100（0.8、0.4、0.4），注水只用第一个子信道，0.85 bit/s/Hz；平分只有 0.70 bit/s/Hz，差 21%。</dd><dt>易错</dt><dd>注水公式里的 γ<sub>i</sub> 是"全部功率都给这个子信道"时的 SNR；平分时每个只分到 P/3；B 最后再乘。</dd></dl></div>
       <!-- /PKP:p5q1 -->
     </div>
+    <!-- EN:p5q1 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>Assume all three sub-channels get power: \(\sum_{i=1}^{3}\big(\tfrac1{\gamma_0}-\tfrac1{\gamma_i}\big)=1\Rightarrow\dfrac3{\gamma_0}=1+\dfrac1{80}+\dfrac1{40}+\dfrac1{40}=1.0625\).</li>
+        <li>\(\gamma_0=3/1.0625=2.82\). All three SNRs (80, 40, 40) exceed 2.82, so the assumption holds and no sub-channel is dropped.</li>
+        <li>Powers: \(P_1/P=1/2.82-1/80=0.342\), \(P_2/P=P_3/P=1/2.82-1/40=0.329\).</li>
+        <li>Capacity: \(C=B\sum\log_2(\gamma_i/\gamma_0)=10\text{ MHz}\times[\log_2(28.33)+2\log_2(14.17)]=10\times(4.82+7.65)\).</li>
+      </ol>
+      <div class="ans">C ≈ 124.7 Mbps ≈ 125 Mbps</div>
+      <div class="official"><b>Official answer:</b> 125 Mbps ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>MIMO capacity with an informed transmitter: eigen-sub-channels plus water-filling (Ch 5 p.19, p.40; Ch 2 p.54–57).</dd><dt>Background</dt><dd>The SVD splits a MIMO channel into non-interfering parallel sub-channels; the water-filling formulas.</dd><dt>Method</dt><dd>① Assume every sub-channel gets power and find γ₀ from Σ(1/γ₀ − 1/γ<sub>i</sub>) = 1; ② check that the weakest γ<sub>i</sub> ≥ γ₀, otherwise drop it and repeat; ③ P<sub>i</sub>/P = 1/γ₀ − 1/γ<sub>i</sub>; ④ C = B Σ log₂(γ<sub>i</sub>/γ₀).</dd><dt>Key numbers</dt><dd>γ₀ = 3/1.0625 = 2.82; powers 0.342, 0.329, 0.329 (sum 1); C = 10 MHz × (4.82 + 7.65) = 124.7 Mbps.</dd><dt>Comparison 1</dt><dd>Equal power (uninformed transmitter): the SNRs become 80/3, 40/3, 40/3 and C = 122.1 Mbps, only 2% less. At high SNR channel knowledge at the transmitter matters little (p.41–42).</dd><dt>Comparison 2</dt><dd>At low SNR the difference is large: dividing all three SNRs by 100 (0.8, 0.4, 0.4), water-filling uses only the first sub-channel and gives 0.85 bit/s/Hz, while equal power gives 0.70 bit/s/Hz, 21% less.</dd><dt>Common mistakes</dt><dd>The γ<sub>i</sub> in water-filling is the SNR if <b>all</b> the power went to that sub-channel; with equal power each gets only P/3; multiply by B at the end.</dd></dl></div>
+    </div>
+    <!-- /EN:p5q1 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -32,7 +45,7 @@
     </div>
     <div class="chips"><span class="chip">Alamouti STBC</span><span class="chip">共轭技巧</span><span class="chip">正交矩阵 F</span><span class="chip src">讲义第 5 章 p.21–26</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>两个时隙收到：\(y_1=h_Au_1+h_Bu_2+w_1\)，\(y_2=-h_Au_2^*+h_Bu_1^*+w_2\)。</li>
         <li>对 \(y_2\) 取共轭，让未知量都以 \(u_1,u_2\)（不带共轭）出现：\(y_2^*=h_B^*u_1-h_A^*u_2+w_2^*\)。</li>
@@ -47,6 +60,21 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>Alamouti 空时块码的接收、判决变量和分集阶数（第 5 章 p.21–26）。</dd><dt>前置知识</dt><dd>复数共轭 (ab)* = a*b*；2 × 2 矩阵乘法；噪声乘以复数 c 后方差变成 |c|²N₀。</dd><dt>解题套路</dt><dd>① 写出两个时隙的 y₁、y₂；② 对 y₂ 取共轭，让 u₁、u₂ 都不带共轭；③ 写成 ỹ = Fu + ṽ；④ 左乘 F<sup>H</sup>；⑤ 除以 ‖h‖ 归一化。</dd><dt>关键性质</dt><dd>X X<sup>H</sup> = ‖s‖²I（编码正交）→ F<sup>H</sup>F = (|h<sub>A</sub>|² + |h<sub>B</sub>|²)I（接收端能把两个符号完全分开）。</dd><dt>易错</dt><dd>第二时隙天线 A 发的是 −u₂*（负号和共轭都要有）；z₁ 的噪声项是 h<sub>A</sub>*w₁ + h<sub>B</sub>w₂*，方差 (|h<sub>A</sub>|² + |h<sub>B</sub>|²)N₀。</dd><dt>为什么是 2 阶分集</dt><dd>有效增益 |h<sub>A</sub>|² + |h<sub>B</sub>|² 是两个独立衰落之和，两个同时很小的概率远小于一个很小的概率；而且发射端不需要知道信道。</dd><dt>举一反三</dt><dd>2 发 M 收：增益是 2M 个 |h|² 之和，分集 2M（满分集）。2025-26 S2 问 ŝ 的统计量：无偏，方差 σ²/‖h‖²。和 1 发 2 收 MRC 比，分集相同，但少 3 dB（功率分给两根天线，p.30）。</dd></dl></div>
       <!-- /PKP:p5q2 -->
     </div>
+    <!-- EN:p5q2 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>Received in the two slots: \(y_1=h_Au_1+h_Bu_2+w_1\), \(y_2=-h_Au_2^*+h_Bu_1^*+w_2\).</li>
+        <li>Conjugate \(y_2\) so that the unknowns appear as \(u_1,u_2\) without conjugates: \(y_2^*=h_B^*u_1-h_A^*u_2+w_2^*\).</li>
+        <li>In matrix form: \(\begin{bmatrix}y_1\\y_2^*\end{bmatrix}=\underbrace{\begin{bmatrix}h_A&h_B\\h_B^*&-h_A^*\end{bmatrix}}_{\mathbf F}\begin{bmatrix}u_1\\u_2\end{bmatrix}+\begin{bmatrix}w_1\\w_2^*\end{bmatrix}\), with \(\mathbf F^H\mathbf F=(|h_A|^2+|h_B|^2)\mathbf I\).</li>
+        <li>Pre-multiply by \(\mathbf F^H\); the two symbols separate completely:<div class="calc">z₁ = h<sub>A</sub>* y₁ + h<sub>B</sub> y₂* = (|h<sub>A</sub>|² + |h<sub>B</sub>|²)u₁ + h<sub>A</sub>* w₁ + h<sub>B</sub> w₂*</div><div class="calc">z₂ = h<sub>B</sub>* y₁ − h<sub>A</sub> y₂* = (|h<sub>A</sub>|² + |h<sub>B</sub>|²)u₂ + h<sub>B</sub>* w₁ − h<sub>A</sub> w₂*</div></li>
+        <li>The noise variance is \((|h_A|^2+|h_B|^2)N_0\). Dividing by \(\|\mathbf h\|=\sqrt{|h_A|^2+|h_B|^2}\) brings it back to \(N_0\).</li>
+      </ol>
+      <div class="ans">z₁ = ‖h‖u₁ + w̃₁, z₂ = ‖h‖u₂ + w̃₂, ‖h‖² = |h<sub>A</sub>|² + |h<sub>B</sub>|², w̃₁, w̃₂ ~ N(0, N₀)</div>
+      <div class="official"><b>Official answer:</b> z₁ = ‖h₁‖u₁ + w̃₁, z₂ = ‖h₂‖u₂ + w̃₂ (the two norms are in fact the same ‖h‖) ✓</div>
+      <div class="note">The effective SNR of each symbol is proportional to |h<sub>A</sub>|² + |h<sub>B</sub>|². Both paths fading at the same time is unlikely, which gives second-order diversity, and the transmitter needs no channel knowledge.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Reception, decision variables and diversity order of the Alamouti space-time block code (Ch 5 p.21–26).</dd><dt>Background</dt><dd>Complex conjugate (ab)* = a*b*; 2 × 2 matrix multiplication; multiplying noise by a complex c scales its variance by |c|².</dd><dt>Method</dt><dd>① Write y₁ and y₂ for the two slots; ② conjugate y₂ so u₁ and u₂ appear without conjugates; ③ write ỹ = Fu + ṽ; ④ pre-multiply by F<sup>H</sup>; ⑤ divide by ‖h‖ to normalise.</dd><dt>Key properties</dt><dd>X X<sup>H</sup> = ‖s‖²I (orthogonal code) → F<sup>H</sup>F = (|h<sub>A</sub>|² + |h<sub>B</sub>|²)I (the receiver can separate the two symbols completely).</dd><dt>Common mistakes</dt><dd>In slot 2 antenna A sends −u₂* (both the minus sign and the conjugate); the noise in z₁ is h<sub>A</sub>*w₁ + h<sub>B</sub>w₂*, variance (|h<sub>A</sub>|² + |h<sub>B</sub>|²)N₀.</dd><dt>Why order 2</dt><dd>The effective gain |h<sub>A</sub>|² + |h<sub>B</sub>|² is a sum of two independently fading terms; both being small at once is much less likely than one being small. And the transmitter does not need the channel.</dd><dt>Variations</dt><dd>2 transmit, M receive antennas: the gain is a sum of 2M terms |h|², diversity 2M (full diversity). 2025-26 S2 asks for the statistics of ŝ: unbiased, variance σ²/‖h‖². Compared with 1 × 2 MRC the diversity is the same but 3 dB is lost (power split between two antennas, p.30).</dd></dl></div>
+    </div>
+    <!-- /EN:p5q2 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -62,7 +90,7 @@
     </div>
     <div class="chips"><span class="chip">分集增益 d</span><span class="chip">复用增益 r</span><span class="chip">R = r·log₂SNR</span><span class="chip src">讲义第 4 章 p.31–34</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>γ = 10 dB = 10。\(10^{-d}\le10^{-3}\) → d ≥ 3。</li>
         <li>N = 8、M = 4，逐个试 r：<div class="tw"><table class="mini"><thead><tr><th>r</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead><tbody><tr><td>d = (8−r)(4−r)</td><td>32</td><td>21</td><td>12</td><td>5</td><td>0</td></tr></tbody></table></div>满足 d ≥ 3 的最大 r 是 3。</li>
@@ -75,5 +103,18 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>分集-复用折中：d(r) = (N − r)(M − r)，速率 R = r log₂SNR（第 4 章 p.31–34）。</dd><dt>前置知识</dt><dd>分集增益 d：SNR 翻倍时误码率降多快，最大 N × M；复用增益 r：SNR 翻倍时速率多几 bit/s/Hz，最大 min(N, M)。</dd><dt>解题套路</dt><dd>① 由 P<sub>e</sub> = γ<sup>−d</sup> ≤ 目标求 d 的下限；② 列 r = 0 … min(N, M) 对应的 d；③ 找满足条件的最大 r；④ R = r log₂γ，P<sub>e</sub> = γ<sup>−d(r)</sup>。</dd><dt>关键数字</dt><dd>γ = 10 → d ≥ 3；d(3) = 5 ≥ 3，d(4) = 0 &lt; 3 → r = 3；R = 3 × 3.32 = 9.97 bit/s/Hz，P<sub>e</sub> = 10⁻⁵。</dd><dt>易错</dt><dd>SNR 用线性值（10 dB → 10，20 dB → 100）；d 必须是整数，向上取；r 不能超过 min(N, M) = 4。</dd><dt>举一反三</dt><dd>SNR = 20 dB（100）时：100<sup>−d</sup> ≤ 10⁻³ → d ≥ 1.5 → 取 2；r = 3 的 d = 5 仍满足，r = 4 不行 → R = 3 log₂100 = 19.9 bit/s/Hz。已知 P<sub>e</sub> 和 d 求 SNR：SNR = P<sub>e</sub><sup>−1/d</sup>。</dd><dt>物理意义</dt><dd>r 是同时传输的独立数据流个数，d 是抗衰落能力；天线资源要么用来"多传"，要么用来"传得稳"。</dd></dl></div>
       <!-- /PKP:p5q3 -->
     </div>
+    <!-- EN:p5q3 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>γ = 10 dB = 10. \(10^{-d}\le10^{-3}\) → d ≥ 3.</li>
+        <li>N = 8, M = 4, try each r:<div class="tw"><table class="mini"><thead><tr><th>r</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead><tbody><tr><td>d = (8−r)(4−r)</td><td>32</td><td>21</td><td>12</td><td>5</td><td>0</td></tr></tbody></table></div>The largest r with d ≥ 3 is 3.</li>
+        <li>By definition of the multiplexing gain \(r=R/\log_2\mathrm{SNR}\), so \(R=r\log_2\gamma=3\times\log_210=3\times3.32=9.97\) bit/s/Hz.</li>
+        <li>(b) r = 3 → d = 5 → \(P_e=10^{-5}\).</li>
+      </ol>
+      <div class="ans">(a) ≈ 9.96 bit/s/Hz; (b) P<sub>e</sub> = 10⁻⁵</div>
+      <div class="official"><b>Official answer:</b> 9.96 bits/s/Hz; 10⁻⁵ ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The diversity-multiplexing trade-off d(r) = (N − r)(M − r) and the rate R = r log₂SNR (Ch 4 p.31–34).</dd><dt>Background</dt><dd>Diversity gain d: how fast the error rate falls when the SNR doubles, at most N × M. Multiplexing gain r: how many extra bit/s/Hz per doubling of SNR, at most min(N, M).</dd><dt>Method</dt><dd>① From P<sub>e</sub> = γ<sup>−d</sup> ≤ target find the minimum d; ② list d for r = 0 … min(N, M); ③ take the largest r that meets it; ④ R = r log₂γ, P<sub>e</sub> = γ<sup>−d(r)</sup>.</dd><dt>Key numbers</dt><dd>γ = 10 → d ≥ 3; d(3) = 5 ≥ 3, d(4) = 0 &lt; 3 → r = 3; R = 3 × 3.32 = 9.97 bit/s/Hz, P<sub>e</sub> = 10⁻⁵.</dd><dt>Common mistakes</dt><dd>Use the linear SNR (10 dB → 10, 20 dB → 100); d must be an integer, round up; r cannot exceed min(N, M) = 4.</dd><dt>Variations</dt><dd>At SNR = 20 dB (100): 100<sup>−d</sup> ≤ 10⁻³ → d ≥ 1.5 → 2; r = 3 (d = 5) still works, r = 4 does not → R = 3 log₂100 = 19.9 bit/s/Hz. Given P<sub>e</sub> and d, the SNR is P<sub>e</sub><sup>−1/d</sup>.</dd><dt>Physical meaning</dt><dd>r is the number of independent data streams sent at once, d is the robustness against fading: the antennas can be used either to send more or to send more reliably.</dd></dl></div>
+    </div>
+    <!-- /EN:p5q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>

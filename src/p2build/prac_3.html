@@ -13,7 +13,7 @@
     </div>
     <div class="chips"><span class="chip">正交归一基</span><span class="chip">和角公式</span><span class="chip src">讲义第 3 章 p.4–11</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>拆开：\(A_i\cos(2\pi t/T+\phi_j)=(A_i\cos\phi_j)\cos(2\pi t/T)+(-A_i\sin\phi_j)\sin(2\pi t/T)\)。所有信号都在 cos 和 sin 这两个方向上。</li>
         <li>正交：\(\int_0^T\cos(2\pi t/T)\sin(2\pi t/T)dt=\tfrac12\int_0^T\sin(4\pi t/T)dt=0\)。</li>
@@ -25,6 +25,18 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>信号空间：正交归一基和维数（第 3 章 p.4–11）。</dd><dt>前置知识</dt><dd>和角公式 cos(a + b) = cos a cos b − sin a sin b；∫₀<sup>T</sup> cos²(2πt/T) dt = T/2；内积 = 相乘再积分。</dd><dt>解题套路</dt><dd>① 把信号展开成几个固定波形的线性组合；② 验证这些波形两两正交；③ 每个除以 √能量做归一化；④ 基函数的个数就是维数。</dd><dt>关键结果</dt><dd>ψ₁ = √(2/T) cos(2πt/T)，ψ₂ = √(2/T) sin(2πt/T)。坐标 (A<sub>i</sub>cosφ<sub>j</sub>√(T/2), −A<sub>i</sub>sinφ<sub>j</sub>√(T/2))，到原点的距离 A<sub>i</sub>√(T/2) = √E。</dd><dt>易错</dt><dd>忘了归一化系数 √(2/T)；以为 A<sub>i</sub>、φ<sub>j</sub> 取值多维数就多：维数只看需要几个基函数，与信号个数无关（D ≤ M）；sin 前面的负号放进坐标里。</dd><dt>举一反三</dt><dd>只调幅度（φ 固定）→ 1 维（PAM）；只调相位 → 2 维（PSK）；幅度、相位都调 → 2 维（QAM，本题就是）。期末 2025-26 S1 Q1(a)(i)：画 ±1 的星座，维数 1、距离 2。</dd></dl></div>
       <!-- /PKP:p3q1 -->
     </div>
+    <!-- EN:p3q1 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>Expand: \(A_i\cos(2\pi t/T+\phi_j)=(A_i\cos\phi_j)\cos(2\pi t/T)+(-A_i\sin\phi_j)\sin(2\pi t/T)\). Every signal lies along the cos and sin directions.</li>
+        <li>Orthogonal: \(\int_0^T\cos(2\pi t/T)\sin(2\pi t/T)dt=\tfrac12\int_0^T\sin(4\pi t/T)dt=0\).</li>
+        <li>Normalise: \(\int_0^T\cos^2(2\pi t/T)dt=T/2\), so multiply by \(\sqrt{2/T}\) to get unit energy.</li>
+      </ol>
+      <div class="ans">(a) { √(2/T)·cos(2πt/T), √(2/T)·sin(2πt/T) }; (b) dimension 2</div>
+      <div class="official"><b>Official answer:</b> same as above ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Signal space: orthonormal basis and dimension (Ch 3 p.4–11).</dd><dt>Background</dt><dd>Angle-sum identity cos(a + b) = cos a cos b − sin a sin b; ∫₀<sup>T</sup> cos²(2πt/T) dt = T/2; inner product = multiply and integrate.</dd><dt>Method</dt><dd>① Write the signal as a linear combination of a few fixed waveforms; ② check they are mutually orthogonal; ③ divide each by √energy to normalise; ④ the number of basis functions is the dimension.</dd><dt>Key result</dt><dd>ψ₁ = √(2/T) cos(2πt/T), ψ₂ = √(2/T) sin(2πt/T). Coordinates (A<sub>i</sub>cosφ<sub>j</sub>√(T/2), −A<sub>i</sub>sinφ<sub>j</sub>√(T/2)); distance from the origin A<sub>i</sub>√(T/2) = √E.</dd><dt>Common mistakes</dt><dd>Forgetting the normalising factor √(2/T); thinking many values of A<sub>i</sub>, φ<sub>j</sub> mean many dimensions (the dimension only counts basis functions, D ≤ M); the minus sign of the sin term belongs in the coordinate.</dd><dt>Variations</dt><dd>Amplitude only (φ fixed) → 1-D (PAM); phase only → 2-D (PSK); both → 2-D (QAM, as here). 2025-26 S1 Q1(a)(i): sketch the ±1 constellation, dimension 1, distance 2.</dd></dl></div>
+    </div>
+    <!-- /EN:p3q1 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -43,7 +55,7 @@
     </div>
     <div class="chips"><span class="chip">ML 检测</span><span class="chip">似然比</span><span class="chip">判决门限</span><span class="chip src">讲义第 3 章 p.18–20</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>发 0 时 \(y\sim\mathcal N(0,\sigma_0^2)\)，发 1 时 \(y\sim\mathcal N(1,\sigma_1^2)\)。ML：哪个似然大判哪个。</li>
         <li>判 1 当 \(\dfrac{1}{\sigma_1}e^{-(y-1)^2/2\sigma_1^2}>\dfrac{1}{\sigma_0}e^{-y^2/2\sigma_0^2}\)，取对数：<div class="calc">g(y) = y²/(2σ₀²) − (y − 1)²/(2σ₁²) + ln(σ₀/σ₁) &gt; 0</div></li>
@@ -57,6 +69,20 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>非标准情况下的 ML 检测：两种假设的噪声方差不同（第 3 章 p.18–20）。</dd><dt>前置知识</dt><dd>高斯 PDF（前面的系数 1/(√(2π)σ) 不能丢）；ln 是增函数，比大小时可以取对数；二次方程求根；Q 函数。</dd><dt>解题套路</dt><dd>① 写出两个条件 PDF；② 比较似然并取对数，整理成 g(y) &gt; 0；③ 解 g(ỹ) = 0 得门限；④ 两种错误分别算；⑤ 按先验概率（各 ½）加权。</dd><dt>关键公式</dt><dd>g(y) = y²/(2σ₀²) − (y − 1)²/(2σ₁²) + ln(σ₀/σ₁)；P<sub>e</sub> = ½[Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀)]。</dd><dt>数值例</dt><dd>σ₀² = 0.1、σ₁² = 0.4：ỹ ≈ 0.46，P<sub>e</sub> = ½[Q(0.54/0.632) + Q(0.46/0.316)] = ½[Q(0.85) + Q(1.46)] ≈ 0.135。</dd><dt>易错</dt><dd>只比较指数、忘了系数 1/σ，会得到错误的门限；两种错误要用各自的 σ；二次方程有两个根，取 0 和 1 之间的那个。</dd><dt>举一反三</dt><dd>方差相等 → ỹ = 0.5，P<sub>e</sub> = Q(0.5/σ)；先验不等 → 用 MAP，对数里再加 ln P(x)，门限往先验小的一边移。</dd></dl></div>
       <!-- /PKP:p3q2 -->
     </div>
+    <!-- EN:p3q2 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>Sending 0: \(y\sim\mathcal N(0,\sigma_0^2)\); sending 1: \(y\sim\mathcal N(1,\sigma_1^2)\). ML: choose the hypothesis with the larger likelihood.</li>
+        <li>Decide 1 when \(\dfrac{1}{\sigma_1}e^{-(y-1)^2/2\sigma_1^2}>\dfrac{1}{\sigma_0}e^{-y^2/2\sigma_0^2}\); taking logarithms:<div class="calc">g(y) = y²/(2σ₀²) − (y − 1)²/(2σ₁²) + ln(σ₀/σ₁) &gt; 0</div></li>
+        <li>g(y) = 0 is a quadratic in y; the root between 0 and 1 is the threshold ỹ: decide 1 if y &gt; ỹ, 0 if y &lt; ỹ. With equal variances ỹ = 0.5; with σ₁ &gt; σ₀ the threshold moves towards 0.</li>
+        <li>(b) Two error events: sending 0 and the noise pushes y above ỹ, probability \(Q(\tilde y/\sigma_0)\); sending 1 and y falls below ỹ, probability \(Q((1-\tilde y)/\sigma_1)\). Equal priors, weight ½ each.</li>
+      </ol>
+      <div class="ans">x̂<sub>n</sub> = 1 if y<sub>n</sub> &gt; ỹ, otherwise 0; P<sub>e</sub> = ½[Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀)]</div>
+      <div class="official"><b>Official answer:</b> same as above ✓</div>
+      <div class="note">A numerical feel: with σ₀² = 0.1 and σ₁² = 0.4, g(y) = 3.75y² + 2.5y − 1.943 and ỹ ≈ 0.46. Strictly, the quadratic has a second root at a very negative y (where the rule decides 1 again); its probability is negligible and the answer ignores it.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Non-standard ML detection: the two hypotheses have different noise variances (Ch 3 p.18–20).</dd><dt>Background</dt><dd>Gaussian PDF (keep the factor 1/(√(2π)σ)); ln is increasing, so likelihoods can be compared after taking logs; roots of a quadratic; the Q function.</dd><dt>Method</dt><dd>① Write both conditional PDFs; ② compare likelihoods, take logs, rearrange to g(y) &gt; 0; ③ solve g(ỹ) = 0 for the threshold; ④ compute the two error events separately; ⑤ weight by the priors (½ each).</dd><dt>Key formulas</dt><dd>g(y) = y²/(2σ₀²) − (y − 1)²/(2σ₁²) + ln(σ₀/σ₁); P<sub>e</sub> = ½[Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀)].</dd><dt>Numerical example</dt><dd>σ₀² = 0.1, σ₁² = 0.4: ỹ ≈ 0.46, P<sub>e</sub> = ½[Q(0.54/0.632) + Q(0.46/0.316)] = ½[Q(0.85) + Q(1.46)] ≈ 0.135.</dd><dt>Common mistakes</dt><dd>Comparing only the exponents and dropping 1/σ gives the wrong threshold; each error event uses its own σ; the quadratic has two roots, take the one between 0 and 1.</dd><dt>Variations</dt><dd>Equal variances → ỹ = 0.5, P<sub>e</sub> = Q(0.5/σ). Unequal priors → MAP, add ln P(x) inside the log; the threshold moves towards the less likely symbol.</dd></dl></div>
+    </div>
+    <!-- /EN:p3q2 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -68,7 +94,7 @@
     </div>
     <div class="chips"><span class="chip">误码平台</span><span class="chip">符号时长 vs 比特时长</span><span class="chip src">讲义第 3 章 p.35–36</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>平台公式里起作用的是"回声长度 / 符号长度"。BPSK 一个符号就是一个比特，所以公式写 \(T_b\)；换成 QPSK 要用<b>符号</b>时长 \(T_s\)。</li>
         <li>\((3\,\mu s/T_s)^2=10^{-3}\) → \(3/T_s=0.0316\) → \(T_s=94.9\) µs。</li>
@@ -80,5 +106,17 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>时延扩展造成的不可消除误码平台；比特时长和符号时长的换算（第 3 章 p.35）。</dd><dt>前置知识</dt><dd>M 进制每符号 log₂M bit：R<sub>b</sub> = log₂M / T<sub>s</sub>；QPSK 的 M = 4。</dd><dt>解题套路</dt><dd>由平台要求求最短符号时长 T = σ<sub>Tm</sub>/√P<sub>floor</sub>，再换成比特速率。</dd><dt>关键公式</dt><dd>(σ<sub>Tm</sub>/T)² = P<sub>floor</sub> → T = 3 µs / √10⁻³ = 3/0.0316 = 94.9 µs → R<sub>b</sub> = 2/94.9 µs = 21.08 kbps。</dd><dt>易错</dt><dd>公式里的 T 是<b>符号</b>时长（ISI 取决于回声相对一个符号多长）；直接当成比特时长会得到 10.54 kbps；σ<sub>Tm</sub> 是 rms 时延扩展，不是最大时延。</dd><dt>对比</dt><dd>多普勒平台 ½(πf<sub>D</sub>T<sub>b</sub>)² 要求符号<b>短</b>（速率下限），时延扩展平台要求符号<b>长</b>（速率上限），两者同时存在时速率要落在两者之间。</dd><dt>物理意义</dt><dd>"平台"是指 SNR 再高误码率也降不下去：误码来自信号自己的回声，不是噪声。解决办法是均衡（第 6 章）或 OFDM（第 7 章）。</dd></dl></div>
       <!-- /PKP:p3q3 -->
     </div>
+    <!-- EN:p3q3 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>What matters in the floor formula is "echo length / symbol length". For BPSK a symbol is one bit, so the formula uses \(T_b\); for QPSK use the <b>symbol</b> duration \(T_s\).</li>
+        <li>\((3\,\mu s/T_s)^2=10^{-3}\) → \(3/T_s=0.0316\) → \(T_s=94.9\) µs.</li>
+        <li>QPSK carries 2 bits per symbol: \(R_b=2/T_s=2/94.9\,\mu s=21.08\) kbps. (Under the same conditions BPSK gives only 10.54 kbps.)</li>
+      </ol>
+      <div class="ans">R ≈ 21.08 kbps</div>
+      <div class="official"><b>Official answer:</b> 21.08 kbps ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The irreducible error floor caused by delay spread; converting between bit and symbol durations (Ch 3 p.35).</dd><dt>Background</dt><dd>M-ary signalling carries log₂M bits per symbol: R<sub>b</sub> = log₂M / T<sub>s</sub>; QPSK has M = 4.</dd><dt>Method</dt><dd>From the floor requirement find the shortest symbol duration T = σ<sub>Tm</sub>/√P<sub>floor</sub>, then convert to a bit rate.</dd><dt>Key formula</dt><dd>(σ<sub>Tm</sub>/T)² = P<sub>floor</sub> → T = 3 µs / √10⁻³ = 3/0.0316 = 94.9 µs → R<sub>b</sub> = 2/94.9 µs = 21.08 kbps.</dd><dt>Common mistakes</dt><dd>T in the formula is the <b>symbol</b> duration (ISI depends on how long the echo is compared with one symbol); treating it as a bit duration gives 10.54 kbps. σ<sub>Tm</sub> is the rms delay spread, not the maximum delay.</dd><dt>Contrast</dt><dd>The Doppler floor ½(πf<sub>D</sub>T<sub>b</sub>)² needs <b>short</b> symbols (a minimum rate); the delay-spread floor needs <b>long</b> symbols (a maximum rate). With both present, the rate must lie between the two limits.</dd><dt>Physical meaning</dt><dd>A "floor" means the error rate stops falling however high the SNR: the errors come from the signal's own echoes, not from noise. The remedies are equalisation (Ch 6) or OFDM (Ch 7).</dd></dl></div>
+    </div>
+    <!-- /EN:p3q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>

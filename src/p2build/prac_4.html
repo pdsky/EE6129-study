@@ -8,7 +8,7 @@
     </div>
     <div class="chips"><span class="chip">宏分集</span><span class="chip">阴影衰落</span><span class="chip src">讲义第 4 章 p.3–4</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>中断主要由<b>阴影衰落</b>（大尺度）造成：手机和某个基站之间被楼房、地形挡住，信号长时间偏低。</li>
         <li>几个基站在<b>不同位置</b>，手机到它们的传播路径不同，被同一障碍物同时挡住的可能性小，各条链路的阴影近似独立。</li>
@@ -21,6 +21,19 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>宏分集的原理（论述题，第 4 章 p.3–6）。</dd><dt>答题要点</dt><dd>① 中断主要由<b>阴影衰落</b>造成（大尺度、变化慢，加功率不划算）；② 几个基站位置不同，传播路径不同，阴影近似独立；③ 选最强的基站或合并，只有<b>所有</b>链路同时变差才中断，P<sub>out</sub> = ΠP<sub>out,i</sub>；④ 条件：链路相关时效果下降（p.21）。</dd><dt>区分</dt><dd>宏分集对付阴影，基站之间相距很远；微分集对付多径，天线只需相隔几个波长（p.4–5）。</dd><dt>数字例</dt><dd>单条链路中断 10%，两个独立基站同时中断只有 1%，三个只有 0.1%。</dd><dt>联系</dt><dd>Practice 2 第 2 题给出了定量公式：独立时 [Q(Δ/σ)]²，相关时要先条件化再积分。</dd><dt>写作提示</dt><dd>论述题按"原因 → 机制 → 公式 → 条件"四句写，每句一个要点，比长段落更容易拿分。</dd></dl></div>
       <!-- /PKP:p4q1 -->
     </div>
+    <!-- EN:p4q1 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>Outage is mainly caused by <b>shadowing</b> (large-scale fading): buildings or terrain block the path between the mobile and a base station, keeping the signal low for a long time.</li>
+        <li>The base stations are at <b>different locations</b>, so the propagation paths differ and are unlikely to be blocked by the same obstacle; the shadowing on the different links is approximately independent.</li>
+        <li>Macro-diversity selects the strongest base station (or combines several). Outage occurs only when <b>all</b> links are below the threshold; for independent links \(P_{out}=\prod_iP_{out,i}\), much smaller than for a single link.</li>
+        <li>Example: a single link is in outage 10% of the time; two independent base stations are in outage together only 1% of the time ([Q(Δ/σ)]² in Practice 2 Q2). Correlated links reduce the benefit.</li>
+      </ol>
+      <div class="ans">Shadowing on links to different base stations is roughly independent; the probability that all links are in a deep fade together is the product of the individual probabilities, far smaller than for one link</div>
+      <div class="official"><b>Official answer:</b> see the lecture notes (Ch 4 p.3–4)</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The principle of macro-diversity (essay question, Ch 4 p.3–6).</dd><dt>Answer outline</dt><dd>① Outage is mainly due to <b>shadowing</b> (large-scale, slowly varying; extra power is an inefficient fix); ② base stations at different locations have different propagation paths, so the shadowing is roughly independent; ③ selecting the strongest base station or combining means outage only when <b>all</b> links are poor, P<sub>out</sub> = ΠP<sub>out,i</sub>; ④ condition: correlated links reduce the gain (p.21).</dd><dt>Do not confuse</dt><dd>Macro-diversity combats shadowing, with base stations far apart; micro-diversity combats multipath, with antennas only a few wavelengths apart (p.4–5).</dd><dt>Numbers</dt><dd>One link in outage 10%: two independent base stations 1%, three 0.1%.</dd><dt>Link</dt><dd>Practice 2 Q2 gives the quantitative formula: [Q(Δ/σ)]² when independent; when correlated, condition first and then integrate.</dd><dt>Writing tip</dt><dd>Write an essay answer as four sentences, "cause → mechanism → formula → condition", one point each. That earns marks more reliably than one long paragraph.</dd></dl></div>
+    </div>
+    <!-- /EN:p4q1 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -38,7 +51,7 @@
     </div>
     <div class="chips"><span class="chip">离散分布求期望</span><span class="chip">MRC：SNR 相加</span><span class="chip">阵列增益 g / 分集增益 d</span><span class="chip">相关削弱分集</span><span class="chip src">讲义第 4 章 p.16、p.21、p.27</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>(a) \(P_T=\sigma_n^2=1\)，所以 γ = α。\(\bar\gamma=8\cdot\tfrac13+11\cdot\tfrac23=10\)。<div class="calc">P̄s = ⅓·½e⁻⁸ + ⅔·½e⁻¹¹ = 5.59×10⁻⁵ + 0.56×10⁻⁵ = 6.15×10⁻⁵</div></li>
         <li>(b) MRC 输出 SNR = 两路之和。两路独立，组合：8+8 = 16（1/9），8+11 = 19（2 × 1/3 × 2/3 = 4/9），11+11 = 22（4/9）。<div class="calc">γ̄_Σ = (16 + 76 + 88)/9 = 20</div><div class="calc">P̄s = ½[e⁻¹⁶·1/9 + e⁻¹⁹·4/9 + e⁻²²·4/9] = 7.56×10⁻⁹</div></li>
@@ -53,6 +66,21 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>离散 SNR 分布下的平均 SNR、平均误码率；MRC；阵列增益 g、分集增益 d；相关支路（第 4 章 p.16、p.21、p.27–28）。</dd><dt>前置知识</dt><dd>离散期望 Σx·p；独立事件概率相乘；E[f(X)] ≠ f(E[X])；独立变量 E[g(X)h(Y)] = E[g(X)]E[h(Y)]。</dd><dt>解题套路</dt><dd>(a) 直接求期望；(b) 列 2 × 2 组合表 → 输出 SNR = 两路之和 → 按概率加权；(c) 把 e<sup>−γ<sub>Σ</sub></sup> 拆成独立因子的乘积，分别求期望。</dd><dt>关键公式</dt><dd>g = γ̄<sub>Σ</sub>/γ̄；d = −log₁₀P̄<sub>s</sub> / log₁₀γ̄（γ̄ 是合并器<b>输入</b>的平均 SNR）。</dd><dt>捷径</dt><dd>(b) 也可以不列表：两路独立，E[e<sup>−(γ₁+γ₂)</sup>] = (E[e<sup>−γ</sup>])²，而 (a) 已经算出 E[e<sup>−γ</sup>] = 2 × 6.15×10⁻⁵ = 1.23×10⁻⁴，所以 P̄<sub>s</sub> = ½ × (1.23×10⁻⁴)² = 7.56×10⁻⁹。</dd><dt>易错</dt><dd>8 + 11 有 (8, 11)、(11, 8) 两种，概率 4/9；e⁻¹⁶ 这类极小数要保留有效数字；d 用输入的 10，不是输出的 20；(c) 共享的 β 进指数是 2β。</dd><dt>结论</dt><dd>(b)(c) 平均 SNR 都是 20、g 都是 2，但相关让误码率高 2.7 倍、d 从 8.1 降到 7.7。</dd></dl></div>
       <!-- /PKP:p4q2 -->
     </div>
+    <!-- EN:p4q2 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>(a) \(P_T=\sigma_n^2=1\), so γ = α. \(\bar\gamma=8\cdot\tfrac13+11\cdot\tfrac23=10\).<div class="calc">P̄<sub>s</sub> = ⅓·½e⁻⁸ + ⅔·½e⁻¹¹ = 5.59×10⁻⁵ + 0.56×10⁻⁵ = 6.15×10⁻⁵</div></li>
+        <li>(b) The MRC output SNR is the sum of the two branches. With independent branches the combinations are 8+8 = 16 (1/9), 8+11 = 19 (2 × 1/3 × 2/3 = 4/9), 11+11 = 22 (4/9).<div class="calc">γ̄<sub>Σ</sub> = (16 + 76 + 88)/9 = 20</div><div class="calc">P̄<sub>s</sub> = ½[e⁻¹⁶·1/9 + e⁻¹⁹·4/9 + e⁻²²·4/9] = 7.56×10⁻⁹</div></li>
+        <li>\(g=\bar\gamma_\Sigma/\bar\gamma=20/10=2\); \(d=-\log_{10}\bar P_s/\log_{10}\bar\gamma=8.12/1=8.1\) (γ̄ is the per-branch input SNR, 10).</li>
+        <li>(c) \(E[\gamma_i]=E[r_i]+E[\beta]=(0.2+0.8)+(7/3+20/3)=1+9=10\), \(\bar\gamma_\Sigma=20\), g = 2.</li>
+        <li>\(\gamma_\Sigma=r_1+r_2+2\beta\); the three are independent, so the exponential factorises: \(E[e^{-\gamma_\Sigma}]=E[e^{-r_1}]\,E[e^{-r_2}]\,E[e^{-2\beta}]\).<div class="calc">E[e<sup>−r</sup>] = ⅓e<sup>−0.6</sup> + ⅔e<sup>−1.2</sup> = 0.1829 + 0.2008 = 0.3837</div><div class="calc">E[e<sup>−2β</sup>] = ⅓e<sup>−14</sup> + ⅔e<sup>−20</sup> = 2.786×10⁻⁷</div><div class="calc">P̄<sub>s</sub> = ½ × 0.3837² × 2.786×10⁻⁷ = 2.05×10⁻⁸, d = 8 − log₁₀2.05 = 7.7</div></li>
+      </ol>
+      <div class="ans">(a) γ̄ = 10, P̄<sub>s</sub> = 6.15×10⁻⁵; (b) γ̄<sub>Σ</sub> = 20, P̄<sub>s</sub> = 7.6×10⁻⁹, g = 2, d = 8.1; (c) γ̄<sub>Σ</sub> = 20, P̄<sub>s</sub> = 2.05×10⁻⁸, g = 2, d = 7.7</div>
+      <div class="official"><b>Official answer:</b> identical ✓</div>
+      <div class="note">(b) and (c) have the same mean SNR, yet (c) has a 2.7 times higher error rate and d drops from 8.1 to 7.7: the shared shadowing β makes both branches fade together, which weakens diversity (lecture p.21).</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Mean SNR and mean error rate for a discrete SNR distribution; MRC; array gain g and diversity gain d; correlated branches (Ch 4 p.16, p.21, p.27–28).</dd><dt>Background</dt><dd>Discrete expectation Σx·p; independent events multiply; E[f(X)] ≠ f(E[X]); for independent variables E[g(X)h(Y)] = E[g(X)]E[h(Y)].</dd><dt>Method</dt><dd>(a) Take the expectation directly. (b) Tabulate the 2 × 2 combinations → output SNR = sum of the branches → weight by probability. (c) Split e<sup>−γ<sub>Σ</sub></sup> into a product of independent factors and average each.</dd><dt>Key formulas</dt><dd>g = γ̄<sub>Σ</sub>/γ̄; d = −log₁₀P̄<sub>s</sub> / log₁₀γ̄ (γ̄ is the mean SNR at the combiner <b>input</b>).</dd><dt>Shortcut</dt><dd>(b) needs no table: for independent branches E[e<sup>−(γ₁+γ₂)</sup>] = (E[e<sup>−γ</sup>])², and (a) already gives E[e<sup>−γ</sup>] = 2 × 6.15×10⁻⁵ = 1.23×10⁻⁴, so P̄<sub>s</sub> = ½ × (1.23×10⁻⁴)² = 7.56×10⁻⁹.</dd><dt>Common mistakes</dt><dd>8 + 11 occurs in two orders, (8, 11) and (11, 8), probability 4/9. Keep enough significant figures for tiny numbers like e⁻¹⁶. Use the input SNR 10 for d, not the output 20. In (c) the shared β enters the exponent as 2β.</dd><dt>Conclusion</dt><dd>In (b) and (c) the mean SNR is 20 and g = 2, but correlation raises the error rate 2.7 times and lowers d from 8.1 to 7.7.</dd></dl></div>
+    </div>
+    <!-- /EN:p4q2 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -68,7 +96,7 @@
     </div>
     <div class="chips"><span class="chip">高斯随机变量之和</span><span class="chip">等增益合并</span><span class="chip src">讲义第 4 章 p.19；第 1b 章 p.11</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>(a) 设 b = +1（对称，另一种情况一样）。\(z=y=\alpha\sqrt E+w\)：两个独立高斯之和还是高斯。<div class="calc">均值 α₀√E，方差 σ₁²E + σ₂²</div></li>
         <li>出错 = z ≤ 0：\(P_b=P(z\le0)=Q\!\left(\dfrac{\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\)。</li>
@@ -82,5 +110,19 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>衰落因子是高斯随机变量时的 BPSK 误码率；等权合并（第 4 章 p.19；第 1b 章独立高斯相加）。</dd><dt>前置知识</dt><dd>独立高斯之和仍是高斯，均值相加、方差相加；Var(cX) = c²Var(X)，所以 Var(α√E) = σ₁²E。</dd><dt>解题套路</dt><dd>设 b = +1（对称）→ 求判决变量 z 的均值和方差 → 出错 = z ≤ 0 → P = Q(均值 / 标准差)。</dd><dt>关键结论</dt><dd>M 路等权相加：均值 × M，方差 × M，标准差 × √M → Q 的参数放大 √M 倍。</dd><dt>易错</dt><dd>方差项 σ₁²E 别漏乘 E；标准差是 √(σ₁²E + σ₂²)，不是 σ₁√E + σ₂。</dd><dt>物理意义</dt><dd>即使没有噪声（σ₂ = 0），误码率也是 Q(α₀/σ₁) ≠ 0：衰落因子本身可能变成负数，把符号翻过来，这是衰落造成的"平台"；合并 M 路后变成 Q(√M α₀/σ₁)，平台降低。</dd><dt>举一反三</dt><dd>如果接收端知道每个 α<sub>k</sub>，可以按 α<sub>k</sub> 加权（MRC，p.15）；这里不知道 α<sub>k</sub>，所以只能等权。</dd></dl></div>
       <!-- /PKP:p4q3 -->
     </div>
+    <!-- EN:p4q3 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>(a) Take b = +1 (the other case is symmetric). \(z=y=\alpha\sqrt E+w\): the sum of two independent Gaussians is Gaussian.<div class="calc">mean α₀√E, variance σ₁²E + σ₂²</div></li>
+        <li>Error = z ≤ 0: \(P_b=P(z\le0)=Q\!\left(\dfrac{\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\).</li>
+        <li>(b) Equal-weight sum: \(z=\sum_ky_k=b\sqrt E\sum_k\alpha_k+\sum_kw_k\). All \(\alpha_k\) and \(w_k\) are independent:<div class="calc">mean Mα₀√E, variance M(σ₁²E + σ₂²)</div></li>
+        <li>\(P_b=Q\!\left(\dfrac{M\alpha_0\sqrt E}{\sqrt{M(\sigma_1^2E+\sigma_2^2)}}\right)=Q\!\left(\dfrac{\sqrt M\,\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\).</li>
+      </ol>
+      <div class="ans">(a) Q(α₀√E / √(σ₁²E + σ₂²)); (b) Q(√M·α₀√E / √(σ₁²E + σ₂²))</div>
+      <div class="official"><b>Official answer:</b> same as above ✓</div>
+      <div class="note">The mean grows like M while the standard deviation grows like √M, so the argument of Q increases by √M. That is the combining gain.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>BPSK error rate when the fading factor is Gaussian; equal-weight combining (Ch 4 p.19; sums of independent Gaussians, Ch 1b).</dd><dt>Background</dt><dd>A sum of independent Gaussians is Gaussian with means and variances adding; Var(cX) = c²Var(X), so Var(α√E) = σ₁²E.</dd><dt>Method</dt><dd>Assume b = +1 (symmetric) → mean and variance of the decision variable z → error when z ≤ 0 → P = Q(mean / standard deviation).</dd><dt>Key result</dt><dd>Summing M branches with equal weights multiplies the mean by M and the variance by M, so the standard deviation grows by √M and the Q argument by √M.</dd><dt>Common mistakes</dt><dd>Do not forget the factor E in σ₁²E; the standard deviation is √(σ₁²E + σ₂²), not σ₁√E + σ₂.</dd><dt>Physical meaning</dt><dd>Even without noise (σ₂ = 0) the error rate is Q(α₀/σ₁) ≠ 0: the fading factor itself can become negative and flip the symbol, a fading-induced floor. Combining M branches lowers it to Q(√M α₀/σ₁).</dd><dt>Variation</dt><dd>If the receiver knew each α<sub>k</sub> it could weight by α<sub>k</sub> (MRC, p.15); here it does not, so equal weights are used.</dd></dl></div>
+    </div>
+    <!-- /EN:p4q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>

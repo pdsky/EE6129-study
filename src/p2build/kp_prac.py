@@ -3,7 +3,7 @@
 
 The box sits inside <div class="sol">, so 自测模式 hides it together with the solution.
 Idempotent: each box is between <!-- PKP:id --> and <!-- /PKP:id -->.
-Run before build_practice.py.
+Run before add_en.py / build_practice.py (safe to re-run afterwards too).
 """
 import pathlib, re
 
@@ -222,6 +222,9 @@ def apply():
         for qid in re.findall(r'<article class="ex" id="(p\dq\d)">', s):
             a = s.find(f'<article class="ex" id="{qid}">')
             d = s.find('<div class="done">', a)
+            e = s.find(f'<!-- EN:{qid} -->', a, d)   # English block (add_en.py) follows the Chinese one
+            if e >= 0:
+                d = e
             j = s.rfind('    </div>\n', a, d)          # closing tag of <div class="sol">
             s = s[:j] + box(qid, KP[qid]) + s[j:]
             n += 1

@@ -20,6 +20,10 @@ sys.path.insert(0, str(E))
 import data_2324, data_2425, data_2526s1, data_2526s2
 QS = data_2324.QS + data_2425.QS + data_2526s1.QS + data_2526s2.QS
 BYID = {q['id']: q for q in QS}
+from kp_exams import KP
+missing = [q['id'] for q in QS if q['id'] not in KP]
+if missing:
+    raise SystemExit(f'kp_exams.py has no knowledge points for: {missing}')
 
 PAPERS = {
   'y2324s2': ('2023-24 S2', 'Semester 2 Examination 2023-2024', 'April / May 2024', 14),
@@ -76,6 +80,12 @@ CSS = '''
 .pq-links{font-size:13px;font-family:var(--f-mono);margin:8px 0 4px;display:flex;flex-wrap:wrap;gap:4px 16px;}
 .pq-links a{text-decoration:none;}
 .pastq .figwrap svg{max-width:100%;height:auto;}
+.pq-kp{border:1px solid var(--accent);border-left-width:5px;border-radius:10px;background:var(--accent-soft);padding:12px 16px 8px;margin:4px 0 10px;}
+.pq-kp > .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--accent-ink);font-weight:700;margin-bottom:4px;}
+.pq-kp dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;}
+.pq-kp dt{font-weight:700;font-size:14px;color:var(--accent-ink);}
+.pq-kp dd{margin:0;font-size:14.5px;color:var(--ink);line-height:1.65;}
+@media (max-width:560px){.pq-kp dl{grid-template-columns:1fr;gap:0;}.pq-kp dt{margin-top:6px;}}
 .pq-table td{font-family:var(--f-body);font-size:13.5px;line-height:1.55;vertical-align:top;}
 '''
 
@@ -115,12 +125,14 @@ def render(q, ctx, art, titles):
                  ('#' + s['id']) if ctx == 'exams' else None)
         if anchor: links.append(f'<a href="{anchor}">→ 同一道题：{PAPERS[s["paper"]][0]} {s["q"]}</a>')
     note = f'<div class="pq-note">注：{q["note"]}</div>' if q.get('note') else ''
+    kp = '<div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl>' + ''.join(
+        f'<dt>{lab}</dt><dd>{html}</dd>' for lab, html in KP[q['id']]) + '</dl></div>'
     qid = ('pq-' + q['id']) if ctx == 'lecture' else q['id']
     return f'''<div class="pastq" id="{qid}">
   <div class="pq-head">{''.join(tags)}</div>
   <div class="pq-topic"><b>考点</b>：{q['topic']}</div>
   <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en">{q['en']}</div></details>
-  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody">{q['sol']}{note}</div></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody">{q['sol']}{note}</div></div>{kp}</details>
   <div class="pq-links">{''.join(links)}</div>
 </div>
 '''

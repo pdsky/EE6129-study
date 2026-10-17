@@ -734,13 +734,19 @@ table td:first-child{font-family:var(--f-body);}
 .pq-links{font-size:13px;font-family:var(--f-mono);margin:8px 0 4px;display:flex;flex-wrap:wrap;gap:4px 16px;}
 .pq-links a{text-decoration:none;}
 .pastq .figwrap svg{max-width:100%;height:auto;}
+.pq-kp{border:1px solid var(--accent);border-left-width:5px;border-radius:10px;background:var(--accent-soft);padding:12px 16px 8px;margin:4px 0 10px;}
+.pq-kp > .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--accent-ink);font-weight:700;margin-bottom:4px;}
+.pq-kp dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;}
+.pq-kp dt{font-weight:700;font-size:14px;color:var(--accent-ink);}
+.pq-kp dd{margin:0;font-size:14.5px;color:var(--ink);line-height:1.65;}
+@media (max-width:560px){.pq-kp dl{grid-template-columns:1fr;gap:0;}.pq-kp dt{margin-top:6px;}}
 .pq-table td{font-family:var(--f-body);font-size:13.5px;line-height:1.55;vertical-align:top;}
 </style><div class="pastq-block"><h3><span class="zh-num">真题</span>本章的历年期末考题（1 题）</h3><p class="pq-intro">来自 2025-26 S2 期末卷。原题照试卷逐字转录，先自己做，再展开解答。</p><div class="pastq" id="pq-y2526s2-q4b">
   <div class="pq-head"><span class="pq-paper">2025-26 S2</span><span class="pq-q">Q4(b)</span><span>8 分</span></div>
   <div class="pq-topic"><b>考点</b>：MEO/LEO 卫星系统的四种切换</div>
   <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) In a satellite system with Medium Earth Orbit (MEO) or Low Earth Orbit (LEO) satellites, there could also be handovers in the system if the satellite acts as a base station. Briefly describe the 4 different types of handovers that can occur in this type of satellite system.</p>
 <p class="marks">(8 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>星内切换（Intra-satellite）</b>（讲义 Part C p.40）：用户在同一颗卫星的覆盖区内，从一个扇区（点波束）移到另一个扇区。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>星间切换（Inter-satellite）</b>：用户从一颗卫星的覆盖区移到另一颗卫星的覆盖区，或者卫星自己飞走了。LEO 卫星每次只可见 15–20 分钟，这种切换很频繁。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>网关切换（Gateway）</b>：卫星移动后离开了当前连接的地面网关，需要换一个网关。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>系统间切换（Inter-system）</b>：卫星系统和地面蜂窝系统之间，根据信号强度和 QoS 进行的<b>垂直切换</b>。</div></div><div class="wans">星内、星间、网关、系统间（垂直）切换</div></div></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>星内切换（Intra-satellite）</b>（讲义 Part C p.40）：用户在同一颗卫星的覆盖区内，从一个扇区（点波束）移到另一个扇区。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>星间切换（Inter-satellite）</b>：用户从一颗卫星的覆盖区移到另一颗卫星的覆盖区，或者卫星自己飞走了。LEO 卫星每次只可见 15–20 分钟，这种切换很频繁。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>网关切换（Gateway）</b>：卫星移动后离开了当前连接的地面网关，需要换一个网关。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>系统间切换（Inter-system）</b>：卫星系统和地面蜂窝系统之间，根据信号强度和 QoS 进行的<b>垂直切换</b>。</div></div><div class="wans">星内、星间、网关、系统间（垂直）切换</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>MEO/LEO 卫星系统的四种切换（Part C p.40）。</dd><dt>答题要点</dt><dd>星内切换（同一颗卫星的不同点波束 / 扇区之间）；星间切换（换卫星，LEO 每颗只可见 15–20 分钟，很频繁）；网关切换（卫星离开当前地面网关）；系统间切换（卫星与地面蜂窝之间的垂直切换）。</dd><dt>记忆</dt><dd>从小到大："波束 → 卫星 → 网关 → 系统"。</dd><dt>易错</dt><dd>星间切换不只是用户移动造成的，卫星自己飞走也会触发；系统间切换叫"垂直切换"。</dd></dl></div></details>
   <div class="pq-links"><a href="exams.html#y2526s2-q4b">→ 在「历年真题」页看整份 2025-26 S2 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->

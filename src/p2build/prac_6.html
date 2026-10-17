@@ -20,7 +20,7 @@
     </div>
     <div class="chips"><span class="chip">ISI 条件误码率</span><span class="chip">滤波后噪声方差</span><span class="chip">高 SNR 看最坏项</span><span class="chip src">讲义第 6 章 p.22–28</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>记 \(A=\sqrt{2E_b/N_0}\)。没有 ISI 时 \(P_e=Q(A)\)：信号幅度 \(\sqrt{E_b}\)，噪声标准差 \(\sqrt{N_0/2}\)。</li>
         <li>(a) 不均衡：\(z(n)=\sqrt{E_b}(a_n+\alpha a_{n-1})+w(n)\)。前一个符号同号时幅度 \((1+\alpha)\sqrt{E_b}\)，异号时 \((1-\alpha)\sqrt{E_b}\)，各一半：<div class="calc">Pe = ½Q((1 − α)A) + ½Q((1 + α)A)</div></li>
@@ -35,6 +35,21 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>ISI 信道的误码率；均衡器的权衡：ISI 减小 vs 噪声放大；高 SNR 下的比较（第 6 章 p.22–28）。</dd><dt>前置知识</dt><dd>Z 变换相乘 = 滤波器串联；白噪声过 FIR 后方差 σ²Σc²；条件误码率再平均；高 SNR 时误码率由 Q 参数最小的那一项决定。</dd><dt>解题套路</dt><dd>不均衡：ISI 前一个符号同号 / 异号两种情况，各 ½。加均衡：信号经过 H(z)U(z) = 1 − α²z⁻²，噪声只经过 U(z)，方差变成 (N₀/2)(1 + α²)，再分两种情况。</dd><dt>关键比较</dt><dd>(1 − α²)/√(1 + α²) &gt; 1 − α ⇔ (1 + α)/√(1 + α²) &gt; 1 ⇔ (1 + α)² &gt; 1 + α² ⇔ 2α &gt; 0，对 α &gt; 0 总成立。</dd><dt>易错</dt><dd>噪声只经过 U(z)，不经过 H(z)；均衡后残余 ISI 是 −α²，位置在 n − 2，不是 0；Q 里除的是 √(1 + α²) 倍的标准差。</dd><dt>数值例</dt><dd>α = 0.4：最坏项参数不均衡 0.6，均衡 0.84/1.077 = 0.78，所以加均衡器更好。</dd><dt>联系</dt><dd>期末 Q2(a) 四年考了四次，都是"残余 ISI a + 放大后的噪声 σ′"，公式 ½[Q((1 − a)/σ′) + Q((1 + a)/σ′)]。</dd></dl></div>
       <!-- /PKP:p6q1 -->
     </div>
+    <!-- EN:p6q1 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>Let \(A=\sqrt{2E_b/N_0}\). Without ISI \(P_e=Q(A)\): signal amplitude \(\sqrt{E_b}\), noise standard deviation \(\sqrt{N_0/2}\).</li>
+        <li>(a) No equaliser: \(z(n)=\sqrt{E_b}(a_n+\alpha a_{n-1})+w(n)\). If the previous symbol has the same sign the amplitude is \((1+\alpha)\sqrt{E_b}\), otherwise \((1-\alpha)\sqrt{E_b}\), each half the time:<div class="calc">P<sub>e</sub> = ½Q((1 − α)A) + ½Q((1 + α)A)</div></li>
+        <li>With the equaliser: overall response \(H(z)U(z)=(1+\alpha z^{-1})(1-\alpha z^{-1})=1-\alpha^2z^{-2}\), so the ISI drops from α to α²; but the noise also passes through U(z) and its variance becomes \(\tfrac{N_0}{2}(1+\alpha^2)\) (sum of squared coefficients).</li>
+        <li>\(z(n)=\sqrt{E_b}(a_n-\alpha^2a_{n-2})+w^{\prime}(n)\): amplitudes \((1\pm\alpha^2)\sqrt{E_b}\), standard deviation scaled by \(\sqrt{1+\alpha^2}\):<div class="calc">P<sub>e</sub> = ½Q( (1 − α²)/√(1 + α²) · A ) + ½Q( (1 + α²)/√(1 + α²) · A )</div></li>
+        <li>(b) At high SNR the error rate is dominated by the term with the <b>smallest</b> Q argument. Compare: without equaliser \(1-\alpha\); with equaliser \((1-\alpha^2)/\sqrt{1+\alpha^2}\).</li>
+        <li>\(\dfrac{1-\alpha^2}{\sqrt{1+\alpha^2}}>1-\alpha\ \Leftrightarrow\ \dfrac{1+\alpha}{\sqrt{1+\alpha^2}}>1\ \Leftrightarrow\ (1+\alpha)^2>1+\alpha^2\ \Leftrightarrow\ 2\alpha>0\), which always holds for α &gt; 0.</li>
+      </ol>
+      <div class="ans">(b) Better with the equaliser: the worst-case effective distance is larger. E.g. α = 0.4: 0.6 without, 0.78 with</div>
+      <div class="official"><b>Official answer:</b> expressions as above; (b) Better to operate with the proposed equalizer ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Error rate of an ISI channel; the equaliser trade-off between less ISI and more noise; comparison at high SNR (Ch 6 p.22–28).</dd><dt>Background</dt><dd>Multiplying Z-transforms = cascading filters; white noise through an FIR filter has variance σ²Σc²; average the conditional error rates; at high SNR the smallest Q argument dominates.</dd><dt>Method</dt><dd>Without equaliser: the previous symbol has the same or opposite sign, ½ each. With equaliser: the signal sees H(z)U(z) = 1 − α²z⁻², the noise sees only U(z) and its variance becomes (N₀/2)(1 + α²); again two cases.</dd><dt>Key comparison</dt><dd>(1 − α²)/√(1 + α²) &gt; 1 − α ⇔ (1 + α)/√(1 + α²) &gt; 1 ⇔ (1 + α)² &gt; 1 + α² ⇔ 2α &gt; 0, always true for α &gt; 0.</dd><dt>Common mistakes</dt><dd>The noise goes through U(z) only, not H(z); after equalisation the residual ISI is −α² at position n − 2, not zero; divide by √(1 + α²) times the standard deviation inside Q.</dd><dt>Numbers</dt><dd>α = 0.4: worst-case argument 0.6 without the equaliser, 0.84/1.077 = 0.78 with it, so the equaliser is better.</dd><dt>Link</dt><dd>Final-exam Q2(a) asked this four years running: residual ISI a plus amplified noise σ′, P<sub>e</sub> = ½[Q((1 − a)/σ′) + Q((1 + a)/σ′)].</dd></dl></div>
+    </div>
+    <!-- /EN:p6q1 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -50,7 +65,7 @@
     </div>
     <div class="chips"><span class="chip">条件误码率求平均</span><span class="chip">迫零噪声放大</span><span class="chip">等比级数</span><span class="chip src">讲义第 6 章 p.23–28</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>(a) 设 \(b_n=+1\)：\(b_{n-1}=+1\) 时幅度 1 + a，\(b_{n-1}=-1\) 时幅度 1 − a，噪声标准差 √0.1：<div class="calc">Pe = ½Q((1 + a)/√0.1) + ½Q((1 − a)/√0.1)</div></li>
         <li>(b) 理想迫零：\(C(z)=\dfrac{1}{1+az^{-1}}=\sum_{k\ge0}(-a)^kz^{-k}\)（|a| &lt; 1 收敛），输出 \(b_n\) + 滤波后的噪声。</li>
@@ -64,6 +79,20 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>直接判决（不均衡）和理想迫零均衡下的误码率（第 6 章 p.23–28）。</dd><dt>前置知识</dt><dd>条件误码率再平均；ZF：C(z) = 1/H(z)；等比级数 Σa<sup>2k</sup> = 1/(1 − a²)；滤波后噪声方差 σ²Σc²。</dd><dt>解题套路</dt><dd>(a) b<sub>n−1</sub> = ±1 两种情况，信号离门限 1 ± a，标准差 √0.1；(b) 1/(1 + az⁻¹) = Σ(−a)<sup>k</sup>z<sup>−k</sup>，ISI 消失，噪声方差 0.1/(1 − a²)，只剩一项 Q。</dd><dt>数值例</dt><dd>a = 0.5：(a) ½[Q(4.74) + Q(1.58)] ≈ 0.028；(b) Q(√7.5) = Q(2.74) ≈ 0.0031，ZF 好约 9 倍。</dd><dt>比较</dt><dd>高 SNR 时比较最坏的 Q 参数：ZF 是 √(1 − a²)，不均衡是 1 − a；√(1 − a²) = √((1 − a)(1 + a)) &gt; 1 − a，所以 ZF 更好。但 a → 1 时噪声放大 1/(1 − a²) 趋于无穷。</dd><dt>易错</dt><dd>√0.1 是标准差，0.1 是方差；ZF 后没有 ISI，不要再分情况；不均衡时别只算 Q((1 − a)/σ) 一项。</dd></dl></div>
       <!-- /PKP:p6q2 -->
     </div>
+    <!-- EN:p6q2 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>(a) Take \(b_n=+1\): if \(b_{n-1}=+1\) the amplitude is 1 + a, if \(b_{n-1}=-1\) it is 1 − a; the noise standard deviation is √0.1:<div class="calc">P<sub>e</sub> = ½Q((1 + a)/√0.1) + ½Q((1 − a)/√0.1)</div></li>
+        <li>(b) Ideal zero forcing: \(C(z)=\dfrac{1}{1+az^{-1}}=\sum_{k\ge0}(-a)^kz^{-k}\) (converges for |a| &lt; 1); the output is \(b_n\) plus filtered noise.</li>
+        <li>Noise variance = 0.1 × sum of squared coefficients = \(0.1\sum_k a^{2k}=\dfrac{0.1}{1-a^2}\).</li>
+        <li>\(P_e=Q\!\left(\dfrac{1}{\sqrt{0.1/(1-a^2)}}\right)=Q\!\left(\sqrt{\dfrac{1-a^2}{0.1}}\right)\).</li>
+      </ol>
+      <div class="ans">(a) ½Q((1+a)/√0.1) + ½Q((1−a)/√0.1); (b) Q(√((1−a²)/0.1))</div>
+      <div class="official"><b>Official answer:</b> same as above ✓</div>
+      <div class="note">Comparison: the ZF Q argument is √(1−a²)/√0.1, the worst no-equaliser term is (1−a)/√0.1. Since √(1−a²) = √((1−a)(1+a)) &gt; 1−a, ZF is better at high SNR; but as a → 1 ZF amplifies the noise heavily.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Error rate with direct decisions (no equaliser) and with an ideal zero-forcing equaliser (Ch 6 p.23–28).</dd><dt>Background</dt><dd>Average the conditional error rates; ZF: C(z) = 1/H(z); geometric series Σa<sup>2k</sup> = 1/(1 − a²); filtered-noise variance σ²Σc².</dd><dt>Method</dt><dd>(a) Two cases b<sub>n−1</sub> = ±1, distances 1 ± a from the threshold, standard deviation √0.1. (b) 1/(1 + az⁻¹) = Σ(−a)<sup>k</sup>z<sup>−k</sup>; ISI vanishes, noise variance 0.1/(1 − a²), a single Q term.</dd><dt>Numbers</dt><dd>a = 0.5: (a) ½[Q(4.74) + Q(1.58)] ≈ 0.028; (b) Q(√7.5) = Q(2.74) ≈ 0.0031, ZF about 9 times better.</dd><dt>Comparison</dt><dd>At high SNR compare the worst Q arguments: ZF √(1 − a²), no equaliser 1 − a; √(1 − a²) = √((1 − a)(1 + a)) &gt; 1 − a, so ZF is better. But as a → 1 the noise amplification 1/(1 − a²) blows up.</dd><dt>Common mistakes</dt><dd>√0.1 is the standard deviation, 0.1 the variance; after ZF there is no ISI, so no case split; without the equaliser do not keep only the Q((1 − a)/σ) term.</dd></dl></div>
+    </div>
+    <!-- /EN:p6q2 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -79,7 +108,7 @@
     </div>
     <div class="chips"><span class="chip">MMSE 求最优系数</span><span class="chip">DFE 错误传播</span><span class="chip">马尔可夫稳态</span><span class="chip src">讲义第 6 章 p.26–34</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>(a) 展开：\(u_n=A_n+\tfrac12A_{n-1}+z_n+q\big(A_{n+1}+\tfrac12A_n+z_{n+1}\big)\)，所以 \(u_n-A_n=\tfrac q2A_n+\tfrac12A_{n-1}+qA_{n+1}+z_n+qz_{n+1}\)。</li>
         <li>各项独立、均值 0，均方值相加：\(E[(u_n-A_n)^2]=\tfrac{q^2}4+\tfrac14+q^2+1+q^2=1.25+2.25q^2\)，q = 0 最小。</li>
@@ -95,5 +124,21 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>MMSE 线性均衡和判决反馈均衡 DFE 的误码率；DFE 的错误传播（第 6 章 p.26–34）。</dd><dt>前置知识</dt><dd>独立零均值随机变量的均方值相加；A<sub>n</sub>² = 1；全概率公式；线性方程求稳态。</dd><dt>解题套路</dt><dd>(a) 把 u<sub>n</sub> − A<sub>n</sub> 拆成独立项 → 均方误差 1.25 + 2.25q² → 求导得 q = 0 → u<sub>n</sub> = y<sub>n</sub>，幅度 1.5 或 0.5 → 平均。(b) 列条件误码率：上次对 → Q(1)；上次错 → ½Q(2) + ½ × ½ → 解稳态方程。</dd><dt>为什么 q = 0</dt><dd>用未来样本 y<sub>n+1</sub> 能多拿到 ½A<sub>n</sub> 的有用信号，但同时带进 A<sub>n+1</sub> 的干扰和 z<sub>n+1</sub> 的噪声，得不偿失，所以最优是不用它。</dd><dt>关键公式</dt><dd>DFE 稳态：p = (1 − p)·0.159 + p·0.261 → p = 0.159/(1 − 0.261 + 0.159) = 0.177。</dd><dt>易错</dt><dd>展开时漏了 (q/2)A<sub>n</sub> 项；上次判错时幅度是 2 或 0（ISI 加倍），幅度 0 时误码 ½；稳态方程别解错。</dd><dt>结论</dt><dd>线性 0.188 &gt; DFE 0.177 &gt; 无错误传播的 DFE 0.159：DFE 不放大噪声，但错误传播吃掉了一部分优势（p.34）。</dd></dl></div>
       <!-- /PKP:p6q3 -->
     </div>
+    <!-- EN:p6q3 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>(a) Expand: \(u_n=A_n+\tfrac12A_{n-1}+z_n+q\big(A_{n+1}+\tfrac12A_n+z_{n+1}\big)\), so \(u_n-A_n=\tfrac q2A_n+\tfrac12A_{n-1}+qA_{n+1}+z_n+qz_{n+1}\).</li>
+        <li>All terms are independent with zero mean, so their mean squares add: \(E[(u_n-A_n)^2]=\tfrac{q^2}4+\tfrac14+q^2+1+q^2=1.25+2.25q^2\), minimised at q = 0.</li>
+        <li>With q = 0, \(u_n=y_n\) and the amplitude is 1.5 or 0.5:<div class="calc">P<sub>e</sub> = ½Q(1.5) + ½Q(0.5) = ½(0.0668) + ½(0.3085) = 0.188</div></li>
+        <li>(b) Previous decision correct: the ISI is cancelled exactly, \(u_n=A_n+z_n\), error probability \(Q(1)=0.159\).</li>
+        <li>Previous decision wrong (\(\hat A_{n-1}=-A_{n-1}\)): \(u_n=A_n+A_{n-1}+z_n\), amplitude 2 or 0 with equal probability, error probability \(\tfrac12Q(2)+\tfrac12\cdot\tfrac12=0.261\).</li>
+        <li>Let p be the long-run error rate: \(p=(1-p)\times0.159+p\times0.261\) → \(p=\dfrac{0.159}{1-0.261+0.159}=0.177\).</li>
+      </ol>
+      <div class="ans">(a) q = 0, P<sub>e</sub> ≈ 0.19; (b) P<sub>e</sub> ≈ 0.18</div>
+      <div class="official"><b>Official answer:</b> (a) q = 0, P<sub>e</sub> ≈ 0.19; (b) P<sub>e</sub> ≈ 0.18 ✓</div>
+      <div class="note">Without error propagation the DFE error rate would be Q(1) = 0.159; error propagation raises it to 0.177, still better than the linear equaliser's 0.188.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Error rates of an MMSE linear equaliser and a decision-feedback equaliser; DFE error propagation (Ch 6 p.26–34).</dd><dt>Background</dt><dd>Mean squares of independent zero-mean variables add; A<sub>n</sub>² = 1; total probability; solving a linear equation for the steady state.</dd><dt>Method</dt><dd>(a) Split u<sub>n</sub> − A<sub>n</sub> into independent terms → MSE 1.25 + 2.25q² → derivative gives q = 0 → u<sub>n</sub> = y<sub>n</sub>, amplitude 1.5 or 0.5 → average. (b) Conditional error rates: previous correct → Q(1); previous wrong → ½Q(2) + ½ × ½ → solve the steady-state equation.</dd><dt>Why q = 0</dt><dd>Using the future sample y<sub>n+1</sub> adds ½A<sub>n</sub> of useful signal but also brings in A<sub>n+1</sub> interference and z<sub>n+1</sub> noise; the net effect is negative, so the best choice is not to use it.</dd><dt>Key formula</dt><dd>DFE steady state: p = (1 − p)·0.159 + p·0.261 → p = 0.159/(1 − 0.261 + 0.159) = 0.177.</dd><dt>Common mistakes</dt><dd>Dropping the (q/2)A<sub>n</sub> term when expanding; after a wrong decision the amplitude is 2 or 0 (the ISI doubles), and amplitude 0 gives error probability ½; solving the steady-state equation incorrectly.</dd><dt>Conclusion</dt><dd>Linear 0.188 &gt; DFE 0.177 &gt; DFE without error propagation 0.159: the DFE does not amplify noise, but error propagation eats part of the advantage (p.34).</dd></dl></div>
+    </div>
+    <!-- /EN:p6q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>

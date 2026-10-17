@@ -11,7 +11,7 @@
     </div>
     <div class="chips"><span class="chip">AFD</span><span class="chip">ρ = Z_min / Z_rms</span><span class="chip src">讲义第 2 章 p.42–43</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>ρ = 0.1，\(e^{\rho^2}-1=e^{0.01}-1=0.01005\)。</li>
         <li>分母：\(\sqrt{2\pi}\times50\times0.1=2.5066\times5=12.53\)。</li>
@@ -24,6 +24,19 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>瑞利衰落的平均衰落持续时间 AFD（第 2 章 p.42–43）。</dd><dt>前置知识</dt><dd>ρ = Z<sub>min</sub>/Z<sub>rms</sub> 是<b>幅度</b>比；瑞利 P(z &lt; Z<sub>min</sub>) = 1 − e<sup>−ρ²</sup>；多普勒 f<sub>D</sub> = v f<sub>c</sub>/c。</dd><dt>解题套路</dt><dd>算 ρ → e<sup>ρ²</sup> − 1 → 分母 √(2π) f<sub>D</sub> ρ → 相除。</dd><dt>关键公式</dt><dd>AFD = (e<sup>ρ²</sup> − 1)/(√(2π) f<sub>D</sub> ρ)；LCR = √(2π) f<sub>D</sub> ρ e<sup>−ρ²</sup>；AFD × LCR = 1 − e<sup>−ρ²</sup>（低于门限的时间比例）。</dd><dt>易错</dt><dd>"rms 值的 0.1"是幅度，ρ = 0.1（功率低 20 dB）；若题目说"功率的 0.1"，则 ρ = √0.1 = 0.316。</dd><dt>举一反三</dt><dd>已知车速和载频，先求 f<sub>D</sub>。一次衰落连错几个符号 = AFD × 符号速率：1 Msps 时 0.8 ms ≈ 800 个符号（讲解页 2.6 节例题）。</dd><dt>直觉</dt><dd>ρ 很小时 AFD ≈ ρ/(√(2π) f<sub>D</sub>)：门限越低，跌到门限以下的时间越短；车越快（f<sub>D</sub> 越大），衰落越短但越频繁。</dd></dl></div>
       <!-- /PKP:p2q1 -->
     </div>
+    <!-- EN:p2q1 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>ρ = 0.1, \(e^{\rho^2}-1=e^{0.01}-1=0.01005\).</li>
+        <li>Denominator: \(\sqrt{2\pi}\times50\times0.1=2.5066\times5=12.53\).</li>
+        <li>\(AFD=0.01005/12.53=8.0\times10^{-4}\) s.</li>
+      </ol>
+      <div class="ans">AFD ≈ 0.8 ms</div>
+      <div class="official"><b>Official answer:</b> 0.8 ms ✓</div>
+      <div class="note">By-product, the level crossing rate: \(\sqrt{2\pi}\times50\times0.1\times e^{-0.01}=12.4\) crossings/s. AFD × LCR = 0.00995 ≈ 1%, the fraction of time the signal is more than 20 dB below its rms value.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Average fade duration (AFD) in Rayleigh fading (Ch 2 p.42–43).</dd><dt>Background</dt><dd>ρ = Z<sub>min</sub>/Z<sub>rms</sub> is an <b>amplitude</b> ratio; Rayleigh P(z &lt; Z<sub>min</sub>) = 1 − e<sup>−ρ²</sup>; Doppler f<sub>D</sub> = v f<sub>c</sub>/c.</dd><dt>Method</dt><dd>Find ρ → e<sup>ρ²</sup> − 1 → denominator √(2π) f<sub>D</sub> ρ → divide.</dd><dt>Key formulas</dt><dd>AFD = (e<sup>ρ²</sup> − 1)/(√(2π) f<sub>D</sub> ρ); LCR = √(2π) f<sub>D</sub> ρ e<sup>−ρ²</sup>; AFD × LCR = 1 − e<sup>−ρ²</sup> (fraction of time below the threshold).</dd><dt>Common mistakes</dt><dd>"0.1 of the rms value" is an amplitude, so ρ = 0.1 (power 20 dB down). If a question says "0.1 of the power", then ρ = √0.1 = 0.316.</dd><dt>Variations</dt><dd>Given vehicle speed and carrier frequency, compute f<sub>D</sub> first. Number of symbols lost per fade = AFD × symbol rate: at 1 Msps, 0.8 ms ≈ 800 symbols (Section 2.6 example on the learning page).</dd><dt>Intuition</dt><dd>For small ρ, AFD ≈ ρ/(√(2π) f<sub>D</sub>): the lower the threshold, the shorter the time spent below it; the faster the vehicle (larger f<sub>D</sub>), the shorter but more frequent the fades.</dd></dl></div>
+    </div>
+    <!-- /EN:p2q1 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -45,7 +58,7 @@
     </div>
     <div class="chips"><span class="chip">宏分集</span><span class="chip">独立 → 概率相乘</span><span class="chip">条件概率 + 全概率</span><span class="chip src">讲义第 2 章 p.12–15；第 4 章 p.4</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>(a) W：只考虑路径损耗时的<b>平均接收功率</b>（两个基站到手机的平均值相同）；\(Z_1,Z_2\)：两条链路各自的<b>阴影衰落</b>分量（dB）。</li>
         <li>(b) 中断 = 两条都低于 T = W − Δ，即 \(Z_1<-\Delta\) 且 \(Z_2<-\Delta\)。每个的概率 \(P(Z_i<-\Delta)=Q(\Delta/\sigma)\)（对称性）。独立 → 相乘：\(P_{out}=[Q(\Delta/\sigma)]^2\)。</li>
@@ -61,6 +74,22 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>宏分集的中断概率：独立阴影和相关阴影两种情况；条件概率 + 全概率（第 2 章 p.12–15；第 4 章 p.3–4、p.21）。</dd><dt>前置知识</dt><dd>独立事件概率相乘；独立高斯的线性组合仍是高斯，aY₁ + bY ~ N(0, (a² + b²)σ²)；全概率的连续形式 P(A) = ∫P(A | y)p(y)dy。</dd><dt>解题套路</dt><dd>(b) 每个基站单独中断 P(Z<sub>i</sub> &lt; −Δ) = Q(Δ/σ)，独立 → 平方。(c) 先固定两条链路共享的 Y（"条件化"），这时两条链路独立 → 条件中断概率相乘 → 再按 Y 的 PDF 积分。</dd><dt>关键一步</dt><dd>令 Y = σu，u ~ N(0, 1)。给定 u：Z<sub>i</sub> ~ N(bσu, a²σ²)，P(Z<sub>i</sub> &lt; −Δ | u) = Q((Δ + bσu)/(|a|σ))。</dd><dt>隐含条件</dt><dd>要和"Z<sub>i</sub> ~ N(0, σ²)"一致，需要 a² + b² = 1。此时 Z₁、Z₂ 的相关系数等于 b²：b 越大，两条链路越像。</dd><dt>自检</dt><dd>b = 0 时退化成 (b) 的 [Q(Δ/σ)]²；a = 0（完全相关）时两条链路一模一样，P<sub>out</sub> = Q(Δ/σ)，分集完全没用。</dd><dt>联系</dt><dd>Practice 4 第 1 题用文字解释同一件事；第 4 章 p.21"相关削弱分集"；Practice 4 第 2(c) 题是离散版本的共享阴影。</dd></dl></div>
       <!-- /PKP:p2q2 -->
     </div>
+    <!-- EN:p2q2 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>(a) W: the <b>mean received power</b> due to path loss alone (the same for both base stations); \(Z_1,Z_2\): the <b>shadowing</b> components (dB) of the two links.</li>
+        <li>(b) Outage = both below T = W − Δ, i.e. \(Z_1\lt-\Delta\) and \(Z_2\lt-\Delta\). Each has probability \(P(Z_i\lt-\Delta)=Q(\Delta/\sigma)\) (by symmetry). Independent → multiply: \(P_{out}=[Q(\Delta/\sigma)]^2\).</li>
+        <li>(c) The two links share bY, which makes them correlated. Trick: <b>condition on Y first</b>; then \(Z_1,Z_2\) contain only the independent parts \(aY_1,aY_2\).</li>
+        <li>To match the form of the answer, let \(Y=\sigma u\), \(u\sim\mathcal N(0,1)\). Given u: \(Z_i\sim\mathcal N(b\sigma u,\ a^2\sigma^2)\),<div class="calc">P(Z<sub>i</sub> &lt; −Δ | u) = Q( (Δ + bσu) / (|a|σ) )</div></li>
+        <li>Given u the two links are independent: \(P(\text{outage}\mid u)=Q\big(\tfrac{\Delta+b\sigma u}{|a|\sigma}\big)^2\).</li>
+        <li>Average over the standard normal density of u, \(\tfrac{1}{\sqrt{2\pi}}e^{-u^2/2}\) (total probability theorem), which gives the result.</li>
+      </ol>
+      <div class="ans">(b) [Q(Δ/σ)]²; (c) ∫ (1/√(2π)) Q[(Δ + bσu)/(|a|σ)]² e<sup>−u²/2</sup> du</div>
+      <div class="official"><b>Official answer:</b> same as above ✓ (the question writes byσ; its integration variable y is the normalised u)</div>
+      <div class="note">Sanity check: b = 0 reduces to the independent case (b); a = 0 makes the two links identical, P<sub>out</sub> = Q(Δ/σ), and diversity is useless. The stronger the correlation, the weaker the macro-diversity gain.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Outage with macro-diversity for independent and correlated shadowing; conditional probability plus total probability (Ch 2 p.12–15; Ch 4 p.3–4, p.21).</dd><dt>Background</dt><dd>Independent events multiply; a linear combination of independent Gaussians is Gaussian, aY₁ + bY ~ N(0, (a² + b²)σ²); continuous total probability P(A) = ∫P(A | y)p(y)dy.</dd><dt>Method</dt><dd>(b) Single-link outage P(Z<sub>i</sub> &lt; −Δ) = Q(Δ/σ), independent → square. (c) Fix the shared Y ("condition on it"), the links are then independent → multiply the conditional outages → integrate over the PDF of Y.</dd><dt>Key step</dt><dd>Let Y = σu, u ~ N(0, 1). Given u: Z<sub>i</sub> ~ N(bσu, a²σ²), P(Z<sub>i</sub> &lt; −Δ | u) = Q((Δ + bσu)/(|a|σ)).</dd><dt>Hidden assumption</dt><dd>To be consistent with Z<sub>i</sub> ~ N(0, σ²) we need a² + b² = 1. The correlation coefficient of Z₁ and Z₂ is then b²: the larger b, the more alike the two links.</dd><dt>Check</dt><dd>b = 0 gives the [Q(Δ/σ)]² of part (b); a = 0 (fully correlated) makes the links identical, P<sub>out</sub> = Q(Δ/σ), no diversity at all.</dd><dt>Link</dt><dd>Practice 4 Q1 explains the same idea in words; Ch 4 p.21 "correlation reduces diversity"; Practice 4 Q2(c) is a discrete version with shared shadowing.</dd></dl></div>
+    </div>
+    <!-- /EN:p2q2 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -76,7 +105,7 @@
     </div>
     <div class="chips"><span class="chip">香农容量</span><span class="chip">SINR</span><span class="chip">MUD</span><span class="chip src">讲义第 1a 章 p.16；第 2 章 p.48</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>(a) 用户 2 当噪声：SINR = 10 / (10 + 0.1) = 0.990。<div class="calc">C₁ = 20×10⁶ × log₂(1 + 0.990) = 20×10⁶ × 0.993 = 19.86 Mbps</div></li>
         <li>(b) 用户 1 被完全减掉，只剩噪声：SNR = 10 / 0.1 = 100。<div class="calc">C₂ = 20×10⁶ × log₂(101) = 20×10⁶ × 6.658 = 133.16 Mbps</div></li>
@@ -87,5 +116,16 @@
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>香农容量、SINR（把干扰当噪声）、多用户检测 MUD / 连续干扰消除（第 1a 章 p.16；第 2 章 p.48）。</dd><dt>前置知识</dt><dd>C = B log₂(1 + SNR)，SNR 用线性值；log₂x = ln x / ln 2 = log₁₀x / 0.301。</dd><dt>解题套路</dt><dd>(a) SINR₁ = P₁/(P₂ + N)；(b) 用户 1 已被减掉，SNR₂ = P₂/N；分别代入香农公式。</dd><dt>检验</dt><dd>C₁ + C₂ = 19.86 + 133.16 = 153.02 Mbps = 20 log₂(1 + (10 + 10)/0.1)：<mark class="hl">连续消除的总容量等于两个用户功率合起来的单用户容量</mark>，和解码顺序无关。</dd><dt>易错</dt><dd>SINR 0.990 是线性值，不是 dB；log₂1.99 = 0.993；别忘了乘带宽 20 MHz；两个功率的单位要一致（都用 mW）。</dd><dt>举一反三</dt><dd>反过来先解用户 2，两个结果对调，总和不变。如果不用 MUD，两个用户都把对方当噪声，总容量只有 2 × 19.86 = 39.7 Mbps，不到 MUD 的 1/3，这就是多用户检测的价值。</dd></dl></div>
       <!-- /PKP:p2q3 -->
     </div>
+    <!-- EN:p2q3 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>(a) User 2 treated as noise: SINR = 10 / (10 + 0.1) = 0.990.<div class="calc">C₁ = 20×10⁶ × log₂(1 + 0.990) = 20×10⁶ × 0.993 = 19.86 Mbps</div></li>
+        <li>(b) User 1 completely removed, only noise remains: SNR = 10 / 0.1 = 100.<div class="calc">C₂ = 20×10⁶ × log₂(101) = 20×10⁶ × 6.658 = 133.16 Mbps</div></li>
+      </ol>
+      <div class="ans">(a) 19.86 Mbps; (b) 133.16 Mbps</div>
+      <div class="official"><b>Official answer:</b> 19.86 Mbps; 133.16 Mbps ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Shannon capacity, SINR (interference treated as noise) and multi-user detection / successive interference cancellation (Ch 1a p.16; Ch 2 p.48).</dd><dt>Background</dt><dd>C = B log₂(1 + SNR) with SNR as a linear value; log₂x = ln x / ln 2 = log₁₀x / 0.301.</dd><dt>Method</dt><dd>(a) SINR₁ = P₁/(P₂ + N); (b) user 1 already subtracted, SNR₂ = P₂/N; substitute each into Shannon's formula.</dd><dt>Check</dt><dd>C₁ + C₂ = 19.86 + 133.16 = 153.02 Mbps = 20 log₂(1 + (10 + 10)/0.1): <mark class="hl">the sum capacity with successive cancellation equals the single-user capacity with the two powers combined</mark>, independent of the decoding order.</dd><dt>Common mistakes</dt><dd>SINR 0.990 is linear, not dB; log₂1.99 = 0.993; remember to multiply by the 20 MHz bandwidth; use the same unit (mW) for both powers.</dd><dt>Variations</dt><dd>Decoding user 2 first swaps the two results; the sum stays the same. Without MUD, each user treats the other as noise and the total is only 2 × 19.86 = 39.7 Mbps, less than a third of the MUD total. That is the value of multi-user detection.</dd></dl></div>
+    </div>
+    <!-- /EN:p2q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>

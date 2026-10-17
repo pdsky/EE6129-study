@@ -97,6 +97,13 @@ ol.steps>li::before{content:counter(s);position:absolute;left:0;top:8px;width:22
 .official b{color:var(--ok)}
 .note{margin-top:8px;border-radius:10px;padding:8px 14px;font-size:.86rem;background:var(--extra-soft);border:1px solid var(--extra)}
 .note::before{content:'补充　';font-weight:700;color:var(--extra)}
+.lang-en .sol-zh,.lang-zh .sol-en{display:none!important}
+.sol-en .note::before{content:'Note  '}
+.sol-en{font-size:.97rem}
+.seg{display:inline-flex;align-items:center;border:1px solid var(--border);border-radius:999px;overflow:hidden;font-size:.8rem;background:var(--surface)}
+.seg-lab{padding:0 8px 0 10px;color:var(--muted)}
+.seg button{font:inherit;border:none;border-left:1px solid var(--border);background:transparent;color:var(--muted);padding:4px 11px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);font-weight:600}
 .pkp{margin-top:12px;border:1px solid var(--accent);border-left-width:5px;border-radius:10px;background:var(--surface);padding:10px 16px 8px}
 .pkp > .lbl{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.08em;color:var(--accent-strong);font-weight:700;margin-bottom:4px}
 .pkp dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:5px 14px}
@@ -137,11 +144,11 @@ window.MathJax = {
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" async></script>
 </head>
 <body>
-<div class="wrap" id="root">
+<div class="wrap lang-en" id="root">
   <a class="back" href="index.html">← 学习站目录</a>
   <div class="eyebrow">EE6129 · Part 2 · Practice 1–7</div>
   <h1>Part 2 练习</h1>
-  <p class="lede">讲义配套的 7 份 Practice 共 21 道题，逐题给出英文原题、考点、思路和分步解答，并和官方答案逐一核对。「随机练习」按同样的题型随机出数字，自动判分。</p>
+  <p class="lede">讲义配套的 7 份 Practice 共 21 道题，逐题给出中英对照的原题、考点、思路和分步解答，并和官方答案逐一核对。解答默认是英文（考试要用英文作答），可以随时切换成中文。「随机练习」按同样的题型随机出数字，自动判分。</p>
   <div class="notice">所有数字都用程序验算过。<b>20 道题与官方答案一致</b>（其中 P4 Q1 是论述题）；Practice 1 第 1 题按题目数据算不出官方的数字，题下写了原因和标准做法。紫色"补充"框是课外内容。配套讲解见 <a href="p2-learn.html">Part 2 讲解页</a>。</div>
 
   <div class="tabs" role="tablist" aria-label="页面视图">
@@ -150,6 +157,7 @@ window.MathJax = {
     <span class="spacer"></span>
     <label class="toggle" id="examWrap"><input type="checkbox" id="examMode"> 自测模式（先藏解答）</label>
     <label class="toggle"><input type="checkbox" id="zhMode" checked> 题目中文对照</label>
+    <span class="seg" id="langSeg" role="group" aria-label="解答语言"><span class="seg-lab">解答</span><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="zh" aria-pressed="false">中文</button></span>
     <span class="count" id="count"></span>
   </div>
 
@@ -191,7 +199,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">简化路径损耗模型</span><span class="chip">最小二乘拟合</span><span class="chip">阴影方差 = MSE</span><span class="chip">中断概率 Q 函数</span><span class="chip src">讲义第 2 章 p.8、12–15</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>取 dB 后模型变成一条直线 \(y=K_{dB}-\gamma x\)，其中 \(x=10\log_{10}d\)（\(d_0\) = 1 m）。用最小二乘找最贴近 6 个点的直线；剩下的均方误差就是阴影方差。</p>
       <ol class="steps">
         <li>把距离换成 \(x_i=10\log_{10}d_i\)：6.99、13.98、18.13、20.41、26.02、30.00（平均 \(\bar x=19.26\)）；\(y_i\) 平均 \(\bar y=-106.67\)。</li>
@@ -216,6 +224,29 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>用最小二乘从测量数据拟合简化路径损耗模型的 K、γ，再把拟合的均方误差当作阴影方差，求中断概率（第 2 章 p.8、p.12–15）。</dd><dt>前置知识</dt><dd>dB 运算；最小二乘（对 K、γ 求偏导令其为 0，讲解页 2.1 节的推导框）；Q 函数（第 1b 章）。</dd><dt>解题套路</dt><dd>① x<sub>i</sub> = 10 log₁₀(d<sub>i</sub>/d₀)；② 列 x、M、x²、xM 四列并求和；③ 解两个正规方程得 K、γ；④ 逐点算残差 e<sub>i</sub> = 实测 − 预测，MSE = σ<sub>ψ</sub>²；⑤ P<sub>out</sub> = Q(余量/σ<sub>ψ</sub>)。</dd><dt>关键公式</dt><dd>γ = −Σ(x<sub>i</sub> − x̄)(M<sub>i</sub> − M̄) / Σ(x<sub>i</sub> − x̄)²；K<sub>dB</sub> = M̄ + γx̄；σ<sub>ψ</sub>² = (1/n)Σe<sub>i</sub>²；P<sub>out</sub> = Q(10/σ<sub>ψ</sub>)。</dd><dt>易错</dt><dd>直线斜率是 −γ，别丢负号；x 用 10 log₁₀d，只用 log₁₀d 会让 γ 大 10 倍；MSE 是方差，Q 里要用开根号后的 σ；"高 10 dB"就是余量 10 dB。</dd><dt>自检</dt><dd>残差之和为 0；拟合直线经过平均点 (19.26, −106.67)；上面的步骤 4 有逐点残差，Σe² = 71.23。</dd><dt>举一反三</dt><dd>已知 K、γ、σ，求某距离的中断概率，或给定中断概率求最大覆盖距离（讲义 p.16 例题，讲解页 2.2 节）。官方答案无法复现，原因见上面的补充框。</dd></dl></div>
       <!-- /PKP:p1q1 -->
     </div>
+    <!-- EN:p1q1 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> In dB the model is a straight line \(y=K_{dB}-\gamma x\) with \(x=10\log_{10}d\) (\(d_0\) = 1 m). Least squares finds the line closest to the 6 points; the remaining mean squared error is the shadowing variance.</p>
+      <ol class="steps">
+        <li>Convert the distances to \(x_i=10\log_{10}d_i\): 6.99, 13.98, 18.13, 20.41, 26.02, 30.00 (mean \(\bar x=19.26\)); the mean of \(y_i\) is \(\bar y=-106.67\).</li>
+        <li>Slope \(=\dfrac{\sum(x_i-\bar x)(y_i-\bar y)}{\sum(x_i-\bar x)^2}=-3.94\), so \(\gamma=3.94\).</li>
+        <li>Intercept \(K_{dB}=\bar y+\gamma\bar x=-106.67+3.94\times19.26=-30.8\) dB.</li>
+        <li>(b) Residual \(e_i=M_i-\hat y_i\): first compute the fitted prediction \(\hat y_i=K_{dB}-\gamma x_i=-30.79-3.94\,x_i\), then subtract it from the measurement \(M_i\).<div class="tw"><table class="mini"><thead><tr><th>d (m)</th><th>\(x_i\)</th><th>\(\gamma x_i\)</th><th>prediction \(\hat y_i\)</th><th>measured \(M_i\)</th><th>residual \(e_i\)</th><th>\(e_i^2\)</th></tr></thead><tbody>
+            <tr><td>5</td><td>6.99</td><td>27.54</td><td>−58.33</td><td>−60</td><td>−1.67</td><td>2.78</td></tr>
+            <tr><td>25</td><td>13.98</td><td>55.09</td><td>−85.88</td><td>−80</td><td>+5.88</td><td>34.53</td></tr>
+            <tr><td>65</td><td>18.13</td><td>71.44</td><td>−102.23</td><td>−105</td><td>−2.77</td><td>7.68</td></tr>
+            <tr><td>110</td><td>20.41</td><td>80.44</td><td>−111.23</td><td>−115</td><td>−3.77</td><td>14.20</td></tr>
+            <tr><td>400</td><td>26.02</td><td>102.53</td><td>−133.32</td><td>−130</td><td>+3.32</td><td>11.05</td></tr>
+            <tr><td>1000</td><td>30.00</td><td>118.22</td><td>−149.01</td><td>−150</td><td>−0.99</td><td>0.99</td></tr>
+          </tbody></table></div>\(\sum e_i^2=71.23\), so the MSE is \(\sigma_\psi^2=71.23/6=11.87\) and \(\sigma_\psi=3.45\) dB. (Least-squares residuals always sum to 0, a quick arithmetic check.)</li>
+        <li>The mean received power is 10 dB above the threshold: \(P_{out}=Q(10/\sigma_\psi)=Q(2.90)=1.85\times10^{-3}\).</li>
+      </ol>
+      <div class="ans"><b>Standard least squares:</b> K ≈ −30.8 dB, γ ≈ 3.94, σ²<sub>ψ</sub> ≈ 11.9 dB², P<sub>out</sub> ≈ 1.85 × 10⁻³</div>
+      <div class="official"><b>Official answer:</b> (a) K<sub>dB</sub> = −31.4 dB, γ = 3.86; (b) 6.19 × 10⁻⁴</div>
+      <div class="note">The official answer cannot be reproduced from the given data. Substituting the official K = −31.4 and γ = 3.86 back into the 6 points gives an MSE of 13.1 and P<sub>out</sub> ≈ 2.9 × 10⁻³; the official 6.19 × 10⁻⁴ corresponds to σ ≈ 3.10 dB. A different fitting method or an arithmetic slip may have been used. <b>In the exam, state the method clearly (least squares, σ² = MSE, P<sub>out</sub> = Q(10/σ))</b>, and ask the lecturer if in doubt.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Fitting K and γ of the simplified path-loss model to measured data by least squares, then using the fitted MSE as the shadowing variance to find the outage probability (Ch 2 p.8, p.12–15).</dd><dt>Background</dt><dd>dB arithmetic; least squares (set the partial derivatives with respect to K and γ to zero, see the derivation box in Section 2.1 of the learning page); the Q function (Ch 1b).</dd><dt>Method</dt><dd>① x<sub>i</sub> = 10 log₁₀(d<sub>i</sub>/d₀); ② tabulate x, M, x², xM and sum each column; ③ solve the two normal equations for K and γ; ④ compute the residuals e<sub>i</sub> = measured − predicted, MSE = σ<sub>ψ</sub>²; ⑤ P<sub>out</sub> = Q(margin/σ<sub>ψ</sub>).</dd><dt>Key formulas</dt><dd>γ = −Σ(x<sub>i</sub> − x̄)(M<sub>i</sub> − M̄) / Σ(x<sub>i</sub> − x̄)²; K<sub>dB</sub> = M̄ + γx̄; σ<sub>ψ</sub>² = (1/n)Σe<sub>i</sub>²; P<sub>out</sub> = Q(10/σ<sub>ψ</sub>).</dd><dt>Common mistakes</dt><dd>The slope of the line is −γ, so keep the minus sign. Use 10 log₁₀d, not log₁₀d (otherwise γ comes out 10 times too large). The MSE is a variance: take the square root before putting it in Q. "10 dB above" means a 10 dB margin.</dd><dt>Check</dt><dd>The residuals sum to 0; the fitted line passes through the mean point (19.26, −106.67); Σe² = 71.23 from the table in step 4.</dd><dt>Variations</dt><dd>Given K, γ and σ, find the outage probability at some distance, or the maximum coverage distance for a target outage (lecture p.16 example, Section 2.2 of the learning page). See the note above on why the official answer cannot be reproduced.</dd></dl></div>
+    </div>
+    <!-- /EN:p1q1 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -231,7 +262,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">对数正态 = dB 值高斯</span><span class="chip">Q 函数与反函数</span><span class="chip src">讲义第 2 章 p.11–15</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>dBm 值服从高斯分布。"低于门限"的概率 = 先减均值、再除标准差，查 Q 表。</p>
       <ol class="steps">
         <li>(a) 门限比均值低 15 − 10 = 5 dB，是 5/8 = 0.625 个标准差：\(P_{out}=Q(0.625)=0.266\)。</li>
@@ -244,6 +275,19 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>对数正态阴影 = dB 值服从高斯；中断概率的正算和反算（第 2 章 p.11–15）。</dd><dt>前置知识</dt><dd>标准化：(门限 − 均值)/标准差；Q 函数的单调性（减函数）和对称性 Q(−x) = 1 − Q(x)；常用值 Q(1.645) = 0.05、Q(2.326) = 0.01、Q(3.09) = 10⁻³。</dd><dt>解题套路</dt><dd>(a) 门限离均值几个标准差 → 查 Q；(b) 把 μ 当未知数，列 Q((μ − 10)/σ) &lt; 0.01，反查得 (μ − 10)/σ &gt; 2.326。</dd><dt>关键公式</dt><dd>P<sub>out</sub> = P(P<sub>r</sub> &lt; P<sub>min</sub>) = Q((μ<sub>ψ</sub> − P<sub>min</sub>)/σ<sub>ψ</sub>)。μ − P<sub>min</sub> 叫阴影余量。</dd><dt>易错</dt><dd>Q 是减函数，"概率 &lt; 1%"要翻成"参数 &gt; 2.326"；σ 和 σ² 别混；两个 dBm 相减得到的是 dB。</dd><dt>举一反三</dt><dd>σ 越大，同样的中断概率要求的余量越大：σ = 8 dB 时 μ 要 &gt; 10 + 8 × 2.326 = 28.6 dBm，比 σ = 4 dB 时多 9.3 dB。</dd><dt>物理意义</dt><dd>阴影是大尺度、慢变化的衰落（被楼房、地形挡住），所以用余量来对付；多径是小尺度衰落，靠分集来对付（第 4 章）。</dd></dl></div>
       <!-- /PKP:p1q2 -->
     </div>
+    <!-- EN:p1q2 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> The received power in dBm is Gaussian. Probability of falling below the threshold: subtract the mean, divide by the standard deviation, look up the Q table.</p>
+      <ol class="steps">
+        <li>(a) The threshold is 15 − 10 = 5 dB below the mean, i.e. 5/8 = 0.625 standard deviations: \(P_{out}=Q(0.625)=0.266\).</li>
+        <li>(b) Require \(Q\big((\mu_\psi-10)/4\big)\lt0.01\). From the table \(Q(2.326)=0.01\); Q is decreasing, so \((\mu_\psi-10)/4>2.326\).</li>
+        <li>\(\mu_\psi>10+4\times2.326=19.3\) dBm.</li>
+      </ol>
+      <div class="ans">(a) ≈ 26%; (b) μ<sub>ψ</sub> &gt; 19.3 dBm</div>
+      <div class="official"><b>Official answer:</b> (a) 26%; (b) μ<sub>ψ</sub> &gt; 19.32 dB ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Log-normal shadowing means the dB value is Gaussian; outage probability computed forwards and backwards (Ch 2 p.11–15).</dd><dt>Background</dt><dd>Standardisation: (threshold − mean)/standard deviation; Q is decreasing and Q(−x) = 1 − Q(x); common values Q(1.645) = 0.05, Q(2.326) = 0.01, Q(3.09) = 10⁻³.</dd><dt>Method</dt><dd>(a) How many standard deviations is the threshold from the mean → Q. (b) Treat μ as unknown, write Q((μ − 10)/σ) &lt; 0.01 and invert: (μ − 10)/σ &gt; 2.326.</dd><dt>Key formula</dt><dd>P<sub>out</sub> = P(P<sub>r</sub> &lt; P<sub>min</sub>) = Q((μ<sub>ψ</sub> − P<sub>min</sub>)/σ<sub>ψ</sub>). The difference μ − P<sub>min</sub> is the shadowing margin.</dd><dt>Common mistakes</dt><dd>Q is decreasing, so "probability &lt; 1%" becomes "argument &gt; 2.326". Do not confuse σ with σ². The difference of two dBm values is in dB.</dd><dt>Variations</dt><dd>A larger σ needs a larger margin for the same outage: with σ = 8 dB, μ must exceed 10 + 8 × 2.326 = 28.6 dBm, 9.3 dB more than with σ = 4 dB.</dd><dt>Physical meaning</dt><dd>Shadowing is large-scale, slowly varying fading (blocking by buildings and terrain), so it is handled with a margin; small-scale multipath fading is handled with diversity (Ch 4).</dd></dl></div>
+    </div>
+    <!-- /EN:p1q2 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -260,7 +304,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">平均时延 / rms 时延扩展</span><span class="chip">平坦衰落条件 σ/Ts &lt; 0.1</span><span class="chip src">讲义第 2 章 p.30–33</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>把 \(P_r(\tau)\) 当成 0–10 µs 上的均匀分布：\(\mu_{T_m}=\dfrac{\int_0^{10}\tau\,d\tau}{\int_0^{10}d\tau}=\dfrac{50}{10}=5\) µs。</li>
         <li>\(E[\tau^2]=\dfrac{\int_0^{10}\tau^2d\tau}{10}=\dfrac{1000/3}{10}=33.33\)；\(\sigma_{T_m}=\sqrt{33.33-5^2}=\sqrt{8.33}=2.89\) µs。（均匀分布的标准差 = 宽度/√12 = 10/3.46。）</li>
@@ -272,6 +316,18 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>由功率时延谱求平均时延和 rms 时延扩展，再判断平坦 / 频率选择性衰落（第 2 章 p.29–33）。</dd><dt>前置知识</dt><dd>把 P(τ) 归一化后当概率密度；E[τ]、E[τ²]、方差 = E[τ²] − (E[τ])²（第 1b 章）。</dd><dt>解题套路</dt><dd>① μ = ∫τP(τ)dτ / ∫P(τ)dτ；② E[τ²] = ∫τ²P(τ)dτ / ∫P(τ)dτ；③ σ = √(E[τ²] − μ²)；④ 平坦条件 σ/T<sub>s</sub> &lt; 0.1 → 求 T<sub>s</sub> 下限 → R<sub>s</sub> 上限。</dd><dt>关键公式</dt><dd>[0, a] 上均匀分布：μ = a/2，σ = a/√12。本题 a = 10 µs → 5 µs、2.89 µs。</dd><dt>易错</dt><dd>分母是 ∫P = 10，不是 1；平坦衰落要求符号长、速率低，不等号别反；34.6 ksps 是上限。</dd><dt>举一反三</dt><dd>问"信号带宽 1 MHz（T<sub>s</sub> = 1 µs）是否平坦"：σ/T<sub>s</sub> = 2.89 &gt; 0.1 → 频率选择性衰落，需要均衡或 OFDM。离散时延谱（几条回波）用加权求和代替积分，见讲解页 2.4 节例题。</dd><dt>联系</dt><dd>时延扩展越大，相干带宽越小（B<sub>C</sub> ∝ 1/σ<sub>Tm</sub>）；第 3 章的时延扩展误码平台 (σ<sub>Tm</sub>/T<sub>b</sub>)² 用的也是这个 σ。</dd></dl></div>
       <!-- /PKP:p1q3 -->
     </div>
+    <!-- EN:p1q3 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>Treat \(P_r(\tau)\) as a uniform distribution on 0–10 µs: \(\mu_{T_m}=\dfrac{\int_0^{10}\tau\,d\tau}{\int_0^{10}d\tau}=\dfrac{50}{10}=5\) µs.</li>
+        <li>\(E[\tau^2]=\dfrac{\int_0^{10}\tau^2d\tau}{10}=\dfrac{1000/3}{10}=33.33\); \(\sigma_{T_m}=\sqrt{33.33-5^2}=\sqrt{8.33}=2.89\) µs. (Standard deviation of a uniform distribution = width/√12 = 10/3.46.)</li>
+        <li>(b) Flat fading: \(\sigma_{T_m}/T_s\lt0.1\) → \(T_s>28.9\) µs → \(R_s\lt1/28.9\,\mu s=34.6\) ksps.</li>
+      </ol>
+      <div class="ans">μ = 5 µs, σ = 2.89 µs; R<sub>s</sub> &lt; 34.6 ksps</div>
+      <div class="official"><b>Official answer:</b> 5 µs, 2.89 µs; 34.6 ksps ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Mean delay and rms delay spread from a power delay profile, and the flat / frequency-selective decision (Ch 2 p.29–33).</dd><dt>Background</dt><dd>Normalise P(τ) and treat it as a probability density; E[τ], E[τ²] and variance = E[τ²] − (E[τ])² (Ch 1b).</dd><dt>Method</dt><dd>① μ = ∫τP(τ)dτ / ∫P(τ)dτ; ② E[τ²] = ∫τ²P(τ)dτ / ∫P(τ)dτ; ③ σ = √(E[τ²] − μ²); ④ flat if σ/T<sub>s</sub> &lt; 0.1 → lower bound on T<sub>s</sub> → upper bound on R<sub>s</sub>.</dd><dt>Key formula</dt><dd>Uniform on [0, a]: μ = a/2, σ = a/√12. Here a = 10 µs → 5 µs and 2.89 µs.</dd><dt>Common mistakes</dt><dd>The denominator is ∫P = 10, not 1. Flat fading needs long symbols (low rate), so keep the inequality the right way round; 34.6 ksps is an upper limit.</dd><dt>Variations</dt><dd>"Is a 1 MHz signal (T<sub>s</sub> = 1 µs) flat?" σ/T<sub>s</sub> = 2.89 &gt; 0.1 → frequency-selective, needs equalisation or OFDM. For a discrete profile (a few echoes) replace the integrals by weighted sums (Section 2.4 example on the learning page).</dd><dt>Link</dt><dd>Larger delay spread means smaller coherence bandwidth (B<sub>C</sub> ∝ 1/σ<sub>Tm</sub>); the same σ appears in the Ch 3 error floor (σ<sub>Tm</sub>/T<sub>b</sub>)².</dd></dl></div>
+    </div>
+    <!-- /EN:p1q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
   <div class="group" id="P2"><h2>Practice 2 · 无线信道 2</h2><span>讲义第 2 章 p.40–49 · 第 9 周</span></div>
@@ -287,7 +343,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">AFD</span><span class="chip">ρ = Z_min / Z_rms</span><span class="chip src">讲义第 2 章 p.42–43</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>ρ = 0.1，\(e^{\rho^2}-1=e^{0.01}-1=0.01005\)。</li>
         <li>分母：\(\sqrt{2\pi}\times50\times0.1=2.5066\times5=12.53\)。</li>
@@ -300,6 +356,19 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>瑞利衰落的平均衰落持续时间 AFD（第 2 章 p.42–43）。</dd><dt>前置知识</dt><dd>ρ = Z<sub>min</sub>/Z<sub>rms</sub> 是<b>幅度</b>比；瑞利 P(z &lt; Z<sub>min</sub>) = 1 − e<sup>−ρ²</sup>；多普勒 f<sub>D</sub> = v f<sub>c</sub>/c。</dd><dt>解题套路</dt><dd>算 ρ → e<sup>ρ²</sup> − 1 → 分母 √(2π) f<sub>D</sub> ρ → 相除。</dd><dt>关键公式</dt><dd>AFD = (e<sup>ρ²</sup> − 1)/(√(2π) f<sub>D</sub> ρ)；LCR = √(2π) f<sub>D</sub> ρ e<sup>−ρ²</sup>；AFD × LCR = 1 − e<sup>−ρ²</sup>（低于门限的时间比例）。</dd><dt>易错</dt><dd>"rms 值的 0.1"是幅度，ρ = 0.1（功率低 20 dB）；若题目说"功率的 0.1"，则 ρ = √0.1 = 0.316。</dd><dt>举一反三</dt><dd>已知车速和载频，先求 f<sub>D</sub>。一次衰落连错几个符号 = AFD × 符号速率：1 Msps 时 0.8 ms ≈ 800 个符号（讲解页 2.6 节例题）。</dd><dt>直觉</dt><dd>ρ 很小时 AFD ≈ ρ/(√(2π) f<sub>D</sub>)：门限越低，跌到门限以下的时间越短；车越快（f<sub>D</sub> 越大），衰落越短但越频繁。</dd></dl></div>
       <!-- /PKP:p2q1 -->
     </div>
+    <!-- EN:p2q1 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>ρ = 0.1, \(e^{\rho^2}-1=e^{0.01}-1=0.01005\).</li>
+        <li>Denominator: \(\sqrt{2\pi}\times50\times0.1=2.5066\times5=12.53\).</li>
+        <li>\(AFD=0.01005/12.53=8.0\times10^{-4}\) s.</li>
+      </ol>
+      <div class="ans">AFD ≈ 0.8 ms</div>
+      <div class="official"><b>Official answer:</b> 0.8 ms ✓</div>
+      <div class="note">By-product, the level crossing rate: \(\sqrt{2\pi}\times50\times0.1\times e^{-0.01}=12.4\) crossings/s. AFD × LCR = 0.00995 ≈ 1%, the fraction of time the signal is more than 20 dB below its rms value.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Average fade duration (AFD) in Rayleigh fading (Ch 2 p.42–43).</dd><dt>Background</dt><dd>ρ = Z<sub>min</sub>/Z<sub>rms</sub> is an <b>amplitude</b> ratio; Rayleigh P(z &lt; Z<sub>min</sub>) = 1 − e<sup>−ρ²</sup>; Doppler f<sub>D</sub> = v f<sub>c</sub>/c.</dd><dt>Method</dt><dd>Find ρ → e<sup>ρ²</sup> − 1 → denominator √(2π) f<sub>D</sub> ρ → divide.</dd><dt>Key formulas</dt><dd>AFD = (e<sup>ρ²</sup> − 1)/(√(2π) f<sub>D</sub> ρ); LCR = √(2π) f<sub>D</sub> ρ e<sup>−ρ²</sup>; AFD × LCR = 1 − e<sup>−ρ²</sup> (fraction of time below the threshold).</dd><dt>Common mistakes</dt><dd>"0.1 of the rms value" is an amplitude, so ρ = 0.1 (power 20 dB down). If a question says "0.1 of the power", then ρ = √0.1 = 0.316.</dd><dt>Variations</dt><dd>Given vehicle speed and carrier frequency, compute f<sub>D</sub> first. Number of symbols lost per fade = AFD × symbol rate: at 1 Msps, 0.8 ms ≈ 800 symbols (Section 2.6 example on the learning page).</dd><dt>Intuition</dt><dd>For small ρ, AFD ≈ ρ/(√(2π) f<sub>D</sub>): the lower the threshold, the shorter the time spent below it; the faster the vehicle (larger f<sub>D</sub>), the shorter but more frequent the fades.</dd></dl></div>
+    </div>
+    <!-- /EN:p2q1 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -321,7 +390,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">宏分集</span><span class="chip">独立 → 概率相乘</span><span class="chip">条件概率 + 全概率</span><span class="chip src">讲义第 2 章 p.12–15；第 4 章 p.4</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>(a) W：只考虑路径损耗时的<b>平均接收功率</b>（两个基站到手机的平均值相同）；\(Z_1,Z_2\)：两条链路各自的<b>阴影衰落</b>分量（dB）。</li>
         <li>(b) 中断 = 两条都低于 T = W − Δ，即 \(Z_1<-\Delta\) 且 \(Z_2<-\Delta\)。每个的概率 \(P(Z_i<-\Delta)=Q(\Delta/\sigma)\)（对称性）。独立 → 相乘：\(P_{out}=[Q(\Delta/\sigma)]^2\)。</li>
@@ -337,6 +406,22 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>宏分集的中断概率：独立阴影和相关阴影两种情况；条件概率 + 全概率（第 2 章 p.12–15；第 4 章 p.3–4、p.21）。</dd><dt>前置知识</dt><dd>独立事件概率相乘；独立高斯的线性组合仍是高斯，aY₁ + bY ~ N(0, (a² + b²)σ²)；全概率的连续形式 P(A) = ∫P(A | y)p(y)dy。</dd><dt>解题套路</dt><dd>(b) 每个基站单独中断 P(Z<sub>i</sub> &lt; −Δ) = Q(Δ/σ)，独立 → 平方。(c) 先固定两条链路共享的 Y（"条件化"），这时两条链路独立 → 条件中断概率相乘 → 再按 Y 的 PDF 积分。</dd><dt>关键一步</dt><dd>令 Y = σu，u ~ N(0, 1)。给定 u：Z<sub>i</sub> ~ N(bσu, a²σ²)，P(Z<sub>i</sub> &lt; −Δ | u) = Q((Δ + bσu)/(|a|σ))。</dd><dt>隐含条件</dt><dd>要和"Z<sub>i</sub> ~ N(0, σ²)"一致，需要 a² + b² = 1。此时 Z₁、Z₂ 的相关系数等于 b²：b 越大，两条链路越像。</dd><dt>自检</dt><dd>b = 0 时退化成 (b) 的 [Q(Δ/σ)]²；a = 0（完全相关）时两条链路一模一样，P<sub>out</sub> = Q(Δ/σ)，分集完全没用。</dd><dt>联系</dt><dd>Practice 4 第 1 题用文字解释同一件事；第 4 章 p.21"相关削弱分集"；Practice 4 第 2(c) 题是离散版本的共享阴影。</dd></dl></div>
       <!-- /PKP:p2q2 -->
     </div>
+    <!-- EN:p2q2 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>(a) W: the <b>mean received power</b> due to path loss alone (the same for both base stations); \(Z_1,Z_2\): the <b>shadowing</b> components (dB) of the two links.</li>
+        <li>(b) Outage = both below T = W − Δ, i.e. \(Z_1\lt-\Delta\) and \(Z_2\lt-\Delta\). Each has probability \(P(Z_i\lt-\Delta)=Q(\Delta/\sigma)\) (by symmetry). Independent → multiply: \(P_{out}=[Q(\Delta/\sigma)]^2\).</li>
+        <li>(c) The two links share bY, which makes them correlated. Trick: <b>condition on Y first</b>; then \(Z_1,Z_2\) contain only the independent parts \(aY_1,aY_2\).</li>
+        <li>To match the form of the answer, let \(Y=\sigma u\), \(u\sim\mathcal N(0,1)\). Given u: \(Z_i\sim\mathcal N(b\sigma u,\ a^2\sigma^2)\),<div class="calc">P(Z<sub>i</sub> &lt; −Δ | u) = Q( (Δ + bσu) / (|a|σ) )</div></li>
+        <li>Given u the two links are independent: \(P(\text{outage}\mid u)=Q\big(\tfrac{\Delta+b\sigma u}{|a|\sigma}\big)^2\).</li>
+        <li>Average over the standard normal density of u, \(\tfrac{1}{\sqrt{2\pi}}e^{-u^2/2}\) (total probability theorem), which gives the result.</li>
+      </ol>
+      <div class="ans">(b) [Q(Δ/σ)]²; (c) ∫ (1/√(2π)) Q[(Δ + bσu)/(|a|σ)]² e<sup>−u²/2</sup> du</div>
+      <div class="official"><b>Official answer:</b> same as above ✓ (the question writes byσ; its integration variable y is the normalised u)</div>
+      <div class="note">Sanity check: b = 0 reduces to the independent case (b); a = 0 makes the two links identical, P<sub>out</sub> = Q(Δ/σ), and diversity is useless. The stronger the correlation, the weaker the macro-diversity gain.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Outage with macro-diversity for independent and correlated shadowing; conditional probability plus total probability (Ch 2 p.12–15; Ch 4 p.3–4, p.21).</dd><dt>Background</dt><dd>Independent events multiply; a linear combination of independent Gaussians is Gaussian, aY₁ + bY ~ N(0, (a² + b²)σ²); continuous total probability P(A) = ∫P(A | y)p(y)dy.</dd><dt>Method</dt><dd>(b) Single-link outage P(Z<sub>i</sub> &lt; −Δ) = Q(Δ/σ), independent → square. (c) Fix the shared Y ("condition on it"), the links are then independent → multiply the conditional outages → integrate over the PDF of Y.</dd><dt>Key step</dt><dd>Let Y = σu, u ~ N(0, 1). Given u: Z<sub>i</sub> ~ N(bσu, a²σ²), P(Z<sub>i</sub> &lt; −Δ | u) = Q((Δ + bσu)/(|a|σ)).</dd><dt>Hidden assumption</dt><dd>To be consistent with Z<sub>i</sub> ~ N(0, σ²) we need a² + b² = 1. The correlation coefficient of Z₁ and Z₂ is then b²: the larger b, the more alike the two links.</dd><dt>Check</dt><dd>b = 0 gives the [Q(Δ/σ)]² of part (b); a = 0 (fully correlated) makes the links identical, P<sub>out</sub> = Q(Δ/σ), no diversity at all.</dd><dt>Link</dt><dd>Practice 4 Q1 explains the same idea in words; Ch 4 p.21 "correlation reduces diversity"; Practice 4 Q2(c) is a discrete version with shared shadowing.</dd></dl></div>
+    </div>
+    <!-- /EN:p2q2 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -352,7 +437,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">香农容量</span><span class="chip">SINR</span><span class="chip">MUD</span><span class="chip src">讲义第 1a 章 p.16；第 2 章 p.48</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>(a) 用户 2 当噪声：SINR = 10 / (10 + 0.1) = 0.990。<div class="calc">C₁ = 20×10⁶ × log₂(1 + 0.990) = 20×10⁶ × 0.993 = 19.86 Mbps</div></li>
         <li>(b) 用户 1 被完全减掉，只剩噪声：SNR = 10 / 0.1 = 100。<div class="calc">C₂ = 20×10⁶ × log₂(101) = 20×10⁶ × 6.658 = 133.16 Mbps</div></li>
@@ -363,6 +448,17 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>香农容量、SINR（把干扰当噪声）、多用户检测 MUD / 连续干扰消除（第 1a 章 p.16；第 2 章 p.48）。</dd><dt>前置知识</dt><dd>C = B log₂(1 + SNR)，SNR 用线性值；log₂x = ln x / ln 2 = log₁₀x / 0.301。</dd><dt>解题套路</dt><dd>(a) SINR₁ = P₁/(P₂ + N)；(b) 用户 1 已被减掉，SNR₂ = P₂/N；分别代入香农公式。</dd><dt>检验</dt><dd>C₁ + C₂ = 19.86 + 133.16 = 153.02 Mbps = 20 log₂(1 + (10 + 10)/0.1)：<mark class="hl">连续消除的总容量等于两个用户功率合起来的单用户容量</mark>，和解码顺序无关。</dd><dt>易错</dt><dd>SINR 0.990 是线性值，不是 dB；log₂1.99 = 0.993；别忘了乘带宽 20 MHz；两个功率的单位要一致（都用 mW）。</dd><dt>举一反三</dt><dd>反过来先解用户 2，两个结果对调，总和不变。如果不用 MUD，两个用户都把对方当噪声，总容量只有 2 × 19.86 = 39.7 Mbps，不到 MUD 的 1/3，这就是多用户检测的价值。</dd></dl></div>
       <!-- /PKP:p2q3 -->
     </div>
+    <!-- EN:p2q3 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>(a) User 2 treated as noise: SINR = 10 / (10 + 0.1) = 0.990.<div class="calc">C₁ = 20×10⁶ × log₂(1 + 0.990) = 20×10⁶ × 0.993 = 19.86 Mbps</div></li>
+        <li>(b) User 1 completely removed, only noise remains: SNR = 10 / 0.1 = 100.<div class="calc">C₂ = 20×10⁶ × log₂(101) = 20×10⁶ × 6.658 = 133.16 Mbps</div></li>
+      </ol>
+      <div class="ans">(a) 19.86 Mbps; (b) 133.16 Mbps</div>
+      <div class="official"><b>Official answer:</b> 19.86 Mbps; 133.16 Mbps ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Shannon capacity, SINR (interference treated as noise) and multi-user detection / successive interference cancellation (Ch 1a p.16; Ch 2 p.48).</dd><dt>Background</dt><dd>C = B log₂(1 + SNR) with SNR as a linear value; log₂x = ln x / ln 2 = log₁₀x / 0.301.</dd><dt>Method</dt><dd>(a) SINR₁ = P₁/(P₂ + N); (b) user 1 already subtracted, SNR₂ = P₂/N; substitute each into Shannon's formula.</dd><dt>Check</dt><dd>C₁ + C₂ = 19.86 + 133.16 = 153.02 Mbps = 20 log₂(1 + (10 + 10)/0.1): <mark class="hl">the sum capacity with successive cancellation equals the single-user capacity with the two powers combined</mark>, independent of the decoding order.</dd><dt>Common mistakes</dt><dd>SINR 0.990 is linear, not dB; log₂1.99 = 0.993; remember to multiply by the 20 MHz bandwidth; use the same unit (mW) for both powers.</dd><dt>Variations</dt><dd>Decoding user 2 first swaps the two results; the sum stays the same. Without MUD, each user treats the other as noise and the total is only 2 × 19.86 = 39.7 Mbps, less than a third of the MUD total. That is the value of multi-user detection.</dd></dl></div>
+    </div>
+    <!-- /EN:p2q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
   <div class="group" id="P3"><h2>Practice 3 · 信号检测</h2><span>讲义第 3 章 · 第 10 周</span></div>
@@ -380,7 +476,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">正交归一基</span><span class="chip">和角公式</span><span class="chip src">讲义第 3 章 p.4–11</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>拆开：\(A_i\cos(2\pi t/T+\phi_j)=(A_i\cos\phi_j)\cos(2\pi t/T)+(-A_i\sin\phi_j)\sin(2\pi t/T)\)。所有信号都在 cos 和 sin 这两个方向上。</li>
         <li>正交：\(\int_0^T\cos(2\pi t/T)\sin(2\pi t/T)dt=\tfrac12\int_0^T\sin(4\pi t/T)dt=0\)。</li>
@@ -392,6 +488,18 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>信号空间：正交归一基和维数（第 3 章 p.4–11）。</dd><dt>前置知识</dt><dd>和角公式 cos(a + b) = cos a cos b − sin a sin b；∫₀<sup>T</sup> cos²(2πt/T) dt = T/2；内积 = 相乘再积分。</dd><dt>解题套路</dt><dd>① 把信号展开成几个固定波形的线性组合；② 验证这些波形两两正交；③ 每个除以 √能量做归一化；④ 基函数的个数就是维数。</dd><dt>关键结果</dt><dd>ψ₁ = √(2/T) cos(2πt/T)，ψ₂ = √(2/T) sin(2πt/T)。坐标 (A<sub>i</sub>cosφ<sub>j</sub>√(T/2), −A<sub>i</sub>sinφ<sub>j</sub>√(T/2))，到原点的距离 A<sub>i</sub>√(T/2) = √E。</dd><dt>易错</dt><dd>忘了归一化系数 √(2/T)；以为 A<sub>i</sub>、φ<sub>j</sub> 取值多维数就多：维数只看需要几个基函数，与信号个数无关（D ≤ M）；sin 前面的负号放进坐标里。</dd><dt>举一反三</dt><dd>只调幅度（φ 固定）→ 1 维（PAM）；只调相位 → 2 维（PSK）；幅度、相位都调 → 2 维（QAM，本题就是）。期末 2025-26 S1 Q1(a)(i)：画 ±1 的星座，维数 1、距离 2。</dd></dl></div>
       <!-- /PKP:p3q1 -->
     </div>
+    <!-- EN:p3q1 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>Expand: \(A_i\cos(2\pi t/T+\phi_j)=(A_i\cos\phi_j)\cos(2\pi t/T)+(-A_i\sin\phi_j)\sin(2\pi t/T)\). Every signal lies along the cos and sin directions.</li>
+        <li>Orthogonal: \(\int_0^T\cos(2\pi t/T)\sin(2\pi t/T)dt=\tfrac12\int_0^T\sin(4\pi t/T)dt=0\).</li>
+        <li>Normalise: \(\int_0^T\cos^2(2\pi t/T)dt=T/2\), so multiply by \(\sqrt{2/T}\) to get unit energy.</li>
+      </ol>
+      <div class="ans">(a) { √(2/T)·cos(2πt/T), √(2/T)·sin(2πt/T) }; (b) dimension 2</div>
+      <div class="official"><b>Official answer:</b> same as above ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Signal space: orthonormal basis and dimension (Ch 3 p.4–11).</dd><dt>Background</dt><dd>Angle-sum identity cos(a + b) = cos a cos b − sin a sin b; ∫₀<sup>T</sup> cos²(2πt/T) dt = T/2; inner product = multiply and integrate.</dd><dt>Method</dt><dd>① Write the signal as a linear combination of a few fixed waveforms; ② check they are mutually orthogonal; ③ divide each by √energy to normalise; ④ the number of basis functions is the dimension.</dd><dt>Key result</dt><dd>ψ₁ = √(2/T) cos(2πt/T), ψ₂ = √(2/T) sin(2πt/T). Coordinates (A<sub>i</sub>cosφ<sub>j</sub>√(T/2), −A<sub>i</sub>sinφ<sub>j</sub>√(T/2)); distance from the origin A<sub>i</sub>√(T/2) = √E.</dd><dt>Common mistakes</dt><dd>Forgetting the normalising factor √(2/T); thinking many values of A<sub>i</sub>, φ<sub>j</sub> mean many dimensions (the dimension only counts basis functions, D ≤ M); the minus sign of the sin term belongs in the coordinate.</dd><dt>Variations</dt><dd>Amplitude only (φ fixed) → 1-D (PAM); phase only → 2-D (PSK); both → 2-D (QAM, as here). 2025-26 S1 Q1(a)(i): sketch the ±1 constellation, dimension 1, distance 2.</dd></dl></div>
+    </div>
+    <!-- /EN:p3q1 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -410,7 +518,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">ML 检测</span><span class="chip">似然比</span><span class="chip">判决门限</span><span class="chip src">讲义第 3 章 p.18–20</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>发 0 时 \(y\sim\mathcal N(0,\sigma_0^2)\)，发 1 时 \(y\sim\mathcal N(1,\sigma_1^2)\)。ML：哪个似然大判哪个。</li>
         <li>判 1 当 \(\dfrac{1}{\sigma_1}e^{-(y-1)^2/2\sigma_1^2}>\dfrac{1}{\sigma_0}e^{-y^2/2\sigma_0^2}\)，取对数：<div class="calc">g(y) = y²/(2σ₀²) − (y − 1)²/(2σ₁²) + ln(σ₀/σ₁) &gt; 0</div></li>
@@ -424,6 +532,20 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>非标准情况下的 ML 检测：两种假设的噪声方差不同（第 3 章 p.18–20）。</dd><dt>前置知识</dt><dd>高斯 PDF（前面的系数 1/(√(2π)σ) 不能丢）；ln 是增函数，比大小时可以取对数；二次方程求根；Q 函数。</dd><dt>解题套路</dt><dd>① 写出两个条件 PDF；② 比较似然并取对数，整理成 g(y) &gt; 0；③ 解 g(ỹ) = 0 得门限；④ 两种错误分别算；⑤ 按先验概率（各 ½）加权。</dd><dt>关键公式</dt><dd>g(y) = y²/(2σ₀²) − (y − 1)²/(2σ₁²) + ln(σ₀/σ₁)；P<sub>e</sub> = ½[Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀)]。</dd><dt>数值例</dt><dd>σ₀² = 0.1、σ₁² = 0.4：ỹ ≈ 0.46，P<sub>e</sub> = ½[Q(0.54/0.632) + Q(0.46/0.316)] = ½[Q(0.85) + Q(1.46)] ≈ 0.135。</dd><dt>易错</dt><dd>只比较指数、忘了系数 1/σ，会得到错误的门限；两种错误要用各自的 σ；二次方程有两个根，取 0 和 1 之间的那个。</dd><dt>举一反三</dt><dd>方差相等 → ỹ = 0.5，P<sub>e</sub> = Q(0.5/σ)；先验不等 → 用 MAP，对数里再加 ln P(x)，门限往先验小的一边移。</dd></dl></div>
       <!-- /PKP:p3q2 -->
     </div>
+    <!-- EN:p3q2 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>Sending 0: \(y\sim\mathcal N(0,\sigma_0^2)\); sending 1: \(y\sim\mathcal N(1,\sigma_1^2)\). ML: choose the hypothesis with the larger likelihood.</li>
+        <li>Decide 1 when \(\dfrac{1}{\sigma_1}e^{-(y-1)^2/2\sigma_1^2}>\dfrac{1}{\sigma_0}e^{-y^2/2\sigma_0^2}\); taking logarithms:<div class="calc">g(y) = y²/(2σ₀²) − (y − 1)²/(2σ₁²) + ln(σ₀/σ₁) &gt; 0</div></li>
+        <li>g(y) = 0 is a quadratic in y; the root between 0 and 1 is the threshold ỹ: decide 1 if y &gt; ỹ, 0 if y &lt; ỹ. With equal variances ỹ = 0.5; with σ₁ &gt; σ₀ the threshold moves towards 0.</li>
+        <li>(b) Two error events: sending 0 and the noise pushes y above ỹ, probability \(Q(\tilde y/\sigma_0)\); sending 1 and y falls below ỹ, probability \(Q((1-\tilde y)/\sigma_1)\). Equal priors, weight ½ each.</li>
+      </ol>
+      <div class="ans">x̂<sub>n</sub> = 1 if y<sub>n</sub> &gt; ỹ, otherwise 0; P<sub>e</sub> = ½[Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀)]</div>
+      <div class="official"><b>Official answer:</b> same as above ✓</div>
+      <div class="note">A numerical feel: with σ₀² = 0.1 and σ₁² = 0.4, g(y) = 3.75y² + 2.5y − 1.943 and ỹ ≈ 0.46. Strictly, the quadratic has a second root at a very negative y (where the rule decides 1 again); its probability is negligible and the answer ignores it.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Non-standard ML detection: the two hypotheses have different noise variances (Ch 3 p.18–20).</dd><dt>Background</dt><dd>Gaussian PDF (keep the factor 1/(√(2π)σ)); ln is increasing, so likelihoods can be compared after taking logs; roots of a quadratic; the Q function.</dd><dt>Method</dt><dd>① Write both conditional PDFs; ② compare likelihoods, take logs, rearrange to g(y) &gt; 0; ③ solve g(ỹ) = 0 for the threshold; ④ compute the two error events separately; ⑤ weight by the priors (½ each).</dd><dt>Key formulas</dt><dd>g(y) = y²/(2σ₀²) − (y − 1)²/(2σ₁²) + ln(σ₀/σ₁); P<sub>e</sub> = ½[Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀)].</dd><dt>Numerical example</dt><dd>σ₀² = 0.1, σ₁² = 0.4: ỹ ≈ 0.46, P<sub>e</sub> = ½[Q(0.54/0.632) + Q(0.46/0.316)] = ½[Q(0.85) + Q(1.46)] ≈ 0.135.</dd><dt>Common mistakes</dt><dd>Comparing only the exponents and dropping 1/σ gives the wrong threshold; each error event uses its own σ; the quadratic has two roots, take the one between 0 and 1.</dd><dt>Variations</dt><dd>Equal variances → ỹ = 0.5, P<sub>e</sub> = Q(0.5/σ). Unequal priors → MAP, add ln P(x) inside the log; the threshold moves towards the less likely symbol.</dd></dl></div>
+    </div>
+    <!-- /EN:p3q2 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -435,7 +557,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">误码平台</span><span class="chip">符号时长 vs 比特时长</span><span class="chip src">讲义第 3 章 p.35–36</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>平台公式里起作用的是"回声长度 / 符号长度"。BPSK 一个符号就是一个比特，所以公式写 \(T_b\)；换成 QPSK 要用<b>符号</b>时长 \(T_s\)。</li>
         <li>\((3\,\mu s/T_s)^2=10^{-3}\) → \(3/T_s=0.0316\) → \(T_s=94.9\) µs。</li>
@@ -447,6 +569,18 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>时延扩展造成的不可消除误码平台；比特时长和符号时长的换算（第 3 章 p.35）。</dd><dt>前置知识</dt><dd>M 进制每符号 log₂M bit：R<sub>b</sub> = log₂M / T<sub>s</sub>；QPSK 的 M = 4。</dd><dt>解题套路</dt><dd>由平台要求求最短符号时长 T = σ<sub>Tm</sub>/√P<sub>floor</sub>，再换成比特速率。</dd><dt>关键公式</dt><dd>(σ<sub>Tm</sub>/T)² = P<sub>floor</sub> → T = 3 µs / √10⁻³ = 3/0.0316 = 94.9 µs → R<sub>b</sub> = 2/94.9 µs = 21.08 kbps。</dd><dt>易错</dt><dd>公式里的 T 是<b>符号</b>时长（ISI 取决于回声相对一个符号多长）；直接当成比特时长会得到 10.54 kbps；σ<sub>Tm</sub> 是 rms 时延扩展，不是最大时延。</dd><dt>对比</dt><dd>多普勒平台 ½(πf<sub>D</sub>T<sub>b</sub>)² 要求符号<b>短</b>（速率下限），时延扩展平台要求符号<b>长</b>（速率上限），两者同时存在时速率要落在两者之间。</dd><dt>物理意义</dt><dd>"平台"是指 SNR 再高误码率也降不下去：误码来自信号自己的回声，不是噪声。解决办法是均衡（第 6 章）或 OFDM（第 7 章）。</dd></dl></div>
       <!-- /PKP:p3q3 -->
     </div>
+    <!-- EN:p3q3 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>What matters in the floor formula is "echo length / symbol length". For BPSK a symbol is one bit, so the formula uses \(T_b\); for QPSK use the <b>symbol</b> duration \(T_s\).</li>
+        <li>\((3\,\mu s/T_s)^2=10^{-3}\) → \(3/T_s=0.0316\) → \(T_s=94.9\) µs.</li>
+        <li>QPSK carries 2 bits per symbol: \(R_b=2/T_s=2/94.9\,\mu s=21.08\) kbps. (Under the same conditions BPSK gives only 10.54 kbps.)</li>
+      </ol>
+      <div class="ans">R ≈ 21.08 kbps</div>
+      <div class="official"><b>Official answer:</b> 21.08 kbps ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The irreducible error floor caused by delay spread; converting between bit and symbol durations (Ch 3 p.35).</dd><dt>Background</dt><dd>M-ary signalling carries log₂M bits per symbol: R<sub>b</sub> = log₂M / T<sub>s</sub>; QPSK has M = 4.</dd><dt>Method</dt><dd>From the floor requirement find the shortest symbol duration T = σ<sub>Tm</sub>/√P<sub>floor</sub>, then convert to a bit rate.</dd><dt>Key formula</dt><dd>(σ<sub>Tm</sub>/T)² = P<sub>floor</sub> → T = 3 µs / √10⁻³ = 3/0.0316 = 94.9 µs → R<sub>b</sub> = 2/94.9 µs = 21.08 kbps.</dd><dt>Common mistakes</dt><dd>T in the formula is the <b>symbol</b> duration (ISI depends on how long the echo is compared with one symbol); treating it as a bit duration gives 10.54 kbps. σ<sub>Tm</sub> is the rms delay spread, not the maximum delay.</dd><dt>Contrast</dt><dd>The Doppler floor ½(πf<sub>D</sub>T<sub>b</sub>)² needs <b>short</b> symbols (a minimum rate); the delay-spread floor needs <b>long</b> symbols (a maximum rate). With both present, the rate must lie between the two limits.</dd><dt>Physical meaning</dt><dd>A "floor" means the error rate stops falling however high the SNR: the errors come from the signal's own echoes, not from noise. The remedies are equalisation (Ch 6) or OFDM (Ch 7).</dd></dl></div>
+    </div>
+    <!-- /EN:p3q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
   <div class="group" id="P4"><h2>Practice 4 · 分集</h2><span>讲义第 4 章 · 第 11 周</span></div>
@@ -459,7 +593,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">宏分集</span><span class="chip">阴影衰落</span><span class="chip src">讲义第 4 章 p.3–4</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>中断主要由<b>阴影衰落</b>（大尺度）造成：手机和某个基站之间被楼房、地形挡住，信号长时间偏低。</li>
         <li>几个基站在<b>不同位置</b>，手机到它们的传播路径不同，被同一障碍物同时挡住的可能性小，各条链路的阴影近似独立。</li>
@@ -472,6 +606,19 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>宏分集的原理（论述题，第 4 章 p.3–6）。</dd><dt>答题要点</dt><dd>① 中断主要由<b>阴影衰落</b>造成（大尺度、变化慢，加功率不划算）；② 几个基站位置不同，传播路径不同，阴影近似独立；③ 选最强的基站或合并，只有<b>所有</b>链路同时变差才中断，P<sub>out</sub> = ΠP<sub>out,i</sub>；④ 条件：链路相关时效果下降（p.21）。</dd><dt>区分</dt><dd>宏分集对付阴影，基站之间相距很远；微分集对付多径，天线只需相隔几个波长（p.4–5）。</dd><dt>数字例</dt><dd>单条链路中断 10%，两个独立基站同时中断只有 1%，三个只有 0.1%。</dd><dt>联系</dt><dd>Practice 2 第 2 题给出了定量公式：独立时 [Q(Δ/σ)]²，相关时要先条件化再积分。</dd><dt>写作提示</dt><dd>论述题按"原因 → 机制 → 公式 → 条件"四句写，每句一个要点，比长段落更容易拿分。</dd></dl></div>
       <!-- /PKP:p4q1 -->
     </div>
+    <!-- EN:p4q1 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>Outage is mainly caused by <b>shadowing</b> (large-scale fading): buildings or terrain block the path between the mobile and a base station, keeping the signal low for a long time.</li>
+        <li>The base stations are at <b>different locations</b>, so the propagation paths differ and are unlikely to be blocked by the same obstacle; the shadowing on the different links is approximately independent.</li>
+        <li>Macro-diversity selects the strongest base station (or combines several). Outage occurs only when <b>all</b> links are below the threshold; for independent links \(P_{out}=\prod_iP_{out,i}\), much smaller than for a single link.</li>
+        <li>Example: a single link is in outage 10% of the time; two independent base stations are in outage together only 1% of the time ([Q(Δ/σ)]² in Practice 2 Q2). Correlated links reduce the benefit.</li>
+      </ol>
+      <div class="ans">Shadowing on links to different base stations is roughly independent; the probability that all links are in a deep fade together is the product of the individual probabilities, far smaller than for one link</div>
+      <div class="official"><b>Official answer:</b> see the lecture notes (Ch 4 p.3–4)</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The principle of macro-diversity (essay question, Ch 4 p.3–6).</dd><dt>Answer outline</dt><dd>① Outage is mainly due to <b>shadowing</b> (large-scale, slowly varying; extra power is an inefficient fix); ② base stations at different locations have different propagation paths, so the shadowing is roughly independent; ③ selecting the strongest base station or combining means outage only when <b>all</b> links are poor, P<sub>out</sub> = ΠP<sub>out,i</sub>; ④ condition: correlated links reduce the gain (p.21).</dd><dt>Do not confuse</dt><dd>Macro-diversity combats shadowing, with base stations far apart; micro-diversity combats multipath, with antennas only a few wavelengths apart (p.4–5).</dd><dt>Numbers</dt><dd>One link in outage 10%: two independent base stations 1%, three 0.1%.</dd><dt>Link</dt><dd>Practice 2 Q2 gives the quantitative formula: [Q(Δ/σ)]² when independent; when correlated, condition first and then integrate.</dd><dt>Writing tip</dt><dd>Write an essay answer as four sentences, "cause → mechanism → formula → condition", one point each. That earns marks more reliably than one long paragraph.</dd></dl></div>
+    </div>
+    <!-- /EN:p4q1 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -489,7 +636,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">离散分布求期望</span><span class="chip">MRC：SNR 相加</span><span class="chip">阵列增益 g / 分集增益 d</span><span class="chip">相关削弱分集</span><span class="chip src">讲义第 4 章 p.16、p.21、p.27</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>(a) \(P_T=\sigma_n^2=1\)，所以 γ = α。\(\bar\gamma=8\cdot\tfrac13+11\cdot\tfrac23=10\)。<div class="calc">P̄s = ⅓·½e⁻⁸ + ⅔·½e⁻¹¹ = 5.59×10⁻⁵ + 0.56×10⁻⁵ = 6.15×10⁻⁵</div></li>
         <li>(b) MRC 输出 SNR = 两路之和。两路独立，组合：8+8 = 16（1/9），8+11 = 19（2 × 1/3 × 2/3 = 4/9），11+11 = 22（4/9）。<div class="calc">γ̄_Σ = (16 + 76 + 88)/9 = 20</div><div class="calc">P̄s = ½[e⁻¹⁶·1/9 + e⁻¹⁹·4/9 + e⁻²²·4/9] = 7.56×10⁻⁹</div></li>
@@ -504,6 +651,21 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>离散 SNR 分布下的平均 SNR、平均误码率；MRC；阵列增益 g、分集增益 d；相关支路（第 4 章 p.16、p.21、p.27–28）。</dd><dt>前置知识</dt><dd>离散期望 Σx·p；独立事件概率相乘；E[f(X)] ≠ f(E[X])；独立变量 E[g(X)h(Y)] = E[g(X)]E[h(Y)]。</dd><dt>解题套路</dt><dd>(a) 直接求期望；(b) 列 2 × 2 组合表 → 输出 SNR = 两路之和 → 按概率加权；(c) 把 e<sup>−γ<sub>Σ</sub></sup> 拆成独立因子的乘积，分别求期望。</dd><dt>关键公式</dt><dd>g = γ̄<sub>Σ</sub>/γ̄；d = −log₁₀P̄<sub>s</sub> / log₁₀γ̄（γ̄ 是合并器<b>输入</b>的平均 SNR）。</dd><dt>捷径</dt><dd>(b) 也可以不列表：两路独立，E[e<sup>−(γ₁+γ₂)</sup>] = (E[e<sup>−γ</sup>])²，而 (a) 已经算出 E[e<sup>−γ</sup>] = 2 × 6.15×10⁻⁵ = 1.23×10⁻⁴，所以 P̄<sub>s</sub> = ½ × (1.23×10⁻⁴)² = 7.56×10⁻⁹。</dd><dt>易错</dt><dd>8 + 11 有 (8, 11)、(11, 8) 两种，概率 4/9；e⁻¹⁶ 这类极小数要保留有效数字；d 用输入的 10，不是输出的 20；(c) 共享的 β 进指数是 2β。</dd><dt>结论</dt><dd>(b)(c) 平均 SNR 都是 20、g 都是 2，但相关让误码率高 2.7 倍、d 从 8.1 降到 7.7。</dd></dl></div>
       <!-- /PKP:p4q2 -->
     </div>
+    <!-- EN:p4q2 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>(a) \(P_T=\sigma_n^2=1\), so γ = α. \(\bar\gamma=8\cdot\tfrac13+11\cdot\tfrac23=10\).<div class="calc">P̄<sub>s</sub> = ⅓·½e⁻⁸ + ⅔·½e⁻¹¹ = 5.59×10⁻⁵ + 0.56×10⁻⁵ = 6.15×10⁻⁵</div></li>
+        <li>(b) The MRC output SNR is the sum of the two branches. With independent branches the combinations are 8+8 = 16 (1/9), 8+11 = 19 (2 × 1/3 × 2/3 = 4/9), 11+11 = 22 (4/9).<div class="calc">γ̄<sub>Σ</sub> = (16 + 76 + 88)/9 = 20</div><div class="calc">P̄<sub>s</sub> = ½[e⁻¹⁶·1/9 + e⁻¹⁹·4/9 + e⁻²²·4/9] = 7.56×10⁻⁹</div></li>
+        <li>\(g=\bar\gamma_\Sigma/\bar\gamma=20/10=2\); \(d=-\log_{10}\bar P_s/\log_{10}\bar\gamma=8.12/1=8.1\) (γ̄ is the per-branch input SNR, 10).</li>
+        <li>(c) \(E[\gamma_i]=E[r_i]+E[\beta]=(0.2+0.8)+(7/3+20/3)=1+9=10\), \(\bar\gamma_\Sigma=20\), g = 2.</li>
+        <li>\(\gamma_\Sigma=r_1+r_2+2\beta\); the three are independent, so the exponential factorises: \(E[e^{-\gamma_\Sigma}]=E[e^{-r_1}]\,E[e^{-r_2}]\,E[e^{-2\beta}]\).<div class="calc">E[e<sup>−r</sup>] = ⅓e<sup>−0.6</sup> + ⅔e<sup>−1.2</sup> = 0.1829 + 0.2008 = 0.3837</div><div class="calc">E[e<sup>−2β</sup>] = ⅓e<sup>−14</sup> + ⅔e<sup>−20</sup> = 2.786×10⁻⁷</div><div class="calc">P̄<sub>s</sub> = ½ × 0.3837² × 2.786×10⁻⁷ = 2.05×10⁻⁸, d = 8 − log₁₀2.05 = 7.7</div></li>
+      </ol>
+      <div class="ans">(a) γ̄ = 10, P̄<sub>s</sub> = 6.15×10⁻⁵; (b) γ̄<sub>Σ</sub> = 20, P̄<sub>s</sub> = 7.6×10⁻⁹, g = 2, d = 8.1; (c) γ̄<sub>Σ</sub> = 20, P̄<sub>s</sub> = 2.05×10⁻⁸, g = 2, d = 7.7</div>
+      <div class="official"><b>Official answer:</b> identical ✓</div>
+      <div class="note">(b) and (c) have the same mean SNR, yet (c) has a 2.7 times higher error rate and d drops from 8.1 to 7.7: the shared shadowing β makes both branches fade together, which weakens diversity (lecture p.21).</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Mean SNR and mean error rate for a discrete SNR distribution; MRC; array gain g and diversity gain d; correlated branches (Ch 4 p.16, p.21, p.27–28).</dd><dt>Background</dt><dd>Discrete expectation Σx·p; independent events multiply; E[f(X)] ≠ f(E[X]); for independent variables E[g(X)h(Y)] = E[g(X)]E[h(Y)].</dd><dt>Method</dt><dd>(a) Take the expectation directly. (b) Tabulate the 2 × 2 combinations → output SNR = sum of the branches → weight by probability. (c) Split e<sup>−γ<sub>Σ</sub></sup> into a product of independent factors and average each.</dd><dt>Key formulas</dt><dd>g = γ̄<sub>Σ</sub>/γ̄; d = −log₁₀P̄<sub>s</sub> / log₁₀γ̄ (γ̄ is the mean SNR at the combiner <b>input</b>).</dd><dt>Shortcut</dt><dd>(b) needs no table: for independent branches E[e<sup>−(γ₁+γ₂)</sup>] = (E[e<sup>−γ</sup>])², and (a) already gives E[e<sup>−γ</sup>] = 2 × 6.15×10⁻⁵ = 1.23×10⁻⁴, so P̄<sub>s</sub> = ½ × (1.23×10⁻⁴)² = 7.56×10⁻⁹.</dd><dt>Common mistakes</dt><dd>8 + 11 occurs in two orders, (8, 11) and (11, 8), probability 4/9. Keep enough significant figures for tiny numbers like e⁻¹⁶. Use the input SNR 10 for d, not the output 20. In (c) the shared β enters the exponent as 2β.</dd><dt>Conclusion</dt><dd>In (b) and (c) the mean SNR is 20 and g = 2, but correlation raises the error rate 2.7 times and lowers d from 8.1 to 7.7.</dd></dl></div>
+    </div>
+    <!-- /EN:p4q2 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -519,7 +681,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">高斯随机变量之和</span><span class="chip">等增益合并</span><span class="chip src">讲义第 4 章 p.19；第 1b 章 p.11</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>(a) 设 b = +1（对称，另一种情况一样）。\(z=y=\alpha\sqrt E+w\)：两个独立高斯之和还是高斯。<div class="calc">均值 α₀√E，方差 σ₁²E + σ₂²</div></li>
         <li>出错 = z ≤ 0：\(P_b=P(z\le0)=Q\!\left(\dfrac{\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\)。</li>
@@ -533,6 +695,20 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>衰落因子是高斯随机变量时的 BPSK 误码率；等权合并（第 4 章 p.19；第 1b 章独立高斯相加）。</dd><dt>前置知识</dt><dd>独立高斯之和仍是高斯，均值相加、方差相加；Var(cX) = c²Var(X)，所以 Var(α√E) = σ₁²E。</dd><dt>解题套路</dt><dd>设 b = +1（对称）→ 求判决变量 z 的均值和方差 → 出错 = z ≤ 0 → P = Q(均值 / 标准差)。</dd><dt>关键结论</dt><dd>M 路等权相加：均值 × M，方差 × M，标准差 × √M → Q 的参数放大 √M 倍。</dd><dt>易错</dt><dd>方差项 σ₁²E 别漏乘 E；标准差是 √(σ₁²E + σ₂²)，不是 σ₁√E + σ₂。</dd><dt>物理意义</dt><dd>即使没有噪声（σ₂ = 0），误码率也是 Q(α₀/σ₁) ≠ 0：衰落因子本身可能变成负数，把符号翻过来，这是衰落造成的"平台"；合并 M 路后变成 Q(√M α₀/σ₁)，平台降低。</dd><dt>举一反三</dt><dd>如果接收端知道每个 α<sub>k</sub>，可以按 α<sub>k</sub> 加权（MRC，p.15）；这里不知道 α<sub>k</sub>，所以只能等权。</dd></dl></div>
       <!-- /PKP:p4q3 -->
     </div>
+    <!-- EN:p4q3 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>(a) Take b = +1 (the other case is symmetric). \(z=y=\alpha\sqrt E+w\): the sum of two independent Gaussians is Gaussian.<div class="calc">mean α₀√E, variance σ₁²E + σ₂²</div></li>
+        <li>Error = z ≤ 0: \(P_b=P(z\le0)=Q\!\left(\dfrac{\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\).</li>
+        <li>(b) Equal-weight sum: \(z=\sum_ky_k=b\sqrt E\sum_k\alpha_k+\sum_kw_k\). All \(\alpha_k\) and \(w_k\) are independent:<div class="calc">mean Mα₀√E, variance M(σ₁²E + σ₂²)</div></li>
+        <li>\(P_b=Q\!\left(\dfrac{M\alpha_0\sqrt E}{\sqrt{M(\sigma_1^2E+\sigma_2^2)}}\right)=Q\!\left(\dfrac{\sqrt M\,\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\).</li>
+      </ol>
+      <div class="ans">(a) Q(α₀√E / √(σ₁²E + σ₂²)); (b) Q(√M·α₀√E / √(σ₁²E + σ₂²))</div>
+      <div class="official"><b>Official answer:</b> same as above ✓</div>
+      <div class="note">The mean grows like M while the standard deviation grows like √M, so the argument of Q increases by √M. That is the combining gain.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>BPSK error rate when the fading factor is Gaussian; equal-weight combining (Ch 4 p.19; sums of independent Gaussians, Ch 1b).</dd><dt>Background</dt><dd>A sum of independent Gaussians is Gaussian with means and variances adding; Var(cX) = c²Var(X), so Var(α√E) = σ₁²E.</dd><dt>Method</dt><dd>Assume b = +1 (symmetric) → mean and variance of the decision variable z → error when z ≤ 0 → P = Q(mean / standard deviation).</dd><dt>Key result</dt><dd>Summing M branches with equal weights multiplies the mean by M and the variance by M, so the standard deviation grows by √M and the Q argument by √M.</dd><dt>Common mistakes</dt><dd>Do not forget the factor E in σ₁²E; the standard deviation is √(σ₁²E + σ₂²), not σ₁√E + σ₂.</dd><dt>Physical meaning</dt><dd>Even without noise (σ₂ = 0) the error rate is Q(α₀/σ₁) ≠ 0: the fading factor itself can become negative and flip the symbol, a fading-induced floor. Combining M branches lowers it to Q(√M α₀/σ₁).</dd><dt>Variation</dt><dd>If the receiver knew each α<sub>k</sub> it could weight by α<sub>k</sub> (MRC, p.15); here it does not, so equal weights are used.</dd></dl></div>
+    </div>
+    <!-- /EN:p4q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
   <div class="group" id="P5"><h2>Practice 5 · MIMO</h2><span>讲义第 4 章 p.30–34、第 5 章 · 第 12 周</span></div>
@@ -545,7 +721,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">注水法</span><span class="chip">informed transmitter</span><span class="chip src">讲义第 2 章 p.54–57；第 5 章 p.40</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>先假设三个都分到功率：\(\sum_{i=1}^{3}\big(\tfrac1{\gamma_0}-\tfrac1{\gamma_i}\big)=1\Rightarrow\dfrac3{\gamma_0}=1+\dfrac1{80}+\dfrac1{40}+\dfrac1{40}=1.0625\)。</li>
         <li>\(\gamma_0=3/1.0625=2.82\)。三个 SNR（80、40、40）都大于 2.82，假设成立，不用去掉任何子信道。</li>
@@ -558,6 +734,19 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>发射端知道信道（informed）时的 MIMO 容量：特征子信道 + 注水（第 5 章 p.19、p.40；第 2 章 p.54–57）。</dd><dt>前置知识</dt><dd>SVD 把 MIMO 信道拆成互不干扰的并行子信道；注水公式。</dd><dt>解题套路</dt><dd>① 假设全部子信道都分功率，由 Σ(1/γ₀ − 1/γ<sub>i</sub>) = 1 求 γ₀；② 检查最差的 γ<sub>i</sub> ≥ γ₀，不满足就去掉重算；③ P<sub>i</sub>/P = 1/γ₀ − 1/γ<sub>i</sub>；④ C = B Σ log₂(γ<sub>i</sub>/γ₀)。</dd><dt>关键数字</dt><dd>γ₀ = 3/1.0625 = 2.82；功率 0.342、0.329、0.329（和为 1）；C = 10 MHz × (4.82 + 7.65) = 124.7 Mbps。</dd><dt>对比 1</dt><dd>功率平分（发射端不知道信道）：每路 SNR 变为 80/3、40/3、40/3，C = 122.1 Mbps，只少 2%。高 SNR 时知不知道信道差别很小（p.41–42）。</dd><dt>对比 2</dt><dd>低 SNR 时差别就大了：三个 SNR 都除以 100（0.8、0.4、0.4），注水只用第一个子信道，0.85 bit/s/Hz；平分只有 0.70 bit/s/Hz，差 21%。</dd><dt>易错</dt><dd>注水公式里的 γ<sub>i</sub> 是"全部功率都给这个子信道"时的 SNR；平分时每个只分到 P/3；B 最后再乘。</dd></dl></div>
       <!-- /PKP:p5q1 -->
     </div>
+    <!-- EN:p5q1 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>Assume all three sub-channels get power: \(\sum_{i=1}^{3}\big(\tfrac1{\gamma_0}-\tfrac1{\gamma_i}\big)=1\Rightarrow\dfrac3{\gamma_0}=1+\dfrac1{80}+\dfrac1{40}+\dfrac1{40}=1.0625\).</li>
+        <li>\(\gamma_0=3/1.0625=2.82\). All three SNRs (80, 40, 40) exceed 2.82, so the assumption holds and no sub-channel is dropped.</li>
+        <li>Powers: \(P_1/P=1/2.82-1/80=0.342\), \(P_2/P=P_3/P=1/2.82-1/40=0.329\).</li>
+        <li>Capacity: \(C=B\sum\log_2(\gamma_i/\gamma_0)=10\text{ MHz}\times[\log_2(28.33)+2\log_2(14.17)]=10\times(4.82+7.65)\).</li>
+      </ol>
+      <div class="ans">C ≈ 124.7 Mbps ≈ 125 Mbps</div>
+      <div class="official"><b>Official answer:</b> 125 Mbps ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>MIMO capacity with an informed transmitter: eigen-sub-channels plus water-filling (Ch 5 p.19, p.40; Ch 2 p.54–57).</dd><dt>Background</dt><dd>The SVD splits a MIMO channel into non-interfering parallel sub-channels; the water-filling formulas.</dd><dt>Method</dt><dd>① Assume every sub-channel gets power and find γ₀ from Σ(1/γ₀ − 1/γ<sub>i</sub>) = 1; ② check that the weakest γ<sub>i</sub> ≥ γ₀, otherwise drop it and repeat; ③ P<sub>i</sub>/P = 1/γ₀ − 1/γ<sub>i</sub>; ④ C = B Σ log₂(γ<sub>i</sub>/γ₀).</dd><dt>Key numbers</dt><dd>γ₀ = 3/1.0625 = 2.82; powers 0.342, 0.329, 0.329 (sum 1); C = 10 MHz × (4.82 + 7.65) = 124.7 Mbps.</dd><dt>Comparison 1</dt><dd>Equal power (uninformed transmitter): the SNRs become 80/3, 40/3, 40/3 and C = 122.1 Mbps, only 2% less. At high SNR channel knowledge at the transmitter matters little (p.41–42).</dd><dt>Comparison 2</dt><dd>At low SNR the difference is large: dividing all three SNRs by 100 (0.8, 0.4, 0.4), water-filling uses only the first sub-channel and gives 0.85 bit/s/Hz, while equal power gives 0.70 bit/s/Hz, 21% less.</dd><dt>Common mistakes</dt><dd>The γ<sub>i</sub> in water-filling is the SNR if <b>all</b> the power went to that sub-channel; with equal power each gets only P/3; multiply by B at the end.</dd></dl></div>
+    </div>
+    <!-- /EN:p5q1 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -569,7 +758,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">Alamouti STBC</span><span class="chip">共轭技巧</span><span class="chip">正交矩阵 F</span><span class="chip src">讲义第 5 章 p.21–26</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>两个时隙收到：\(y_1=h_Au_1+h_Bu_2+w_1\)，\(y_2=-h_Au_2^*+h_Bu_1^*+w_2\)。</li>
         <li>对 \(y_2\) 取共轭，让未知量都以 \(u_1,u_2\)（不带共轭）出现：\(y_2^*=h_B^*u_1-h_A^*u_2+w_2^*\)。</li>
@@ -584,6 +773,21 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>Alamouti 空时块码的接收、判决变量和分集阶数（第 5 章 p.21–26）。</dd><dt>前置知识</dt><dd>复数共轭 (ab)* = a*b*；2 × 2 矩阵乘法；噪声乘以复数 c 后方差变成 |c|²N₀。</dd><dt>解题套路</dt><dd>① 写出两个时隙的 y₁、y₂；② 对 y₂ 取共轭，让 u₁、u₂ 都不带共轭；③ 写成 ỹ = Fu + ṽ；④ 左乘 F<sup>H</sup>；⑤ 除以 ‖h‖ 归一化。</dd><dt>关键性质</dt><dd>X X<sup>H</sup> = ‖s‖²I（编码正交）→ F<sup>H</sup>F = (|h<sub>A</sub>|² + |h<sub>B</sub>|²)I（接收端能把两个符号完全分开）。</dd><dt>易错</dt><dd>第二时隙天线 A 发的是 −u₂*（负号和共轭都要有）；z₁ 的噪声项是 h<sub>A</sub>*w₁ + h<sub>B</sub>w₂*，方差 (|h<sub>A</sub>|² + |h<sub>B</sub>|²)N₀。</dd><dt>为什么是 2 阶分集</dt><dd>有效增益 |h<sub>A</sub>|² + |h<sub>B</sub>|² 是两个独立衰落之和，两个同时很小的概率远小于一个很小的概率；而且发射端不需要知道信道。</dd><dt>举一反三</dt><dd>2 发 M 收：增益是 2M 个 |h|² 之和，分集 2M（满分集）。2025-26 S2 问 ŝ 的统计量：无偏，方差 σ²/‖h‖²。和 1 发 2 收 MRC 比，分集相同，但少 3 dB（功率分给两根天线，p.30）。</dd></dl></div>
       <!-- /PKP:p5q2 -->
     </div>
+    <!-- EN:p5q2 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>Received in the two slots: \(y_1=h_Au_1+h_Bu_2+w_1\), \(y_2=-h_Au_2^*+h_Bu_1^*+w_2\).</li>
+        <li>Conjugate \(y_2\) so that the unknowns appear as \(u_1,u_2\) without conjugates: \(y_2^*=h_B^*u_1-h_A^*u_2+w_2^*\).</li>
+        <li>In matrix form: \(\begin{bmatrix}y_1\\y_2^*\end{bmatrix}=\underbrace{\begin{bmatrix}h_A&h_B\\h_B^*&-h_A^*\end{bmatrix}}_{\mathbf F}\begin{bmatrix}u_1\\u_2\end{bmatrix}+\begin{bmatrix}w_1\\w_2^*\end{bmatrix}\), with \(\mathbf F^H\mathbf F=(|h_A|^2+|h_B|^2)\mathbf I\).</li>
+        <li>Pre-multiply by \(\mathbf F^H\); the two symbols separate completely:<div class="calc">z₁ = h<sub>A</sub>* y₁ + h<sub>B</sub> y₂* = (|h<sub>A</sub>|² + |h<sub>B</sub>|²)u₁ + h<sub>A</sub>* w₁ + h<sub>B</sub> w₂*</div><div class="calc">z₂ = h<sub>B</sub>* y₁ − h<sub>A</sub> y₂* = (|h<sub>A</sub>|² + |h<sub>B</sub>|²)u₂ + h<sub>B</sub>* w₁ − h<sub>A</sub> w₂*</div></li>
+        <li>The noise variance is \((|h_A|^2+|h_B|^2)N_0\). Dividing by \(\|\mathbf h\|=\sqrt{|h_A|^2+|h_B|^2}\) brings it back to \(N_0\).</li>
+      </ol>
+      <div class="ans">z₁ = ‖h‖u₁ + w̃₁, z₂ = ‖h‖u₂ + w̃₂, ‖h‖² = |h<sub>A</sub>|² + |h<sub>B</sub>|², w̃₁, w̃₂ ~ N(0, N₀)</div>
+      <div class="official"><b>Official answer:</b> z₁ = ‖h₁‖u₁ + w̃₁, z₂ = ‖h₂‖u₂ + w̃₂ (the two norms are in fact the same ‖h‖) ✓</div>
+      <div class="note">The effective SNR of each symbol is proportional to |h<sub>A</sub>|² + |h<sub>B</sub>|². Both paths fading at the same time is unlikely, which gives second-order diversity, and the transmitter needs no channel knowledge.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Reception, decision variables and diversity order of the Alamouti space-time block code (Ch 5 p.21–26).</dd><dt>Background</dt><dd>Complex conjugate (ab)* = a*b*; 2 × 2 matrix multiplication; multiplying noise by a complex c scales its variance by |c|².</dd><dt>Method</dt><dd>① Write y₁ and y₂ for the two slots; ② conjugate y₂ so u₁ and u₂ appear without conjugates; ③ write ỹ = Fu + ṽ; ④ pre-multiply by F<sup>H</sup>; ⑤ divide by ‖h‖ to normalise.</dd><dt>Key properties</dt><dd>X X<sup>H</sup> = ‖s‖²I (orthogonal code) → F<sup>H</sup>F = (|h<sub>A</sub>|² + |h<sub>B</sub>|²)I (the receiver can separate the two symbols completely).</dd><dt>Common mistakes</dt><dd>In slot 2 antenna A sends −u₂* (both the minus sign and the conjugate); the noise in z₁ is h<sub>A</sub>*w₁ + h<sub>B</sub>w₂*, variance (|h<sub>A</sub>|² + |h<sub>B</sub>|²)N₀.</dd><dt>Why order 2</dt><dd>The effective gain |h<sub>A</sub>|² + |h<sub>B</sub>|² is a sum of two independently fading terms; both being small at once is much less likely than one being small. And the transmitter does not need the channel.</dd><dt>Variations</dt><dd>2 transmit, M receive antennas: the gain is a sum of 2M terms |h|², diversity 2M (full diversity). 2025-26 S2 asks for the statistics of ŝ: unbiased, variance σ²/‖h‖². Compared with 1 × 2 MRC the diversity is the same but 3 dB is lost (power split between two antennas, p.30).</dd></dl></div>
+    </div>
+    <!-- /EN:p5q2 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -599,7 +803,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">分集增益 d</span><span class="chip">复用增益 r</span><span class="chip">R = r·log₂SNR</span><span class="chip src">讲义第 4 章 p.31–34</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>γ = 10 dB = 10。\(10^{-d}\le10^{-3}\) → d ≥ 3。</li>
         <li>N = 8、M = 4，逐个试 r：<div class="tw"><table class="mini"><thead><tr><th>r</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead><tbody><tr><td>d = (8−r)(4−r)</td><td>32</td><td>21</td><td>12</td><td>5</td><td>0</td></tr></tbody></table></div>满足 d ≥ 3 的最大 r 是 3。</li>
@@ -612,6 +816,19 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>分集-复用折中：d(r) = (N − r)(M − r)，速率 R = r log₂SNR（第 4 章 p.31–34）。</dd><dt>前置知识</dt><dd>分集增益 d：SNR 翻倍时误码率降多快，最大 N × M；复用增益 r：SNR 翻倍时速率多几 bit/s/Hz，最大 min(N, M)。</dd><dt>解题套路</dt><dd>① 由 P<sub>e</sub> = γ<sup>−d</sup> ≤ 目标求 d 的下限；② 列 r = 0 … min(N, M) 对应的 d；③ 找满足条件的最大 r；④ R = r log₂γ，P<sub>e</sub> = γ<sup>−d(r)</sup>。</dd><dt>关键数字</dt><dd>γ = 10 → d ≥ 3；d(3) = 5 ≥ 3，d(4) = 0 &lt; 3 → r = 3；R = 3 × 3.32 = 9.97 bit/s/Hz，P<sub>e</sub> = 10⁻⁵。</dd><dt>易错</dt><dd>SNR 用线性值（10 dB → 10，20 dB → 100）；d 必须是整数，向上取；r 不能超过 min(N, M) = 4。</dd><dt>举一反三</dt><dd>SNR = 20 dB（100）时：100<sup>−d</sup> ≤ 10⁻³ → d ≥ 1.5 → 取 2；r = 3 的 d = 5 仍满足，r = 4 不行 → R = 3 log₂100 = 19.9 bit/s/Hz。已知 P<sub>e</sub> 和 d 求 SNR：SNR = P<sub>e</sub><sup>−1/d</sup>。</dd><dt>物理意义</dt><dd>r 是同时传输的独立数据流个数，d 是抗衰落能力；天线资源要么用来"多传"，要么用来"传得稳"。</dd></dl></div>
       <!-- /PKP:p5q3 -->
     </div>
+    <!-- EN:p5q3 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>γ = 10 dB = 10. \(10^{-d}\le10^{-3}\) → d ≥ 3.</li>
+        <li>N = 8, M = 4, try each r:<div class="tw"><table class="mini"><thead><tr><th>r</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead><tbody><tr><td>d = (8−r)(4−r)</td><td>32</td><td>21</td><td>12</td><td>5</td><td>0</td></tr></tbody></table></div>The largest r with d ≥ 3 is 3.</li>
+        <li>By definition of the multiplexing gain \(r=R/\log_2\mathrm{SNR}\), so \(R=r\log_2\gamma=3\times\log_210=3\times3.32=9.97\) bit/s/Hz.</li>
+        <li>(b) r = 3 → d = 5 → \(P_e=10^{-5}\).</li>
+      </ol>
+      <div class="ans">(a) ≈ 9.96 bit/s/Hz; (b) P<sub>e</sub> = 10⁻⁵</div>
+      <div class="official"><b>Official answer:</b> 9.96 bits/s/Hz; 10⁻⁵ ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The diversity-multiplexing trade-off d(r) = (N − r)(M − r) and the rate R = r log₂SNR (Ch 4 p.31–34).</dd><dt>Background</dt><dd>Diversity gain d: how fast the error rate falls when the SNR doubles, at most N × M. Multiplexing gain r: how many extra bit/s/Hz per doubling of SNR, at most min(N, M).</dd><dt>Method</dt><dd>① From P<sub>e</sub> = γ<sup>−d</sup> ≤ target find the minimum d; ② list d for r = 0 … min(N, M); ③ take the largest r that meets it; ④ R = r log₂γ, P<sub>e</sub> = γ<sup>−d(r)</sup>.</dd><dt>Key numbers</dt><dd>γ = 10 → d ≥ 3; d(3) = 5 ≥ 3, d(4) = 0 &lt; 3 → r = 3; R = 3 × 3.32 = 9.97 bit/s/Hz, P<sub>e</sub> = 10⁻⁵.</dd><dt>Common mistakes</dt><dd>Use the linear SNR (10 dB → 10, 20 dB → 100); d must be an integer, round up; r cannot exceed min(N, M) = 4.</dd><dt>Variations</dt><dd>At SNR = 20 dB (100): 100<sup>−d</sup> ≤ 10⁻³ → d ≥ 1.5 → 2; r = 3 (d = 5) still works, r = 4 does not → R = 3 log₂100 = 19.9 bit/s/Hz. Given P<sub>e</sub> and d, the SNR is P<sub>e</sub><sup>−1/d</sup>.</dd><dt>Physical meaning</dt><dd>r is the number of independent data streams sent at once, d is the robustness against fading: the antennas can be used either to send more or to send more reliably.</dd></dl></div>
+    </div>
+    <!-- /EN:p5q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
   <div class="group" id="P6"><h2>Practice 6 · 均衡</h2><span>讲义第 6 章 · 第 13 周</span></div>
@@ -636,7 +853,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">ISI 条件误码率</span><span class="chip">滤波后噪声方差</span><span class="chip">高 SNR 看最坏项</span><span class="chip src">讲义第 6 章 p.22–28</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>记 \(A=\sqrt{2E_b/N_0}\)。没有 ISI 时 \(P_e=Q(A)\)：信号幅度 \(\sqrt{E_b}\)，噪声标准差 \(\sqrt{N_0/2}\)。</li>
         <li>(a) 不均衡：\(z(n)=\sqrt{E_b}(a_n+\alpha a_{n-1})+w(n)\)。前一个符号同号时幅度 \((1+\alpha)\sqrt{E_b}\)，异号时 \((1-\alpha)\sqrt{E_b}\)，各一半：<div class="calc">Pe = ½Q((1 − α)A) + ½Q((1 + α)A)</div></li>
@@ -651,6 +868,21 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>ISI 信道的误码率；均衡器的权衡：ISI 减小 vs 噪声放大；高 SNR 下的比较（第 6 章 p.22–28）。</dd><dt>前置知识</dt><dd>Z 变换相乘 = 滤波器串联；白噪声过 FIR 后方差 σ²Σc²；条件误码率再平均；高 SNR 时误码率由 Q 参数最小的那一项决定。</dd><dt>解题套路</dt><dd>不均衡：ISI 前一个符号同号 / 异号两种情况，各 ½。加均衡：信号经过 H(z)U(z) = 1 − α²z⁻²，噪声只经过 U(z)，方差变成 (N₀/2)(1 + α²)，再分两种情况。</dd><dt>关键比较</dt><dd>(1 − α²)/√(1 + α²) &gt; 1 − α ⇔ (1 + α)/√(1 + α²) &gt; 1 ⇔ (1 + α)² &gt; 1 + α² ⇔ 2α &gt; 0，对 α &gt; 0 总成立。</dd><dt>易错</dt><dd>噪声只经过 U(z)，不经过 H(z)；均衡后残余 ISI 是 −α²，位置在 n − 2，不是 0；Q 里除的是 √(1 + α²) 倍的标准差。</dd><dt>数值例</dt><dd>α = 0.4：最坏项参数不均衡 0.6，均衡 0.84/1.077 = 0.78，所以加均衡器更好。</dd><dt>联系</dt><dd>期末 Q2(a) 四年考了四次，都是"残余 ISI a + 放大后的噪声 σ′"，公式 ½[Q((1 − a)/σ′) + Q((1 + a)/σ′)]。</dd></dl></div>
       <!-- /PKP:p6q1 -->
     </div>
+    <!-- EN:p6q1 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>Let \(A=\sqrt{2E_b/N_0}\). Without ISI \(P_e=Q(A)\): signal amplitude \(\sqrt{E_b}\), noise standard deviation \(\sqrt{N_0/2}\).</li>
+        <li>(a) No equaliser: \(z(n)=\sqrt{E_b}(a_n+\alpha a_{n-1})+w(n)\). If the previous symbol has the same sign the amplitude is \((1+\alpha)\sqrt{E_b}\), otherwise \((1-\alpha)\sqrt{E_b}\), each half the time:<div class="calc">P<sub>e</sub> = ½Q((1 − α)A) + ½Q((1 + α)A)</div></li>
+        <li>With the equaliser: overall response \(H(z)U(z)=(1+\alpha z^{-1})(1-\alpha z^{-1})=1-\alpha^2z^{-2}\), so the ISI drops from α to α²; but the noise also passes through U(z) and its variance becomes \(\tfrac{N_0}{2}(1+\alpha^2)\) (sum of squared coefficients).</li>
+        <li>\(z(n)=\sqrt{E_b}(a_n-\alpha^2a_{n-2})+w^{\prime}(n)\): amplitudes \((1\pm\alpha^2)\sqrt{E_b}\), standard deviation scaled by \(\sqrt{1+\alpha^2}\):<div class="calc">P<sub>e</sub> = ½Q( (1 − α²)/√(1 + α²) · A ) + ½Q( (1 + α²)/√(1 + α²) · A )</div></li>
+        <li>(b) At high SNR the error rate is dominated by the term with the <b>smallest</b> Q argument. Compare: without equaliser \(1-\alpha\); with equaliser \((1-\alpha^2)/\sqrt{1+\alpha^2}\).</li>
+        <li>\(\dfrac{1-\alpha^2}{\sqrt{1+\alpha^2}}>1-\alpha\ \Leftrightarrow\ \dfrac{1+\alpha}{\sqrt{1+\alpha^2}}>1\ \Leftrightarrow\ (1+\alpha)^2>1+\alpha^2\ \Leftrightarrow\ 2\alpha>0\), which always holds for α &gt; 0.</li>
+      </ol>
+      <div class="ans">(b) Better with the equaliser: the worst-case effective distance is larger. E.g. α = 0.4: 0.6 without, 0.78 with</div>
+      <div class="official"><b>Official answer:</b> expressions as above; (b) Better to operate with the proposed equalizer ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Error rate of an ISI channel; the equaliser trade-off between less ISI and more noise; comparison at high SNR (Ch 6 p.22–28).</dd><dt>Background</dt><dd>Multiplying Z-transforms = cascading filters; white noise through an FIR filter has variance σ²Σc²; average the conditional error rates; at high SNR the smallest Q argument dominates.</dd><dt>Method</dt><dd>Without equaliser: the previous symbol has the same or opposite sign, ½ each. With equaliser: the signal sees H(z)U(z) = 1 − α²z⁻², the noise sees only U(z) and its variance becomes (N₀/2)(1 + α²); again two cases.</dd><dt>Key comparison</dt><dd>(1 − α²)/√(1 + α²) &gt; 1 − α ⇔ (1 + α)/√(1 + α²) &gt; 1 ⇔ (1 + α)² &gt; 1 + α² ⇔ 2α &gt; 0, always true for α &gt; 0.</dd><dt>Common mistakes</dt><dd>The noise goes through U(z) only, not H(z); after equalisation the residual ISI is −α² at position n − 2, not zero; divide by √(1 + α²) times the standard deviation inside Q.</dd><dt>Numbers</dt><dd>α = 0.4: worst-case argument 0.6 without the equaliser, 0.84/1.077 = 0.78 with it, so the equaliser is better.</dd><dt>Link</dt><dd>Final-exam Q2(a) asked this four years running: residual ISI a plus amplified noise σ′, P<sub>e</sub> = ½[Q((1 − a)/σ′) + Q((1 + a)/σ′)].</dd></dl></div>
+    </div>
+    <!-- /EN:p6q1 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -666,7 +898,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">条件误码率求平均</span><span class="chip">迫零噪声放大</span><span class="chip">等比级数</span><span class="chip src">讲义第 6 章 p.23–28</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>(a) 设 \(b_n=+1\)：\(b_{n-1}=+1\) 时幅度 1 + a，\(b_{n-1}=-1\) 时幅度 1 − a，噪声标准差 √0.1：<div class="calc">Pe = ½Q((1 + a)/√0.1) + ½Q((1 − a)/√0.1)</div></li>
         <li>(b) 理想迫零：\(C(z)=\dfrac{1}{1+az^{-1}}=\sum_{k\ge0}(-a)^kz^{-k}\)（|a| &lt; 1 收敛），输出 \(b_n\) + 滤波后的噪声。</li>
@@ -680,6 +912,20 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>直接判决（不均衡）和理想迫零均衡下的误码率（第 6 章 p.23–28）。</dd><dt>前置知识</dt><dd>条件误码率再平均；ZF：C(z) = 1/H(z)；等比级数 Σa<sup>2k</sup> = 1/(1 − a²)；滤波后噪声方差 σ²Σc²。</dd><dt>解题套路</dt><dd>(a) b<sub>n−1</sub> = ±1 两种情况，信号离门限 1 ± a，标准差 √0.1；(b) 1/(1 + az⁻¹) = Σ(−a)<sup>k</sup>z<sup>−k</sup>，ISI 消失，噪声方差 0.1/(1 − a²)，只剩一项 Q。</dd><dt>数值例</dt><dd>a = 0.5：(a) ½[Q(4.74) + Q(1.58)] ≈ 0.028；(b) Q(√7.5) = Q(2.74) ≈ 0.0031，ZF 好约 9 倍。</dd><dt>比较</dt><dd>高 SNR 时比较最坏的 Q 参数：ZF 是 √(1 − a²)，不均衡是 1 − a；√(1 − a²) = √((1 − a)(1 + a)) &gt; 1 − a，所以 ZF 更好。但 a → 1 时噪声放大 1/(1 − a²) 趋于无穷。</dd><dt>易错</dt><dd>√0.1 是标准差，0.1 是方差；ZF 后没有 ISI，不要再分情况；不均衡时别只算 Q((1 − a)/σ) 一项。</dd></dl></div>
       <!-- /PKP:p6q2 -->
     </div>
+    <!-- EN:p6q2 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>(a) Take \(b_n=+1\): if \(b_{n-1}=+1\) the amplitude is 1 + a, if \(b_{n-1}=-1\) it is 1 − a; the noise standard deviation is √0.1:<div class="calc">P<sub>e</sub> = ½Q((1 + a)/√0.1) + ½Q((1 − a)/√0.1)</div></li>
+        <li>(b) Ideal zero forcing: \(C(z)=\dfrac{1}{1+az^{-1}}=\sum_{k\ge0}(-a)^kz^{-k}\) (converges for |a| &lt; 1); the output is \(b_n\) plus filtered noise.</li>
+        <li>Noise variance = 0.1 × sum of squared coefficients = \(0.1\sum_k a^{2k}=\dfrac{0.1}{1-a^2}\).</li>
+        <li>\(P_e=Q\!\left(\dfrac{1}{\sqrt{0.1/(1-a^2)}}\right)=Q\!\left(\sqrt{\dfrac{1-a^2}{0.1}}\right)\).</li>
+      </ol>
+      <div class="ans">(a) ½Q((1+a)/√0.1) + ½Q((1−a)/√0.1); (b) Q(√((1−a²)/0.1))</div>
+      <div class="official"><b>Official answer:</b> same as above ✓</div>
+      <div class="note">Comparison: the ZF Q argument is √(1−a²)/√0.1, the worst no-equaliser term is (1−a)/√0.1. Since √(1−a²) = √((1−a)(1+a)) &gt; 1−a, ZF is better at high SNR; but as a → 1 ZF amplifies the noise heavily.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Error rate with direct decisions (no equaliser) and with an ideal zero-forcing equaliser (Ch 6 p.23–28).</dd><dt>Background</dt><dd>Average the conditional error rates; ZF: C(z) = 1/H(z); geometric series Σa<sup>2k</sup> = 1/(1 − a²); filtered-noise variance σ²Σc².</dd><dt>Method</dt><dd>(a) Two cases b<sub>n−1</sub> = ±1, distances 1 ± a from the threshold, standard deviation √0.1. (b) 1/(1 + az⁻¹) = Σ(−a)<sup>k</sup>z<sup>−k</sup>; ISI vanishes, noise variance 0.1/(1 − a²), a single Q term.</dd><dt>Numbers</dt><dd>a = 0.5: (a) ½[Q(4.74) + Q(1.58)] ≈ 0.028; (b) Q(√7.5) = Q(2.74) ≈ 0.0031, ZF about 9 times better.</dd><dt>Comparison</dt><dd>At high SNR compare the worst Q arguments: ZF √(1 − a²), no equaliser 1 − a; √(1 − a²) = √((1 − a)(1 + a)) &gt; 1 − a, so ZF is better. But as a → 1 the noise amplification 1/(1 − a²) blows up.</dd><dt>Common mistakes</dt><dd>√0.1 is the standard deviation, 0.1 the variance; after ZF there is no ISI, so no case split; without the equaliser do not keep only the Q((1 − a)/σ) term.</dd></dl></div>
+    </div>
+    <!-- /EN:p6q2 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -695,7 +941,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">MMSE 求最优系数</span><span class="chip">DFE 错误传播</span><span class="chip">马尔可夫稳态</span><span class="chip src">讲义第 6 章 p.26–34</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>(a) 展开：\(u_n=A_n+\tfrac12A_{n-1}+z_n+q\big(A_{n+1}+\tfrac12A_n+z_{n+1}\big)\)，所以 \(u_n-A_n=\tfrac q2A_n+\tfrac12A_{n-1}+qA_{n+1}+z_n+qz_{n+1}\)。</li>
         <li>各项独立、均值 0，均方值相加：\(E[(u_n-A_n)^2]=\tfrac{q^2}4+\tfrac14+q^2+1+q^2=1.25+2.25q^2\)，q = 0 最小。</li>
@@ -711,6 +957,22 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>MMSE 线性均衡和判决反馈均衡 DFE 的误码率；DFE 的错误传播（第 6 章 p.26–34）。</dd><dt>前置知识</dt><dd>独立零均值随机变量的均方值相加；A<sub>n</sub>² = 1；全概率公式；线性方程求稳态。</dd><dt>解题套路</dt><dd>(a) 把 u<sub>n</sub> − A<sub>n</sub> 拆成独立项 → 均方误差 1.25 + 2.25q² → 求导得 q = 0 → u<sub>n</sub> = y<sub>n</sub>，幅度 1.5 或 0.5 → 平均。(b) 列条件误码率：上次对 → Q(1)；上次错 → ½Q(2) + ½ × ½ → 解稳态方程。</dd><dt>为什么 q = 0</dt><dd>用未来样本 y<sub>n+1</sub> 能多拿到 ½A<sub>n</sub> 的有用信号，但同时带进 A<sub>n+1</sub> 的干扰和 z<sub>n+1</sub> 的噪声，得不偿失，所以最优是不用它。</dd><dt>关键公式</dt><dd>DFE 稳态：p = (1 − p)·0.159 + p·0.261 → p = 0.159/(1 − 0.261 + 0.159) = 0.177。</dd><dt>易错</dt><dd>展开时漏了 (q/2)A<sub>n</sub> 项；上次判错时幅度是 2 或 0（ISI 加倍），幅度 0 时误码 ½；稳态方程别解错。</dd><dt>结论</dt><dd>线性 0.188 &gt; DFE 0.177 &gt; 无错误传播的 DFE 0.159：DFE 不放大噪声，但错误传播吃掉了一部分优势（p.34）。</dd></dl></div>
       <!-- /PKP:p6q3 -->
     </div>
+    <!-- EN:p6q3 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>(a) Expand: \(u_n=A_n+\tfrac12A_{n-1}+z_n+q\big(A_{n+1}+\tfrac12A_n+z_{n+1}\big)\), so \(u_n-A_n=\tfrac q2A_n+\tfrac12A_{n-1}+qA_{n+1}+z_n+qz_{n+1}\).</li>
+        <li>All terms are independent with zero mean, so their mean squares add: \(E[(u_n-A_n)^2]=\tfrac{q^2}4+\tfrac14+q^2+1+q^2=1.25+2.25q^2\), minimised at q = 0.</li>
+        <li>With q = 0, \(u_n=y_n\) and the amplitude is 1.5 or 0.5:<div class="calc">P<sub>e</sub> = ½Q(1.5) + ½Q(0.5) = ½(0.0668) + ½(0.3085) = 0.188</div></li>
+        <li>(b) Previous decision correct: the ISI is cancelled exactly, \(u_n=A_n+z_n\), error probability \(Q(1)=0.159\).</li>
+        <li>Previous decision wrong (\(\hat A_{n-1}=-A_{n-1}\)): \(u_n=A_n+A_{n-1}+z_n\), amplitude 2 or 0 with equal probability, error probability \(\tfrac12Q(2)+\tfrac12\cdot\tfrac12=0.261\).</li>
+        <li>Let p be the long-run error rate: \(p=(1-p)\times0.159+p\times0.261\) → \(p=\dfrac{0.159}{1-0.261+0.159}=0.177\).</li>
+      </ol>
+      <div class="ans">(a) q = 0, P<sub>e</sub> ≈ 0.19; (b) P<sub>e</sub> ≈ 0.18</div>
+      <div class="official"><b>Official answer:</b> (a) q = 0, P<sub>e</sub> ≈ 0.19; (b) P<sub>e</sub> ≈ 0.18 ✓</div>
+      <div class="note">Without error propagation the DFE error rate would be Q(1) = 0.159; error propagation raises it to 0.177, still better than the linear equaliser's 0.188.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Error rates of an MMSE linear equaliser and a decision-feedback equaliser; DFE error propagation (Ch 6 p.26–34).</dd><dt>Background</dt><dd>Mean squares of independent zero-mean variables add; A<sub>n</sub>² = 1; total probability; solving a linear equation for the steady state.</dd><dt>Method</dt><dd>(a) Split u<sub>n</sub> − A<sub>n</sub> into independent terms → MSE 1.25 + 2.25q² → derivative gives q = 0 → u<sub>n</sub> = y<sub>n</sub>, amplitude 1.5 or 0.5 → average. (b) Conditional error rates: previous correct → Q(1); previous wrong → ½Q(2) + ½ × ½ → solve the steady-state equation.</dd><dt>Why q = 0</dt><dd>Using the future sample y<sub>n+1</sub> adds ½A<sub>n</sub> of useful signal but also brings in A<sub>n+1</sub> interference and z<sub>n+1</sub> noise; the net effect is negative, so the best choice is not to use it.</dd><dt>Key formula</dt><dd>DFE steady state: p = (1 − p)·0.159 + p·0.261 → p = 0.159/(1 − 0.261 + 0.159) = 0.177.</dd><dt>Common mistakes</dt><dd>Dropping the (q/2)A<sub>n</sub> term when expanding; after a wrong decision the amplitude is 2 or 0 (the ISI doubles), and amplitude 0 gives error probability ½; solving the steady-state equation incorrectly.</dd><dt>Conclusion</dt><dd>Linear 0.188 &gt; DFE 0.177 &gt; DFE without error propagation 0.159: the DFE does not amplify noise, but error propagation eats part of the advantage (p.34).</dd></dl></div>
+    </div>
+    <!-- /EN:p6q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
   <div class="group" id="P7"><h2>Practice 7 · OFDM</h2><span>讲义第 7 章 · 第 13 周</span></div>
@@ -731,7 +993,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">慢平坦衰落条件</span><span class="chip">H_k = DFT{h}</span><span class="chip">等容量分配</span><span class="chip">注水</span><span class="chip src">讲义第 7 章 p.5、p.15、p.24</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>(a) 平坦：子信道宽 B/N 要远小于相干带宽 → \(N\gg B/B_C\)。慢衰落：OFDM 符号时长约 N/B，要远小于相干时间 1/B_d → \(N\ll B/B_d\)。所以 \(B/B_C\ll N\ll B/B_d\)。</li>
         <li>(b) \(H_k=h_0+h_1e^{-j2\pi k/N}=0.8+0.6e^{-j\pi k/2}\)：<div class="calc">H₀ = H₄ = 1.4，H₁ = 0.8 − 0.6j，H₂ = 0.2，H₃ = 0.8 + 0.6j</div>功率增益 |H_k|²（k = 1, 2, 3, 4）：1、0.04、1、1.96。</li>
@@ -747,6 +1009,22 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>OFDM 的四个核心计算：N 的选择、H<sub>k</sub>、等容量功率分配、注水容量（第 7 章 p.5、p.15、p.24；第 2 章注水）。</dd><dt>前置知识</dt><dd>相干带宽 / 相干时间；欧拉公式 e<sup>−jπk/2</sup> 依次为 1、−j、−1、j；注水公式；log₂。</dd><dt>解题套路</dt><dd>(a) 平坦 N ≫ B/B<sub>C</sub>，慢衰落 N ≪ B/B<sub>d</sub>；(b) H<sub>k</sub> = h₀ + h₁e<sup>−j2πk/N</sup>；(c) |H<sub>k</sub>|²P<sub>k</sub> = c，由 ΣP<sub>k</sub> = 10 求 c；(d) 池底 1/|H<sub>k</sub>|²，水面 μ，去掉池底高过水面的子信道。</dd><dt>关键数字</dt><dd>|H<sub>k</sub>|² = 1、0.04、1、1.96；c = 10/27.51 = 0.3635；注水水面 4.17，功率 3.17、0、3.17、3.66；7.15 bit / 4 = 1.79 bit/s/Hz。</dd><dt>自检</dt><dd>Σ|H<sub>k</sub>|² = N Σh<sub>i</sub>² = 4 × (0.64 + 0.36) = 4；(c)(d) 的功率加起来都是 10；被去掉的子信道 2 的池底 25 高于水面。</dd><dt>易错</dt><dd>编号 k = 1…4（H₄ = H₀）；用 |H<sub>k</sub>|² 不是 |H<sub>k</sub>|；噪声 σ² = 1；最后除以 N 换成 bit/s/Hz。</dd><dt>对比结论</dt><dd>等容量把 91% 的功率砸在最差的子信道上；注水干脆放弃它。要公平用 (c)，要总容量最大用 (d)。</dd></dl></div>
       <!-- /PKP:p7q1 -->
     </div>
+    <!-- EN:p7q1 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>(a) Flat: the sub-channel width B/N must be much smaller than the coherence bandwidth → \(N\gg B/B_C\). Slow: the OFDM symbol duration ≈ N/B must be much shorter than the coherence time 1/B<sub>d</sub> → \(N\ll B/B_d\). Hence \(B/B_C\ll N\ll B/B_d\).</li>
+        <li>(b) \(H_k=h_0+h_1e^{-j2\pi k/N}=0.8+0.6e^{-j\pi k/2}\):<div class="calc">H₀ = H₄ = 1.4, H₁ = 0.8 − 0.6j, H₂ = 0.2, H₃ = 0.8 + 0.6j</div>Power gains |H<sub>k</sub>|² (k = 1, 2, 3, 4): 1, 0.04, 1, 1.96.</li>
+        <li>(c) Equal capacity \(\log_2(1+|H_k|^2P_k)\) ⇔ the same \(|H_k|^2P_k=c\): \(P_k=c/|H_k|^2\).<div class="calc">c(1/1 + 1/0.04 + 1/1 + 1/1.96) = c × 27.51 = 10 → c = 0.3635</div><div class="calc">P₁ = 0.36, P₂ = 9.09, P₃ = 0.36, P₄ = 0.19</div></li>
+        <li>(d) Water-filling: floor levels \(1/|H_k|^2\) = 1, 25, 1, 0.51. Filling all four gives a water level (10 + 27.51)/4 = 9.38 &lt; 25, so sub-channel 2 is dropped.</li>
+        <li>With three left: level μ = (10 + 1 + 1 + 0.51)/3 = 4.17, powers 3.17, 3.17, 3.66 (all positive).<div class="calc">C = log₂(4.17 × 1) + log₂(4.17 × 1) + log₂(4.17 × 1.96) = 2.06 + 2.06 + 3.03 = 7.15 bit</div></li>
+        <li>These 7.15 bit are carried by 4 sub-carriers, each occupying B/4, so per hertz: 7.15/4 = 1.79 bit/s/Hz.</li>
+      </ol>
+      <div class="ans">(a) B/B<sub>C</sub> ≪ N ≪ B/B<sub>d</sub>; (b) 1.4, 0.8−0.6j, 0.2, 0.8+0.6j; (c) 0.36, 9.09, 0.36, 0.19; (d) ≈ 1.8 bit/s/Hz</div>
+      <div class="official"><b>Official answer:</b> identical ✓ (the official solution labels k = 1…4 as H₁…H₄, with H₄ = H₀ = 1.4)</div>
+      <div class="note">Compare (c) and (d): to make every sub-channel "equal", (c) spends 91% of the power on the worst sub-channel; water-filling (d) simply abandons it and gets a much higher total capacity.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The four core OFDM calculations: choosing N, H<sub>k</sub>, equal-capacity power allocation, water-filling capacity (Ch 7 p.5, p.15, p.24; water-filling from Ch 2).</dd><dt>Background</dt><dd>Coherence bandwidth and coherence time; Euler: e<sup>−jπk/2</sup> is 1, −j, −1, j in turn; water-filling; log₂.</dd><dt>Method</dt><dd>(a) Flat N ≫ B/B<sub>C</sub>, slow N ≪ B/B<sub>d</sub>; (b) H<sub>k</sub> = h₀ + h₁e<sup>−j2πk/N</sup>; (c) |H<sub>k</sub>|²P<sub>k</sub> = c, find c from ΣP<sub>k</sub> = 10; (d) floors 1/|H<sub>k</sub>|², water level μ, drop sub-channels whose floor is above the water.</dd><dt>Key numbers</dt><dd>|H<sub>k</sub>|² = 1, 0.04, 1, 1.96; c = 10/27.51 = 0.3635; water level 4.17, powers 3.17, 0, 3.17, 3.66; 7.15 bit / 4 = 1.79 bit/s/Hz.</dd><dt>Check</dt><dd>Σ|H<sub>k</sub>|² = N Σh<sub>i</sub>² = 4 × (0.64 + 0.36) = 4; the powers in (c) and (d) both sum to 10; the dropped sub-channel 2 has floor 25, above the water level.</dd><dt>Common mistakes</dt><dd>Index k = 1…4 (H₄ = H₀); use |H<sub>k</sub>|², not |H<sub>k</sub>|; noise σ² = 1; divide by N at the end to get bit/s/Hz.</dd><dt>Conclusion</dt><dd>Equal capacity pours 91% of the power into the worst sub-channel; water-filling gives up on it. Use (c) for fairness, (d) for maximum total capacity.</dd></dl></div>
+    </div>
+    <!-- /EN:p7q1 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -758,7 +1036,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">Δf = B/N</span><span class="chip">循环前缀开销</span><span class="chip src">讲义第 7 章 p.8、p.17–18</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>16-QAM 每符号 4 bit：需要的总符号速率 2 Mbps / 4 = 500 k 符号/秒。</li>
         <li>N 个子载波：有用符号时长 T = N/B = N/600k，加 CP 后一个 OFDM 符号长 T + 20 µs，期间 N 个子载波各发一个符号。</li>
@@ -772,6 +1050,20 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>OFDM 系统设计：子载波数、OFDM 符号时长、CP 开销（第 7 章 p.8、p.17–18）。</dd><dt>前置知识</dt><dd>有用符号时长 T = N/B = 1/Δf；一个 OFDM 块 = T + T<sub>G</sub>，期间每个子载波发一个符号。</dd><dt>解题套路</dt><dd>① 比特速率 ÷ log₂M = 需要的符号速率；② 列方程 N / (N/B + T<sub>G</sub>) = 符号速率；③ 解 N；④ T = N/B，总时长 T + T<sub>G</sub>。</dd><dt>关键数字</dt><dd>2 Mbps / 4 = 500 k 符号/秒；N = 0.8333N + 10 → N = 60；T = 100 µs，总长 120 µs。</dd><dt>检验</dt><dd>60 × 4 bit / 120 µs = 2 Mbps；CP 占 1/6 的时间，功率损失 10 log(120/100) = 0.79 dB。</dd><dt>举一反三</dt><dd>时延扩展变成 40 µs：N = 0.8333N + 20 → N = 120，T = 200 µs，总长 240 µs。时延扩展越大，需要的 N 越大，CP 的占比才不至于太高。</dd><dt>易错</dt><dd>没有 CP 时 N 取多少都行，题目就没有唯一解，所以一定要把 CP 算进时长；速率是比特速率，要先除以 4。</dd></dl></div>
       <!-- /PKP:p7q2 -->
     </div>
+    <!-- EN:p7q2 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>16-QAM carries 4 bits per symbol: the required total symbol rate is 2 Mbps / 4 = 500 k symbols/s.</li>
+        <li>With N sub-carriers: useful symbol duration T = N/B = N/600k; with the CP one OFDM symbol lasts T + 20 µs, during which each of the N sub-carriers sends one symbol.</li>
+        <li>\(\dfrac{N}{N/600\text{k}+20\,\mu s}=500\text{k}\) → \(N=0.8333N+10\) → N = 60.</li>
+        <li>T = 60/600 kHz = 100 µs; total OFDM symbol 100 + 20 = 120 µs = 0.12 ms.</li>
+      </ol>
+      <div class="ans">N = 60, OFDM symbol duration 0.12 ms</div>
+      <div class="official"><b>Official answer:</b> 60; 0.12 ms ✓</div>
+      <div class="note">Without the CP, 600 kHz would carry 500 k symbols/s for any N and the problem would have no unique answer. The CP overhead is what fixes N: the larger N, the smaller the CP fraction. Here the CP takes 20/120 = 1/6 of the time, so the bandwidth must exceed 500 k by 1/5, exactly 600 kHz.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>OFDM system design: number of sub-carriers, OFDM symbol duration, CP overhead (Ch 7 p.8, p.17–18).</dd><dt>Background</dt><dd>Useful symbol duration T = N/B = 1/Δf; one OFDM block lasts T + T<sub>G</sub>, during which each sub-carrier sends one symbol.</dd><dt>Method</dt><dd>① Bit rate ÷ log₂M = required symbol rate; ② write N / (N/B + T<sub>G</sub>) = symbol rate; ③ solve for N; ④ T = N/B, total T + T<sub>G</sub>.</dd><dt>Key numbers</dt><dd>2 Mbps / 4 = 500 k symbols/s; N = 0.8333N + 10 → N = 60; T = 100 µs, total 120 µs.</dd><dt>Check</dt><dd>60 × 4 bit / 120 µs = 2 Mbps; the CP takes 1/6 of the time, power loss 10 log(120/100) = 0.79 dB.</dd><dt>Variations</dt><dd>With a 40 µs delay spread: N = 0.8333N + 20 → N = 120, T = 200 µs, total 240 µs. A larger delay spread needs a larger N to keep the CP fraction small.</dd><dt>Common mistakes</dt><dd>Without a CP any N would do and there would be no unique answer, so the CP must be included in the duration; the given rate is a bit rate, divide by 4 first.</dd></dl></div>
+    </div>
+    <!-- /EN:p7q2 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -783,7 +1075,7 @@ window.MathJax = {
     </div>
     <div class="chips"><span class="chip">信道长度</span><span class="chip">CP ≥ L − 1</span><span class="chip src">讲义第 7 章 p.17–22</span></div>
     <button class="reveal" type="button">显示解答</button>
-    <div class="sol">
+    <div class="sol sol-zh">
       <ol class="steps">
         <li>冲激响应 h = [1, 0.9]：一条直射，加一条晚一个采样到达的回波，信道长度 L = 2，最大时延扩展 = 1 个采样。</li>
         <li>上一个 OFDM 块的最后一个采样，会通过 0.9z⁻¹ 漏进下一个块的第一个采样。CP 至少要盖住这 1 个采样，才能把 ISI 挡在 CP 里（接收端丢掉 CP）。</li>
@@ -795,6 +1087,18 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>循环前缀的最短长度（第 7 章 p.17–22）。</dd><dt>前置知识</dt><dd>Z 变换：Z⁻¹ 表示晚一个采样；L 个抽头的信道，最长回波晚 L − 1 个采样。</dd><dt>解题套路</dt><dd>由 H(Z) 读出冲激响应 h = [1, 0.9] → L = 2 → CP ≥ L − 1 = 1 个采样。</dd><dt>为什么够</dt><dd>CP ≥ L − 1 时，接收端保留的 N 个采样只含本块的数据，线性卷积变成循环卷积，DFT 后 r<sub>k</sub> = H<sub>k</sub>s<sub>k</sub> + w<sub>k</sub>（讲解页 7.4 节推导框）。</dd><dt>为什么复制块尾</dt><dd>只放一段空白也能挡住上一块的回声，但接收窗口里看到的不再是完整的周期信号，子载波失去正交，会有 ICI；复制块尾才能保持循环结构。</dd><dt>易错</dt><dd>是 L − 1 = 1 个，不是 L = 2 个；系数 0.9 的大小不影响 CP 长度，只看延迟几个采样。</dd><dt>举一反三</dt><dd>H(Z) = 1 + 0.5Z⁻³ → 延迟 3 个采样 → CP ≥ 3；换成时间就是 T<sub>G</sub> ≥ 最大时延扩展 T<sub>D</sub>。CP 每多 1 个采样，效率降为 N/(N + G)。</dd></dl></div>
       <!-- /PKP:p7q3 -->
     </div>
+    <!-- EN:p7q3 -->
+    <div class="sol sol-en" lang="en">
+      <ol class="steps">
+        <li>Impulse response h = [1, 0.9]: a direct path plus an echo one sample later; channel length L = 2, maximum delay spread = 1 sample.</li>
+        <li>The last sample of the previous OFDM block leaks into the first sample of the next block through 0.9z⁻¹. The CP must cover at least this 1 sample so the ISI stays inside the CP, which the receiver discards.</li>
+        <li>Because the CP is a copy of the block tail, the linear convolution looks like a circular convolution inside the receive window; after the DFT this gives exactly \(H_ks_k\), and the sub-carriers stay orthogonal.</li>
+      </ol>
+      <div class="ans">Minimum CP = 1 sample (symbol) = L − 1</div>
+      <div class="official"><b>Official answer:</b> 1 symbol length ✓</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The minimum cyclic-prefix length (Ch 7 p.17–22).</dd><dt>Background</dt><dd>Z-transform: Z⁻¹ means one sample later; a channel with L taps has its longest echo L − 1 samples late.</dd><dt>Method</dt><dd>Read the impulse response h = [1, 0.9] from H(Z) → L = 2 → CP ≥ L − 1 = 1 sample.</dd><dt>Why it is enough</dt><dd>With CP ≥ L − 1 the N samples kept by the receiver contain only data from the current block, the linear convolution becomes circular, and after the DFT r<sub>k</sub> = H<sub>k</sub>s<sub>k</sub> + w<sub>k</sub> (derivation box in Section 7.4 of the learning page).</dd><dt>Why copy the tail</dt><dd>An empty guard interval would also block the previous block's echo, but the receive window would no longer see a complete periodic signal, the sub-carriers would lose orthogonality and ICI would appear. Only copying the tail keeps the circular structure.</dd><dt>Common mistakes</dt><dd>It is L − 1 = 1 sample, not L = 2; the size of the coefficient 0.9 does not matter, only how many samples the echo is delayed.</dd><dt>Variations</dt><dd>H(Z) = 1 + 0.5Z⁻³ → delay 3 samples → CP ≥ 3; in time, T<sub>G</sub> ≥ the maximum delay spread T<sub>D</sub>. Each extra CP sample lowers the efficiency to N/(N + G).</dd></dl></div>
+    </div>
+    <!-- /EN:p7q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -840,6 +1144,10 @@ window.MathJax = {
       count();
     });
   });
+  var langBtns=[].slice.call(document.querySelectorAll('#langSeg button'));
+  function setLang(l){ root.classList.toggle('lang-en',l==='en'); root.classList.toggle('lang-zh',l==='zh'); langBtns.forEach(function(b){ b.setAttribute('aria-pressed',String(b.dataset.lang===l)); }); store.set('ee6129-p2:sollang',l); }
+  setLang(store.get('ee6129-p2:sollang')==='zh'?'zh':'en');
+  langBtns.forEach(function(b){ b.addEventListener('click',function(){ setLang(b.dataset.lang); }); });
   var zh=document.getElementById('zhMode');
   if (store.get('ee6129-p2:zh')==='0'){ zh.checked=false; root.classList.add('no-zh'); }
   zh.addEventListener('change',function(){ root.classList.toggle('no-zh',!zh.checked); store.set('ee6129-p2:zh',zh.checked?'1':'0'); });
@@ -856,7 +1164,7 @@ window.MathJax = {
   /* ---------- tabs ---------- */
   var tabs=[].slice.call(document.querySelectorAll('[data-tab]'));
   function show(id){ tabs.forEach(function(t){ var on=t.dataset.tab===id; t.setAttribute('aria-selected',String(on)); document.getElementById(t.dataset.tab).hidden=!on; });
-    document.getElementById('examWrap').style.visibility = id==='sol'?'visible':'hidden'; document.getElementById('count').style.visibility = id==='sol'?'visible':'hidden'; }
+    document.getElementById('examWrap').style.visibility = id==='sol'?'visible':'hidden'; document.getElementById('count').style.visibility = id==='sol'?'visible':'hidden'; document.getElementById('langSeg').style.visibility = id==='sol'?'visible':'hidden'; }
   tabs.forEach(function(t){ t.addEventListener('click',function(){ show(t.dataset.tab); try{history.replaceState(null,'','#'+t.dataset.tab);}catch(e){} }); });
   if ((location.hash||'')==='#drill') show('drill');
 

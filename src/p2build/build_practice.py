@@ -101,6 +101,13 @@ ol.steps>li::before{content:counter(s);position:absolute;left:0;top:8px;width:22
 .official b{color:var(--ok)}
 .note{margin-top:8px;border-radius:10px;padding:8px 14px;font-size:.86rem;background:var(--extra-soft);border:1px solid var(--extra)}
 .note::before{content:'补充　';font-weight:700;color:var(--extra)}
+.lang-en .sol-zh,.lang-zh .sol-en{display:none!important}
+.sol-en .note::before{content:'Note  '}
+.sol-en{font-size:.97rem}
+.seg{display:inline-flex;align-items:center;border:1px solid var(--border);border-radius:999px;overflow:hidden;font-size:.8rem;background:var(--surface)}
+.seg-lab{padding:0 8px 0 10px;color:var(--muted)}
+.seg button{font:inherit;border:none;border-left:1px solid var(--border);background:transparent;color:var(--muted);padding:4px 11px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--on-accent);font-weight:600}
 .pkp{margin-top:12px;border:1px solid var(--accent);border-left-width:5px;border-radius:10px;background:var(--surface);padding:10px 16px 8px}
 .pkp > .lbl{font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.08em;color:var(--accent-strong);font-weight:700;margin-bottom:4px}
 .pkp dl{margin:0;display:grid;grid-template-columns:max-content 1fr;gap:5px 14px}
@@ -157,11 +164,11 @@ OVERVIEW = f'''
     </tbody>
   </table></div>'''
 
-BODY = f'''<div class="wrap" id="root">
+BODY = f'''<div class="wrap lang-en" id="root">
   <a class="back" href="index.html">← 学习站目录</a>
   <div class="eyebrow">EE6129 · Part 2 · Practice 1–7</div>
   <h1>Part 2 练习</h1>
-  <p class="lede">讲义配套的 7 份 Practice 共 21 道题，逐题给出英文原题、考点、思路和分步解答，并和官方答案逐一核对。「随机练习」按同样的题型随机出数字，自动判分。</p>
+  <p class="lede">讲义配套的 7 份 Practice 共 21 道题，逐题给出中英对照的原题、考点、思路和分步解答，并和官方答案逐一核对。解答默认是英文（考试要用英文作答），可以随时切换成中文。「随机练习」按同样的题型随机出数字，自动判分。</p>
   <div class="notice">所有数字都用程序验算过。<b>20 道题与官方答案一致</b>（其中 P4 Q1 是论述题）；Practice 1 第 1 题按题目数据算不出官方的数字，题下写了原因和标准做法。紫色"补充"框是课外内容。配套讲解见 <a href="{learn_href}">Part 2 讲解页</a>。</div>
 
   <div class="tabs" role="tablist" aria-label="页面视图">
@@ -170,6 +177,7 @@ BODY = f'''<div class="wrap" id="root">
     <span class="spacer"></span>
     <label class="toggle" id="examWrap"><input type="checkbox" id="examMode"> 自测模式（先藏解答）</label>
     <label class="toggle"><input type="checkbox" id="zhMode" checked> 题目中文对照</label>
+    <span class="seg" id="langSeg" role="group" aria-label="解答语言"><span class="seg-lab">解答</span><button type="button" data-lang="en" aria-pressed="true">EN</button><button type="button" data-lang="zh" aria-pressed="false">中文</button></span>
     <span class="count" id="count"></span>
   </div>
 
@@ -227,6 +235,10 @@ JS = r'''
       count();
     });
   });
+  var langBtns=[].slice.call(document.querySelectorAll('#langSeg button'));
+  function setLang(l){ root.classList.toggle('lang-en',l==='en'); root.classList.toggle('lang-zh',l==='zh'); langBtns.forEach(function(b){ b.setAttribute('aria-pressed',String(b.dataset.lang===l)); }); store.set('ee6129-p2:sollang',l); }
+  setLang(store.get('ee6129-p2:sollang')==='zh'?'zh':'en');
+  langBtns.forEach(function(b){ b.addEventListener('click',function(){ setLang(b.dataset.lang); }); });
   var zh=document.getElementById('zhMode');
   if (store.get('ee6129-p2:zh')==='0'){ zh.checked=false; root.classList.add('no-zh'); }
   zh.addEventListener('change',function(){ root.classList.toggle('no-zh',!zh.checked); store.set('ee6129-p2:zh',zh.checked?'1':'0'); });
@@ -243,7 +255,7 @@ JS = r'''
   /* ---------- tabs ---------- */
   var tabs=[].slice.call(document.querySelectorAll('[data-tab]'));
   function show(id){ tabs.forEach(function(t){ var on=t.dataset.tab===id; t.setAttribute('aria-selected',String(on)); document.getElementById(t.dataset.tab).hidden=!on; });
-    document.getElementById('examWrap').style.visibility = id==='sol'?'visible':'hidden'; document.getElementById('count').style.visibility = id==='sol'?'visible':'hidden'; }
+    document.getElementById('examWrap').style.visibility = id==='sol'?'visible':'hidden'; document.getElementById('count').style.visibility = id==='sol'?'visible':'hidden'; document.getElementById('langSeg').style.visibility = id==='sol'?'visible':'hidden'; }
   tabs.forEach(function(t){ t.addEventListener('click',function(){ show(t.dataset.tab); try{history.replaceState(null,'','#'+t.dataset.tab);}catch(e){} }); });
   if ((location.hash||'')==='#drill') show('drill');
 
