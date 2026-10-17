@@ -2,10 +2,12 @@
 
   <article class="ex" id="p2q1">
     <header><span class="pg">P2 · Q1</span><h3>平均衰落时长</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 2</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 2</span></div>
       <p>For Rayleigh fading channels, the average fade duration can be expressed as,</p>
+      <p class="zh" lang="zh-CN">对于瑞利衰落信道，平均衰落持续时间（AFD）可以表示为：</p>
       <p class="eq">\(AFD=\dfrac{e^{\rho^2}-1}{\sqrt{2\pi}f_D\rho}\)</p>
       <p>The maximum Doppler shift is 50 Hz. The minimum signal strength, for acceptable performance is 0.1 of the rms value of the signal strength. Determine the average time duration when the signal strength is below the acceptable value.</p>
+      <p class="zh" lang="zh-CN">最大多普勒频移为 50 Hz。保证可接受性能所需的最小信号强度是信号强度 rms 值的 0.1 倍。求信号强度低于这个可接受值的平均持续时间。</p>
     </div>
     <div class="chips"><span class="chip">AFD</span><span class="chip">ρ = Z_min / Z_rms</span><span class="chip src">讲义第 2 章 p.42–43</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -24,13 +26,18 @@
 
   <article class="ex" id="p2q2">
     <header><span class="pg">P2 · Q2</span><h3>两个基站的宏分集：独立与相关阴影</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 2</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 2</span></div>
       <p>Consider a mobile station located between two base stations in a cellular network. The received signal powers (in dBm) from the base stations are given by</p>
+      <p class="zh" lang="zh-CN">考虑蜂窝网络中一个位于两个基站之间的移动台。它从两个基站收到的信号功率（dBm）为</p>
       <p class="eq">\(P_{r,1}=W+Z_1;\quad P_{r,2}=W+Z_2\)</p>
       <p>where \(Z_1\) and \(Z_2\) are random variables \(\sim\mathcal N(0,\sigma^2)\). Outage is defined to have occurred when both \(P_{r,1}\) and \(P_{r,2}\) fall below a threshold T, where T is smaller than W by Δ.</p>
+      <p class="zh" lang="zh-CN">其中 \(Z_1\) 和 \(Z_2\) 是随机变量，\(\sim\mathcal N(0,\sigma^2)\)。当 \(P_{r,1}\) 和 \(P_{r,2}\) <b>都</b>低于门限 T 时，定义为发生中断；T 比 W 小 Δ。</p>
       <p>(a) Interpret the terms W, \(Z_1\), \(Z_2\).</p>
+      <p class="zh" lang="zh-CN">(a) 解释 W、\(Z_1\)、\(Z_2\) 这几项的含义。</p>
       <p>(b) If \(Z_1\) and \(Z_2\) are statistically independent, show that the outage probability is, \(P_{out}=[Q(\Delta/\sigma)]^2\)</p>
+      <p class="zh" lang="zh-CN">(b) 若 \(Z_1\) 与 \(Z_2\) 统计独立，证明中断概率为 \(P_{out}=[Q(\Delta/\sigma)]^2\)。</p>
       <p>(c) Now suppose \(Z_1\) and \(Z_2\) are correlated in the following way: \(Z_1=aY_1+bY\), \(Z_2=aY_2+bY\), where Y, \(Y_1\), \(Y_2\) are independent random variables \(\sim\mathcal N(0,\sigma^2)\). Show that</p>
+      <p class="zh" lang="zh-CN">(c) 现在假设 \(Z_1\) 与 \(Z_2\) 按如下方式相关：\(Z_1=aY_1+bY\)，\(Z_2=aY_2+bY\)，其中 Y、\(Y_1\)、\(Y_2\) 是相互独立的随机变量，\(\sim\mathcal N(0,\sigma^2)\)。证明</p>
       <p class="eq">\(P_{out}=\displaystyle\int_{-\infty}^{\infty}\frac{1}{\sqrt{2\pi}}Q\!\left[\frac{\Delta+by\sigma}{|a|\sigma}\right]^2e^{-y^2/2}dy\)</p>
     </div>
     <div class="chips"><span class="chip">宏分集</span><span class="chip">独立 → 概率相乘</span><span class="chip">条件概率 + 全概率</span><span class="chip src">讲义第 2 章 p.12–15；第 4 章 p.4</span></div>
@@ -53,10 +60,13 @@
 
   <article class="ex" id="p2q3">
     <header><span class="pg">P2 · Q3</span><h3>两个用户：干扰当噪声 vs 多用户检测</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 2</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 2</span></div>
       <p>Two users transmit simultaneously to a single receiver over an AWGN channel. The power received from each transmitter is 10mW. The total received noise power is 0.1mW. The channel bandwidth for each user is 20MHz.</p>
+      <p class="zh" lang="zh-CN">两个用户通过 AWGN 信道同时向同一个接收机发送信号。来自每个发射机的接收功率都是 10 mW，总接收噪声功率为 0.1 mW，每个用户的信道带宽为 20 MHz。</p>
       <p>(a) The receiver decodes user 1's signal first. In this decoding, user 2's signal behaves like noise (assume it is AWGN). What is the capacity of user 1's channel?</p>
+      <p class="zh" lang="zh-CN">(a) 接收机先解码用户 1 的信号。解码时，用户 2 的信号相当于噪声（假设它是 AWGN）。用户 1 信道的容量是多少？</p>
       <p>(b) After applying MUD, the decoder removes user 1's signal completely from the received signal. What is the capacity of user 2's channel?</p>
+      <p class="zh" lang="zh-CN">(b) 采用多用户检测（MUD）后，解码器把用户 1 的信号从接收信号中完全去掉。用户 2 信道的容量是多少？</p>
     </div>
     <div class="chips"><span class="chip">香农容量</span><span class="chip">SINR</span><span class="chip">MUD</span><span class="chip src">讲义第 1a 章 p.16；第 2 章 p.48</span></div>
     <button class="reveal" type="button">显示解答</button>

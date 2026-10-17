@@ -77,7 +77,10 @@ table.mini{width:auto;min-width:240px}
 .orig-lab{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-strong);margin-bottom:4px}
 .orig-lab span:last-child{color:var(--muted)}
 .orig p{margin:.4em 0}
-.orig .eq{text-align:center;margin:.6em 0;overflow-x:auto}
+.orig .eq{text-align:center;margin:.6em 0;overflow-x:auto;overflow-y:hidden;padding:2px 0}
+.orig p.zh{margin:-.15em 0 .75em;padding:2px 0 2px 10px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 6px 6px 0;color:var(--text);font-size:.9rem;line-height:1.7}
+.orig .zh-th{font-weight:400;font-size:.85em;color:var(--muted)}
+.no-zh .orig p.zh,.no-zh .orig .zh-th{display:none}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px}
 .chip{font-size:.74rem;border-radius:999px;padding:2px 10px;background:var(--accent-soft);color:var(--accent-strong);font-weight:500}
 .chip.src{background:transparent;border:1px solid var(--border);color:var(--muted)}
@@ -160,6 +163,7 @@ BODY = f'''<div class="wrap" id="root">
     <button class="tab" role="tab" id="tab-drill" aria-controls="drill" aria-selected="false" data-tab="drill">随机练习</button>
     <span class="spacer"></span>
     <label class="toggle" id="examWrap"><input type="checkbox" id="examMode"> 自测模式（先藏解答）</label>
+    <label class="toggle"><input type="checkbox" id="zhMode" checked> 题目中文对照</label>
     <span class="count" id="count"></span>
   </div>
 
@@ -217,6 +221,9 @@ JS = r'''
       count();
     });
   });
+  var zh=document.getElementById('zhMode');
+  if (store.get('ee6129-p2:zh')==='0'){ zh.checked=false; root.classList.add('no-zh'); }
+  zh.addEventListener('change',function(){ root.classList.toggle('no-zh',!zh.checked); store.set('ee6129-p2:zh',zh.checked?'1':'0'); });
   var exam=document.getElementById('examMode');
   exam.addEventListener('change',function(){ root.classList.toggle('exam',exam.checked); exs.forEach(function(e){e.classList.remove('open');}); });
   exs.forEach(function(e){

@@ -1,0 +1,163 @@
+"""给 prac_1..7.html 的题目原文加中文对照（幂等：先删旧的 p.zh 再插入）。
+
+每题按 .orig 里非公式 <p> 的顺序一一对应 ZH[id] 中的中文段落，
+中文段落插在对应英文段落之后。另外给 P1Q1 解答加残差计算表。
+运行：/usr/bin/python3 add_zh.py
+"""
+import pathlib, re
+
+HERE = pathlib.Path(__file__).resolve().parent
+
+ZH = {
+ 'p1q1': [
+  r'表 1 给出了一组实测路径损耗数据，其中 \(P_t\) 和 \(P_r\) 分别是发射功率和接收功率。',
+  r'(a) 使用路径损耗模型 \(P_r=P_tK[1/d]^{\gamma}\)，求最能拟合表中数据的 K（以 dB 表示）和 γ。',
+  r'(b) 假设存在阴影衰落，并且在距离 d 处仅由路径损耗决定的接收功率比“不中断”所需的最小功率高 10 dB，求距离 d 处的中断概率。',
+ ],
+ 'p1q2': [
+  r'考虑一个蜂窝系统，接收信号功率服从对数正态分布，均值为 \(\mu_\psi\) dBm，标准差为 \(\sigma_\psi\) dBm。为避免中断，接收信号功率必须高于 10 dBm。',
+  r'(a) 当 \(\mu_\psi\) = 15 dBm、\(\sigma_\psi\) = 8 dBm 时，中断概率是多少？',
+  r'(b) 若 \(\sigma_\psi\) = 4 dBm，要使中断概率小于 1%，\(\mu_\psi\) 至少要取多少？',
+ ],
+ 'p1q3': [
+  r'考虑一个具有如下功率时延谱（power delay profile）的信道。',
+  r'(a) 计算该信道的平均时延扩展（mean delay spread）和均方根时延扩展（rms delay spread）。',
+  r'(b) 要使该信道表现为平坦衰落，符号速率 \(R_s\) 应取多少？设 \(R_s=1/T_s\)，\(T_s\) 为信号的符号周期。',
+ ],
+ 'p2q1': [
+  r'对于瑞利衰落信道，平均衰落持续时间（AFD）可以表示为：',
+  r'最大多普勒频移为 50 Hz。保证可接受性能所需的最小信号强度是信号强度 rms 值的 0.1 倍。求信号强度低于这个可接受值的平均持续时间。',
+ ],
+ 'p2q2': [
+  r'考虑蜂窝网络中一个位于两个基站之间的移动台。它从两个基站收到的信号功率（dBm）为',
+  r'其中 \(Z_1\) 和 \(Z_2\) 是随机变量，\(\sim\mathcal N(0,\sigma^2)\)。当 \(P_{r,1}\) 和 \(P_{r,2}\) <b>都</b>低于门限 T 时，定义为发生中断；T 比 W 小 Δ。',
+  r'(a) 解释 W、\(Z_1\)、\(Z_2\) 这几项的含义。',
+  r'(b) 若 \(Z_1\) 与 \(Z_2\) 统计独立，证明中断概率为 \(P_{out}=[Q(\Delta/\sigma)]^2\)。',
+  r'(c) 现在假设 \(Z_1\) 与 \(Z_2\) 按如下方式相关：\(Z_1=aY_1+bY\)，\(Z_2=aY_2+bY\)，其中 Y、\(Y_1\)、\(Y_2\) 是相互独立的随机变量，\(\sim\mathcal N(0,\sigma^2)\)。证明',
+ ],
+ 'p2q3': [
+  r'两个用户通过 AWGN 信道同时向同一个接收机发送信号。来自每个发射机的接收功率都是 10 mW，总接收噪声功率为 0.1 mW，每个用户的信道带宽为 20 MHz。',
+  r'(a) 接收机先解码用户 1 的信号。解码时，用户 2 的信号相当于噪声（假设它是 AWGN）。用户 1 信道的容量是多少？',
+  r'(b) 采用多用户检测（MUD）后，解码器把用户 1 的信号从接收信号中完全去掉。用户 2 信道的容量是多少？',
+ ],
+ 'p3q1': [
+  r'考虑如下调制信号，消息信号被调制在幅度 \(A_i\) 和相位 \(\phi_j\) 上。',
+  r'(a) 求该信号的一组标准正交基。',
+  r'(b) 求该信号所张成的信号空间的维数。',
+ ],
+ 'p3q2': [
+  r'某二进制磁盘存储信道可以近似为离散时间 AWGN 信道：输入 \(x_n\in\{0,1\}\)，输出 \(y_n=x_n+w_n\)，\(y_n\) 也是读盘设备在时刻 n 的判决变量。噪声方差与 \(x_n\) 的取值有关：\(w_n\) 的条件高斯概率密度如下，其中 \(\sigma_1^2>\sigma_0^2\)。',
+  r'对所有 n，假设 \(P(x_n=0)=P(x_n=1)=\tfrac12\)。',
+  r'(a) 求 ML 检测器根据 \(y_n\) 的值判决 \(\hat x_n\in\{0,1\}\) 的判决规则，并用 \(\sigma_0^2\) 和 \(\sigma_1^2\) 表示。',
+  r'(b) 求相应的误比特概率 \(P_e\)。',
+ ],
+ 'p3q3': [
+  r'利用 BPSK 系统的近似式 \(P_{floor}\approx\left(\dfrac{\sigma_{T_m}}{T_b}\right)^2\)，求 QPSK 系统在时延扩展 \(\sigma_{T_m}\) = 3 µs 的信道上、不可约误码平台（irreducible error floor）为 \(10^{-3}\) 时能传输的数据速率。',
+ ],
+ 'p4q1': [
+  r'降低中断概率的一种常用技术是宏分集（Macro-diversity）：移动台发出的信号由多个基站同时接收和处理。解释为什么这样能降低中断概率。',
+ ],
+ 'p4q2': [
+  r'考虑一个 DPSK 传输系统，发射信号功率和噪声功率都是 1 W。DPSK 的误符号概率为 \(\tfrac12e^{-\gamma}\)，γ 为信噪比。',
+  r'(a) 若 SNR 为 \(\gamma=\dfrac{\alpha P_T}{\sigma_n^2}\)，其中 α 以概率 1/3 取 8、以概率 2/3 取 11；\(P_T\) 和 \(\alpha P_T\) 分别是发射和接收信号功率，\(\sigma_n^2\) 是噪声功率。求平均 SNR \(\bar\gamma\) 和平均误符号概率 \(\bar P_s\)。',
+  r'(b) 若接收机采用 2 支路 MRC，每条支路的 SNR 都服从 (a) 中的分布，求输出 SNR \(\bar\gamma_\Sigma\)、平均误符号概率 \(\bar P_s\)、阵列增益 g 和分集增益 d。',
+  r'(c) 现在两条路径不再独立：\(\gamma_1=r_1+\beta\)，\(\gamma_2=r_2+\beta\)。阴影项 β 以概率 1/3 取 7、以概率 2/3 取 10，且与 \(r_1\)、\(r_2\) 独立；\(r_i\)（i = 1, 2）以概率 1/3 取 0.6、以概率 2/3 取 1.2。求 \(\bar\gamma_\Sigma\)、\(\bar P_{s,diversity}\)、g 和 d。',
+ ],
+ 'p4q3': [
+  r'一个 BPSK 系统用 M 根天线在衰落信道上发送消息 {b}，b 等概取 +1 或 −1。来自第 k 根发射天线的接收信号为 \(y_k=\alpha_kb\sqrt E+w_k,\ k=1,2,\dots,M\)，其中 E 是发射信号能量，\(\alpha_k\) 是实值的乘性衰减因子，\(w_k\) 是零均值、方差为 \(\sigma_2^2\) 的加性高斯白噪声。衰减因子 \(\alpha_k\) 可建模为均值 \(\alpha_0\)、方差 \(\sigma_1^2\) 的高斯过程。接收机用其输出 z 作为判决变量，判决规则为：z &gt; 0 时 \(\hat b=+1\)，z ≤ 0 时 \(\hat b=-1\)。',
+  r'(a) 推导 M = 1 时平均误比特概率的表达式。',
+  r'(b) 推导接收机采用等权合并（equal weight combining）时的平均误比特概率。',
+ ],
+ 'p5q1': [
+  r'考虑一个 3 信道 MIMO 系统，三个信道的 SNR 分别为 80、40、40，信道带宽为 10 MHz。假设发射端已知信道（informed transmitter），用注水法（Water-filling）求信道容量。',
+ ],
+ 'p5q2': [
+  r'Alamouti 方案用 A、B 两根天线，在 2 个符号周期内发送两个复值符号 \(u_1\) 和 \(u_2\)：第一个符号周期发送 \(x_A(1)=u_1\)、\(x_B(1)=u_2\)，第二个符号周期发送 \(x_A(2)=-u_2^*\)、\(x_B(2)=u_1^*\)。设信道增益 \(h_A(1)=h_A(2)=h_A\)、\(h_B(1)=h_B(2)=h_B\)，\(h_A,h_B\sim\mathcal N(0,1)\)，信道噪声 \(\sim\mathcal N(0,N_0)\)。推导判决变量。',
+ ],
+ 'p5q3': [
+  r'考虑一个 8 × 4 MIMO 系统。分集–复用折中公式为 \(d(r)=(N-r)(M-r)\)，其中 r 和 d 都是整数。',
+  r'a) 若要求 \(P_e=\gamma^{-d}\le10^{-3}\)，SNR γ = 10 dB，该信道每 Hz 的最大传输速率是多少？',
+  r'b) 在 (a) 求出的 r 下，得到的 \(P_e\) 是多少？',
+ ],
+ 'p6q1': [
+  r'图 1 是二进制 PAM 通信系统的离散时间模型：\(a(n)\sqrt{E_b}\to H(z)\to(+w(n))\to U(z)\to z(n)\to\) 检测器 \(\to\hat a(n)\)。',
+  r'图中 w(n) 是高斯白噪声，自相关函数为 \(R_w(k)=\dfrac{N_0}{2}\delta(k)\)。',
+  r'信道 H(Z) 会引入符号间干扰（ISI），模型为 \(H(Z)=1+\alpha Z^{-1},\ 0\lt\alpha\lt\tfrac12\)。',
+  r'发送数据建模为独立同分布的符号序列 \(\{a_n\}\)，\(a_n\) 等概取 ±1。检测器按如下规则判决：\(z(n)\ge0\) 时 \(\hat a(n)=1\)，\(z(n)\lt0\) 时 \(\hat a(n)=-1\)。',
+  r'考虑一种均衡器设计：\(U(z)=1-\alpha z^{-1}\)。',
+  r'(a) 分别推导不用均衡器和使用上述均衡器时平均误比特概率的表达式。',
+  r'(b) 系统将工作在高信噪比下。用还是不用上述均衡器更好？说明理由。',
+ ],
+ 'p6q2': [
+  r'考虑如下 ISI 信道上二进制传输的离散时间模型：\(y_n=b_n+a\cdot b_{n-1}+w_n\)，其中 \(b_n\in\{\pm1\}\) 是第 n 个发送比特，a 是固定的实系数，0 &lt; a &lt; 1，\(w_n\) 是 i.i.d. 零均值高斯噪声，方差为 0.1。\(\{b_n\}\) 等概，且对不同 n 相互独立。',
+  r'(a) 若判决 \(\hat b_n=\mathrm{sgn}(y_n)\)，求误比特概率 \(P(\hat b_n\ne b_n)\)。',
+  r'(b) 若使用理想迫零（zero-forcing）均衡器，并根据均衡器输出的正负号判决，求所得的 BER。',
+ ],
+ 'p6q3': [
+  r'考虑在 2 抽头离散时间 ISI 信道上传输 i.i.d.、等概的二进制幅度 \(A_n\in\{\pm1\}\)。接收样本为 \(y_n=A_nx_0+A_{n-1}x_1+z_n\)，其中 \(\{z_n\}\) 是 i.i.d. 零均值高斯噪声，方差为 \(\sigma^2\)。设 \(x_0=1\)，\(x_1=1/2\)，\(\sigma^2=1\)。',
+  r'(a) 考虑一个带参数 q 的线性均衡器，判决变量为 \(u_n=y_n+qy_{n+1}\)。求使 \(E[(u_n-A_n)^2]\) 最小的 q。若按 \(u_n\) 的正负号判决，即 \(\hat A_n=\mathrm{sgn}(u_n)\)，错误概率是多少？',
+  r'(b) 考虑一个简单的判决反馈均衡器（DFE），判决变量为 \(u_n=y_n-\hat A_{n-1}x_1\)。\(\hat A_n\) 由 \(u_n\) 的正负号决定，\(\hat A_{n-1}\) 由 \(u_{n-1}\) 的正负号决定，依此类推。设“时间”从 n = 1 开始，且 \(A_0=0\)。求 n 很大（n → ∞）时的错误概率。',
+ ],
+ 'p7q1': [
+  r'OFDM 信号 x(t) 经过多径信道传输，接收信号为 \(y(t)=h_0x(t)+h_1x(t-\tau)+w(t)\)，其中 \(h_0,h_1\) 是相互独立的信道增益，τ 是时延，w(t) 是零均值、方差 \(\sigma^2=1\) 的 AWGN。测得多普勒扩展为 \(B_d\)，相干带宽为 \(B_C\)。',
+  r'(a) 在总带宽 B Hz 固定的情况下，需要合理选择子载波数 N，使每个子信道都可以看作慢、平坦衰落。说明 N 的选取原则。',
+  r'(b) 当 N = 4、\(h_0\) = 0.8、\(h_1\) = 0.6 时，求各子信道的信道增益系数 \(H_k\)。',
+  r'(c) 已知 (b) 中的 \(H_k\)，发射端给第 k 个子信道分配功率 \(P_k\)，使所有子信道的容量相同。在总功率约束 \(\sum_{k=1}^{N}P_k=10\) 下，求每个子信道的 \(P_k\)。',
+  r'(d) 在相同的 \(H_k\) 和 (c) 的总功率约束下，求最大和容量（bit/s/Hz）。',
+ ],
+ 'p7q2': [
+  r'考虑一个 OFDM 系统的设计：目标是在 600 kHz 的可用带宽内，用 16-QAM 以 2 Mbps 的速率传输数据。已知信道时延扩展最大为 20 μs，可设循环前缀等于最大时延扩展。求子载波总数和 OFDM 符号周期。',
+ ],
+ 'p7q3': [
+  r'某移动信道的 Z 变换为 \(H(Z)=1+0.9Z^{-1}\)。为抑制该信道的 ISI，系统改用 OFDM 设计。所需的最小循环前缀是多少？说明理由。',
+ ],
+}
+
+RESID = '''        <li>(b) 残差 \\(e_i=M_i-\\hat y_i\\)：先用拟合直线算预测值 \\(\\hat y_i=K_{dB}-\\gamma x_i=-30.79-3.94\\,x_i\\)，再用实测值 \\(M_i\\) 减去它<!-- ZH:resid -->
+          <div class="tw"><table class="mini"><thead><tr><th>d (m)</th><th>\\(x_i\\)</th><th>\\(\\gamma x_i\\)</th><th>预测 \\(\\hat y_i\\)</th><th>实测 \\(M_i\\)</th><th>残差 \\(e_i\\)</th><th>\\(e_i^2\\)</th></tr></thead><tbody>
+            <tr><td>5</td><td>6.99</td><td>27.54</td><td>−58.33</td><td>−60</td><td>−1.67</td><td>2.78</td></tr>
+            <tr><td>25</td><td>13.98</td><td>55.09</td><td>−85.88</td><td>−80</td><td>+5.88</td><td>34.53</td></tr>
+            <tr><td>65</td><td>18.13</td><td>71.44</td><td>−102.23</td><td>−105</td><td>−2.77</td><td>7.68</td></tr>
+            <tr><td>110</td><td>20.41</td><td>80.44</td><td>−111.23</td><td>−115</td><td>−3.77</td><td>14.20</td></tr>
+            <tr><td>400</td><td>26.02</td><td>102.53</td><td>−133.32</td><td>−130</td><td>+3.32</td><td>11.05</td></tr>
+            <tr><td>1000</td><td>30.00</td><td>118.22</td><td>−149.01</td><td>−150</td><td>−0.99</td><td>0.99</td></tr>
+          </tbody></table></div>
+          \\(\\sum e_i^2=71.23\\)，均方误差 \\(\\sigma_\\psi^2=71.23/6=11.87\\)，\\(\\sigma_\\psi=3.45\\) dB。（最小二乘的残差加起来正好是 0，可以用来检查有没有算错。）<!-- /ZH:resid --></li>
+'''
+RESID_OLD = '        <li>(b) 残差依次为 −1.67、5.88、−2.77、−3.77、3.32、−0.99，均方误差 \\(\\sigma_\\psi^2=11.87\\)，\\(\\sigma_\\psi=3.45\\) dB。</li>\n'
+
+LAB_OLD = '<span>Original question</span>'
+LAB_NEW = '<span>Original question · 中英对照</span>'
+
+total = 0
+for i in range(1, 8):
+    f = HERE / f'prac_{i}.html'
+    s = f.read_text(encoding='utf-8')
+    s = re.sub(r'\n[ \t]*<p class="zh" lang="zh-CN">.*?</p>(?=\n)', '', s)
+    s = s.replace(LAB_OLD, LAB_NEW)
+
+    def fix(m):
+        global total
+        qid, body = m.group(1), m.group(2)
+        zh = ZH[qid]
+        paras = list(re.finditer(r'^([ \t]*)<p>.*?</p>$', body, re.M))
+        assert len(paras) == len(zh), (qid, len(paras), len(zh))
+        out, pos = [], 0
+        for p, z in zip(paras, zh):
+            out.append(body[pos:p.end()])
+            out.append(f'\n{p.group(1)}<p class="zh" lang="zh-CN">{z}</p>')
+            pos = p.end()
+        out.append(body[pos:])
+        total += len(zh)
+        return m.group(0).replace(body, ''.join(out), 1)
+
+    s = re.sub(r'<article class="ex" id="([^"]+)">.*?<div class="orig" lang="en">(.*?)</div>\n    <div class="chips">', fix, s, flags=re.S)
+    if i == 1:
+        s = re.sub(r'<br><span class="zh-th">.*?</span>', '', s)
+        s = s.replace('<th>Distance from Transmitter \\(d_i\\) (m)</th>',
+                      '<th>Distance from Transmitter \\(d_i\\) (m)<br><span class="zh-th">距发射机距离</span></th>')
+        if '<!-- ZH:resid -->' not in s:
+            assert RESID_OLD in s
+            s = s.replace(RESID_OLD, RESID)
+    f.write_text(s, encoding='utf-8')
+print('inserted', total, 'zh paragraphs')

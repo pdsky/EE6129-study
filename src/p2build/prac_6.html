@@ -2,14 +2,21 @@
 
   <article class="ex" id="p6q1">
     <header><span class="pg">P6 · Q1</span><h3>二进制 PAM：加不加这个均衡器</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 6</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 6</span></div>
       <p>Figure 1 shows a discrete-time model of a binary PAM communication system: \(a(n)\sqrt{E_b}\to H(z)\to(+w(n))\to U(z)\to z(n)\to\) Detector \(\to\hat a(n)\).</p>
+      <p class="zh" lang="zh-CN">图 1 是二进制 PAM 通信系统的离散时间模型：\(a(n)\sqrt{E_b}\to H(z)\to(+w(n))\to U(z)\to z(n)\to\) 检测器 \(\to\hat a(n)\)。</p>
       <p>In the Figure, w(n) is a white Gaussian noise with the autocorrelation function, \(R_w(k)=\dfrac{N_0}{2}\delta(k)\).</p>
+      <p class="zh" lang="zh-CN">图中 w(n) 是高斯白噪声，自相关函数为 \(R_w(k)=\dfrac{N_0}{2}\delta(k)\)。</p>
       <p>The channel, H(Z), introduces Inter-Symbol Interference (ISI) and is modelled as, \(H(Z)=1+\alpha Z^{-1},\ 0<\alpha<\tfrac12\).</p>
+      <p class="zh" lang="zh-CN">信道 H(Z) 会引入符号间干扰（ISI），模型为 \(H(Z)=1+\alpha Z^{-1},\ 0\lt\alpha\lt\tfrac12\)。</p>
       <p>The transmitted data is modelled as a sequence of independent and identically distributed symbols, \(\{a_n\}\), where \(a_n\) is equally likely to be ±1. The detector detects the transmitted data according to the following rule, \(\hat a(n)=1\) if \(z(n)\ge0\), −1 if \(z(n)<0\).</p>
+      <p class="zh" lang="zh-CN">发送数据建模为独立同分布的符号序列 \(\{a_n\}\)，\(a_n\) 等概取 ±1。检测器按如下规则判决：\(z(n)\ge0\) 时 \(\hat a(n)=1\)，\(z(n)\lt0\) 时 \(\hat a(n)=-1\)。</p>
       <p>Consider an equalizer design, where \(U(z)=1-\alpha z^{-1}\).</p>
+      <p class="zh" lang="zh-CN">考虑一种均衡器设计：\(U(z)=1-\alpha z^{-1}\)。</p>
       <p>(a) Derive the expressions for the average bit error probability when no equalizer is used and when the above equalizer is used.</p>
+      <p class="zh" lang="zh-CN">(a) 分别推导不用均衡器和使用上述均衡器时平均误比特概率的表达式。</p>
       <p>(b) The system is to operate at high signal-to-noise ratio. Will it be better for the system to operate with or without the above equalizer? Explain your answer.</p>
+      <p class="zh" lang="zh-CN">(b) 系统将工作在高信噪比下。用还是不用上述均衡器更好？说明理由。</p>
     </div>
     <div class="chips"><span class="chip">ISI 条件误码率</span><span class="chip">滤波后噪声方差</span><span class="chip">高 SNR 看最坏项</span><span class="chip src">讲义第 6 章 p.22–28</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -30,10 +37,13 @@
 
   <article class="ex" id="p6q2">
     <header><span class="pg">P6 · Q2</span><h3>ISI 信道：直接判决 vs 理想迫零</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 6</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 6</span></div>
       <p>Consider the following discrete time model for binary transmission over an ISI channel. \(y_n=b_n+a\cdot b_{n-1}+w_n\), where \(b_n\in\{\pm1\}\) is the nth transmitted bit, a is a fixed real coefficient, 0 &lt; a &lt; 1 and \(w_n\) is i.i.d. zero-mean Gaussian with variance 0.1. \(\{b_n\}\) are equally likely and independent in n.</p>
+      <p class="zh" lang="zh-CN">考虑如下 ISI 信道上二进制传输的离散时间模型：\(y_n=b_n+a\cdot b_{n-1}+w_n\)，其中 \(b_n\in\{\pm1\}\) 是第 n 个发送比特，a 是固定的实系数，0 &lt; a &lt; 1，\(w_n\) 是 i.i.d. 零均值高斯噪声，方差为 0.1。\(\{b_n\}\) 等概，且对不同 n 相互独立。</p>
       <p>(a) Find the bit error probability \(P(\hat b_n\ne b_n)\) if \(\hat b_n=\mathrm{sgn}(y_n)\).</p>
+      <p class="zh" lang="zh-CN">(a) 若判决 \(\hat b_n=\mathrm{sgn}(y_n)\)，求误比特概率 \(P(\hat b_n\ne b_n)\)。</p>
       <p>(b) Find the resulting BER if an ideal zero-forcing equalizer is used and the decision is made based on the sign of the equalizer output.</p>
+      <p class="zh" lang="zh-CN">(b) 若使用理想迫零（zero-forcing）均衡器，并根据均衡器输出的正负号判决，求所得的 BER。</p>
     </div>
     <div class="chips"><span class="chip">条件误码率求平均</span><span class="chip">迫零噪声放大</span><span class="chip">等比级数</span><span class="chip src">讲义第 6 章 p.23–28</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -53,10 +63,13 @@
 
   <article class="ex" id="p6q3">
     <header><span class="pg">P6 · Q3</span><h3>MMSE 线性均衡 vs 判决反馈均衡</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 6</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 6</span></div>
       <p>Consider transmitting i.i.d. and equally likely binary amplitudes \(A_n\in\{\pm1\}\) over a 2-tap discrete-time ISI channel. The received samples can be expressed as, \(y_n=A_nx_0+A_{n-1}x_1+z_n\), where \(\{z_n\}\) is i.i.d. zero mean Gaussian noise, with variance \(\sigma^2\). Assume \(x_0=1\), \(x_1=1/2\), and \(\sigma^2=1\).</p>
+      <p class="zh" lang="zh-CN">考虑在 2 抽头离散时间 ISI 信道上传输 i.i.d.、等概的二进制幅度 \(A_n\in\{\pm1\}\)。接收样本为 \(y_n=A_nx_0+A_{n-1}x_1+z_n\)，其中 \(\{z_n\}\) 是 i.i.d. 零均值高斯噪声，方差为 \(\sigma^2\)。设 \(x_0=1\)，\(x_1=1/2\)，\(\sigma^2=1\)。</p>
       <p>(a) Consider a linear equalizer, that has a parameter q and the decision variable, \(u_n=y_n+qy_{n+1}\). Determine q such that \(E[(u_n-A_n)^2]\) is minimized. With decisions based on the sign of \(u_n\), i.e. \(\hat A_n=\mathrm{sgn}(u_n)\), what is the resulting error probability?</p>
+      <p class="zh" lang="zh-CN">(a) 考虑一个带参数 q 的线性均衡器，判决变量为 \(u_n=y_n+qy_{n+1}\)。求使 \(E[(u_n-A_n)^2]\) 最小的 q。若按 \(u_n\) 的正负号判决，即 \(\hat A_n=\mathrm{sgn}(u_n)\)，错误概率是多少？</p>
       <p>(b) Consider a simple decision-feedback equalizer, that forms the decision variable, \(u_n=y_n-\hat A_{n-1}x_1\). \(\hat A_n\) is determined based on the sign of \(u_n\), \(\hat A_{n-1}\) is determined based on the sign of \(u_{n-1}\), etc. Assume that "time" starts at n = 1 and that \(A_0=0\). Determine the resulting error probability for large n (n → ∞).</p>
+      <p class="zh" lang="zh-CN">(b) 考虑一个简单的判决反馈均衡器（DFE），判决变量为 \(u_n=y_n-\hat A_{n-1}x_1\)。\(\hat A_n\) 由 \(u_n\) 的正负号决定，\(\hat A_{n-1}\) 由 \(u_{n-1}\) 的正负号决定，依此类推。设“时间”从 n = 1 开始，且 \(A_0=0\)。求 n 很大（n → ∞）时的错误概率。</p>
     </div>
     <div class="chips"><span class="chip">MMSE 求最优系数</span><span class="chip">DFE 错误传播</span><span class="chip">马尔可夫稳态</span><span class="chip src">讲义第 6 章 p.26–34</span></div>
     <button class="reveal" type="button">显示解答</button>

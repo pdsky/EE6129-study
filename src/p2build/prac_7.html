@@ -2,12 +2,17 @@
 
   <article class="ex" id="p7q1">
     <header><span class="pg">P7 · Q1</span><h3>两径信道上的 OFDM：选 N、算 H_k、分功率</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 7</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 7</span></div>
       <p>An OFDM signal x(t) is transmitted through a multi-path channel. The received signals can be expressed as, \(y(t)=h_0x(t)+h_1x(t-\tau)+w(t)\), where \(h_0,h_1\) are independent channel gains, τ is the time delay, and w(t) is the AWGN with zero-mean and variance \(\sigma^2=1\). The Doppler spread and Coherence bandwidth have been measured to be \(B_d\) and \(B_C\) respectively.</p>
+      <p class="zh" lang="zh-CN">OFDM 信号 x(t) 经过多径信道传输，接收信号为 \(y(t)=h_0x(t)+h_1x(t-\tau)+w(t)\)，其中 \(h_0,h_1\) 是相互独立的信道增益，τ 是时延，w(t) 是零均值、方差 \(\sigma^2=1\) 的 AWGN。测得多普勒扩展为 \(B_d\)，相干带宽为 \(B_C\)。</p>
       <p>(a) Given a fixed total bandwidth B Hz, the number of sub-carriers N needs to be carefully selected so that each sub-channel could be regarded as experiencing slow flat fading. Explain the principle of how the value of N is selected.</p>
+      <p class="zh" lang="zh-CN">(a) 在总带宽 B Hz 固定的情况下，需要合理选择子载波数 N，使每个子信道都可以看作慢、平坦衰落。说明 N 的选取原则。</p>
       <p>(b) For N = 4, \(h_0\) = 0.8, and \(h_1\) = 0.6, find the values of the channel gain coefficients \(H_k\) for each sub-channel.</p>
+      <p class="zh" lang="zh-CN">(b) 当 N = 4、\(h_0\) = 0.8、\(h_1\) = 0.6 时，求各子信道的信道增益系数 \(H_k\)。</p>
       <p>(c) Given the value of \(H_k\) from (b), the transmitter allocates power \(P_k\) to the kth sub-channel such that each sub-channel has the same capacity. Under the sum-power constraint, \(\sum_{k=1}^{N}P_k=10\), find the value of \(P_k\) for each sub-channel.</p>
+      <p class="zh" lang="zh-CN">(c) 已知 (b) 中的 \(H_k\)，发射端给第 k 个子信道分配功率 \(P_k\)，使所有子信道的容量相同。在总功率约束 \(\sum_{k=1}^{N}P_k=10\) 下，求每个子信道的 \(P_k\)。</p>
       <p>(d) Given the same value of \(H_k\) and the sum-power constraint from (c), find the maximum sum capacity in bits per second per Hertz.</p>
+      <p class="zh" lang="zh-CN">(d) 在相同的 \(H_k\) 和 (c) 的总功率约束下，求最大和容量（bit/s/Hz）。</p>
     </div>
     <div class="chips"><span class="chip">慢平坦衰落条件</span><span class="chip">H_k = DFT{h}</span><span class="chip">等容量分配</span><span class="chip">注水</span><span class="chip src">讲义第 7 章 p.5、p.15、p.24</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -29,8 +34,9 @@
 
   <article class="ex" id="p7q2">
     <header><span class="pg">P7 · Q2</span><h3>设计一个 2 Mbps 的 OFDM 系统</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 7</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 7</span></div>
       <p>Consider the design of an OFDM system. The goal is to transmit data at a rate of 2 Mbps using 16-QAM with an available bandwidth of 600 kHz. It is known that the delay spread of the channel is up to a maximum of 20 μs. You can assume the cyclic prefix to be equal to the maximum delay spread. Find the total number of sub-carriers and the OFDM symbol duration.</p>
+      <p class="zh" lang="zh-CN">考虑一个 OFDM 系统的设计：目标是在 600 kHz 的可用带宽内，用 16-QAM 以 2 Mbps 的速率传输数据。已知信道时延扩展最大为 20 μs，可设循环前缀等于最大时延扩展。求子载波总数和 OFDM 符号周期。</p>
     </div>
     <div class="chips"><span class="chip">Δf = B/N</span><span class="chip">循环前缀开销</span><span class="chip src">讲义第 7 章 p.8、p.17–18</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -50,8 +56,9 @@
 
   <article class="ex" id="p7q3">
     <header><span class="pg">P7 · Q3</span><h3>最短的循环前缀</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 7</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 7</span></div>
       <p>The Z–transform of a mobile channel is \(H(Z)=1+0.9Z^{-1}\). In order to mitigate the ISI of this channel, the system is now designed with OFDM. What is the minimum cyclic-prefix required. Explain your answer.</p>
+      <p class="zh" lang="zh-CN">某移动信道的 Z 变换为 \(H(Z)=1+0.9Z^{-1}\)。为抑制该信道的 ISI，系统改用 OFDM 设计。所需的最小循环前缀是多少？说明理由。</p>
     </div>
     <div class="chips"><span class="chip">信道长度</span><span class="chip">CP ≥ L − 1</span><span class="chip src">讲义第 7 章 p.17–22</span></div>
     <button class="reveal" type="button">显示解答</button>

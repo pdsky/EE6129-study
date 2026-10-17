@@ -2,13 +2,16 @@
 
   <article class="ex" id="p1q1">
     <header><span class="pg">P1 · Q1</span><h3>拟合路径损耗模型，再求中断概率</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 1</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 1</span></div>
       <p>A set of empirical path loss measurements is given in Table 1, where \(P_t\) and \(P_r\) are the transmitted power and received power respectively.</p>
-      <div class="tw"><table class="mini"><thead><tr><th>Distance from Transmitter \(d_i\) (m)</th><th>\((P_r/P_t)_{dB}\)</th></tr></thead><tbody>
+      <p class="zh" lang="zh-CN">表 1 给出了一组实测路径损耗数据，其中 \(P_t\) 和 \(P_r\) 分别是发射功率和接收功率。</p>
+      <div class="tw"><table class="mini"><thead><tr><th>Distance from Transmitter \(d_i\) (m)<br><span class="zh-th">距发射机距离</span></th><th>\((P_r/P_t)_{dB}\)</th></tr></thead><tbody>
         <tr><td>5</td><td>−60</td></tr><tr><td>25</td><td>−80</td></tr><tr><td>65</td><td>−105</td></tr><tr><td>110</td><td>−115</td></tr><tr><td>400</td><td>−130</td></tr><tr><td>1,000</td><td>−150</td></tr>
       </tbody></table></div>
       <p>(a) Using the path loss model, \(P_r=P_tK[1/d]^{\gamma}\), find the values of K in dB and γ that best fit the data shown in the Table.</p>
+      <p class="zh" lang="zh-CN">(a) 使用路径损耗模型 \(P_r=P_tK[1/d]^{\gamma}\)，求最能拟合表中数据的 K（以 dB 表示）和 γ。</p>
       <p>(b) Assuming the presence of shadowing and that the received power at a distance d due to path loss alone is 10 dB above the required minimum power for non-outage, find the outage probability at d.</p>
+      <p class="zh" lang="zh-CN">(b) 假设存在阴影衰落，并且在距离 d 处仅由路径损耗决定的接收功率比“不中断”所需的最小功率高 10 dB，求距离 d 处的中断概率。</p>
     </div>
     <div class="chips"><span class="chip">简化路径损耗模型</span><span class="chip">最小二乘拟合</span><span class="chip">阴影方差 = MSE</span><span class="chip">中断概率 Q 函数</span><span class="chip src">讲义第 2 章 p.8、12–15</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -18,7 +21,16 @@
         <li>把距离换成 \(x_i=10\log_{10}d_i\)：6.99、13.98、18.13、20.41、26.02、30.00（平均 \(\bar x=19.26\)）；\(y_i\) 平均 \(\bar y=-106.67\)。</li>
         <li>直线斜率 \(=\dfrac{\sum(x_i-\bar x)(y_i-\bar y)}{\sum(x_i-\bar x)^2}=-3.94\)，所以 \(\gamma=3.94\)。</li>
         <li>截距 \(K_{dB}=\bar y+\gamma\bar x=-106.67+3.94\times19.26=-30.8\) dB。</li>
-        <li>(b) 残差依次为 −1.67、5.88、−2.77、−3.77、3.32、−0.99，均方误差 \(\sigma_\psi^2=11.87\)，\(\sigma_\psi=3.45\) dB。</li>
+        <li>(b) 残差 \(e_i=M_i-\hat y_i\)：先用拟合直线算预测值 \(\hat y_i=K_{dB}-\gamma x_i=-30.79-3.94\,x_i\)，再用实测值 \(M_i\) 减去它<!-- ZH:resid -->
+          <div class="tw"><table class="mini"><thead><tr><th>d (m)</th><th>\(x_i\)</th><th>\(\gamma x_i\)</th><th>预测 \(\hat y_i\)</th><th>实测 \(M_i\)</th><th>残差 \(e_i\)</th><th>\(e_i^2\)</th></tr></thead><tbody>
+            <tr><td>5</td><td>6.99</td><td>27.54</td><td>−58.33</td><td>−60</td><td>−1.67</td><td>2.78</td></tr>
+            <tr><td>25</td><td>13.98</td><td>55.09</td><td>−85.88</td><td>−80</td><td>+5.88</td><td>34.53</td></tr>
+            <tr><td>65</td><td>18.13</td><td>71.44</td><td>−102.23</td><td>−105</td><td>−2.77</td><td>7.68</td></tr>
+            <tr><td>110</td><td>20.41</td><td>80.44</td><td>−111.23</td><td>−115</td><td>−3.77</td><td>14.20</td></tr>
+            <tr><td>400</td><td>26.02</td><td>102.53</td><td>−133.32</td><td>−130</td><td>+3.32</td><td>11.05</td></tr>
+            <tr><td>1000</td><td>30.00</td><td>118.22</td><td>−149.01</td><td>−150</td><td>−0.99</td><td>0.99</td></tr>
+          </tbody></table></div>
+          \(\sum e_i^2=71.23\)，均方误差 \(\sigma_\psi^2=71.23/6=11.87\)，\(\sigma_\psi=3.45\) dB。（最小二乘的残差加起来正好是 0，可以用来检查有没有算错。）<!-- /ZH:resid --></li>
         <li>平均功率比门限高 10 dB：\(P_{out}=Q(10/\sigma_\psi)=Q(2.90)=1.85\times10^{-3}\)。</li>
       </ol>
       <div class="ans"><b>按标准最小二乘：</b>K ≈ −30.8 dB，γ ≈ 3.94，σ²_ψ ≈ 11.9 dB²，P_out ≈ 1.85 × 10⁻³</div>
@@ -30,10 +42,13 @@
 
   <article class="ex" id="p1q2">
     <header><span class="pg">P1 · Q2</span><h3>对数正态阴影下的中断概率</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 1</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 1</span></div>
       <p>Consider a cellular system where the received signal power has a log-normal distribution with mean \(\mu_\psi\) dBm and standard deviation \(\sigma_\psi\) dBm. In order to avoid outage, the received signal power is required to be above 10 dBm.</p>
+      <p class="zh" lang="zh-CN">考虑一个蜂窝系统，接收信号功率服从对数正态分布，均值为 \(\mu_\psi\) dBm，标准差为 \(\sigma_\psi\) dBm。为避免中断，接收信号功率必须高于 10 dBm。</p>
       <p>(a) What is the outage probability when \(\mu_\psi\) = 15 dBm and \(\sigma_\psi\) = 8 dBm?</p>
+      <p class="zh" lang="zh-CN">(a) 当 \(\mu_\psi\) = 15 dBm、\(\sigma_\psi\) = 8 dBm 时，中断概率是多少？</p>
       <p>(b) For \(\sigma_\psi\) = 4 dBm, what value of \(\mu_\psi\) is required such that the outage probability is less than 1%?</p>
+      <p class="zh" lang="zh-CN">(b) 若 \(\sigma_\psi\) = 4 dBm，要使中断概率小于 1%，\(\mu_\psi\) 至少要取多少？</p>
     </div>
     <div class="chips"><span class="chip">对数正态 = dB 值高斯</span><span class="chip">Q 函数与反函数</span><span class="chip src">讲义第 2 章 p.11–15</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -52,11 +67,14 @@
 
   <article class="ex" id="p1q3">
     <header><span class="pg">P1 · Q3</span><h3>均匀功率时延分布的时延扩展</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 1</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 1</span></div>
       <p>Consider a channel with the following power delay profile.</p>
+      <p class="zh" lang="zh-CN">考虑一个具有如下功率时延谱（power delay profile）的信道。</p>
       <p class="eq">\(P_r(\tau)=\begin{cases}1 & 0\le\tau\le10\,\mu s\\ 0 & \text{Otherwise}\end{cases}\)</p>
       <p>(a) Compute the mean delay spread and rms delay spread of the channel.</p>
+      <p class="zh" lang="zh-CN">(a) 计算该信道的平均时延扩展（mean delay spread）和均方根时延扩展（rms delay spread）。</p>
       <p>(b) What should the symbol rate, \(R_s\), be for this channel to exhibit flat fading? Assume \(R_s=1/T_s\), where \(T_s\) is the signal symbol duration.</p>
+      <p class="zh" lang="zh-CN">(b) 要使该信道表现为平坦衰落，符号速率 \(R_s\) 应取多少？设 \(R_s=1/T_s\)，\(T_s\) 为信号的符号周期。</p>
     </div>
     <div class="chips"><span class="chip">平均时延 / rms 时延扩展</span><span class="chip">平坦衰落条件 σ/Ts &lt; 0.1</span><span class="chip src">讲义第 2 章 p.30–33</span></div>
     <button class="reveal" type="button">显示解答</button>

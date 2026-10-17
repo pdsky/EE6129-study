@@ -2,8 +2,9 @@
 
   <article class="ex" id="p4q1">
     <header><span class="pg">P4 · Q1</span><h3>宏分集为什么能降低中断概率</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 4</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 4</span></div>
       <p>One common technique used to reduce outage probability is Macro-diversity, where the signal transmitted by a Mobile Station is received and processed by multiple Base Stations. Explain why this might reduce outage probability.</p>
+      <p class="zh" lang="zh-CN">降低中断概率的一种常用技术是宏分集（Macro-diversity）：移动台发出的信号由多个基站同时接收和处理。解释为什么这样能降低中断概率。</p>
     </div>
     <div class="chips"><span class="chip">宏分集</span><span class="chip">阴影衰落</span><span class="chip src">讲义第 4 章 p.3–4</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -22,11 +23,15 @@
 
   <article class="ex" id="p4q2">
     <header><span class="pg">P4 · Q2</span><h3>离散 SNR 分布下的 DPSK 与 MRC</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 4</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 4</span></div>
       <p>Consider a DPSK transmission system, where the transmit signal power and noise power are 1W each. The symbol error probability for DPSK is \(\tfrac12e^{-\gamma}\), where γ is the signal to noise ratio.</p>
+      <p class="zh" lang="zh-CN">考虑一个 DPSK 传输系统，发射信号功率和噪声功率都是 1 W。DPSK 的误符号概率为 \(\tfrac12e^{-\gamma}\)，γ 为信噪比。</p>
       <p>(a) If the SNR γ has a distribution given as, \(\gamma=\dfrac{\alpha P_T}{\sigma_n^2}\), \(\alpha=\begin{cases}8 & \text{with a probability of }\tfrac13\\ 11 & \text{with a probability of }\tfrac23\end{cases}\), where \(P_T\) and \(\alpha P_T\) are the transmitted and received signal powers respectively, and \(\sigma_n^2\) is the noise power. Find the average SNR \(\bar\gamma\) and average symbol error probability \(\bar P_s\).</p>
+      <p class="zh" lang="zh-CN">(a) 若 SNR 为 \(\gamma=\dfrac{\alpha P_T}{\sigma_n^2}\)，其中 α 以概率 1/3 取 8、以概率 2/3 取 11；\(P_T\) 和 \(\alpha P_T\) 分别是发射和接收信号功率，\(\sigma_n^2\) 是噪声功率。求平均 SNR \(\bar\gamma\) 和平均误符号概率 \(\bar P_s\)。</p>
       <p>(b) If the receiver employs a 2-branch MRC technique, and the SNR for each branch has the distribution given in part (a), find the output SNR \(\bar\gamma_\Sigma\), average symbol error probability \(\bar P_s\), array gain g and diversity gain d.</p>
+      <p class="zh" lang="zh-CN">(b) 若接收机采用 2 支路 MRC，每条支路的 SNR 都服从 (a) 中的分布，求输出 SNR \(\bar\gamma_\Sigma\)、平均误符号概率 \(\bar P_s\)、阵列增益 g 和分集增益 d。</p>
       <p>(c) The paths are now not independent. Specifically, \(\gamma_1=r_1+\beta\) and \(\gamma_2=r_2+\beta\), and the shadowing term β has the following distribution, \(\beta=\begin{cases}7 & \text{with a probability of }\tfrac13\\ 10 & \text{with a probability of }\tfrac23\end{cases}\), where β is independent of \(r_1\) and \(r_2\), and \(r_1\) and \(r_2\) have the following distribution, \(r_i=\begin{cases}0.6 & \text{with a probability of }\tfrac13\\ 1.2 & \text{with a probability of }\tfrac23\end{cases}\); for i = 1, 2. Find \(\bar\gamma_\Sigma\), \(\bar P_{s,diversity}\), g and d.</p>
+      <p class="zh" lang="zh-CN">(c) 现在两条路径不再独立：\(\gamma_1=r_1+\beta\)，\(\gamma_2=r_2+\beta\)。阴影项 β 以概率 1/3 取 7、以概率 2/3 取 10，且与 \(r_1\)、\(r_2\) 独立；\(r_i\)（i = 1, 2）以概率 1/3 取 0.6、以概率 2/3 取 1.2。求 \(\bar\gamma_\Sigma\)、\(\bar P_{s,diversity}\)、g 和 d。</p>
     </div>
     <div class="chips"><span class="chip">离散分布求期望</span><span class="chip">MRC：SNR 相加</span><span class="chip">阵列增益 g / 分集增益 d</span><span class="chip">相关削弱分集</span><span class="chip src">讲义第 4 章 p.16、p.21、p.27</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -47,10 +52,13 @@
 
   <article class="ex" id="p4q3">
     <header><span class="pg">P4 · Q3</span><h3>高斯衰落因子下的 BPSK 与等增益合并</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 4</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 4</span></div>
       <p>A BPSK system uses M antennas to transmit a message {b} over a fading channel, where b is equally likely to be +1 or −1. The signal received from the kth transmit antenna can be expressed as \(y_k=\alpha_kb\sqrt E+w_k,\ k=1,2,\dots,M\), where E is the transmitted signal energy, \(\alpha_k\) is a real-value multiplicative dampening factor, and \(w_k\) is an additive white Gaussian noise with zero mean and a variance of \(\sigma_2^2\). The damping factor, \(\alpha_k\) can be modelled as a Gaussian process with mean \(\alpha_0\) and variance \(\sigma_1^2\). The receiver uses its output, z, as the decision variable. The decision rule is, \(\hat b=+1\) when z &gt; 0, −1 when z ≤ 0.</p>
+      <p class="zh" lang="zh-CN">一个 BPSK 系统用 M 根天线在衰落信道上发送消息 {b}，b 等概取 +1 或 −1。来自第 k 根发射天线的接收信号为 \(y_k=\alpha_kb\sqrt E+w_k,\ k=1,2,\dots,M\)，其中 E 是发射信号能量，\(\alpha_k\) 是实值的乘性衰减因子，\(w_k\) 是零均值、方差为 \(\sigma_2^2\) 的加性高斯白噪声。衰减因子 \(\alpha_k\) 可建模为均值 \(\alpha_0\)、方差 \(\sigma_1^2\) 的高斯过程。接收机用其输出 z 作为判决变量，判决规则为：z &gt; 0 时 \(\hat b=+1\)，z ≤ 0 时 \(\hat b=-1\)。</p>
       <p>(a) Derive an expression for the average bit error probability when M = 1.</p>
+      <p class="zh" lang="zh-CN">(a) 推导 M = 1 时平均误比特概率的表达式。</p>
       <p>(b) Derive the average bit error probability for the case when the receiver uses an equal weight combining scheme.</p>
+      <p class="zh" lang="zh-CN">(b) 推导接收机采用等权合并（equal weight combining）时的平均误比特概率。</p>
     </div>
     <div class="chips"><span class="chip">高斯随机变量之和</span><span class="chip">等增益合并</span><span class="chip src">讲义第 4 章 p.19；第 1b 章 p.11</span></div>
     <button class="reveal" type="button">显示解答</button>

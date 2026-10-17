@@ -73,7 +73,10 @@ table.mini{width:auto;min-width:240px}
 .orig-lab{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;font-family:'IBM Plex Mono',monospace;font-size:.66rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-strong);margin-bottom:4px}
 .orig-lab span:last-child{color:var(--muted)}
 .orig p{margin:.4em 0}
-.orig .eq{text-align:center;margin:.6em 0;overflow-x:auto}
+.orig .eq{text-align:center;margin:.6em 0;overflow-x:auto;overflow-y:hidden;padding:2px 0}
+.orig p.zh{margin:-.15em 0 .75em;padding:2px 0 2px 10px;border-left:3px solid var(--accent);background:var(--accent-soft);border-radius:0 6px 6px 0;color:var(--text);font-size:.9rem;line-height:1.7}
+.orig .zh-th{font-weight:400;font-size:.85em;color:var(--muted)}
+.no-zh .orig p.zh,.no-zh .orig .zh-th{display:none}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 2px}
 .chip{font-size:.74rem;border-radius:999px;padding:2px 10px;background:var(--accent-soft);color:var(--accent-strong);font-weight:500}
 .chip.src{background:transparent;border:1px solid var(--border);color:var(--muted)}
@@ -140,6 +143,7 @@ window.MathJax = {
     <button class="tab" role="tab" id="tab-drill" aria-controls="drill" aria-selected="false" data-tab="drill">随机练习</button>
     <span class="spacer"></span>
     <label class="toggle" id="examWrap"><input type="checkbox" id="examMode"> 自测模式（先藏解答）</label>
+    <label class="toggle"><input type="checkbox" id="zhMode" checked> 题目中文对照</label>
     <span class="count" id="count"></span>
   </div>
 
@@ -168,13 +172,16 @@ window.MathJax = {
 
   <article class="ex" id="p1q1">
     <header><span class="pg">P1 · Q1</span><h3>拟合路径损耗模型，再求中断概率</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 1</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 1</span></div>
       <p>A set of empirical path loss measurements is given in Table 1, where \(P_t\) and \(P_r\) are the transmitted power and received power respectively.</p>
-      <div class="tw"><table class="mini"><thead><tr><th>Distance from Transmitter \(d_i\) (m)</th><th>\((P_r/P_t)_{dB}\)</th></tr></thead><tbody>
+      <p class="zh" lang="zh-CN">表 1 给出了一组实测路径损耗数据，其中 \(P_t\) 和 \(P_r\) 分别是发射功率和接收功率。</p>
+      <div class="tw"><table class="mini"><thead><tr><th>Distance from Transmitter \(d_i\) (m)<br><span class="zh-th">距发射机距离</span></th><th>\((P_r/P_t)_{dB}\)</th></tr></thead><tbody>
         <tr><td>5</td><td>−60</td></tr><tr><td>25</td><td>−80</td></tr><tr><td>65</td><td>−105</td></tr><tr><td>110</td><td>−115</td></tr><tr><td>400</td><td>−130</td></tr><tr><td>1,000</td><td>−150</td></tr>
       </tbody></table></div>
       <p>(a) Using the path loss model, \(P_r=P_tK[1/d]^{\gamma}\), find the values of K in dB and γ that best fit the data shown in the Table.</p>
+      <p class="zh" lang="zh-CN">(a) 使用路径损耗模型 \(P_r=P_tK[1/d]^{\gamma}\)，求最能拟合表中数据的 K（以 dB 表示）和 γ。</p>
       <p>(b) Assuming the presence of shadowing and that the received power at a distance d due to path loss alone is 10 dB above the required minimum power for non-outage, find the outage probability at d.</p>
+      <p class="zh" lang="zh-CN">(b) 假设存在阴影衰落，并且在距离 d 处仅由路径损耗决定的接收功率比“不中断”所需的最小功率高 10 dB，求距离 d 处的中断概率。</p>
     </div>
     <div class="chips"><span class="chip">简化路径损耗模型</span><span class="chip">最小二乘拟合</span><span class="chip">阴影方差 = MSE</span><span class="chip">中断概率 Q 函数</span><span class="chip src">讲义第 2 章 p.8、12–15</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -184,7 +191,16 @@ window.MathJax = {
         <li>把距离换成 \(x_i=10\log_{10}d_i\)：6.99、13.98、18.13、20.41、26.02、30.00（平均 \(\bar x=19.26\)）；\(y_i\) 平均 \(\bar y=-106.67\)。</li>
         <li>直线斜率 \(=\dfrac{\sum(x_i-\bar x)(y_i-\bar y)}{\sum(x_i-\bar x)^2}=-3.94\)，所以 \(\gamma=3.94\)。</li>
         <li>截距 \(K_{dB}=\bar y+\gamma\bar x=-106.67+3.94\times19.26=-30.8\) dB。</li>
-        <li>(b) 残差依次为 −1.67、5.88、−2.77、−3.77、3.32、−0.99，均方误差 \(\sigma_\psi^2=11.87\)，\(\sigma_\psi=3.45\) dB。</li>
+        <li>(b) 残差 \(e_i=M_i-\hat y_i\)：先用拟合直线算预测值 \(\hat y_i=K_{dB}-\gamma x_i=-30.79-3.94\,x_i\)，再用实测值 \(M_i\) 减去它<!-- ZH:resid -->
+          <div class="tw"><table class="mini"><thead><tr><th>d (m)</th><th>\(x_i\)</th><th>\(\gamma x_i\)</th><th>预测 \(\hat y_i\)</th><th>实测 \(M_i\)</th><th>残差 \(e_i\)</th><th>\(e_i^2\)</th></tr></thead><tbody>
+            <tr><td>5</td><td>6.99</td><td>27.54</td><td>−58.33</td><td>−60</td><td>−1.67</td><td>2.78</td></tr>
+            <tr><td>25</td><td>13.98</td><td>55.09</td><td>−85.88</td><td>−80</td><td>+5.88</td><td>34.53</td></tr>
+            <tr><td>65</td><td>18.13</td><td>71.44</td><td>−102.23</td><td>−105</td><td>−2.77</td><td>7.68</td></tr>
+            <tr><td>110</td><td>20.41</td><td>80.44</td><td>−111.23</td><td>−115</td><td>−3.77</td><td>14.20</td></tr>
+            <tr><td>400</td><td>26.02</td><td>102.53</td><td>−133.32</td><td>−130</td><td>+3.32</td><td>11.05</td></tr>
+            <tr><td>1000</td><td>30.00</td><td>118.22</td><td>−149.01</td><td>−150</td><td>−0.99</td><td>0.99</td></tr>
+          </tbody></table></div>
+          \(\sum e_i^2=71.23\)，均方误差 \(\sigma_\psi^2=71.23/6=11.87\)，\(\sigma_\psi=3.45\) dB。（最小二乘的残差加起来正好是 0，可以用来检查有没有算错。）<!-- /ZH:resid --></li>
         <li>平均功率比门限高 10 dB：\(P_{out}=Q(10/\sigma_\psi)=Q(2.90)=1.85\times10^{-3}\)。</li>
       </ol>
       <div class="ans"><b>按标准最小二乘：</b>K ≈ −30.8 dB，γ ≈ 3.94，σ²_ψ ≈ 11.9 dB²，P_out ≈ 1.85 × 10⁻³</div>
@@ -196,10 +212,13 @@ window.MathJax = {
 
   <article class="ex" id="p1q2">
     <header><span class="pg">P1 · Q2</span><h3>对数正态阴影下的中断概率</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 1</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 1</span></div>
       <p>Consider a cellular system where the received signal power has a log-normal distribution with mean \(\mu_\psi\) dBm and standard deviation \(\sigma_\psi\) dBm. In order to avoid outage, the received signal power is required to be above 10 dBm.</p>
+      <p class="zh" lang="zh-CN">考虑一个蜂窝系统，接收信号功率服从对数正态分布，均值为 \(\mu_\psi\) dBm，标准差为 \(\sigma_\psi\) dBm。为避免中断，接收信号功率必须高于 10 dBm。</p>
       <p>(a) What is the outage probability when \(\mu_\psi\) = 15 dBm and \(\sigma_\psi\) = 8 dBm?</p>
+      <p class="zh" lang="zh-CN">(a) 当 \(\mu_\psi\) = 15 dBm、\(\sigma_\psi\) = 8 dBm 时，中断概率是多少？</p>
       <p>(b) For \(\sigma_\psi\) = 4 dBm, what value of \(\mu_\psi\) is required such that the outage probability is less than 1%?</p>
+      <p class="zh" lang="zh-CN">(b) 若 \(\sigma_\psi\) = 4 dBm，要使中断概率小于 1%，\(\mu_\psi\) 至少要取多少？</p>
     </div>
     <div class="chips"><span class="chip">对数正态 = dB 值高斯</span><span class="chip">Q 函数与反函数</span><span class="chip src">讲义第 2 章 p.11–15</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -218,11 +237,14 @@ window.MathJax = {
 
   <article class="ex" id="p1q3">
     <header><span class="pg">P1 · Q3</span><h3>均匀功率时延分布的时延扩展</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 1</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 1</span></div>
       <p>Consider a channel with the following power delay profile.</p>
+      <p class="zh" lang="zh-CN">考虑一个具有如下功率时延谱（power delay profile）的信道。</p>
       <p class="eq">\(P_r(\tau)=\begin{cases}1 & 0\le\tau\le10\,\mu s\\ 0 & \text{Otherwise}\end{cases}\)</p>
       <p>(a) Compute the mean delay spread and rms delay spread of the channel.</p>
+      <p class="zh" lang="zh-CN">(a) 计算该信道的平均时延扩展（mean delay spread）和均方根时延扩展（rms delay spread）。</p>
       <p>(b) What should the symbol rate, \(R_s\), be for this channel to exhibit flat fading? Assume \(R_s=1/T_s\), where \(T_s\) is the signal symbol duration.</p>
+      <p class="zh" lang="zh-CN">(b) 要使该信道表现为平坦衰落，符号速率 \(R_s\) 应取多少？设 \(R_s=1/T_s\)，\(T_s\) 为信号的符号周期。</p>
     </div>
     <div class="chips"><span class="chip">平均时延 / rms 时延扩展</span><span class="chip">平坦衰落条件 σ/Ts &lt; 0.1</span><span class="chip src">讲义第 2 章 p.30–33</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -241,10 +263,12 @@ window.MathJax = {
 
   <article class="ex" id="p2q1">
     <header><span class="pg">P2 · Q1</span><h3>平均衰落时长</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 2</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 2</span></div>
       <p>For Rayleigh fading channels, the average fade duration can be expressed as,</p>
+      <p class="zh" lang="zh-CN">对于瑞利衰落信道，平均衰落持续时间（AFD）可以表示为：</p>
       <p class="eq">\(AFD=\dfrac{e^{\rho^2}-1}{\sqrt{2\pi}f_D\rho}\)</p>
       <p>The maximum Doppler shift is 50 Hz. The minimum signal strength, for acceptable performance is 0.1 of the rms value of the signal strength. Determine the average time duration when the signal strength is below the acceptable value.</p>
+      <p class="zh" lang="zh-CN">最大多普勒频移为 50 Hz。保证可接受性能所需的最小信号强度是信号强度 rms 值的 0.1 倍。求信号强度低于这个可接受值的平均持续时间。</p>
     </div>
     <div class="chips"><span class="chip">AFD</span><span class="chip">ρ = Z_min / Z_rms</span><span class="chip src">讲义第 2 章 p.42–43</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -263,13 +287,18 @@ window.MathJax = {
 
   <article class="ex" id="p2q2">
     <header><span class="pg">P2 · Q2</span><h3>两个基站的宏分集：独立与相关阴影</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 2</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 2</span></div>
       <p>Consider a mobile station located between two base stations in a cellular network. The received signal powers (in dBm) from the base stations are given by</p>
+      <p class="zh" lang="zh-CN">考虑蜂窝网络中一个位于两个基站之间的移动台。它从两个基站收到的信号功率（dBm）为</p>
       <p class="eq">\(P_{r,1}=W+Z_1;\quad P_{r,2}=W+Z_2\)</p>
       <p>where \(Z_1\) and \(Z_2\) are random variables \(\sim\mathcal N(0,\sigma^2)\). Outage is defined to have occurred when both \(P_{r,1}\) and \(P_{r,2}\) fall below a threshold T, where T is smaller than W by Δ.</p>
+      <p class="zh" lang="zh-CN">其中 \(Z_1\) 和 \(Z_2\) 是随机变量，\(\sim\mathcal N(0,\sigma^2)\)。当 \(P_{r,1}\) 和 \(P_{r,2}\) <b>都</b>低于门限 T 时，定义为发生中断；T 比 W 小 Δ。</p>
       <p>(a) Interpret the terms W, \(Z_1\), \(Z_2\).</p>
+      <p class="zh" lang="zh-CN">(a) 解释 W、\(Z_1\)、\(Z_2\) 这几项的含义。</p>
       <p>(b) If \(Z_1\) and \(Z_2\) are statistically independent, show that the outage probability is, \(P_{out}=[Q(\Delta/\sigma)]^2\)</p>
+      <p class="zh" lang="zh-CN">(b) 若 \(Z_1\) 与 \(Z_2\) 统计独立，证明中断概率为 \(P_{out}=[Q(\Delta/\sigma)]^2\)。</p>
       <p>(c) Now suppose \(Z_1\) and \(Z_2\) are correlated in the following way: \(Z_1=aY_1+bY\), \(Z_2=aY_2+bY\), where Y, \(Y_1\), \(Y_2\) are independent random variables \(\sim\mathcal N(0,\sigma^2)\). Show that</p>
+      <p class="zh" lang="zh-CN">(c) 现在假设 \(Z_1\) 与 \(Z_2\) 按如下方式相关：\(Z_1=aY_1+bY\)，\(Z_2=aY_2+bY\)，其中 Y、\(Y_1\)、\(Y_2\) 是相互独立的随机变量，\(\sim\mathcal N(0,\sigma^2)\)。证明</p>
       <p class="eq">\(P_{out}=\displaystyle\int_{-\infty}^{\infty}\frac{1}{\sqrt{2\pi}}Q\!\left[\frac{\Delta+by\sigma}{|a|\sigma}\right]^2e^{-y^2/2}dy\)</p>
     </div>
     <div class="chips"><span class="chip">宏分集</span><span class="chip">独立 → 概率相乘</span><span class="chip">条件概率 + 全概率</span><span class="chip src">讲义第 2 章 p.12–15；第 4 章 p.4</span></div>
@@ -292,10 +321,13 @@ window.MathJax = {
 
   <article class="ex" id="p2q3">
     <header><span class="pg">P2 · Q3</span><h3>两个用户：干扰当噪声 vs 多用户检测</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 2</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 2</span></div>
       <p>Two users transmit simultaneously to a single receiver over an AWGN channel. The power received from each transmitter is 10mW. The total received noise power is 0.1mW. The channel bandwidth for each user is 20MHz.</p>
+      <p class="zh" lang="zh-CN">两个用户通过 AWGN 信道同时向同一个接收机发送信号。来自每个发射机的接收功率都是 10 mW，总接收噪声功率为 0.1 mW，每个用户的信道带宽为 20 MHz。</p>
       <p>(a) The receiver decodes user 1's signal first. In this decoding, user 2's signal behaves like noise (assume it is AWGN). What is the capacity of user 1's channel?</p>
+      <p class="zh" lang="zh-CN">(a) 接收机先解码用户 1 的信号。解码时，用户 2 的信号相当于噪声（假设它是 AWGN）。用户 1 信道的容量是多少？</p>
       <p>(b) After applying MUD, the decoder removes user 1's signal completely from the received signal. What is the capacity of user 2's channel?</p>
+      <p class="zh" lang="zh-CN">(b) 采用多用户检测（MUD）后，解码器把用户 1 的信号从接收信号中完全去掉。用户 2 信道的容量是多少？</p>
     </div>
     <div class="chips"><span class="chip">香农容量</span><span class="chip">SINR</span><span class="chip">MUD</span><span class="chip src">讲义第 1a 章 p.16；第 2 章 p.48</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -313,11 +345,14 @@ window.MathJax = {
 
   <article class="ex" id="p3q1">
     <header><span class="pg">P3 · Q1</span><h3>正交基与信号空间维数</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 3</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 3</span></div>
       <p>Consider the following modulated signal, where the message signals are modulated in \(A_i\) and \(\phi_j\).</p>
+      <p class="zh" lang="zh-CN">考虑如下调制信号，消息信号被调制在幅度 \(A_i\) 和相位 \(\phi_j\) 上。</p>
       <p class="eq">\(A_i\cos\!\left(\dfrac{2\pi t}{T}+\phi_j\right),\quad 0<t<T\)</p>
       <p>(a) Find an orthonormal basis for the signal.</p>
+      <p class="zh" lang="zh-CN">(a) 求该信号的一组标准正交基。</p>
       <p>(b) Find the dimension of the space spanned by the signal.</p>
+      <p class="zh" lang="zh-CN">(b) 求该信号所张成的信号空间的维数。</p>
     </div>
     <div class="chips"><span class="chip">正交归一基</span><span class="chip">和角公式</span><span class="chip src">讲义第 3 章 p.4–11</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -335,12 +370,16 @@ window.MathJax = {
 
   <article class="ex" id="p3q2">
     <header><span class="pg">P3 · Q2</span><h3>噪声方差不相等时的 ML 判决</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 3</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 3</span></div>
       <p>A particular binary disc storage channel can be approximated as a discrete-time AWGN channel with inputs \(x_n\in\{0,1\}\) and output \(y_n=x_n+w_n\), where \(y_n\) is also the decision variable in the disc reading device at time n. The noise variance depends on the value of \(x_n\) in that \(w_n\) has the conditional Gaussian pdf given below, where \(\sigma_1^2>\sigma_0^2\).</p>
+      <p class="zh" lang="zh-CN">某二进制磁盘存储信道可以近似为离散时间 AWGN 信道：输入 \(x_n\in\{0,1\}\)，输出 \(y_n=x_n+w_n\)，\(y_n\) 也是读盘设备在时刻 n 的判决变量。噪声方差与 \(x_n\) 的取值有关：\(w_n\) 的条件高斯概率密度如下，其中 \(\sigma_1^2>\sigma_0^2\)。</p>
       <p class="eq">\(f(w_n\mid x_n)=\begin{cases}\dfrac{1}{\sqrt{2\pi\sigma_0^2}}e^{-w_n^2/2\sigma_0^2} & x_n=0\\[2mm] \dfrac{1}{\sqrt{2\pi\sigma_1^2}}e^{-w_n^2/2\sigma_1^2} & x_n=1\end{cases}\)</p>
       <p>Assume \(P(x_n=0)=P(x_n=1)=\tfrac12\) for all n.</p>
+      <p class="zh" lang="zh-CN">对所有 n，假设 \(P(x_n=0)=P(x_n=1)=\tfrac12\)。</p>
       <p>(a) Find a decision rule for a ML detector that will decide \(\hat x_n\in\{0,1\}\) based on the value of \(y_n\), and formulate it in terms of \(\sigma_0^2\) and \(\sigma_1^2\).</p>
+      <p class="zh" lang="zh-CN">(a) 求 ML 检测器根据 \(y_n\) 的值判决 \(\hat x_n\in\{0,1\}\) 的判决规则，并用 \(\sigma_0^2\) 和 \(\sigma_1^2\) 表示。</p>
       <p>(b) Find the corresponding bit error probability \(P_e\).</p>
+      <p class="zh" lang="zh-CN">(b) 求相应的误比特概率 \(P_e\)。</p>
     </div>
     <div class="chips"><span class="chip">ML 检测</span><span class="chip">似然比</span><span class="chip">判决门限</span><span class="chip src">讲义第 3 章 p.18–20</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -360,8 +399,9 @@ window.MathJax = {
 
   <article class="ex" id="p3q3">
     <header><span class="pg">P3 · Q3</span><h3>时延扩展造成的误码平台与最高速率</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 3</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 3</span></div>
       <p>Using the approximation \(P_{floor}\approx\left(\dfrac{\sigma_{T_m}}{T_b}\right)^2\) for a BPSK system, determine the data rate of a QPSK system that can be transmitted through a channel with delay spread \(\sigma_{T_m}\) = 3 µs, such that the irreducible error floor is \(10^{-3}\).</p>
+      <p class="zh" lang="zh-CN">利用 BPSK 系统的近似式 \(P_{floor}\approx\left(\dfrac{\sigma_{T_m}}{T_b}\right)^2\)，求 QPSK 系统在时延扩展 \(\sigma_{T_m}\) = 3 µs 的信道上、不可约误码平台（irreducible error floor）为 \(10^{-3}\) 时能传输的数据速率。</p>
     </div>
     <div class="chips"><span class="chip">误码平台</span><span class="chip">符号时长 vs 比特时长</span><span class="chip src">讲义第 3 章 p.35–36</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -380,8 +420,9 @@ window.MathJax = {
 
   <article class="ex" id="p4q1">
     <header><span class="pg">P4 · Q1</span><h3>宏分集为什么能降低中断概率</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 4</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 4</span></div>
       <p>One common technique used to reduce outage probability is Macro-diversity, where the signal transmitted by a Mobile Station is received and processed by multiple Base Stations. Explain why this might reduce outage probability.</p>
+      <p class="zh" lang="zh-CN">降低中断概率的一种常用技术是宏分集（Macro-diversity）：移动台发出的信号由多个基站同时接收和处理。解释为什么这样能降低中断概率。</p>
     </div>
     <div class="chips"><span class="chip">宏分集</span><span class="chip">阴影衰落</span><span class="chip src">讲义第 4 章 p.3–4</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -400,11 +441,15 @@ window.MathJax = {
 
   <article class="ex" id="p4q2">
     <header><span class="pg">P4 · Q2</span><h3>离散 SNR 分布下的 DPSK 与 MRC</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 4</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 4</span></div>
       <p>Consider a DPSK transmission system, where the transmit signal power and noise power are 1W each. The symbol error probability for DPSK is \(\tfrac12e^{-\gamma}\), where γ is the signal to noise ratio.</p>
+      <p class="zh" lang="zh-CN">考虑一个 DPSK 传输系统，发射信号功率和噪声功率都是 1 W。DPSK 的误符号概率为 \(\tfrac12e^{-\gamma}\)，γ 为信噪比。</p>
       <p>(a) If the SNR γ has a distribution given as, \(\gamma=\dfrac{\alpha P_T}{\sigma_n^2}\), \(\alpha=\begin{cases}8 & \text{with a probability of }\tfrac13\\ 11 & \text{with a probability of }\tfrac23\end{cases}\), where \(P_T\) and \(\alpha P_T\) are the transmitted and received signal powers respectively, and \(\sigma_n^2\) is the noise power. Find the average SNR \(\bar\gamma\) and average symbol error probability \(\bar P_s\).</p>
+      <p class="zh" lang="zh-CN">(a) 若 SNR 为 \(\gamma=\dfrac{\alpha P_T}{\sigma_n^2}\)，其中 α 以概率 1/3 取 8、以概率 2/3 取 11；\(P_T\) 和 \(\alpha P_T\) 分别是发射和接收信号功率，\(\sigma_n^2\) 是噪声功率。求平均 SNR \(\bar\gamma\) 和平均误符号概率 \(\bar P_s\)。</p>
       <p>(b) If the receiver employs a 2-branch MRC technique, and the SNR for each branch has the distribution given in part (a), find the output SNR \(\bar\gamma_\Sigma\), average symbol error probability \(\bar P_s\), array gain g and diversity gain d.</p>
+      <p class="zh" lang="zh-CN">(b) 若接收机采用 2 支路 MRC，每条支路的 SNR 都服从 (a) 中的分布，求输出 SNR \(\bar\gamma_\Sigma\)、平均误符号概率 \(\bar P_s\)、阵列增益 g 和分集增益 d。</p>
       <p>(c) The paths are now not independent. Specifically, \(\gamma_1=r_1+\beta\) and \(\gamma_2=r_2+\beta\), and the shadowing term β has the following distribution, \(\beta=\begin{cases}7 & \text{with a probability of }\tfrac13\\ 10 & \text{with a probability of }\tfrac23\end{cases}\), where β is independent of \(r_1\) and \(r_2\), and \(r_1\) and \(r_2\) have the following distribution, \(r_i=\begin{cases}0.6 & \text{with a probability of }\tfrac13\\ 1.2 & \text{with a probability of }\tfrac23\end{cases}\); for i = 1, 2. Find \(\bar\gamma_\Sigma\), \(\bar P_{s,diversity}\), g and d.</p>
+      <p class="zh" lang="zh-CN">(c) 现在两条路径不再独立：\(\gamma_1=r_1+\beta\)，\(\gamma_2=r_2+\beta\)。阴影项 β 以概率 1/3 取 7、以概率 2/3 取 10，且与 \(r_1\)、\(r_2\) 独立；\(r_i\)（i = 1, 2）以概率 1/3 取 0.6、以概率 2/3 取 1.2。求 \(\bar\gamma_\Sigma\)、\(\bar P_{s,diversity}\)、g 和 d。</p>
     </div>
     <div class="chips"><span class="chip">离散分布求期望</span><span class="chip">MRC：SNR 相加</span><span class="chip">阵列增益 g / 分集增益 d</span><span class="chip">相关削弱分集</span><span class="chip src">讲义第 4 章 p.16、p.21、p.27</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -425,10 +470,13 @@ window.MathJax = {
 
   <article class="ex" id="p4q3">
     <header><span class="pg">P4 · Q3</span><h3>高斯衰落因子下的 BPSK 与等增益合并</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 4</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 4</span></div>
       <p>A BPSK system uses M antennas to transmit a message {b} over a fading channel, where b is equally likely to be +1 or −1. The signal received from the kth transmit antenna can be expressed as \(y_k=\alpha_kb\sqrt E+w_k,\ k=1,2,\dots,M\), where E is the transmitted signal energy, \(\alpha_k\) is a real-value multiplicative dampening factor, and \(w_k\) is an additive white Gaussian noise with zero mean and a variance of \(\sigma_2^2\). The damping factor, \(\alpha_k\) can be modelled as a Gaussian process with mean \(\alpha_0\) and variance \(\sigma_1^2\). The receiver uses its output, z, as the decision variable. The decision rule is, \(\hat b=+1\) when z &gt; 0, −1 when z ≤ 0.</p>
+      <p class="zh" lang="zh-CN">一个 BPSK 系统用 M 根天线在衰落信道上发送消息 {b}，b 等概取 +1 或 −1。来自第 k 根发射天线的接收信号为 \(y_k=\alpha_kb\sqrt E+w_k,\ k=1,2,\dots,M\)，其中 E 是发射信号能量，\(\alpha_k\) 是实值的乘性衰减因子，\(w_k\) 是零均值、方差为 \(\sigma_2^2\) 的加性高斯白噪声。衰减因子 \(\alpha_k\) 可建模为均值 \(\alpha_0\)、方差 \(\sigma_1^2\) 的高斯过程。接收机用其输出 z 作为判决变量，判决规则为：z &gt; 0 时 \(\hat b=+1\)，z ≤ 0 时 \(\hat b=-1\)。</p>
       <p>(a) Derive an expression for the average bit error probability when M = 1.</p>
+      <p class="zh" lang="zh-CN">(a) 推导 M = 1 时平均误比特概率的表达式。</p>
       <p>(b) Derive the average bit error probability for the case when the receiver uses an equal weight combining scheme.</p>
+      <p class="zh" lang="zh-CN">(b) 推导接收机采用等权合并（equal weight combining）时的平均误比特概率。</p>
     </div>
     <div class="chips"><span class="chip">高斯随机变量之和</span><span class="chip">等增益合并</span><span class="chip src">讲义第 4 章 p.19；第 1b 章 p.11</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -449,8 +497,9 @@ window.MathJax = {
 
   <article class="ex" id="p5q1">
     <header><span class="pg">P5 · Q1</span><h3>三个子信道的注水容量</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 5</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 5</span></div>
       <p>Consider a 3-channel MIMO system. The SNRs for the three channels are 80, 40, and 40. The channel bandwidth is 10MHz. Assume informed transmitter and find the channel capacity using the Water-filling method.</p>
+      <p class="zh" lang="zh-CN">考虑一个 3 信道 MIMO 系统，三个信道的 SNR 分别为 80、40、40，信道带宽为 10 MHz。假设发射端已知信道（informed transmitter），用注水法（Water-filling）求信道容量。</p>
     </div>
     <div class="chips"><span class="chip">注水法</span><span class="chip">informed transmitter</span><span class="chip src">讲义第 2 章 p.54–57；第 5 章 p.40</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -469,8 +518,9 @@ window.MathJax = {
 
   <article class="ex" id="p5q2">
     <header><span class="pg">P5 · Q2</span><h3>推导 Alamouti 码的判决变量</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 5</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 5</span></div>
       <p>An Alamouti scheme transmits two complex-value symbols, \(u_1\) and \(u_2\), over 2 symbol duration using 2 antennas A and B. The transmitted symbols for the first symbol duration are \(x_A(1)=u_1\) and \(x_B(1)=u_2\), and for the second symbol duration are \(x_A(2)=-u_2^*\) and \(x_B(2)=u_1^*\). Let the channel gains be, \(h_A(1)=h_A(2)=h_A\) and \(h_B(1)=h_B(2)=h_B\), \(h_A,h_B\sim\mathcal N(0,1)\). Assume channel noise \(\sim\mathcal N(0,N_0)\). Derive the decision variable.</p>
+      <p class="zh" lang="zh-CN">Alamouti 方案用 A、B 两根天线，在 2 个符号周期内发送两个复值符号 \(u_1\) 和 \(u_2\)：第一个符号周期发送 \(x_A(1)=u_1\)、\(x_B(1)=u_2\)，第二个符号周期发送 \(x_A(2)=-u_2^*\)、\(x_B(2)=u_1^*\)。设信道增益 \(h_A(1)=h_A(2)=h_A\)、\(h_B(1)=h_B(2)=h_B\)，\(h_A,h_B\sim\mathcal N(0,1)\)，信道噪声 \(\sim\mathcal N(0,N_0)\)。推导判决变量。</p>
     </div>
     <div class="chips"><span class="chip">Alamouti STBC</span><span class="chip">共轭技巧</span><span class="chip">正交矩阵 F</span><span class="chip src">讲义第 5 章 p.21–26</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -491,10 +541,13 @@ window.MathJax = {
 
   <article class="ex" id="p5q3">
     <header><span class="pg">P5 · Q3</span><h3>分集-复用折中：8 × 4 MIMO 最高速率</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 5</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 5</span></div>
       <p>Consider an 8 x 4 MIMO system. The diversity-multiplexing trade-off formula is given as, \(d(r)=(N-r)(M-r)\), where r and d are integers.</p>
+      <p class="zh" lang="zh-CN">考虑一个 8 × 4 MIMO 系统。分集–复用折中公式为 \(d(r)=(N-r)(M-r)\)，其中 r 和 d 都是整数。</p>
       <p>a) What is the maximum transmission rate per Hz for this channel if \(P_e=\gamma^{-d}\le10^{-3}\), where the SNR, γ = 10dB?</p>
+      <p class="zh" lang="zh-CN">a) 若要求 \(P_e=\gamma^{-d}\le10^{-3}\)，SNR γ = 10 dB，该信道每 Hz 的最大传输速率是多少？</p>
       <p>b) Given the r in part (a), what is the resulting \(P_e\)?</p>
+      <p class="zh" lang="zh-CN">b) 在 (a) 求出的 r 下，得到的 \(P_e\) 是多少？</p>
     </div>
     <div class="chips"><span class="chip">分集增益 d</span><span class="chip">复用增益 r</span><span class="chip">R = r·log₂SNR</span><span class="chip src">讲义第 4 章 p.31–34</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -514,14 +567,21 @@ window.MathJax = {
 
   <article class="ex" id="p6q1">
     <header><span class="pg">P6 · Q1</span><h3>二进制 PAM：加不加这个均衡器</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 6</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 6</span></div>
       <p>Figure 1 shows a discrete-time model of a binary PAM communication system: \(a(n)\sqrt{E_b}\to H(z)\to(+w(n))\to U(z)\to z(n)\to\) Detector \(\to\hat a(n)\).</p>
+      <p class="zh" lang="zh-CN">图 1 是二进制 PAM 通信系统的离散时间模型：\(a(n)\sqrt{E_b}\to H(z)\to(+w(n))\to U(z)\to z(n)\to\) 检测器 \(\to\hat a(n)\)。</p>
       <p>In the Figure, w(n) is a white Gaussian noise with the autocorrelation function, \(R_w(k)=\dfrac{N_0}{2}\delta(k)\).</p>
+      <p class="zh" lang="zh-CN">图中 w(n) 是高斯白噪声，自相关函数为 \(R_w(k)=\dfrac{N_0}{2}\delta(k)\)。</p>
       <p>The channel, H(Z), introduces Inter-Symbol Interference (ISI) and is modelled as, \(H(Z)=1+\alpha Z^{-1},\ 0<\alpha<\tfrac12\).</p>
+      <p class="zh" lang="zh-CN">信道 H(Z) 会引入符号间干扰（ISI），模型为 \(H(Z)=1+\alpha Z^{-1},\ 0\lt\alpha\lt\tfrac12\)。</p>
       <p>The transmitted data is modelled as a sequence of independent and identically distributed symbols, \(\{a_n\}\), where \(a_n\) is equally likely to be ±1. The detector detects the transmitted data according to the following rule, \(\hat a(n)=1\) if \(z(n)\ge0\), −1 if \(z(n)<0\).</p>
+      <p class="zh" lang="zh-CN">发送数据建模为独立同分布的符号序列 \(\{a_n\}\)，\(a_n\) 等概取 ±1。检测器按如下规则判决：\(z(n)\ge0\) 时 \(\hat a(n)=1\)，\(z(n)\lt0\) 时 \(\hat a(n)=-1\)。</p>
       <p>Consider an equalizer design, where \(U(z)=1-\alpha z^{-1}\).</p>
+      <p class="zh" lang="zh-CN">考虑一种均衡器设计：\(U(z)=1-\alpha z^{-1}\)。</p>
       <p>(a) Derive the expressions for the average bit error probability when no equalizer is used and when the above equalizer is used.</p>
+      <p class="zh" lang="zh-CN">(a) 分别推导不用均衡器和使用上述均衡器时平均误比特概率的表达式。</p>
       <p>(b) The system is to operate at high signal-to-noise ratio. Will it be better for the system to operate with or without the above equalizer? Explain your answer.</p>
+      <p class="zh" lang="zh-CN">(b) 系统将工作在高信噪比下。用还是不用上述均衡器更好？说明理由。</p>
     </div>
     <div class="chips"><span class="chip">ISI 条件误码率</span><span class="chip">滤波后噪声方差</span><span class="chip">高 SNR 看最坏项</span><span class="chip src">讲义第 6 章 p.22–28</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -542,10 +602,13 @@ window.MathJax = {
 
   <article class="ex" id="p6q2">
     <header><span class="pg">P6 · Q2</span><h3>ISI 信道：直接判决 vs 理想迫零</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 6</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 6</span></div>
       <p>Consider the following discrete time model for binary transmission over an ISI channel. \(y_n=b_n+a\cdot b_{n-1}+w_n\), where \(b_n\in\{\pm1\}\) is the nth transmitted bit, a is a fixed real coefficient, 0 &lt; a &lt; 1 and \(w_n\) is i.i.d. zero-mean Gaussian with variance 0.1. \(\{b_n\}\) are equally likely and independent in n.</p>
+      <p class="zh" lang="zh-CN">考虑如下 ISI 信道上二进制传输的离散时间模型：\(y_n=b_n+a\cdot b_{n-1}+w_n\)，其中 \(b_n\in\{\pm1\}\) 是第 n 个发送比特，a 是固定的实系数，0 &lt; a &lt; 1，\(w_n\) 是 i.i.d. 零均值高斯噪声，方差为 0.1。\(\{b_n\}\) 等概，且对不同 n 相互独立。</p>
       <p>(a) Find the bit error probability \(P(\hat b_n\ne b_n)\) if \(\hat b_n=\mathrm{sgn}(y_n)\).</p>
+      <p class="zh" lang="zh-CN">(a) 若判决 \(\hat b_n=\mathrm{sgn}(y_n)\)，求误比特概率 \(P(\hat b_n\ne b_n)\)。</p>
       <p>(b) Find the resulting BER if an ideal zero-forcing equalizer is used and the decision is made based on the sign of the equalizer output.</p>
+      <p class="zh" lang="zh-CN">(b) 若使用理想迫零（zero-forcing）均衡器，并根据均衡器输出的正负号判决，求所得的 BER。</p>
     </div>
     <div class="chips"><span class="chip">条件误码率求平均</span><span class="chip">迫零噪声放大</span><span class="chip">等比级数</span><span class="chip src">讲义第 6 章 p.23–28</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -565,10 +628,13 @@ window.MathJax = {
 
   <article class="ex" id="p6q3">
     <header><span class="pg">P6 · Q3</span><h3>MMSE 线性均衡 vs 判决反馈均衡</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 6</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 6</span></div>
       <p>Consider transmitting i.i.d. and equally likely binary amplitudes \(A_n\in\{\pm1\}\) over a 2-tap discrete-time ISI channel. The received samples can be expressed as, \(y_n=A_nx_0+A_{n-1}x_1+z_n\), where \(\{z_n\}\) is i.i.d. zero mean Gaussian noise, with variance \(\sigma^2\). Assume \(x_0=1\), \(x_1=1/2\), and \(\sigma^2=1\).</p>
+      <p class="zh" lang="zh-CN">考虑在 2 抽头离散时间 ISI 信道上传输 i.i.d.、等概的二进制幅度 \(A_n\in\{\pm1\}\)。接收样本为 \(y_n=A_nx_0+A_{n-1}x_1+z_n\)，其中 \(\{z_n\}\) 是 i.i.d. 零均值高斯噪声，方差为 \(\sigma^2\)。设 \(x_0=1\)，\(x_1=1/2\)，\(\sigma^2=1\)。</p>
       <p>(a) Consider a linear equalizer, that has a parameter q and the decision variable, \(u_n=y_n+qy_{n+1}\). Determine q such that \(E[(u_n-A_n)^2]\) is minimized. With decisions based on the sign of \(u_n\), i.e. \(\hat A_n=\mathrm{sgn}(u_n)\), what is the resulting error probability?</p>
+      <p class="zh" lang="zh-CN">(a) 考虑一个带参数 q 的线性均衡器，判决变量为 \(u_n=y_n+qy_{n+1}\)。求使 \(E[(u_n-A_n)^2]\) 最小的 q。若按 \(u_n\) 的正负号判决，即 \(\hat A_n=\mathrm{sgn}(u_n)\)，错误概率是多少？</p>
       <p>(b) Consider a simple decision-feedback equalizer, that forms the decision variable, \(u_n=y_n-\hat A_{n-1}x_1\). \(\hat A_n\) is determined based on the sign of \(u_n\), \(\hat A_{n-1}\) is determined based on the sign of \(u_{n-1}\), etc. Assume that "time" starts at n = 1 and that \(A_0=0\). Determine the resulting error probability for large n (n → ∞).</p>
+      <p class="zh" lang="zh-CN">(b) 考虑一个简单的判决反馈均衡器（DFE），判决变量为 \(u_n=y_n-\hat A_{n-1}x_1\)。\(\hat A_n\) 由 \(u_n\) 的正负号决定，\(\hat A_{n-1}\) 由 \(u_{n-1}\) 的正负号决定，依此类推。设“时间”从 n = 1 开始，且 \(A_0=0\)。求 n 很大（n → ∞）时的错误概率。</p>
     </div>
     <div class="chips"><span class="chip">MMSE 求最优系数</span><span class="chip">DFE 错误传播</span><span class="chip">马尔可夫稳态</span><span class="chip src">讲义第 6 章 p.26–34</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -591,12 +657,17 @@ window.MathJax = {
 
   <article class="ex" id="p7q1">
     <header><span class="pg">P7 · Q1</span><h3>两径信道上的 OFDM：选 N、算 H_k、分功率</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 7</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 7</span></div>
       <p>An OFDM signal x(t) is transmitted through a multi-path channel. The received signals can be expressed as, \(y(t)=h_0x(t)+h_1x(t-\tau)+w(t)\), where \(h_0,h_1\) are independent channel gains, τ is the time delay, and w(t) is the AWGN with zero-mean and variance \(\sigma^2=1\). The Doppler spread and Coherence bandwidth have been measured to be \(B_d\) and \(B_C\) respectively.</p>
+      <p class="zh" lang="zh-CN">OFDM 信号 x(t) 经过多径信道传输，接收信号为 \(y(t)=h_0x(t)+h_1x(t-\tau)+w(t)\)，其中 \(h_0,h_1\) 是相互独立的信道增益，τ 是时延，w(t) 是零均值、方差 \(\sigma^2=1\) 的 AWGN。测得多普勒扩展为 \(B_d\)，相干带宽为 \(B_C\)。</p>
       <p>(a) Given a fixed total bandwidth B Hz, the number of sub-carriers N needs to be carefully selected so that each sub-channel could be regarded as experiencing slow flat fading. Explain the principle of how the value of N is selected.</p>
+      <p class="zh" lang="zh-CN">(a) 在总带宽 B Hz 固定的情况下，需要合理选择子载波数 N，使每个子信道都可以看作慢、平坦衰落。说明 N 的选取原则。</p>
       <p>(b) For N = 4, \(h_0\) = 0.8, and \(h_1\) = 0.6, find the values of the channel gain coefficients \(H_k\) for each sub-channel.</p>
+      <p class="zh" lang="zh-CN">(b) 当 N = 4、\(h_0\) = 0.8、\(h_1\) = 0.6 时，求各子信道的信道增益系数 \(H_k\)。</p>
       <p>(c) Given the value of \(H_k\) from (b), the transmitter allocates power \(P_k\) to the kth sub-channel such that each sub-channel has the same capacity. Under the sum-power constraint, \(\sum_{k=1}^{N}P_k=10\), find the value of \(P_k\) for each sub-channel.</p>
+      <p class="zh" lang="zh-CN">(c) 已知 (b) 中的 \(H_k\)，发射端给第 k 个子信道分配功率 \(P_k\)，使所有子信道的容量相同。在总功率约束 \(\sum_{k=1}^{N}P_k=10\) 下，求每个子信道的 \(P_k\)。</p>
       <p>(d) Given the same value of \(H_k\) and the sum-power constraint from (c), find the maximum sum capacity in bits per second per Hertz.</p>
+      <p class="zh" lang="zh-CN">(d) 在相同的 \(H_k\) 和 (c) 的总功率约束下，求最大和容量（bit/s/Hz）。</p>
     </div>
     <div class="chips"><span class="chip">慢平坦衰落条件</span><span class="chip">H_k = DFT{h}</span><span class="chip">等容量分配</span><span class="chip">注水</span><span class="chip src">讲义第 7 章 p.5、p.15、p.24</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -618,8 +689,9 @@ window.MathJax = {
 
   <article class="ex" id="p7q2">
     <header><span class="pg">P7 · Q2</span><h3>设计一个 2 Mbps 的 OFDM 系统</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 7</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 7</span></div>
       <p>Consider the design of an OFDM system. The goal is to transmit data at a rate of 2 Mbps using 16-QAM with an available bandwidth of 600 kHz. It is known that the delay spread of the channel is up to a maximum of 20 μs. You can assume the cyclic prefix to be equal to the maximum delay spread. Find the total number of sub-carriers and the OFDM symbol duration.</p>
+      <p class="zh" lang="zh-CN">考虑一个 OFDM 系统的设计：目标是在 600 kHz 的可用带宽内，用 16-QAM 以 2 Mbps 的速率传输数据。已知信道时延扩展最大为 20 μs，可设循环前缀等于最大时延扩展。求子载波总数和 OFDM 符号周期。</p>
     </div>
     <div class="chips"><span class="chip">Δf = B/N</span><span class="chip">循环前缀开销</span><span class="chip src">讲义第 7 章 p.8、p.17–18</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -639,8 +711,9 @@ window.MathJax = {
 
   <article class="ex" id="p7q3">
     <header><span class="pg">P7 · Q3</span><h3>最短的循环前缀</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 7</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 7</span></div>
       <p>The Z–transform of a mobile channel is \(H(Z)=1+0.9Z^{-1}\). In order to mitigate the ISI of this channel, the system is now designed with OFDM. What is the minimum cyclic-prefix required. Explain your answer.</p>
+      <p class="zh" lang="zh-CN">某移动信道的 Z 变换为 \(H(Z)=1+0.9Z^{-1}\)。为抑制该信道的 ISI，系统改用 OFDM 设计。所需的最小循环前缀是多少？说明理由。</p>
     </div>
     <div class="chips"><span class="chip">信道长度</span><span class="chip">CP ≥ L − 1</span><span class="chip src">讲义第 7 章 p.17–22</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -698,6 +771,9 @@ window.MathJax = {
       count();
     });
   });
+  var zh=document.getElementById('zhMode');
+  if (store.get('ee6129-p2:zh')==='0'){ zh.checked=false; root.classList.add('no-zh'); }
+  zh.addEventListener('change',function(){ root.classList.toggle('no-zh',!zh.checked); store.set('ee6129-p2:zh',zh.checked?'1':'0'); });
   var exam=document.getElementById('examMode');
   exam.addEventListener('change',function(){ root.classList.toggle('exam',exam.checked); exs.forEach(function(e){e.classList.remove('open');}); });
   exs.forEach(function(e){

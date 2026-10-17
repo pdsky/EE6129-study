@@ -2,11 +2,14 @@
 
   <article class="ex" id="p3q1">
     <header><span class="pg">P3 · Q1</span><h3>正交基与信号空间维数</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 3</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 3</span></div>
       <p>Consider the following modulated signal, where the message signals are modulated in \(A_i\) and \(\phi_j\).</p>
+      <p class="zh" lang="zh-CN">考虑如下调制信号，消息信号被调制在幅度 \(A_i\) 和相位 \(\phi_j\) 上。</p>
       <p class="eq">\(A_i\cos\!\left(\dfrac{2\pi t}{T}+\phi_j\right),\quad 0<t<T\)</p>
       <p>(a) Find an orthonormal basis for the signal.</p>
+      <p class="zh" lang="zh-CN">(a) 求该信号的一组标准正交基。</p>
       <p>(b) Find the dimension of the space spanned by the signal.</p>
+      <p class="zh" lang="zh-CN">(b) 求该信号所张成的信号空间的维数。</p>
     </div>
     <div class="chips"><span class="chip">正交归一基</span><span class="chip">和角公式</span><span class="chip src">讲义第 3 章 p.4–11</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -24,12 +27,16 @@
 
   <article class="ex" id="p3q2">
     <header><span class="pg">P3 · Q2</span><h3>噪声方差不相等时的 ML 判决</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 3</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 3</span></div>
       <p>A particular binary disc storage channel can be approximated as a discrete-time AWGN channel with inputs \(x_n\in\{0,1\}\) and output \(y_n=x_n+w_n\), where \(y_n\) is also the decision variable in the disc reading device at time n. The noise variance depends on the value of \(x_n\) in that \(w_n\) has the conditional Gaussian pdf given below, where \(\sigma_1^2>\sigma_0^2\).</p>
+      <p class="zh" lang="zh-CN">某二进制磁盘存储信道可以近似为离散时间 AWGN 信道：输入 \(x_n\in\{0,1\}\)，输出 \(y_n=x_n+w_n\)，\(y_n\) 也是读盘设备在时刻 n 的判决变量。噪声方差与 \(x_n\) 的取值有关：\(w_n\) 的条件高斯概率密度如下，其中 \(\sigma_1^2>\sigma_0^2\)。</p>
       <p class="eq">\(f(w_n\mid x_n)=\begin{cases}\dfrac{1}{\sqrt{2\pi\sigma_0^2}}e^{-w_n^2/2\sigma_0^2} & x_n=0\\[2mm] \dfrac{1}{\sqrt{2\pi\sigma_1^2}}e^{-w_n^2/2\sigma_1^2} & x_n=1\end{cases}\)</p>
       <p>Assume \(P(x_n=0)=P(x_n=1)=\tfrac12\) for all n.</p>
+      <p class="zh" lang="zh-CN">对所有 n，假设 \(P(x_n=0)=P(x_n=1)=\tfrac12\)。</p>
       <p>(a) Find a decision rule for a ML detector that will decide \(\hat x_n\in\{0,1\}\) based on the value of \(y_n\), and formulate it in terms of \(\sigma_0^2\) and \(\sigma_1^2\).</p>
+      <p class="zh" lang="zh-CN">(a) 求 ML 检测器根据 \(y_n\) 的值判决 \(\hat x_n\in\{0,1\}\) 的判决规则，并用 \(\sigma_0^2\) 和 \(\sigma_1^2\) 表示。</p>
       <p>(b) Find the corresponding bit error probability \(P_e\).</p>
+      <p class="zh" lang="zh-CN">(b) 求相应的误比特概率 \(P_e\)。</p>
     </div>
     <div class="chips"><span class="chip">ML 检测</span><span class="chip">似然比</span><span class="chip">判决门限</span><span class="chip src">讲义第 3 章 p.18–20</span></div>
     <button class="reveal" type="button">显示解答</button>
@@ -49,8 +56,9 @@
 
   <article class="ex" id="p3q3">
     <header><span class="pg">P3 · Q3</span><h3>时延扩展造成的误码平台与最高速率</h3></header>
-    <div class="orig" lang="en"><div class="orig-lab"><span>Original question</span><span>Practice 3</span></div>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 3</span></div>
       <p>Using the approximation \(P_{floor}\approx\left(\dfrac{\sigma_{T_m}}{T_b}\right)^2\) for a BPSK system, determine the data rate of a QPSK system that can be transmitted through a channel with delay spread \(\sigma_{T_m}\) = 3 µs, such that the irreducible error floor is \(10^{-3}\).</p>
+      <p class="zh" lang="zh-CN">利用 BPSK 系统的近似式 \(P_{floor}\approx\left(\dfrac{\sigma_{T_m}}{T_b}\right)^2\)，求 QPSK 系统在时延扩展 \(\sigma_{T_m}\) = 3 µs 的信道上、不可约误码平台（irreducible error floor）为 \(10^{-3}\) 时能传输的数据速率。</p>
     </div>
     <div class="chips"><span class="chip">误码平台</span><span class="chip">符号时长 vs 比特时长</span><span class="chip src">讲义第 3 章 p.35–36</span></div>
     <button class="reveal" type="button">显示解答</button>
