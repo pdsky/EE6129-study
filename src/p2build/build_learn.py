@@ -26,6 +26,24 @@ EXTRA_CSS = '''
 .imp{display:inline-block;vertical-align:middle;margin-left:10px;font-family:var(--f-mono);font-size:11px;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:999px;border:1px solid var(--key-line);color:var(--key);background:var(--key-soft);white-space:nowrap;}
 .imp.i2{opacity:.85}
 .imp.i1{color:var(--ink-faint);border-color:var(--line-strong);background:transparent;}
+/* quiz scope + formulas to memorise (quiz_marks.py) */
+:root{--must:#b42318;--must-soft:#fdecea;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--must:#f97066;--must-soft:rgba(249,112,102,.13);}}
+:root[data-theme="dark"]{--must:#f97066;--must-soft:rgba(249,112,102,.13);}
+.qz{display:inline-block;vertical-align:middle;margin-left:8px;font-family:var(--f-mono);font-size:11px;font-weight:700;letter-spacing:.03em;line-height:1.5;padding:1px 8px;border-radius:999px;border:1px solid;white-space:nowrap;}
+.qz.in,.qz.note{color:var(--good);border-color:var(--good);background:var(--good-soft);}
+.qz.out{color:var(--ink-faint);border-color:var(--line-strong);background:transparent;font-weight:600;}
+.qz.must{color:var(--must);border-color:var(--must);background:var(--must-soft);}
+.qz.try{color:var(--gold);border-color:var(--gold);background:var(--gold-soft);}
+.qz.give{color:var(--accent-ink);border-color:var(--accent);background:var(--accent-soft);}
+.chapter-head{flex-wrap:wrap;}
+.chapter-head .qz{margin-left:0;}
+.qzline{margin-top:10px;padding-top:8px;border-top:1px dashed var(--line-strong);font-family:var(--f-body);font-size:14px;line-height:1.7;color:var(--ink);}
+.qzline .qz{margin:0 8px 0 0;}
+.qzbox{border:1.5px solid var(--good);border-left-width:5px;border-radius:10px;background:var(--good-soft);padding:14px 18px 8px;margin:0 0 28px;}
+.qzbox > .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;color:var(--good);font-weight:700;margin-bottom:6px;}
+.qzbox p{margin:0 0 .6em;font-size:15px;line-height:1.75;}
+.qzbox .qz{margin:0 2px;}
 .key{border:1.5px solid var(--key);border-left-width:5px;border-radius:10px;background:var(--key-soft);padding:14px 18px 12px;margin:24px 0;}
 .key > .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--key);font-weight:700;margin-bottom:6px;}
 .key ul,.key ol{margin:0 0 .4em;padding-left:1.3em;}

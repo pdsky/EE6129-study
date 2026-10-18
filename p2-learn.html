@@ -261,6 +261,24 @@ table td:first-child{font-family:var(--f-body);}
 .imp{display:inline-block;vertical-align:middle;margin-left:10px;font-family:var(--f-mono);font-size:11px;font-weight:700;letter-spacing:.04em;padding:2px 8px;border-radius:999px;border:1px solid var(--key-line);color:var(--key);background:var(--key-soft);white-space:nowrap;}
 .imp.i2{opacity:.85}
 .imp.i1{color:var(--ink-faint);border-color:var(--line-strong);background:transparent;}
+/* quiz scope + formulas to memorise (quiz_marks.py) */
+:root{--must:#b42318;--must-soft:#fdecea;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--must:#f97066;--must-soft:rgba(249,112,102,.13);}}
+:root[data-theme="dark"]{--must:#f97066;--must-soft:rgba(249,112,102,.13);}
+.qz{display:inline-block;vertical-align:middle;margin-left:8px;font-family:var(--f-mono);font-size:11px;font-weight:700;letter-spacing:.03em;line-height:1.5;padding:1px 8px;border-radius:999px;border:1px solid;white-space:nowrap;}
+.qz.in,.qz.note{color:var(--good);border-color:var(--good);background:var(--good-soft);}
+.qz.out{color:var(--ink-faint);border-color:var(--line-strong);background:transparent;font-weight:600;}
+.qz.must{color:var(--must);border-color:var(--must);background:var(--must-soft);}
+.qz.try{color:var(--gold);border-color:var(--gold);background:var(--gold-soft);}
+.qz.give{color:var(--accent-ink);border-color:var(--accent);background:var(--accent-soft);}
+.chapter-head{flex-wrap:wrap;}
+.chapter-head .qz{margin-left:0;}
+.qzline{margin-top:10px;padding-top:8px;border-top:1px dashed var(--line-strong);font-family:var(--f-body);font-size:14px;line-height:1.7;color:var(--ink);}
+.qzline .qz{margin:0 8px 0 0;}
+.qzbox{border:1.5px solid var(--good);border-left-width:5px;border-radius:10px;background:var(--good-soft);padding:14px 18px 8px;margin:0 0 28px;}
+.qzbox > .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;color:var(--good);font-weight:700;margin-bottom:6px;}
+.qzbox p{margin:0 0 .6em;font-size:15px;line-height:1.75;}
+.qzbox .qz{margin:0 2px;}
 .key{border:1.5px solid var(--key);border-left-width:5px;border-radius:10px;background:var(--key-soft);padding:14px 18px 12px;margin:24px 0;}
 .key > .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;color:var(--key);font-weight:700;margin-bottom:6px;}
 .key ul,.key ol{margin:0 0 .4em;padding-left:1.3em;}
@@ -351,6 +369,13 @@ window.MathJax = {
 .teach mark.hl{background:linear-gradient(to bottom,transparent 45%,var(--teach-line) 45%);color:inherit;font-weight:600;}
 .exam .ex:not(.open) .teach{display:none;}
 </style><div class="teach big"><div class="lbl">▶ 老师上课讲的考试规则（Part 2） <span>· Part 2 第 8–10 周录音</span></div><ul><li><b>考核</b>：Part 2 有 1 次 Quiz（10%）、1 份作业（15%），期末 4 题里有 2 题是 Part 2 的。老师说<b>期末他出的那两题最难</b>；Quiz 题型接近期末但更简单；作业最简单，要认真做，可以讨论，但要各自提交。</li><li><b>怎么复习</b>：只看讲义、做完 Practice 就足够考好，不用看课外材料（课外内容不加分）。每份 Practice 只有 3 题，老师说对考试已经够用。</li><li><b>蓝框公式要背</b>：讲义里用<b>蓝色方框</b>框起来的公式必须记住，考试可能不给。没框的公式考试会给，但要懂每个符号是什么意思。框了但不是蓝色的（比如误码平台公式）不用背。下面的"公式清单"框按录音整理了第 1b–3 章的情况。</li><li><b>Quiz（第 10 周，10 月 23 日 3:00–3:30）</b>：闭卷 30 分钟，3 道短题（计算或简述，每题有小问），范围 Ch1b、Ch2、Practice 1–2。提前 10–15 分钟到；自带<b>正常大小的答题纸</b>、笔、认可的计算器，带照片的证件放在桌上。字要写清楚（2 写得像 S 就没法给分）。生病要有 MC，补考会更难。</li><li><b>作业</b>：第 11 周（10 月 30 日起）在 NTULearn 下载，第 13 周周日 23:59 前在线提交。</li><li><b>不考的</b>：第 1a 章（无线系统概览）不考；推导题不会让你从头推到尾（MIMO 只考其中一部分）；<b>不会考积分</b>，但离散分布的求和会考。</li><li><b>改卷方式</b>：按步骤给分，粗心错误只扣一部分；<mark class="hl">没做 dB ↔ 线性换算会扣分</mark>；问"什么衰落类型"只答一个维度只给一半分。</li><li><b>答题习惯</b>：先读题，把已知量写下来；看到"求中断概率""求路径损耗"等，先写出对应公式，再看缺哪个量。</li><li><b>各章难度</b>：MIMO（第 5 章）和均衡（第 6 章）最难；OFDM 数学相对简单；分集不太难。</li></ul></div><!-- TEACH:end 0 -->
+      <div class="qzbox">
+        <div class="lbl">10 月 23 日 Quiz · 周五 3:00–3:30 pm · LT23 · 闭卷 30 分钟 · 3 道短题</div>
+        <p><b>范围</b>：第 1b 章概率复习（本页 1.2–1.5）、第 2 章无线信道（本页 2.1–2.8）、Practice 1–2（练习页 P1、P2）。<b>不考</b>：第 1a 章（1.1）、第 3–7 章、积分计算（离散求和会考）。</p>
+        <p><b>页面标记</b>：<span class="qz in">Quiz</span> 本节在范围内　<span class="qz out">Quiz 不考</span>　公式卡下方：<span class="qz must">背</span> 讲义蓝框，考试不给，要背　<span class="qz try">尽量记</span>　<span class="qz give">考试给</span> 只要懂含义。</p>
+        <p><b>必背公式（录音里老师点名）</b>：贝叶斯公式；E[X] = Σx·P(x)；简化路径损耗模型（线性 + dB）；P<sub>out</sub> = Q(余量/σ)；平坦衰落 σ<sub>Tm</sub>/T<sub>s</sub> &lt; 0.1；SNR 指数分布 p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup>；瑞利中断 1 − e<sup>−γ₀/γ̄</sup>；香农 C = B log₂(1 + SNR)。<b>尽量记</b>：衰落余量公式、注水功率分配式。</p>
+        <p><b>要带</b>：认可的计算器、带照片的证件、正常大小的答题纸和笔；提前 10–15 分钟到。字写清楚，dB ↔ 线性换算要写出来，漏了会扣分。</p>
+      </div>
       <p class="dropcap">Part 1 站在网络的高度看问题：小区怎么排、频率怎么复用、能装多少用户。Part 2 把镜头拉近到<b>一条无线链路</b>：信号从天线发出去，路上会变弱、会抖动、会叠出回声，接收机要怎样把原来的比特找回来。</p>
       <p>整门课就是一条"先找毛病、再开药方"的逻辑线：</p>
       <div class="tblwrap"><table><thead><tr><th>章</th><th>回答的问题</th><th>周次</th><th>练习</th></tr></thead><tbody>
@@ -386,9 +411,9 @@ window.MathJax = {
 
     <!-- ================= CH 1 ================= -->
     <section class="chapter" id="ch1">
-      <div class="chapter-head"><span class="chapter-num">第一章</span><h2>无线系统一览与概率复习</h2></div>
+      <div class="chapter-head"><span class="chapter-num">第一章</span><h2>无线系统一览与概率复习</h2><span class="qz in">Quiz 范围：第 1b 章</span></div>
 
-      <h3><span class="zh-num">1.1</span>现有的无线系统（第 1a 章）<span class="imp i1">★ 了解</span></h3>
+      <h3><span class="zh-num">1.1</span>现有的无线系统（第 1a 章）<span class="imp i1">★ 了解</span><span class="qz out">Quiz 不考</span></h3>
 <!-- TEACH:begin 2 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 8 周录音</span></div><ul><li>老师明确说<b>第 1a 章不考</b>，只是背景知识，建议了解一下就好。</li></ul></div><!-- TEACH:end 2 -->
       <p>这部分是背景知识，四份期末卷都没有出过题，Quiz 范围也只有 Ch1b，扫一眼即可。把讲义 p.3–12 压成一张表：</p>
       <div class="tblwrap"><table><thead><tr><th>系统</th><th>关键数字</th><th>一句话</th></tr></thead><tbody>
@@ -407,7 +432,7 @@ window.MathJax = {
       </ul>
       <p>认知无线电有三种工作方式（p.19）：<b>Overlay</b>（偷听并帮助原有用户的传输）、<b>Interweave</b>（找频谱空洞，见缝插针）、<b>Underlay</b>（和原有用户同时用，但把对它的干扰压到很低）。p.21–24 讲 M2M（机器对机器）通信和人打电话的区别：设备数量巨大、消息很短、对时延不敏感、对能耗非常敏感。</p>
 
-      <h3><span class="zh-num">1.2</span>事件的概率：四条规则<span class="imp i2">★★ 常考</span></h3>
+      <h3><span class="zh-num">1.2</span>事件的概率：四条规则<span class="imp i2">★★ 常考</span><span class="qz in">Quiz</span></h3>
 <!-- TEACH:begin 3 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 8 周录音</span></div><ul><li>往年学生常犯的错：把 P(B) 写成 P(A₁)P(B | A₁)（"A₁ 约掉"）。<mark class="hl">全概率必须对所有 A<sub>i</sub> 求和</mark>，老师说考试遇到类似题别再犯。</li><li>贝叶斯公式是<b>蓝框，要背</b>；后面最大似然检测、序列估计都要用它把 P(B | A) 换成 P(A | B)。</li><li>独立时条件概率就等于概率本身，P(A∩B) = P(A)P(B)，推导里常用这个假设来化简。</li></ul></div><!-- TEACH:end 3 -->
       <p>第 2–7 章几乎每个公式都是"某件坏事发生的概率"：中断概率、误码率、深衰落的概率。第 1b 章（Quiz 范围）就是把算这些概率要用的工具捋一遍。先从最简单的"事件"讲起。</p>
       <p><b>几个名词</b>：做一次随机试验（掷一次骰子），所有可能结果的集合叫<b>样本空间</b>（{1, 2, 3, 4, 5, 6}，讲义叫 Universe）；样本空间里的一部分叫<b>事件</b>（"出偶数" = {2, 4, 6}）。每个结果等可能时，事件的概率 = 它包含的结果数 ÷ 总结果数。</p>
@@ -428,6 +453,7 @@ window.MathJax = {
       <div class="formula-card">
         <div class="flbl">四条规则（第 1b 章 p.5–9）</div>
         <div class="fexpr">加法：\(P(A\cup B)=P(A)+P(B)-P(A\cap B)\)<br>乘法：\(P(A\cap B)=P(A)\,P(B\mid A)=P(B)\,P(A\mid B)\)<br>全概率：\(P(B)=\sum_i P(A_i)\,P(B\mid A_i)\)<br>贝叶斯：\(P(A_i\mid B)=\dfrac{P(A_i)P(B\mid A_i)}{\sum_j P(A_j)P(B\mid A_j)}\)</div>
+        <div class="qzline"><span class="qz must">背</span>贝叶斯公式是蓝框，要背。加法、乘法、全概率要会用；全概率必须对所有 A<sub>i</sub> 求和。</div>
         <div class="fmeaning"><b>加法</b>算"或"；A、B 互斥（不可能同时发生）时交集为 0，直接相加。<b>乘法</b>算"且"：先 A 发生，再在 A 发生的条件下 B 发生。<b>全概率</b>是"分情况讨论再加起来"：把所有可能的情况 \(A_1, A_2,\dots\)（互斥、合起来是全部）各自算一遍再加权。<b>贝叶斯</b>反过来：已经看到结果 B，问是哪种情况造成的。</div>
       </div>
       <p><b>独立</b>：如果 A 发不发生完全不影响 B，即 \(P(B\mid A)=P(B)\)，乘法规则就简化成 <mark class="hl">\(P(A\cap B)=P(A)P(B)\)，独立事件同时发生的概率等于各自概率相乘</mark>（p.6）。这一条是第 4 章分集的全部基础：两条独立的路各有 10% 的时间中断，同时中断只有 0.1 × 0.1 = 1%。Practice 2 第 2 题"两个基站同时收不到"也是这个道理：\(P_{out}=[Q(\Delta/\sigma)]^2\)。</p>
@@ -445,7 +471,7 @@ window.MathJax = {
       <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>全概率公式（分情况加权）和贝叶斯公式（由结果反推原因）。</dd><dt>用到的知识</dt><dd>全概率要求各种情况<b>互斥且完备</b>（概率加起来等于 1，这里 0.8 + 0.2）；贝叶斯 P(A<sub>i</sub>|B) = P(A<sub>i</sub>)P(B|A<sub>i</sub>)/P(B)，分母就是全概率算出的 P(B)。</dd><dt>关键一步</dt><dd>0.00208 里有 0.002 来自深衰落：<mark class="hl">平均误码率由最差的状态主导</mark>。这是第 3 章"衰落下误码率只按 1/SNR 下降"的直观原因，也是第 4 章分集的动机。</dd><dt>和检测的关系</dt><dd>第 3 章 MAP 检测（p.18–19）就是贝叶斯：先验 P(s<sub>i</sub>) × 似然 p(y|s<sub>i</sub>)，再比大小。</dd><dt>举一反三</dt><dd>好状态占 95%：0.95 × 10⁻⁴ + 0.05 × 10⁻² = 5.95 × 10⁻⁴。深衰落时间减为 1/4，平均误码率降约 3.5 倍。</dd></dl></div>
       <!-- /KP:bayes -->
 
-      <h3><span class="zh-num">1.3</span>随机变量、期望和方差<span class="imp">★★★ 必考</span></h3>
+      <h3><span class="zh-num">1.3</span>随机变量、期望和方差<span class="imp">★★★ 必考</span><span class="qz in">Quiz</span></h3>
 <!-- TEACH:begin 4 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 8 周录音</span></div><ul><li>记号：<b>大写字母（X、Y、Z）是随机变量，小写字母是它的取值</b>。</li><li>E[g(X)] 乘的是<b>随机变量 X 的 PDF</b>，不是函数 g 的 PDF；E[g(X)] ≠ g(E[X])。这两点都是往年常见错误。</li><li>方差 = 平方的均值 − 均值的平方；独立变量的方差可以直接相加。</li></ul></div><!-- TEACH:end 4 -->
       <p><b>随机变量</b>就是"取值随机的数"，比如信噪比 γ、噪声 w、接收功率的 dB 值。描述它最重要的两个数：</p>
       <ul>
@@ -455,6 +481,7 @@ window.MathJax = {
       <div class="formula-card">
         <div class="flbl">定义（第 1b 章 p.10–11）</div>
         <div class="fexpr">\(E[X]=\sum_x x\,P_X(x)\)　　\(\mathrm{Var}(X)=E\big[(X-E[X])^2\big]=E[X^2]-(E[X])^2\)</div>
+        <div class="qzline"><span class="qz must">背</span>期望 E[X] = Σx·P(x) 要背，离散分布的求和会考。方差公式要会用。</div>
         <div class="fmeaning">第二个等号最常用：先算平方的平均，再减去平均的平方。</div>
       </div>
       <div class="formula-card">
@@ -492,12 +519,13 @@ window.MathJax = {
         </ul>
       </div>
 
-      <h3><span class="zh-num">1.4</span>连续随机变量：PDF 和 CDF<span class="imp i2">★★ 常考</span></h3>
+      <h3><span class="zh-num">1.4</span>连续随机变量：PDF 和 CDF<span class="imp i2">★★ 常考</span><span class="qz in">Quiz</span></h3>
 <!-- TEACH:begin 5 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 8 周录音</span></div><ul><li>CDF 和中断概率在数学上是同一件事（P(X &lt; x)），第 2–4 章会反复用到。</li></ul></div><!-- TEACH:end 5 -->
       <p>噪声、衰落这类量可以取任意实数，叫<b>连续随机变量</b>。它取"某一个确切值"的概率是 0，只能问"落在某个区间里"的概率，所以要用<b>概率密度函数（PDF）</b> \(p_X(x)\) 来描述（p.12）：</p>
       <div class="formula-card">
         <div class="flbl">PDF 与 CDF（第 1b 章 p.12–13）</div>
         <div class="fexpr">\(P(a\le X\le b)=\displaystyle\int_a^b p_X(x)\,dx\)　　\(\displaystyle\int_{-\infty}^{\infty}p_X(x)\,dx=1\)<br>\(F_X(x)=P(X\le x)=\displaystyle\int_{-\infty}^{x}p_X(t)\,dt\)　　\(E[X]=\displaystyle\int x\,p_X(x)\,dx\)</div>
+        <div class="qzline"><span class="qz note">Quiz</span>Quiz 不考积分：知道"概率 = PDF 下的面积""CDF = P(X ≤ x)"就够了。</div>
         <div class="fmeaning"><b>概率 = PDF 曲线下的面积</b>。PDF 的值本身不是概率，可以大于 1；整条曲线下的总面积是 1。<b>CDF</b> \(F_X(x)\) 是"X 不超过 x 的概率"，从 0 单调涨到 1；PDF 是 CDF 的导数。离散变量把积分换成求和。</div>
       </div>
       <p>后面会用到的三个连续分布：</p>
@@ -519,12 +547,13 @@ window.MathJax = {
       <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>由 PDF 积分得 CDF；指数分布（瑞利衰落下功率 / SNR 的分布，第 2 章 p.26）。</dd><dt>用到的知识</dt><dd>P(γ &lt; γ₀) = ∫₀<sup>γ₀</sup> p(γ)dγ；指数 PDF (1/γ̄)e<sup>−γ/γ̄</sup> 积分得 1 − e<sup>−γ₀/γ̄</sup>。</dd><dt>关键一步</dt><dd>先把 dB 换成线性：γ₀/γ̄ = 10/100 = 0.1，P = 1 − e<sup>−0.1</sup> = 0.095，约 10%。</dd><dt>近似</dt><dd>x 小时 1 − e<sup>−x</sup> ≈ x，所以中断概率 ≈ γ₀/γ̄：平均 SNR 提高 10 dB，中断概率只降到 1/10。</dd><dt>后面在哪用</dt><dd>第 3 章 p.31 中断概率和 p.33 例题反求 γ̄；第 4 章选择分集 (1 − e<sup>−γ₀/γ̄</sup>)<sup>M</sup>；第 2 章衰落余量。</dd></dl></div>
       <!-- /KP:cdf -->
 
-      <h3><span class="zh-num">1.5</span>高斯分布和 Q 函数：本课最常用的一张表<span class="imp">★★★ 必考</span></h3>
+      <h3><span class="zh-num">1.5</span>高斯分布和 Q 函数：本课最常用的一张表<span class="imp">★★★ 必考</span><span class="qz in">Quiz</span></h3>
 <!-- TEACH:begin 6 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 8 周录音、Part 2 第 9 周录音</span></div><ul><li>高斯分布完全由<b>均值和方差</b>两个数确定。看到"高斯"，先想均值是多少、方差是多少。</li><li><mark class="hl">Q 函数表一定会考到</mark>，一定要会查（正着查和倒着查）。</li></ul></div><!-- TEACH:end 6 -->
       <p>噪声、阴影衰落的 dB 值，都服从高斯（正态）分布 \(\mathcal N(\mu,\sigma^2)\)（p.14）。μ 决定钟形曲线的中心在哪，σ 决定它有多胖。我们最常问的问题是：<b>它比平均值低（或高）超过一定量的概率是多少？</b>这个概率没有初等公式，要查 <b>Q 函数表</b>（考试附录会给）。</p>
       <div class="formula-card">
         <div class="flbl">Q 函数（第 2 章 p.15；考卷 Appendix A 给 Q 函数表）</div>
         <div class="fexpr">\(Q(x)=\displaystyle\int_x^{\infty}\frac{1}{\sqrt{2\pi}}e^{-u^2/2}\,du=P(Z>x),\quad Z\sim\mathcal N(0,1)\)</div>
+        <div class="qzline"><span class="qz give">考试给</span>考卷附 Q 函数表，数值不用背；正查、反查都要会，一定会用到。</div>
         <div class="fmeaning">Q(x) 是<b>标准</b>正态变量 Z（均值 0、方差 1）大于 x 的概率，也就是钟形曲线右边那条"尾巴"的面积。x 越大，尾巴越小。</div>
       </div>
       <div class="key">
@@ -586,7 +615,7 @@ window.MathJax = {
     </section>
     <!-- ================= CH 2 ================= -->
     <section class="chapter" id="ch2">
-      <div class="chapter-head"><span class="chapter-num">第二章</span><h2>无线信道：信号在路上会遇到三种麻烦</h2></div>
+      <div class="chapter-head"><span class="chapter-num">第二章</span><h2>无线信道：信号在路上会遇到三种麻烦</h2><span class="qz in">Quiz 范围</span></div>
       <div class="key">
         <div class="lbl">★ 本章是 10 月 23 日 Quiz 的主体，也是期末 Q1(a) 的固定来源</div>
         <p>四份期末卷有三份的 Q1(a) 出自这一章；Practice 1、2 全部在这一章。下面每一节都标了星级，<b>★★★ 的六块要做到看见题就会算</b>：路径损耗 dB 式、阴影中断概率、时延扩展与平坦衰落判别、快慢衰落判别、LCR/AFD 数错误、衰落余量。</p>
@@ -603,7 +632,7 @@ window.MathJax = {
       </div>
       <p>三层是<b>叠加</b>的：接收功率(dB) = 发射功率 − 路径损耗（平均值）+ 阴影起伏（高斯，几 dB）+ 多径起伏（瑞利，可以深到 −20、−30 dB）。前两层在 2.1–2.2 节，多径在 2.3–2.6 节，2.7–2.8 节问"这样的信道最多能传多快"。</p>
 
-      <h3><span class="zh-num">2.1</span>路径损耗：平均来看离多远、弱多少<span class="imp">★★★ 必考</span></h3>
+      <h3><span class="zh-num">2.1</span>路径损耗：平均来看离多远、弱多少<span class="imp">★★★ 必考</span><span class="qz in">Quiz</span></h3>
 <!-- TEACH:begin 7 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 8 周录音、Part 2 第 9 周录音</span></div><ul><li>"simplified path loss model" 是专有名词，就指这个公式。往年 Quiz 有学生用成了自由空间模型。</li><li>γ 叫 <b>path loss exponent</b>，题目可能只说"exponent = 3.5"，要知道就是 γ；K 是某个区域的常数；K 和 γ 都由实测数据拟合（empirical）。</li><li>d₀ 默认 1 m；γ 的取值范围表不用背，题目会给 γ 或让你算。</li><li>线性和 dB 两种形式都要背，按题目给的量选方便的那种。<mark class="hl">mW 没换成 dBm 会扣分</mark>，每次代数前先问自己：这个数是不是 dB？</li><li>简化路径损耗模型里没有随机变量，结果是确定的一个数。</li></ul></div><!-- TEACH:end 7 -->
       <p>讲义 p.3 列了四类模型：自由空间（太简单）、射线追踪（需要现场几何数据）、经验模型（Okumura、Hata、COST 231，换个环境就不准）、<b>简化路径损耗模型</b>（最适合做分析，考试主要用它）。</p>
       <div class="formula-card">
@@ -633,6 +662,7 @@ window.MathJax = {
       <div class="formula-card">
         <div class="flbl">简化路径损耗模型（p.8）—— 必背</div>
         <div class="fexpr">\(P_r=P_tK\left(\dfrac{d_0}{d}\right)^{\gamma}\ \Longrightarrow\ P_{r,\mathrm{dB}}=P_{t,\mathrm{dB}}+K_{\mathrm{dB}}-10\gamma\log_{10}\dfrac{d}{d_0}\)</div>
+        <div class="qzline"><span class="qz must">背</span>线性和 dB 两种形式都要背，考试不给。γ 的取值范围表不用背。</div>
         <div class="fmeaning">γ 就是 Part A 的路径损耗指数 n。K 是和天线有关的常数（dB 时通常是负数），\(d_0\) 是参考距离，一般取 1 m。γ 和 K 都靠实测拟合（p.8）。p.9 给了典型 γ：城区宏蜂窝 3.7–6.5、城区微蜂窝 2.7–3.5、同层办公楼 1.6–3.5、住宅 3；频率越高 γ 越大。</div>
       </div>
       <p><b>怎么从左边的式子得到右边</b>：两边取 \(10\log_{10}\)，乘法变加法、幂变成乘系数：\(10\log_{10}(d_0/d)^{\gamma}=-10\gamma\log_{10}(d/d_0)\)。功率用 dBm（相对 1 mW）时，\(P_{t,\mathrm{dB}}\) 和 \(P_{r,\mathrm{dB}}\) 都是 dBm，\(K_{\mathrm{dB}}\) 和其他项是 dB，直接加减。</p>
@@ -688,7 +718,7 @@ window.MathJax = {
       <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>用最小二乘拟合 K、γ，再把 MSE 当作阴影方差（p.12–15，Practice 1 第 1 题）。</dd><dt>用到的知识</dt><dd>两个正规方程（上面的"推导"框）；σ<sub>ψ</sub>² = MSE = (1/n)Σe<sub>i</sub>²。</dd><dt>关键一步</dt><dd>残差 e<sub>i</sub> = 实测 − 拟合直线的预测。练习页 P1Q1 解答里有逐点残差表：Σe² = 71.23，σ² = 11.87，σ = 3.45 dB，再 P<sub>out</sub> = Q(10/3.45)。</dd><dt>易错</dt><dd>x 用 10 log₁₀d，不是 d；MSE 按讲义除以 n；官方答案（K = −31.4、γ = 3.86）按题目数据算不出来，考试写清楚方法即可。</dd><dt>自检</dt><dd>最小二乘的残差之和为 0；拟合直线经过平均点 (x̄, M̄) = (19.26, −106.67)。</dd></dl></div>
       <!-- /KP:ls6 -->
 
-      <h3><span class="zh-num">2.2</span>阴影衰落与中断概率<span class="imp">★★★ 必考</span></h3>
+      <h3><span class="zh-num">2.2</span>阴影衰落与中断概率<span class="imp">★★★ 必考</span><span class="qz in">Quiz</span></h3>
 <!-- TEACH:begin 8 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 9 周录音</span></div><ul><li>加了阴影以后：<b>平均路径损耗 = 不含阴影的路径损耗</b>（阴影零均值）；<b>路径损耗的方差 = 阴影的方差</b>（常数的方差为 0）。</li><li>题目只给 MSE 时，它就是 σ²（均值为 0 时 MSE = 方差），开根号才是 σ。</li><li><b>老师要求掌握的技巧</b>：把"P<sub>r</sub> &lt; P<sub>min</sub>"整理成"随机变量 &lt; −x"（随机变量留在左边，其他都移到右边，整体前面是负号），再由对称性写成 Q(x/σ)。第 3、6、7 章算误码率都用这一招。</li><li>Q(x/σ) 这个式子对任何零均值高斯都成立；对阴影来说 x = 无阴影时的平均接收功率 − 最低功率。</li></ul></div><!-- TEACH:end 8 -->
       <p>信号在路上要穿过 M 个障碍物，每个都把功率乘上一个衰减因子 \(A_i\)，总衰减 \(\psi=\prod A_i\)（p.11）。取对数以后乘法变成加法：\(\log\psi=\sum\log A_i\)。很多个随机量相加，按中心极限定理近似服从<b>高斯分布</b>，所以 <mark class="hl">ψ 的 dB 值是高斯的，ψ 本身叫对数正态（log-normal）分布</mark>。讲义给的典型值：均值 0，方差 4–12 dB²。</p>
       <div class="formula-card">
@@ -720,6 +750,7 @@ window.MathJax = {
       <div class="formula-card">
         <div class="flbl">中断概率（p.15）—— 必背</div>
         <div class="fexpr">\(P_{\mathrm{out}}=Q\!\left(\dfrac{P_{r,\mathrm{dB}}(\text{无阴影})-P_{m,\mathrm{dB}}}{\sigma_{\psi_{\mathrm{dB}}}}\right)=Q\!\left(\dfrac{\text{余量}}{\text{标准差}}\right)\)</div>
+        <div class="qzline"><span class="qz must">背</span>P<sub>out</sub> = Q(余量/σ) 要背。</div>
         <div class="fmeaning">余量越大、阴影越小，中断越少。讲义说典型目标是中断概率小于 1%（p.16），对应 <mark class="hl">余量 ≥ 2.33σ</mark>。</div>
       </div>
       <div class="worked">
@@ -747,7 +778,7 @@ window.MathJax = {
         </ul>
       </div>
 
-      <h3><span class="zh-num">2.3</span>多径衰落：很多条回波叠在一起<span class="imp i2">★★ 常考</span></h3>
+      <h3><span class="zh-num">2.3</span>多径衰落：很多条回波叠在一起<span class="imp i2">★★ 常考</span><span class="qz in">Quiz</span></h3>
 <!-- TEACH:begin 9 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 9 周录音</span></div><ul><li>I/Q 分量<b>只要求理解，考得不多</b>；瑞利分布、指数分布的推导<b>不会让推</b>。下面的推导框是帮助理解的，不用背。</li><li>要背的是 <b>SNR 的指数 PDF</b> p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup>，不是包络或功率的那两个式子。</li><li>AWGN 信道里 SNR 是常数；<mark class="hl">衰落信道里 SNR 是随机变量</mark>。这一点贯穿第 2–7 章。</li><li>莱斯分布的公式不用记，只要知道：直射分量越强，越接近没有衰落的 AWGN。</li></ul></div><!-- TEACH:end 9 -->
       <p>同一个信号沿很多条路到达接收机，每条路有自己的幅度 \(\alpha_n\)、相位 \(\phi_n\)、时延 \(\tau_n\)、多普勒频移，而且这些量都随时间变（p.19–22）。讲义用时变冲激响应描述：</p>
       <div class="formula-card">
@@ -803,6 +834,7 @@ window.MathJax = {
       <div class="formula-card">
         <div class="flbl">瑞利衰落（p.25–26）</div>
         <div class="fexpr">\(p_z(z)=\dfrac{z}{\sigma^2}e^{-z^2/(2\sigma^2)}\)　　\(p_\gamma(\gamma)=\dfrac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}\)　　\(P(\gamma\lt \gamma_0)=1-e^{-\gamma_0/\bar\gamma}\)</div>
+        <div class="qzline"><span class="qz must">背</span>要背 SNR 的指数分布 p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup> 和瑞利中断 P(γ &lt; γ₀) = 1 − e<sup>−γ₀/γ̄</sup>（老师说"经常出现"）。包络的瑞利 PDF 不用背。</div>
         <div class="fmeaning">包络是瑞利分布；功率 \(z^2\) 和 SNR γ 是<b>指数分布</b>，平均功率 \(2\sigma^2\)、平均 SNR \(\bar\gamma\)。<mark class="hl">\(P(\gamma\lt \gamma_0)=1-e^{-\gamma_0/\bar\gamma}\)</mark> 是后面所有"瑞利信道中断概率"的起点：第 2.7 节的衰落余量、第 3 章的中断、第 4 章的选择分集都从它出发。</div>
       </div>
 <!-- FIG:rayleigh -->
@@ -820,6 +852,7 @@ window.MathJax = {
       <div class="formula-card">
         <div class="flbl">莱斯分布与莱斯因子（p.27–28）</div>
         <div class="fexpr">\(p_z(z)=\dfrac{z}{\sigma^2}\,e^{-\frac{z^2+s^2}{2\sigma^2}}\,I_0\!\left(\dfrac{zs}{\sigma^2}\right),\ z\ge0\)　　\(K=\dfrac{s^2}{2\sigma^2}\)</div>
+        <div class="qzline"><span class="qz give">考试给</span>考试会给，懂 K 的含义即可。</div>
         <div class="fmeaning">s² 是直射波功率，2σ² 是散射波总功率，\(I_0(\cdot)\) 是零阶修正贝塞尔函数（不用会算，知道它出现在莱斯分布里即可）。<mark class="hl">K = 直射功率 ÷ 散射功率：K = 0 退化成瑞利（最糟）；K → ∞ 几乎不衰落，接近 AWGN</mark>。K 常用 dB 表示，讲义 p.28 的图画了 K = −∞ dB（瑞利）、6 dB、∞ dB 三条。</div>
       </div>
       <p><b>直观理解</b>：瑞利信道里所有回波都是"随机相位"的，有可能恰好互相抵消到接近 0；莱斯信道里有一支"主力"直射波，散射波只能在它周围晃，要把它抵消掉，散射波必须恰好全部反向，这很难发生。所以 K 越大，深衰落越少。</p>
@@ -846,12 +879,13 @@ window.MathJax = {
       </tbody></table></div>
       <p>规律：γ₀/γ̄ 很小时 \(1-e^{-x}\approx x\)，<mark class="hl">"低 10k dB 的概率约是 10⁻ᵏ"</mark>。这就是 p.51 说"中断概率 1% 需要 20 dB 衰落余量"的来源。</p>
 
-      <h3><span class="zh-num">2.4</span>时延扩展：回声拖了多长的尾巴<span class="imp">★★★ 必考</span></h3>
+      <h3><span class="zh-num">2.4</span>时延扩展：回声拖了多长的尾巴<span class="imp">★★★ 必考</span><span class="qz in">Quiz</span></h3>
 <!-- TEACH:begin 10 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 9 周录音</span></div><ul><li>σ<sub>τ</sub>/T<sub>s</sub> &lt; 0.1 是<b>蓝框，要背</b>。它只能用来确定"是平坦衰落"：比值稍大于 0.1（如 0.15）时<b>不能下结论</b>，要远大于 0.1 才能说是频率选择性。</li><li>时延扩展是时间色散，多普勒扩展是频率色散，两种效应分开判断。</li></ul></div><!-- TEACH:end 10 -->
       <p>功率时延分布（power delay profile）\(P_r(\tau)\) 记录"晚到 τ 秒的那些回波有多少功率"，第一条到达的回波 τ = 0（p.30）。用它算两个数：</p>
       <div class="formula-card">
         <div class="flbl">平均时延与 rms 时延扩展（p.30）</div>
         <div class="fexpr">\(\mu_{T_m}=\dfrac{\sum_k\tau_kP_r(\tau_k)}{\sum_kP_r(\tau_k)}\)　　\(\sigma_{T_m}=\sqrt{\dfrac{\sum_k(\tau_k-\mu_{T_m})^2P_r(\tau_k)}{\sum_kP_r(\tau_k)}}\)（连续时把求和换成积分）</div>
+        <div class="qzline"><span class="qz give">考试给</span>公式考试会给，要会按功率加权去算。</div>
         <div class="fmeaning">把功率当成"权重"：\(\mu_{T_m}\) 是按功率加权的平均晚到时间，\(\sigma_{T_m}\) 是晚到时间的加权标准差，也就是回波拖尾有多散。和第一章的期望、方差是同一套算法，只是概率换成了"功率占比"。</div>
       </div>
       <div class="worked">
@@ -890,7 +924,7 @@ window.MathJax = {
       <!-- /DRV:bc -->
       <p>时延扩展在频域的对应量是<b>相干带宽</b> \(B_C\)（p.31）：两个频率相隔超过 \(B_C\)，它们的衰落就互不相关。时延扩展越大，相干带宽越小。于是（p.31–33）：</p>
       <ul>
-        <li>信号带宽 &lt; \(B_C\)，或者 <mark class="hl">\(\sigma_{T_m}/T_s<0.1\)：平坦衰落</mark>，整个信号一起起伏，波形不失真；</li>
+        <li>信号带宽 &lt; \(B_C\)，或者 <mark class="hl">\(\sigma_{T_m}/T_s<0.1\)：平坦衰落</mark><span class="qz must">背</span>，整个信号一起起伏，波形不失真；</li>
         <li>信号带宽 &gt; \(B_C\)，或者 \(\sigma_{T_m}\) 和 \(T_s\) 相当：不同频率衰落不同，<b>频率选择性衰落</b>，在时域表现为<b>码间干扰（ISI）</b>：上一个符号的回波拖进了下一个符号。第 6 章（均衡）和第 7 章（OFDM）就是治这个病的。</li>
       </ul>
       <div class="analogy">
@@ -905,7 +939,7 @@ window.MathJax = {
         </ul>
       </div>
 
-      <h3><span class="zh-num">2.5</span>多普勒：信道变化有多快<span class="imp">★★★ 必考</span></h3>
+      <h3><span class="zh-num">2.5</span>多普勒：信道变化有多快<span class="imp">★★★ 必考</span><span class="qz in">Quiz</span></h3>
 <!-- TEACH:begin 11 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 9 周录音</span></div><ul><li>多普勒<b>频移</b>不算失真；多普勒<b>扩展</b>才是严重的失真（频率色散）。</li><li><mark class="hl">问"衰落类型"时必须两个维度都答</mark>：平坦 / 频率选择性选一个，慢 / 快选一个，各自写出判断依据，合起来比如"平坦快衰落"。只答一个维度只给一半分，往年真的出过这题。</li><li>简单记法：信号带宽在相干带宽以内就是平坦；符号时长在相干时间以内就是慢衰落。</li></ul></div><!-- TEACH:end 11 -->
       <div class="formula-card">
         <div class="flbl">多普勒频移与相干时间（p.34–36）</div>
@@ -936,12 +970,13 @@ window.MathJax = {
         <p>期末原题：2025-26 S2 Q1(a)(i) 直接问"怎样用 B<sub>C</sub>、多普勒扩展和信号带宽判断衰落类型"；2023-24 Q1(a)(iii)：T<sub>s</sub> = 1 ms、σ = 0.01 ms、信道时不变 → σ/T<sub>s</sub> = 0.01 &lt; 0.1 平坦，时不变即没有多普勒 → 慢，结论"平坦慢衰落"。</p>
       </div>
 
-      <h3><span class="zh-num">2.6</span>电平通过率与平均衰落时长<span class="imp">★★★ 必考</span></h3>
+      <h3><span class="zh-num">2.6</span>电平通过率与平均衰落时长<span class="imp">★★★ 必考</span><span class="qz in">Quiz</span></h3>
 <!-- TEACH:begin 12 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 9 周录音、Part 2 第 10 周录音</span></div><ul><li>LCR、AFD 公式考试<b>会给</b>，但不一定解释符号：要会说出 <b>ρ = Z<sub>min</sub>/Z<sub>rms</sub></b>，f<sub>m</sub> 是最大多普勒频移。</li><li>题目说"最小信号强度是 rms 值的 10%" → 立刻想到 ρ = 0.1。</li><li>一次衰落里错的符号数 = AFD ÷ T<sub>s</sub>；题目给的是符号<b>速率</b>时取倒数，即 AFD × R<sub>s</sub>。</li><li>这类题数据多，老师建议先读题、把已知量逐个写下来，再动笔算。</li></ul></div><!-- TEACH:end 12 -->
       <p>设能正常工作的最低信号强度是 \(Z_{\min}\)，记 \(\rho=Z_{\min}/Z_{\mathrm{rms}}\)（门限和信号 rms 值之比）。信号在门限上下起伏，每往下穿过一次门限就进入一次"深衰落"。</p>
       <div class="formula-card">
         <div class="flbl">瑞利衰落的 LCR 与 AFD（p.41–43）</div>
         <div class="fexpr">\(L_Z=\sqrt{2\pi}\,f_m\,\rho\,e^{-\rho^2}\)　（次/秒）　　\(\bar\tau_Z=\dfrac{e^{\rho^2}-1}{\sqrt{2\pi}\,f_m\,\rho}\)　（秒）</div>
+        <div class="qzline"><span class="qz give">考试给</span>公式考试会给，要会解释 ρ 和 f<sub>m</sub>。</div>
         <div class="fmeaning"><b>电平通过率 LCR</b>：每秒有多少次信号"往下穿过"门限，也就是每秒进入几次深衰落。<b>平均衰落时长 AFD</b>：每次掉到门限以下平均持续多久。两者的乘积等于"信号低于门限的时间比例"：<mark class="hl">\(L_Z\bar\tau_Z=P(z\lt Z_{\min})=1-e^{-\rho^2}\)</mark>。</div>
       </div>
 <!-- DRV:afd -->
@@ -991,11 +1026,12 @@ window.MathJax = {
         </ul>
       </div>
 
-      <h3><span class="zh-num">2.7</span>信道容量：最多能传多快<span class="imp">★★★ 必考</span></h3>
+      <h3><span class="zh-num">2.7</span>信道容量：最多能传多快<span class="imp">★★★ 必考</span><span class="qz in">Quiz</span></h3>
 <!-- TEACH:begin 13 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 9 周录音</span></div><ul><li>香农公式 C = B log₂(1 + SNR) 必须背，老师说这是通信工程师最基本的公式。</li><li><b>不会考积分</b>；Jensen 不等式只要求理解概念。</li><li>衰落余量 = 为了抵抗衰落而额外多给的 SNR；不同衰落模型公式不同，瑞利的公式"有点难记，但要尽量记"。</li><li>中断这个概念既可以对功率说，也可以对 SNR 说，本质一样：低于最低要求的概率。</li></ul></div><!-- TEACH:end 13 -->
       <div class="formula-card">
         <div class="flbl">AWGN 信道的香农容量（p.48）</div>
         <div class="fexpr">\(C=B\log_2(1+\gamma),\qquad \gamma=\dfrac{P}{N_0B}\)</div>
+        <div class="qzline"><span class="qz must">背</span>C = B log₂(1 + SNR) 要背，SNR 用线性值。</div>
         <div class="fmeaning">只要传输速率 R &lt; C，就存在能让误码率任意小的编码；R &gt; C 则误码率不可能趋于零。带宽翻倍容量差不多翻倍；SNR 翻倍只多 1 bit/s/Hz 左右（高 SNR 时）。<b>γ 用线性值</b>，不能直接代 dB。</div>
       </div>
       <div class="worked">
@@ -1029,8 +1065,9 @@ window.MathJax = {
       </div>
       <!-- /DRV:jensen -->
       <div class="formula-card">
-        <div class="flbl">瑞利衰落的衰落余量（p.51）—— 必背</div>
+        <div class="flbl">瑞利衰落的衰落余量（p.51）</div>
         <div class="fexpr">\(\text{FM}=\bar\gamma_{\mathrm{dB}}-\gamma_{\mathrm{AWGN,dB}}=10\log_{10}\dfrac{1}{\ln\frac{1}{1-\varepsilon}}\ \text{dB}\approx10\log_{10}\dfrac1\varepsilon\)</div>
+        <div class="qzline"><span class="qz try">尽量记</span>尽量记：老师说"有点难记，但要试着记"。</div>
         <div class="fmeaning">ε 很小时 \(\ln\frac{1}{1-\varepsilon}\approx\varepsilon\)，所以 <mark class="hl">ε = 1% → 20 dB，0.5% → 23 dB，0.1% → 30 dB</mark>。中断要求每严 10 倍，余量多 10 dB。</div>
       </div>
       <div class="worked">
@@ -1047,12 +1084,13 @@ window.MathJax = {
       <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>中断概率 ε 对应的最小 SNR 和衰落余量（p.50–51），2025-26 S2 Q1(a)(iii)。</dd><dt>用到的知识</dt><dd>瑞利：1 − e<sup>−γ<sub>min</sub>/γ̄</sup> = ε → γ<sub>min</sub> = γ̄ ln(1/(1 − ε))；FM = γ̄/γ<sub>min</sub>。</dd><dt>关键一步</dt><dd><mark class="hl">衰落余量只取决于 ε，与 γ̄ 无关</mark>：10 log₁₀(1/ln(1/(1 − ε)))。ε = 0.005 → 23.0 dB；0.01 → 20.0 dB；0.05 → 12.9 dB（和第 3 章 p.34 例题一致）。</dd><dt>易错</dt><dd>ln 是自然对数；ε 小时 ln(1/(1 − ε)) ≈ ε；中断容量 C<sub>ε</sub> = B log₂(1 + γ<sub>min</sub>)，平均无错速率还要乘 (1 − ε)。</dd></dl></div>
       <!-- /KP:fm -->
 
-      <h3><span class="zh-num">2.8</span>注水法：功率该怎么分<span class="imp i2">★★ 常考</span></h3>
+      <h3><span class="zh-num">2.8</span>注水法：功率该怎么分<span class="imp i2">★★ 常考</span><span class="qz in">Quiz</span></h3>
 <!-- TEACH:begin 14 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 9 周录音</span></div><ul><li>注水"很重要，要会算"：先假设全部子信道分功率求 γ₀，再检查，再用 P<sub>j</sub>/P = 1/γ₀ − 1/γ<sub>j</sub> 分功率。</li><li>时变信道的注水只要求概念，<b>不会让算</b>，相关细节不考。</li></ul></div><!-- TEACH:end 14 -->
       <p>频率选择性信道可以切成很多段子带，每段宽度约等于相干带宽，各自近似平坦（p.52–53）。每段是一个增益不同的 AWGN 信道。总功率有限时怎么分？答案是<b>注水（water-filling）</b>：好的子信道多分，太差的干脆不给。</p>
       <div class="formula-card">
         <div class="flbl">注水法（p.54）</div>
         <div class="fexpr">\(\dfrac{P_j}{P}=\begin{cases}\dfrac{1}{\gamma_0}-\dfrac{1}{\gamma_j}, & \gamma_j\ge\gamma_0\\ 0, & \gamma_j\lt \gamma_0\end{cases}\qquad \sum_j\Big(\dfrac1{\gamma_0}-\dfrac1{\gamma_j}\Big)=1\qquad C=\sum_{\gamma_j\ge\gamma_0}B_j\log_2\dfrac{\gamma_j}{\gamma_0}\)</div>
+        <div class="qzline"><span class="qz try">尽量记</span>功率分配式尽量记，注水法要会算。</div>
         <div class="fmeaning">\(\gamma_j\) 是"把全部功率都给第 j 个子信道时的 SNR"。\(1/\gamma_0\) 是"水面高度"，\(1/\gamma_j\) 是"池底高度"：池底越低（信道越好），注的水越多；池底高过水面的子信道不分功率。</div>
       </div>
       <div class="analogy">
@@ -1226,7 +1264,7 @@ where B is the signal bandwidth and γ̄<sub>R</sub> = 25dB is the average signa
     </section>
     <!-- ================= CH 3 ================= -->
     <section class="chapter" id="ch3">
-      <div class="chapter-head"><span class="chapter-num">第三章</span><h2>信号检测：从一堆带噪声的波形里认出符号</h2></div>
+      <div class="chapter-head"><span class="chapter-num">第三章</span><h2>信号检测：从一堆带噪声的波形里认出符号</h2><span class="qz out">Quiz 不考 · 期末考</span></div>
       <p>发射端把比特变成波形（调制），接收端反过来：先把收到的波形变成几个数（<b>解调</b>，得到"判决变量"），再根据这几个数判断发的是哪个符号（<b>检测</b>）（p.2、p.13）。</p>
 
       <h3><span class="zh-num">3.1</span>用"坐标"表示波形<span class="imp i2">★★ 常考</span></h3>
@@ -1501,7 +1539,7 @@ where B is the signal bandwidth and γ̄<sub>R</sub> = 25dB is the average signa
     </section>
     <!-- ================= CH 4 ================= -->
     <section class="chapter" id="ch4">
-      <div class="chapter-head"><span class="chapter-num">第四章</span><h2>分集：别把鸡蛋放在一个篮子里</h2></div>
+      <div class="chapter-head"><span class="chapter-num">第四章</span><h2>分集：别把鸡蛋放在一个篮子里</h2><span class="qz out">Quiz 不考 · 期末考</span></div>
 <!-- TEACH:begin 20 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 8 周录音、Part 2 第 10 周录音</span></div><ul><li>老师在课程总览里说分集"不太难"；第 3 章讲平均误码率时说，离散 SNR 分布的平均误码率（求和，不积分）会放在第 4 章练，考试可以考。</li></ul></div><!-- TEACH:end 20 -->
       <p>第 3 章的坏消息是：瑞利衰落下误码率只按 1/SNR 下降，靠加功率很不划算。根本原因是信道偶尔会掉进深衰落，掉进去以后加多少功率都救不回来。第 4 章的思路是：<b>同一份信息走几条独立衰落的路，几条路同时掉进深衰落的概率很小</b>（p.2–3）。</p>
       <div class="formula-card">
@@ -1739,7 +1777,7 @@ Determine the average receiver input SNR, the average receiver output SNR if the
     </section>
     <!-- ================= CH 5 ================= -->
     <section class="chapter" id="ch5">
-      <div class="chapter-head"><span class="chapter-num">第五章</span><h2>MIMO：多根天线，既抗衰落又提速</h2></div>
+      <div class="chapter-head"><span class="chapter-num">第五章</span><h2>MIMO：多根天线，既抗衰落又提速</h2><span class="qz out">Quiz 不考 · 期末考</span></div>
 <!-- TEACH:begin 21 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 8 周录音</span></div><ul><li>老师说 MIMO 和均衡是 Part 2 最难的两章，矩阵运算多。推导考试<b>不会让从头推到尾</b>，只会考其中一部分。空时块码是 MIMO 相比单天线分集多出来的设计手段。</li></ul></div><!-- TEACH:end 21 -->
       <p>MIMO（Multiple-Input Multiple-Output）就是发射端 N 根天线、接收端 M 根天线。第 4 章已经提到它能提供空间分集，这一章讲四件事：信号模型、用 MIMO 做分集、空时编码、MIMO 容量（p.2）。</p>
 
@@ -1956,7 +1994,7 @@ Derive the expected value and variance of the detected signal.</p>
     </section>
     <!-- ================= CH 6 ================= -->
     <section class="chapter" id="ch6">
-      <div class="chapter-head"><span class="chapter-num">第六章</span><h2>均衡：把拖进下一个符号的回声抵消掉</h2></div>
+      <div class="chapter-head"><span class="chapter-num">第六章</span><h2>均衡：把拖进下一个符号的回声抵消掉</h2><span class="qz out">Quiz 不考 · 期末考</span></div>
 <!-- TEACH:begin 22 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 8 周录音、Part 2 第 10 周录音</span></div><ul><li>均衡是最难的两章之一。本课只讲<b>接收端</b>均衡（均衡器也可以放在发射端，但不在本课范围）。均衡后的判决变量看不懂时，回到第 3 章看判决变量的定义。</li></ul></div><!-- TEACH:end 22 -->
       <p>第 2 章说过，信号带宽超过相干带宽时会出现频率选择性衰落，在时域表现为<b>码间干扰 ISI</b>：前一个符号的回波拖进了后一个符号（p.4）。<b>均衡器</b>放在接收端，在采样时刻把 ISI 压下去（p.2）。</p>
 
@@ -2200,7 +2238,7 @@ where w′(n) is the noise at the equalizer output. Using the decision rule of m
     </section>
     <!-- ================= CH 7 ================= -->
     <section class="chapter" id="ch7">
-      <div class="chapter-head"><span class="chapter-num">第七章</span><h2>OFDM：把一条坑洼的宽路，改成很多条平整的窄路</h2></div>
+      <div class="chapter-head"><span class="chapter-num">第七章</span><h2>OFDM：把一条坑洼的宽路，改成很多条平整的窄路</h2><span class="qz out">Quiz 不考 · 期末考</span></div>
 <!-- TEACH:begin 23 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 8 周录音</span></div><ul><li>老师说 OFDM 的数学相对简单。它和均衡一样，原理不是"同一信息发多遍"的分集，而是对付频率选择性衰落。</li></ul></div><!-- TEACH:end 23 -->
       <p>单载波系统速率越高，符号越短，ISI 拖的符号越多，时域均衡器越复杂（p.3）。OFDM 换个思路：<b>不把一条高速数据流塞进一个宽带信道，而是拆成 N 条低速子流，每条用一个窄带子载波发</b>（p.2、p.4）。</p>
       <div class="analogy">

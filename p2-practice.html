@@ -126,6 +126,9 @@ ol.steps>li::before{content:counter(s);position:absolute;left:0;top:8px;width:22
 .deep .note .tw{margin:6px 0}
 .deep .tmpl{border-left:3px solid var(--accent);background:var(--surface-2);border-radius:0 8px 8px 0;padding:6px 14px;margin:.4em 0;font-size:.9rem}
 .deep .tmpl p{margin:.3em 0}
+.qz{display:inline-block;vertical-align:middle;margin-left:8px;font-family:'IBM Plex Mono',monospace;font-size:.66rem;font-weight:700;letter-spacing:.03em;line-height:1.5;padding:1px 8px;border-radius:999px;border:1px solid;white-space:nowrap}
+.qz.in{color:var(--ok);border-color:var(--ok);background:var(--ok-soft)}
+.qz.out{color:var(--muted);border-color:var(--border);background:transparent;font-weight:600}
 .deep.intent{margin:10px 0 2px;border-color:var(--warn)}
 .deep.intent > summary{color:var(--warn)}
 .deep.intent h4 .st{background:var(--warn-soft);color:var(--warn)}
@@ -203,10 +206,10 @@ window.MathJax = {
       <button class="chipbtn" type="button" data-f="p5">P5</button><button class="chipbtn" type="button" data-f="p6">P6</button>
       <button class="chipbtn" type="button" data-f="p7">P7</button>
     </div>
-  <div class="group" id="P1"><h2>Practice 1 · 无线信道 1</h2><span>讲义第 2 章 p.8–33 · 第 8 周</span></div>
+  <div class="group" id="P1"><h2>Practice 1 · 无线信道 1<span class="qz in">Quiz 范围</span></h2><span>讲义第 2 章 p.8–33 · 第 8 周</span></div>
 
   <article class="ex" id="p1q1">
-    <header><span class="pg">P1 · Q1</span><h3>拟合路径损耗模型，再求中断概率</h3></header>
+    <header><span class="pg">P1 · Q1</span><h3>拟合路径损耗模型，再求中断概率<span class="qz in">Quiz</span></h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 1</span></div>
       <p>A set of empirical path loss measurements is given in Table 1, where \(P_t\) and \(P_r\) are the transmitted power and received power respectively.</p>
       <p class="zh" lang="zh-CN">表 1 给出了一组实测路径损耗数据，其中 \(P_t\) 和 \(P_r\) 分别是发射功率和接收功率。</p>
@@ -312,7 +315,7 @@ window.MathJax = {
   </article>
 
   <article class="ex" id="p1q2">
-    <header><span class="pg">P1 · Q2</span><h3>对数正态阴影下的中断概率</h3></header>
+    <header><span class="pg">P1 · Q2</span><h3>对数正态阴影下的中断概率<span class="qz in">Quiz</span></h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 1</span></div>
       <p>Consider a cellular system where the received signal power has a log-normal distribution with mean \(\mu_\psi\) dBm and standard deviation \(\sigma_\psi\) dBm. In order to avoid outage, the received signal power is required to be above 10 dBm.</p>
       <p class="zh" lang="zh-CN">考虑一个蜂窝系统，接收信号功率服从对数正态分布，均值为 \(\mu_\psi\) dBm，标准差为 \(\sigma_\psi\) dBm。为避免中断，接收信号功率必须高于 10 dBm。</p>
@@ -379,7 +382,7 @@ window.MathJax = {
   </article>
 
   <article class="ex" id="p1q3">
-    <header><span class="pg">P1 · Q3</span><h3>均匀功率时延分布的时延扩展</h3></header>
+    <header><span class="pg">P1 · Q3</span><h3>均匀功率时延分布的时延扩展<span class="qz in">Quiz</span></h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 1</span></div>
       <p>Consider a channel with the following power delay profile.</p>
       <p class="zh" lang="zh-CN">考虑一个具有如下功率时延谱（power delay profile）的信道。</p>
@@ -443,10 +446,10 @@ window.MathJax = {
 <!-- TEACH:begin 26 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 10 周录音</span></div><ul><li>平均时延和 rms 时延扩展的公式考试会给，不用背；但判断平坦衰落的 σ/T<sub>s</sub> &lt; 0.1 要背。</li></ul></div><!-- TEACH:end 26 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P2"><h2>Practice 2 · 无线信道 2</h2><span>讲义第 2 章 p.40–49 · 第 9 周</span></div>
+  <div class="group" id="P2"><h2>Practice 2 · 无线信道 2<span class="qz in">Quiz 范围</span></h2><span>讲义第 2 章 p.40–49 · 第 9 周</span></div>
 
   <article class="ex" id="p2q1">
-    <header><span class="pg">P2 · Q1</span><h3>平均衰落时长</h3></header>
+    <header><span class="pg">P2 · Q1</span><h3>平均衰落时长<span class="qz in">Quiz</span></h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 2</span></div>
       <p>For Rayleigh fading channels, the average fade duration can be expressed as,</p>
       <p class="zh" lang="zh-CN">对于瑞利衰落信道，平均衰落持续时间（AFD）可以表示为：</p>
@@ -511,7 +514,7 @@ window.MathJax = {
   </article>
 
   <article class="ex" id="p2q2">
-    <header><span class="pg">P2 · Q2</span><h3>两个基站的宏分集：独立与相关阴影</h3></header>
+    <header><span class="pg">P2 · Q2</span><h3>两个基站的宏分集：独立与相关阴影<span class="qz in">Quiz</span></h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 2</span></div>
       <p>Consider a mobile station located between two base stations in a cellular network. The received signal powers (in dBm) from the base stations are given by</p>
       <p class="zh" lang="zh-CN">考虑蜂窝网络中一个位于两个基站之间的移动台。它从两个基站收到的信号功率（dBm）为</p>
@@ -711,7 +714,7 @@ window.MathJax = {
   </article>
 
   <article class="ex" id="p2q3">
-    <header><span class="pg">P2 · Q3</span><h3>两个用户：干扰当噪声 vs 多用户检测</h3></header>
+    <header><span class="pg">P2 · Q3</span><h3>两个用户：干扰当噪声 vs 多用户检测<span class="qz in">Quiz</span></h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 2</span></div>
       <p>Two users transmit simultaneously to a single receiver over an AWGN channel. The power received from each transmitter is 10mW. The total received noise power is 0.1mW. The channel bandwidth for each user is 20MHz.</p>
       <p class="zh" lang="zh-CN">两个用户通过 AWGN 信道同时向同一个接收机发送信号。来自每个发射机的接收功率都是 10 mW，总接收噪声功率为 0.1 mW，每个用户的信道带宽为 20 MHz。</p>
@@ -771,7 +774,7 @@ window.MathJax = {
     <!-- /EN:p2q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P3"><h2>Practice 3 · 信号检测</h2><span>讲义第 3 章 · 第 10 周</span></div>
+  <div class="group" id="P3"><h2>Practice 3 · 信号检测<span class="qz out">Quiz 不考</span></h2><span>讲义第 3 章 · 第 10 周</span></div>
 
   <article class="ex" id="p3q1">
     <header><span class="pg">P3 · Q1</span><h3>正交基与信号空间维数</h3></header>
@@ -966,7 +969,7 @@ window.MathJax = {
     <!-- /EN:p3q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P4"><h2>Practice 4 · 分集</h2><span>讲义第 4 章 · 第 11 周</span></div>
+  <div class="group" id="P4"><h2>Practice 4 · 分集<span class="qz out">Quiz 不考</span></h2><span>讲义第 4 章 · 第 11 周</span></div>
 
   <article class="ex" id="p4q1">
     <header><span class="pg">P4 · Q1</span><h3>宏分集为什么能降低中断概率</h3></header>
@@ -1169,7 +1172,7 @@ window.MathJax = {
     <!-- /EN:p4q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P5"><h2>Practice 5 · MIMO</h2><span>讲义第 4 章 p.30–34、第 5 章 · 第 12 周</span></div>
+  <div class="group" id="P5"><h2>Practice 5 · MIMO<span class="qz out">Quiz 不考</span></h2><span>讲义第 4 章 p.30–34、第 5 章 · 第 12 周</span></div>
 
   <article class="ex" id="p5q1">
     <header><span class="pg">P5 · Q1</span><h3>三个子信道的注水容量</h3></header>
@@ -1360,7 +1363,7 @@ window.MathJax = {
     <!-- /EN:p5q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P6"><h2>Practice 6 · 均衡</h2><span>讲义第 6 章 · 第 13 周</span></div>
+  <div class="group" id="P6"><h2>Practice 6 · 均衡<span class="qz out">Quiz 不考</span></h2><span>讲义第 6 章 · 第 13 周</span></div>
 
   <article class="ex" id="p6q1">
     <header><span class="pg">P6 · Q1</span><h3>二进制 PAM：加不加这个均衡器</h3></header>
@@ -1579,7 +1582,7 @@ window.MathJax = {
     <!-- /EN:p6q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P7"><h2>Practice 7 · OFDM</h2><span>讲义第 7 章 · 第 13 周</span></div>
+  <div class="group" id="P7"><h2>Practice 7 · OFDM<span class="qz out">Quiz 不考</span></h2><span>讲义第 7 章 · 第 13 周</span></div>
 
   <article class="ex" id="p7q1">
     <header><span class="pg">P7 · Q1</span><h3>两径信道上的 OFDM：选 N、算 H_k、分功率</h3></header>
