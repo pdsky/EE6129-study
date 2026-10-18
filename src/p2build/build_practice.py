@@ -130,6 +130,11 @@ ol.steps>li::before{content:counter(s);position:absolute;left:0;top:8px;width:22
 .deep .note .tw{margin:6px 0}
 .deep .tmpl{border-left:3px solid var(--accent);background:var(--surface-2);border-radius:0 8px 8px 0;padding:6px 14px;margin:.4em 0;font-size:.9rem}
 .deep .tmpl p{margin:.3em 0}
+.deep.intent{margin:10px 0 2px;border-color:var(--warn)}
+.deep.intent > summary{color:var(--warn)}
+.deep.intent h4 .st{background:var(--warn-soft);color:var(--warn)}
+.deep table.sym td{font-size:.86rem}
+.deep table.sym td:first-child{min-width:7em;max-width:16em;font-weight:600;color:var(--text)}
 .done{display:flex;justify-content:flex-end;margin-top:10px}
 .done label{font-size:.8rem;color:var(--muted);display:flex;gap:6px;align-items:center;cursor:pointer}
 .done input{accent-color:var(--ok)}

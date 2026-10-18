@@ -126,6 +126,11 @@ ol.steps>li::before{content:counter(s);position:absolute;left:0;top:8px;width:22
 .deep .note .tw{margin:6px 0}
 .deep .tmpl{border-left:3px solid var(--accent);background:var(--surface-2);border-radius:0 8px 8px 0;padding:6px 14px;margin:.4em 0;font-size:.9rem}
 .deep .tmpl p{margin:.3em 0}
+.deep.intent{margin:10px 0 2px;border-color:var(--warn)}
+.deep.intent > summary{color:var(--warn)}
+.deep.intent h4 .st{background:var(--warn-soft);color:var(--warn)}
+.deep table.sym td{font-size:.86rem}
+.deep table.sym td:first-child{min-width:7em;max-width:16em;font-weight:600;color:var(--text)}
 .done{display:flex;justify-content:flex-end;margin-top:10px}
 .done label{font-size:.8rem;color:var(--muted);display:flex;gap:6px;align-items:center;cursor:pointer}
 .done input{accent-color:var(--ok)}
@@ -214,6 +219,33 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">(b) 假设存在阴影衰落，并且在距离 d 处仅由路径损耗决定的接收功率比“不中断”所需的最小功率高 10 dB，求距离 d 处的中断概率。</p>
     </div>
     <div class="chips"><span class="chip">简化路径损耗模型</span><span class="chip">最小二乘拟合</span><span class="chip">阴影方差 = MSE</span><span class="chip">中断概率 Q 函数</span><span class="chip src">讲义第 2 章 p.8、12–15</span></div>
+    <!-- INTENT:p1q1 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>有人拿着接收机，在离发射机 5 m、25 m、65 m、110 m、400 m、1000 m 六个地方各测了一次"收到的功率比发出的功率小多少"，表里的 \((P_r/P_t)_{dB}\) 就是这个比值（负数 = 损耗）。</p>
+          <p>题目给了一个路径损耗模型 \(P_r=P_tK(1/d)^{\gamma}\)，要你用这 6 个实测点把模型里的两个未知参数定下来，再用它算中断概率。</p>
+          <p>取 dB 以后模型变成一条直线：\((P_r/P_t)_{dB}=K_{dB}-\gamma\cdot10\log_{10}d\)。所以 (a) 本质上就是"给 6 个点，画一条最贴合的直线"。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(d_i\)</td><td>测量点离发射机的距离（m）</td></tr><tr><td>\((P_r/P_t)_{dB}\)</td><td>实测的路径增益（dB），负得越多损耗越大</td></tr><tr><td>K</td><td>参考距离 1 m 处的增益，直线的截距</td></tr><tr><td>γ</td><td>路径损耗指数：距离每增大 10 倍，损耗多 10γ dB；自由空间 γ = 2，城市 3–5。直线的斜率是 −γ</td></tr><tr><td>阴影（shadowing）</td><td>6 个点不会正好落在直线上，偏离直线的那部分就是阴影，(b) 要用它</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 用最小二乘（least squares）找最贴合 6 个点的直线，读出 K（dB）和 γ。</li>
+            <li><b>(b)</b> "只考虑路径损耗时，接收功率比不中断所需的最低功率高 10 dB"：直线给出的平均功率比门限高 10 dB，即余量 10 dB。阴影把功率往下压超过 10 dB 就中断。题目没给阴影的标准差 σ，要从 (a) 的拟合残差里算：σ² = 均方误差（MSE）。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>横坐标用 10 log₁₀d，不是 log₁₀d，否则 γ 会差 10 倍。</li>
+            <li>"10 dB above" 是余量，不是门限本身；和 P2 Q2 的 Δ 是同一个意思，中断概率 = Q(余量/σ)。</li>
+            <li>MSE 是方差 σ²，代进 Q 之前要开根号。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>实测数据怎么变成模型：直线部分是路径损耗（平均趋势），点在直线周围的散布是阴影（随机波动），散布的大小直接决定中断概率。</p>
+          <div class="ans">一句话：用 6 个测量点拟合一条 dB 直线得到 K、γ，再把点偏离直线的程度当作阴影 σ，求"比平均低 10 dB 以上"的概率。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p1q1 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>取 dB 后模型变成一条直线 \(y=K_{dB}-\gamma x\)，其中 \(x=10\log_{10}d\)（\(d_0\) = 1 m）。用最小二乘找最贴近 6 个点的直线；剩下的均方误差就是阴影方差。</p>
@@ -290,6 +322,31 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">(b) 若 \(\sigma_\psi\) = 4 dBm，要使中断概率小于 1%，\(\mu_\psi\) 至少要取多少？</p>
     </div>
     <div class="chips"><span class="chip">对数正态 = dB 值高斯</span><span class="chip">Q 函数与反函数</span><span class="chip src">讲义第 2 章 p.11–15</span></div>
+    <!-- INTENT:p1q2 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>手机收到的功率因为阴影而随机起伏。题目说它服从对数正态分布（log-normal），意思是：用 dBm 表示时，功率服从高斯分布。</p>
+          <p>手机要正常工作，接收功率必须高于 10 dBm，低于就算中断。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(\mu_\psi\)</td><td>接收功率的平均值（dBm），由路径损耗决定</td></tr><tr><td>\(\sigma_\psi\)</td><td>阴影的标准差，表示起伏有多大（题目写 dBm，实际单位是 dB）</td></tr><tr><td>10 dBm</td><td>门限：低于它就中断</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 正着算：平均 15 dBm、σ = 8 dB 时，功率掉到 10 dBm 以下的概率是多少。</li>
+            <li><b>(b)</b> 反着算：σ = 4 dB 时，平均功率至少要多大，才能让中断概率小于 1%。也就是"需要留多少余量"。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>对数正态在 dB 上就是高斯，直接在 dB 上算，不用换回线性值。</li>
+            <li>(b) 是 Q 函数反查：Q(x) = 0.01 → x = 2.326，再解出平均值。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>余量和中断概率的关系：门限离平均值越多个标准差，中断越少；要中断 1%，余量约为 2.33σ。</p>
+          <div class="ans">一句话：功率在 dB 上服从高斯，(a) 求低于 10 dBm 的概率，(b) 反过来求平均值要多高才能让这个概率 &lt; 1%。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p1q2 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>dBm 值服从高斯分布。"低于门限"的概率 = 先减均值、再除标准差，查 Q 表。</p>
@@ -333,6 +390,31 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">(b) 要使该信道表现为平坦衰落，符号速率 \(R_s\) 应取多少？设 \(R_s=1/T_s\)，\(T_s\) 为信号的符号周期。</p>
     </div>
     <div class="chips"><span class="chip">平均时延 / rms 时延扩展</span><span class="chip">平坦衰落条件 σ/Ts &lt; 0.1</span><span class="chip src">讲义第 2 章 p.30–33</span></div>
+    <!-- INTENT:p1q3 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>信号经多条路径到达接收机，各条路径的时延不同，像回声一样陆续到达。</p>
+          <p>功率时延分布 \(P_r(\tau)\)（power delay profile）描述"时延为 τ 的那部分回声有多少功率"。这里是 0 到 10 µs 之间均匀分布：每个时延的功率都一样，10 µs 之后就没有了。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>τ</td><td>某条路径相对最早到达那条的时延</td></tr><tr><td>\(\mu_{T_m}\)</td><td>平均时延（mean delay spread）：按功率加权的平均到达时延</td></tr><tr><td>\(\sigma_{T_m}\)</td><td>rms 时延扩展：时延的标准差，衡量回声"拖得有多散"</td></tr><tr><td>\(T_s,\ R_s=1/T_s\)</td><td>符号时长和符号速率</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 把 \(P_r(\tau)\) 当作权重（相当于一个概率分布），求时延的均值和标准差。</li>
+            <li><b>(b)</b> 平坦衰落（flat fading）要求符号比回声的散布长得多，回声才不会拖进下一个符号。讲义的判据是 \(\sigma_{T_m}/T_s\lt0.1\)，由此求符号速率最多能多快。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>题目说的 "mean delay spread" 就是平均时延。</li>
+            <li>(b) 的答案是一个上限：R_s 小于某个值，不是等于。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>时延扩展限制了不加均衡时的最高符号速率：符号越快越短，回声就越容易造成码间干扰（ISI）。</p>
+          <div class="ans">一句话：把均匀的功率时延分布当成概率分布，求时延的均值和标准差，再用 σ/T_s &lt; 0.1 求平坦衰落允许的最高符号速率。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p1q3 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -373,6 +455,30 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">最大多普勒频移为 50 Hz。保证可接受性能所需的最小信号强度是信号强度 rms 值的 0.1 倍。求信号强度低于这个可接受值的平均持续时间。</p>
     </div>
     <div class="chips"><span class="chip">AFD</span><span class="chip">ρ = Z_min / Z_rms</span><span class="chip src">讲义第 2 章 p.42–43</span></div>
+    <!-- INTENT:p2q1 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>手机在移动时，多径信号时而同相相加、时而反相抵消，接收信号的幅度快速起伏，这就是瑞利衰落（Rayleigh fading）。</p>
+          <p>信号偶尔会掉进很深的"坑"（深衰落），在坑里的这段时间通信质量很差。题目问：每次掉进坑里，平均要多久才爬出来。这就是平均衰落时长（AFD, average fade duration）。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(f_D\)</td><td>最大多普勒频移 50 Hz，表示信道变化有多快：车越快 f_D 越大，坑来得越频繁、也越短</td></tr><tr><td>ρ</td><td>门限和信号 rms 值之比：ρ = Z_min / Z_rms</td></tr><tr><td>AFD 公式</td><td>题目直接给出，代数即可</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>唯一一问</b> "可接受的最低信号强度是 rms 值的 0.1 倍"：求 ρ，代进公式算信号低于门限时平均持续多久。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>"signal strength" 指幅度，所以 ρ = 0.1 直接代；如果说的是功率的 0.1 倍，ρ 才是 √0.1。</li>
+            <li>幅度 0.1 倍 = 功率低 20 dB，是很深的坑，所以 AFD 很短。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>AFD 告诉你一次深衰落会吞掉多少个符号，交织和编码要按它来设计。</p>
+          <div class="ans">一句话：瑞利衰落时信号会掉进深坑，题目问"低于 rms 值 0.1 倍"的坑平均持续多久，求出 ρ 代入公式即可。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p2q1 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -421,6 +527,34 @@ window.MathJax = {
       <p class="eq">\(P_{out}=\displaystyle\int_{-\infty}^{\infty}\frac{1}{\sqrt{2\pi}}Q\!\left[\frac{\Delta+by\sigma}{|a|\sigma}\right]^2e^{-y^2/2}dy\)</p>
     </div>
     <div class="chips"><span class="chip">宏分集</span><span class="chip">独立 → 概率相乘</span><span class="chip">条件概率 + 全概率</span><span class="chip src">讲义第 2 章 p.12–15；第 4 章 p.4</span></div>
+    <!-- INTENT:p2q2 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>手机站在两个基站中间，能同时收到两个基站的信号：基站 1 ))) 📱 ((( 基站 2。这种安排叫宏分集（macro-diversity）："分集"是准备多条路，"宏"是说这两条路来自相隔很远的两个基站。</p>
+          <p>目的：只要有一个基站的信号够强，通话就不断；两个都不行才真的断线。</p>
+          <p>举例：W = −90 dBm，门限 T = −100 dBm（所以 Δ = 10 dB）。某一时刻 Z₁ = −12 dB、Z₂ = +3 dB，则 P_r,1 = −102 dBm（基站 1 被楼挡住），P_r,2 = −87 dBm（畅通）。手机改用基站 2，不算中断。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(P_{r,1},P_{r,2}\)</td><td>手机从两个基站收到的功率（dBm）</td></tr><tr><td>W</td><td>平均接收功率，只由距离决定（路径损耗）。手机在正中间，两边一样</td></tr><tr><td>\(Z_1,Z_2\sim\mathcal N(0,\sigma^2)\)</td><td>阴影衰落（dB）：被楼、树挡住造成的随机起伏，平均为 0，σ 是起伏大小，典型 6–10 dB</td></tr><tr><td>T</td><td>门限：接收功率低于它就听不清</td></tr><tr><td>Δ</td><td>余量（margin）：T 比 W 小 Δ，即 T = W − Δ</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 解释 W、Z₁、Z₂ 的含义，就是上面表里那几句。</li>
+            <li><b>(b)</b> 假设两边的阴影互不相关（独立）：基站 1 那边挡不挡，和基站 2 那边无关。求两个同时低于门限的概率。</li>
+            <li><b>(c)</b> 更真实的情况：有些障碍物会同时挡住两条路（手机进了地下室、车里、站到大楼背后）。题目用 \(Z_1=aY_1+bY\)、\(Z_2=aY_2+bY\) 描述：Y 是两条链路共有的阴影（手机周围的墙、车身），Y₁、Y₂ 是各自独有的阴影。b 越大，两条链路越像（相关系数 ρ = b²）；b = 0 就是 (b)，a = 0 就是两条完全一样。要证明这时的中断概率等于题目给的积分式。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>中断要求两个都低于门限，不是任意一个。</li>
+            <li>"功率低于门限"和"阴影低于 −Δ"是同一件事：\(P_{r,i}\lt T\iff W+Z_i\lt W-\Delta\iff Z_i\lt-\Delta\)。−Δ 不是门限，而是门限在阴影这个尺度上的对应位置：平均功率本来比门限高 Δ，阴影要把信号压低超过 Δ 才会中断。改写成 Z 的形式，是因为题目只给了 Z 的分布。</li>
+            <li>所以整道题都在求同一个东西：\(P_{out}=P(Z_1\lt-\Delta\ \text{and}\ Z_2\lt-\Delta)\)，一个 0 到 1 之间的数。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>相关性会削弱宏分集。取 Δ = σ：一个基站中断 15.9%；两个独立基站 2.5%；相关 ρ = 0.5 时 6.3%；完全相关又回到 15.9%，等于没多一个基站。宏分集的好处来自"一个坏了还有另一个"，两个经常一起坏，备用的就帮不上忙。</p>
+          <div class="ans">一句话：手机同时连两个基站，两个都低于门限才算断线。(b) 算两边阴影独立时的断线概率，(c) 算两边有共同阴影时的断线概率，说明相关会让"多一个基站"的好处变小。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p2q2 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -587,6 +721,31 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">(b) 采用多用户检测（MUD）后，解码器把用户 1 的信号从接收信号中完全去掉。用户 2 信道的容量是多少？</p>
     </div>
     <div class="chips"><span class="chip">香农容量</span><span class="chip">SINR</span><span class="chip">MUD</span><span class="chip src">讲义第 1a 章 p.16；第 2 章 p.48</span></div>
+    <!-- INTENT:p2q3 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>两个用户在同一时间、同一频段，向同一个接收机（比如基站）发信号。接收机收到的是"用户 1 的信号 + 用户 2 的信号 + 噪声"混在一起。</p>
+          <p>信道是 AWGN 信道（Additive White Gaussian Noise，加性高斯白噪声）：噪声直接加在信号上（加性），所有频率上功率一样、不同时刻互不相关（白），幅度服从均值 0 的高斯分布；除了这种噪声没有别的损伤（没有衰落、没有多径）。香农公式 C = B log₂(1 + SNR) 就是在这种信道下成立的。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>10 mW</td><td>接收机收到的每个用户的功率</td></tr><tr><td>0.1 mW</td><td>总噪声功率</td></tr><tr><td>20 MHz</td><td>每个用户的带宽</td></tr><tr><td>SINR</td><td>信号 /（干扰 + 噪声）：把别的用户也当成噪声时的信噪比</td></tr><tr><td>MUD</td><td>多用户检测（multi-user detection）：先解出一个用户，把它从接收信号里减掉，再解下一个（连续干扰消除 SIC）</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 先解用户 1。这时用户 2 的信号还在，只能把它当噪声。用户 1 的容量是多少？关键是 SINR = P₁ /(P₂ + N)。</li>
+            <li><b>(b)</b> 用户 1 解出来并完全减掉以后，再解用户 2，它只剩噪声。用户 2 的容量是多少？SNR = P₂ / N。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>香农公式里的 SNR 用线性值，不是 dB。</li>
+            <li>两个功率单位要一致（都用 mW）。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>把干扰当噪声代价很大（同样 10 mW，容量差了好几倍）；先解一个再减掉，后解的那个用户就像独占信道一样。</p>
+          <div class="ans">一句话：两个用户同时发，(a) 先解用户 1、把用户 2 当噪声，(b) 减掉用户 1 后再解用户 2，分别用香农公式求容量。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p2q3 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -626,6 +785,30 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">(b) 求该信号所张成的信号空间的维数。</p>
     </div>
     <div class="chips"><span class="chip">正交归一基</span><span class="chip">和角公式</span><span class="chip src">讲义第 3 章 p.4–11</span></div>
+    <!-- INTENT:p3q1 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>发送的信号是固定频率（1/T）的余弦波，信息藏在它的幅度 \(A_i\) 和相位 \(\phi_j\) 里，比如 PSK、QAM 就是这样。</p>
+          <p>题目想让你把所有可能的波形都看成某个坐标系里的点（信号空间，signal space）：找出几个"坐标轴"函数，每个信号都能写成这些坐标轴的组合。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(A_i,\ \phi_j\)</td><td>幅度和相位，携带信息</td></tr><tr><td>正交归一基（orthonormal basis）</td><td>一组"坐标轴"函数：两两正交（乘积在 0 到 T 上积分为 0），每个能量为 1（自身平方积分为 1）</td></tr><tr><td>维数（dimension）</td><td>需要几个坐标轴，也就是基函数的个数</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 找出这组基函数。提示：用和角公式把 cos(2πt/T + φ) 拆开，看所有信号都落在哪几个方向上，再检查正交、调整系数让能量为 1。</li>
+            <li><b>(b)</b> 这些信号张成的空间是几维：数一数 (a) 里有几个基函数。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>归一化：cos² 在一个周期上积分是 T/2，不是 T，所以系数是 √(2/T)。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>每个调制波形都对应一个向量。PSK、QAM 都是二维的，所以能画在平面上，这就是星座图。</p>
+          <div class="ans">一句话：把"幅度 + 相位调制的余弦"拆成 cos 和 sin 两个方向，找出这两个归一化的坐标轴，维数就是 2。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p3q1 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -668,6 +851,31 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">(b) 求相应的误比特概率 \(P_e\)。</p>
     </div>
     <div class="chips"><span class="chip">ML 检测</span><span class="chip">似然比</span><span class="chip">判决门限</span><span class="chip src">讲义第 3 章 p.18–20</span></div>
+    <!-- INTENT:p3q2 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>从光盘（磁盘）读数据：每个位置存的是 0 或 1，读出来的值 y = x + 噪声。</p>
+          <p>特别之处：噪声大小和存的是什么有关。存 1 时噪声更大（σ₁ > σ₀）。读到一个 y，要判断原来存的是 0 还是 1。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(x_n\in\{0,1\}\)</td><td>存的比特，0 和 1 各占一半</td></tr><tr><td>\(w_n\)</td><td>噪声，高斯；x = 0 时方差 σ₀²，x = 1 时方差 σ₁²</td></tr><tr><td>\(y_n\)</td><td>读出来的值，也就是判决用的变量</td></tr><tr><td>ML 检测</td><td>最大似然（maximum likelihood）：比较"存 0 时读到这个 y 的可能性"和"存 1 时读到这个 y 的可能性"，选大的</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 写出 ML 判决规则：y 大于某个门限 ỹ 判 1，否则判 0。要求把门限用 σ₀²、σ₁² 表示出来。</li>
+            <li><b>(b)</b> 求误码率：存 0 被误判成 1，和存 1 被误判成 0，两种错误各占一半。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>噪声方差相等时门限就是中点 0.5；这里不相等，门限会偏，不能直接用 0.5。</li>
+            <li>0、1 等概，所以 ML 和 MAP（最大后验）结果一样。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>ML 门限是两条似然曲线（两个 PDF）的交点，不一定在中点：哪一边噪声大，门限就往另一边让。</p>
+          <div class="ans">一句话：读到 y，比较"存 0 时出现 y"和"存 1 时出现 y"的概率密度，哪个大判哪个；两边噪声不一样大，所以门限不在 0.5。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p3q2 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -707,6 +915,30 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">利用 BPSK 系统的近似式 \(P_{floor}\approx\left(\dfrac{\sigma_{T_m}}{T_b}\right)^2\)，求 QPSK 系统在时延扩展 \(\sigma_{T_m}\) = 3 µs 的信道上、不可约误码平台（irreducible error floor）为 \(10^{-3}\) 时能传输的数据速率。</p>
     </div>
     <div class="chips"><span class="chip">误码平台</span><span class="chip">符号时长 vs 比特时长</span><span class="chip src">讲义第 3 章 p.35–36</span></div>
+    <!-- INTENT:p3q3 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>多径时延扩展让每个符号的回声拖进下一个符号，造成码间干扰（ISI）。</p>
+          <p>这种错误不是噪声造成的，所以即使信号功率无限大（SNR → ∞）也消不掉，误码率会停在一个"平台"上，叫不可消除的误码平台（irreducible error floor）。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(P_{floor}\approx(\sigma_{T_m}/T_b)^2\)</td><td>题目给的 BPSK 平台近似公式：回声越长、符号越短，平台越高</td></tr><tr><td>\(\sigma_{T_m}\)</td><td>rms 时延扩展，3 µs</td></tr><tr><td>\(T_b\)</td><td>BPSK 的比特时长（BPSK 一个符号就是一个比特）</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>唯一一问</b> 换成 QPSK，在 3 µs 的时延扩展下，要让平台不高于 10⁻³，数据速率最高能到多少？</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>公式本质上看的是"回声长度 / 符号长度"。BPSK 的 T_b 就是符号时长；QPSK 要用符号时长 T_s。</li>
+            <li>QPSK 每个符号 2 bit，最后数据速率 = 2/T_s。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>时延扩展给速率设了上限，单纯加功率没用，要靠均衡（第 6 章）或 OFDM（第 7 章）。</p>
+          <div class="ans">一句话：误码平台由"时延扩展 / 符号时长"决定，用 10⁻³ 反推最短符号时长，再按 QPSK 每符号 2 bit 换算成数据速率。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p3q3 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -743,6 +975,29 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">降低中断概率的一种常用技术是宏分集（Macro-diversity）：移动台发出的信号由多个基站同时接收和处理。解释为什么这样能降低中断概率。</p>
     </div>
     <div class="chips"><span class="chip">宏分集</span><span class="chip">阴影衰落</span><span class="chip src">讲义第 4 章 p.3–4</span></div>
+    <!-- INTENT:p4q1 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>这是一道文字解释题。宏分集（macro-diversity）：一部手机发的信号，被好几个不同位置的基站同时接收和处理。</p>
+          <p>题目问：为什么这样能降低中断概率。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>中断（outage）</td><td>接收信号低于门限、无法通信</td></tr><tr><td>阴影衰落（shadowing）</td><td>大的障碍物（楼、山）挡住传播路径，信号长时间偏低，是中断的主要原因</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>唯一一问</b> 解释原因。答案要说清三点：中断主要来自阴影；不同基站在不同位置，被同一障碍物同时挡住的可能性小，各链路阴影近似独立；只有所有链路同时不行才中断，概率是各自概率相乘，远小于单条链路。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>同一个基站上多装几根天线解决不了阴影：手机被同一栋楼挡住时，那几根天线一起变差。所以必须是相隔很远的多个基站。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>宏分集对付的是阴影（大尺度衰落），和 P2 Q2 (b) 是同一件事的文字版；链路相关时效果会打折扣。</p>
+          <div class="ans">一句话：解释为什么多个相距很远的基站能降低中断：它们的阴影近似独立，同时都被挡住的概率是各自概率之积，很小。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p4q1 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -786,6 +1041,33 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">(c) 现在两条路径不再独立：\(\gamma_1=r_1+\beta\)，\(\gamma_2=r_2+\beta\)。阴影项 β 以概率 1/3 取 7、以概率 2/3 取 10，且与 \(r_1\)、\(r_2\) 独立；\(r_i\)（i = 1, 2）以概率 1/3 取 0.6、以概率 2/3 取 1.2。求 \(\bar\gamma_\Sigma\)、\(\bar P_{s,diversity}\)、g 和 d。</p>
     </div>
     <div class="chips"><span class="chip">离散分布求期望</span><span class="chip">MRC：SNR 相加</span><span class="chip">阵列增益 g / 分集增益 d</span><span class="chip">相关削弱分集</span><span class="chip src">讲义第 4 章 p.16、p.21、p.27</span></div>
+    <!-- INTENT:p4q2 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>DPSK 系统，误码率 \(P_s=\tfrac12e^{-\gamma}\)，γ 是信噪比。因为衰落，γ 是随机的。为了好算，题目让 γ 只取两三个离散值。</p>
+          <p>三问一层层加东西：(a) 一条支路；(b) 两条独立支路做最大比合并（MRC）；(c) 两条支路共享一部分阴影，不再独立。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>α</td><td>信道功率增益，随机：8（概率 1/3）或 11（概率 2/3）。发射功率和噪声都是 1 W，所以 γ = α</td></tr><tr><td>MRC</td><td>最大比合并：输出 SNR = 各支路 SNR 之和</td></tr><tr><td>阵列增益 g</td><td>g = 合并后平均 SNR / 单支路平均 SNR，平均 SNR 提高了几倍</td></tr><tr><td>分集增益 d</td><td>误码率随 SNR 下降的"斜率"：\(\bar P_s\approx\bar\gamma^{-d}\)，所以 \(d=-\log_{10}\bar P_s/\log_{10}\bar\gamma\)</td></tr><tr><td>β, r_i</td><td>(c) 中 γ_i = r_i + β：β 是两条支路共有的阴影，r_i 是各自独有的部分</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 单支路：求平均 SNR 和平均误码率。</li>
+            <li><b>(b)</b> 两条独立支路 MRC：列出两路 SNR 的所有组合和概率，求合并后的平均 SNR、平均误码率、g 和 d。</li>
+            <li><b>(c)</b> 两条支路共享 β：再求一遍平均 SNR、误码率、g、d，和 (b) 比较。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>平均误码率要对误码率求平均，不能把平均 SNR 代进公式：E[½e^{−γ}] ≠ ½e^{−E[γ]}。</li>
+            <li>d 的分母用单支路的平均 SNR（10）。</li>
+            <li>(c) 里 r₁、r₂、β 相互独立，e 的指数可以拆成三个期望相乘。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>(b)(c) 平均 SNR 一样，误码率却不同：两路共享阴影 β，会一起变差，分集被削弱。这是 P2 Q2 (c) 的离散版。</p>
+          <div class="ans">一句话：SNR 只取几个离散值，先算单支路，再算两路 MRC（独立 / 共享阴影），比较平均 SNR、误码率、阵列增益和分集增益。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p4q2 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -831,6 +1113,31 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">(b) 推导接收机采用等权合并（equal weight combining）时的平均误比特概率。</p>
     </div>
     <div class="chips"><span class="chip">高斯随机变量之和</span><span class="chip">等增益合并</span><span class="chip src">讲义第 4 章 p.19；第 1b 章 p.11</span></div>
+    <!-- INTENT:p4q3 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>用 M 根天线发同一个 BPSK 比特 b（+1 或 −1），每条路径有一个随机的衰减系数 α_k，再加上噪声。接收机把收到的东西变成一个判决量 z，z > 0 判 +1，否则判 −1。</p>
+          <p>和一般题不同的是：这里衰减系数 α_k 是高斯的（不是瑞利），所以 z 也是高斯的，误码率可以直接写成 Q 函数。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(y_k=\alpha_kb\sqrt E+w_k\)</td><td>第 k 根天线发来的接收信号</td></tr><tr><td>E</td><td>发射信号能量</td></tr><tr><td>\(\alpha_k\sim\mathcal N(\alpha_0,\sigma_1^2)\)</td><td>衰减系数（damping factor），均值 α₀、方差 σ₁²</td></tr><tr><td>\(w_k\sim\mathcal N(0,\sigma_2^2)\)</td><td>加性高斯噪声</td></tr><tr><td>等增益合并（equal weight combining）</td><td>把各路 y_k 直接相加：z = Σ y_k</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> M = 1：z 就是 y。求平均误码率：设 b = +1，求 z ≤ 0 的概率。</li>
+            <li><b>(b)</b> M 路等权相加：求 z 的均值和方差，再求误码率。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>独立高斯之和还是高斯：均值相加，方差相加。</li>
+            <li>α√E 的方差是 σ₁²E（常数乘随机变量，方差乘常数的平方）。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>合并 M 路以后，均值按 M 增长，标准差只按 √M 增长，Q 函数的参数放大 √M 倍，这就是合并的好处。</p>
+          <div class="ans">一句话：衰减和噪声都是高斯，所以判决量也是高斯；求它的均值和方差，误码率就是 Q(均值/标准差)，M 路合并让参数大 √M 倍。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p4q3 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -871,6 +1178,29 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">考虑一个 3 信道 MIMO 系统，三个信道的 SNR 分别为 80、40、40，信道带宽为 10 MHz。假设发射端已知信道（informed transmitter），用注水法（Water-filling）求信道容量。</p>
     </div>
     <div class="chips"><span class="chip">注水法</span><span class="chip">informed transmitter</span><span class="chip src">讲义第 2 章 p.54–57；第 5 章 p.40</span></div>
+    <!-- INTENT:p5q1 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>MIMO 系统可以分解成 3 条互不干扰的并行子信道，它们的 SNR 分别是 80、40、40（总功率全给它一条时的 SNR）。</p>
+          <p>发射端知道信道（informed transmitter），所以可以把总功率聪明地分给 3 条子信道，让总容量最大。方法就是注水（water-filling）。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(\gamma_i\)</td><td>第 i 条子信道的 SNR：80、40、40</td></tr><tr><td>\(\gamma_0\)</td><td>截止值：SNR 低于它的子信道一点功率都不给</td></tr><tr><td>\(P_i/P=1/\gamma_0-1/\gamma_i\)</td><td>注水的功率分配公式，加起来等于 1</td></tr><tr><td>10 MHz</td><td>带宽</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>唯一一问</b> 先假设 3 条都分到功率，由"功率加起来 = 1"解出 γ₀；检查每条的 γ_i 是否都大于 γ₀；最后容量 C = B Σ log₂(γ_i/γ₀)。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>如果某条 γ_i 小于 γ₀，要把它去掉、重新算 γ₀，不能直接用。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>发射端知道信道时，可以多给好信道、少给差信道，太差的直接放弃，这样总容量最大。</p>
+          <div class="ans">一句话：3 条并行子信道 SNR 为 80、40、40，发射端知道信道，用注水法分配功率，求总容量。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p5q1 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -908,6 +1238,29 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">Alamouti 方案用 A、B 两根天线，在 2 个符号周期内发送两个复值符号 \(u_1\) 和 \(u_2\)：第一个符号周期发送 \(x_A(1)=u_1\)、\(x_B(1)=u_2\)，第二个符号周期发送 \(x_A(2)=-u_2^*\)、\(x_B(2)=u_1^*\)。设信道增益 \(h_A(1)=h_A(2)=h_A\)、\(h_B(1)=h_B(2)=h_B\)，\(h_A,h_B\sim\mathcal N(0,1)\)，信道噪声 \(\sim\mathcal N(0,N_0)\)。推导判决变量。</p>
     </div>
     <div class="chips"><span class="chip">Alamouti STBC</span><span class="chip">共轭技巧</span><span class="chip">正交矩阵 F</span><span class="chip src">讲义第 5 章 p.21–26</span></div>
+    <!-- INTENT:p5q2 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>两根发射天线 A、B，一根接收天线。Alamouti 码用两个时隙发两个符号 u₁、u₂：第 1 个时隙 A 发 u₁、B 发 u₂；第 2 个时隙 A 发 −u₂*、B 发 u₁*（* 是共轭）。</p>
+          <p>信道在两个时隙里不变。接收端在两个时隙各收到一个值 y₁、y₂，每个都是 u₁ 和 u₂ 混在一起的。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(h_A,h_B\)</td><td>两根天线到接收机的信道增益，复高斯</td></tr><tr><td>*</td><td>复共轭</td></tr><tr><td>\(N_0\)</td><td>噪声方差</td></tr><tr><td>判决变量（decision variable）</td><td>接收端算出来、拿去判决的量</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>唯一一问</b> 推导判决变量：怎样把 y₁、y₂ 线性组合，得到只含 u₁（加噪声）的 z₁ 和只含 u₂ 的 z₂。提示：先对 y₂ 取共轭，写成矩阵，这个矩阵有正交性。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>先把 y₂ 取共轭，让 u₁、u₂ 都以不带共轭的形式出现，才能写成矩阵。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>发射端不需要知道信道，只靠这种编码排列，接收端用简单的线性运算就能把两个符号分开，而且每个符号都得到 |h_A|² + |h_B|² 的二阶分集。</p>
+          <div class="ans">一句话：Alamouti 码两个时隙发两个符号，接收端收到的 y₁、y₂ 是混在一起的；要找出线性组合把它们分开，得到各自的判决变量。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p5q2 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -953,6 +1306,31 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">b) 在 (a) 求出的 r 下，得到的 \(P_e\) 是多少？</p>
     </div>
     <div class="chips"><span class="chip">分集增益 d</span><span class="chip">复用增益 r</span><span class="chip">R = r·log₂SNR</span><span class="chip src">讲义第 4 章 p.31–34</span></div>
+    <!-- INTENT:p5q3 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>8 × 4 的 MIMO 系统。多根天线可以用来提高可靠性（分集），也可以用来同时传多路数据提高速率（复用），两者不能同时拉满。</p>
+          <p>题目给了它们之间的折中关系 d(r) = (N − r)(M − r)：复用多一点，分集就少一点。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>r</td><td>复用增益（multiplexing gain）：速率 R = r·log₂SNR，相当于同时传几路</td></tr><tr><td>d</td><td>分集增益（diversity gain）：误码率 \(P_e=\gamma^{-d}\)</td></tr><tr><td>N, M</td><td>8 和 4，两端的天线数</td></tr><tr><td>γ = 10 dB</td><td>SNR，线性值是 10</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>a)</b> 要求 \(P_e\le10^{-3}\)，即需要 d 至少多大；在满足这个 d 的前提下，r 最大取多少；速率 R = r·log₂γ。</li>
+            <li><b>b)</b> 用 (a) 选定的 r 算出实际的 d，再求 P_e。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>10 dB 先换成线性值 10。</li>
+            <li>r、d 都是整数，逐个试 r = 0、1、2、3、4。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>可靠性和速率要折中：先用可靠性要求定下最小的 d，再在这个限制下把 r 取到最大。</p>
+          <div class="ans">一句话：8 × 4 MIMO 在分集和复用之间折中：由误码率要求定出 d ≥ 3，找满足条件的最大 r，再算速率和实际误码率。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p5q3 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -1003,6 +1381,32 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">(b) 系统将工作在高信噪比下。用还是不用上述均衡器更好？说明理由。</p>
     </div>
     <div class="chips"><span class="chip">ISI 条件误码率</span><span class="chip">滤波后噪声方差</span><span class="chip">高 SNR 看最坏项</span><span class="chip src">讲义第 6 章 p.22–28</span></div>
+    <!-- INTENT:p6q1 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>二进制 PAM：发 ±1。信道 H(z) = 1 + αz⁻¹ 的意思是：每个接收样本 = 当前符号 + α × 上一个符号（回声）+ 噪声，上一个符号漏进来就是码间干扰（ISI）。检测器按 z(n) 的正负判决。</p>
+          <p>有人提议加一个均衡器 U(z) = 1 − αz⁻¹，想抵消回声。但均衡器不只作用在信号上，也作用在噪声上。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(a(n)=\pm1\)</td><td>发送符号，等概、独立</td></tr><tr><td>\(E_b\)</td><td>比特能量</td></tr><tr><td>\(R_w(k)=\tfrac{N_0}{2}\delta(k)\)</td><td>白噪声，方差 N₀/2</td></tr><tr><td>α（0 &lt; α &lt; 1）</td><td>回声强度</td></tr><tr><td>\(z^{-1}\)</td><td>延迟一个采样</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 分别求不加均衡器、加均衡器时的平均误码率。要考虑上一个（或前两个）符号是同号还是异号，两种情况各占一半。</li>
+            <li><b>(b)</b> 高 SNR 时，加还是不加更好？解释理由。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>这个均衡器并没有把 ISI 完全消掉：总响应是 1 − α²z⁻²，剩下一个更小的回声 α²，在两个采样之后。</li>
+            <li>噪声也经过 U(z)，方差变成 (N₀/2)(1 + α²)，被放大了。</li>
+            <li>高 SNR 时，误码率由 Q 参数最小的那一项（最坏情况）决定，比较最坏情况即可。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>均衡器是在"减少 ISI"和"放大噪声"之间做交换，要比较的是最坏情况下的有效距离。</p>
+          <div class="ans">一句话：信道有一个强度 α 的回声，比较不均衡和用 1 − αz⁻¹ 均衡时的误码率，看高 SNR 下哪个更好。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p6q1 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -1048,6 +1452,30 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">(b) 若使用理想迫零（zero-forcing）均衡器，并根据均衡器输出的正负号判决，求所得的 BER。</p>
     </div>
     <div class="chips"><span class="chip">条件误码率求平均</span><span class="chip">迫零噪声放大</span><span class="chip">等比级数</span><span class="chip src">讲义第 6 章 p.23–28</span></div>
+    <!-- INTENT:p6q2 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>和 P6 Q1 类似：\(y_n=b_n+a\,b_{n-1}+w_n\)，每个接收值 = 当前比特 + a × 上一个比特 + 噪声（噪声方差 0.1）。</p>
+          <p>两种接收方法：直接看 y 的正负判决；或者先用理想迫零均衡器（zero-forcing）把回声完全消掉，再看正负。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(b_n=\pm1\)</td><td>发送比特，等概、独立</td></tr><tr><td>a（0 &lt; a &lt; 1）</td><td>回声系数</td></tr><tr><td>\(w_n\)</td><td>高斯噪声，方差 0.1</td></tr><tr><td>迫零均衡（ZF）</td><td>用信道的逆滤波器 1/(1 + az⁻¹) 让总响应变成 1，ISI 完全为零</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 直接判决：上一个比特同号时信号幅度 1 + a，异号时 1 − a，各占一半，求平均误码率。</li>
+            <li><b>(b)</b> 理想迫零后再判决：ISI 没了，但噪声也经过了逆滤波器，求新的噪声方差和误码率。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>逆滤波器展开是无穷级数 Σ(−a)^k z^{−k}，滤波后噪声方差 = 0.1 × 系数平方和 = 0.1/(1 − a²)。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>迫零能把 ISI 完全清零，代价是放大噪声；a 越接近 1，噪声放大越严重。</p>
+          <div class="ans">一句话：有回声的二进制信道，比较"直接判正负"和"先迫零消回声再判"的误码率，后者没有 ISI 但噪声被放大。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p6q2 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -1091,6 +1519,31 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">(b) 考虑一个简单的判决反馈均衡器（DFE），判决变量为 \(u_n=y_n-\hat A_{n-1}x_1\)。\(\hat A_n\) 由 \(u_n\) 的正负号决定，\(\hat A_{n-1}\) 由 \(u_{n-1}\) 的正负号决定，依此类推。设“时间”从 n = 1 开始，且 \(A_0=0\)。求 n 很大（n → ∞）时的错误概率。</p>
     </div>
     <div class="chips"><span class="chip">MMSE 求最优系数</span><span class="chip">DFE 错误传播</span><span class="chip">马尔可夫稳态</span><span class="chip src">讲义第 6 章 p.26–34</span></div>
+    <!-- INTENT:p6q3 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>两抽头 ISI 信道：\(y_n=A_n+\tfrac12A_{n-1}+z_n\)，每个接收值 = 当前符号 + 一半的上一个符号 + 噪声（方差 1）。</p>
+          <p>比较两种均衡器：线性均衡器（用下一个样本修正当前样本）和判决反馈均衡器（DFE，用已经判出来的上一个符号把回声减掉）。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(A_n=\pm1\)</td><td>发送符号</td></tr><tr><td>\(x_0=1,\ x_1=\tfrac12\)</td><td>信道的两个抽头：当前符号的系数和上一个符号的系数</td></tr><tr><td>q</td><td>线性均衡器的参数：\(u_n=y_n+q\,y_{n+1}\)</td></tr><tr><td>MMSE</td><td>最小均方误差：选 q 让 E[(u_n − A_n)²] 最小</td></tr><tr><td>DFE</td><td>判决反馈：\(u_n=y_n-\hat A_{n-1}x_1\)，减掉"按上次判决估计的回声"</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 求让均方误差最小的 q，然后按 u_n 的正负判决，求误码率。</li>
+            <li><b>(b)</b> DFE：上一次判对时回声被完全减掉；判错时回声反而加倍（错误传播）。求 n 很大时的长期误码率。"时间从 n = 1 开始、A₀ = 0" 只是说第一个符号前面没有回声。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>(a) 把 u_n − A_n 展开，各项独立、均值 0，均方值直接相加，再对 q 求最小。</li>
+            <li>(b) 长期误码率要考虑上一次对或错两种状态：p = (1 − p) × P(错|上次对) + p × P(错|上次错)。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>DFE 在不放大噪声的情况下消掉 ISI，比线性均衡好；但一次判错会传给下一次（错误传播），让误码率比理想值高一点。</p>
+          <div class="ans">一句话：同一个 ISI 信道，(a) 求 MMSE 线性均衡器的最优 q 和误码率，(b) 求有错误传播的 DFE 的长期误码率，比较两者。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p6q3 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -1143,6 +1596,34 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">(d) 在相同的 \(H_k\) 和 (c) 的总功率约束下，求最大和容量（bit/s/Hz）。</p>
     </div>
     <div class="chips"><span class="chip">慢平坦衰落条件</span><span class="chip">H_k = DFT{h}</span><span class="chip">等容量分配</span><span class="chip">注水</span><span class="chip src">讲义第 7 章 p.5、p.15、p.24</span></div>
+    <!-- INTENT:p7q1 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>OFDM 信号经过两径信道：\(y(t)=h_0x(t)+h_1x(t-\tau)+w(t)\)，直射一条加延迟 τ 的回波一条。</p>
+          <p>OFDM 把总带宽 B 切成 N 个子载波。题目先问 N 怎么选，再算每个子载波的增益，最后在两种原则下给子载波分功率。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(B_d\)</td><td>多普勒扩展：信道随时间变化有多快（相干时间约 1/B_d）</td></tr><tr><td>\(B_C\)</td><td>相干带宽：频率相差多远，信道就不一样了</td></tr><tr><td>\(H_k\)</td><td>第 k 个子载波的信道增益（复数），等于 [h₀, h₁] 的 DFT</td></tr><tr><td>\(P_k\)</td><td>分给第 k 个子载波的功率，总和 10</td></tr><tr><td>σ² = 1</td><td>噪声方差，所以子载波 k 的 SNR = |H_k|²P_k</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 解释 N 怎么选：每个子载波要窄到感受到的是平坦衰落（B/N 远小于 B_C），同时一个 OFDM 符号要短到信道在这期间几乎不变（慢衰落）。</li>
+            <li><b>(b)</b> N = 4、h₀ = 0.8、h₁ = 0.6：算出 4 个子载波各自的 H_k。</li>
+            <li><b>(c)</b> 按"每个子载波容量一样"的原则分配总功率 10。</li>
+            <li><b>(d)</b> 按"总容量最大"的原则（注水）分配，求每秒每赫兹的最大总容量。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>题目把子载波编号成 k = 1…4，注意和 0…3 的对应关系（H₄ = H₀）。</li>
+            <li>(d) 要"每赫兹"：4 个子载波各占 B/4，总比特数要除以 4。</li>
+            <li>注水时先检查最差的子载波要不要放弃。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>OFDM 把一个频率选择性信道变成 N 个各自平坦、但增益不同的子信道；"人人平等"地分功率很浪费，注水会放弃最差的子载波，总容量高得多。</p>
+          <div class="ans">一句话：两径信道上的 OFDM：说明 N 怎么选，算出 4 个子载波的增益，再分别按"容量相等"和"注水"分功率。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p7q1 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -1186,6 +1667,29 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">考虑一个 OFDM 系统的设计：目标是在 600 kHz 的可用带宽内，用 16-QAM 以 2 Mbps 的速率传输数据。已知信道时延扩展最大为 20 μs，可设循环前缀等于最大时延扩展。求子载波总数和 OFDM 符号周期。</p>
     </div>
     <div class="chips"><span class="chip">Δf = B/N</span><span class="chip">循环前缀开销</span><span class="chip src">讲义第 7 章 p.8、p.17–18</span></div>
+    <!-- INTENT:p7q2 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>设计题：要用 OFDM 在 600 kHz 带宽里传 2 Mbps，调制用 16-QAM。信道时延扩展最多 20 µs，循环前缀（CP）就取 20 µs。</p>
+          <p>求子载波数 N 和 OFDM 符号时长。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>16-QAM</td><td>每个符号 4 bit</td></tr><tr><td>N</td><td>子载波数：一个 OFDM 符号里同时发 N 个 QAM 符号</td></tr><tr><td>Δf = B/N</td><td>子载波间隔；有用符号时长 T = 1/Δf = N/B</td></tr><tr><td>CP</td><td>循环前缀 20 µs，每个 OFDM 符号前面都要加，占时间但不带新数据</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>唯一一问</b> 列出"速率 = 每个 OFDM 符号的比特数 ÷ OFDM 符号总时长"：4N /(N/B + 20 µs) = 2 Mbps，解出 N，再算 OFDM 符号时长（含 CP）。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>OFDM 符号总时长 = 有用部分 N/B + CP，别漏 CP。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>没有 CP 的话，600 kHz 本来就够用，N 取多少都行；正是 CP 的开销决定了 N：N 越大，CP 占的比例越小。</p>
+          <div class="ans">一句话：由"4 bit × N 个子载波 ÷（N/B + 20 µs）= 2 Mbps"解出子载波数 N，再算含 CP 的 OFDM 符号时长。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p7q2 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -1225,6 +1729,29 @@ window.MathJax = {
       <p class="zh" lang="zh-CN">某移动信道的 Z 变换为 \(H(Z)=1+0.9Z^{-1}\)。为抑制该信道的 ISI，系统改用 OFDM 设计。所需的最小循环前缀是多少？说明理由。</p>
     </div>
     <div class="chips"><span class="chip">信道长度</span><span class="chip">CP ≥ L − 1</span><span class="chip src">讲义第 7 章 p.17–22</span></div>
+    <!-- INTENT:p7q3 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>信道 H(z) = 1 + 0.9z⁻¹：一条直射，加一条晚一个采样到达、强度 0.9 的回波。</p>
+          <p>系统用 OFDM 来对付这个回波造成的 ISI，问循环前缀（CP）至少要多长。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(z^{-1}\)</td><td>延迟一个采样</td></tr><tr><td>L</td><td>信道长度：冲激响应 [1, 0.9] 有 2 个抽头，L = 2</td></tr><tr><td>CP</td><td>循环前缀：把每个 OFDM 块尾部的几个采样复制到块前面</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>唯一一问</b> 求最短 CP 并解释：上一个块会漏进下一个块几个采样？CP 要盖住它们，接收端把 CP 丢掉，ISI 就跟着丢掉了；用块尾的复制品还能让子载波保持正交。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>是 L − 1 = 1 个采样，不是 L = 2 个；系数 0.9 的大小不影响 CP 长度，只看延迟几个采样。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>CP 的长度只取决于信道"记忆"有多长（最大时延），至少等于 L − 1 个采样。</p>
+          <div class="ans">一句话：信道有一个晚 1 个采样的回波，问 OFDM 的循环前缀至少多长才能挡住 ISI，并解释原因。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p7q3 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">

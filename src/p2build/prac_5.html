@@ -7,6 +7,29 @@
       <p class="zh" lang="zh-CN">考虑一个 3 信道 MIMO 系统，三个信道的 SNR 分别为 80、40、40，信道带宽为 10 MHz。假设发射端已知信道（informed transmitter），用注水法（Water-filling）求信道容量。</p>
     </div>
     <div class="chips"><span class="chip">注水法</span><span class="chip">informed transmitter</span><span class="chip src">讲义第 2 章 p.54–57；第 5 章 p.40</span></div>
+    <!-- INTENT:p5q1 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>MIMO 系统可以分解成 3 条互不干扰的并行子信道，它们的 SNR 分别是 80、40、40（总功率全给它一条时的 SNR）。</p>
+          <p>发射端知道信道（informed transmitter），所以可以把总功率聪明地分给 3 条子信道，让总容量最大。方法就是注水（water-filling）。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(\gamma_i\)</td><td>第 i 条子信道的 SNR：80、40、40</td></tr><tr><td>\(\gamma_0\)</td><td>截止值：SNR 低于它的子信道一点功率都不给</td></tr><tr><td>\(P_i/P=1/\gamma_0-1/\gamma_i\)</td><td>注水的功率分配公式，加起来等于 1</td></tr><tr><td>10 MHz</td><td>带宽</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>唯一一问</b> 先假设 3 条都分到功率，由"功率加起来 = 1"解出 γ₀；检查每条的 γ_i 是否都大于 γ₀；最后容量 C = B Σ log₂(γ_i/γ₀)。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>如果某条 γ_i 小于 γ₀，要把它去掉、重新算 γ₀，不能直接用。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>发射端知道信道时，可以多给好信道、少给差信道，太差的直接放弃，这样总容量最大。</p>
+          <div class="ans">一句话：3 条并行子信道 SNR 为 80、40、40，发射端知道信道，用注水法分配功率，求总容量。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p5q1 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -44,6 +67,29 @@
       <p class="zh" lang="zh-CN">Alamouti 方案用 A、B 两根天线，在 2 个符号周期内发送两个复值符号 \(u_1\) 和 \(u_2\)：第一个符号周期发送 \(x_A(1)=u_1\)、\(x_B(1)=u_2\)，第二个符号周期发送 \(x_A(2)=-u_2^*\)、\(x_B(2)=u_1^*\)。设信道增益 \(h_A(1)=h_A(2)=h_A\)、\(h_B(1)=h_B(2)=h_B\)，\(h_A,h_B\sim\mathcal N(0,1)\)，信道噪声 \(\sim\mathcal N(0,N_0)\)。推导判决变量。</p>
     </div>
     <div class="chips"><span class="chip">Alamouti STBC</span><span class="chip">共轭技巧</span><span class="chip">正交矩阵 F</span><span class="chip src">讲义第 5 章 p.21–26</span></div>
+    <!-- INTENT:p5q2 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>两根发射天线 A、B，一根接收天线。Alamouti 码用两个时隙发两个符号 u₁、u₂：第 1 个时隙 A 发 u₁、B 发 u₂；第 2 个时隙 A 发 −u₂*、B 发 u₁*（* 是共轭）。</p>
+          <p>信道在两个时隙里不变。接收端在两个时隙各收到一个值 y₁、y₂，每个都是 u₁ 和 u₂ 混在一起的。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(h_A,h_B\)</td><td>两根天线到接收机的信道增益，复高斯</td></tr><tr><td>*</td><td>复共轭</td></tr><tr><td>\(N_0\)</td><td>噪声方差</td></tr><tr><td>判决变量（decision variable）</td><td>接收端算出来、拿去判决的量</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>唯一一问</b> 推导判决变量：怎样把 y₁、y₂ 线性组合，得到只含 u₁（加噪声）的 z₁ 和只含 u₂ 的 z₂。提示：先对 y₂ 取共轭，写成矩阵，这个矩阵有正交性。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>先把 y₂ 取共轭，让 u₁、u₂ 都以不带共轭的形式出现，才能写成矩阵。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>发射端不需要知道信道，只靠这种编码排列，接收端用简单的线性运算就能把两个符号分开，而且每个符号都得到 |h_A|² + |h_B|² 的二阶分集。</p>
+          <div class="ans">一句话：Alamouti 码两个时隙发两个符号，接收端收到的 y₁、y₂ 是混在一起的；要找出线性组合把它们分开，得到各自的判决变量。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p5q2 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -89,6 +135,31 @@
       <p class="zh" lang="zh-CN">b) 在 (a) 求出的 r 下，得到的 \(P_e\) 是多少？</p>
     </div>
     <div class="chips"><span class="chip">分集增益 d</span><span class="chip">复用增益 r</span><span class="chip">R = r·log₂SNR</span><span class="chip src">讲义第 4 章 p.31–34</span></div>
+    <!-- INTENT:p5q3 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>8 × 4 的 MIMO 系统。多根天线可以用来提高可靠性（分集），也可以用来同时传多路数据提高速率（复用），两者不能同时拉满。</p>
+          <p>题目给了它们之间的折中关系 d(r) = (N − r)(M − r)：复用多一点，分集就少一点。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>r</td><td>复用增益（multiplexing gain）：速率 R = r·log₂SNR，相当于同时传几路</td></tr><tr><td>d</td><td>分集增益（diversity gain）：误码率 \(P_e=\gamma^{-d}\)</td></tr><tr><td>N, M</td><td>8 和 4，两端的天线数</td></tr><tr><td>γ = 10 dB</td><td>SNR，线性值是 10</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>a)</b> 要求 \(P_e\le10^{-3}\)，即需要 d 至少多大；在满足这个 d 的前提下，r 最大取多少；速率 R = r·log₂γ。</li>
+            <li><b>b)</b> 用 (a) 选定的 r 算出实际的 d，再求 P_e。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>10 dB 先换成线性值 10。</li>
+            <li>r、d 都是整数，逐个试 r = 0、1、2、3、4。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>可靠性和速率要折中：先用可靠性要求定下最小的 d，再在这个限制下把 r 取到最大。</p>
+          <div class="ans">一句话：8 × 4 MIMO 在分集和复用之间折中：由误码率要求定出 d ≥ 3，找满足条件的最大 r，再算速率和实际误码率。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p5q3 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">

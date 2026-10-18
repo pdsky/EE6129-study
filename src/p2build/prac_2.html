@@ -10,6 +10,30 @@
       <p class="zh" lang="zh-CN">最大多普勒频移为 50 Hz。保证可接受性能所需的最小信号强度是信号强度 rms 值的 0.1 倍。求信号强度低于这个可接受值的平均持续时间。</p>
     </div>
     <div class="chips"><span class="chip">AFD</span><span class="chip">ρ = Z_min / Z_rms</span><span class="chip src">讲义第 2 章 p.42–43</span></div>
+    <!-- INTENT:p2q1 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>手机在移动时，多径信号时而同相相加、时而反相抵消，接收信号的幅度快速起伏，这就是瑞利衰落（Rayleigh fading）。</p>
+          <p>信号偶尔会掉进很深的"坑"（深衰落），在坑里的这段时间通信质量很差。题目问：每次掉进坑里，平均要多久才爬出来。这就是平均衰落时长（AFD, average fade duration）。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(f_D\)</td><td>最大多普勒频移 50 Hz，表示信道变化有多快：车越快 f_D 越大，坑来得越频繁、也越短</td></tr><tr><td>ρ</td><td>门限和信号 rms 值之比：ρ = Z_min / Z_rms</td></tr><tr><td>AFD 公式</td><td>题目直接给出，代数即可</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>唯一一问</b> "可接受的最低信号强度是 rms 值的 0.1 倍"：求 ρ，代进公式算信号低于门限时平均持续多久。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>"signal strength" 指幅度，所以 ρ = 0.1 直接代；如果说的是功率的 0.1 倍，ρ 才是 √0.1。</li>
+            <li>幅度 0.1 倍 = 功率低 20 dB，是很深的坑，所以 AFD 很短。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>AFD 告诉你一次深衰落会吞掉多少个符号，交织和编码要按它来设计。</p>
+          <div class="ans">一句话：瑞利衰落时信号会掉进深坑，题目问"低于 rms 值 0.1 倍"的坑平均持续多久，求出 ρ 代入公式即可。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p2q1 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -57,6 +81,34 @@
       <p class="eq">\(P_{out}=\displaystyle\int_{-\infty}^{\infty}\frac{1}{\sqrt{2\pi}}Q\!\left[\frac{\Delta+by\sigma}{|a|\sigma}\right]^2e^{-y^2/2}dy\)</p>
     </div>
     <div class="chips"><span class="chip">宏分集</span><span class="chip">独立 → 概率相乘</span><span class="chip">条件概率 + 全概率</span><span class="chip src">讲义第 2 章 p.12–15；第 4 章 p.4</span></div>
+    <!-- INTENT:p2q2 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>手机站在两个基站中间，能同时收到两个基站的信号：基站 1 ))) 📱 ((( 基站 2。这种安排叫宏分集（macro-diversity）："分集"是准备多条路，"宏"是说这两条路来自相隔很远的两个基站。</p>
+          <p>目的：只要有一个基站的信号够强，通话就不断；两个都不行才真的断线。</p>
+          <p>举例：W = −90 dBm，门限 T = −100 dBm（所以 Δ = 10 dB）。某一时刻 Z₁ = −12 dB、Z₂ = +3 dB，则 P_r,1 = −102 dBm（基站 1 被楼挡住），P_r,2 = −87 dBm（畅通）。手机改用基站 2，不算中断。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(P_{r,1},P_{r,2}\)</td><td>手机从两个基站收到的功率（dBm）</td></tr><tr><td>W</td><td>平均接收功率，只由距离决定（路径损耗）。手机在正中间，两边一样</td></tr><tr><td>\(Z_1,Z_2\sim\mathcal N(0,\sigma^2)\)</td><td>阴影衰落（dB）：被楼、树挡住造成的随机起伏，平均为 0，σ 是起伏大小，典型 6–10 dB</td></tr><tr><td>T</td><td>门限：接收功率低于它就听不清</td></tr><tr><td>Δ</td><td>余量（margin）：T 比 W 小 Δ，即 T = W − Δ</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 解释 W、Z₁、Z₂ 的含义，就是上面表里那几句。</li>
+            <li><b>(b)</b> 假设两边的阴影互不相关（独立）：基站 1 那边挡不挡，和基站 2 那边无关。求两个同时低于门限的概率。</li>
+            <li><b>(c)</b> 更真实的情况：有些障碍物会同时挡住两条路（手机进了地下室、车里、站到大楼背后）。题目用 \(Z_1=aY_1+bY\)、\(Z_2=aY_2+bY\) 描述：Y 是两条链路共有的阴影（手机周围的墙、车身），Y₁、Y₂ 是各自独有的阴影。b 越大，两条链路越像（相关系数 ρ = b²）；b = 0 就是 (b)，a = 0 就是两条完全一样。要证明这时的中断概率等于题目给的积分式。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>中断要求两个都低于门限，不是任意一个。</li>
+            <li>"功率低于门限"和"阴影低于 −Δ"是同一件事：\(P_{r,i}\lt T\iff W+Z_i\lt W-\Delta\iff Z_i\lt-\Delta\)。−Δ 不是门限，而是门限在阴影这个尺度上的对应位置：平均功率本来比门限高 Δ，阴影要把信号压低超过 Δ 才会中断。改写成 Z 的形式，是因为题目只给了 Z 的分布。</li>
+            <li>所以整道题都在求同一个东西：\(P_{out}=P(Z_1\lt-\Delta\ \text{and}\ Z_2\lt-\Delta)\)，一个 0 到 1 之间的数。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>相关性会削弱宏分集。取 Δ = σ：一个基站中断 15.9%；两个独立基站 2.5%；相关 ρ = 0.5 时 6.3%；完全相关又回到 15.9%，等于没多一个基站。宏分集的好处来自"一个坏了还有另一个"，两个经常一起坏，备用的就帮不上忙。</p>
+          <div class="ans">一句话：手机同时连两个基站，两个都低于门限才算断线。(b) 算两边阴影独立时的断线概率，(c) 算两边有共同阴影时的断线概率，说明相关会让"多一个基站"的好处变小。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p2q2 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -222,6 +274,31 @@
       <p class="zh" lang="zh-CN">(b) 采用多用户检测（MUD）后，解码器把用户 1 的信号从接收信号中完全去掉。用户 2 信道的容量是多少？</p>
     </div>
     <div class="chips"><span class="chip">香农容量</span><span class="chip">SINR</span><span class="chip">MUD</span><span class="chip src">讲义第 1a 章 p.16；第 2 章 p.48</span></div>
+    <!-- INTENT:p2q3 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>两个用户在同一时间、同一频段，向同一个接收机（比如基站）发信号。接收机收到的是"用户 1 的信号 + 用户 2 的信号 + 噪声"混在一起。</p>
+          <p>信道是 AWGN 信道（Additive White Gaussian Noise，加性高斯白噪声）：噪声直接加在信号上（加性），所有频率上功率一样、不同时刻互不相关（白），幅度服从均值 0 的高斯分布；除了这种噪声没有别的损伤（没有衰落、没有多径）。香农公式 C = B log₂(1 + SNR) 就是在这种信道下成立的。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>10 mW</td><td>接收机收到的每个用户的功率</td></tr><tr><td>0.1 mW</td><td>总噪声功率</td></tr><tr><td>20 MHz</td><td>每个用户的带宽</td></tr><tr><td>SINR</td><td>信号 /（干扰 + 噪声）：把别的用户也当成噪声时的信噪比</td></tr><tr><td>MUD</td><td>多用户检测（multi-user detection）：先解出一个用户，把它从接收信号里减掉，再解下一个（连续干扰消除 SIC）</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 先解用户 1。这时用户 2 的信号还在，只能把它当噪声。用户 1 的容量是多少？关键是 SINR = P₁ /(P₂ + N)。</li>
+            <li><b>(b)</b> 用户 1 解出来并完全减掉以后，再解用户 2，它只剩噪声。用户 2 的容量是多少？SNR = P₂ / N。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>香农公式里的 SNR 用线性值，不是 dB。</li>
+            <li>两个功率单位要一致（都用 mW）。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>把干扰当噪声代价很大（同样 10 mW，容量差了好几倍）；先解一个再减掉，后解的那个用户就像独占信道一样。</p>
+          <div class="ans">一句话：两个用户同时发，(a) 先解用户 1、把用户 2 当噪声，(b) 减掉用户 1 后再解用户 2，分别用香农公式求容量。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p2q3 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">

@@ -15,6 +15,34 @@
       <p class="zh" lang="zh-CN">(d) 在相同的 \(H_k\) 和 (c) 的总功率约束下，求最大和容量（bit/s/Hz）。</p>
     </div>
     <div class="chips"><span class="chip">慢平坦衰落条件</span><span class="chip">H_k = DFT{h}</span><span class="chip">等容量分配</span><span class="chip">注水</span><span class="chip src">讲义第 7 章 p.5、p.15、p.24</span></div>
+    <!-- INTENT:p7q1 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>OFDM 信号经过两径信道：\(y(t)=h_0x(t)+h_1x(t-\tau)+w(t)\)，直射一条加延迟 τ 的回波一条。</p>
+          <p>OFDM 把总带宽 B 切成 N 个子载波。题目先问 N 怎么选，再算每个子载波的增益，最后在两种原则下给子载波分功率。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(B_d\)</td><td>多普勒扩展：信道随时间变化有多快（相干时间约 1/B_d）</td></tr><tr><td>\(B_C\)</td><td>相干带宽：频率相差多远，信道就不一样了</td></tr><tr><td>\(H_k\)</td><td>第 k 个子载波的信道增益（复数），等于 [h₀, h₁] 的 DFT</td></tr><tr><td>\(P_k\)</td><td>分给第 k 个子载波的功率，总和 10</td></tr><tr><td>σ² = 1</td><td>噪声方差，所以子载波 k 的 SNR = |H_k|²P_k</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 解释 N 怎么选：每个子载波要窄到感受到的是平坦衰落（B/N 远小于 B_C），同时一个 OFDM 符号要短到信道在这期间几乎不变（慢衰落）。</li>
+            <li><b>(b)</b> N = 4、h₀ = 0.8、h₁ = 0.6：算出 4 个子载波各自的 H_k。</li>
+            <li><b>(c)</b> 按"每个子载波容量一样"的原则分配总功率 10。</li>
+            <li><b>(d)</b> 按"总容量最大"的原则（注水）分配，求每秒每赫兹的最大总容量。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>题目把子载波编号成 k = 1…4，注意和 0…3 的对应关系（H₄ = H₀）。</li>
+            <li>(d) 要"每赫兹"：4 个子载波各占 B/4，总比特数要除以 4。</li>
+            <li>注水时先检查最差的子载波要不要放弃。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>OFDM 把一个频率选择性信道变成 N 个各自平坦、但增益不同的子信道；"人人平等"地分功率很浪费，注水会放弃最差的子载波，总容量高得多。</p>
+          <div class="ans">一句话：两径信道上的 OFDM：说明 N 怎么选，算出 4 个子载波的增益，再分别按"容量相等"和"注水"分功率。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p7q1 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -58,6 +86,29 @@
       <p class="zh" lang="zh-CN">考虑一个 OFDM 系统的设计：目标是在 600 kHz 的可用带宽内，用 16-QAM 以 2 Mbps 的速率传输数据。已知信道时延扩展最大为 20 μs，可设循环前缀等于最大时延扩展。求子载波总数和 OFDM 符号周期。</p>
     </div>
     <div class="chips"><span class="chip">Δf = B/N</span><span class="chip">循环前缀开销</span><span class="chip src">讲义第 7 章 p.8、p.17–18</span></div>
+    <!-- INTENT:p7q2 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>设计题：要用 OFDM 在 600 kHz 带宽里传 2 Mbps，调制用 16-QAM。信道时延扩展最多 20 µs，循环前缀（CP）就取 20 µs。</p>
+          <p>求子载波数 N 和 OFDM 符号时长。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>16-QAM</td><td>每个符号 4 bit</td></tr><tr><td>N</td><td>子载波数：一个 OFDM 符号里同时发 N 个 QAM 符号</td></tr><tr><td>Δf = B/N</td><td>子载波间隔；有用符号时长 T = 1/Δf = N/B</td></tr><tr><td>CP</td><td>循环前缀 20 µs，每个 OFDM 符号前面都要加，占时间但不带新数据</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>唯一一问</b> 列出"速率 = 每个 OFDM 符号的比特数 ÷ OFDM 符号总时长"：4N /(N/B + 20 µs) = 2 Mbps，解出 N，再算 OFDM 符号时长（含 CP）。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>OFDM 符号总时长 = 有用部分 N/B + CP，别漏 CP。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>没有 CP 的话，600 kHz 本来就够用，N 取多少都行；正是 CP 的开销决定了 N：N 越大，CP 占的比例越小。</p>
+          <div class="ans">一句话：由"4 bit × N 个子载波 ÷（N/B + 20 µs）= 2 Mbps"解出子载波数 N，再算含 CP 的 OFDM 符号时长。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p7q2 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -97,6 +148,29 @@
       <p class="zh" lang="zh-CN">某移动信道的 Z 变换为 \(H(Z)=1+0.9Z^{-1}\)。为抑制该信道的 ISI，系统改用 OFDM 设计。所需的最小循环前缀是多少？说明理由。</p>
     </div>
     <div class="chips"><span class="chip">信道长度</span><span class="chip">CP ≥ L − 1</span><span class="chip src">讲义第 7 章 p.17–22</span></div>
+    <!-- INTENT:p7q3 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>信道 H(z) = 1 + 0.9z⁻¹：一条直射，加一条晚一个采样到达、强度 0.9 的回波。</p>
+          <p>系统用 OFDM 来对付这个回波造成的 ISI，问循环前缀（CP）至少要多长。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(z^{-1}\)</td><td>延迟一个采样</td></tr><tr><td>L</td><td>信道长度：冲激响应 [1, 0.9] 有 2 个抽头，L = 2</td></tr><tr><td>CP</td><td>循环前缀：把每个 OFDM 块尾部的几个采样复制到块前面</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>唯一一问</b> 求最短 CP 并解释：上一个块会漏进下一个块几个采样？CP 要盖住它们，接收端把 CP 丢掉，ISI 就跟着丢掉了；用块尾的复制品还能让子载波保持正交。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>是 L − 1 = 1 个采样，不是 L = 2 个；系数 0.9 的大小不影响 CP 长度，只看延迟几个采样。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>CP 的长度只取决于信道"记忆"有多长（最大时延），至少等于 L − 1 个采样。</p>
+          <div class="ans">一句话：信道有一个晚 1 个采样的回波，问 OFDM 的循环前缀至少多长才能挡住 ISI，并解释原因。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p7q3 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">

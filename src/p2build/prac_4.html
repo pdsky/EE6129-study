@@ -7,6 +7,29 @@
       <p class="zh" lang="zh-CN">降低中断概率的一种常用技术是宏分集（Macro-diversity）：移动台发出的信号由多个基站同时接收和处理。解释为什么这样能降低中断概率。</p>
     </div>
     <div class="chips"><span class="chip">宏分集</span><span class="chip">阴影衰落</span><span class="chip src">讲义第 4 章 p.3–4</span></div>
+    <!-- INTENT:p4q1 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>这是一道文字解释题。宏分集（macro-diversity）：一部手机发的信号，被好几个不同位置的基站同时接收和处理。</p>
+          <p>题目问：为什么这样能降低中断概率。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>中断（outage）</td><td>接收信号低于门限、无法通信</td></tr><tr><td>阴影衰落（shadowing）</td><td>大的障碍物（楼、山）挡住传播路径，信号长时间偏低，是中断的主要原因</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>唯一一问</b> 解释原因。答案要说清三点：中断主要来自阴影；不同基站在不同位置，被同一障碍物同时挡住的可能性小，各链路阴影近似独立；只有所有链路同时不行才中断，概率是各自概率相乘，远小于单条链路。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>同一个基站上多装几根天线解决不了阴影：手机被同一栋楼挡住时，那几根天线一起变差。所以必须是相隔很远的多个基站。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>宏分集对付的是阴影（大尺度衰落），和 P2 Q2 (b) 是同一件事的文字版；链路相关时效果会打折扣。</p>
+          <div class="ans">一句话：解释为什么多个相距很远的基站能降低中断：它们的阴影近似独立，同时都被挡住的概率是各自概率之积，很小。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p4q1 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -50,6 +73,33 @@
       <p class="zh" lang="zh-CN">(c) 现在两条路径不再独立：\(\gamma_1=r_1+\beta\)，\(\gamma_2=r_2+\beta\)。阴影项 β 以概率 1/3 取 7、以概率 2/3 取 10，且与 \(r_1\)、\(r_2\) 独立；\(r_i\)（i = 1, 2）以概率 1/3 取 0.6、以概率 2/3 取 1.2。求 \(\bar\gamma_\Sigma\)、\(\bar P_{s,diversity}\)、g 和 d。</p>
     </div>
     <div class="chips"><span class="chip">离散分布求期望</span><span class="chip">MRC：SNR 相加</span><span class="chip">阵列增益 g / 分集增益 d</span><span class="chip">相关削弱分集</span><span class="chip src">讲义第 4 章 p.16、p.21、p.27</span></div>
+    <!-- INTENT:p4q2 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>DPSK 系统，误码率 \(P_s=\tfrac12e^{-\gamma}\)，γ 是信噪比。因为衰落，γ 是随机的。为了好算，题目让 γ 只取两三个离散值。</p>
+          <p>三问一层层加东西：(a) 一条支路；(b) 两条独立支路做最大比合并（MRC）；(c) 两条支路共享一部分阴影，不再独立。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>α</td><td>信道功率增益，随机：8（概率 1/3）或 11（概率 2/3）。发射功率和噪声都是 1 W，所以 γ = α</td></tr><tr><td>MRC</td><td>最大比合并：输出 SNR = 各支路 SNR 之和</td></tr><tr><td>阵列增益 g</td><td>g = 合并后平均 SNR / 单支路平均 SNR，平均 SNR 提高了几倍</td></tr><tr><td>分集增益 d</td><td>误码率随 SNR 下降的"斜率"：\(\bar P_s\approx\bar\gamma^{-d}\)，所以 \(d=-\log_{10}\bar P_s/\log_{10}\bar\gamma\)</td></tr><tr><td>β, r_i</td><td>(c) 中 γ_i = r_i + β：β 是两条支路共有的阴影，r_i 是各自独有的部分</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 单支路：求平均 SNR 和平均误码率。</li>
+            <li><b>(b)</b> 两条独立支路 MRC：列出两路 SNR 的所有组合和概率，求合并后的平均 SNR、平均误码率、g 和 d。</li>
+            <li><b>(c)</b> 两条支路共享 β：再求一遍平均 SNR、误码率、g、d，和 (b) 比较。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>平均误码率要对误码率求平均，不能把平均 SNR 代进公式：E[½e^{−γ}] ≠ ½e^{−E[γ]}。</li>
+            <li>d 的分母用单支路的平均 SNR（10）。</li>
+            <li>(c) 里 r₁、r₂、β 相互独立，e 的指数可以拆成三个期望相乘。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>(b)(c) 平均 SNR 一样，误码率却不同：两路共享阴影 β，会一起变差，分集被削弱。这是 P2 Q2 (c) 的离散版。</p>
+          <div class="ans">一句话：SNR 只取几个离散值，先算单支路，再算两路 MRC（独立 / 共享阴影），比较平均 SNR、误码率、阵列增益和分集增益。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p4q2 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -95,6 +145,31 @@
       <p class="zh" lang="zh-CN">(b) 推导接收机采用等权合并（equal weight combining）时的平均误比特概率。</p>
     </div>
     <div class="chips"><span class="chip">高斯随机变量之和</span><span class="chip">等增益合并</span><span class="chip src">讲义第 4 章 p.19；第 1b 章 p.11</span></div>
+    <!-- INTENT:p4q3 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>用 M 根天线发同一个 BPSK 比特 b（+1 或 −1），每条路径有一个随机的衰减系数 α_k，再加上噪声。接收机把收到的东西变成一个判决量 z，z > 0 判 +1，否则判 −1。</p>
+          <p>和一般题不同的是：这里衰减系数 α_k 是高斯的（不是瑞利），所以 z 也是高斯的，误码率可以直接写成 Q 函数。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(y_k=\alpha_kb\sqrt E+w_k\)</td><td>第 k 根天线发来的接收信号</td></tr><tr><td>E</td><td>发射信号能量</td></tr><tr><td>\(\alpha_k\sim\mathcal N(\alpha_0,\sigma_1^2)\)</td><td>衰减系数（damping factor），均值 α₀、方差 σ₁²</td></tr><tr><td>\(w_k\sim\mathcal N(0,\sigma_2^2)\)</td><td>加性高斯噪声</td></tr><tr><td>等增益合并（equal weight combining）</td><td>把各路 y_k 直接相加：z = Σ y_k</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> M = 1：z 就是 y。求平均误码率：设 b = +1，求 z ≤ 0 的概率。</li>
+            <li><b>(b)</b> M 路等权相加：求 z 的均值和方差，再求误码率。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>独立高斯之和还是高斯：均值相加，方差相加。</li>
+            <li>α√E 的方差是 σ₁²E（常数乘随机变量，方差乘常数的平方）。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>合并 M 路以后，均值按 M 增长，标准差只按 √M 增长，Q 函数的参数放大 √M 倍，这就是合并的好处。</p>
+          <div class="ans">一句话：衰减和噪声都是高斯，所以判决量也是高斯；求它的均值和方差，误码率就是 Q(均值/标准差)，M 路合并让参数大 √M 倍。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p4q3 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">

@@ -19,6 +19,32 @@
       <p class="zh" lang="zh-CN">(b) 系统将工作在高信噪比下。用还是不用上述均衡器更好？说明理由。</p>
     </div>
     <div class="chips"><span class="chip">ISI 条件误码率</span><span class="chip">滤波后噪声方差</span><span class="chip">高 SNR 看最坏项</span><span class="chip src">讲义第 6 章 p.22–28</span></div>
+    <!-- INTENT:p6q1 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>二进制 PAM：发 ±1。信道 H(z) = 1 + αz⁻¹ 的意思是：每个接收样本 = 当前符号 + α × 上一个符号（回声）+ 噪声，上一个符号漏进来就是码间干扰（ISI）。检测器按 z(n) 的正负判决。</p>
+          <p>有人提议加一个均衡器 U(z) = 1 − αz⁻¹，想抵消回声。但均衡器不只作用在信号上，也作用在噪声上。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(a(n)=\pm1\)</td><td>发送符号，等概、独立</td></tr><tr><td>\(E_b\)</td><td>比特能量</td></tr><tr><td>\(R_w(k)=\tfrac{N_0}{2}\delta(k)\)</td><td>白噪声，方差 N₀/2</td></tr><tr><td>α（0 &lt; α &lt; 1）</td><td>回声强度</td></tr><tr><td>\(z^{-1}\)</td><td>延迟一个采样</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 分别求不加均衡器、加均衡器时的平均误码率。要考虑上一个（或前两个）符号是同号还是异号，两种情况各占一半。</li>
+            <li><b>(b)</b> 高 SNR 时，加还是不加更好？解释理由。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>这个均衡器并没有把 ISI 完全消掉：总响应是 1 − α²z⁻²，剩下一个更小的回声 α²，在两个采样之后。</li>
+            <li>噪声也经过 U(z)，方差变成 (N₀/2)(1 + α²)，被放大了。</li>
+            <li>高 SNR 时，误码率由 Q 参数最小的那一项（最坏情况）决定，比较最坏情况即可。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>均衡器是在"减少 ISI"和"放大噪声"之间做交换，要比较的是最坏情况下的有效距离。</p>
+          <div class="ans">一句话：信道有一个强度 α 的回声，比较不均衡和用 1 − αz⁻¹ 均衡时的误码率，看高 SNR 下哪个更好。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p6q1 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -64,6 +90,30 @@
       <p class="zh" lang="zh-CN">(b) 若使用理想迫零（zero-forcing）均衡器，并根据均衡器输出的正负号判决，求所得的 BER。</p>
     </div>
     <div class="chips"><span class="chip">条件误码率求平均</span><span class="chip">迫零噪声放大</span><span class="chip">等比级数</span><span class="chip src">讲义第 6 章 p.23–28</span></div>
+    <!-- INTENT:p6q2 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>和 P6 Q1 类似：\(y_n=b_n+a\,b_{n-1}+w_n\)，每个接收值 = 当前比特 + a × 上一个比特 + 噪声（噪声方差 0.1）。</p>
+          <p>两种接收方法：直接看 y 的正负判决；或者先用理想迫零均衡器（zero-forcing）把回声完全消掉，再看正负。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(b_n=\pm1\)</td><td>发送比特，等概、独立</td></tr><tr><td>a（0 &lt; a &lt; 1）</td><td>回声系数</td></tr><tr><td>\(w_n\)</td><td>高斯噪声，方差 0.1</td></tr><tr><td>迫零均衡（ZF）</td><td>用信道的逆滤波器 1/(1 + az⁻¹) 让总响应变成 1，ISI 完全为零</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 直接判决：上一个比特同号时信号幅度 1 + a，异号时 1 − a，各占一半，求平均误码率。</li>
+            <li><b>(b)</b> 理想迫零后再判决：ISI 没了，但噪声也经过了逆滤波器，求新的噪声方差和误码率。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>逆滤波器展开是无穷级数 Σ(−a)^k z^{−k}，滤波后噪声方差 = 0.1 × 系数平方和 = 0.1/(1 − a²)。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>迫零能把 ISI 完全清零，代价是放大噪声；a 越接近 1，噪声放大越严重。</p>
+          <div class="ans">一句话：有回声的二进制信道，比较"直接判正负"和"先迫零消回声再判"的误码率，后者没有 ISI 但噪声被放大。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p6q2 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -107,6 +157,31 @@
       <p class="zh" lang="zh-CN">(b) 考虑一个简单的判决反馈均衡器（DFE），判决变量为 \(u_n=y_n-\hat A_{n-1}x_1\)。\(\hat A_n\) 由 \(u_n\) 的正负号决定，\(\hat A_{n-1}\) 由 \(u_{n-1}\) 的正负号决定，依此类推。设“时间”从 n = 1 开始，且 \(A_0=0\)。求 n 很大（n → ∞）时的错误概率。</p>
     </div>
     <div class="chips"><span class="chip">MMSE 求最优系数</span><span class="chip">DFE 错误传播</span><span class="chip">马尔可夫稳态</span><span class="chip src">讲义第 6 章 p.26–34</span></div>
+    <!-- INTENT:p6q3 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>两抽头 ISI 信道：\(y_n=A_n+\tfrac12A_{n-1}+z_n\)，每个接收值 = 当前符号 + 一半的上一个符号 + 噪声（方差 1）。</p>
+          <p>比较两种均衡器：线性均衡器（用下一个样本修正当前样本）和判决反馈均衡器（DFE，用已经判出来的上一个符号把回声减掉）。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(A_n=\pm1\)</td><td>发送符号</td></tr><tr><td>\(x_0=1,\ x_1=\tfrac12\)</td><td>信道的两个抽头：当前符号的系数和上一个符号的系数</td></tr><tr><td>q</td><td>线性均衡器的参数：\(u_n=y_n+q\,y_{n+1}\)</td></tr><tr><td>MMSE</td><td>最小均方误差：选 q 让 E[(u_n − A_n)²] 最小</td></tr><tr><td>DFE</td><td>判决反馈：\(u_n=y_n-\hat A_{n-1}x_1\)，减掉"按上次判决估计的回声"</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 求让均方误差最小的 q，然后按 u_n 的正负判决，求误码率。</li>
+            <li><b>(b)</b> DFE：上一次判对时回声被完全减掉；判错时回声反而加倍（错误传播）。求 n 很大时的长期误码率。"时间从 n = 1 开始、A₀ = 0" 只是说第一个符号前面没有回声。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>(a) 把 u_n − A_n 展开，各项独立、均值 0，均方值直接相加，再对 q 求最小。</li>
+            <li>(b) 长期误码率要考虑上一次对或错两种状态：p = (1 − p) × P(错|上次对) + p × P(错|上次错)。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>DFE 在不放大噪声的情况下消掉 ISI，比线性均衡好；但一次判错会传给下一次（错误传播），让误码率比理想值高一点。</p>
+          <div class="ans">一句话：同一个 ISI 信道，(a) 求 MMSE 线性均衡器的最优 q 和误码率，(b) 求有错误传播的 DFE 的长期误码率，比较两者。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p6q3 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">

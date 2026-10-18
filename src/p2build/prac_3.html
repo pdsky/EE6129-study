@@ -12,6 +12,30 @@
       <p class="zh" lang="zh-CN">(b) 求该信号所张成的信号空间的维数。</p>
     </div>
     <div class="chips"><span class="chip">正交归一基</span><span class="chip">和角公式</span><span class="chip src">讲义第 3 章 p.4–11</span></div>
+    <!-- INTENT:p3q1 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>发送的信号是固定频率（1/T）的余弦波，信息藏在它的幅度 \(A_i\) 和相位 \(\phi_j\) 里，比如 PSK、QAM 就是这样。</p>
+          <p>题目想让你把所有可能的波形都看成某个坐标系里的点（信号空间，signal space）：找出几个"坐标轴"函数，每个信号都能写成这些坐标轴的组合。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(A_i,\ \phi_j\)</td><td>幅度和相位，携带信息</td></tr><tr><td>正交归一基（orthonormal basis）</td><td>一组"坐标轴"函数：两两正交（乘积在 0 到 T 上积分为 0），每个能量为 1（自身平方积分为 1）</td></tr><tr><td>维数（dimension）</td><td>需要几个坐标轴，也就是基函数的个数</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 找出这组基函数。提示：用和角公式把 cos(2πt/T + φ) 拆开，看所有信号都落在哪几个方向上，再检查正交、调整系数让能量为 1。</li>
+            <li><b>(b)</b> 这些信号张成的空间是几维：数一数 (a) 里有几个基函数。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>归一化：cos² 在一个周期上积分是 T/2，不是 T，所以系数是 √(2/T)。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>每个调制波形都对应一个向量。PSK、QAM 都是二维的，所以能画在平面上，这就是星座图。</p>
+          <div class="ans">一句话：把"幅度 + 相位调制的余弦"拆成 cos 和 sin 两个方向，找出这两个归一化的坐标轴，维数就是 2。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p3q1 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -54,6 +78,31 @@
       <p class="zh" lang="zh-CN">(b) 求相应的误比特概率 \(P_e\)。</p>
     </div>
     <div class="chips"><span class="chip">ML 检测</span><span class="chip">似然比</span><span class="chip">判决门限</span><span class="chip src">讲义第 3 章 p.18–20</span></div>
+    <!-- INTENT:p3q2 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>从光盘（磁盘）读数据：每个位置存的是 0 或 1，读出来的值 y = x + 噪声。</p>
+          <p>特别之处：噪声大小和存的是什么有关。存 1 时噪声更大（σ₁ > σ₀）。读到一个 y，要判断原来存的是 0 还是 1。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(x_n\in\{0,1\}\)</td><td>存的比特，0 和 1 各占一半</td></tr><tr><td>\(w_n\)</td><td>噪声，高斯；x = 0 时方差 σ₀²，x = 1 时方差 σ₁²</td></tr><tr><td>\(y_n\)</td><td>读出来的值，也就是判决用的变量</td></tr><tr><td>ML 检测</td><td>最大似然（maximum likelihood）：比较"存 0 时读到这个 y 的可能性"和"存 1 时读到这个 y 的可能性"，选大的</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 写出 ML 判决规则：y 大于某个门限 ỹ 判 1，否则判 0。要求把门限用 σ₀²、σ₁² 表示出来。</li>
+            <li><b>(b)</b> 求误码率：存 0 被误判成 1，和存 1 被误判成 0，两种错误各占一半。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>噪声方差相等时门限就是中点 0.5；这里不相等，门限会偏，不能直接用 0.5。</li>
+            <li>0、1 等概，所以 ML 和 MAP（最大后验）结果一样。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>ML 门限是两条似然曲线（两个 PDF）的交点，不一定在中点：哪一边噪声大，门限就往另一边让。</p>
+          <div class="ans">一句话：读到 y，比较"存 0 时出现 y"和"存 1 时出现 y"的概率密度，哪个大判哪个；两边噪声不一样大，所以门限不在 0.5。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p3q2 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
@@ -93,6 +142,30 @@
       <p class="zh" lang="zh-CN">利用 BPSK 系统的近似式 \(P_{floor}\approx\left(\dfrac{\sigma_{T_m}}{T_b}\right)^2\)，求 QPSK 系统在时延扩展 \(\sigma_{T_m}\) = 3 µs 的信道上、不可约误码平台（irreducible error floor）为 \(10^{-3}\) 时能传输的数据速率。</p>
     </div>
     <div class="chips"><span class="chip">误码平台</span><span class="chip">符号时长 vs 比特时长</span><span class="chip src">讲义第 3 章 p.35–36</span></div>
+    <!-- INTENT:p3q3 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>多径时延扩展让每个符号的回声拖进下一个符号，造成码间干扰（ISI）。</p>
+          <p>这种错误不是噪声造成的，所以即使信号功率无限大（SNR → ∞）也消不掉，误码率会停在一个"平台"上，叫不可消除的误码平台（irreducible error floor）。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(P_{floor}\approx(\sigma_{T_m}/T_b)^2\)</td><td>题目给的 BPSK 平台近似公式：回声越长、符号越短，平台越高</td></tr><tr><td>\(\sigma_{T_m}\)</td><td>rms 时延扩展，3 µs</td></tr><tr><td>\(T_b\)</td><td>BPSK 的比特时长（BPSK 一个符号就是一个比特）</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>唯一一问</b> 换成 QPSK，在 3 µs 的时延扩展下，要让平台不高于 10⁻³，数据速率最高能到多少？</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>公式本质上看的是"回声长度 / 符号长度"。BPSK 的 T_b 就是符号时长；QPSK 要用符号时长 T_s。</li>
+            <li>QPSK 每个符号 2 bit，最后数据速率 = 2/T_s。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>时延扩展给速率设了上限，单纯加功率没用，要靠均衡（第 6 章）或 OFDM（第 7 章）。</p>
+          <div class="ans">一句话：误码平台由"时延扩展 / 符号时长"决定，用 10⁻³ 反推最短符号时长，再按 QPSK 每符号 2 bit 换算成数据速率。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p3q3 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">

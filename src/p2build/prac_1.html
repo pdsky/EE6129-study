@@ -14,6 +14,33 @@
       <p class="zh" lang="zh-CN">(b) 假设存在阴影衰落，并且在距离 d 处仅由路径损耗决定的接收功率比“不中断”所需的最小功率高 10 dB，求距离 d 处的中断概率。</p>
     </div>
     <div class="chips"><span class="chip">简化路径损耗模型</span><span class="chip">最小二乘拟合</span><span class="chip">阴影方差 = MSE</span><span class="chip">中断概率 Q 函数</span><span class="chip src">讲义第 2 章 p.8、12–15</span></div>
+    <!-- INTENT:p1q1 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>有人拿着接收机，在离发射机 5 m、25 m、65 m、110 m、400 m、1000 m 六个地方各测了一次"收到的功率比发出的功率小多少"，表里的 \((P_r/P_t)_{dB}\) 就是这个比值（负数 = 损耗）。</p>
+          <p>题目给了一个路径损耗模型 \(P_r=P_tK(1/d)^{\gamma}\)，要你用这 6 个实测点把模型里的两个未知参数定下来，再用它算中断概率。</p>
+          <p>取 dB 以后模型变成一条直线：\((P_r/P_t)_{dB}=K_{dB}-\gamma\cdot10\log_{10}d\)。所以 (a) 本质上就是"给 6 个点，画一条最贴合的直线"。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(d_i\)</td><td>测量点离发射机的距离（m）</td></tr><tr><td>\((P_r/P_t)_{dB}\)</td><td>实测的路径增益（dB），负得越多损耗越大</td></tr><tr><td>K</td><td>参考距离 1 m 处的增益，直线的截距</td></tr><tr><td>γ</td><td>路径损耗指数：距离每增大 10 倍，损耗多 10γ dB；自由空间 γ = 2，城市 3–5。直线的斜率是 −γ</td></tr><tr><td>阴影（shadowing）</td><td>6 个点不会正好落在直线上，偏离直线的那部分就是阴影，(b) 要用它</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 用最小二乘（least squares）找最贴合 6 个点的直线，读出 K（dB）和 γ。</li>
+            <li><b>(b)</b> "只考虑路径损耗时，接收功率比不中断所需的最低功率高 10 dB"：直线给出的平均功率比门限高 10 dB，即余量 10 dB。阴影把功率往下压超过 10 dB 就中断。题目没给阴影的标准差 σ，要从 (a) 的拟合残差里算：σ² = 均方误差（MSE）。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>横坐标用 10 log₁₀d，不是 log₁₀d，否则 γ 会差 10 倍。</li>
+            <li>"10 dB above" 是余量，不是门限本身；和 P2 Q2 的 Δ 是同一个意思，中断概率 = Q(余量/σ)。</li>
+            <li>MSE 是方差 σ²，代进 Q 之前要开根号。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>实测数据怎么变成模型：直线部分是路径损耗（平均趋势），点在直线周围的散布是阴影（随机波动），散布的大小直接决定中断概率。</p>
+          <div class="ans">一句话：用 6 个测量点拟合一条 dB 直线得到 K、γ，再把点偏离直线的程度当作阴影 σ，求"比平均低 10 dB 以上"的概率。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p1q1 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>取 dB 后模型变成一条直线 \(y=K_{dB}-\gamma x\)，其中 \(x=10\log_{10}d\)（\(d_0\) = 1 m）。用最小二乘找最贴近 6 个点的直线；剩下的均方误差就是阴影方差。</p>
@@ -77,6 +104,31 @@
       <p class="zh" lang="zh-CN">(b) 若 \(\sigma_\psi\) = 4 dBm，要使中断概率小于 1%，\(\mu_\psi\) 至少要取多少？</p>
     </div>
     <div class="chips"><span class="chip">对数正态 = dB 值高斯</span><span class="chip">Q 函数与反函数</span><span class="chip src">讲义第 2 章 p.11–15</span></div>
+    <!-- INTENT:p1q2 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>手机收到的功率因为阴影而随机起伏。题目说它服从对数正态分布（log-normal），意思是：用 dBm 表示时，功率服从高斯分布。</p>
+          <p>手机要正常工作，接收功率必须高于 10 dBm，低于就算中断。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(\mu_\psi\)</td><td>接收功率的平均值（dBm），由路径损耗决定</td></tr><tr><td>\(\sigma_\psi\)</td><td>阴影的标准差，表示起伏有多大（题目写 dBm，实际单位是 dB）</td></tr><tr><td>10 dBm</td><td>门限：低于它就中断</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 正着算：平均 15 dBm、σ = 8 dB 时，功率掉到 10 dBm 以下的概率是多少。</li>
+            <li><b>(b)</b> 反着算：σ = 4 dB 时，平均功率至少要多大，才能让中断概率小于 1%。也就是"需要留多少余量"。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>对数正态在 dB 上就是高斯，直接在 dB 上算，不用换回线性值。</li>
+            <li>(b) 是 Q 函数反查：Q(x) = 0.01 → x = 2.326，再解出平均值。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>余量和中断概率的关系：门限离平均值越多个标准差，中断越少；要中断 1%，余量约为 2.33σ。</p>
+          <div class="ans">一句话：功率在 dB 上服从高斯，(a) 求低于 10 dBm 的概率，(b) 反过来求平均值要多高才能让这个概率 &lt; 1%。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p1q2 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>dBm 值服从高斯分布。"低于门限"的概率 = 先减均值、再除标准差，查 Q 表。</p>
@@ -119,6 +171,31 @@
       <p class="zh" lang="zh-CN">(b) 要使该信道表现为平坦衰落，符号速率 \(R_s\) 应取多少？设 \(R_s=1/T_s\)，\(T_s\) 为信号的符号周期。</p>
     </div>
     <div class="chips"><span class="chip">平均时延 / rms 时延扩展</span><span class="chip">平坦衰落条件 σ/Ts &lt; 0.1</span><span class="chip src">讲义第 2 章 p.30–33</span></div>
+    <!-- INTENT:p1q3 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>信号经多条路径到达接收机，各条路径的时延不同，像回声一样陆续到达。</p>
+          <p>功率时延分布 \(P_r(\tau)\)（power delay profile）描述"时延为 τ 的那部分回声有多少功率"。这里是 0 到 10 µs 之间均匀分布：每个时延的功率都一样，10 µs 之后就没有了。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>τ</td><td>某条路径相对最早到达那条的时延</td></tr><tr><td>\(\mu_{T_m}\)</td><td>平均时延（mean delay spread）：按功率加权的平均到达时延</td></tr><tr><td>\(\sigma_{T_m}\)</td><td>rms 时延扩展：时延的标准差，衡量回声"拖得有多散"</td></tr><tr><td>\(T_s,\ R_s=1/T_s\)</td><td>符号时长和符号速率</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 把 \(P_r(\tau)\) 当作权重（相当于一个概率分布），求时延的均值和标准差。</li>
+            <li><b>(b)</b> 平坦衰落（flat fading）要求符号比回声的散布长得多，回声才不会拖进下一个符号。讲义的判据是 \(\sigma_{T_m}/T_s\lt0.1\)，由此求符号速率最多能多快。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>题目说的 "mean delay spread" 就是平均时延。</li>
+            <li>(b) 的答案是一个上限：R_s 小于某个值，不是等于。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>时延扩展限制了不加均衡时的最高符号速率：符号越快越短，回声就越容易造成码间干扰（ISI）。</p>
+          <div class="ans">一句话：把均匀的功率时延分布当成概率分布，求时延的均值和标准差，再用 σ/T_s &lt; 0.1 求平坦衰落允许的最高符号速率。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p1q3 -->
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
