@@ -6,7 +6,7 @@ import pathlib, re
 REPO = pathlib.Path('/run/media/paddy/新加卷/NTUlearn/EE6129-study')
 OUT = pathlib.Path('/run/media/paddy/新加卷/NTUlearn/EE6129_artifacts')
 OUT.mkdir(exist_ok=True)
-EXAMPLES_URL = 'https://claude.ai/artifact/NnpJ3ExvwnRF1dD55ww36a'
+EXAMPLES_URL = 'https://claude.ai/artifact/DVPDZGHpQJVjBLP8XZAraG'
 
 WRAPPER = re.compile(r'^\s*(<!doctype html>|<html[^>]*>|<head>|<meta charset[^>]*>|<meta name="viewport"[^>]*>|</head>|<body>|</body>|</html>)\s*$', re.I)
 

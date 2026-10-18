@@ -11,8 +11,8 @@ CSS = re.search(r"CSS = r'''(.*?)'''", (B / 'build_practice.py').read_text(encod
 
 # where each topic is explained (repo page, artifact page)
 LEARN = {
-  'B': ('partB.html', 'https://claude.ai/artifact/Rq8eSjXVaeEVwoUvRE411c'),
-  'C': ('partC.html', 'https://claude.ai/artifact/9gXNBydjgxgVdZQwSYLKfh'),
+  'B': ('partB.html', 'https://claude.ai/artifact/5Rjn7L2PvSN5ZVrTQnJnio'),
+  'C': ('partC.html', 'https://claude.ai/artifact/DLKM7od5QZHLjbgEN6cALD'),
 }
 ANCHOR = {'WLAN':'ch1','MAC':'ch2','MANET/WSN':'ch4','LTE':'ch6','IoT':'ch7','轨道':'ch1','链路':'ch4','多址':'ch5','网络':'ch6'}
 

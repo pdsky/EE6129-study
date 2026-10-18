@@ -23,8 +23,8 @@ EXTRA_CSS = '''
 
 # repo href -> artifact href
 LINKS = {
-  'partC.html': 'https://claude.ai/artifact/9gXNBydjgxgVdZQwSYLKfh',
-  'bc-practice.html': 'https://claude.ai/artifact/Sr1BqA97a2ezDwodgRXEBr',
+  'partC.html': 'https://claude.ai/artifact/DLKM7od5QZHLjbgEN6cALD',
+  'bc-practice.html': 'https://claude.ai/artifact/Fx13NpGCHaY9ztzpnHKLLf',
 }
 
 PAGES = {

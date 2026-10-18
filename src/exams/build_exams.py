@@ -33,12 +33,12 @@ PAPERS = {
 }
 # lecture pages: key -> (repo file, artifact file, artifact id, short name)
 PAGES = {
-  'A':  ('partA.html', 'partA.html', '6Vp1fcfRZ4o2cfmUtFQtpG', 'Part A'),
-  'B':  ('partB.html', 'partB.html', 'Rq8eSjXVaeEVwoUvRE411c', 'Part B'),
-  'C':  ('partC.html', 'partC.html', '9gXNBydjgxgVdZQwSYLKfh', 'Part C'),
-  'p2': ('p2-learn.html', 'p2-learn.html', 'G7A1bCLeHLqk5ywkZeTtwT', 'Part 2'),
+  'A':  ('partA.html', 'partA.html', 'EtNMokdHETG8HTMnziTaiH', 'Part A'),
+  'B':  ('partB.html', 'partB.html', '5Rjn7L2PvSN5ZVrTQnJnio', 'Part B'),
+  'C':  ('partC.html', 'partC.html', 'DLKM7od5QZHLjbgEN6cALD', 'Part C'),
+  'p2': ('p2-learn.html', 'p2-learn.html', '2oFi3Q2EigxutPVdykK7SQ', 'Part 2'),
 }
-HW1 = ('hw1.html', 'McfNsRbbazKMbWfp3FeM4B')
+HW1 = ('hw1.html', 'UwozCLuvD2KmGrQdQnLRGn')
 EXAMS = ('exams.html', URLS.get('exams'))
 ZH = ['开篇', '第一章', '第二章', '第三章', '第四章', '第五章', '第六章', '第七章', '第八章', '第九章', '第十章']
 
