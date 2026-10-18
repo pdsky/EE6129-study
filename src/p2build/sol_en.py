@@ -110,6 +110,67 @@ EN['p2q2'] = dict(
   ('Check', '''b = 0 gives the [Q(Δ/σ)]² of part (b); a = 0 (fully correlated) makes the links identical, P<sub>out</sub> = Q(Δ/σ), no diversity at all.'''),
   ('Link', '''Practice 4 Q1 explains the same idea in words; Ch 4 p.21 "correlation reduces diversity"; Practice 4 Q2(c) is a discrete version with shared shadowing.''')])
 
+# collapsible step-by-step walk-through of part (c), rendered after the note (add_en.py)
+EN['p2q2']['detail'] = r'''      <details class="deep">
+        <summary>(c) Step by step: fix Y → multiply → integrate over Y → substitute</summary>
+        <div class="deep-body">
+          <h4><span class="st">Step 0</span>Write outage as a condition on Z</h4>
+          <p>\(P_{r,i}=W+Z_i\) and the threshold is \(T=W-\Delta\), so</p>
+          <div class="eqb">\[P_{r,i}\lt T\iff W+Z_i\lt W-\Delta\iff Z_i\lt-\Delta,\qquad P_{out}=P\big(Z_1\lt-\Delta\ \text{and}\ Z_2\lt-\Delta\big)\]</div>
+          <p>The outage condition is the same in (b) and (c); only the relation between Z₁ and Z₂ changes.</p>
+
+          <h4><span class="st">Step 1</span>Why we cannot just square, as in (b)</h4>
+          <p>\(Z_1=aY_1+bY\), \(Z_2=aY_2+bY\): both links contain the same \(bY\). When Y is very negative, both links get worse together, so Z₁ and Z₂ are not independent: \(P(A\cap B)\neq P(A)P(B)\), and we cannot simply multiply.</p>
+          <p>Intuition (not in the slides): \(bY\) is shadowing common to both links, e.g. the phone is behind a building or inside a car, so the signal from either base station must pass through it; \(aY_1\), \(aY_2\) are the shadowing specific to each path, independent of each other.</p>
+          <p>How strong the correlation is: the cross terms vanish because the variables are independent with zero mean,</p>
+          <div class="eqb">\[\operatorname{Cov}(Z_1,Z_2)=E\big[(aY_1+bY)(aY_2+bY)\big]=b^2E[Y^2]=b^2\sigma^2,\qquad \operatorname{Var}(Z_i)=(a^2+b^2)\sigma^2\]</div>
+          <p>The question says \(Z_i\sim\mathcal N(0,\sigma^2)\), which implies \(a^2+b^2=1\); the correlation coefficient is \(\rho=b^2\). The larger b, the more alike the two links.</p>
+
+          <h4><span class="st">Step 2</span>Lecturer's method ①: treat Y as a constant</h4>
+          <p>Suppose Y = y is known. In \(Z_1=aY_1+by\) the term \(by\) is just a constant shift; the only random part is \(aY_1\sim\mathcal N(0,a^2\sigma^2)\) (a constant times a Gaussian, standard deviation \(|a|\sigma\)), so</p>
+          <div class="eqb">\[Z_i\mid y\ \sim\ \mathcal N\big(by,\ a^2\sigma^2\big)\]</div>
+          <p><b>Key point:</b> given y, Z₁ depends only on Y₁ and Z₂ only on Y₂, and Y₁, Y₂ are independent, so Z₁ and Z₂ are <b>conditionally independent</b>. The shared part is "frozen" and the correlation disappears.</p>
+
+          <h4><span class="st">Step 3</span>Conditional outage of one link</h4>
+          <div class="eqb">\[P(Z_1\lt-\Delta\mid y)=P\big(aY_1\lt-(\Delta+by)\big)=P\Big(N\lt-\frac{\Delta+by}{|a|\sigma}\Big)=P\Big(N\gt\frac{\Delta+by}{|a|\sigma}\Big)=Q\Big(\frac{\Delta+by}{|a|\sigma}\Big)\]</div>
+          <p>N ~ N(0, 1) is aY₁ divided by its standard deviation |a|σ; the third equality uses the symmetry of the Gaussian about 0; the last step is the definition Q(x) = P(N &gt; x). We write |a| because a standard deviation must be positive; a negative a leaves the distribution unchanged. The more negative y (deeper common shadow), the smaller Δ + by and the larger Q: outage becomes more likely.</p>
+
+          <h4><span class="st">Step 4</span>Multiply the two links</h4>
+          <div class="eqb">\[P(\text{outage}\mid y)=P(Z_1\lt-\Delta\mid y)\,P(Z_2\lt-\Delta\mid y)=\Big[Q\Big(\frac{\Delta+by}{|a|\sigma}\Big)\Big]^2\]</div>
+          <p>This is the "independent → multiply" of part (b), done under the condition that Y is known.</p>
+
+          <h4><span class="st">Step 5</span>Lecturer's method ②: make Y random again and integrate over its PDF</h4>
+          <p>Total probability theorem, continuous form: \(P(A)=\int P(A\mid Y=y)\,f_Y(y)\,dy\) (discrete form \(\sum_k P(A\mid B_k)P(B_k)\)): a weighted average over every case, weighted by how likely it is. With \(f_Y(y)=\frac{1}{\sqrt{2\pi}\,\sigma}e^{-y^2/(2\sigma^2)}\):</p>
+          <div class="eqb">\[P_{out}=\int_{-\infty}^{\infty}\Big[Q\Big(\frac{\Delta+by}{|a|\sigma}\Big)\Big]^2\,\frac{1}{\sqrt{2\pi}\,\sigma}\,e^{-y^2/(2\sigma^2)}\,dy\]</div>
+          <p>This is already correct; it just does not look like the required form yet.</p>
+
+          <h4><span class="st">Step 6</span>Lecturer's method ③: substitute u = y/σ</h4>
+          <p>\(y=\sigma u\), \(dy=\sigma\,du\), limits still ±∞. The 1/σ in front of the PDF cancels the σ in dy; \(e^{-y^2/(2\sigma^2)}=e^{-u^2/2}\); the argument of Q becomes \((\Delta+b\sigma u)/(|a|\sigma)\):</p>
+          <div class="eqb">\[P_{out}=\int_{-\infty}^{\infty}\frac{1}{\sqrt{2\pi}}\Big[Q\Big(\frac{\Delta+b\sigma u}{|a|\sigma}\Big)\Big]^2e^{-u^2/2}\,du\]</div>
+          <p>The integration variable is a dummy variable. Renaming u to y gives the question's \((\Delta+by\sigma)/(|a|\sigma)\), so <b>the y in the question is the normalised u</b>, not the original Y. The question's \(Q[\cdot]^2\) means \([Q(\cdot)]^2\), not Q of a squared argument.</p>
+
+          <h4><span class="st">Check</span>Two extreme cases</h4>
+          <ul>
+            <li><b>b = 0</b> (no common shadowing, a = 1): Q no longer depends on u and comes out of the integral, leaving \(\int\frac{1}{\sqrt{2\pi}}e^{-u^2/2}du=1\). The result is \([Q(\Delta/\sigma)]^2\), part (b) ✓</li>
+            <li><b>a → 0</b> (fully shared, b = 1): the argument of Q goes to ±∞. For u &gt; −Δ/σ, Q → 0; for u &lt; −Δ/σ, Q → 1. So \(P_{out}=P(u\lt-\Delta/\sigma)=Q(\Delta/\sigma)\), the same as a single base station: no diversity at all ✓</li>
+          </ul>
+
+          <div class="note">Numbers for intuition (not in the slides; numerical integration, checked by Monte Carlo simulation). With Δ = σ (e.g. both 8 dB), a single base station has outage Q(1) = 0.1587:
+            <div class="tw"><table class="mini"><thead><tr><th>ρ = b²</th><th>0</th><th>0.25</th><th>0.5</th><th>0.75</th><th>0.9</th><th>1</th></tr></thead><tbody><tr><td>P<sub>out</sub></td><td>0.0252</td><td>0.0417</td><td>0.0625</td><td>0.0905</td><td>0.1155</td><td>0.1587</td></tr></tbody></table></div>
+            For ρ = 0.5 the conditional outage P(outage | u) is 0.52 at u = −2, 0.0062 at u = 0 and about 6×10⁻⁵ at u = +1. Almost all outages happen when the common shadow is deep (u very negative) and both base stations fail together. That is why correlation weakens macro-diversity.</div>
+
+          <h4><span class="st">Exam</span>Compact answer (write it in this order)</h4>
+          <div class="tmpl">
+            <p>Outage ⇔ \(Z_1\lt-\Delta\) and \(Z_2\lt-\Delta\). \(Z_1\) and \(Z_2\) share the term \(bY\), so they are correlated; condition on \(Y=y\).</p>
+            <p>Given y, \(Z_i=aY_i+by\sim\mathcal N(by,\,a^2\sigma^2)\), and \(Z_1,Z_2\) are independent since \(Y_1,Y_2\) are independent.</p>
+            <p>\(P(Z_i\lt-\Delta\mid y)=P\big(aY_i\lt-(\Delta+by)\big)=Q\big(\tfrac{\Delta+by}{|a|\sigma}\big)\), so \(P(\text{out}\mid y)=Q^2\big(\tfrac{\Delta+by}{|a|\sigma}\big)\).</p>
+            <p>By the total probability theorem, \(P_{out}=\int P(\text{out}\mid y)f_Y(y)\,dy=\int Q^2\big(\tfrac{\Delta+by}{|a|\sigma}\big)\tfrac{1}{\sqrt{2\pi}\,\sigma}e^{-y^2/2\sigma^2}dy\).</p>
+            <p>Let \(u=y/\sigma\) (\(dy=\sigma\,du\)): \(P_{out}=\int\tfrac{1}{\sqrt{2\pi}}Q^2\big(\tfrac{\Delta+b\sigma u}{|a|\sigma}\big)e^{-u^2/2}du\), which is the required result.</p>
+          </div>
+          <div class="ans">In one line: fix the shared variable → conditionally independent, multiply → integrate over its PDF → substitute u = y/σ. Practice 4 Q2(c) is the discrete version of the same method.</div>
+        </div>
+      </details>'''
+
 EN['p2q3'] = dict(
  steps=[
   r'''(a) User 2 treated as noise: SINR = 10 / (10 + 0.1) = 0.990.''' + C('C₁ = 20×10⁶ × log₂(1 + 0.990) = 20×10⁶ × 0.993 = 19.86 Mbps'),

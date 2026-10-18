@@ -23,7 +23,9 @@ def render(qid, d):
     out.append(f'      <div class="official"><b>Official answer:</b> {d["official"]}</div>')
     if d.get('note'):
         out.append(f'      <div class="note">{d["note"]}</div>')
-    rows = ''.join(f'<dt>{lab}</dt><dd>{html}</dd>' for lab, html in d['kp'])
+    if d.get('detail'):
+        out.append(d['detail'])
+    rows =''.join(f'<dt>{lab}</dt><dd>{html}</dd>' for lab, html in d['kp'])
     out.append(f'      <div class="pkp"><div class="lbl">◆ Key points</div><dl>{rows}</dl></div>')
     out.append('    </div>')
     return f'    <!-- EN:{qid} -->\n' + '\n'.join(out) + f'\n    <!-- /EN:{qid} -->\n'

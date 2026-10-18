@@ -110,6 +110,22 @@ ol.steps>li::before{content:counter(s);position:absolute;left:0;top:8px;width:22
 .pkp dt{font-weight:700;font-size:.84rem;color:var(--accent-strong);padding-top:1px}
 .pkp dd{margin:0;font-size:.88rem;line-height:1.65}
 @media (max-width:560px){.pkp dl{grid-template-columns:1fr;gap:0}.pkp dt{margin-top:6px}}
+.deep{margin-top:12px;border:1px solid var(--accent);border-radius:10px;background:var(--surface)}
+.deep > summary{cursor:pointer;list-style:none;padding:9px 14px;font-weight:600;font-size:.9rem;color:var(--accent-strong);display:flex;gap:8px;align-items:baseline}
+.deep > summary::-webkit-details-marker{display:none}
+.deep > summary::before{content:'▸';font-size:.8rem}
+.deep[open] > summary::before{content:'▾'}
+.deep[open] > summary{border-bottom:1px solid var(--border)}
+.deep-body{padding:4px 16px 14px;font-size:.92rem}
+.deep h4{font-size:.94rem;font-weight:700;margin:16px 0 4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px}
+.deep h4 .st{font-family:'IBM Plex Mono',monospace;font-size:.68rem;font-weight:600;background:var(--accent-soft);color:var(--accent-strong);border-radius:6px;padding:1px 7px}
+.deep p{margin:.35em 0;max-width:76ch}
+.deep ul{margin:.3em 0;padding-left:1.3em}
+.deep li{margin:.25em 0}
+.deep .eqb{overflow-x:auto;overflow-y:hidden;margin:.3em 0;padding:1px 0}
+.deep .note .tw{margin:6px 0}
+.deep .tmpl{border-left:3px solid var(--accent);background:var(--surface-2);border-radius:0 8px 8px 0;padding:6px 14px;margin:.4em 0;font-size:.9rem}
+.deep .tmpl p{margin:.3em 0}
 .done{display:flex;justify-content:flex-end;margin-top:10px}
 .done label{font-size:.8rem;color:var(--muted);display:flex;gap:6px;align-items:center;cursor:pointer}
 .done input{accent-color:var(--ok)}
@@ -418,6 +434,65 @@ window.MathJax = {
       <div class="ans">(b) [Q(Δ/σ)]²；(c) ∫ (1/√(2π)) Q[(Δ + bσu)/(|a|σ)]² e^{−u²/2} du</div>
       <div class="official"><b>官方答案：</b>与上面一致 ✓（题目里写成 byσ，积分变量 y 指的是归一化后的 u）</div>
       <div class="note">直觉：b = 0 时退化成 (b) 的独立情况；a = 0 时两条链路完全一样，Pout = Q(Δ/σ)，分集完全没用。相关性越强，宏分集效果越差。</div>
+      <details class="deep">
+        <summary>(c) 逐步详解：先固定 Y → 相乘 → 对 Y 积分 → 换元</summary>
+        <div class="deep-body">
+          <h4><span class="st">第 0 步</span>把"中断"写成 Z 的条件</h4>
+          <p>\(P_{r,i}=W+Z_i\)，门限 \(T=W-\Delta\)，所以</p>
+          <div class="eqb">\[P_{r,i}\lt T\iff W+Z_i\lt W-\Delta\iff Z_i\lt-\Delta,\qquad P_{out}=P\big(Z_1\lt-\Delta\ \text{and}\ Z_2\lt-\Delta\big)\]</div>
+          <p>(b) 和 (c) 的中断条件完全一样，区别只在 Z₁、Z₂ 之间是什么关系。</p>
+
+          <h4><span class="st">第 1 步</span>为什么不能像 (b) 那样直接平方</h4>
+          <p>\(Z_1=aY_1+bY\)，\(Z_2=aY_2+bY\)：两条链路含有同一个 \(bY\)。Y 很负时两条链路一起变差，所以 Z₁、Z₂ 不独立，\(P(A\cap B)\neq P(A)P(B)\)，不能直接相乘。</p>
+          <p>直观理解（课外补充）：\(bY\) 像两条链路共有的阴影，比如手机站在大楼背后、在车里，信号从哪个基站来都要穿过它；\(aY_1\)、\(aY_2\) 是各条路径独有的阴影，互相独立。</p>
+          <p>相关程度：交叉项因为独立且均值为 0，全部消掉，</p>
+          <div class="eqb">\[\operatorname{Cov}(Z_1,Z_2)=E\big[(aY_1+bY)(aY_2+bY)\big]=b^2E[Y^2]=b^2\sigma^2,\qquad \operatorname{Var}(Z_i)=(a^2+b^2)\sigma^2\]</div>
+          <p>题目说 \(Z_i\sim\mathcal N(0,\sigma^2)\)，隐含 \(a^2+b^2=1\)，相关系数 \(\rho=b^2\)：b 越大，两条链路越像。</p>
+
+          <h4><span class="st">第 2 步</span>老师的方法①：先把 Y 当成常数</h4>
+          <p>假设 Y = y 已经确定。\(Z_1=aY_1+by\) 里的 \(by\) 只是常数平移，唯一随机的是 \(aY_1\sim\mathcal N(0,a^2\sigma^2)\)（常数乘高斯，标准差是 \(|a|\sigma\)），所以</p>
+          <div class="eqb">\[Z_i\mid y\ \sim\ \mathcal N\big(by,\ a^2\sigma^2\big)\]</div>
+          <p><b>关键：</b>给定 y 以后，Z₁ 只和 Y₁ 有关，Z₂ 只和 Y₂ 有关，而 Y₁、Y₂ 独立，所以 Z₁、Z₂ <b>条件独立</b>。共享的那部分被"冻结"了，相关性就没有了。</p>
+
+          <h4><span class="st">第 3 步</span>一条链路的条件中断概率</h4>
+          <div class="eqb">\[P(Z_1\lt-\Delta\mid y)=P\big(aY_1\lt-(\Delta+by)\big)=P\Big(N\lt-\frac{\Delta+by}{|a|\sigma}\Big)=P\Big(N\gt\frac{\Delta+by}{|a|\sigma}\Big)=Q\Big(\frac{\Delta+by}{|a|\sigma}\Big)\]</div>
+          <p>N ~ N(0, 1) 是 aY₁ 除以它的标准差 |a|σ 得到的；第三个等号用高斯关于 0 对称；最后一步就是 Q 的定义 Q(x) = P(N &gt; x)。写 |a| 是因为标准差必须为正，a 为负时分布不变。y 越负（共同阴影越深），Δ + by 越小，Q 越大，越容易中断。</p>
+
+          <h4><span class="st">第 4 步</span>两条链路相乘</h4>
+          <div class="eqb">\[P(\text{outage}\mid y)=P(Z_1\lt-\Delta\mid y)\,P(Z_2\lt-\Delta\mid y)=\Big[Q\Big(\frac{\Delta+by}{|a|\sigma}\Big)\Big]^2\]</div>
+          <p>这一步就是 (b) 的"独立 → 相乘"，只是放在"Y 已知"这个条件下做。</p>
+
+          <h4><span class="st">第 5 步</span>老师的方法②：把 Y 变回随机变量，对它的 PDF 积分</h4>
+          <p>全概率定理的连续形式 \(P(A)=\int P(A\mid Y=y)\,f_Y(y)\,dy\)，离散版是 \(\sum_k P(A\mid B_k)P(B_k)\)，意思就是按每种情况出现的概率加权平均。代入 \(f_Y(y)=\frac{1}{\sqrt{2\pi}\,\sigma}e^{-y^2/(2\sigma^2)}\)：</p>
+          <div class="eqb">\[P_{out}=\int_{-\infty}^{\infty}\Big[Q\Big(\frac{\Delta+by}{|a|\sigma}\Big)\Big]^2\,\frac{1}{\sqrt{2\pi}\,\sigma}\,e^{-y^2/(2\sigma^2)}\,dy\]</div>
+          <p>这个式子已经是对的，只是和题目给的形式还不一样。</p>
+
+          <h4><span class="st">第 6 步</span>老师的方法③：换元 u = y/σ</h4>
+          <p>\(y=\sigma u\)，\(dy=\sigma\,du\)，上下限仍是 ±∞。PDF 前面的 1/σ 和 dy 里的 σ 抵消；\(e^{-y^2/(2\sigma^2)}=e^{-u^2/2}\)；Q 的参数变成 \((\Delta+b\sigma u)/(|a|\sigma)\)：</p>
+          <div class="eqb">\[P_{out}=\int_{-\infty}^{\infty}\frac{1}{\sqrt{2\pi}}\Big[Q\Big(\frac{\Delta+b\sigma u}{|a|\sigma}\Big)\Big]^2e^{-u^2/2}\,du\]</div>
+          <p>积分变量叫什么都可以（哑变量）。把 u 改名成 y，就是题目里的 \((\Delta+by\sigma)/(|a|\sigma)\)，所以<b>题目里的 y 其实是归一化后的 u</b>，不是原来的 Y。题目写的 \(Q[\cdot]^2\) 指 \([Q(\cdot)]^2\)，不是把 Q 里面的东西平方。</p>
+
+          <h4><span class="st">自检</span>两个极端</h4>
+          <ul>
+            <li><b>b = 0</b>（没有共同阴影，a = 1）：Q 里不含 u，可以提到积分外面，剩下 \(\int\frac{1}{\sqrt{2\pi}}e^{-u^2/2}du=1\)，结果是 \([Q(\Delta/\sigma)]^2\)，回到 (b) ✓</li>
+            <li><b>a → 0</b>（完全共享，b = 1）：Q 的参数趋向 ±∞。u &gt; −Δ/σ 时 Q → 0，u &lt; −Δ/σ 时 Q → 1，所以 \(P_{out}=P(u\lt-\Delta/\sigma)=Q(\Delta/\sigma)\)，和只有一个基站时一样，分集完全没用 ✓</li>
+          </ul>
+
+          <div class="note">数字感受（讲义没有；数值积分计算，蒙特卡洛模拟核对过）。取 Δ = σ（比如都是 8 dB），只有一个基站时中断概率 Q(1) = 0.1587：
+            <div class="tw"><table class="mini"><thead><tr><th>ρ = b²</th><th>0</th><th>0.25</th><th>0.5</th><th>0.75</th><th>0.9</th><th>1</th></tr></thead><tbody><tr><td>P<sub>out</sub></td><td>0.0252</td><td>0.0417</td><td>0.0625</td><td>0.0905</td><td>0.1155</td><td>0.1587</td></tr></tbody></table></div>
+            ρ = 0.5 时的条件中断概率 P(中断 | u)：u = −2 为 0.52，u = 0 为 0.0062，u = +1 约 6×10⁻⁵。中断几乎都发生在共同阴影很深（u 很负）的时候，两个基站一起失效，这就是相关会削弱宏分集的原因。</div>
+
+          <h4><span class="st">考试</span>英文写法（照这个结构写）</h4>
+          <div class="tmpl" lang="en">
+            <p>Outage ⇔ \(Z_1\lt-\Delta\) and \(Z_2\lt-\Delta\). \(Z_1\) and \(Z_2\) share the term \(bY\), so they are correlated; condition on \(Y=y\).</p>
+            <p>Given y, \(Z_i=aY_i+by\sim\mathcal N(by,\,a^2\sigma^2)\), and \(Z_1,Z_2\) are independent since \(Y_1,Y_2\) are independent.</p>
+            <p>\(P(Z_i\lt-\Delta\mid y)=P\big(aY_i\lt-(\Delta+by)\big)=Q\big(\tfrac{\Delta+by}{|a|\sigma}\big)\), so \(P(\text{out}\mid y)=Q^2\big(\tfrac{\Delta+by}{|a|\sigma}\big)\).</p>
+            <p>By the total probability theorem, \(P_{out}=\int P(\text{out}\mid y)f_Y(y)\,dy=\int Q^2\big(\tfrac{\Delta+by}{|a|\sigma}\big)\tfrac{1}{\sqrt{2\pi}\,\sigma}e^{-y^2/2\sigma^2}dy\).</p>
+            <p>Let \(u=y/\sigma\) (\(dy=\sigma\,du\)): \(P_{out}=\int\tfrac{1}{\sqrt{2\pi}}Q^2\big(\tfrac{\Delta+b\sigma u}{|a|\sigma}\big)e^{-u^2/2}du\), which is the required result.</p>
+          </div>
+          <div class="ans">一句话记住：先固定共享变量 → 条件独立，相乘 → 按它的 PDF 积分 → 换元 u = y/σ。Practice 4 第 2(c) 题是同一套路的离散版。</div>
+        </div>
+      </details>
       <!-- PKP:p2q2 -->
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>宏分集的中断概率：独立阴影和相关阴影两种情况；条件概率 + 全概率（第 2 章 p.12–15；第 4 章 p.3–4、p.21）。</dd><dt>前置知识</dt><dd>独立事件概率相乘；独立高斯的线性组合仍是高斯，aY₁ + bY ~ N(0, (a² + b²)σ²)；全概率的连续形式 P(A) = ∫P(A | y)p(y)dy。</dd><dt>解题套路</dt><dd>(b) 每个基站单独中断 P(Z<sub>i</sub> &lt; −Δ) = Q(Δ/σ)，独立 → 平方。(c) 先固定两条链路共享的 Y（"条件化"），这时两条链路独立 → 条件中断概率相乘 → 再按 Y 的 PDF 积分。</dd><dt>关键一步</dt><dd>令 Y = σu，u ~ N(0, 1)。给定 u：Z<sub>i</sub> ~ N(bσu, a²σ²)，P(Z<sub>i</sub> &lt; −Δ | u) = Q((Δ + bσu)/(|a|σ))。</dd><dt>隐含条件</dt><dd>要和"Z<sub>i</sub> ~ N(0, σ²)"一致，需要 a² + b² = 1。此时 Z₁、Z₂ 的相关系数等于 b²：b 越大，两条链路越像。</dd><dt>自检</dt><dd>b = 0 时退化成 (b) 的 [Q(Δ/σ)]²；a = 0（完全相关）时两条链路一模一样，P<sub>out</sub> = Q(Δ/σ)，分集完全没用。</dd><dt>联系</dt><dd>Practice 4 第 1 题用文字解释同一件事；第 4 章 p.21"相关削弱分集"；Practice 4 第 2(c) 题是离散版本的共享阴影。</dd></dl></div>
       <!-- /PKP:p2q2 -->
@@ -435,6 +510,65 @@ window.MathJax = {
       <div class="ans">(b) [Q(Δ/σ)]²; (c) ∫ (1/√(2π)) Q[(Δ + bσu)/(|a|σ)]² e<sup>−u²/2</sup> du</div>
       <div class="official"><b>Official answer:</b> same as above ✓ (the question writes byσ; its integration variable y is the normalised u)</div>
       <div class="note">Sanity check: b = 0 reduces to the independent case (b); a = 0 makes the two links identical, P<sub>out</sub> = Q(Δ/σ), and diversity is useless. The stronger the correlation, the weaker the macro-diversity gain.</div>
+      <details class="deep">
+        <summary>(c) Step by step: fix Y → multiply → integrate over Y → substitute</summary>
+        <div class="deep-body">
+          <h4><span class="st">Step 0</span>Write outage as a condition on Z</h4>
+          <p>\(P_{r,i}=W+Z_i\) and the threshold is \(T=W-\Delta\), so</p>
+          <div class="eqb">\[P_{r,i}\lt T\iff W+Z_i\lt W-\Delta\iff Z_i\lt-\Delta,\qquad P_{out}=P\big(Z_1\lt-\Delta\ \text{and}\ Z_2\lt-\Delta\big)\]</div>
+          <p>The outage condition is the same in (b) and (c); only the relation between Z₁ and Z₂ changes.</p>
+
+          <h4><span class="st">Step 1</span>Why we cannot just square, as in (b)</h4>
+          <p>\(Z_1=aY_1+bY\), \(Z_2=aY_2+bY\): both links contain the same \(bY\). When Y is very negative, both links get worse together, so Z₁ and Z₂ are not independent: \(P(A\cap B)\neq P(A)P(B)\), and we cannot simply multiply.</p>
+          <p>Intuition (not in the slides): \(bY\) is shadowing common to both links, e.g. the phone is behind a building or inside a car, so the signal from either base station must pass through it; \(aY_1\), \(aY_2\) are the shadowing specific to each path, independent of each other.</p>
+          <p>How strong the correlation is: the cross terms vanish because the variables are independent with zero mean,</p>
+          <div class="eqb">\[\operatorname{Cov}(Z_1,Z_2)=E\big[(aY_1+bY)(aY_2+bY)\big]=b^2E[Y^2]=b^2\sigma^2,\qquad \operatorname{Var}(Z_i)=(a^2+b^2)\sigma^2\]</div>
+          <p>The question says \(Z_i\sim\mathcal N(0,\sigma^2)\), which implies \(a^2+b^2=1\); the correlation coefficient is \(\rho=b^2\). The larger b, the more alike the two links.</p>
+
+          <h4><span class="st">Step 2</span>Lecturer's method ①: treat Y as a constant</h4>
+          <p>Suppose Y = y is known. In \(Z_1=aY_1+by\) the term \(by\) is just a constant shift; the only random part is \(aY_1\sim\mathcal N(0,a^2\sigma^2)\) (a constant times a Gaussian, standard deviation \(|a|\sigma\)), so</p>
+          <div class="eqb">\[Z_i\mid y\ \sim\ \mathcal N\big(by,\ a^2\sigma^2\big)\]</div>
+          <p><b>Key point:</b> given y, Z₁ depends only on Y₁ and Z₂ only on Y₂, and Y₁, Y₂ are independent, so Z₁ and Z₂ are <b>conditionally independent</b>. The shared part is "frozen" and the correlation disappears.</p>
+
+          <h4><span class="st">Step 3</span>Conditional outage of one link</h4>
+          <div class="eqb">\[P(Z_1\lt-\Delta\mid y)=P\big(aY_1\lt-(\Delta+by)\big)=P\Big(N\lt-\frac{\Delta+by}{|a|\sigma}\Big)=P\Big(N\gt\frac{\Delta+by}{|a|\sigma}\Big)=Q\Big(\frac{\Delta+by}{|a|\sigma}\Big)\]</div>
+          <p>N ~ N(0, 1) is aY₁ divided by its standard deviation |a|σ; the third equality uses the symmetry of the Gaussian about 0; the last step is the definition Q(x) = P(N &gt; x). We write |a| because a standard deviation must be positive; a negative a leaves the distribution unchanged. The more negative y (deeper common shadow), the smaller Δ + by and the larger Q: outage becomes more likely.</p>
+
+          <h4><span class="st">Step 4</span>Multiply the two links</h4>
+          <div class="eqb">\[P(\text{outage}\mid y)=P(Z_1\lt-\Delta\mid y)\,P(Z_2\lt-\Delta\mid y)=\Big[Q\Big(\frac{\Delta+by}{|a|\sigma}\Big)\Big]^2\]</div>
+          <p>This is the "independent → multiply" of part (b), done under the condition that Y is known.</p>
+
+          <h4><span class="st">Step 5</span>Lecturer's method ②: make Y random again and integrate over its PDF</h4>
+          <p>Total probability theorem, continuous form: \(P(A)=\int P(A\mid Y=y)\,f_Y(y)\,dy\) (discrete form \(\sum_k P(A\mid B_k)P(B_k)\)): a weighted average over every case, weighted by how likely it is. With \(f_Y(y)=\frac{1}{\sqrt{2\pi}\,\sigma}e^{-y^2/(2\sigma^2)}\):</p>
+          <div class="eqb">\[P_{out}=\int_{-\infty}^{\infty}\Big[Q\Big(\frac{\Delta+by}{|a|\sigma}\Big)\Big]^2\,\frac{1}{\sqrt{2\pi}\,\sigma}\,e^{-y^2/(2\sigma^2)}\,dy\]</div>
+          <p>This is already correct; it just does not look like the required form yet.</p>
+
+          <h4><span class="st">Step 6</span>Lecturer's method ③: substitute u = y/σ</h4>
+          <p>\(y=\sigma u\), \(dy=\sigma\,du\), limits still ±∞. The 1/σ in front of the PDF cancels the σ in dy; \(e^{-y^2/(2\sigma^2)}=e^{-u^2/2}\); the argument of Q becomes \((\Delta+b\sigma u)/(|a|\sigma)\):</p>
+          <div class="eqb">\[P_{out}=\int_{-\infty}^{\infty}\frac{1}{\sqrt{2\pi}}\Big[Q\Big(\frac{\Delta+b\sigma u}{|a|\sigma}\Big)\Big]^2e^{-u^2/2}\,du\]</div>
+          <p>The integration variable is a dummy variable. Renaming u to y gives the question's \((\Delta+by\sigma)/(|a|\sigma)\), so <b>the y in the question is the normalised u</b>, not the original Y. The question's \(Q[\cdot]^2\) means \([Q(\cdot)]^2\), not Q of a squared argument.</p>
+
+          <h4><span class="st">Check</span>Two extreme cases</h4>
+          <ul>
+            <li><b>b = 0</b> (no common shadowing, a = 1): Q no longer depends on u and comes out of the integral, leaving \(\int\frac{1}{\sqrt{2\pi}}e^{-u^2/2}du=1\). The result is \([Q(\Delta/\sigma)]^2\), part (b) ✓</li>
+            <li><b>a → 0</b> (fully shared, b = 1): the argument of Q goes to ±∞. For u &gt; −Δ/σ, Q → 0; for u &lt; −Δ/σ, Q → 1. So \(P_{out}=P(u\lt-\Delta/\sigma)=Q(\Delta/\sigma)\), the same as a single base station: no diversity at all ✓</li>
+          </ul>
+
+          <div class="note">Numbers for intuition (not in the slides; numerical integration, checked by Monte Carlo simulation). With Δ = σ (e.g. both 8 dB), a single base station has outage Q(1) = 0.1587:
+            <div class="tw"><table class="mini"><thead><tr><th>ρ = b²</th><th>0</th><th>0.25</th><th>0.5</th><th>0.75</th><th>0.9</th><th>1</th></tr></thead><tbody><tr><td>P<sub>out</sub></td><td>0.0252</td><td>0.0417</td><td>0.0625</td><td>0.0905</td><td>0.1155</td><td>0.1587</td></tr></tbody></table></div>
+            For ρ = 0.5 the conditional outage P(outage | u) is 0.52 at u = −2, 0.0062 at u = 0 and about 6×10⁻⁵ at u = +1. Almost all outages happen when the common shadow is deep (u very negative) and both base stations fail together. That is why correlation weakens macro-diversity.</div>
+
+          <h4><span class="st">Exam</span>Compact answer (write it in this order)</h4>
+          <div class="tmpl">
+            <p>Outage ⇔ \(Z_1\lt-\Delta\) and \(Z_2\lt-\Delta\). \(Z_1\) and \(Z_2\) share the term \(bY\), so they are correlated; condition on \(Y=y\).</p>
+            <p>Given y, \(Z_i=aY_i+by\sim\mathcal N(by,\,a^2\sigma^2)\), and \(Z_1,Z_2\) are independent since \(Y_1,Y_2\) are independent.</p>
+            <p>\(P(Z_i\lt-\Delta\mid y)=P\big(aY_i\lt-(\Delta+by)\big)=Q\big(\tfrac{\Delta+by}{|a|\sigma}\big)\), so \(P(\text{out}\mid y)=Q^2\big(\tfrac{\Delta+by}{|a|\sigma}\big)\).</p>
+            <p>By the total probability theorem, \(P_{out}=\int P(\text{out}\mid y)f_Y(y)\,dy=\int Q^2\big(\tfrac{\Delta+by}{|a|\sigma}\big)\tfrac{1}{\sqrt{2\pi}\,\sigma}e^{-y^2/2\sigma^2}dy\).</p>
+            <p>Let \(u=y/\sigma\) (\(dy=\sigma\,du\)): \(P_{out}=\int\tfrac{1}{\sqrt{2\pi}}Q^2\big(\tfrac{\Delta+b\sigma u}{|a|\sigma}\big)e^{-u^2/2}du\), which is the required result.</p>
+          </div>
+          <div class="ans">In one line: fix the shared variable → conditionally independent, multiply → integrate over its PDF → substitute u = y/σ. Practice 4 Q2(c) is the discrete version of the same method.</div>
+        </div>
+      </details>
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Outage with macro-diversity for independent and correlated shadowing; conditional probability plus total probability (Ch 2 p.12–15; Ch 4 p.3–4, p.21).</dd><dt>Background</dt><dd>Independent events multiply; a linear combination of independent Gaussians is Gaussian, aY₁ + bY ~ N(0, (a² + b²)σ²); continuous total probability P(A) = ∫P(A | y)p(y)dy.</dd><dt>Method</dt><dd>(b) Single-link outage P(Z<sub>i</sub> &lt; −Δ) = Q(Δ/σ), independent → square. (c) Fix the shared Y ("condition on it"), the links are then independent → multiply the conditional outages → integrate over the PDF of Y.</dd><dt>Key step</dt><dd>Let Y = σu, u ~ N(0, 1). Given u: Z<sub>i</sub> ~ N(bσu, a²σ²), P(Z<sub>i</sub> &lt; −Δ | u) = Q((Δ + bσu)/(|a|σ)).</dd><dt>Hidden assumption</dt><dd>To be consistent with Z<sub>i</sub> ~ N(0, σ²) we need a² + b² = 1. The correlation coefficient of Z₁ and Z₂ is then b²: the larger b, the more alike the two links.</dd><dt>Check</dt><dd>b = 0 gives the [Q(Δ/σ)]² of part (b); a = 0 (fully correlated) makes the links identical, P<sub>out</sub> = Q(Δ/σ), no diversity at all.</dd><dt>Link</dt><dd>Practice 4 Q1 explains the same idea in words; Ch 4 p.21 "correlation reduces diversity"; Practice 4 Q2(c) is a discrete version with shared shadowing.</dd></dl></div>
     </div>
     <!-- /EN:p2q2 -->
