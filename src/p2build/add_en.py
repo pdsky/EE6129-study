@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Add an English solution (from sol_en.py) next to each Chinese solution in prac_1..7.html.
+"""Add an English solution (from sol_en.py) next to each Chinese solution in prac_1..8.html.
 
 The Chinese block becomes <div class="sol sol-zh">, the English one <div class="sol sol-en" lang="en">,
 placed right after it between <!-- EN:id --> and <!-- /EN:id -->. The page toggle (解答 EN / 中文)
@@ -33,7 +33,7 @@ def render(qid, d):
 
 def apply():
     n = 0
-    for i in range(1, 8):
+    for i in range(1, 9):
         f = B / f'prac_{i}.html'
         s = f.read_text(encoding='utf-8')
         s = re.sub(r'    <!-- EN:(\w+) -->.*?<!-- /EN:\1 -->\n', '', s, flags=re.S)

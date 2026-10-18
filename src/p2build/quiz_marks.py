@@ -6,8 +6,8 @@ Ch1a and Ch3–7 not tested; no integration. Formula status follows the recordin
 must memorise; 尽量记 = lecturer said try to remember; 考试给 = given in the paper, know the meaning.
 
 Learn fragments (learn_01..07): a Quiz box at the top of ch0, badges on chapter heads and section
-headings, and a status line under selected formula cards. Practice fragments (prac_1..7): badges on
-the Practice group headings and on every P1/P2 question. Everything this script adds carries the
+headings, and a status line under selected formula cards. Practice fragments (prac_1..8): badges on
+the Practice group headings and on every P1/P2/mock question. Everything this script adds carries the
 class qz / qzline / qzbox and is removed before re-inserting, so it is idempotent.
 Run before build_learn.py and build_practice.py.
 """
@@ -91,10 +91,10 @@ def learn():
 
 
 def practice():
-    for i in range(1, 8):
+    for i in range(1, 9):                                # prac_8 = self-written mock Quiz
         f = B / f'prac_{i}.html'
         s = strip(f.read_text(encoding='utf-8'))
-        inq = i <= 2
+        inq = i <= 2 or i == 8
         s = re.sub(r'(<div class="group" id="P\d"><h2>.*?)(</h2>)',
                    lambda m: m.group(1) + ('<span class="qz in">Quiz 范围</span>' if inq else '<span class="qz out">Quiz 不考</span>') + m.group(2), s, count=1)
         if inq:
@@ -105,4 +105,4 @@ def practice():
 
 learn()
 practice()
-print('quiz marks: learn_01–07, prac_1–7')
+print('quiz marks: learn_01–07, prac_1–8')

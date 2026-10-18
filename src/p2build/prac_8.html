@@ -1,0 +1,460 @@
+  <div class="group" id="P8"><h2>模拟 Quiz · 自编 6 题<span class="qz in">Quiz 范围</span></h2><span>第 1b 章 + 第 2 章 · 两套（A、B），每套 3 题，按 30 分钟练</span></div>
+
+  <article class="ex" id="p8q1">
+    <header><span class="pg">模拟 A · Q1</span><h3>两种信道状态：全概率、贝叶斯与离散 SNR<span class="qz in">Quiz</span></h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz A (self-written)</span></div>
+      <p>A wireless link alternates between two states. In the "good" state, which occurs with probability 0.7, the bit error probability is \(10^{-4}\). In the "bad" state, which occurs with probability 0.3, the bit error probability is \(10^{-2}\).</p>
+      <p class="zh" lang="zh-CN">一条无线链路在两种状态之间切换。"好"状态出现的概率为 0.7，此时误比特率为 \(10^{-4}\)；"坏"状态出现的概率为 0.3，此时误比特率为 \(10^{-2}\)。</p>
+      <p>(a) Find the average bit error probability of the link. (3 marks)</p>
+      <p class="zh" lang="zh-CN">(a) 求该链路的平均误比特率。（3 分）</p>
+      <p>(b) A bit is found to be in error. What is the probability that the link was in the bad state when this bit was sent? (3 marks)</p>
+      <p class="zh" lang="zh-CN">(b) 发现某个比特出错了。发送这个比特时，链路处于"坏"状态的概率是多少？（3 分）</p>
+      <p>(c) The received SNR is 10 dB in the good state and 0 dB in the bad state. Find the mean and the variance of the SNR (in linear scale), and express the mean SNR in dB. (4 marks)</p>
+      <p class="zh" lang="zh-CN">(c) 好状态下接收 SNR 为 10 dB，坏状态下为 0 dB。求 SNR（线性值）的均值和方差，并把平均 SNR 用 dB 表示。（4 分）</p>
+    </div>
+    <div class="chips"><span class="chip">全概率</span><span class="chip">贝叶斯（必背）</span><span class="chip">离散期望与方差</span><span class="chip src">讲义第 1b 章 p.5–14</span></div>
+    <!-- INTENT:p8q1 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>一条无线链路时好时坏：比如有时被遮挡、有时畅通。题目把它简化成两种状态，每种状态出现的概率和误比特率都已知。</p>
+          <p>这是第 1b 章概率复习的典型题：分情况讨论（全概率）、由结果反推原因（贝叶斯）、离散随机变量的期望和方差。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>good / bad</td><td>两种信道状态，概率分别是 0.7 和 0.3（加起来是 1）</td></tr><tr><td>\(10^{-4},\ 10^{-2}\)</td><td>各状态下的误比特率，也就是条件概率 P(出错 | 状态)</td></tr><tr><td>10 dB / 0 dB</td><td>各状态下的接收 SNR（dB），算均值方差前要换成线性值 10 和 1</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 不知道当时处于哪个状态，一个比特出错的总概率是多少：两种情况各自算，再按出现概率加权。</li>
+            <li><b>(b)</b> 已经知道"这个比特出错了"，反过来问"当时是坏状态"的概率：先有结果、再问原因，就是贝叶斯。</li>
+            <li><b>(c)</b> 把 SNR 看成一个离散随机变量（10 的概率 0.7，1 的概率 0.3），求它的均值和方差，再把均值换回 dB。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>(b) 的答案不是 0.3：0.3 是"事先"处于坏状态的概率，题目问的是"知道出错以后"的概率。</li>
+            <li>(c) 不能直接平均 dB 值：dB 是对数，先换成线性值再平均。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>全概率（分情况加权）和贝叶斯（由果推因）是第 1b 章的两个核心工具；还要会求离散分布的期望和方差，并注意 dB 和线性值的换算。</p>
+          <div class="ans">一句话：两状态信道：(a) 用全概率求平均误码率，(b) 用贝叶斯求"出错时处于坏状态"的概率，(c) 求 SNR 的均值和方差（先换线性值）。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p8q1 -->
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol sol-zh">
+      <p class="idea"><b>思路：</b>(a) 分情况讨论再加权，就是全概率；(b) 已经看到结果（出错），反过来问原因（处于哪个状态），就是贝叶斯；(c) 离散分布求期望和方差，先把 dB 换成线性值。</p>
+      <ol class="steps">
+        <li>(a) 全概率：\(P_e=P(G)\,P(e\mid G)+P(B)\,P(e\mid B)=0.7\times10^{-4}+0.3\times10^{-2}=7\times10^{-5}+3\times10^{-3}\)<div class="calc">P_e = 3.07 × 10⁻³</div></li>
+        <li>(b) 贝叶斯：\(P(B\mid e)=\dfrac{P(B)\,P(e\mid B)}{P_e}=\dfrac{3\times10^{-3}}{3.07\times10^{-3}}=0.977\)。分子就是 (a) 里"坏状态"那一项，分母就是 (a) 的答案。</li>
+        <li>(c) 先换成线性值：10 dB → 10，0 dB → 1。<div class="calc">E[γ] = 0.7 × 10 + 0.3 × 1 = 7.3　　E[γ²] = 0.7 × 100 + 0.3 × 1 = 70.3</div></li>
+        <li>\(\mathrm{Var}(\gamma)=E[\gamma^2]-(E[\gamma])^2=70.3-53.29=17.01\)（标准差 4.12）；平均 SNR \(=10\log_{10}7.3=8.63\) dB。</li>
+      </ol>
+      <div class="ans">(a) 3.07 × 10⁻³；(b) 0.977；(c) E[γ] = 7.3（8.63 dB），Var(γ) = 17.0</div>
+      <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
+      <div class="note">直接把 dB 值平均，得到 0.7 × 10 + 0.3 × 0 = 7 dB，是错的：dB 是对数，要先换成线性值再求平均。老师说没做 dB ↔ 线性换算会扣分。另外 (b) 很有代表性：坏状态只占 30% 的时间，却贡献了 97.7% 的错误，误码几乎全来自信道差的时候。</div>
+      <!-- PKP:p8q1 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>全概率、贝叶斯（蓝框必背）、离散随机变量的期望和方差（第 1b 章 p.5–14，Quiz 范围）。</dd><dt>前置知识</dt><dd>P(B) = ΣP(A<sub>i</sub>)P(B | A<sub>i</sub>)；P(A<sub>i</sub> | B) = P(A<sub>i</sub>)P(B | A<sub>i</sub>)/P(B)；E[X] = Σx·p(x)；Var(X) = E[X²] − (E[X])²。</dd><dt>解题套路</dt><dd>先列"状态—概率—条件概率"表；(a) 加权求和；(b) 用 (a) 里对应那一项除以 (a) 的总和；(c) 换成线性值后列表求 E[X]、E[X²]。</dd><dt>易错</dt><dd>直接平均 dB 值（得 7 dB，错）；方差忘了减均值的平方；贝叶斯的分母是全概率算出的总误码率；全概率必须对所有状态求和（老师点名的往年错误）。</dd><dt>直觉</dt><dd>坏状态只占 30% 的时间，却贡献了 97.7% 的错误：平均误码率几乎完全由信道差的时候决定，这也是第 4 章要用分集的原因。</dd><dt>举一反三</dt><dd>三个状态的信道同理，表里多一行；也可以问"连续两个比特都出错的概率"（独立时相乘）。</dd><dt>联系</dt><dd>Practice 4 第 2 题（离散 SNR 求平均误码率）；P2 Q2 (c) 是全概率的连续版本。</dd></dl></div>
+      <!-- /PKP:p8q1 -->
+    </div>
+    <!-- EN:p8q1 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> (a) Split into cases and weight them: total probability. (b) The result (an error) is known and we ask about the cause (the state): Bayes' rule. (c) Mean and variance of a discrete random variable, after converting dB to linear values.</p>
+      <ol class="steps">
+        <li>(a) Total probability: \(P_e=P(G)\,P(e\mid G)+P(B)\,P(e\mid B)=0.7\times10^{-4}+0.3\times10^{-2}=7\times10^{-5}+3\times10^{-3}\)<div class="calc">P<sub>e</sub> = 3.07 × 10⁻³</div></li>
+        <li>(b) Bayes: \(P(B\mid e)=\dfrac{P(B)\,P(e\mid B)}{P_e}=\dfrac{3\times10^{-3}}{3.07\times10^{-3}}=0.977\). The numerator is the "bad" term of (a); the denominator is the answer of (a).</li>
+        <li>(c) Convert to linear first: 10 dB → 10, 0 dB → 1.<div class="calc">E[γ] = 0.7 × 10 + 0.3 × 1 = 7.3　　E[γ²] = 0.7 × 100 + 0.3 × 1 = 70.3</div></li>
+        <li>\(\mathrm{Var}(\gamma)=E[\gamma^2]-(E[\gamma])^2=70.3-53.29=17.01\) (standard deviation 4.12); mean SNR \(=10\log_{10}7.3=8.63\) dB.</li>
+      </ol>
+      <div class="ans">(a) 3.07 × 10⁻³; (b) 0.977; (c) E[γ] = 7.3 (8.63 dB), Var(γ) = 17.0</div>
+      <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
+      <div class="note">Averaging the dB values gives 0.7 × 10 + 0.3 × 0 = 7 dB, which is wrong: dB is logarithmic, so convert to linear before averaging. The lecturer said a missing dB ↔ linear conversion loses marks. Part (b) is typical: the bad state occupies only 30% of the time but causes 97.7% of the errors.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Total probability, Bayes' rule (blue box, memorise), mean and variance of a discrete random variable (Ch 1b p.5–14, Quiz scope).</dd><dt>Background</dt><dd>P(B) = ΣP(A<sub>i</sub>)P(B | A<sub>i</sub>); P(A<sub>i</sub> | B) = P(A<sub>i</sub>)P(B | A<sub>i</sub>)/P(B); E[X] = Σx·p(x); Var(X) = E[X²] − (E[X])².</dd><dt>Method</dt><dd>Make a table of state, probability and conditional probability. (a) Weighted sum; (b) the matching term of (a) divided by the total of (a); (c) convert to linear, then E[X] and E[X²] from the table.</dd><dt>Common mistakes</dt><dd>Averaging dB values (7 dB, wrong); forgetting to subtract the squared mean; the Bayes denominator is the total error probability from total probability; total probability must sum over all states (a past mistake the lecturer pointed out).</dd><dt>Intuition</dt><dd>The bad state is 30% of the time but gives 97.7% of the errors: the average error rate is set almost entirely by the bad periods, which is why Ch 4 uses diversity.</dd><dt>Variations</dt><dd>A three-state channel works the same with one more row; or "probability that two consecutive bits are both wrong" (multiply if independent).</dd><dt>Link</dt><dd>Practice 4 Q2 (average error rate over a discrete SNR); P2 Q2 (c) is the continuous version of total probability.</dd></dl></div>
+    </div>
+    <!-- /EN:p8q1 -->
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p8q2">
+    <header><span class="pg">模拟 A · Q2</span><h3>简化路径损耗模型 + 阴影：中断概率与最大覆盖距离<span class="qz in">Quiz</span></h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz A (self-written)</span></div>
+      <p>A base station transmits 100 mW. Propagation follows the simplified path loss model \(P_r=P_tK(d_0/d)^{\gamma}\) with \(K_{dB}=-31.5\) dB, \(d_0=1\) m and \(\gamma=3.6\). The receiver needs a received power of at least −110 dBm to avoid outage. Log-normal shadowing with a standard deviation of 6 dB is present.</p>
+      <p class="zh" lang="zh-CN">基站发射功率为 100 mW。传播服从简化路径损耗模型 \(P_r=P_tK(d_0/d)^{\gamma}\)，其中 \(K_{dB}=-31.5\) dB，\(d_0=1\) m，\(\gamma=3.6\)。接收功率至少要 −110 dBm 才不中断。存在对数正态阴影，标准差为 6 dB。</p>
+      <p>(a) Write the model in dB form and find the average received power at d = 300 m. (3 marks)</p>
+      <p class="zh" lang="zh-CN">(a) 写出模型的 dB 形式，并求 d = 300 m 处的平均接收功率。（3 分）</p>
+      <p>(b) Find the outage probability at d = 300 m. (3 marks)</p>
+      <p class="zh" lang="zh-CN">(b) 求 d = 300 m 处的中断概率。（3 分）</p>
+      <p>(c) Find the maximum distance at which the outage probability does not exceed 1%. (4 marks)</p>
+      <p class="zh" lang="zh-CN">(c) 求中断概率不超过 1% 的最大距离。（4 分）</p>
+    </div>
+    <div class="chips"><span class="chip">简化路径损耗模型（必背）</span><span class="chip">P_out = Q(余量/σ)（必背）</span><span class="chip">Q 函数反查</span><span class="chip src">讲义第 2 章 p.8、p.12–16</span></div>
+    <!-- INTENT:p8q2 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>基站以 100 mW 发射，信号随距离衰减（简化路径损耗模型），再叠加随机的阴影起伏。手机要收到至少 −110 dBm 才能通信。</p>
+          <p>题目先问 300 m 处平均能收到多少、断线概率多大，再反过来问：要让断线概率不超过 1%，手机最远能离多远。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>100 mW</td><td>发射功率，先换成 20 dBm</td></tr><tr><td>\(K_{dB}=-31.5\) dB，\(d_0=1\) m</td><td>模型常数和参考距离</td></tr><tr><td>γ = 3.6</td><td>路径损耗指数：距离每大 10 倍，多损耗 36 dB</td></tr><tr><td>−110 dBm</td><td>门限：低于它就中断</td></tr><tr><td>σ = 6 dB</td><td>阴影的标准差</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 写出模型的 dB 形式，代 d = 300 m 求平均接收功率。</li>
+            <li><b>(b)</b> 平均功率比门限高多少（余量），再求阴影把功率压低超过余量的概率：Q(余量/σ)。</li>
+            <li><b>(c)</b> 反过来：中断 ≤ 1% 需要多大的余量，平均功率至少多大，对应的距离最远多少。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>100 mW 要先换成 dBm，老师说没换会扣分。</li>
+            <li>(c) 是 Q 函数反查：Q(x) = 0.01 → x = 2.326。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>路径损耗决定平均功率，阴影决定围绕平均值的起伏；中断概率只取决于"余量是几个标准差"。覆盖距离就是由这个关系反推出来的。</p>
+          <div class="ans">一句话：用路径损耗模型算 300 m 处的平均功率和中断概率，再反推中断 ≤ 1% 时的最大覆盖距离。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p8q2 -->
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol sol-zh">
+      <p class="idea"><b>思路：</b>先把 mW 换成 dBm，用 dB 形式算平均接收功率；平均功率比门限高出的部分就是余量，中断概率 = Q(余量/σ)；(c) 反过来：由 1% 反查 Q 得到需要的余量，再解出距离。</p>
+      <ol class="steps">
+        <li>先换单位：\(P_t=10\log_{10}100=20\) dBm（没换成 dBm 会扣分）。</li>
+        <li>(a) dB 形式：\(P_{r,dB}=P_{t,dB}+K_{dB}-10\gamma\log_{10}(d/d_0)\)。<div class="calc">P_r(300 m) = 20 − 31.5 − 36 × log₁₀300 = 20 − 31.5 − 36 × 2.477 = −100.68 dBm</div></li>
+        <li>(b) 余量 = −100.68 − (−110) = 9.32 dB。<div class="calc">P_out = Q(9.32 / 6) = Q(1.55) = 0.060</div></li>
+        <li>(c) 要求 \(Q(x)\le0.01\)，反查 Q 表得 x ≥ 2.326，余量至少 2.326 × 6 = 13.96 dB，所以平均功率至少 −110 + 13.96 = −96.04 dBm。</li>
+        <li>解距离：\(20-31.5-36\log_{10}d\ge-96.04\ \Rightarrow\ 36\log_{10}d\le84.54\ \Rightarrow\ \log_{10}d\le2.348\)<div class="calc">d_max = 10^2.348 ≈ 223 m</div></li>
+      </ol>
+      <div class="ans">(a) P_r,dB = P_t,dB + K_dB − 36 log₁₀d，300 m 处 ≈ −100.7 dBm；(b) P_out ≈ 6.0%；(c) d_max ≈ 223 m</div>
+      <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
+      <div class="note">300 m 处中断 6%，远高于 1% 的常用目标。要压到 1%，要么把覆盖半径缩到约 223 m，要么把发射功率提高 13.96 − 9.32 = 4.64 dB。</div>
+      <!-- PKP:p8q2 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>简化路径损耗模型的 dB 形式（必背）、阴影中断概率 P<sub>out</sub> = Q(余量/σ)（必背）、Q 函数反查（第 2 章 p.8、p.12–16）。</dd><dt>前置知识</dt><dd>P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 10γ log₁₀(d/d₀)；mW → dBm：10 log₁₀(mW 数)；Q(2.326) = 0.01。</dd><dt>解题套路</dt><dd>① 换单位；② 代模型得平均功率；③ 余量 = 平均功率 − 门限；④ P<sub>out</sub> = Q(余量/σ)。反求距离时倒过来：中断要求 → 反查 x → 余量 = xσ → 平均功率下限 → 解 d。</dd><dt>关键一步</dt><dd>(c) 余量 13.96 dB → 平均功率 ≥ −96.04 dBm → 36 log₁₀d ≤ 84.54 → d ≤ 223 m。</dd><dt>易错</dt><dd>100 mW 没换成 20 dBm 就代（会扣分）；10γ = 36，别写成 3.6；Q 的参数是余量除以 σ，不是除以 σ²。</dd><dt>举一反三</dt><dd>给定距离求所需发射功率；或给定中断概率求允许的最大 σ（2023-24 S2 Q1(a)(ii) 就这样问）。</dd><dt>联系</dt><dd>Practice 1 第 2 题（正算、反算中断概率）；Practice 1 第 1 题 (b)。</dd></dl></div>
+      <!-- /PKP:p8q2 -->
+    </div>
+    <!-- EN:p8q2 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> Convert mW to dBm and use the dB form for the average received power. The amount by which the average exceeds the threshold is the margin, and outage = Q(margin/σ). For (c), work backwards: 1% → inverse Q → required margin → distance.</p>
+      <ol class="steps">
+        <li>Units first: \(P_t=10\log_{10}100=20\) dBm (leaving it in mW loses marks).</li>
+        <li>(a) dB form: \(P_{r,dB}=P_{t,dB}+K_{dB}-10\gamma\log_{10}(d/d_0)\).<div class="calc">P<sub>r</sub>(300 m) = 20 − 31.5 − 36 × log₁₀300 = 20 − 31.5 − 36 × 2.477 = −100.68 dBm</div></li>
+        <li>(b) Margin = −100.68 − (−110) = 9.32 dB.<div class="calc">P<sub>out</sub> = Q(9.32 / 6) = Q(1.55) = 0.060</div></li>
+        <li>(c) Need \(Q(x)\le0.01\); the Q table gives x ≥ 2.326, so the margin must be at least 2.326 × 6 = 13.96 dB and the average power at least −110 + 13.96 = −96.04 dBm.</li>
+        <li>Solve for the distance: \(20-31.5-36\log_{10}d\ge-96.04\ \Rightarrow\ 36\log_{10}d\le84.54\ \Rightarrow\ \log_{10}d\le2.348\)<div class="calc">d<sub>max</sub> = 10<sup>2.348</sup> ≈ 223 m</div></li>
+      </ol>
+      <div class="ans">(a) P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 36 log₁₀d, ≈ −100.7 dBm at 300 m; (b) P<sub>out</sub> ≈ 6.0%; (c) d<sub>max</sub> ≈ 223 m</div>
+      <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
+      <div class="note">At 300 m the outage is 6%, far above the usual 1% target. To reach 1%, either shrink the coverage radius to about 223 m or raise the transmit power by 13.96 − 9.32 = 4.64 dB.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>dB form of the simplified path loss model (memorise), shadowing outage P<sub>out</sub> = Q(margin/σ) (memorise), inverse Q lookup (Ch 2 p.8, p.12–16).</dd><dt>Background</dt><dd>P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 10γ log₁₀(d/d₀); mW → dBm: 10 log₁₀(value in mW); Q(2.326) = 0.01.</dd><dt>Method</dt><dd>① Convert units; ② average power from the model; ③ margin = average − threshold; ④ P<sub>out</sub> = Q(margin/σ). For the distance, reverse it: outage target → inverse Q → margin = xσ → minimum average power → solve for d.</dd><dt>Key step</dt><dd>(c) Margin 13.96 dB → average power ≥ −96.04 dBm → 36 log₁₀d ≤ 84.54 → d ≤ 223 m.</dd><dt>Common mistakes</dt><dd>Using 100 mW without converting to 20 dBm (loses marks); 10γ = 36, not 3.6; Q takes margin over σ, not over σ².</dd><dt>Variations</dt><dd>Required transmit power for a given distance; or the largest allowed σ for a given outage (asked in 2023-24 S2 Q1(a)(ii)).</dd><dt>Link</dt><dd>Practice 1 Q2 (outage forwards and backwards); Practice 1 Q1 (b).</dd></dl></div>
+    </div>
+    <!-- /EN:p8q2 -->
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p8q3">
+    <header><span class="pg">模拟 A · Q3</span><h3>离散时延谱、多普勒、衰落类型与 AFD<span class="qz in">Quiz</span></h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz A (self-written)</span></div>
+      <p>A mobile channel has the discrete power delay profile below. The system transmits 50 k symbols/s on a 1.8 GHz carrier, and the mobile moves at 72 km/h.</p>
+      <p class="zh" lang="zh-CN">某移动信道的离散功率时延谱如下表。系统在 1.8 GHz 载频上以 50 k 符号/秒发送，移动台速度为 72 km/h。</p>
+      <div class="tw"><table class="mini"><thead><tr><th>Delay τ (µs)<br><span class="zh-th">时延</span></th><th>Relative power (dB)<br><span class="zh-th">相对功率</span></th></tr></thead><tbody>
+        <tr><td>0</td><td>0</td></tr><tr><td>1</td><td>−3</td></tr><tr><td>3</td><td>−6</td></tr>
+      </tbody></table></div>
+      <p>(a) Find the mean delay and the rms delay spread of the channel. (3 marks)</p>
+      <p class="zh" lang="zh-CN">(a) 求该信道的平均时延和 rms 时延扩展。（3 分）</p>
+      <p>(b) Find the maximum Doppler shift and the coherence time. Hence classify the fading experienced by the signal (flat or frequency-selective, fast or slow), and justify your answer. (4 marks)</p>
+      <p class="zh" lang="zh-CN">(b) 求最大多普勒频移和相干时间，并据此判断信号经历的衰落类型（平坦还是频率选择性，快还是慢），说明理由。（4 分）</p>
+      <p>(c) For acceptable performance the received power must not fall more than 10 dB below its rms value. Assuming Rayleigh fading, find the average fade duration and the average number of symbols affected by one fade. The average fade duration is \(\bar\tau=\dfrac{e^{\rho^2}-1}{\sqrt{2\pi}f_m\rho}\). (3 marks)</p>
+      <p class="zh" lang="zh-CN">(c) 为保证性能，接收功率不能比其 rms 值低 10 dB 以上。假设为瑞利衰落，求平均衰落时长，以及一次衰落平均影响多少个符号。平均衰落时长为 \(\bar\tau=\dfrac{e^{\rho^2}-1}{\sqrt{2\pi}f_m\rho}\)。（3 分）</p>
+    </div>
+    <div class="chips"><span class="chip">平均时延 / rms 时延扩展</span><span class="chip">σ/T_s &lt; 0.1（必背）</span><span class="chip">多普勒与相干时间</span><span class="chip">AFD</span><span class="chip src">讲义第 2 章 p.30–43</span></div>
+    <!-- INTENT:p8q3 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>信号经三条路径到达：直射（0 µs）、晚 1 µs、晚 3 µs，功率依次弱一些。手机以 72 km/h 移动，载频 1.8 GHz，符号速率 50 k 符号/秒。</p>
+          <p>题目从三个角度看这个信道：回声拖多长（时延扩展）、信道变多快（多普勒），以及一次深衰落持续多久（AFD）。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>功率时延谱</td><td>每条路径的时延和相对功率（dB），算的时候换成线性值当权重</td></tr><tr><td>μ、σ</td><td>平均时延和 rms 时延扩展</td></tr><tr><td>\(f_m\)</td><td>最大多普勒频移 = v f<sub>c</sub>/c</td></tr><tr><td>\(T_C\approx1/f_m\)</td><td>相干时间：信道基本不变的时长</td></tr><tr><td>ρ</td><td>AFD 公式里的门限与 rms 值之比，是幅度比</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 按功率加权，求时延的均值和标准差。</li>
+            <li><b>(b)</b> 求 f<sub>m</sub> 和 T<sub>C</sub>，然后判断衰落类型：σ 和 T<sub>s</sub> 比决定平坦还是频率选择性；T<sub>C</sub> 和 T<sub>s</sub> 比决定快还是慢。两个维度都要答。</li>
+            <li><b>(c)</b> "功率不能比 rms 值低 10 dB 以上"给出门限，换成幅度比 ρ，代 AFD 公式，再看一次衰落覆盖几个符号。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>功率低 10 dB 对应幅度比 ρ = √0.1 ≈ 0.316，不是 0.1。</li>
+            <li>问衰落类型只答一个维度只给一半分（老师说过）。</li>
+            <li>72 km/h 要换成 20 m/s。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>时延扩展决定频率维度（平坦/选择性），多普勒决定时间维度（快/慢），两者独立；AFD 告诉你一次深衰落会吞掉多少个符号。</p>
+          <div class="ans">一句话：三径信道：(a) 求时延均值和 rms 扩展，(b) 求多普勒和相干时间并判断衰落类型，(c) 求门限低 10 dB 时的平均衰落时长和受影响的符号数。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p8q3 -->
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol sol-zh">
+      <p class="idea"><b>思路：</b>(a) 把各条径的功率（线性值）当权重，求时延的加权均值和标准差；(b) 两个维度分开判断：σ 对比 T<sub>s</sub> 定平坦 / 选择性，T<sub>C</sub> 对比 T<sub>s</sub> 定快 / 慢；(c) 先由"功率低 10 dB"求出幅度比 ρ，再代 AFD 公式。</p>
+      <ol class="steps">
+        <li>(a) 先换线性：0、−3、−6 dB → 1、0.501、0.251，总和 1.752。<div class="calc">μ = (0 × 1 + 1 × 0.501 + 3 × 0.251) / 1.752 = 1.255 / 1.752 = 0.716 µs</div></li>
+        <li><div class="calc">E[τ²] = (0 + 1 × 0.501 + 9 × 0.251) / 1.752 = 2.762 / 1.752 = 1.576 µs²　　σ = √(1.576 − 0.716²) = √1.063 = 1.03 µs</div></li>
+        <li>(b) 平坦 / 选择性：\(T_s=1/50\text{k}=20\) µs，\(\sigma/T_s=1.03/20=0.052\lt0.1\) → <b>平坦衰落</b>。</li>
+        <li>快 / 慢：v = 72 km/h = 20 m/s，\(f_m=vf_c/c=20\times1.8\times10^9/3\times10^8=120\) Hz，\(T_C\approx1/f_m=8.33\) ms ≫ \(T_s\) = 20 µs → <b>慢衰落</b>。结论：平坦慢衰落。</li>
+        <li>(c) 功率低 10 dB，幅度比 \(\rho=\sqrt{0.1}=0.316\)（ρ 是幅度比，不是功率比）。<div class="calc">AFD = (e^0.1 − 1) / (√(2π) × 120 × 0.316) = 0.1052 / 95.1 = 1.11 ms</div></li>
+        <li>每次衰落影响的符号数 ≈ 1.11 ms / 20 µs ≈ 55 个。</li>
+      </ol>
+      <div class="ans">(a) μ ≈ 0.72 µs，σ ≈ 1.03 µs；(b) f_m = 120 Hz，T_C ≈ 8.3 ms，平坦慢衰落；(c) AFD ≈ 1.1 ms，每次约 55 个符号</div>
+      <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
+      <div class="note">如果把 ρ 当成 0.1，AFD 只有 0.33 ms，差了 3 倍多。顺便可以算 LCR = √(2π) × 120 × 0.316 × e<sup>−0.1</sup> ≈ 86 次/秒；AFD × LCR = 1 − e<sup>−0.1</sup> ≈ 0.095，约 9.5% 的时间低于门限。</div>
+      <!-- PKP:p8q3 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>离散功率时延谱的 μ、σ（第 2 章 p.30）；按平坦/选择性和快/慢两个维度判断衰落类型（p.33–36）；平均衰落时长（p.42–43）。</dd><dt>前置知识</dt><dd>功率加权：μ = ΣP<sub>i</sub>τ<sub>i</sub>/ΣP<sub>i</sub>，σ = √(E[τ²] − μ²)；σ/T<sub>s</sub> &lt; 0.1 → 平坦（必背）；f<sub>m</sub> = v f<sub>c</sub>/c，T<sub>C</sub> ≈ 1/f<sub>m</sub>；ρ = 门限幅度 / rms 幅度。</dd><dt>解题套路</dt><dd>(a) dB → 线性 → 列表求加权均值和二阶矩；(b) T<sub>s</sub> 分别和 σ、T<sub>C</sub> 比；(c) 功率比开根号得 ρ → 代 AFD → 除以 T<sub>s</sub> 得符号数。</dd><dt>易错</dt><dd>拿 dB 值当权重；"功率低 10 dB"对应 ρ = √0.1，不是 0.1；问衰落类型只答一个维度只给一半分（老师说过），平坦/选择性和快/慢都要答；km/h 要换成 m/s。</dd><dt>检验</dt><dd>AFD × LCR = 1 − e<sup>−ρ²</sup> = 0.095：信号约 9.5% 的时间低于门限。</dd><dt>举一反三</dt><dd>符号速率提高到 200 k 符号/秒：T<sub>s</sub> = 5 µs，σ/T<sub>s</sub> = 0.21，就不能再说是平坦衰落了。</dd><dt>联系</dt><dd>Practice 1 第 3 题（连续时延谱）；Practice 2 第 1 题（AFD）；2025-26 S2 Q1(a)(i)(ii)。</dd></dl></div>
+      <!-- /PKP:p8q3 -->
+    </div>
+    <!-- EN:p8q3 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> (a) Use the linear power of each path as a weight and find the weighted mean and standard deviation of the delay. (b) Judge two dimensions separately: σ against T<sub>s</sub> for flat / frequency-selective, T<sub>C</sub> against T<sub>s</sub> for fast / slow. (c) Get the amplitude ratio ρ from "10 dB below" first, then use the AFD formula.</p>
+      <ol class="steps">
+        <li>(a) Linear powers: 0, −3, −6 dB → 1, 0.501, 0.251; sum 1.752.<div class="calc">μ = (0 × 1 + 1 × 0.501 + 3 × 0.251) / 1.752 = 1.255 / 1.752 = 0.716 µs</div></li>
+        <li><div class="calc">E[τ²] = (0 + 1 × 0.501 + 9 × 0.251) / 1.752 = 2.762 / 1.752 = 1.576 µs²　　σ = √(1.576 − 0.716²) = √1.063 = 1.03 µs</div></li>
+        <li>(b) Flat or selective: \(T_s=1/50\text{k}=20\) µs and \(\sigma/T_s=1.03/20=0.052\lt0.1\) → <b>flat fading</b>.</li>
+        <li>Fast or slow: v = 72 km/h = 20 m/s, \(f_m=vf_c/c=20\times1.8\times10^9/3\times10^8=120\) Hz, \(T_C\approx1/f_m=8.33\) ms ≫ \(T_s\) = 20 µs → <b>slow fading</b>. Conclusion: flat, slow fading.</li>
+        <li>(c) Power 10 dB down means an amplitude ratio \(\rho=\sqrt{0.1}=0.316\) (ρ is an amplitude ratio, not a power ratio).<div class="calc">AFD = (e<sup>0.1</sup> − 1) / (√(2π) × 120 × 0.316) = 0.1052 / 95.1 = 1.11 ms</div></li>
+        <li>Symbols affected per fade ≈ 1.11 ms / 20 µs ≈ 55.</li>
+      </ol>
+      <div class="ans">(a) μ ≈ 0.72 µs, σ ≈ 1.03 µs; (b) f<sub>m</sub> = 120 Hz, T<sub>C</sub> ≈ 8.3 ms, flat slow fading; (c) AFD ≈ 1.1 ms, about 55 symbols per fade</div>
+      <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
+      <div class="note">Taking ρ = 0.1 by mistake gives AFD = 0.33 ms, more than 3 times too small. Also LCR = √(2π) × 120 × 0.316 × e<sup>−0.1</sup> ≈ 86 per second, and AFD × LCR = 1 − e<sup>−0.1</sup> ≈ 0.095: the signal is below the threshold about 9.5% of the time.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>μ and σ of a discrete power delay profile (Ch 2 p.30); fading type in two dimensions, flat/selective and fast/slow (p.33–36); average fade duration (p.42–43).</dd><dt>Background</dt><dd>Power-weighted: μ = ΣP<sub>i</sub>τ<sub>i</sub>/ΣP<sub>i</sub>, σ = √(E[τ²] − μ²); σ/T<sub>s</sub> &lt; 0.1 → flat (memorise); f<sub>m</sub> = v f<sub>c</sub>/c, T<sub>C</sub> ≈ 1/f<sub>m</sub>; ρ = threshold amplitude / rms amplitude.</dd><dt>Method</dt><dd>(a) dB → linear → weighted mean and second moment from a table; (b) compare T<sub>s</sub> with σ and with T<sub>C</sub>; (c) square root of the power ratio gives ρ → AFD → divide by T<sub>s</sub> for the symbol count.</dd><dt>Common mistakes</dt><dd>Using dB values as weights; "10 dB down in power" means ρ = √0.1, not 0.1; answering only one dimension of the fading type gets half marks (the lecturer said so), give both flat/selective and fast/slow; convert km/h to m/s.</dd><dt>Check</dt><dd>AFD × LCR = 1 − e<sup>−ρ²</sup> = 0.095: the signal is below the threshold about 9.5% of the time.</dd><dt>Variations</dt><dd>At 200 k symbols/s, T<sub>s</sub> = 5 µs and σ/T<sub>s</sub> = 0.21, so the fading can no longer be called flat.</dd><dt>Link</dt><dd>Practice 1 Q3 (continuous delay profile); Practice 2 Q1 (AFD); 2025-26 S2 Q1(a)(i)(ii).</dd></dl></div>
+    </div>
+    <!-- /EN:p8q3 -->
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p8q4">
+    <header><span class="pg">模拟 B · Q1</span><h3>瑞利衰落：中断概率与衰落余量<span class="qz in">Quiz</span></h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz B (self-written)</span></div>
+      <p>A link operates over a Rayleigh fading channel with an average received SNR of 20 dB. The receiver needs an instantaneous SNR of at least 7 dB.</p>
+      <p class="zh" lang="zh-CN">某链路工作在瑞利衰落信道上，平均接收 SNR 为 20 dB。接收机要求瞬时 SNR 至少为 7 dB。</p>
+      <p>(a) State the probability density function of the instantaneous SNR γ and find the outage probability. (4 marks)</p>
+      <p class="zh" lang="zh-CN">(a) 写出瞬时 SNR γ 的概率密度函数，并求中断概率。（4 分）</p>
+      <p>(b) What average SNR is needed to reduce the outage probability to 1%? Hence find the fade margin relative to the 7 dB requirement. (4 marks)</p>
+      <p class="zh" lang="zh-CN">(b) 要把中断概率降到 1%，平均 SNR 需要多大？据此求相对 7 dB 要求的衰落余量。（4 分）</p>
+      <p>(c) What is the probability that the instantaneous SNR is above its average value? (2 marks)</p>
+      <p class="zh" lang="zh-CN">(c) 瞬时 SNR 高于其平均值的概率是多少？（2 分）</p>
+    </div>
+    <div class="chips"><span class="chip">SNR 指数分布（必背）</span><span class="chip">瑞利中断 1 − e^(−γ₀/γ̄)（必背）</span><span class="chip">衰落余量</span><span class="chip src">讲义第 2 章 p.25–26、p.51</span></div>
+    <!-- INTENT:p8q4 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>链路处在瑞利衰落信道里，平均 SNR 是 20 dB，但瞬时 SNR 在不停起伏，有时会掉到 7 dB 以下，这时就中断。</p>
+          <p>题目问：中断有多频繁；要把中断压到 1%，平均 SNR 要提高到多少；以及瞬时 SNR 高于平均值的机会有多大。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>γ̄ = 20 dB</td><td>平均 SNR，线性值 100</td></tr><tr><td>γ₀ = 7 dB</td><td>接收机要求的最低瞬时 SNR，线性值 5.01</td></tr><tr><td>p(γ)</td><td>瞬时 SNR 的概率密度：瑞利衰落下是指数分布（要背）</td></tr><tr><td>衰落余量（fade margin）</td><td>为了对付衰落，平均 SNR 要比门限多留出的 dB 数</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 写出 SNR 的指数分布，中断概率就是 γ 小于 γ₀ 的概率。</li>
+            <li><b>(b)</b> 反过来：要求中断 = 1%，解出平均 SNR，再和 7 dB 相减得到衰落余量。</li>
+            <li><b>(c)</b> 瞬时 SNR 大于平均值的概率：用指数分布的尾巴直接算。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>要背的是 SNR 的指数分布，不是包络的瑞利分布。</li>
+            <li>代进指数前先把 dB 换成线性值。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>瑞利衰落下 SNR 大部分时间低于平均值，所以要留很大的衰落余量：中断 1% 约需 20 dB。</p>
+          <div class="ans">一句话：瑞利衰落：求 SNR 低于 7 dB 的概率，反推中断 1% 所需的平均 SNR 和衰落余量，再求 SNR 高于平均值的概率。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p8q4 -->
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol sol-zh">
+      <p class="idea"><b>思路：</b>瑞利衰落下瞬时 SNR 服从指数分布，中断概率就是它的 CDF；(b) 反过来解平均 SNR；(c) 直接用指数分布的尾巴。</p>
+      <ol class="steps">
+        <li>(a) 瑞利衰落时 SNR 服从指数分布：\(p(\gamma)=\dfrac{1}{\bar\gamma}e^{-\gamma/\bar\gamma},\ \gamma\ge0\)；中断 \(P_{out}=P(\gamma\lt\gamma_0)=1-e^{-\gamma_0/\bar\gamma}\)。</li>
+        <li>换线性：\(\bar\gamma\) = 20 dB = 100，\(\gamma_0\) = 7 dB = 5.01。<div class="calc">P_out = 1 − e^(−5.01/100) = 1 − e^(−0.0501) = 0.0489</div></li>
+        <li>(b) \(1-e^{-\gamma_0/\bar\gamma}=0.01\ \Rightarrow\ \gamma_0/\bar\gamma=\ln\frac{1}{0.99}=0.01005\ \Rightarrow\ \bar\gamma=5.01/0.01005=498.7\)，即 27.0 dB。</li>
+        <li>衰落余量 FM = 27.0 − 7 = 20.0 dB，和公式 \(10\log_{10}\frac{1}{\ln(1/(1-\varepsilon))}\approx10\log_{10}\frac1\varepsilon=20\) dB 一致。</li>
+        <li>(c) \(P(\gamma\gt\bar\gamma)=e^{-\bar\gamma/\bar\gamma}=e^{-1}=0.368\)。</li>
+      </ol>
+      <div class="ans">(a) p(γ) = (1/γ̄)e^(−γ/γ̄)，P_out ≈ 4.9%；(b) γ̄ ≈ 27 dB，衰落余量 ≈ 20 dB；(c) e⁻¹ ≈ 0.368</div>
+      <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
+      <div class="note">(c) 说明瑞利衰落下，瞬时 SNR 高于平均值的时间只有约 37%，大部分时间都低于平均值，所以要留衰落余量。没有衰落的 AWGN 信道里 SNR 一直等于平均值，平均 7 dB 就够；瑞利信道要多留 20 dB。</div>
+      <!-- PKP:p8q4 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>瑞利衰落下 SNR 的指数分布（必背）、瑞利中断概率（必背）、衰落余量（尽量记）（第 2 章 p.25–26、p.51）。</dd><dt>前置知识</dt><dd>p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup>；P(γ &lt; γ₀) = 1 − e<sup>−γ₀/γ̄</sup>；P(γ &gt; x) = e<sup>−x/γ̄</sup>；ln(1/(1 − ε)) ≈ ε。</dd><dt>解题套路</dt><dd>dB 全部换成线性 → 代 1 − e<sup>−γ₀/γ̄</sup>；反求 γ̄ = γ₀ / ln(1/(1 − ε))；衰落余量 = γ̄<sub>dB</sub> − γ₀,<sub>dB</sub>。</dd><dt>关键一步</dt><dd>ε = 1% 时 ln(1/0.99) = 0.01005，所以 γ̄ ≈ 100γ₀，衰落余量 ≈ 20 dB。</dd><dt>易错</dt><dd>把 dB 值直接代进指数；要背的是 SNR 的指数分布，不是包络的瑞利 PDF；衰落余量是两个 dB 值相减。</dd><dt>速记</dt><dd>ε = 1% → 20 dB，0.5% → 23 dB，0.1% → 30 dB：中断要求每严 10 倍，余量多 10 dB。</dd><dt>联系</dt><dd>讲解页 2.3、2.7 节；2025-26 S2 Q1(a)(iii)（瑞利信道的中断容量与衰落余量）。</dd></dl></div>
+      <!-- /PKP:p8q4 -->
+    </div>
+    <!-- EN:p8q4 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> In Rayleigh fading the instantaneous SNR is exponentially distributed and the outage probability is its CDF; (b) solves it backwards for the average SNR; (c) uses the exponential tail directly.</p>
+      <ol class="steps">
+        <li>(a) In Rayleigh fading the SNR is exponential: \(p(\gamma)=\dfrac{1}{\bar\gamma}e^{-\gamma/\bar\gamma},\ \gamma\ge0\); outage \(P_{out}=P(\gamma\lt\gamma_0)=1-e^{-\gamma_0/\bar\gamma}\).</li>
+        <li>Linear values: \(\bar\gamma\) = 20 dB = 100, \(\gamma_0\) = 7 dB = 5.01.<div class="calc">P<sub>out</sub> = 1 − e<sup>−5.01/100</sup> = 1 − e<sup>−0.0501</sup> = 0.0489</div></li>
+        <li>(b) \(1-e^{-\gamma_0/\bar\gamma}=0.01\ \Rightarrow\ \gamma_0/\bar\gamma=\ln\frac{1}{0.99}=0.01005\ \Rightarrow\ \bar\gamma=5.01/0.01005=498.7\), i.e. 27.0 dB.</li>
+        <li>Fade margin FM = 27.0 − 7 = 20.0 dB, matching \(10\log_{10}\frac{1}{\ln(1/(1-\varepsilon))}\approx10\log_{10}\frac1\varepsilon=20\) dB.</li>
+        <li>(c) \(P(\gamma\gt\bar\gamma)=e^{-\bar\gamma/\bar\gamma}=e^{-1}=0.368\).</li>
+      </ol>
+      <div class="ans">(a) p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup>, P<sub>out</sub> ≈ 4.9%; (b) γ̄ ≈ 27 dB, fade margin ≈ 20 dB; (c) e⁻¹ ≈ 0.368</div>
+      <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
+      <div class="note">Part (c) shows that in Rayleigh fading the instantaneous SNR is above its average only about 37% of the time; most of the time it is below, which is why a fade margin is needed. In an AWGN channel without fading the SNR always equals its average, so an average of 7 dB would be enough; Rayleigh fading needs 20 dB more.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Exponential SNR distribution in Rayleigh fading (memorise), Rayleigh outage (memorise), fade margin (try to remember) (Ch 2 p.25–26, p.51).</dd><dt>Background</dt><dd>p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup>; P(γ &lt; γ₀) = 1 − e<sup>−γ₀/γ̄</sup>; P(γ &gt; x) = e<sup>−x/γ̄</sup>; ln(1/(1 − ε)) ≈ ε.</dd><dt>Method</dt><dd>Convert every dB value to linear → 1 − e<sup>−γ₀/γ̄</sup>; backwards γ̄ = γ₀ / ln(1/(1 − ε)); fade margin = γ̄<sub>dB</sub> − γ<sub>0,dB</sub>.</dd><dt>Key step</dt><dd>For ε = 1%, ln(1/0.99) = 0.01005, so γ̄ ≈ 100γ₀ and the fade margin ≈ 20 dB.</dd><dt>Common mistakes</dt><dd>Putting dB values into the exponent; the formula to memorise is the exponential SNR distribution, not the Rayleigh envelope PDF; the fade margin is a difference of two dB values.</dd><dt>Quick rule</dt><dd>ε = 1% → 20 dB, 0.5% → 23 dB, 0.1% → 30 dB: each 10 times stricter outage needs 10 dB more margin.</dd><dt>Link</dt><dd>Learning page sections 2.3 and 2.7; 2025-26 S2 Q1(a)(iii) (outage capacity and fade margin of a Rayleigh channel).</dd></dl></div>
+    </div>
+    <!-- /EN:p8q4 -->
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p8q5">
+    <header><span class="pg">模拟 B · Q2</span><h3>四个测量点拟合路径损耗模型，再求中断概率<span class="qz in">Quiz</span></h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz B (self-written)</span></div>
+      <p>The path gain measurements below were taken at four distances from a transmitter. The reference distance is \(d_0=1\) m.</p>
+      <p class="zh" lang="zh-CN">在离发射机四个不同距离处测得以下路径增益，参考距离 \(d_0=1\) m。</p>
+      <div class="tw"><table class="mini"><thead><tr><th>Distance d (m)<br><span class="zh-th">距离</span></th><th>\((P_r/P_t)_{dB}\)</th></tr></thead><tbody>
+        <tr><td>10</td><td>−68</td></tr><tr><td>20</td><td>−86</td></tr><tr><td>50</td><td>−91</td></tr><tr><td>100</td><td>−105</td></tr>
+      </tbody></table></div>
+      <p>(a) Using the simplified path loss model, find the values of \(K_{dB}\) and γ that best fit the data in the least-squares sense. (5 marks)</p>
+      <p class="zh" lang="zh-CN">(a) 使用简化路径损耗模型，按最小二乘求最能拟合数据的 \(K_{dB}\) 和 γ。（5 分）</p>
+      <p>(b) Estimate the variance of the shadowing from your fit. (3 marks)</p>
+      <p class="zh" lang="zh-CN">(b) 由拟合结果估计阴影的方差。（3 分）</p>
+      <p>(c) If the received power due to path loss alone is 8 dB above the minimum power required for non-outage, find the outage probability. (2 marks)</p>
+      <p class="zh" lang="zh-CN">(c) 若仅由路径损耗决定的接收功率比不中断所需的最小功率高 8 dB，求中断概率。（2 分）</p>
+    </div>
+    <div class="chips"><span class="chip">最小二乘拟合</span><span class="chip">阴影方差 = MSE</span><span class="chip">P_out = Q(余量/σ)</span><span class="chip src">讲义第 2 章 p.8–16</span></div>
+    <!-- INTENT:p8q5 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>在离发射机 10、20、50、100 m 四个地方各测了一次路径增益。和 Practice 1 第 1 题一样：用这几个点拟合简化路径损耗模型，再用拟合的误差估计阴影，最后算中断概率。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\((P_r/P_t)_{dB}\)</td><td>实测的路径增益（dB）</td></tr><tr><td>\(K_{dB}\)、γ</td><td>要拟合的两个参数：直线的截距和斜率（斜率是 −γ）</td></tr><tr><td>阴影方差</td><td>测量点偏离拟合直线的均方值（MSE）</td></tr><tr><td>8 dB</td><td>余量：平均功率比门限高 8 dB</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 以 x = 10 log₁₀d 为横坐标，用最小二乘求最贴合 4 个点的直线，读出 K<sub>dB</sub> 和 γ。</li>
+            <li><b>(b)</b> 逐点算"实测 − 预测"的残差，残差平方的平均就是阴影方差。</li>
+            <li><b>(c)</b> 余量 8 dB，中断概率 = Q(8/σ)。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>横坐标是 10 log₁₀d，不是 log₁₀d。</li>
+            <li>(b) 求的是方差，(c) 代进 Q 时要用开根号后的 σ。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>实测数据 = 平均趋势（路径损耗直线）+ 随机散布（阴影）；散布的大小直接决定中断概率。</p>
+          <div class="ans">一句话：4 个测量点拟合路径损耗直线得 K、γ，残差的均方值当阴影方差，再求余量 8 dB 时的中断概率。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p8q5 -->
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol sol-zh">
+      <p class="idea"><b>思路：</b>和 Practice 1 第 1 题同一套路：dB 形式是直线 \(M=K_{dB}-\gamma x\)，\(x=10\log_{10}d\)；最小二乘求斜率和截距，残差的均方值就是阴影方差，再算 Q(余量/σ)。</p>
+      <ol class="steps">
+        <li>\(x_i=10\log_{10}d_i\) = 10、13.01、16.99、20，\(\bar x=15.00\)；\(\bar M=-87.5\)。</li>
+        <li>\(x_i-\bar x\) = −5、−1.99、1.99、5；\(M_i-\bar M\) = 19.5、1.5、−3.5、−17.5。<div class="calc">Σ(x − x̄)(M − M̄) = −194.95　　Σ(x − x̄)² = 57.92</div></li>
+        <li>(a) 斜率 = −194.95 / 57.92 = −3.37，所以 γ = 3.37；\(K_{dB}=\bar M+\gamma\bar x=-87.5+3.366\times15=-37.0\) dB。</li>
+        <li>(b) 预测值 \(\hat M_i=K_{dB}-\gamma x_i\) = −70.67、−80.80、−94.20、−104.33；残差 \(e_i=M_i-\hat M_i\) = +2.67、−5.20、+3.20、−0.67（加起来为 0）。<div class="calc">σ²_ψ = (2.67² + 5.20² + 3.20² + 0.67²) / 4 = 44.81 / 4 = 11.2 dB²　　σ_ψ = 3.35 dB</div></li>
+        <li>(c) \(P_{out}=Q(8/3.35)=Q(2.39)=8.4\times10^{-3}\)。</li>
+      </ol>
+      <div class="ans">(a) γ ≈ 3.37，K_dB ≈ −37.0 dB；(b) σ²_ψ ≈ 11.2 dB²（σ ≈ 3.35 dB）；(c) P_out ≈ 0.84%</div>
+      <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
+      <div class="note">点数比 Practice 1 第 1 题少，30 分钟的 Quiz 更可能出这种规模。横坐标一定用 10 log₁₀d；直线斜率是 −γ，别丢负号；MSE 是方差，代进 Q 之前要开根号。</div>
+      <!-- PKP:p8q5 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>最小二乘拟合简化路径损耗模型、阴影方差 = MSE、阴影中断概率（第 2 章 p.8–16）。</dd><dt>前置知识</dt><dd>dB 形式是直线 M = K<sub>dB</sub> − γx，x = 10 log₁₀d；斜率 = Σ(x − x̄)(M − M̄)/Σ(x − x̄)²；拟合直线经过 (x̄, M̄)。</dd><dt>解题套路</dt><dd>列表：x、x − x̄、M − M̄、乘积、平方 → 斜率 → γ = −斜率 → K<sub>dB</sub> = M̄ + γx̄ → 逐点残差 → MSE → Q(余量/σ)。</dd><dt>关键公式</dt><dd>γ = −Σ(x − x̄)(M − M̄)/Σ(x − x̄)²；K<sub>dB</sub> = M̄ + γx̄；σ²<sub>ψ</sub> = (1/n)Σe<sub>i</sub>²。</dd><dt>易错</dt><dd>x 只用 log₁₀d 会让 γ 大 10 倍；斜率是 −γ；MSE 除以 n（讲义的定义）；代进 Q 前要开根号。</dd><dt>检验</dt><dd>残差之和为 0（2.67 − 5.20 + 3.20 − 0.67 = 0）。</dd><dt>联系</dt><dd>Practice 1 第 1 题（6 个点的同一套路）。</dd></dl></div>
+      <!-- /PKP:p8q5 -->
+    </div>
+    <!-- EN:p8q5 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> Same method as Practice 1 Q1: in dB the model is a straight line \(M=K_{dB}-\gamma x\) with \(x=10\log_{10}d\). Least squares gives the slope and intercept, the mean squared residual is the shadowing variance, then Q(margin/σ).</p>
+      <ol class="steps">
+        <li>\(x_i=10\log_{10}d_i\) = 10, 13.01, 16.99, 20; \(\bar x=15.00\); \(\bar M=-87.5\).</li>
+        <li>\(x_i-\bar x\) = −5, −1.99, 1.99, 5; \(M_i-\bar M\) = 19.5, 1.5, −3.5, −17.5.<div class="calc">Σ(x − x̄)(M − M̄) = −194.95　　Σ(x − x̄)² = 57.92</div></li>
+        <li>(a) Slope = −194.95 / 57.92 = −3.37, so γ = 3.37; \(K_{dB}=\bar M+\gamma\bar x=-87.5+3.366\times15=-37.0\) dB.</li>
+        <li>(b) Predictions \(\hat M_i=K_{dB}-\gamma x_i\) = −70.67, −80.80, −94.20, −104.33; residuals \(e_i=M_i-\hat M_i\) = +2.67, −5.20, +3.20, −0.67 (they sum to 0).<div class="calc">σ²<sub>ψ</sub> = (2.67² + 5.20² + 3.20² + 0.67²) / 4 = 44.81 / 4 = 11.2 dB²　　σ<sub>ψ</sub> = 3.35 dB</div></li>
+        <li>(c) \(P_{out}=Q(8/3.35)=Q(2.39)=8.4\times10^{-3}\).</li>
+      </ol>
+      <div class="ans">(a) γ ≈ 3.37, K<sub>dB</sub> ≈ −37.0 dB; (b) σ²<sub>ψ</sub> ≈ 11.2 dB² (σ ≈ 3.35 dB); (c) P<sub>out</sub> ≈ 0.84%</div>
+      <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
+      <div class="note">Fewer points than Practice 1 Q1, which is a more likely size for a 30-minute quiz. Always use 10 log₁₀d on the x axis; the slope is −γ, keep the sign; the MSE is a variance, take the square root before using Q.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Least-squares fit of the simplified path loss model, shadowing variance = MSE, shadowing outage (Ch 2 p.8–16).</dd><dt>Background</dt><dd>In dB the model is the line M = K<sub>dB</sub> − γx with x = 10 log₁₀d; slope = Σ(x − x̄)(M − M̄)/Σ(x − x̄)²; the fitted line passes through (x̄, M̄).</dd><dt>Method</dt><dd>Table of x, x − x̄, M − M̄, products and squares → slope → γ = −slope → K<sub>dB</sub> = M̄ + γx̄ → residuals → MSE → Q(margin/σ).</dd><dt>Key formulas</dt><dd>γ = −Σ(x − x̄)(M − M̄)/Σ(x − x̄)²; K<sub>dB</sub> = M̄ + γx̄; σ²<sub>ψ</sub> = (1/n)Σe<sub>i</sub>².</dd><dt>Common mistakes</dt><dd>Using log₁₀d instead of 10 log₁₀d makes γ 10 times too large; the slope is −γ; the MSE divides by n (the slides' definition); take the square root before Q.</dd><dt>Check</dt><dd>The residuals sum to 0 (2.67 − 5.20 + 3.20 − 0.67 = 0).</dd><dt>Link</dt><dd>Practice 1 Q1 (the same method with 6 points).</dd></dl></div>
+    </div>
+    <!-- /EN:p8q5 -->
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p8q6">
+    <header><span class="pg">模拟 B · Q3</span><h3>香农容量、带宽翻倍与注水<span class="qz in">Quiz</span></h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz B (self-written)</span></div>
+      <p>A receiver gets a signal power of −90 dBm over a bandwidth of 5 MHz. The noise power spectral density is −174 dBm/Hz.</p>
+      <p class="zh" lang="zh-CN">接收机在 5 MHz 带宽内收到 −90 dBm 的信号功率，噪声功率谱密度为 −174 dBm/Hz。</p>
+      <p>(a) Find the received SNR and the Shannon capacity of this AWGN channel. (3 marks)</p>
+      <p class="zh" lang="zh-CN">(a) 求接收 SNR 和该 AWGN 信道的香农容量。（3 分）</p>
+      <p>(b) The bandwidth is doubled to 10 MHz while the received signal power stays the same. Find the new capacity. Does the capacity double? Explain. (3 marks)</p>
+      <p class="zh" lang="zh-CN">(b) 带宽加倍到 10 MHz，接收信号功率不变。求新的容量。容量会翻倍吗？说明理由。（3 分）</p>
+      <p>(c) Two parallel subchannels, each 1 MHz wide, have SNRs of 20 and 0.5 when the whole transmit power P is given to one of them. Using water-filling, find the power allocation and the total capacity. (4 marks)</p>
+      <p class="zh" lang="zh-CN">(c) 两条并行子信道，各宽 1 MHz，把全部发射功率 P 给其中一条时，SNR 分别为 20 和 0.5。用注水法求功率分配和总容量。（4 分）</p>
+    </div>
+    <div class="chips"><span class="chip">香农容量（必背）</span><span class="chip">噪声功率 N₀B</span><span class="chip">注水法</span><span class="chip src">讲义第 2 章 p.48、p.54–57</span></div>
+    <!-- INTENT:p8q6 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>一条 AWGN 信道：已知接收信号功率、带宽和噪声功率谱密度，先求信噪比和香农容量。</p>
+          <p>然后看两种"加资源"的方式：把带宽加倍（功率不变），容量会不会翻倍；以及有两条好坏差很多的子信道时，注水法怎么分功率。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>−90 dBm</td><td>接收信号功率</td></tr><tr><td>−174 dBm/Hz</td><td>噪声功率谱密度 N₀：每赫兹的噪声功率</td></tr><tr><td>N = N₀B</td><td>总噪声功率，在 dB 里是 −174 + 10 log₁₀B</td></tr><tr><td>SNR 20 和 0.5</td><td>(c) 中两条子信道"全部功率都给它时"的 SNR</td></tr><tr><td>γ₀</td><td>注水的截止值：SNR 低于它的子信道不分功率</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 先算噪声功率，再算 SNR（换成线性值），代香农公式。</li>
+            <li><b>(b)</b> 带宽加倍后噪声也加倍，重新算 SNR 和容量，判断是不是翻倍并解释。</li>
+            <li><b>(c)</b> 用注水法：先假设两条都分功率解出 γ₀，检查每条 SNR 是否高于 γ₀，不够的去掉重算，最后求容量。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>香农公式里 SNR 用线性值。</li>
+            <li>带宽变了，噪声功率也跟着变。</li>
+            <li>注水一定要检查 γ<sub>j</sub> ≥ γ₀，否则会算出负功率。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>容量由带宽和 SNR 共同决定，加带宽会同时加噪声；注水法把功率给好信道，太差的子信道直接放弃。</p>
+          <div class="ans">一句话：求 AWGN 信道的 SNR 和香农容量，看带宽加倍后容量是否翻倍，再用注水法给两条子信道分功率。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p8q6 -->
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol sol-zh">
+      <p class="idea"><b>思路：</b>噪声功率 = N₀ × B，在 dB 里就是相加；SNR 换成线性值代香农公式；(c) 注水先假设所有子信道都分功率，检查有没有子信道的 SNR 低于截止值 γ₀，有就去掉重算。</p>
+      <ol class="steps">
+        <li>(a) 噪声功率：\(N=-174+10\log_{10}(5\times10^6)=-174+66.99=-107.01\) dBm。</li>
+        <li>SNR = −90 − (−107.01) = 17.01 dB = 50.2。<div class="calc">C = 5×10⁶ × log₂(1 + 50.2) = 5×10⁶ × 5.68 = 28.4 Mbps</div></li>
+        <li>(b) 带宽加倍，噪声功率也加倍（多 3 dB）：N = −104.0 dBm，SNR = 14.0 dB = 25.1。<div class="calc">C = 10×10⁶ × log₂(1 + 25.1) = 10×10⁶ × 4.71 = 47.1 Mbps</div></li>
+        <li>只增加到约 1.66 倍，没有翻倍：带宽加倍的同时 SNR 减半，log 里的部分变小了。</li>
+        <li>(c) 先假设两条都分功率：\(\dfrac{2}{\gamma_0}=1+\dfrac1{20}+\dfrac1{0.5}=3.05\ \Rightarrow\ \gamma_0=0.656\)。第 2 条的 SNR 0.5 &lt; 0.656，不该分功率，去掉重算。</li>
+        <li>只剩第 1 条：\(\dfrac1{\gamma_0}=1+\dfrac1{20}=1.05\)，\(\gamma_0=0.952\)；\(P_1/P=1/\gamma_0-1/20=1\)，全部功率给第 1 条。<div class="calc">C = 1 MHz × log₂(20 / 0.952) = 1 MHz × log₂21 = 4.39 Mbps</div></li>
+      </ol>
+      <div class="ans">(a) SNR ≈ 17 dB（50.2），C ≈ 28.4 Mbps；(b) C ≈ 47.1 Mbps，约 1.66 倍，不翻倍；(c) 第 2 条不分功率，P₁ = P，C ≈ 4.39 Mbps</div>
+      <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
+      <div class="note">对比：两条平分功率（各 P/2，SNR 分别为 10 和 0.25）时，C = log₂11 + log₂1.25 = 3.78 Mbps，比注水少 0.61 Mbps。把功率给太差的子信道，几乎换不来容量。</div>
+      <!-- PKP:p8q6 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>香农容量（必背）、噪声功率 N₀B、带宽和容量的关系、注水法（第 2 章 p.48、p.54–57）。</dd><dt>前置知识</dt><dd>C = B log₂(1 + SNR)，SNR 用线性值；N = N₀B，dB 里是 N₀ + 10 log₁₀B；注水：Σ(1/γ₀ − 1/γ<sub>j</sub>) = 1，C = ΣB<sub>j</sub> log₂(γ<sub>j</sub>/γ₀)。</dd><dt>解题套路</dt><dd>(a)(b) 先算噪声 → SNR（dB → 线性）→ 香农公式；(c) 假设全部分功率 → 解 γ₀ → 检查每条 γ<sub>j</sub> ≥ γ₀ → 不满足就去掉最差的那条，重算。</dd><dt>关键一步</dt><dd>(c) 第一次算出 γ₀ = 0.656 &gt; 0.5，所以第 2 条被放弃；只剩一条时 P₁ = P。</dd><dt>易错</dt><dd>SNR 用 dB 代进 log₂；带宽加倍忘了噪声也加倍；注水不检查 γ<sub>j</sub> ≥ γ₀，算出负功率还照用。</dd><dt>直觉</dt><dd>带宽加倍、功率不变时 SNR 减半，容量增加不到一倍。注水法会放弃太差的子信道，把功率集中给好的。</dd><dt>联系</dt><dd>Practice 5 第 1 题（三条子信道的注水）；Practice 2 第 3 题（香农容量与 SINR）；Practice 7 第 1 题 (d)。</dd></dl></div>
+      <!-- /PKP:p8q6 -->
+    </div>
+    <!-- EN:p8q6 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> Noise power = N₀ × B, which in dB is a sum. Convert the SNR to linear before Shannon's formula. For (c), water-filling first assumes every subchannel gets power, then checks whether any SNR is below the cut-off γ₀; if so, drop it and recompute.</p>
+      <ol class="steps">
+        <li>(a) Noise power: \(N=-174+10\log_{10}(5\times10^6)=-174+66.99=-107.01\) dBm.</li>
+        <li>SNR = −90 − (−107.01) = 17.01 dB = 50.2.<div class="calc">C = 5×10⁶ × log₂(1 + 50.2) = 5×10⁶ × 5.68 = 28.4 Mbps</div></li>
+        <li>(b) Doubling the bandwidth doubles the noise power (3 dB more): N = −104.0 dBm, SNR = 14.0 dB = 25.1.<div class="calc">C = 10×10⁶ × log₂(1 + 25.1) = 10×10⁶ × 4.71 = 47.1 Mbps</div></li>
+        <li>The capacity grows only by about 1.66 times, not 2: the bandwidth doubles but the SNR halves, so the log term gets smaller.</li>
+        <li>(c) Assume both subchannels get power: \(\dfrac{2}{\gamma_0}=1+\dfrac1{20}+\dfrac1{0.5}=3.05\ \Rightarrow\ \gamma_0=0.656\). Subchannel 2 has SNR 0.5 &lt; 0.656, so it should get no power; drop it and recompute.</li>
+        <li>Only subchannel 1 left: \(\dfrac1{\gamma_0}=1+\dfrac1{20}=1.05\), \(\gamma_0=0.952\); \(P_1/P=1/\gamma_0-1/20=1\), all the power goes to subchannel 1.<div class="calc">C = 1 MHz × log₂(20 / 0.952) = 1 MHz × log₂21 = 4.39 Mbps</div></li>
+      </ol>
+      <div class="ans">(a) SNR ≈ 17 dB (50.2), C ≈ 28.4 Mbps; (b) C ≈ 47.1 Mbps, about 1.66 times, not double; (c) subchannel 2 gets no power, P₁ = P, C ≈ 4.39 Mbps</div>
+      <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
+      <div class="note">For comparison, splitting the power equally (P/2 each, SNRs 10 and 0.25) gives C = log₂11 + log₂1.25 = 3.78 Mbps, 0.61 Mbps less than water-filling. Power given to a very poor subchannel buys almost no capacity.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Shannon capacity (memorise), noise power N₀B, how capacity depends on bandwidth, water-filling (Ch 2 p.48, p.54–57).</dd><dt>Background</dt><dd>C = B log₂(1 + SNR) with linear SNR; N = N₀B, in dB N₀ + 10 log₁₀B; water-filling: Σ(1/γ₀ − 1/γ<sub>j</sub>) = 1, C = ΣB<sub>j</sub> log₂(γ<sub>j</sub>/γ₀).</dd><dt>Method</dt><dd>(a)(b) Noise → SNR (dB → linear) → Shannon; (c) assume all subchannels on → solve γ₀ → check every γ<sub>j</sub> ≥ γ₀ → if not, drop the worst one and recompute.</dd><dt>Key step</dt><dd>(c) The first γ₀ = 0.656 &gt; 0.5, so subchannel 2 is dropped; with one subchannel left, P₁ = P.</dd><dt>Common mistakes</dt><dd>Putting the SNR in dB into log₂; forgetting that doubling the bandwidth doubles the noise; not checking γ<sub>j</sub> ≥ γ₀ and using a negative power.</dd><dt>Intuition</dt><dd>With fixed power, doubling the bandwidth halves the SNR, so capacity grows by less than a factor of two. Water-filling gives up on very poor subchannels and concentrates the power on the good ones.</dd><dt>Link</dt><dd>Practice 5 Q1 (water-filling over three subchannels); Practice 2 Q3 (Shannon capacity and SINR); Practice 7 Q1 (d).</dd></dl></div>
+    </div>
+    <!-- /EN:p8q6 -->
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>

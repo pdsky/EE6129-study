@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Insert the 题意讲解 box (intent.py) into every practice question in prac_1..7.html.
+"""Insert the 题意讲解 box (intent.py) into every practice question in prac_1..8.html.
 
 The box goes right after the chips line and before the 显示解答 button, outside <div class="sol">,
 so it stays available in 自测模式. Idempotent: each box is between <!-- INTENT:id --> and
@@ -39,7 +39,7 @@ def render(qid, d):
 
 def apply():
     n = 0
-    for i in range(1, 8):
+    for i in range(1, 9):
         f = B / f'prac_{i}.html'
         s = f.read_text(encoding='utf-8')
         s = re.sub(r'    <!-- INTENT:(\w+) -->.*?<!-- /INTENT:\1 -->\n', '', s, flags=re.S)

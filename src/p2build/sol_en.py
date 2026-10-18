@@ -443,3 +443,125 @@ EN['p7q3'] = dict(
   ('Why copy the tail', '''An empty guard interval would also block the previous block's echo, but the receive window would no longer see a complete periodic signal, the sub-carriers would lose orthogonality and ICI would appear. Only copying the tail keeps the circular structure.'''),
   ('Common mistakes', '''It is L − 1 = 1 sample, not L = 2; the size of the coefficient 0.9 does not matter, only how many samples the echo is delayed.'''),
   ('Variations', '''H(Z) = 1 + 0.5Z⁻³ → delay 3 samples → CP ≥ 3; in time, T<sub>G</sub> ≥ the maximum delay spread T<sub>D</sub>. Each extra CP sample lowers the efficiency to N/(N + G).''')])
+
+# ---------------------------------------------------------------- mock Quiz (self-written, group P8)
+EN['p8q1'] = dict(
+ idea=r'''(a) Split into cases and weight them: total probability. (b) The result (an error) is known and we ask about the cause (the state): Bayes' rule. (c) Mean and variance of a discrete random variable, after converting dB to linear values.''',
+ steps=[
+  r'''(a) Total probability: \(P_e=P(G)\,P(e\mid G)+P(B)\,P(e\mid B)=0.7\times10^{-4}+0.3\times10^{-2}=7\times10^{-5}+3\times10^{-3}\)''' + C('P<sub>e</sub> = 3.07 × 10⁻³'),
+  r'''(b) Bayes: \(P(B\mid e)=\dfrac{P(B)\,P(e\mid B)}{P_e}=\dfrac{3\times10^{-3}}{3.07\times10^{-3}}=0.977\). The numerator is the "bad" term of (a); the denominator is the answer of (a).''',
+  r'''(c) Convert to linear first: 10 dB → 10, 0 dB → 1.''' + C('E[γ] = 0.7 × 10 + 0.3 × 1 = 7.3　　E[γ²] = 0.7 × 100 + 0.3 × 1 = 70.3'),
+  r'''\(\mathrm{Var}(\gamma)=E[\gamma^2]-(E[\gamma])^2=70.3-53.29=17.01\) (standard deviation 4.12); mean SNR \(=10\log_{10}7.3=8.63\) dB.'''],
+ ans='(a) 3.07 × 10⁻³; (b) 0.977; (c) E[γ] = 7.3 (8.63 dB), Var(γ) = 17.0',
+ official='none (self-written mock question); all numbers checked by src/p2build/verify_mock.py',
+ note='''Averaging the dB values gives 0.7 × 10 + 0.3 × 0 = 7 dB, which is wrong: dB is logarithmic, so convert to linear before averaging. The lecturer said a missing dB ↔ linear conversion loses marks. Part (b) is typical: the bad state occupies only 30% of the time but causes 97.7% of the errors.''',
+ kp=[
+  ('What it tests', '''Total probability, Bayes' rule (blue box, memorise), mean and variance of a discrete random variable (Ch 1b p.5–14, Quiz scope).'''),
+  ('Background', '''P(B) = ΣP(A<sub>i</sub>)P(B | A<sub>i</sub>); P(A<sub>i</sub> | B) = P(A<sub>i</sub>)P(B | A<sub>i</sub>)/P(B); E[X] = Σx·p(x); Var(X) = E[X²] − (E[X])².'''),
+  ('Method', '''Make a table of state, probability and conditional probability. (a) Weighted sum; (b) the matching term of (a) divided by the total of (a); (c) convert to linear, then E[X] and E[X²] from the table.'''),
+  ('Common mistakes', '''Averaging dB values (7 dB, wrong); forgetting to subtract the squared mean; the Bayes denominator is the total error probability from total probability; total probability must sum over all states (a past mistake the lecturer pointed out).'''),
+  ('Intuition', '''The bad state is 30% of the time but gives 97.7% of the errors: the average error rate is set almost entirely by the bad periods, which is why Ch 4 uses diversity.'''),
+  ('Variations', '''A three-state channel works the same with one more row; or "probability that two consecutive bits are both wrong" (multiply if independent).'''),
+  ('Link', '''Practice 4 Q2 (average error rate over a discrete SNR); P2 Q2 (c) is the continuous version of total probability.''')])
+
+EN['p8q2'] = dict(
+ idea=r'''Convert mW to dBm and use the dB form for the average received power. The amount by which the average exceeds the threshold is the margin, and outage = Q(margin/σ). For (c), work backwards: 1% → inverse Q → required margin → distance.''',
+ steps=[
+  r'''Units first: \(P_t=10\log_{10}100=20\) dBm (leaving it in mW loses marks).''',
+  r'''(a) dB form: \(P_{r,dB}=P_{t,dB}+K_{dB}-10\gamma\log_{10}(d/d_0)\).''' + C('P<sub>r</sub>(300 m) = 20 − 31.5 − 36 × log₁₀300 = 20 − 31.5 − 36 × 2.477 = −100.68 dBm'),
+  r'''(b) Margin = −100.68 − (−110) = 9.32 dB.''' + C('P<sub>out</sub> = Q(9.32 / 6) = Q(1.55) = 0.060'),
+  r'''(c) Need \(Q(x)\le0.01\); the Q table gives x ≥ 2.326, so the margin must be at least 2.326 × 6 = 13.96 dB and the average power at least −110 + 13.96 = −96.04 dBm.''',
+  r'''Solve for the distance: \(20-31.5-36\log_{10}d\ge-96.04\ \Rightarrow\ 36\log_{10}d\le84.54\ \Rightarrow\ \log_{10}d\le2.348\)''' + C('d<sub>max</sub> = 10<sup>2.348</sup> ≈ 223 m')],
+ ans='(a) P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 36 log₁₀d, ≈ −100.7 dBm at 300 m; (b) P<sub>out</sub> ≈ 6.0%; (c) d<sub>max</sub> ≈ 223 m',
+ official='none (self-written mock question); all numbers checked by src/p2build/verify_mock.py',
+ note='''At 300 m the outage is 6%, far above the usual 1% target. To reach 1%, either shrink the coverage radius to about 223 m or raise the transmit power by 13.96 − 9.32 = 4.64 dB.''',
+ kp=[
+  ('What it tests', '''dB form of the simplified path loss model (memorise), shadowing outage P<sub>out</sub> = Q(margin/σ) (memorise), inverse Q lookup (Ch 2 p.8, p.12–16).'''),
+  ('Background', '''P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 10γ log₁₀(d/d₀); mW → dBm: 10 log₁₀(value in mW); Q(2.326) = 0.01.'''),
+  ('Method', '''① Convert units; ② average power from the model; ③ margin = average − threshold; ④ P<sub>out</sub> = Q(margin/σ). For the distance, reverse it: outage target → inverse Q → margin = xσ → minimum average power → solve for d.'''),
+  ('Key step', '''(c) Margin 13.96 dB → average power ≥ −96.04 dBm → 36 log₁₀d ≤ 84.54 → d ≤ 223 m.'''),
+  ('Common mistakes', '''Using 100 mW without converting to 20 dBm (loses marks); 10γ = 36, not 3.6; Q takes margin over σ, not over σ².'''),
+  ('Variations', '''Required transmit power for a given distance; or the largest allowed σ for a given outage (asked in 2023-24 S2 Q1(a)(ii)).'''),
+  ('Link', '''Practice 1 Q2 (outage forwards and backwards); Practice 1 Q1 (b).''')])
+
+EN['p8q3'] = dict(
+ idea=r'''(a) Use the linear power of each path as a weight and find the weighted mean and standard deviation of the delay. (b) Judge two dimensions separately: σ against T<sub>s</sub> for flat / frequency-selective, T<sub>C</sub> against T<sub>s</sub> for fast / slow. (c) Get the amplitude ratio ρ from "10 dB below" first, then use the AFD formula.''',
+ steps=[
+  r'''(a) Linear powers: 0, −3, −6 dB → 1, 0.501, 0.251; sum 1.752.''' + C('μ = (0 × 1 + 1 × 0.501 + 3 × 0.251) / 1.752 = 1.255 / 1.752 = 0.716 µs'),
+  C('E[τ²] = (0 + 1 × 0.501 + 9 × 0.251) / 1.752 = 2.762 / 1.752 = 1.576 µs²　　σ = √(1.576 − 0.716²) = √1.063 = 1.03 µs'),
+  r'''(b) Flat or selective: \(T_s=1/50\text{k}=20\) µs and \(\sigma/T_s=1.03/20=0.052\lt0.1\) → <b>flat fading</b>.''',
+  r'''Fast or slow: v = 72 km/h = 20 m/s, \(f_m=vf_c/c=20\times1.8\times10^9/3\times10^8=120\) Hz, \(T_C\approx1/f_m=8.33\) ms ≫ \(T_s\) = 20 µs → <b>slow fading</b>. Conclusion: flat, slow fading.''',
+  r'''(c) Power 10 dB down means an amplitude ratio \(\rho=\sqrt{0.1}=0.316\) (ρ is an amplitude ratio, not a power ratio).''' + C('AFD = (e<sup>0.1</sup> − 1) / (√(2π) × 120 × 0.316) = 0.1052 / 95.1 = 1.11 ms'),
+  r'''Symbols affected per fade ≈ 1.11 ms / 20 µs ≈ 55.'''],
+ ans='(a) μ ≈ 0.72 µs, σ ≈ 1.03 µs; (b) f<sub>m</sub> = 120 Hz, T<sub>C</sub> ≈ 8.3 ms, flat slow fading; (c) AFD ≈ 1.1 ms, about 55 symbols per fade',
+ official='none (self-written mock question); all numbers checked by src/p2build/verify_mock.py',
+ note='''Taking ρ = 0.1 by mistake gives AFD = 0.33 ms, more than 3 times too small. Also LCR = √(2π) × 120 × 0.316 × e<sup>−0.1</sup> ≈ 86 per second, and AFD × LCR = 1 − e<sup>−0.1</sup> ≈ 0.095: the signal is below the threshold about 9.5% of the time.''',
+ kp=[
+  ('What it tests', '''μ and σ of a discrete power delay profile (Ch 2 p.30); fading type in two dimensions, flat/selective and fast/slow (p.33–36); average fade duration (p.42–43).'''),
+  ('Background', '''Power-weighted: μ = ΣP<sub>i</sub>τ<sub>i</sub>/ΣP<sub>i</sub>, σ = √(E[τ²] − μ²); σ/T<sub>s</sub> &lt; 0.1 → flat (memorise); f<sub>m</sub> = v f<sub>c</sub>/c, T<sub>C</sub> ≈ 1/f<sub>m</sub>; ρ = threshold amplitude / rms amplitude.'''),
+  ('Method', '''(a) dB → linear → weighted mean and second moment from a table; (b) compare T<sub>s</sub> with σ and with T<sub>C</sub>; (c) square root of the power ratio gives ρ → AFD → divide by T<sub>s</sub> for the symbol count.'''),
+  ('Common mistakes', '''Using dB values as weights; "10 dB down in power" means ρ = √0.1, not 0.1; answering only one dimension of the fading type gets half marks (the lecturer said so), give both flat/selective and fast/slow; convert km/h to m/s.'''),
+  ('Check', '''AFD × LCR = 1 − e<sup>−ρ²</sup> = 0.095: the signal is below the threshold about 9.5% of the time.'''),
+  ('Variations', '''At 200 k symbols/s, T<sub>s</sub> = 5 µs and σ/T<sub>s</sub> = 0.21, so the fading can no longer be called flat.'''),
+  ('Link', '''Practice 1 Q3 (continuous delay profile); Practice 2 Q1 (AFD); 2025-26 S2 Q1(a)(i)(ii).''')])
+
+EN['p8q4'] = dict(
+ idea=r'''In Rayleigh fading the instantaneous SNR is exponentially distributed and the outage probability is its CDF; (b) solves it backwards for the average SNR; (c) uses the exponential tail directly.''',
+ steps=[
+  r'''(a) In Rayleigh fading the SNR is exponential: \(p(\gamma)=\dfrac{1}{\bar\gamma}e^{-\gamma/\bar\gamma},\ \gamma\ge0\); outage \(P_{out}=P(\gamma\lt\gamma_0)=1-e^{-\gamma_0/\bar\gamma}\).''',
+  r'''Linear values: \(\bar\gamma\) = 20 dB = 100, \(\gamma_0\) = 7 dB = 5.01.''' + C('P<sub>out</sub> = 1 − e<sup>−5.01/100</sup> = 1 − e<sup>−0.0501</sup> = 0.0489'),
+  r'''(b) \(1-e^{-\gamma_0/\bar\gamma}=0.01\ \Rightarrow\ \gamma_0/\bar\gamma=\ln\frac{1}{0.99}=0.01005\ \Rightarrow\ \bar\gamma=5.01/0.01005=498.7\), i.e. 27.0 dB.''',
+  r'''Fade margin FM = 27.0 − 7 = 20.0 dB, matching \(10\log_{10}\frac{1}{\ln(1/(1-\varepsilon))}\approx10\log_{10}\frac1\varepsilon=20\) dB.''',
+  r'''(c) \(P(\gamma\gt\bar\gamma)=e^{-\bar\gamma/\bar\gamma}=e^{-1}=0.368\).'''],
+ ans='(a) p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup>, P<sub>out</sub> ≈ 4.9%; (b) γ̄ ≈ 27 dB, fade margin ≈ 20 dB; (c) e⁻¹ ≈ 0.368',
+ official='none (self-written mock question); all numbers checked by src/p2build/verify_mock.py',
+ note='''Part (c) shows that in Rayleigh fading the instantaneous SNR is above its average only about 37% of the time; most of the time it is below, which is why a fade margin is needed. In an AWGN channel without fading the SNR always equals its average, so an average of 7 dB would be enough; Rayleigh fading needs 20 dB more.''',
+ kp=[
+  ('What it tests', '''Exponential SNR distribution in Rayleigh fading (memorise), Rayleigh outage (memorise), fade margin (try to remember) (Ch 2 p.25–26, p.51).'''),
+  ('Background', '''p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup>; P(γ &lt; γ₀) = 1 − e<sup>−γ₀/γ̄</sup>; P(γ &gt; x) = e<sup>−x/γ̄</sup>; ln(1/(1 − ε)) ≈ ε.'''),
+  ('Method', '''Convert every dB value to linear → 1 − e<sup>−γ₀/γ̄</sup>; backwards γ̄ = γ₀ / ln(1/(1 − ε)); fade margin = γ̄<sub>dB</sub> − γ<sub>0,dB</sub>.'''),
+  ('Key step', '''For ε = 1%, ln(1/0.99) = 0.01005, so γ̄ ≈ 100γ₀ and the fade margin ≈ 20 dB.'''),
+  ('Common mistakes', '''Putting dB values into the exponent; the formula to memorise is the exponential SNR distribution, not the Rayleigh envelope PDF; the fade margin is a difference of two dB values.'''),
+  ('Quick rule', '''ε = 1% → 20 dB, 0.5% → 23 dB, 0.1% → 30 dB: each 10 times stricter outage needs 10 dB more margin.'''),
+  ('Link', '''Learning page sections 2.3 and 2.7; 2025-26 S2 Q1(a)(iii) (outage capacity and fade margin of a Rayleigh channel).''')])
+
+EN['p8q5'] = dict(
+ idea=r'''Same method as Practice 1 Q1: in dB the model is a straight line \(M=K_{dB}-\gamma x\) with \(x=10\log_{10}d\). Least squares gives the slope and intercept, the mean squared residual is the shadowing variance, then Q(margin/σ).''',
+ steps=[
+  r'''\(x_i=10\log_{10}d_i\) = 10, 13.01, 16.99, 20; \(\bar x=15.00\); \(\bar M=-87.5\).''',
+  r'''\(x_i-\bar x\) = −5, −1.99, 1.99, 5; \(M_i-\bar M\) = 19.5, 1.5, −3.5, −17.5.''' + C('Σ(x − x̄)(M − M̄) = −194.95　　Σ(x − x̄)² = 57.92'),
+  r'''(a) Slope = −194.95 / 57.92 = −3.37, so γ = 3.37; \(K_{dB}=\bar M+\gamma\bar x=-87.5+3.366\times15=-37.0\) dB.''',
+  r'''(b) Predictions \(\hat M_i=K_{dB}-\gamma x_i\) = −70.67, −80.80, −94.20, −104.33; residuals \(e_i=M_i-\hat M_i\) = +2.67, −5.20, +3.20, −0.67 (they sum to 0).''' + C('σ²<sub>ψ</sub> = (2.67² + 5.20² + 3.20² + 0.67²) / 4 = 44.81 / 4 = 11.2 dB²　　σ<sub>ψ</sub> = 3.35 dB'),
+  r'''(c) \(P_{out}=Q(8/3.35)=Q(2.39)=8.4\times10^{-3}\).'''],
+ ans='(a) γ ≈ 3.37, K<sub>dB</sub> ≈ −37.0 dB; (b) σ²<sub>ψ</sub> ≈ 11.2 dB² (σ ≈ 3.35 dB); (c) P<sub>out</sub> ≈ 0.84%',
+ official='none (self-written mock question); all numbers checked by src/p2build/verify_mock.py',
+ note='''Fewer points than Practice 1 Q1, which is a more likely size for a 30-minute quiz. Always use 10 log₁₀d on the x axis; the slope is −γ, keep the sign; the MSE is a variance, take the square root before using Q.''',
+ kp=[
+  ('What it tests', '''Least-squares fit of the simplified path loss model, shadowing variance = MSE, shadowing outage (Ch 2 p.8–16).'''),
+  ('Background', '''In dB the model is the line M = K<sub>dB</sub> − γx with x = 10 log₁₀d; slope = Σ(x − x̄)(M − M̄)/Σ(x − x̄)²; the fitted line passes through (x̄, M̄).'''),
+  ('Method', '''Table of x, x − x̄, M − M̄, products and squares → slope → γ = −slope → K<sub>dB</sub> = M̄ + γx̄ → residuals → MSE → Q(margin/σ).'''),
+  ('Key formulas', '''γ = −Σ(x − x̄)(M − M̄)/Σ(x − x̄)²; K<sub>dB</sub> = M̄ + γx̄; σ²<sub>ψ</sub> = (1/n)Σe<sub>i</sub>².'''),
+  ('Common mistakes', '''Using log₁₀d instead of 10 log₁₀d makes γ 10 times too large; the slope is −γ; the MSE divides by n (the slides' definition); take the square root before Q.'''),
+  ('Check', '''The residuals sum to 0 (2.67 − 5.20 + 3.20 − 0.67 = 0).'''),
+  ('Link', '''Practice 1 Q1 (the same method with 6 points).''')])
+
+EN['p8q6'] = dict(
+ idea=r'''Noise power = N₀ × B, which in dB is a sum. Convert the SNR to linear before Shannon's formula. For (c), water-filling first assumes every subchannel gets power, then checks whether any SNR is below the cut-off γ₀; if so, drop it and recompute.''',
+ steps=[
+  r'''(a) Noise power: \(N=-174+10\log_{10}(5\times10^6)=-174+66.99=-107.01\) dBm.''',
+  r'''SNR = −90 − (−107.01) = 17.01 dB = 50.2.''' + C('C = 5×10⁶ × log₂(1 + 50.2) = 5×10⁶ × 5.68 = 28.4 Mbps'),
+  r'''(b) Doubling the bandwidth doubles the noise power (3 dB more): N = −104.0 dBm, SNR = 14.0 dB = 25.1.''' + C('C = 10×10⁶ × log₂(1 + 25.1) = 10×10⁶ × 4.71 = 47.1 Mbps'),
+  r'''The capacity grows only by about 1.66 times, not 2: the bandwidth doubles but the SNR halves, so the log term gets smaller.''',
+  r'''(c) Assume both subchannels get power: \(\dfrac{2}{\gamma_0}=1+\dfrac1{20}+\dfrac1{0.5}=3.05\ \Rightarrow\ \gamma_0=0.656\). Subchannel 2 has SNR 0.5 &lt; 0.656, so it should get no power; drop it and recompute.''',
+  r'''Only subchannel 1 left: \(\dfrac1{\gamma_0}=1+\dfrac1{20}=1.05\), \(\gamma_0=0.952\); \(P_1/P=1/\gamma_0-1/20=1\), all the power goes to subchannel 1.''' + C('C = 1 MHz × log₂(20 / 0.952) = 1 MHz × log₂21 = 4.39 Mbps')],
+ ans='(a) SNR ≈ 17 dB (50.2), C ≈ 28.4 Mbps; (b) C ≈ 47.1 Mbps, about 1.66 times, not double; (c) subchannel 2 gets no power, P₁ = P, C ≈ 4.39 Mbps',
+ official='none (self-written mock question); all numbers checked by src/p2build/verify_mock.py',
+ note='''For comparison, splitting the power equally (P/2 each, SNRs 10 and 0.25) gives C = log₂11 + log₂1.25 = 3.78 Mbps, 0.61 Mbps less than water-filling. Power given to a very poor subchannel buys almost no capacity.''',
+ kp=[
+  ('What it tests', '''Shannon capacity (memorise), noise power N₀B, how capacity depends on bandwidth, water-filling (Ch 2 p.48, p.54–57).'''),
+  ('Background', '''C = B log₂(1 + SNR) with linear SNR; N = N₀B, in dB N₀ + 10 log₁₀B; water-filling: Σ(1/γ₀ − 1/γ<sub>j</sub>) = 1, C = ΣB<sub>j</sub> log₂(γ<sub>j</sub>/γ₀).'''),
+  ('Method', '''(a)(b) Noise → SNR (dB → linear) → Shannon; (c) assume all subchannels on → solve γ₀ → check every γ<sub>j</sub> ≥ γ₀ → if not, drop the worst one and recompute.'''),
+  ('Key step', '''(c) The first γ₀ = 0.656 &gt; 0.5, so subchannel 2 is dropped; with one subchannel left, P₁ = P.'''),
+  ('Common mistakes', '''Putting the SNR in dB into log₂; forgetting that doubling the bandwidth doubles the noise; not checking γ<sub>j</sub> ≥ γ₀ and using a negative power.'''),
+  ('Intuition', '''With fixed power, doubling the bandwidth halves the SNR, so capacity grows by less than a factor of two. Water-filling gives up on very poor subchannels and concentrates the power on the good ones.'''),
+  ('Link', '''Practice 5 Q1 (water-filling over three subchannels); Practice 2 Q3 (Shannon capacity and SINR); Practice 7 Q1 (d).''')])
