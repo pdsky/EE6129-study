@@ -205,6 +205,63 @@
       <div class="ans">(a) μ ≈ 0.72 µs，σ ≈ 1.03 µs；(b) f_m = 120 Hz，T_C ≈ 8.3 ms，平坦慢衰落；(c) AFD ≈ 1.1 ms，每次约 55 个符号</div>
       <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
       <div class="note">如果把 ρ 当成 0.1，AFD 只有 0.33 ms，差了 3 倍多。顺便可以算 LCR = √(2π) × 120 × 0.316 × e<sup>−0.1</sup> ≈ 86 次/秒；AFD × LCR = 1 − e<sup>−0.1</sup> ≈ 0.095，约 9.5% 的时间低于门限。</div>
+      <details class="deep">
+        <summary>逐步详解：每个量是什么、怎么算、哪些要背</summary>
+        <div class="deep-body">
+          <h4><span class="st">背不背</span>这道题用到的公式（按老师第 8–10 周录音）</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>公式</th><th>用在</th><th>要不要背</th></tr></thead><tbody>
+            <tr><td>平均时延 μ、rms 时延扩展 σ</td><td>(a)</td><td>考试会给；要会按功率加权去算</td></tr>
+            <tr><td>\(\sigma_{T_m}/T_s\lt0.1\) → 平坦</td><td>(b)</td><td><b>要背</b>（蓝框）</td></tr>
+            <tr><td>\(f_m=vf_c/c\)、\(T_C\approx1/f_m\)</td><td>(b)</td><td>录音里没点名；公式很短、题目常要先算它，建议记住</td></tr>
+            <tr><td>AFD、LCR</td><td>(c)</td><td>考试会给（本题题干也给了）；要会说出 ρ = Z<sub>min</sub>/Z<sub>rms</sub>、f<sub>m</sub> 是最大多普勒频移</td></tr>
+            <tr><td>功率 ∝ 幅度²</td><td>(c)</td><td>基本关系，必须会</td></tr>
+          </tbody></table></div>
+          <p>瑞利衰落本身：<b>要背</b> SNR 的指数分布 \(p(\gamma)=\frac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}\) 和瑞利中断 \(1-e^{-\gamma_0/\bar\gamma}\)（老师说"经常出现"）；包络的瑞利 PDF 不用背；瑞利分布的推导不会让推；衰落余量公式尽量记。</p>
+
+          <h4><span class="st">(a)</span>平均时延和 rms 时延扩展是什么</h4>
+          <p>基站发一个很短的脉冲，手机收到的是先后到达的几份"回声"：0 µs 到的最强（0 dB），1 µs 到的弱一点（−3 dB），3 µs 到的最弱（−6 dB）。这张表就是功率时延谱。平均时延 μ 是回声能量的"重心"在哪个时刻；rms 时延扩展 σ 是能量在时间上散得多开。真正重要的是 σ，它决定回声会不会拖进下一个符号。</p>
+          <p><b>为什么要除以 1.752：</b>这是按功率加权的平均，加权平均要除以权重之和。就像按学分算平均成绩，要除以总学分。三条路径的功率（线性值）是 1、0.501、0.251，加起来 1.752。</p>
+          <p>换个角度：除以 1.752 就是把功率变成"能量占比"：1/1.752 = 0.571，0.501/1.752 = 0.286，0.251/1.752 = 0.143，加起来是 1，相当于一个离散概率分布。于是 μ = 0 × 0.571 + 1 × 0.286 + 3 × 0.143 = 0.716 µs，σ 就是这个分布的标准差。这和第 1b 章离散随机变量的期望、方差是同一套算法。</p>
+          <ul>
+            <li>权重必须用线性值，dB 值（0、−3、−6）是负数，不能当权重。</li>
+            <li>σ 不是"最大时延 − 最小时延"：这里时延差 3 µs，σ 只有 1.03 µs，因为晚到的回声功率小、权重低。</li>
+          </ul>
+
+          <h4><span class="st">(b)</span>衰落类型：两个维度分别判断</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>维度</th><th>问的问题</th><th>比较</th><th>本题</th></tr></thead><tbody>
+            <tr><td>平坦 / 频率选择性</td><td>回声会不会拖进下一个符号</td><td>σ 和 T<sub>s</sub>：σ/T<sub>s</sub> &lt; 0.1 → 平坦</td><td>1.03/20 = 0.052 → 平坦</td></tr>
+            <tr><td>慢 / 快</td><td>一个符号的时间里信道变没变</td><td>T<sub>C</sub> 和 T<sub>s</sub>：T<sub>s</sub> ≪ T<sub>C</sub> → 慢</td><td>20 µs ≪ 8.33 ms → 慢</td></tr>
+          </tbody></table></div>
+          <p>两个维度互不相关：时延扩展只管平坦 / 选择性，多普勒只管快 / 慢。符号时长被夹在中间：\(\sigma_{T_m}\ll T_s\ll T_C\) 时就是平坦慢衰落。<b>只答一个维度只给一半分</b>（老师说过）。σ/T<sub>s</sub> 只比 0.1 稍大（比如 0.15）时不能下结论，要远大于 0.1 才能说是频率选择性。</p>
+
+          <h4><span class="st">(b)</span>最大多普勒频移和相干时间</h4>
+          <p><b>最大多普勒频移 f<sub>m</sub>：</b>手机在动，收到的频率会偏一点（和救护车开过来时警笛变尖是同一个道理）。频移 \(f_d=\frac{v}{c}f_c\cos\theta\)，正对着信号方向走时 cos θ = 1，频移最大：\(f_m=vf_c/c\)。本题 v = 72 km/h ÷ 3.6 = 20 m/s，\(f_m=20\times1.8\times10^9/3\times10^8=120\) Hz。</p>
+          <p><b>相干时间 T<sub>C</sub>：</b>信道基本保持不变的时长。多普勒越大，各条回波的相位变得越快，信道变化越快，T<sub>C</sub> 越短：\(T_C\approx1/f_m=1/120=8.33\) ms。两者互为倒数：走得越快，f<sub>m</sub> 越大，T<sub>C</sub> 越短；不动时 f<sub>m</sub> = 0，信道不变。</p>
+          <ul>
+            <li>km/h 要除以 3.6 换成 m/s；GHz 换成 Hz；比较 T<sub>C</sub> 和 T<sub>s</sub> 前把 ms、µs 统一。</li>
+          </ul>
+
+          <h4><span class="st">(c)</span>ρ 怎么来：先功率比，再开根号</h4>
+          <p>ρ = Z<sub>min</sub>/Z<sub>rms</sub> 是<b>幅度</b>之比，题目给的却是<b>功率</b>条件（"功率不能比 rms 值低 10 dB 以上"）。功率是幅度的平方（P = V²/R），所以幅度是功率的平方根：</p>
+          <div class="eqb">\[\frac{P_{\min}}{P_{\mathrm{rms}}}=10^{-10/10}=0.1=\Big(\frac{Z_{\min}}{Z_{\mathrm{rms}}}\Big)^2=\rho^2\ \Rightarrow\ \rho=\sqrt{0.1}=0.316\]</div>
+          <div class="tw"><table class="mini"><thead><tr><th>幅度比 ρ</th><th>功率比 ρ²</th><th>功率低多少</th></tr></thead><tbody>
+            <tr><td>0.707</td><td>0.5</td><td>3 dB</td></tr><tr><td>0.316</td><td>0.1</td><td>10 dB</td></tr><tr><td>0.1</td><td>0.01</td><td>20 dB</td></tr>
+          </tbody></table></div>
+          <p>功率的 dB 除以 10，幅度的 dB 除以 20：\(\rho=10^{-10/20}=0.316\)。AFD 公式指数里的 ρ² 正好就是功率比 0.1，可以直接用。和 Practice 2 第 1 题对比：那里说 "signal <b>strength</b> is 0.1 of the rms value"，指的是幅度，ρ 直接等于 0.1。题目说幅度（strength、envelope）就直接用；说功率或给 dB，就先换功率比再开根号。把本题 ρ 当成 0.1，AFD 会算成 0.33 ms，差 3 倍多。</p>
+
+          <h4><span class="st">(c)</span>为什么除以 20 µs</h4>
+          <p>20 µs 是一个符号的时长：50 k 符号/秒 → \(T_s=1/50000=20\) µs。一次深衰落平均持续 1.11 ms = 1110 µs，这段时间里有 1110 / 20 ≈ 55 个符号，所以一次衰落平均影响约 55 个连续符号。也可以写成 AFD × 符号速率 = 1.11×10⁻³ × 50×10³ ≈ 55。</p>
+          <p>这说明错误是成片出现的，不是零星的，所以要用交织把连续的比特打散，再靠纠错码纠正。</p>
+
+          <h4><span class="st">考试</span>(b)(c) 的英文写法</h4>
+          <div class="tmpl" lang="en">
+            <p>Flat or frequency-selective: \(\sigma_{T_m}/T_s=1.03/20=0.052\lt0.1\), so the fading is <b>flat</b>.</p>
+            <p>Fast or slow: \(f_m=vf_c/c=120\) Hz, \(T_C\approx1/f_m=8.33\) ms ≫ \(T_s\) = 20 µs, so the channel is almost constant over a symbol and the fading is <b>slow</b>. Hence the signal experiences flat, slow fading.</p>
+            <p>(c) A power 10 dB below the rms value means \(\rho^2=0.1\), \(\rho=\sqrt{0.1}=0.316\). AFD \(=(e^{0.1}-1)/(\sqrt{2\pi}\times120\times0.316)=1.11\) ms. Symbols per fade \(=\text{AFD}/T_s=1.11\text{ ms}/20\ \mu s\approx55\).</p>
+          </div>
+          <div class="ans">一句话：功率加权求 μ、σ（除以总功率）→ σ 和 T<sub>s</sub> 比定平坦/选择性，T<sub>C</sub> = 1/f<sub>m</sub> 和 T<sub>s</sub> 比定快/慢 → 功率比开根号得 ρ → AFD ÷ T<sub>s</sub> 得受影响的符号数。</div>
+        </div>
+      </details>
       <!-- PKP:p8q3 -->
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>离散功率时延谱的 μ、σ（第 2 章 p.30）；按平坦/选择性和快/慢两个维度判断衰落类型（p.33–36）；平均衰落时长（p.42–43）。</dd><dt>前置知识</dt><dd>功率加权：μ = ΣP<sub>i</sub>τ<sub>i</sub>/ΣP<sub>i</sub>，σ = √(E[τ²] − μ²)；σ/T<sub>s</sub> &lt; 0.1 → 平坦（必背）；f<sub>m</sub> = v f<sub>c</sub>/c，T<sub>C</sub> ≈ 1/f<sub>m</sub>；ρ = 门限幅度 / rms 幅度。</dd><dt>解题套路</dt><dd>(a) dB → 线性 → 列表求加权均值和二阶矩；(b) T<sub>s</sub> 分别和 σ、T<sub>C</sub> 比；(c) 功率比开根号得 ρ → 代 AFD → 除以 T<sub>s</sub> 得符号数。</dd><dt>易错</dt><dd>拿 dB 值当权重；"功率低 10 dB"对应 ρ = √0.1，不是 0.1；问衰落类型只答一个维度只给一半分（老师说过），平坦/选择性和快/慢都要答；km/h 要换成 m/s。</dd><dt>检验</dt><dd>AFD × LCR = 1 − e<sup>−ρ²</sup> = 0.095：信号约 9.5% 的时间低于门限。</dd><dt>举一反三</dt><dd>符号速率提高到 200 k 符号/秒：T<sub>s</sub> = 5 µs，σ/T<sub>s</sub> = 0.21，就不能再说是平坦衰落了。</dd><dt>联系</dt><dd>Practice 1 第 3 题（连续时延谱）；Practice 2 第 1 题（AFD）；2025-26 S2 Q1(a)(i)(ii)。</dd></dl></div>
       <!-- /PKP:p8q3 -->
@@ -223,6 +280,63 @@
       <div class="ans">(a) μ ≈ 0.72 µs, σ ≈ 1.03 µs; (b) f<sub>m</sub> = 120 Hz, T<sub>C</sub> ≈ 8.3 ms, flat slow fading; (c) AFD ≈ 1.1 ms, about 55 symbols per fade</div>
       <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
       <div class="note">Taking ρ = 0.1 by mistake gives AFD = 0.33 ms, more than 3 times too small. Also LCR = √(2π) × 120 × 0.316 × e<sup>−0.1</sup> ≈ 86 per second, and AFD × LCR = 1 − e<sup>−0.1</sup> ≈ 0.095: the signal is below the threshold about 9.5% of the time.</div>
+      <details class="deep">
+        <summary>Step by step: what each quantity is, how to compute it, what to memorise</summary>
+        <div class="deep-body">
+          <h4><span class="st">Memorise?</span>Formulas used here (from the lecturer's week 8–10 recordings)</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>Formula</th><th>Part</th><th>Memorise?</th></tr></thead><tbody>
+            <tr><td>Mean delay μ, rms delay spread σ</td><td>(a)</td><td>Given in the exam; know how to weight by power</td></tr>
+            <tr><td>\(\sigma_{T_m}/T_s\lt0.1\) → flat</td><td>(b)</td><td><b>Memorise</b> (blue box)</td></tr>
+            <tr><td>\(f_m=vf_c/c\), \(T_C\approx1/f_m\)</td><td>(b)</td><td>Not named in the recordings; short and often needed first, so worth remembering</td></tr>
+            <tr><td>AFD, LCR</td><td>(c)</td><td>Given (this question gives AFD); be able to say ρ = Z<sub>min</sub>/Z<sub>rms</sub> and that f<sub>m</sub> is the maximum Doppler shift</td></tr>
+            <tr><td>Power ∝ amplitude²</td><td>(c)</td><td>Basic relation, must know</td></tr>
+          </tbody></table></div>
+          <p>Rayleigh fading itself: <b>memorise</b> the exponential SNR distribution \(p(\gamma)=\frac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}\) and the Rayleigh outage \(1-e^{-\gamma_0/\bar\gamma}\) (the lecturer said it "often appears"); the Rayleigh envelope PDF need not be memorised; its derivation will not be asked; try to remember the fade-margin formula.</p>
+
+          <h4><span class="st">(a)</span>What mean delay and rms delay spread are</h4>
+          <p>A very short pulse arrives as several echoes: the strongest at 0 µs (0 dB), a weaker one at 1 µs (−3 dB), the weakest at 3 µs (−6 dB). That table is the power delay profile. The mean delay μ is the "centre of gravity" of the echo energy in time; the rms delay spread σ is how widely the energy is spread. σ is what matters: it decides whether echoes leak into the next symbol.</p>
+          <p><b>Why divide by 1.752:</b> this is a power-weighted average, and a weighted average is divided by the sum of the weights, just like a credit-weighted grade average is divided by the total credits. The linear powers are 1, 0.501 and 0.251, which sum to 1.752.</p>
+          <p>Equivalently, dividing by 1.752 turns powers into energy fractions: 1/1.752 = 0.571, 0.501/1.752 = 0.286, 0.251/1.752 = 0.143, which sum to 1 like a discrete probability distribution. Then μ = 0 × 0.571 + 1 × 0.286 + 3 × 0.143 = 0.716 µs and σ is the standard deviation of that distribution: the same mean and variance as for a discrete random variable in Ch 1b.</p>
+          <ul>
+            <li>The weights must be linear; the dB values (0, −3, −6) are negative and cannot be weights.</li>
+            <li>σ is not "largest delay − smallest delay": the delays span 3 µs but σ is only 1.03 µs, because late echoes carry little power.</li>
+          </ul>
+
+          <h4><span class="st">(b)</span>Fading type: two separate dimensions</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>Dimension</th><th>Question</th><th>Compare</th><th>Here</th></tr></thead><tbody>
+            <tr><td>Flat / frequency-selective</td><td>Do echoes leak into the next symbol?</td><td>σ with T<sub>s</sub>: σ/T<sub>s</sub> &lt; 0.1 → flat</td><td>1.03/20 = 0.052 → flat</td></tr>
+            <tr><td>Slow / fast</td><td>Does the channel change within one symbol?</td><td>T<sub>C</sub> with T<sub>s</sub>: T<sub>s</sub> ≪ T<sub>C</sub> → slow</td><td>20 µs ≪ 8.33 ms → slow</td></tr>
+          </tbody></table></div>
+          <p>The two dimensions are independent: delay spread decides flat/selective, Doppler decides fast/slow. The symbol duration sits in between: \(\sigma_{T_m}\ll T_s\ll T_C\) means flat, slow fading. <b>Answering only one dimension gets half marks</b> (the lecturer said so). If σ/T<sub>s</sub> is only slightly above 0.1 (e.g. 0.15), no conclusion can be drawn; it must be well above 0.1 to call the fading frequency-selective.</p>
+
+          <h4><span class="st">(b)</span>Maximum Doppler shift and coherence time</h4>
+          <p><b>Maximum Doppler shift f<sub>m</sub>:</b> a moving receiver sees a slightly shifted frequency (like a siren rising in pitch as an ambulance approaches). The shift is \(f_d=\frac{v}{c}f_c\cos\theta\), largest when moving straight along the signal direction (cos θ = 1): \(f_m=vf_c/c\). Here v = 72 km/h ÷ 3.6 = 20 m/s and \(f_m=20\times1.8\times10^9/3\times10^8=120\) Hz.</p>
+          <p><b>Coherence time T<sub>C</sub>:</b> how long the channel stays roughly constant. A larger Doppler makes the echo phases change faster, so the channel changes faster and T<sub>C</sub> is shorter: \(T_C\approx1/f_m=1/120=8.33\) ms. They are reciprocals: faster movement, larger f<sub>m</sub>, shorter T<sub>C</sub>; with no movement, f<sub>m</sub> = 0 and the channel does not change.</p>
+          <ul>
+            <li>Divide km/h by 3.6 to get m/s; convert GHz to Hz; put T<sub>C</sub> and T<sub>s</sub> in the same unit before comparing.</li>
+          </ul>
+
+          <h4><span class="st">(c)</span>Where ρ comes from: power ratio first, then square root</h4>
+          <p>ρ = Z<sub>min</sub>/Z<sub>rms</sub> is an <b>amplitude</b> ratio, but the question gives a <b>power</b> condition ("not more than 10 dB below its rms value"). Power is amplitude squared (P = V²/R), so amplitude is the square root of power:</p>
+          <div class="eqb">\[\frac{P_{\min}}{P_{\mathrm{rms}}}=10^{-10/10}=0.1=\Big(\frac{Z_{\min}}{Z_{\mathrm{rms}}}\Big)^2=\rho^2\ \Rightarrow\ \rho=\sqrt{0.1}=0.316\]</div>
+          <div class="tw"><table class="mini"><thead><tr><th>Amplitude ratio ρ</th><th>Power ratio ρ²</th><th>Power down by</th></tr></thead><tbody>
+            <tr><td>0.707</td><td>0.5</td><td>3 dB</td></tr><tr><td>0.316</td><td>0.1</td><td>10 dB</td></tr><tr><td>0.1</td><td>0.01</td><td>20 dB</td></tr>
+          </tbody></table></div>
+          <p>For power, divide the dB value by 10; for amplitude, by 20: \(\rho=10^{-10/20}=0.316\). The ρ² in the exponent of the AFD formula is exactly the power ratio 0.1. Compare Practice 2 Q1: "signal <b>strength</b> is 0.1 of the rms value" refers to amplitude, so there ρ = 0.1 directly. If the question talks about amplitude (strength, envelope), use the number as ρ; if it talks about power or gives dB, convert to a power ratio and take the square root. Taking ρ = 0.1 here would give AFD = 0.33 ms, more than 3 times too small.</p>
+
+          <h4><span class="st">(c)</span>Why divide by 20 µs</h4>
+          <p>20 µs is one symbol duration: 50 k symbols/s → \(T_s=1/50000=20\) µs. A deep fade lasts 1.11 ms = 1110 µs on average, which covers 1110 / 20 ≈ 55 symbols, so one fade affects about 55 consecutive symbols. Equivalently AFD × symbol rate = 1.11×10⁻³ × 50×10³ ≈ 55.</p>
+          <p>Errors therefore come in bursts, not one at a time, which is why interleaving is used to spread consecutive bits apart before error-correcting codes fix them.</p>
+
+          <h4><span class="st">Exam</span>Compact answer for (b) and (c)</h4>
+          <div class="tmpl">
+            <p>Flat or frequency-selective: \(\sigma_{T_m}/T_s=1.03/20=0.052\lt0.1\), so the fading is <b>flat</b>.</p>
+            <p>Fast or slow: \(f_m=vf_c/c=120\) Hz, \(T_C\approx1/f_m=8.33\) ms ≫ \(T_s\) = 20 µs, so the channel is almost constant over a symbol and the fading is <b>slow</b>. Hence the signal experiences flat, slow fading.</p>
+            <p>(c) A power 10 dB below the rms value means \(\rho^2=0.1\), \(\rho=\sqrt{0.1}=0.316\). AFD \(=(e^{0.1}-1)/(\sqrt{2\pi}\times120\times0.316)=1.11\) ms. Symbols per fade \(=\text{AFD}/T_s=1.11\text{ ms}/20\ \mu s\approx55\).</p>
+          </div>
+          <div class="ans">In one line: power-weighted μ and σ (divide by the total power) → σ vs T<sub>s</sub> for flat/selective, T<sub>C</sub> = 1/f<sub>m</sub> vs T<sub>s</sub> for fast/slow → square root of the power ratio gives ρ → AFD ÷ T<sub>s</sub> gives the symbols per fade.</div>
+        </div>
+      </details>
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>μ and σ of a discrete power delay profile (Ch 2 p.30); fading type in two dimensions, flat/selective and fast/slow (p.33–36); average fade duration (p.42–43).</dd><dt>Background</dt><dd>Power-weighted: μ = ΣP<sub>i</sub>τ<sub>i</sub>/ΣP<sub>i</sub>, σ = √(E[τ²] − μ²); σ/T<sub>s</sub> &lt; 0.1 → flat (memorise); f<sub>m</sub> = v f<sub>c</sub>/c, T<sub>C</sub> ≈ 1/f<sub>m</sub>; ρ = threshold amplitude / rms amplitude.</dd><dt>Method</dt><dd>(a) dB → linear → weighted mean and second moment from a table; (b) compare T<sub>s</sub> with σ and with T<sub>C</sub>; (c) square root of the power ratio gives ρ → AFD → divide by T<sub>s</sub> for the symbol count.</dd><dt>Common mistakes</dt><dd>Using dB values as weights; "10 dB down in power" means ρ = √0.1, not 0.1; answering only one dimension of the fading type gets half marks (the lecturer said so), give both flat/selective and fast/slow; convert km/h to m/s.</dd><dt>Check</dt><dd>AFD × LCR = 1 − e<sup>−ρ²</sup> = 0.095: the signal is below the threshold about 9.5% of the time.</dd><dt>Variations</dt><dd>At 200 k symbols/s, T<sub>s</sub> = 5 µs and σ/T<sub>s</sub> = 0.21, so the fading can no longer be called flat.</dd><dt>Link</dt><dd>Practice 1 Q3 (continuous delay profile); Practice 2 Q1 (AFD); 2025-26 S2 Q1(a)(i)(ii).</dd></dl></div>
     </div>
     <!-- /EN:p8q3 -->

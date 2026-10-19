@@ -565,3 +565,62 @@ EN['p8q6'] = dict(
   ('Common mistakes', '''Putting the SNR in dB into log₂; forgetting that doubling the bandwidth doubles the noise; not checking γ<sub>j</sub> ≥ γ₀ and using a negative power.'''),
   ('Intuition', '''With fixed power, doubling the bandwidth halves the SNR, so capacity grows by less than a factor of two. Water-filling gives up on very poor subchannels and concentrates the power on the good ones.'''),
   ('Link', '''Practice 5 Q1 (water-filling over three subchannels); Practice 2 Q3 (Shannon capacity and SINR); Practice 7 Q1 (d).''')])
+
+# collapsible walk-through for mock A·Q3 (rendered by add_en.py after the note)
+EN['p8q3']['detail'] = r'''      <details class="deep">
+        <summary>Step by step: what each quantity is, how to compute it, what to memorise</summary>
+        <div class="deep-body">
+          <h4><span class="st">Memorise?</span>Formulas used here (from the lecturer's week 8–10 recordings)</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>Formula</th><th>Part</th><th>Memorise?</th></tr></thead><tbody>
+            <tr><td>Mean delay μ, rms delay spread σ</td><td>(a)</td><td>Given in the exam; know how to weight by power</td></tr>
+            <tr><td>\(\sigma_{T_m}/T_s\lt0.1\) → flat</td><td>(b)</td><td><b>Memorise</b> (blue box)</td></tr>
+            <tr><td>\(f_m=vf_c/c\), \(T_C\approx1/f_m\)</td><td>(b)</td><td>Not named in the recordings; short and often needed first, so worth remembering</td></tr>
+            <tr><td>AFD, LCR</td><td>(c)</td><td>Given (this question gives AFD); be able to say ρ = Z<sub>min</sub>/Z<sub>rms</sub> and that f<sub>m</sub> is the maximum Doppler shift</td></tr>
+            <tr><td>Power ∝ amplitude²</td><td>(c)</td><td>Basic relation, must know</td></tr>
+          </tbody></table></div>
+          <p>Rayleigh fading itself: <b>memorise</b> the exponential SNR distribution \(p(\gamma)=\frac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}\) and the Rayleigh outage \(1-e^{-\gamma_0/\bar\gamma}\) (the lecturer said it "often appears"); the Rayleigh envelope PDF need not be memorised; its derivation will not be asked; try to remember the fade-margin formula.</p>
+
+          <h4><span class="st">(a)</span>What mean delay and rms delay spread are</h4>
+          <p>A very short pulse arrives as several echoes: the strongest at 0 µs (0 dB), a weaker one at 1 µs (−3 dB), the weakest at 3 µs (−6 dB). That table is the power delay profile. The mean delay μ is the "centre of gravity" of the echo energy in time; the rms delay spread σ is how widely the energy is spread. σ is what matters: it decides whether echoes leak into the next symbol.</p>
+          <p><b>Why divide by 1.752:</b> this is a power-weighted average, and a weighted average is divided by the sum of the weights, just like a credit-weighted grade average is divided by the total credits. The linear powers are 1, 0.501 and 0.251, which sum to 1.752.</p>
+          <p>Equivalently, dividing by 1.752 turns powers into energy fractions: 1/1.752 = 0.571, 0.501/1.752 = 0.286, 0.251/1.752 = 0.143, which sum to 1 like a discrete probability distribution. Then μ = 0 × 0.571 + 1 × 0.286 + 3 × 0.143 = 0.716 µs and σ is the standard deviation of that distribution: the same mean and variance as for a discrete random variable in Ch 1b.</p>
+          <ul>
+            <li>The weights must be linear; the dB values (0, −3, −6) are negative and cannot be weights.</li>
+            <li>σ is not "largest delay − smallest delay": the delays span 3 µs but σ is only 1.03 µs, because late echoes carry little power.</li>
+          </ul>
+
+          <h4><span class="st">(b)</span>Fading type: two separate dimensions</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>Dimension</th><th>Question</th><th>Compare</th><th>Here</th></tr></thead><tbody>
+            <tr><td>Flat / frequency-selective</td><td>Do echoes leak into the next symbol?</td><td>σ with T<sub>s</sub>: σ/T<sub>s</sub> &lt; 0.1 → flat</td><td>1.03/20 = 0.052 → flat</td></tr>
+            <tr><td>Slow / fast</td><td>Does the channel change within one symbol?</td><td>T<sub>C</sub> with T<sub>s</sub>: T<sub>s</sub> ≪ T<sub>C</sub> → slow</td><td>20 µs ≪ 8.33 ms → slow</td></tr>
+          </tbody></table></div>
+          <p>The two dimensions are independent: delay spread decides flat/selective, Doppler decides fast/slow. The symbol duration sits in between: \(\sigma_{T_m}\ll T_s\ll T_C\) means flat, slow fading. <b>Answering only one dimension gets half marks</b> (the lecturer said so). If σ/T<sub>s</sub> is only slightly above 0.1 (e.g. 0.15), no conclusion can be drawn; it must be well above 0.1 to call the fading frequency-selective.</p>
+
+          <h4><span class="st">(b)</span>Maximum Doppler shift and coherence time</h4>
+          <p><b>Maximum Doppler shift f<sub>m</sub>:</b> a moving receiver sees a slightly shifted frequency (like a siren rising in pitch as an ambulance approaches). The shift is \(f_d=\frac{v}{c}f_c\cos\theta\), largest when moving straight along the signal direction (cos θ = 1): \(f_m=vf_c/c\). Here v = 72 km/h ÷ 3.6 = 20 m/s and \(f_m=20\times1.8\times10^9/3\times10^8=120\) Hz.</p>
+          <p><b>Coherence time T<sub>C</sub>:</b> how long the channel stays roughly constant. A larger Doppler makes the echo phases change faster, so the channel changes faster and T<sub>C</sub> is shorter: \(T_C\approx1/f_m=1/120=8.33\) ms. They are reciprocals: faster movement, larger f<sub>m</sub>, shorter T<sub>C</sub>; with no movement, f<sub>m</sub> = 0 and the channel does not change.</p>
+          <ul>
+            <li>Divide km/h by 3.6 to get m/s; convert GHz to Hz; put T<sub>C</sub> and T<sub>s</sub> in the same unit before comparing.</li>
+          </ul>
+
+          <h4><span class="st">(c)</span>Where ρ comes from: power ratio first, then square root</h4>
+          <p>ρ = Z<sub>min</sub>/Z<sub>rms</sub> is an <b>amplitude</b> ratio, but the question gives a <b>power</b> condition ("not more than 10 dB below its rms value"). Power is amplitude squared (P = V²/R), so amplitude is the square root of power:</p>
+          <div class="eqb">\[\frac{P_{\min}}{P_{\mathrm{rms}}}=10^{-10/10}=0.1=\Big(\frac{Z_{\min}}{Z_{\mathrm{rms}}}\Big)^2=\rho^2\ \Rightarrow\ \rho=\sqrt{0.1}=0.316\]</div>
+          <div class="tw"><table class="mini"><thead><tr><th>Amplitude ratio ρ</th><th>Power ratio ρ²</th><th>Power down by</th></tr></thead><tbody>
+            <tr><td>0.707</td><td>0.5</td><td>3 dB</td></tr><tr><td>0.316</td><td>0.1</td><td>10 dB</td></tr><tr><td>0.1</td><td>0.01</td><td>20 dB</td></tr>
+          </tbody></table></div>
+          <p>For power, divide the dB value by 10; for amplitude, by 20: \(\rho=10^{-10/20}=0.316\). The ρ² in the exponent of the AFD formula is exactly the power ratio 0.1. Compare Practice 2 Q1: "signal <b>strength</b> is 0.1 of the rms value" refers to amplitude, so there ρ = 0.1 directly. If the question talks about amplitude (strength, envelope), use the number as ρ; if it talks about power or gives dB, convert to a power ratio and take the square root. Taking ρ = 0.1 here would give AFD = 0.33 ms, more than 3 times too small.</p>
+
+          <h4><span class="st">(c)</span>Why divide by 20 µs</h4>
+          <p>20 µs is one symbol duration: 50 k symbols/s → \(T_s=1/50000=20\) µs. A deep fade lasts 1.11 ms = 1110 µs on average, which covers 1110 / 20 ≈ 55 symbols, so one fade affects about 55 consecutive symbols. Equivalently AFD × symbol rate = 1.11×10⁻³ × 50×10³ ≈ 55.</p>
+          <p>Errors therefore come in bursts, not one at a time, which is why interleaving is used to spread consecutive bits apart before error-correcting codes fix them.</p>
+
+          <h4><span class="st">Exam</span>Compact answer for (b) and (c)</h4>
+          <div class="tmpl">
+            <p>Flat or frequency-selective: \(\sigma_{T_m}/T_s=1.03/20=0.052\lt0.1\), so the fading is <b>flat</b>.</p>
+            <p>Fast or slow: \(f_m=vf_c/c=120\) Hz, \(T_C\approx1/f_m=8.33\) ms ≫ \(T_s\) = 20 µs, so the channel is almost constant over a symbol and the fading is <b>slow</b>. Hence the signal experiences flat, slow fading.</p>
+            <p>(c) A power 10 dB below the rms value means \(\rho^2=0.1\), \(\rho=\sqrt{0.1}=0.316\). AFD \(=(e^{0.1}-1)/(\sqrt{2\pi}\times120\times0.316)=1.11\) ms. Symbols per fade \(=\text{AFD}/T_s=1.11\text{ ms}/20\ \mu s\approx55\).</p>
+          </div>
+          <div class="ans">In one line: power-weighted μ and σ (divide by the total power) → σ vs T<sub>s</sub> for flat/selective, T<sub>C</sub> = 1/f<sub>m</sub> vs T<sub>s</sub> for fast/slow → square root of the power ratio gives ρ → AFD ÷ T<sub>s</sub> gives the symbols per fade.</div>
+        </div>
+      </details>'''
