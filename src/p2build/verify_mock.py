@@ -77,3 +77,33 @@ print(f'(c) both on: 1/g0 = {inv0:.4f} g0 = {1/inv0:.4f} -> 0.5 < g0, drop')
 inv0 = 1 + 1 / 20; g0 = 1 / inv0
 print(f'    one on: 1/g0 = {inv0:.4f} g0 = {g0:.4f} ; P1/P = {inv0-1/20:.3f} ; C/B = log2(20/g0) = {log2(20/g0):.4f} bit/s/Hz ; per 1 MHz subchannel C = {log2(20/g0):.3f} Mbps')
 print(f'    equal split (each P/2): C/B = {log2(1+10)+log2(1+0.25):.4f} ; all power to ch1: {log2(21):.4f}')
+
+print('--- p8q7  macro-diversity with independent shadowing, diversity gain in dB')
+Pav, Pth, s = -95, -105, 8
+x1 = (Pav - Pth) / s
+p1 = Q(x1)
+print(f'(a) margin {Pav-Pth} dB ; Q({x1:.2f}) = {p1:.4f}')
+print(f'(b) two independent BS: {p1:.4f}^2 = {p1*p1:.4e}')
+xr = Qinv(p1 * p1)
+print(f'(c) single BS needs Q(x) = {p1*p1:.4e} -> x = {xr:.3f} -> margin {xr*s:.2f} dB -> extra {xr*s-10:.2f} dB')
+print(f'    table-style: Q^-1 ~ 2.29 -> margin {2.29*s:.2f} dB, extra {2.29*s-10:.2f} dB')
+
+print('--- p8q8  fading type, LCR from counts, Rayleigh consistency')
+Bc, fm, Rs = 200e3, 100, 50e3
+print(f'(a) Bs ~ Rs = {Rs/1e3:.0f} kHz < Bc {Bc/1e3:.0f} kHz -> flat ; Bd = fm = {fm} Hz << Bs ; Tc ~ 1/fm = {1e3/fm:.0f} ms >> Ts = {1e6/Rs:.0f} us -> slow')
+N, T, afd = 300, 10, 0.5e-3
+lcr = N / T; frac = lcr * afd; Ts = 1 / Rs
+print(f'(b) LCR = {lcr:.0f}/s ; fraction below = {frac:.4f} ; symbols per fade = {afd/Ts:.1f} ; symbol errors per s = {lcr*afd/Ts:.0f} = {frac*Rs:.0f}')
+rho2 = log(1 / (1 - frac)); rho = sqrt(rho2)
+print(f'(c) rho^2 = ln(1/(1-{frac})) = {rho2:.5f} ; rho = {rho:.4f} ; threshold {dB(rho2):.2f} dB below rms power')
+fm_imp = lcr / (sqrt(2 * pi) * rho * exp(-rho2))
+print(f'    implied fm = {fm_imp:.1f} Hz (vs 100 Hz given)')
+
+print('--- p8q9  SNR / SIR / SINR, interference cancellation, Rayleigh outage capacity')
+S, I, Nn, B = 2.0, 0.5, 0.05, 10e6
+sinr = S / (I + Nn); sir = S / I; snr = S / Nn
+print(f'(a) SNR = {snr:.1f} ({dB(snr):.2f} dB) ; SIR = {sir:.1f} ({dB(sir):.2f} dB) ; SINR = {sinr:.3f} ({dB(sinr):.2f} dB) ; C = {B*log2(1+sinr)/1e6:.2f} Mbps')
+print(f'(b) interference removed: C = {B*log2(1+snr)/1e6:.2f} Mbps ; gain x{log2(1+snr)/log2(1+sinr):.2f}')
+gb, eps = lin(20), 0.01
+gmin = gb * log(1 / (1 - eps))
+print(f'(c) gamma_min = {gmin:.3f} ({dB(gmin):.2f} dB) ; C_eps = {B*log2(1+gmin)/1e6:.2f} Mbps ; AWGN at 20 dB = {B*log2(1+gb)/1e6:.2f} Mbps ; FM = {20-dB(gmin):.2f} dB')

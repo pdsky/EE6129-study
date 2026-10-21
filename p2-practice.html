@@ -155,6 +155,7 @@ ol.steps>li::before{content:counter(s);position:absolute;left:0;top:8px;width:22
 .dsteps{margin-top:10px}
 .score{font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--muted)}
 mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+@media (max-width:640px){mjx-container:not([display="true"]){display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
 footer{margin-top:40px;font-size:.78rem;color:var(--muted);max-width:72ch}
 @media (max-width:640px){h1{font-size:1.9rem}.ex{padding:15px}}
 </style>
@@ -172,7 +173,7 @@ window.MathJax = {
   <a class="back" href="index.html">← 学习站目录</a>
   <div class="eyebrow">EE6129 · Part 2 · Practice 1–7 + 模拟 Quiz</div>
   <h1>Part 2 练习</h1>
-  <p class="lede">讲义配套的 7 份 Practice 共 21 道题，逐题给出中英对照的原题、考点、思路和分步解答，并和官方答案逐一核对；最后是按 10 月 23 日 Quiz 范围自编的 6 道模拟题（两套，每套 3 题）。解答默认是英文（考试要用英文作答），可以随时切换成中文。「随机练习」按同样的题型随机出数字，自动判分。</p>
+  <p class="lede">讲义配套的 7 份 Practice 共 21 道题，逐题给出中英对照的原题、考点、思路和分步解答，并和官方答案逐一核对；最后是按 10 月 23 日 Quiz 范围自编的 9 道模拟题（三套，每套 3 题）。解答默认是英文（考试要用英文作答），可以随时切换成中文。「随机练习」按同样的题型随机出数字，自动判分。</p>
   <div class="notice">所有数字都用程序验算过。<b>20 道题与官方答案一致</b>（其中 P4 Q1 是论述题）；Practice 1 第 1 题按题目数据算不出官方的数字，题下写了原因和标准做法。模拟题是自编的，没有官方答案，数字都用 src/p2build/verify_mock.py 验算过。紫色"补充"框是课外内容。配套讲解见 <a href="p2-learn.html">Part 2 讲解页</a>。</div>
 
   <div class="tabs" role="tablist" aria-label="页面视图">
@@ -197,7 +198,7 @@ window.MathJax = {
       <tr><td><a href="#P5">Practice 5</a></td><td>12</td><td>注水、Alamouti 判决变量、分集-复用折中</td><td><a href="p2-learn.html#ch5">第五章</a>、<a href="p2-learn.html#ch4">4.4</a></td></tr>
       <tr><td><a href="#P6">Practice 6</a></td><td>13</td><td>ISI 误码率、迫零、MMSE 与 DFE</td><td><a href="p2-learn.html#ch6">第六章</a></td></tr>
       <tr><td><a href="#P7">Practice 7</a></td><td>13</td><td>OFDM 子载波数、H_k、等容量 vs 注水、CP</td><td><a href="p2-learn.html#ch7">第七章</a></td></tr>
-      <tr><td><a href="#P8">模拟 Quiz</a></td><td>10</td><td>自编 6 题：全概率与贝叶斯、路径损耗与阴影中断、时延扩展与衰落类型、瑞利中断与衰落余量、最小二乘拟合、香农容量与注水</td><td><a href="p2-learn.html#ch1">第一章</a>、<a href="p2-learn.html#ch2">第二章</a></td></tr>
+      <tr><td><a href="#P8">模拟 Quiz</a></td><td>10</td><td>自编 9 题：全概率与贝叶斯、路径损耗与阴影中断、时延扩展与衰落类型、瑞利中断与衰落余量、最小二乘拟合、香农容量与注水、宏分集增益、LCR 与错误符号数、SINR 与中断容量</td><td><a href="p2-learn.html#ch1">第一章</a>、<a href="p2-learn.html#ch2">第二章</a></td></tr>
     </tbody>
   </table></div>
     <div class="filters" id="filters">
@@ -1863,7 +1864,7 @@ window.MathJax = {
     <!-- /EN:p7q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P8"><h2>模拟 Quiz · 自编 6 题<span class="qz in">Quiz 范围</span></h2><span>第 1b 章 + 第 2 章 · 两套（A、B），每套 3 题，按 30 分钟练</span></div>
+  <div class="group" id="P8"><h2>模拟 Quiz · 自编 9 题<span class="qz in">Quiz 范围</span></h2><span>第 1b 章 + 第 2 章 · 三套（A、B、C），每套 3 题，按 30 分钟练</span></div>
 
   <article class="ex" id="p8q1">
     <header><span class="pg">模拟 A · Q1</span><h3>两种信道状态：全概率、贝叶斯与离散 SNR<span class="qz in">Quiz</span></h3></header>
@@ -2667,6 +2668,230 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Shannon capacity (memorise), noise power N₀B, how capacity depends on bandwidth, water-filling (Ch 2 p.48, p.54–57).</dd><dt>Background</dt><dd>C = B log₂(1 + SNR) with linear SNR; N = N₀B, in dB N₀ + 10 log₁₀B; water-filling: Σ(1/γ₀ − 1/γ<sub>j</sub>) = 1, C = ΣB<sub>j</sub> log₂(γ<sub>j</sub>/γ₀).</dd><dt>Method</dt><dd>(a)(b) Noise → SNR (dB → linear) → Shannon; (c) assume all subchannels on → solve γ₀ → check every γ<sub>j</sub> ≥ γ₀ → if not, drop the worst one and recompute.</dd><dt>Key step</dt><dd>(c) The first γ₀ = 0.656 &gt; 0.5, so subchannel 2 is dropped; with one subchannel left, P₁ = P.</dd><dt>Common mistakes</dt><dd>Putting the SNR in dB into log₂; forgetting that doubling the bandwidth doubles the noise; not checking γ<sub>j</sub> ≥ γ₀ and using a negative power.</dd><dt>Intuition</dt><dd>With fixed power, doubling the bandwidth halves the SNR, so capacity grows by less than a factor of two. Water-filling gives up on very poor subchannels and concentrates the power on the good ones.</dd><dt>Link</dt><dd>Practice 5 Q1 (water-filling over three subchannels); Practice 2 Q3 (Shannon capacity and SINR); Practice 7 Q1 (d).</dd></dl></div>
     </div>
     <!-- /EN:p8q6 -->
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p8q7">
+    <header><span class="pg">模拟 C · Q1</span><h3>宏分集：中断概率降多少、相当于省了多少 dB<span class="qz in">Quiz</span></h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz C (self-written)</span></div>
+      <p>A mobile station is served by two base stations at the same distance. From each base station the average received power due to path loss alone is −95 dBm, and the receiver needs at least −105 dBm to avoid outage. Each link experiences log-normal shadowing with a standard deviation of 8 dB, and the shadowing of the two links is statistically independent.</p>
+      <p class="zh" lang="zh-CN">一个移动台由两个距离相同的基站服务。只考虑路径损耗时，从每个基站收到的平均功率都是 −95 dBm，接收机至少需要 −105 dBm 才不中断。每条链路都有标准差为 8 dB 的对数正态阴影，两条链路的阴影统计独立。</p>
+      <p>(a) Find the outage probability if the mobile can use only one base station. (3 marks)</p>
+      <p class="zh" lang="zh-CN">(a) 如果移动台只能用一个基站，求中断概率。（3 分）</p>
+      <p>(b) With macro-diversity, outage occurs only when both received powers fall below −105 dBm. Find the outage probability. (3 marks)</p>
+      <p class="zh" lang="zh-CN">(b) 采用宏分集时，只有两个接收功率都低于 −105 dBm 才算中断。求中断概率。（3 分）</p>
+      <p>(c) How large would the margin of a single base station have to be to give the same outage probability as in (b)? Hence state the gain of macro-diversity in dB. (4 marks)</p>
+      <p class="zh" lang="zh-CN">(c) 单个基站的余量要多大，才能达到和 (b) 一样的中断概率？据此说明宏分集带来多少 dB 的增益。（4 分）</p>
+    </div>
+    <div class="chips"><span class="chip">P_out = Q(余量/σ)（必背）</span><span class="chip">独立 → 相乘</span><span class="chip">Q 函数反查</span><span class="chip src">讲义第 2 章 p.12–16；第 4 章 p.3–4</span></div>
+    <!-- INTENT:p8q7 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>手机站在两个基站中间，离两边一样远，能同时用两个基站（宏分集）。每条链路都有阴影，而且两边的阴影互不相关。</p>
+          <p>题目先问只用一个基站时断线有多频繁，再问两个一起用时降到多少，最后问：要让单个基站也这么可靠，得多给多少 dB 的余量。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>−95 dBm</td><td>只考虑路径损耗时，每个基站送来的平均功率</td></tr><tr><td>−105 dBm</td><td>门限：低于它就中断</td></tr><tr><td>σ = 8 dB</td><td>阴影的标准差</td></tr><tr><td>统计独立</td><td>一边被挡和另一边被挡没有关系，所以概率可以相乘</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 单个基站：余量 = −95 − (−105) = 10 dB，中断 = Q(余量/σ)。</li>
+            <li><b>(b)</b> 宏分集：两个都低于门限才中断，独立就把两个概率相乘。</li>
+            <li><b>(c)</b> 反过来：(b) 的中断概率，如果只靠一个基站来达到，需要多大的余量？和实际的 10 dB 比，差值就是宏分集的"增益"。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>中断是"两个都低于门限"，不是"任意一个"。</li>
+            <li>(c) 反查 Q 表用的是 (b) 的概率。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>宏分集让中断概率变成乘积，等价于白得了几 dB 的余量；前提是阴影独立。</p>
+          <div class="ans">一句话：两个基站、阴影独立：(a) 单基站 Q(10/8)，(b) 两个相乘，(c) 反查 Q 表求单基站需要的余量，差值就是宏分集增益。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p8q7 -->
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol sol-zh">
+      <p class="idea"><b>思路：</b>阴影 → 单个基站的中断是 Q(余量/σ)；两条链路独立，都低于门限才中断 → 相乘；(c) 反过来，用 (b) 的概率反查 Q 表，看单个基站要多大余量才能做到。</p>
+      <ol class="steps">
+        <li>(a) 余量 = 平均功率 − 门限 = −95 − (−105) = 10 dB。<div class="calc">P_out,1 = Q(10 / 8) = Q(1.25) = 0.106</div></li>
+        <li>(b) 两条链路阴影独立，两个都低于门限的概率 = 各自概率相乘：<div class="calc">P_out,2 = [Q(1.25)]² = 0.1056² = 1.12 × 10⁻²</div></li>
+        <li>(c) 单个基站要达到 Q(x) = 0.0112：查 Q 表，Q(2.28) = 0.0113、Q(2.29) = 0.0110，取 x ≈ 2.29。所需余量 = 2.29 × 8 ≈ 18.3 dB。</li>
+        <li>实际余量只有 10 dB，宏分集相当于多给了 18.3 − 10 ≈ 8.3 dB 的余量，这就是宏分集增益。</li>
+      </ol>
+      <div class="ans">(a) ≈ 0.106（10.6%）；(b) ≈ 1.12 × 10⁻²（1.1%）；(c) 单基站要约 18.3 dB 余量，宏分集增益约 8.3 dB</div>
+      <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
+      <div class="note">中断从 10.6% 降到 1.1%，相当于不加发射功率就白得了 8 dB 多的余量。前提是两条链路的阴影独立；有共同阴影时（P2 Q2 (c)）效果会打折扣。</div>
+      <!-- PKP:p8q7 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>阴影中断 P<sub>out</sub> = Q(余量/σ)（必背）、独立事件相乘、Q 函数反查；宏分集为什么有用（第 2 章 p.12–16；第 4 章 p.3–4）。</dd><dt>前置知识</dt><dd>余量 = 平均功率 − 门限（dBm − dBm = dB）；独立：P(A 且 B) = P(A)P(B)；Q 表正查、反查。</dd><dt>解题套路</dt><dd>(a) 余量 ÷ σ → 查 Q；(b) 平方；(c) 用 (b) 的概率反查 x → 所需余量 = xσ → 和实际余量相减得到宏分集增益。</dd><dt>关键一步</dt><dd>Q(1.25) = 0.1056 → 平方 0.0112 → 反查 x ≈ 2.29 → 18.3 dB，比实际的 10 dB 多出约 8.3 dB。</dd><dt>易错</dt><dd>中断要求两个都低于门限，不是任意一个；Q 的参数是余量除以标准差 σ，不是方差；反查时用的是 (b) 的概率，不是 (a) 的。</dd><dt>直觉</dt><dd>宏分集的好处来自"一个坏了还有另一个"：两条链路同时被挡住的概率是各自概率的乘积。阴影相关时，乘积不成立，效果打折扣（P2 Q2 (c)）。</dd><dt>联系</dt><dd>P2 Q2 (b) 的数字版；P4 Q1 用文字解释同一件事；模拟 A · Q2 是单基站的阴影中断。</dd></dl></div>
+      <!-- /PKP:p8q7 -->
+    </div>
+    <!-- EN:p8q7 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> Shadowing → a single base station's outage is Q(margin/σ); the two links are independent and outage needs both below the threshold → multiply; (c) works backwards from the probability in (b) with the Q table.</p>
+      <ol class="steps">
+        <li>(a) Margin = average power − threshold = −95 − (−105) = 10 dB.<div class="calc">P<sub>out,1</sub> = Q(10 / 8) = Q(1.25) = 0.106</div></li>
+        <li>(b) Independent shadowing, so the probability that both links are below the threshold is the product:<div class="calc">P<sub>out,2</sub> = [Q(1.25)]² = 0.1056² = 1.12 × 10⁻²</div></li>
+        <li>(c) A single base station needs Q(x) = 0.0112: the Q table gives Q(2.28) = 0.0113 and Q(2.29) = 0.0110, so x ≈ 2.29. Required margin = 2.29 × 8 ≈ 18.3 dB.</li>
+        <li>The actual margin is only 10 dB, so macro-diversity is worth about 18.3 − 10 ≈ 8.3 dB of extra margin: the macro-diversity gain.</li>
+      </ol>
+      <div class="ans">(a) ≈ 0.106 (10.6%); (b) ≈ 1.12 × 10⁻² (1.1%); (c) a single base station would need about 18.3 dB of margin; macro-diversity gain ≈ 8.3 dB</div>
+      <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
+      <div class="note">Outage drops from 10.6% to 1.1%, as if more than 8 dB of margin were gained without extra transmit power. This assumes independent shadowing; with common shadowing (P2 Q2 (c)) the gain is smaller.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Shadowing outage P<sub>out</sub> = Q(margin/σ) (memorise), multiplying independent events, inverse Q lookup; why macro-diversity helps (Ch 2 p.12–16; Ch 4 p.3–4).</dd><dt>Background</dt><dd>Margin = average power − threshold (dBm − dBm = dB); independent: P(A and B) = P(A)P(B); forward and inverse Q table lookup.</dd><dt>Method</dt><dd>(a) margin ÷ σ → Q; (b) square it; (c) inverse Q of the probability in (b) → required margin = xσ → subtract the actual margin to get the macro-diversity gain.</dd><dt>Key step</dt><dd>Q(1.25) = 0.1056 → squared 0.0112 → inverse x ≈ 2.29 → 18.3 dB, about 8.3 dB more than the actual 10 dB.</dd><dt>Common mistakes</dt><dd>Outage needs both links below the threshold, not either; Q takes margin over the standard deviation σ, not the variance; the inverse lookup uses the probability from (b), not (a).</dd><dt>Intuition</dt><dd>Macro-diversity works because "if one fails, the other is still there": both links blocked at once has probability equal to the product. With correlated shadowing the product no longer holds and the gain shrinks (P2 Q2 (c)).</dd><dt>Link</dt><dd>A numerical version of P2 Q2 (b); P4 Q1 explains the same idea in words; mock A·Q2 is single-base-station shadowing outage.</dd></dl></div>
+    </div>
+    <!-- /EN:p8q7 -->
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p8q8">
+    <header><span class="pg">模拟 C · Q2</span><h3>衰落类型判断，从观测次数求 LCR 和每秒错误符号数<span class="qz in">Quiz</span></h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz C (self-written)</span></div>
+      <p>A system transmits 50 k symbols/s (take the signal bandwidth to be about 50 kHz) over a mobile channel with a coherence bandwidth of 200 kHz and a maximum Doppler shift of 100 Hz.</p>
+      <p class="zh" lang="zh-CN">某系统以 50 k 符号/秒发送（信号带宽取约 50 kHz），信道的相干带宽为 200 kHz，最大多普勒频移为 100 Hz。</p>
+      <p>(a) Explain how the coherence bandwidth, the Doppler spread and the signal bandwidth determine the type of fading, and classify the fading experienced by this system. (4 marks)</p>
+      <p class="zh" lang="zh-CN">(a) 说明相干带宽、多普勒扩展和信号带宽如何决定衰落类型，并判断本系统经历的衰落类型。（4 分）</p>
+      <p>(b) Over a period of 10 seconds, deep fades are observed 300 times, and the average fade duration is estimated to be 0.5 ms. Assuming that every symbol inside a deep fade is in error, find the level crossing rate, the fraction of time the signal spends in deep fades, and the average number of symbol errors per second. (4 marks)</p>
+      <p class="zh" lang="zh-CN">(b) 10 秒内观测到 300 次深衰落，平均衰落时长估计为 0.5 ms。假设深衰落期间的每个符号都出错，求电平通过率、信号处于深衰落的时间比例，以及平均每秒错误的符号数。（4 分）</p>
+      <p>(c) For Rayleigh fading the level crossing rate and the average fade duration are \(L_Z=\sqrt{2\pi}f_m\rho e^{-\rho^2}\) and \(\bar\tau_Z=\dfrac{e^{\rho^2}-1}{\sqrt{2\pi}f_m\rho}\). Assuming Rayleigh fading, how far (in dB) below the rms power is the deep-fade threshold? (2 marks)</p>
+      <p class="zh" lang="zh-CN">(c) 瑞利衰落的电平通过率和平均衰落时长分别为 \(L_Z=\sqrt{2\pi}f_m\rho e^{-\rho^2}\) 和 \(\bar\tau_Z=\dfrac{e^{\rho^2}-1}{\sqrt{2\pi}f_m\rho}\)。假设为瑞利衰落，深衰落门限比 rms 功率低多少 dB？（2 分）</p>
+    </div>
+    <div class="chips"><span class="chip">衰落类型两个维度</span><span class="chip">LCR = 次数 / 时间</span><span class="chip">LCR × AFD = 时间比例</span><span class="chip src">讲义第 2 章 p.31–43</span></div>
+    <!-- INTENT:p8q8 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>已知信道的相干带宽、最大多普勒频移和系统的符号速率，先判断衰落类型；再根据实际观测到的深衰落次数和平均时长，算出错误有多频繁；最后假设是瑞利衰落，反推深衰落门限有多低。</p>
+          <p>这道题的 (a)(b) 和 2025-26 S2 期末卷 Q1(a)(i)(ii) 是同一类问法。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>B<sub>C</sub> = 200 kHz</td><td>相干带宽：频率相差多远，衰落就不一样了</td></tr><tr><td>f<sub>m</sub> = 100 Hz</td><td>最大多普勒频移，也就是多普勒扩展 B<sub>D</sub>；相干时间 T<sub>C</sub> ≈ 1/f<sub>m</sub></td></tr><tr><td>B<sub>s</sub> ≈ 50 kHz</td><td>信号带宽（约等于符号速率），T<sub>s</sub> = 20 µs</td></tr><tr><td>LCR</td><td>电平通过率：每秒掉进深衰落几次</td></tr><tr><td>AFD</td><td>平均衰落时长：每次在深衰落里待多久</td></tr><tr><td>ρ</td><td>门限幅度 / rms 幅度；ρ² 是功率比</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 先讲判断规则，再套到本题：B<sub>s</sub> 和 B<sub>C</sub> 比定平坦还是频率选择性；B<sub>D</sub> 和 B<sub>s</sub> 比（等价于 T<sub>C</sub> 和 T<sub>s</sub> 比）定慢还是快。</li>
+            <li><b>(b)</b> LCR = 次数 ÷ 观测时间；乘以 AFD 得到在深衰落里的时间比例；AFD ÷ T<sub>s</sub> 是每次衰落覆盖几个符号；再乘 LCR 就是每秒错几个。</li>
+            <li><b>(c)</b> 把题目给的 LCR 和 AFD 两个公式相乘，f<sub>m</sub> 会消掉，剩下 1 − e<sup>−ρ²</sup> = 时间比例，解出 ρ²，再换成 dB。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>衰落类型两个维度都要答，只答一个只给一半分。</li>
+            <li>LCR 是"每秒"的次数，300 次要除以 10 秒。</li>
+            <li>ρ² 才是功率比，"比 rms 功率低多少 dB"用 10 log₁₀(ρ²)。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>衰落类型看两个维度；LCR 和 AFD 一个管"多频繁"、一个管"多长"，相乘就是信号低于门限的时间比例。</p>
+          <div class="ans">一句话：用 B_C、B_D、B_s 判断平坦慢衰落；由观测次数求 LCR、时间比例和每秒错误数；再用 1 − e^(−ρ²) 反推门限低多少 dB。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p8q8 -->
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol sol-zh">
+      <p class="idea"><b>思路：</b>(a) 频率维度看信号带宽和相干带宽，时间维度看多普勒扩展和信号带宽，两个都要答；(b) LCR 就是"每秒掉进深衰落几次"，乘以每次持续多久，就是在深衰落里的时间比例；(c) 把题目给的两个公式相乘，f<sub>m</sub> 消掉，只剩 ρ。</p>
+      <ol class="steps">
+        <li>(a) 频率维度：信号带宽 B<sub>s</sub> 小于相干带宽 B<sub>C</sub> → 平坦衰落（整个信号一起起伏）；B<sub>s</sub> 大于 B<sub>C</sub> → 频率选择性衰落（不同频率衰落不同，有 ISI）。时间维度：多普勒扩展 B<sub>D</sub>（≈ f<sub>m</sub>）远小于 B<sub>s</sub>（等价于相干时间 T<sub>C</sub> 远大于符号时长 T<sub>s</sub>）→ 慢衰落；B<sub>D</sub> 接近或大于 B<sub>s</sub> → 快衰落。</li>
+        <li>本题：B<sub>s</sub> ≈ 50 kHz &lt; B<sub>C</sub> = 200 kHz → 平坦；B<sub>D</sub> = 100 Hz ≪ 50 kHz（T<sub>C</sub> ≈ 1/f<sub>m</sub> = 10 ms ≫ T<sub>s</sub> = 20 µs）→ 慢。结论：<b>平坦慢衰落</b>。</li>
+        <li>(b) LCR = 300 次 / 10 s = 30 次/秒。<div class="calc">深衰落时间比例 = LCR × AFD = 30 × 0.5 ms = 0.015（1.5%）</div></li>
+        <li>T<sub>s</sub> = 1/50k = 20 µs，每次深衰落覆盖 0.5 ms / 20 µs = 25 个符号。<div class="calc">每秒错误符号数 = 30 × 25 = 750（也等于 1.5% × 50 000）</div></li>
+        <li>(c) 两式相乘：\(L_Z\bar\tau_Z=e^{-\rho^2}(e^{\rho^2}-1)=1-e^{-\rho^2}=0.015\)，所以 \(\rho^2=\ln\frac{1}{0.985}=0.0151\)。ρ² 是门限功率和 rms 功率之比：<div class="calc">10 log₁₀(0.0151) = −18.2 dB，门限比 rms 功率低约 18.2 dB（ρ = 0.123）</div></li>
+      </ol>
+      <div class="ans">(a) 平坦（B_s &lt; B_C）、慢（B_D ≪ B_s）衰落；(b) LCR = 30 次/s，深衰落占 1.5% 的时间，每秒约 750 个错误符号；(c) 门限比 rms 功率低约 18.2 dB</div>
+      <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
+      <div class="note">自检：把 ρ = 0.123 代回 LCR 公式，f<sub>m</sub> = 30 / (√(2π) × 0.123 × e<sup>−0.0151</sup>) ≈ 99 Hz，和题目给的 100 Hz 吻合。错误是成片出现的（每次连续 25 个），所以要靠交织把它们打散。</div>
+      <!-- PKP:p8q8 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>用 B<sub>C</sub>、B<sub>D</sub>、B<sub>s</sub> 判断衰落类型（两个维度）；LCR 和 AFD 的含义与换算；瑞利下 LCR × AFD = 1 − e<sup>−ρ²</sup>（第 2 章 p.31–43）。2025-26 S2 Q1(a)(i)(ii) 就是这种题。</dd><dt>前置知识</dt><dd>B<sub>s</sub> &lt; B<sub>C</sub> → 平坦；B<sub>D</sub> ≪ B<sub>s</sub>（T<sub>C</sub> ≫ T<sub>s</sub>）→ 慢；LCR = 每秒往下穿过门限的次数；AFD = 每次在门限下停留的平均时长；ρ 是幅度比，ρ² 是功率比。</dd><dt>解题套路</dt><dd>(a) 两个维度分别比较、分别下结论；(b) LCR = 次数 / 观测时间 → 时间比例 = LCR × AFD → 每次的符号数 = AFD / T<sub>s</sub> → 每秒错误数 = LCR × 每次的符号数；(c) 两个公式相乘消掉 f<sub>m</sub>，解 ρ²。</dd><dt>关键公式</dt><dd>L<sub>Z</sub> τ̄<sub>Z</sub> = 1 − e<sup>−ρ²</sup>；门限比 rms 低 10 log₁₀(1/ρ²) dB。</dd><dt>易错</dt><dd>衰落类型只答一个维度只给一半分（老师说过）；LCR 是"次/秒"，别忘了除以观测时间；ρ² 才是功率比，换 dB 用 10 log₁₀(ρ²)（等价于 20 log₁₀ρ）。</dd><dt>检验</dt><dd>把 ρ 代回 LCR 公式反推 f<sub>m</sub> ≈ 99 Hz，和题目的 100 Hz 吻合。</dd><dt>联系</dt><dd>Practice 2 第 1 题（AFD）；模拟 A · Q3（时延谱 + 多普勒 + AFD）；讲解页 2.4–2.6 节。</dd></dl></div>
+      <!-- /PKP:p8q8 -->
+    </div>
+    <!-- EN:p8q8 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> (a) The frequency dimension compares signal bandwidth with coherence bandwidth, the time dimension compares Doppler spread with signal bandwidth; answer both. (b) LCR is "deep fades per second"; times the duration of each gives the fraction of time in deep fades. (c) Multiply the two given formulas: f<sub>m</sub> cancels and only ρ remains.</p>
+      <ol class="steps">
+        <li>(a) Frequency: signal bandwidth B<sub>s</sub> below the coherence bandwidth B<sub>C</sub> → flat fading (the whole signal fades together); B<sub>s</sub> above B<sub>C</sub> → frequency-selective fading (different frequencies fade differently, ISI). Time: Doppler spread B<sub>D</sub> (≈ f<sub>m</sub>) much smaller than B<sub>s</sub> (equivalently coherence time T<sub>C</sub> much longer than the symbol duration T<sub>s</sub>) → slow fading; B<sub>D</sub> close to or above B<sub>s</sub> → fast fading.</li>
+        <li>Here B<sub>s</sub> ≈ 50 kHz &lt; B<sub>C</sub> = 200 kHz → flat; B<sub>D</sub> = 100 Hz ≪ 50 kHz (T<sub>C</sub> ≈ 1/f<sub>m</sub> = 10 ms ≫ T<sub>s</sub> = 20 µs) → slow. Conclusion: <b>flat, slow fading</b>.</li>
+        <li>(b) LCR = 300 fades / 10 s = 30 per second.<div class="calc">fraction of time in deep fades = LCR × AFD = 30 × 0.5 ms = 0.015 (1.5%)</div></li>
+        <li>T<sub>s</sub> = 1/50k = 20 µs, so each deep fade covers 0.5 ms / 20 µs = 25 symbols.<div class="calc">symbol errors per second = 30 × 25 = 750 (also 1.5% × 50 000)</div></li>
+        <li>(c) Multiply: \(L_Z\bar\tau_Z=e^{-\rho^2}(e^{\rho^2}-1)=1-e^{-\rho^2}=0.015\), so \(\rho^2=\ln\frac{1}{0.985}=0.0151\). ρ² is the ratio of threshold power to rms power:<div class="calc">10 log₁₀(0.0151) = −18.2 dB: the threshold is about 18.2 dB below the rms power (ρ = 0.123)</div></li>
+      </ol>
+      <div class="ans">(a) flat (B<sub>s</sub> &lt; B<sub>C</sub>), slow (B<sub>D</sub> ≪ B<sub>s</sub>) fading; (b) LCR = 30 per second, 1.5% of the time in deep fades, about 750 symbol errors per second; (c) the threshold is about 18.2 dB below the rms power</div>
+      <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
+      <div class="note">Check: putting ρ = 0.123 back into the LCR formula gives f<sub>m</sub> = 30 / (√(2π) × 0.123 × e<sup>−0.0151</sup>) ≈ 99 Hz, matching the 100 Hz given. Errors come in bursts (25 in a row), which is why interleaving is used to spread them out.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Fading type from B<sub>C</sub>, B<sub>D</sub> and B<sub>s</sub> (two dimensions); meaning and use of LCR and AFD; for Rayleigh, LCR × AFD = 1 − e<sup>−ρ²</sup> (Ch 2 p.31–43). 2025-26 S2 Q1(a)(i)(ii) is this type of question.</dd><dt>Background</dt><dd>B<sub>s</sub> &lt; B<sub>C</sub> → flat; B<sub>D</sub> ≪ B<sub>s</sub> (T<sub>C</sub> ≫ T<sub>s</sub>) → slow; LCR = downward crossings of the threshold per second; AFD = average time below the threshold per crossing; ρ is an amplitude ratio, ρ² a power ratio.</dd><dt>Method</dt><dd>(a) Compare and conclude in each dimension separately; (b) LCR = count / observation time → fraction = LCR × AFD → symbols per fade = AFD / T<sub>s</sub> → errors per second = LCR × symbols per fade; (c) multiply the two formulas to cancel f<sub>m</sub> and solve for ρ².</dd><dt>Key formulas</dt><dd>L<sub>Z</sub> τ̄<sub>Z</sub> = 1 − e<sup>−ρ²</sup>; the threshold is 10 log₁₀(1/ρ²) dB below the rms power.</dd><dt>Common mistakes</dt><dd>Answering only one dimension of the fading type gets half marks (the lecturer said so); LCR is per second, so divide by the observation time; ρ² is the power ratio, so in dB use 10 log₁₀(ρ²) (= 20 log₁₀ρ).</dd><dt>Check</dt><dd>Putting ρ back into the LCR formula gives f<sub>m</sub> ≈ 99 Hz, matching the 100 Hz given.</dd><dt>Link</dt><dd>Practice 2 Q1 (AFD); mock A·Q3 (delay profile + Doppler + AFD); learning page sections 2.4–2.6.</dd></dl></div>
+    </div>
+    <!-- /EN:p8q8 -->
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p8q9">
+    <header><span class="pg">模拟 C · Q3</span><h3>SNR、SIR、SINR，干扰消除，瑞利信道的中断容量<span class="qz in">Quiz</span></h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz C (self-written)</span></div>
+      <p>A user's received signal power is 2 mW over a bandwidth of 10 MHz. Co-channel interference from a neighbouring cell arrives with a power of 0.5 mW, and the noise power is 0.05 mW. Treat the interference as Gaussian noise.</p>
+      <p class="zh" lang="zh-CN">某用户在 10 MHz 带宽内的接收信号功率为 2 mW。邻区的同频干扰功率为 0.5 mW，噪声功率为 0.05 mW。把干扰当作高斯噪声处理。</p>
+      <p>(a) Find the SNR, the SIR and the SINR (in dB), and the Shannon capacity of the link. (4 marks)</p>
+      <p class="zh" lang="zh-CN">(a) 求 SNR、SIR 和 SINR（用 dB 表示），以及该链路的香农容量。（4 分）</p>
+      <p>(b) An interference canceller removes the interference completely. Find the new capacity. (2 marks)</p>
+      <p class="zh" lang="zh-CN">(b) 干扰消除器把干扰完全去掉，求新的容量。（2 分）</p>
+      <p>(c) In another cell there is no interference, but the link experiences Rayleigh fading with an average SNR of 20 dB. The capacity that can be maintained with outage probability ε is \(C_\varepsilon=B\log_2\!\big[1+\bar\gamma\ln\frac{1}{1-\varepsilon}\big]\). Find C<sub>ε</sub> for ε = 1% and compare it with the capacity of an AWGN channel with the same 20 dB SNR. (4 marks)</p>
+      <p class="zh" lang="zh-CN">(c) 另一个小区没有干扰，但链路经历瑞利衰落，平均 SNR 为 20 dB。在中断概率 ε 下能维持的容量为 \(C_\varepsilon=B\log_2\!\big[1+\bar\gamma\ln\frac{1}{1-\varepsilon}\big]\)。求 ε = 1% 时的 C<sub>ε</sub>，并和同样 20 dB SNR 的 AWGN 信道容量比较。（4 分）</p>
+    </div>
+    <div class="chips"><span class="chip">SNR / SIR / SINR</span><span class="chip">香农容量（必背）</span><span class="chip">中断容量</span><span class="chip src">讲义第 2 章 p.48–51</span></div>
+    <!-- INTENT:p8q9 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>一个用户同时受到邻区干扰和噪声的影响，先比较 SNR、SIR、SINR 三个比值，算出容量；再看把干扰消掉能提升多少。</p>
+          <p>最后换一个场景：没有干扰但有瑞利衰落，问在允许 1% 中断的前提下，能保证的容量有多大，和没有衰落时差多少。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>2 mW</td><td>想要的信号功率 S</td></tr><tr><td>0.5 mW</td><td>同频干扰功率 I</td></tr><tr><td>0.05 mW</td><td>噪声功率 N</td></tr><tr><td>C<sub>ε</sub></td><td>中断容量：允许 ε 的时间中断时，剩下的时间里能保证的速率（公式题目给了）</td></tr><tr><td>γ̄ = 20 dB</td><td>瑞利信道的平均 SNR</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 算三个比值（分母分别是 N、I、I + N）并换成 dB；干扰当高斯噪声，香农公式用 SINR。</li>
+            <li><b>(b)</b> 干扰被完全消掉，分母只剩噪声，用 SNR 重新算容量。</li>
+            <li><b>(c)</b> 先算公式里的 γ̄ ln(1/(1 − ε))（就是允许 1% 中断时的最小 SNR），再代香农；和同样 20 dB 的 AWGN 容量 B log₂(1 + γ̄) 比较。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>有干扰时香农公式里用 SINR，不是 SNR。</li>
+            <li>(c) 里的 ln 是自然对数，20 dB 先换成 100。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>干扰比噪声大得多时系统是"干扰受限"的，消掉干扰收益最大；瑞利衰落要为最坏的时刻留余量，能保证的容量远低于平均 SNR 对应的容量。</p>
+          <div class="ans">一句话：比较 SNR、SIR、SINR 并求香农容量，看消掉干扰后容量提升多少，再求瑞利信道 1% 中断时的容量并和 AWGN 比较。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p8q9 -->
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol sol-zh">
+      <p class="idea"><b>思路：</b>三个比值只差在分母；干扰当高斯噪声时，香农公式里用 SINR；(c) 公式题目给了，\(\bar\gamma\ln\frac{1}{1-\varepsilon}\) 其实就是瑞利中断公式反解出的最小 SNR。</p>
+      <ol class="steps">
+        <li>(a) SNR = 2 / 0.05 = 40（16.0 dB）；SIR = 2 / 0.5 = 4（6.0 dB）；SINR = 2 /(0.5 + 0.05) = 3.64（5.6 dB）。</li>
+        <li>干扰当高斯噪声，香农公式用 SINR：<div class="calc">C = 10 MHz × log₂(1 + 3.64) = 10 × 2.213 = 22.1 Mbps</div></li>
+        <li>(b) 干扰消除后只剩噪声，用 SNR：<div class="calc">C = 10 MHz × log₂(1 + 40) = 10 × 5.358 = 53.6 Mbps（约 2.4 倍）</div></li>
+        <li>(c) γ̄ = 20 dB = 100，\(\ln\frac{1}{0.99}=0.01005\)，最小 SNR \(\gamma_{\min}=100\times0.01005=1.005\)（约 0 dB）。<div class="calc">C_ε = 10 MHz × log₂(1 + 1.005) = 10 × 1.004 = 10.0 Mbps</div></li>
+        <li>同样 20 dB 的 AWGN 信道：C = 10 MHz × log₂(101) = 66.6 Mbps。瑞利信道要保证 99% 的时间不中断，只能按约 0 dB 的最小 SNR 设计，容量只有 AWGN 的约 1/6.6；γ<sub>min</sub> 比 γ̄ 低约 20 dB，正好是 1% 中断对应的衰落余量。</li>
+      </ol>
+      <div class="ans">(a) SNR 16.0 dB、SIR 6.0 dB、SINR 5.6 dB，C ≈ 22.1 Mbps；(b) C ≈ 53.6 Mbps；(c) C<sub>ε</sub> ≈ 10.0 Mbps，远低于 AWGN 的 66.6 Mbps</div>
+      <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
+      <div class="note">干扰（0.5 mW）比噪声（0.05 mW）大 10 倍，所以 SINR ≈ SIR，这种系统叫"干扰受限"：再降噪声没什么用，要降干扰。SINR 一定比 SNR、SIR 都小。</div>
+      <!-- PKP:p8q9 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>SNR、SIR、SINR 的区别；干扰当高斯噪声时的香农容量；瑞利衰落下的中断容量（第 2 章 p.48–51）。2025-26 S2 Q1(a)(iii) 给了同一个 C<sub>ε</sub> 公式。</dd><dt>前置知识</dt><dd>SNR = S/N，SIR = S/I，SINR = S/(I + N)；C = B log₂(1 + x)，x 用线性值；瑞利中断 1 − e<sup>−γ₀/γ̄</sup>（必背），反解得 γ₀ = γ̄ ln(1/(1 − ε))。</dd><dt>解题套路</dt><dd>(a) 三个比值 → 换 dB → 用 SINR 代香农；(b) I = 0，用 SNR；(c) 先算 γ<sub>min</sub> = γ̄ ln(1/(1 − ε))，再代香农，和 AWGN 的 B log₂(1 + γ̄) 比。</dd><dt>关键一步</dt><dd>ε = 1%：ln(1/0.99) = 0.01005，γ<sub>min</sub> ≈ γ̄/100，也就是比平均低 20 dB，等于衰落余量。</dd><dt>易错</dt><dd>有干扰时用 SINR 不用 SNR；功率单位统一；log₂ 里用线性值；(c) 里的 ln 是自然对数。</dd><dt>直觉</dt><dd>干扰比噪声大 10 倍时 SINR ≈ SIR，系统是"干扰受限"的；瑞利衰落要为最坏的 1% 时间留余量，所以能保证的容量远低于平均 SNR 对应的容量。</dd><dt>联系</dt><dd>Practice 2 第 3 题（SINR、MUD）；模拟 B · Q1（瑞利中断与衰落余量）；讲解页 2.7 节的 SNR/SIR/SINR 和衰落余量补充框。</dd></dl></div>
+      <!-- /PKP:p8q9 -->
+    </div>
+    <!-- EN:p8q9 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> The three ratios differ only in the denominator; with interference treated as Gaussian noise, Shannon's formula uses the SINR; in (c) the formula is given, and \(\bar\gamma\ln\frac{1}{1-\varepsilon}\) is just the minimum SNR obtained by inverting the Rayleigh outage formula.</p>
+      <ol class="steps">
+        <li>(a) SNR = 2 / 0.05 = 40 (16.0 dB); SIR = 2 / 0.5 = 4 (6.0 dB); SINR = 2 / (0.5 + 0.05) = 3.64 (5.6 dB).</li>
+        <li>Interference treated as Gaussian noise, so Shannon uses the SINR:<div class="calc">C = 10 MHz × log₂(1 + 3.64) = 10 × 2.213 = 22.1 Mbps</div></li>
+        <li>(b) After cancellation only noise remains, so use the SNR:<div class="calc">C = 10 MHz × log₂(1 + 40) = 10 × 5.358 = 53.6 Mbps (about 2.4 times)</div></li>
+        <li>(c) γ̄ = 20 dB = 100 and \(\ln\frac{1}{0.99}=0.01005\), so the minimum SNR is \(\gamma_{\min}=100\times0.01005=1.005\) (about 0 dB).<div class="calc">C<sub>ε</sub> = 10 MHz × log₂(1 + 1.005) = 10 × 1.004 = 10.0 Mbps</div></li>
+        <li>An AWGN channel with the same 20 dB: C = 10 MHz × log₂(101) = 66.6 Mbps. To stay out of outage 99% of the time the Rayleigh link must be designed for a minimum SNR of about 0 dB, so its capacity is only about 1/6.6 of the AWGN value; γ<sub>min</sub> is about 20 dB below γ̄, exactly the fade margin for 1% outage.</li>
+      </ol>
+      <div class="ans">(a) SNR 16.0 dB, SIR 6.0 dB, SINR 5.6 dB, C ≈ 22.1 Mbps; (b) C ≈ 53.6 Mbps; (c) C<sub>ε</sub> ≈ 10.0 Mbps, far below the 66.6 Mbps of the AWGN channel</div>
+      <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
+      <div class="note">The interference (0.5 mW) is 10 times the noise (0.05 mW), so SINR ≈ SIR: the system is interference-limited, and lowering the noise further barely helps; the interference must be reduced. The SINR is always smaller than both the SNR and the SIR.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>SNR, SIR and SINR; Shannon capacity with interference treated as Gaussian noise; outage capacity in Rayleigh fading (Ch 2 p.48–51). 2025-26 S2 Q1(a)(iii) gives the same C<sub>ε</sub> formula.</dd><dt>Background</dt><dd>SNR = S/N, SIR = S/I, SINR = S/(I + N); C = B log₂(1 + x) with x linear; Rayleigh outage 1 − e<sup>−γ₀/γ̄</sup> (memorise), inverted γ₀ = γ̄ ln(1/(1 − ε)).</dd><dt>Method</dt><dd>(a) Three ratios → dB → Shannon with the SINR; (b) I = 0, use the SNR; (c) γ<sub>min</sub> = γ̄ ln(1/(1 − ε)) first, then Shannon, and compare with the AWGN B log₂(1 + γ̄).</dd><dt>Key step</dt><dd>For ε = 1%, ln(1/0.99) = 0.01005, so γ<sub>min</sub> ≈ γ̄/100: 20 dB below the average, which is the fade margin.</dd><dt>Common mistakes</dt><dd>With interference use the SINR, not the SNR; keep the power units consistent; use linear values inside log₂; the ln in (c) is the natural log.</dd><dt>Intuition</dt><dd>When interference is 10 times the noise, SINR ≈ SIR and the system is interference-limited. Rayleigh fading forces a margin for the worst 1% of the time, so the capacity that can be guaranteed is far below the one for the average SNR.</dd><dt>Link</dt><dd>Practice 2 Q3 (SINR, MUD); mock B·Q1 (Rayleigh outage and fade margin); the SNR/SIR/SINR and fade-margin boxes in section 2.7 of the learning page.</dd></dl></div>
+    </div>
+    <!-- /EN:p8q9 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 

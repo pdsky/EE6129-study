@@ -786,3 +786,63 @@ EN['p8q6']['detail'] = r'''      <details class="deep">
           <div class="ans">In one line: treat 1/γ<sub>j</sub> as the pool floor and pour in the total power to a flat surface 1/γ₀; good channels get more, poor ones less, very poor ones none. Assume all on → solve γ₀ → check γ<sub>j</sub> ≥ γ₀ → drop and redo if needed.</div>
         </div>
       </details>'''
+
+# ---------------------------------------------------------------- mock Quiz set C
+EN['p8q7'] = dict(
+ idea=r'''Shadowing → a single base station's outage is Q(margin/σ); the two links are independent and outage needs both below the threshold → multiply; (c) works backwards from the probability in (b) with the Q table.''',
+ steps=[
+  r'''(a) Margin = average power − threshold = −95 − (−105) = 10 dB.''' + C('P<sub>out,1</sub> = Q(10 / 8) = Q(1.25) = 0.106'),
+  r'''(b) Independent shadowing, so the probability that both links are below the threshold is the product:''' + C('P<sub>out,2</sub> = [Q(1.25)]² = 0.1056² = 1.12 × 10⁻²'),
+  r'''(c) A single base station needs Q(x) = 0.0112: the Q table gives Q(2.28) = 0.0113 and Q(2.29) = 0.0110, so x ≈ 2.29. Required margin = 2.29 × 8 ≈ 18.3 dB.''',
+  r'''The actual margin is only 10 dB, so macro-diversity is worth about 18.3 − 10 ≈ 8.3 dB of extra margin: the macro-diversity gain.'''],
+ ans='(a) ≈ 0.106 (10.6%); (b) ≈ 1.12 × 10⁻² (1.1%); (c) a single base station would need about 18.3 dB of margin; macro-diversity gain ≈ 8.3 dB',
+ official='none (self-written mock question); all numbers checked by src/p2build/verify_mock.py',
+ note='''Outage drops from 10.6% to 1.1%, as if more than 8 dB of margin were gained without extra transmit power. This assumes independent shadowing; with common shadowing (P2 Q2 (c)) the gain is smaller.''',
+ kp=[
+  ('What it tests', '''Shadowing outage P<sub>out</sub> = Q(margin/σ) (memorise), multiplying independent events, inverse Q lookup; why macro-diversity helps (Ch 2 p.12–16; Ch 4 p.3–4).'''),
+  ('Background', '''Margin = average power − threshold (dBm − dBm = dB); independent: P(A and B) = P(A)P(B); forward and inverse Q table lookup.'''),
+  ('Method', '''(a) margin ÷ σ → Q; (b) square it; (c) inverse Q of the probability in (b) → required margin = xσ → subtract the actual margin to get the macro-diversity gain.'''),
+  ('Key step', '''Q(1.25) = 0.1056 → squared 0.0112 → inverse x ≈ 2.29 → 18.3 dB, about 8.3 dB more than the actual 10 dB.'''),
+  ('Common mistakes', '''Outage needs both links below the threshold, not either; Q takes margin over the standard deviation σ, not the variance; the inverse lookup uses the probability from (b), not (a).'''),
+  ('Intuition', '''Macro-diversity works because "if one fails, the other is still there": both links blocked at once has probability equal to the product. With correlated shadowing the product no longer holds and the gain shrinks (P2 Q2 (c)).'''),
+  ('Link', '''A numerical version of P2 Q2 (b); P4 Q1 explains the same idea in words; mock A·Q2 is single-base-station shadowing outage.''')])
+
+EN['p8q8'] = dict(
+ idea=r'''(a) The frequency dimension compares signal bandwidth with coherence bandwidth, the time dimension compares Doppler spread with signal bandwidth; answer both. (b) LCR is "deep fades per second"; times the duration of each gives the fraction of time in deep fades. (c) Multiply the two given formulas: f<sub>m</sub> cancels and only ρ remains.''',
+ steps=[
+  r'''(a) Frequency: signal bandwidth B<sub>s</sub> below the coherence bandwidth B<sub>C</sub> → flat fading (the whole signal fades together); B<sub>s</sub> above B<sub>C</sub> → frequency-selective fading (different frequencies fade differently, ISI). Time: Doppler spread B<sub>D</sub> (≈ f<sub>m</sub>) much smaller than B<sub>s</sub> (equivalently coherence time T<sub>C</sub> much longer than the symbol duration T<sub>s</sub>) → slow fading; B<sub>D</sub> close to or above B<sub>s</sub> → fast fading.''',
+  r'''Here B<sub>s</sub> ≈ 50 kHz &lt; B<sub>C</sub> = 200 kHz → flat; B<sub>D</sub> = 100 Hz ≪ 50 kHz (T<sub>C</sub> ≈ 1/f<sub>m</sub> = 10 ms ≫ T<sub>s</sub> = 20 µs) → slow. Conclusion: <b>flat, slow fading</b>.''',
+  r'''(b) LCR = 300 fades / 10 s = 30 per second.''' + C('fraction of time in deep fades = LCR × AFD = 30 × 0.5 ms = 0.015 (1.5%)'),
+  r'''T<sub>s</sub> = 1/50k = 20 µs, so each deep fade covers 0.5 ms / 20 µs = 25 symbols.''' + C('symbol errors per second = 30 × 25 = 750 (also 1.5% × 50 000)'),
+  r'''(c) Multiply: \(L_Z\bar\tau_Z=e^{-\rho^2}(e^{\rho^2}-1)=1-e^{-\rho^2}=0.015\), so \(\rho^2=\ln\frac{1}{0.985}=0.0151\). ρ² is the ratio of threshold power to rms power:''' + C('10 log₁₀(0.0151) = −18.2 dB: the threshold is about 18.2 dB below the rms power (ρ = 0.123)')],
+ ans='(a) flat (B<sub>s</sub> &lt; B<sub>C</sub>), slow (B<sub>D</sub> ≪ B<sub>s</sub>) fading; (b) LCR = 30 per second, 1.5% of the time in deep fades, about 750 symbol errors per second; (c) the threshold is about 18.2 dB below the rms power',
+ official='none (self-written mock question); all numbers checked by src/p2build/verify_mock.py',
+ note='''Check: putting ρ = 0.123 back into the LCR formula gives f<sub>m</sub> = 30 / (√(2π) × 0.123 × e<sup>−0.0151</sup>) ≈ 99 Hz, matching the 100 Hz given. Errors come in bursts (25 in a row), which is why interleaving is used to spread them out.''',
+ kp=[
+  ('What it tests', '''Fading type from B<sub>C</sub>, B<sub>D</sub> and B<sub>s</sub> (two dimensions); meaning and use of LCR and AFD; for Rayleigh, LCR × AFD = 1 − e<sup>−ρ²</sup> (Ch 2 p.31–43). 2025-26 S2 Q1(a)(i)(ii) is this type of question.'''),
+  ('Background', '''B<sub>s</sub> &lt; B<sub>C</sub> → flat; B<sub>D</sub> ≪ B<sub>s</sub> (T<sub>C</sub> ≫ T<sub>s</sub>) → slow; LCR = downward crossings of the threshold per second; AFD = average time below the threshold per crossing; ρ is an amplitude ratio, ρ² a power ratio.'''),
+  ('Method', '''(a) Compare and conclude in each dimension separately; (b) LCR = count / observation time → fraction = LCR × AFD → symbols per fade = AFD / T<sub>s</sub> → errors per second = LCR × symbols per fade; (c) multiply the two formulas to cancel f<sub>m</sub> and solve for ρ².'''),
+  ('Key formulas', '''L<sub>Z</sub> τ̄<sub>Z</sub> = 1 − e<sup>−ρ²</sup>; the threshold is 10 log₁₀(1/ρ²) dB below the rms power.'''),
+  ('Common mistakes', '''Answering only one dimension of the fading type gets half marks (the lecturer said so); LCR is per second, so divide by the observation time; ρ² is the power ratio, so in dB use 10 log₁₀(ρ²) (= 20 log₁₀ρ).'''),
+  ('Check', '''Putting ρ back into the LCR formula gives f<sub>m</sub> ≈ 99 Hz, matching the 100 Hz given.'''),
+  ('Link', '''Practice 2 Q1 (AFD); mock A·Q3 (delay profile + Doppler + AFD); learning page sections 2.4–2.6.''')])
+
+EN['p8q9'] = dict(
+ idea=r'''The three ratios differ only in the denominator; with interference treated as Gaussian noise, Shannon's formula uses the SINR; in (c) the formula is given, and \(\bar\gamma\ln\frac{1}{1-\varepsilon}\) is just the minimum SNR obtained by inverting the Rayleigh outage formula.''',
+ steps=[
+  r'''(a) SNR = 2 / 0.05 = 40 (16.0 dB); SIR = 2 / 0.5 = 4 (6.0 dB); SINR = 2 / (0.5 + 0.05) = 3.64 (5.6 dB).''',
+  r'''Interference treated as Gaussian noise, so Shannon uses the SINR:''' + C('C = 10 MHz × log₂(1 + 3.64) = 10 × 2.213 = 22.1 Mbps'),
+  r'''(b) After cancellation only noise remains, so use the SNR:''' + C('C = 10 MHz × log₂(1 + 40) = 10 × 5.358 = 53.6 Mbps (about 2.4 times)'),
+  r'''(c) γ̄ = 20 dB = 100 and \(\ln\frac{1}{0.99}=0.01005\), so the minimum SNR is \(\gamma_{\min}=100\times0.01005=1.005\) (about 0 dB).''' + C('C<sub>ε</sub> = 10 MHz × log₂(1 + 1.005) = 10 × 1.004 = 10.0 Mbps'),
+  r'''An AWGN channel with the same 20 dB: C = 10 MHz × log₂(101) = 66.6 Mbps. To stay out of outage 99% of the time the Rayleigh link must be designed for a minimum SNR of about 0 dB, so its capacity is only about 1/6.6 of the AWGN value; γ<sub>min</sub> is about 20 dB below γ̄, exactly the fade margin for 1% outage.'''],
+ ans='(a) SNR 16.0 dB, SIR 6.0 dB, SINR 5.6 dB, C ≈ 22.1 Mbps; (b) C ≈ 53.6 Mbps; (c) C<sub>ε</sub> ≈ 10.0 Mbps, far below the 66.6 Mbps of the AWGN channel',
+ official='none (self-written mock question); all numbers checked by src/p2build/verify_mock.py',
+ note='''The interference (0.5 mW) is 10 times the noise (0.05 mW), so SINR ≈ SIR: the system is interference-limited, and lowering the noise further barely helps; the interference must be reduced. The SINR is always smaller than both the SNR and the SIR.''',
+ kp=[
+  ('What it tests', '''SNR, SIR and SINR; Shannon capacity with interference treated as Gaussian noise; outage capacity in Rayleigh fading (Ch 2 p.48–51). 2025-26 S2 Q1(a)(iii) gives the same C<sub>ε</sub> formula.'''),
+  ('Background', '''SNR = S/N, SIR = S/I, SINR = S/(I + N); C = B log₂(1 + x) with x linear; Rayleigh outage 1 − e<sup>−γ₀/γ̄</sup> (memorise), inverted γ₀ = γ̄ ln(1/(1 − ε)).'''),
+  ('Method', '''(a) Three ratios → dB → Shannon with the SINR; (b) I = 0, use the SNR; (c) γ<sub>min</sub> = γ̄ ln(1/(1 − ε)) first, then Shannon, and compare with the AWGN B log₂(1 + γ̄).'''),
+  ('Key step', '''For ε = 1%, ln(1/0.99) = 0.01005, so γ<sub>min</sub> ≈ γ̄/100: 20 dB below the average, which is the fade margin.'''),
+  ('Common mistakes', '''With interference use the SINR, not the SNR; keep the power units consistent; use linear values inside log₂; the ln in (c) is the natural log.'''),
+  ('Intuition', '''When interference is 10 times the noise, SINR ≈ SIR and the system is interference-limited. Rayleigh fading forces a margin for the worst 1% of the time, so the capacity that can be guaranteed is far below the one for the average SNR.'''),
+  ('Link', '''Practice 2 Q3 (SINR, MUD); mock B·Q1 (Rayleigh outage and fade margin); the SNR/SIR/SINR and fade-margin boxes in section 2.7 of the learning page.''')])
