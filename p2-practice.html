@@ -173,7 +173,7 @@ window.MathJax = {
   <a class="back" href="index.html">← 学习站目录</a>
   <div class="eyebrow">EE6129 · Part 2 · Practice 1–7 + 模拟 Quiz</div>
   <h1>Part 2 练习</h1>
-  <p class="lede">讲义配套的 7 份 Practice 共 21 道题，逐题给出中英对照的原题、考点、思路和分步解答，并和官方答案逐一核对；最后是按 10 月 23 日 Quiz 范围自编的 9 道模拟题（三套，每套 3 题）。解答默认是英文（考试要用英文作答），可以随时切换成中文。「随机练习」按同样的题型随机出数字，自动判分。</p>
+  <p class="lede">讲义配套的 7 份 Practice 共 21 道题，逐题给出中英对照的原题、考点、思路和分步解答，并和官方答案逐一核对；最后是按 10 月 23 日 Quiz 范围自编的 9 道模拟题（三套，每套 3 题），外加 2 道自由空间 / 双径专项题。解答默认是英文（考试要用英文作答），可以随时切换成中文。「随机练习」按同样的题型随机出数字，自动判分。</p>
   <div class="notice">所有数字都用程序验算过。<b>20 道题与官方答案一致</b>（其中 P4 Q1 是论述题）；Practice 1 第 1 题按题目数据算不出官方的数字，题下写了原因和标准做法。模拟题是自编的，没有官方答案，数字都用 src/p2build/verify_mock.py 验算过。紫色"补充"框是课外内容。配套讲解见 <a href="p2-learn.html">Part 2 讲解页</a>。</div>
 
   <div class="tabs" role="tablist" aria-label="页面视图">
@@ -198,7 +198,7 @@ window.MathJax = {
       <tr><td><a href="#P5">Practice 5</a></td><td>12</td><td>注水、Alamouti 判决变量、分集-复用折中</td><td><a href="p2-learn.html#ch5">第五章</a>、<a href="p2-learn.html#ch4">4.4</a></td></tr>
       <tr><td><a href="#P6">Practice 6</a></td><td>13</td><td>ISI 误码率、迫零、MMSE 与 DFE</td><td><a href="p2-learn.html#ch6">第六章</a></td></tr>
       <tr><td><a href="#P7">Practice 7</a></td><td>13</td><td>OFDM 子载波数、H_k、等容量 vs 注水、CP</td><td><a href="p2-learn.html#ch7">第七章</a></td></tr>
-      <tr><td><a href="#P8">模拟 Quiz</a></td><td>10</td><td>自编 9 题：全概率与贝叶斯、路径损耗与阴影中断、时延扩展与衰落类型、瑞利中断与衰落余量、最小二乘拟合、香农容量与注水、宏分集增益、LCR 与错误符号数、SINR 与中断容量</td><td><a href="p2-learn.html#ch1">第一章</a>、<a href="p2-learn.html#ch2">第二章</a></td></tr>
+      <tr><td><a href="#P8">模拟 Quiz</a></td><td>10</td><td>自编 11 题：全概率与贝叶斯、路径损耗与阴影中断、时延扩展与衰落类型、瑞利中断与衰落余量、最小二乘拟合、香农容量与注水、宏分集增益、LCR 与错误符号数、SINR 与中断容量；专项：自由空间、双径模型</td><td><a href="p2-learn.html#ch1">第一章</a>、<a href="p2-learn.html#ch2">第二章</a></td></tr>
     </tbody>
   </table></div>
     <div class="filters" id="filters">
@@ -1864,7 +1864,7 @@ window.MathJax = {
     <!-- /EN:p7q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P8"><h2>模拟 Quiz · 自编 9 题<span class="qz in">Quiz 范围</span></h2><span>第 1b 章 + 第 2 章 · 三套（A、B、C），每套 3 题，按 30 分钟练</span></div>
+  <div class="group" id="P8"><h2>模拟 Quiz · 自编 11 题<span class="qz in">Quiz 范围</span></h2><span>第 1b 章 + 第 2 章 · 三套（A、B、C）每套 3 题，按 30 分钟练；最后 2 道是自由空间 / 双径专项</span></div>
 
   <article class="ex" id="p8q1">
     <header><span class="pg">模拟 A · Q1</span><h3>两种信道状态：全概率、贝叶斯与离散 SNR<span class="qz in">Quiz</span></h3></header>
@@ -2892,6 +2892,152 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>SNR, SIR and SINR; Shannon capacity with interference treated as Gaussian noise; outage capacity in Rayleigh fading (Ch 2 p.48–51). 2025-26 S2 Q1(a)(iii) gives the same C<sub>ε</sub> formula.</dd><dt>Background</dt><dd>SNR = S/N, SIR = S/I, SINR = S/(I + N); C = B log₂(1 + x) with x linear; Rayleigh outage 1 − e<sup>−γ₀/γ̄</sup> (memorise), inverted γ₀ = γ̄ ln(1/(1 − ε)).</dd><dt>Method</dt><dd>(a) Three ratios → dB → Shannon with the SINR; (b) I = 0, use the SNR; (c) γ<sub>min</sub> = γ̄ ln(1/(1 − ε)) first, then Shannon, and compare with the AWGN B log₂(1 + γ̄).</dd><dt>Key step</dt><dd>For ε = 1%, ln(1/0.99) = 0.01005, so γ<sub>min</sub> ≈ γ̄/100: 20 dB below the average, which is the fade margin.</dd><dt>Common mistakes</dt><dd>With interference use the SINR, not the SNR; keep the power units consistent; use linear values inside log₂; the ln in (c) is the natural log.</dd><dt>Intuition</dt><dd>When interference is 10 times the noise, SINR ≈ SIR and the system is interference-limited. Rayleigh fading forces a margin for the worst 1% of the time, so the capacity that can be guaranteed is far below the one for the average SNR.</dd><dt>Link</dt><dd>Practice 2 Q3 (SINR, MUD); mock B·Q1 (Rayleigh outage and fade margin); the SNR/SIR/SINR and fade-margin boxes in section 2.7 of the learning page.</dd></dl></div>
     </div>
     <!-- /EN:p8q9 -->
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p8q10">
+    <header><span class="pg">专项 · Q1</span><h3>自由空间模型，以及为什么不能拿它代替简化模型<span class="qz in">Quiz</span></h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Focused practice (self-written)</span></div>
+      <p>A transmitter radiates 1 W at 900 MHz. Both antennas have unity gain (\(G_t=G_r=1\)).</p>
+      <p class="zh" lang="zh-CN">某发射机在 900 MHz 上发射 1 W，收发天线增益都是 1（\(G_t=G_r=1\)）。</p>
+      <p>(a) Assuming free-space propagation, find the received power in dBm and the path loss in dB at a distance of 1 km. (3 marks)</p>
+      <p class="zh" lang="zh-CN">(a) 假设自由空间传播，求 1 km 处的接收功率（dBm）和路径损耗（dB）。（3 分）</p>
+      <p>(b) By how many dB does the free-space received power drop when the distance is doubled to 2 km? By how many more dB when the carrier frequency is then doubled to 1.8 GHz? (3 marks)</p>
+      <p class="zh" lang="zh-CN">(b) 距离加倍到 2 km，自由空间接收功率下降多少 dB？再把载频加倍到 1.8 GHz，又下降多少 dB？（3 分）</p>
+      <p>(c) For an urban macrocell, the simplified path loss model with \(K_{dB}=-31.5\) dB, \(d_0=1\) m and γ = 3.5 is used instead. Find the received power at 1 km and explain why using the free-space model here would be a serious mistake. (4 marks)</p>
+      <p class="zh" lang="zh-CN">(c) 对城区宏蜂窝，改用简化路径损耗模型：\(K_{dB}=-31.5\) dB，\(d_0=1\) m，γ = 3.5。求 1 km 处的接收功率，并说明为什么这里用自由空间模型是严重的错误。（4 分）</p>
+    </div>
+    <div class="chips"><span class="chip">自由空间 Friis 公式</span><span class="chip">P ∝ d⁻²、f⁻²</span><span class="chip">简化模型 vs 自由空间</span><span class="chip src">讲义第 2 章 p.3–4、p.8</span></div>
+    <!-- INTENT:p8q10 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>讲义第 2 章 p.4 的自由空间模型：发射机和接收机之间什么都不挡，功率像吹气球一样均匀撒到越来越大的球面上，所以按 d⁻² 减少。</p>
+          <p>这道题先用它算一次，再换成城区用的简化路径损耗模型算一次，看看两者差多少。老师提醒过，往年 Quiz 有学生把简化模型的题用成了自由空间模型。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>1 W</td><td>发射功率，换成 30 dBm</td></tr><tr><td>900 MHz</td><td>载频，λ = c/f = 0.333 m</td></tr><tr><td>\(G_t=G_r=1\)</td><td>收发天线增益（0 dB）</td></tr><tr><td>\(P_r=P_tG_tG_r(\lambda/4\pi d)^2\)</td><td>自由空间公式（Friis）</td></tr><tr><td>γ = 3.5</td><td>(c) 里城区的路径损耗指数；自由空间相当于 γ = 2</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 用自由空间公式算 1 km 处的接收功率和路径损耗。</li>
+            <li><b>(b)</b> 距离加倍、频率加倍各让功率少多少 dB：看它们在公式里是几次方。</li>
+            <li><b>(c)</b> 同一个场景换成简化模型（γ = 3.5）再算，和自由空间比较，解释为什么城区不能用自由空间。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>题目说 simplified path loss model 时，不要套自由空间公式。</li>
+            <li>λ/4πd 是幅度比，取 dB 用 20 log₁₀。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>自由空间是理想情况，只适合"什么都不挡"的场合；城区要用简化模型，两者在 1 km 处就能差几十 dB。</p>
+          <div class="ans">一句话：用自由空间公式算 1 km 的接收功率，看距离和频率加倍各少几 dB，再和 γ = 3.5 的简化模型比较，说明为什么不能混用。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p8q10 -->
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol sol-zh">
+      <p class="idea"><b>思路：</b>自由空间公式 \(P_r=P_tG_tG_r\big(\frac{\lambda}{4\pi d}\big)^2\) 取 dB 计算；距离和频率都以平方出现，各加倍一次就各少 6 dB；(c) 用简化模型算一遍，和自由空间比，差几十 dB。</p>
+      <ol class="steps">
+        <li>(a) \(\lambda=c/f=3\times10^8/9\times10^8=0.333\) m，\(P_t\) = 1 W = 30 dBm。<div class="calc">P_r = 30 + 20 log₁₀(0.333 / (4π × 1000)) = 30 + 20 log₁₀(2.65×10⁻⁵) = 30 − 91.5 = −61.5 dBm</div>路径损耗 = 30 − (−61.5) = 91.5 dB（也可以用 Part A 的 32.44 + 20 log₁₀900 + 20 log₁₀1 = 91.5 dB 核对）。</li>
+        <li>(b) \(P_r\propto d^{-2}\)：距离加倍，少 20 log₁₀2 = 6.0 dB（−67.6 dBm）。\(P_r\propto\lambda^2\propto f^{-2}\)：频率再加倍，再少 6.0 dB（−73.6 dBm）。</li>
+        <li>(c) 简化模型：<div class="calc">P_r = 30 + (−31.5) − 10 × 3.5 × log₁₀1000 = 30 − 31.5 − 105 = −106.5 dBm</div></li>
+        <li>和自由空间的 −61.5 dBm 差了约 45 dB（3 万多倍）。城区有楼房遮挡、地面反射，功率随距离衰减得快得多（γ = 3.5 而不是 2）；用自由空间会严重高估接收功率，覆盖范围、中断概率全都算错。题目说 simplified path loss model，就一定要用它。</li>
+      </ol>
+      <div class="ans">(a) P_r ≈ −61.5 dBm，路径损耗 ≈ 91.5 dB；(b) 各少 6 dB（−67.6 dBm，再到 −73.6 dBm）；(c) −106.5 dBm，比自由空间低约 45 dB，用自由空间会严重高估</div>
+      <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
+      <div class="note">一个巧合：900 MHz 时自由空间在 1 m 处的增益 20 log₁₀(λ/4π) = −31.5 dB，正好和 (c) 用的 K<sub>dB</sub> 一样。所以两种模型在 1 m 处一样，差别全在指数：每 10 倍距离，自由空间少 20 dB，γ = 3.5 时少 35 dB。老师提醒过，往年 Quiz 有学生把简化模型的题用成了自由空间模型。</div>
+      <!-- PKP:p8q10 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>自由空间（Friis）公式及其 d⁻²、f⁻² 规律；和简化路径损耗模型的区别（第 2 章 p.3–4、p.8）。练习和历年卷没直接考过，但老师提醒过：往年 Quiz 有学生把简化模型的题用成了自由空间模型。</dd><dt>前置知识</dt><dd>P<sub>r</sub> = P<sub>t</sub>G<sub>t</sub>G<sub>r</sub>(λ/4πd)²；λ = c/f；1 W = 30 dBm；简化模型 P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 10γ log₁₀(d/d₀)。</dd><dt>解题套路</dt><dd>(a) 先求 λ，dB 形式：P<sub>r</sub> = P<sub>t</sub> + 20 log₁₀(λ/4πd)；(b) 平方关系 → 每加倍一次 6 dB；(c) 代简化模型，和 (a) 比较。</dd><dt>关键数字</dt><dd>900 MHz、1 km：路径损耗 91.5 dB；γ = 2 时每 10 倍距离少 20 dB，γ = 3.5 时少 35 dB；1 km 处两模型差约 45 dB。</dd><dt>易错</dt><dd>题目写 simplified path loss model 就不能用自由空间；W 要换成 dBm；20 log₁₀ 而不是 10 log₁₀（λ/4πd 是幅度比，平方后才是功率比）。</dd><dt>直觉</dt><dd>自由空间是"什么都不挡"的理想情况，功率只按球面扩散减少；真实城区有遮挡和反射，衰减快得多。</dd><dt>联系</dt><dd>Part A 第五章（n = 2）；专项 Q2 双径（n = 4）；模拟 A · Q2（简化模型）。</dd></dl></div>
+      <!-- /PKP:p8q10 -->
+    </div>
+    <!-- EN:p8q10 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> Use the free-space formula \(P_r=P_tG_tG_r\big(\frac{\lambda}{4\pi d}\big)^2\) in dB; distance and frequency both appear squared, so each doubling costs 6 dB; in (c) compute with the simplified model and compare: the difference is tens of dB.</p>
+      <ol class="steps">
+        <li>(a) \(\lambda=c/f=3\times10^8/9\times10^8=0.333\) m, \(P_t\) = 1 W = 30 dBm.<div class="calc">P<sub>r</sub> = 30 + 20 log₁₀(0.333 / (4π × 1000)) = 30 + 20 log₁₀(2.65×10⁻⁵) = 30 − 91.5 = −61.5 dBm</div>Path loss = 30 − (−61.5) = 91.5 dB (check with Part A's 32.44 + 20 log₁₀900 + 20 log₁₀1 = 91.5 dB).</li>
+        <li>(b) \(P_r\propto d^{-2}\): doubling the distance costs 20 log₁₀2 = 6.0 dB (−67.6 dBm). \(P_r\propto\lambda^2\propto f^{-2}\): doubling the frequency costs another 6.0 dB (−73.6 dBm).</li>
+        <li>(c) Simplified model:<div class="calc">P<sub>r</sub> = 30 + (−31.5) − 10 × 3.5 × log₁₀1000 = 30 − 31.5 − 105 = −106.5 dBm</div></li>
+        <li>That is about 45 dB (over 30 000 times) below the free-space −61.5 dBm. In a city, buildings block and reflect the signal and the power falls much faster with distance (γ = 3.5 instead of 2); the free-space model would grossly overestimate the received power and get the coverage and outage completely wrong. When a question says "simplified path loss model", use it.</li>
+      </ol>
+      <div class="ans">(a) P<sub>r</sub> ≈ −61.5 dBm, path loss ≈ 91.5 dB; (b) 6 dB each (−67.6 dBm, then −73.6 dBm); (c) −106.5 dBm, about 45 dB below free space, so free space would grossly overestimate</div>
+      <div class="official"><b>Official answer:</b> none (self-written practice question); all numbers checked by src/p2build/verify_mock.py</div>
+      <div class="note">A coincidence: at 900 MHz the free-space gain at 1 m, 20 log₁₀(λ/4π) = −31.5 dB, equals the K<sub>dB</sub> used in (c). So both models agree at 1 m and differ only in the exponent: per decade of distance, free space loses 20 dB while γ = 3.5 loses 35 dB. The lecturer warned that in a past quiz some students used the free-space model on a simplified-model question.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The free-space (Friis) formula and its d⁻², f⁻² behaviour; how it differs from the simplified path loss model (Ch 2 p.3–4, p.8). Not asked directly in the practices or past papers, but the lecturer warned that past quiz students used free space on a simplified-model question.</dd><dt>Background</dt><dd>P<sub>r</sub> = P<sub>t</sub>G<sub>t</sub>G<sub>r</sub>(λ/4πd)²; λ = c/f; 1 W = 30 dBm; simplified model P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 10γ log₁₀(d/d₀).</dd><dt>Method</dt><dd>(a) Find λ, then in dB P<sub>r</sub> = P<sub>t</sub> + 20 log₁₀(λ/4πd); (b) squared dependence → 6 dB per doubling; (c) use the simplified model and compare with (a).</dd><dt>Key numbers</dt><dd>900 MHz, 1 km: path loss 91.5 dB; per decade of distance γ = 2 loses 20 dB, γ = 3.5 loses 35 dB; at 1 km the two models differ by about 45 dB.</dd><dt>Common mistakes</dt><dd>If the question says simplified path loss model, do not use free space; convert W to dBm; 20 log₁₀, not 10 log₁₀ (λ/4πd is an amplitude ratio, its square is the power ratio).</dd><dt>Intuition</dt><dd>Free space is the ideal "nothing in the way" case where power only spreads over a sphere; real cities block and reflect, so the power falls much faster.</dd><dt>Link</dt><dd>Part A Ch 5 (n = 2); focused Q2 two-ray (n = 4); mock A·Q2 (simplified model).</dd></dl></div>
+    </div>
+    <!-- /EN:p8q10 -->
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p8q11">
+    <header><span class="pg">专项 · Q2</span><h3>双径模型：临界距离和 d⁻⁴<span class="qz in">Quiz</span></h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Focused practice (self-written)</span></div>
+      <p>A base station antenna at height \(h_t=30\) m transmits 10 W at 900 MHz to a mobile antenna at height \(h_r=1.5\) m. Both antennas have unity gain. Use the two-ray model \(P_r\approx P_tG_tG_r\dfrac{(h_th_r)^2}{d^4}\) for \(d>d_c=\dfrac{4h_th_r}{\lambda}\).</p>
+      <p class="zh" lang="zh-CN">基站天线高 \(h_t=30\) m，在 900 MHz 上发射 10 W，移动台天线高 \(h_r=1.5\) m，两根天线增益都是 1。当 \(d>d_c=\dfrac{4h_th_r}{\lambda}\) 时使用双径模型 \(P_r\approx P_tG_tG_r\dfrac{(h_th_r)^2}{d^4}\)。</p>
+      <p>(a) Find the critical distance \(d_c\). (2 marks)</p>
+      <p class="zh" lang="zh-CN">(a) 求临界距离 \(d_c\)。（2 分）</p>
+      <p>(b) Find the received power at d = 5 km with the two-ray model, and compare it with the free-space value at the same distance. (4 marks)</p>
+      <p class="zh" lang="zh-CN">(b) 用双径模型求 d = 5 km 处的接收功率，并和同距离的自由空间值比较。（4 分）</p>
+      <p>(c) Beyond \(d_c\), how does the two-ray received power change when (i) the distance is doubled, (ii) the carrier frequency is doubled, (iii) the base station antenna height is doubled? (4 marks)</p>
+      <p class="zh" lang="zh-CN">(c) 在 \(d_c\) 以外，以下情况双径接收功率怎么变化：(i) 距离加倍；(ii) 载频加倍；(iii) 基站天线高度加倍？（4 分）</p>
+    </div>
+    <div class="chips"><span class="chip">双径模型</span><span class="chip">临界距离 d_c</span><span class="chip">P ∝ d⁻⁴</span><span class="chip src">讲义第 2 章 p.5</span></div>
+    <!-- INTENT:p8q11 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>讲义第 2 章 p.5 的双径模型：除了直射波，还有一条从地面反射过来的波。离得远时，两条波几乎反相，大部分互相抵消，所以功率比自由空间掉得快，按 d⁻⁴ 减少。</p>
+          <p>题目让你算出 d⁻⁴ 公式开始适用的临界距离，用它算远处的功率，再看距离、频率、天线高度变化时功率怎么变。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(h_t=30\) m、\(h_r=1.5\) m</td><td>基站和手机的天线高度</td></tr><tr><td>\(d_c=4h_th_r/\lambda\)</td><td>临界距离：比它远，才按 d⁻⁴ 单调下降</td></tr><tr><td>\(P_r\approx P_tG_tG_r(h_th_r)^2/d^4\)</td><td>远处的双径公式，里面没有 λ</td></tr><tr><td>10 W、900 MHz</td><td>发射功率和载频</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 代公式求临界距离。</li>
+            <li><b>(b)</b> 5 km 比临界距离远得多，用双径公式算接收功率，再和同距离的自由空间结果比较。</li>
+            <li><b>(c)</b> 看 d、λ、h<sub>t</sub> 在公式里分别是几次方：距离加倍、频率加倍、天线加高一倍，功率各变多少 dB。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>d 小于 d<sub>c</sub> 时不能用 d⁻⁴ 公式。</li>
+            <li>远处的双径公式里没有 λ，所以频率变了，功率不变。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>双径是 γ = 4 的例子，自由空间是 γ = 2 的例子；真实环境的 γ 常在两者之间，这就是简化模型里 γ 要靠实测拟合的原因。</p>
+          <div class="ans">一句话：算双径模型的临界距离，用 d⁻⁴ 公式求 5 km 的功率并和自由空间比，再看距离、频率、天线高度加倍的影响。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p8q11 -->
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol sol-zh">
+      <p class="idea"><b>思路：</b>先由 λ 算临界距离；d 大于它时直接代双径公式（注意里面没有 λ）；(c) 看每个量在公式里的幂次，换成 dB。</p>
+      <ol class="steps">
+        <li>(a) \(\lambda=0.333\) m：<div class="calc">d_c = 4 × 30 × 1.5 / 0.333 = 540 m</div></li>
+        <li>(b) 5 km 远大于 540 m，可以用双径公式：<div class="calc">P_r = 10 × (30 × 1.5)² / 5000⁴ = 10 × 2025 / 6.25×10¹⁴ = 3.24×10⁻¹¹ W = −74.9 dBm</div></li>
+        <li>同距离的自由空间：\(P_r=10\times\big(\frac{0.333}{4\pi\times5000}\big)^2=2.81\times10^{-10}\) W = −65.5 dBm。双径低了约 9.4 dB：远处地面反射和直射几乎反相抵消，所以比自由空间衰减得快。</li>
+        <li>(c)(i) \(P_r\propto d^{-4}\)：距离加倍，少 40 log₁₀2 = 12 dB（自由空间只少 6 dB）。(ii) 公式里没有 λ：频率加倍，<b>不变</b>（自由空间会少 6 dB）。(iii) \(P_r\propto h_t^2\)：天线高度加倍，多 20 log₁₀2 = 6 dB。</li>
+      </ol>
+      <div class="ans">(a) d_c = 540 m；(b) −74.9 dBm，比自由空间（−65.5 dBm）低约 9.4 dB；(c) 距离加倍 −12 dB，频率加倍不变，天线高度加倍 +6 dB</div>
+      <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
+      <div class="note">d &lt; d<sub>c</sub> 时直射和反射时而相加、时而抵消，功率随距离上下起伏，不能用 d⁻⁴ 公式；d &gt; d<sub>c</sub> 才单调按 d⁻⁴ 下降。这就是 Part A 第五章说的 n = 2（自由空间）和 n = 4（双径远处），也是简化模型里 γ 常在 2 到 4 之间的原因之一。</div>
+      <!-- PKP:p8q11 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>双径模型：临界距离 d<sub>c</sub> = 4h<sub>t</sub>h<sub>r</sub>/λ，远处 P<sub>r</sub> ∝ (h<sub>t</sub>h<sub>r</sub>)²/d⁴（第 2 章 p.5）。练习和历年卷没直接考过。</dd><dt>前置知识</dt><dd>λ = c/f；功率 dB = 10 log₁₀(W) + 30 dBm；幂次换 dB：x 的 n 次方，x 加倍就是 n × 3 dB。</dd><dt>解题套路</dt><dd>(a) 代 d<sub>c</sub>；(b) 确认 d &gt; d<sub>c</sub> 后代双径公式，再和自由空间比；(c) 看 d、λ、h<sub>t</sub> 在公式里的幂次：d⁻⁴ → −12 dB，λ⁰ → 不变，h<sub>t</sub>² → +6 dB。</dd><dt>关键数字</dt><dd>d<sub>c</sub> = 540 m；5 km 处双径 −74.9 dBm，自由空间 −65.5 dBm，差 9.4 dB。</dd><dt>易错</dt><dd>d &lt; d<sub>c</sub> 时不能用 d⁻⁴ 公式；双径远处的公式里没有 λ，频率变了功率不变；天线高度是平方关系。</dd><dt>直觉</dt><dd>远处地面反射波和直射波几乎反相，大部分抵消，只剩一点差值，所以比自由空间衰减得快；把天线架高可以拉大两条路径的差，收到的功率就多一些。</dd><dt>联系</dt><dd>Part A 第五章（n = 4）；专项 Q1 自由空间（n = 2）；讲解页 2.1 节的推导框。</dd></dl></div>
+      <!-- /PKP:p8q11 -->
+    </div>
+    <!-- EN:p8q11 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> Find the critical distance from λ; beyond it, use the two-ray formula directly (note that it contains no λ); for (c), read off the power of each quantity in the formula and convert to dB.</p>
+      <ol class="steps">
+        <li>(a) \(\lambda=0.333\) m:<div class="calc">d<sub>c</sub> = 4 × 30 × 1.5 / 0.333 = 540 m</div></li>
+        <li>(b) 5 km is far beyond 540 m, so the two-ray formula applies:<div class="calc">P<sub>r</sub> = 10 × (30 × 1.5)² / 5000⁴ = 10 × 2025 / 6.25×10¹⁴ = 3.24×10⁻¹¹ W = −74.9 dBm</div></li>
+        <li>Free space at the same distance: \(P_r=10\times\big(\frac{0.333}{4\pi\times5000}\big)^2=2.81\times10^{-10}\) W = −65.5 dBm. The two-ray value is about 9.4 dB lower: far away the ground reflection nearly cancels the direct wave, so the power falls faster than in free space.</li>
+        <li>(c)(i) \(P_r\propto d^{-4}\): doubling the distance costs 40 log₁₀2 = 12 dB (free space only 6 dB). (ii) There is no λ in the formula: doubling the frequency changes <b>nothing</b> (free space would lose 6 dB). (iii) \(P_r\propto h_t^2\): doubling the antenna height gains 20 log₁₀2 = 6 dB.</li>
+      </ol>
+      <div class="ans">(a) d<sub>c</sub> = 540 m; (b) −74.9 dBm, about 9.4 dB below free space (−65.5 dBm); (c) doubling distance −12 dB, doubling frequency no change, doubling antenna height +6 dB</div>
+      <div class="official"><b>Official answer:</b> none (self-written practice question); all numbers checked by src/p2build/verify_mock.py</div>
+      <div class="note">For d &lt; d<sub>c</sub> the direct and reflected waves alternately add and cancel, so the power rises and falls with distance and the d⁻⁴ formula does not apply; only beyond d<sub>c</sub> does it fall steadily as d⁻⁴. This is the n = 2 (free space) and n = 4 (two-ray, far) of Part A Ch 5, and one reason why γ in the simplified model usually lies between 2 and 4.</div>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The two-ray model: critical distance d<sub>c</sub> = 4h<sub>t</sub>h<sub>r</sub>/λ and P<sub>r</sub> ∝ (h<sub>t</sub>h<sub>r</sub>)²/d⁴ far away (Ch 2 p.5). Not asked directly in the practices or past papers.</dd><dt>Background</dt><dd>λ = c/f; power in dBm = 10 log₁₀(W) + 30; powers to dB: if a quantity appears to the n-th power, doubling it changes the result by n × 3 dB.</dd><dt>Method</dt><dd>(a) Substitute into d<sub>c</sub>; (b) check d &gt; d<sub>c</sub>, use the two-ray formula, then compare with free space; (c) read the powers of d, λ and h<sub>t</sub>: d⁻⁴ → −12 dB, λ⁰ → no change, h<sub>t</sub>² → +6 dB.</dd><dt>Key numbers</dt><dd>d<sub>c</sub> = 540 m; at 5 km two-ray −74.9 dBm, free space −65.5 dBm, a 9.4 dB difference.</dd><dt>Common mistakes</dt><dd>The d⁻⁴ formula is not valid for d &lt; d<sub>c</sub>; the far two-ray formula has no λ, so the power does not change with frequency; antenna height enters squared.</dd><dt>Intuition</dt><dd>Far away the ground reflection is almost opposite in phase to the direct wave and cancels most of it, leaving a small difference, so the power falls faster than in free space; raising the antenna increases the path difference and recovers some power.</dd><dt>Link</dt><dd>Part A Ch 5 (n = 4); focused Q1 free space (n = 2); the derivation box in section 2.1 of the learning page.</dd></dl></div>
+    </div>
+    <!-- /EN:p8q11 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 

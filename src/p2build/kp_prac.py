@@ -289,6 +289,24 @@ k('p8q9',
   ('直觉', '干扰比噪声大 10 倍时 SINR ≈ SIR，系统是"干扰受限"的；瑞利衰落要为最坏的 1% 时间留余量，所以能保证的容量远低于平均 SNR 对应的容量。'),
   ('联系', 'Practice 2 第 3 题（SINR、MUD）；模拟 B · Q1（瑞利中断与衰落余量）；讲解页 2.7 节的 SNR/SIR/SINR 和衰落余量补充框。'))
 
+k('p8q10',
+  ('考什么', '自由空间（Friis）公式及其 d⁻²、f⁻² 规律；和简化路径损耗模型的区别（第 2 章 p.3–4、p.8）。练习和历年卷没直接考过，但老师提醒过：往年 Quiz 有学生把简化模型的题用成了自由空间模型。'),
+  ('前置知识', 'P<sub>r</sub> = P<sub>t</sub>G<sub>t</sub>G<sub>r</sub>(λ/4πd)²；λ = c/f；1 W = 30 dBm；简化模型 P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 10γ log₁₀(d/d₀)。'),
+  ('解题套路', '(a) 先求 λ，dB 形式：P<sub>r</sub> = P<sub>t</sub> + 20 log₁₀(λ/4πd)；(b) 平方关系 → 每加倍一次 6 dB；(c) 代简化模型，和 (a) 比较。'),
+  ('关键数字', '900 MHz、1 km：路径损耗 91.5 dB；γ = 2 时每 10 倍距离少 20 dB，γ = 3.5 时少 35 dB；1 km 处两模型差约 45 dB。'),
+  ('易错', '题目写 simplified path loss model 就不能用自由空间；W 要换成 dBm；20 log₁₀ 而不是 10 log₁₀（λ/4πd 是幅度比，平方后才是功率比）。'),
+  ('直觉', '自由空间是"什么都不挡"的理想情况，功率只按球面扩散减少；真实城区有遮挡和反射，衰减快得多。'),
+  ('联系', 'Part A 第五章（n = 2）；专项 Q2 双径（n = 4）；模拟 A · Q2（简化模型）。'))
+
+k('p8q11',
+  ('考什么', '双径模型：临界距离 d<sub>c</sub> = 4h<sub>t</sub>h<sub>r</sub>/λ，远处 P<sub>r</sub> ∝ (h<sub>t</sub>h<sub>r</sub>)²/d⁴（第 2 章 p.5）。练习和历年卷没直接考过。'),
+  ('前置知识', 'λ = c/f；功率 dB = 10 log₁₀(W) + 30 dBm；幂次换 dB：x 的 n 次方，x 加倍就是 n × 3 dB。'),
+  ('解题套路', '(a) 代 d<sub>c</sub>；(b) 确认 d &gt; d<sub>c</sub> 后代双径公式，再和自由空间比；(c) 看 d、λ、h<sub>t</sub> 在公式里的幂次：d⁻⁴ → −12 dB，λ⁰ → 不变，h<sub>t</sub>² → +6 dB。'),
+  ('关键数字', 'd<sub>c</sub> = 540 m；5 km 处双径 −74.9 dBm，自由空间 −65.5 dBm，差 9.4 dB。'),
+  ('易错', 'd &lt; d<sub>c</sub> 时不能用 d⁻⁴ 公式；双径远处的公式里没有 λ，频率变了功率不变；天线高度是平方关系。'),
+  ('直觉', '远处地面反射波和直射波几乎反相，大部分抵消，只剩一点差值，所以比自由空间衰减得快；把天线架高可以拉大两条路径的差，收到的功率就多一些。'),
+  ('联系', 'Part A 第五章（n = 4）；专项 Q1 自由空间（n = 2）；讲解页 2.1 节的推导框。'))
+
 def box(qid, items):
     rows = ''.join(f'<dt>{lab}</dt><dd>{html}</dd>' for lab, html in items)
     return (f'      <!-- PKP:{qid} -->\n      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl>{rows}</dl></div>\n'
@@ -301,7 +319,7 @@ def apply():
         f = B / f'prac_{i}.html'
         s = f.read_text(encoding='utf-8')
         s = re.sub(r'[ \t]*<!-- PKP:(\w+) -->.*?<!-- /PKP:\1 -->\n', '', s, flags=re.S)
-        for qid in re.findall(r'<article class="ex" id="(p\dq\d)">', s):
+        for qid in re.findall(r'<article class="ex" id="(p\dq\d+)">', s):
             a = s.find(f'<article class="ex" id="{qid}">')
             d = s.find('<div class="done">', a)
             e = s.find(f'<!-- EN:{qid} -->', a, d)   # English block (add_en.py) follows the Chinese one

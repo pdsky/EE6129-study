@@ -846,3 +846,42 @@ EN['p8q9'] = dict(
   ('Common mistakes', '''With interference use the SINR, not the SNR; keep the power units consistent; use linear values inside log₂; the ln in (c) is the natural log.'''),
   ('Intuition', '''When interference is 10 times the noise, SINR ≈ SIR and the system is interference-limited. Rayleigh fading forces a margin for the worst 1% of the time, so the capacity that can be guaranteed is far below the one for the average SNR.'''),
   ('Link', '''Practice 2 Q3 (SINR, MUD); mock B·Q1 (Rayleigh outage and fade margin); the SNR/SIR/SINR and fade-margin boxes in section 2.7 of the learning page.''')])
+
+# ---------------------------------------------------------------- focused practice: free space and two-ray
+EN['p8q10'] = dict(
+ idea=r'''Use the free-space formula \(P_r=P_tG_tG_r\big(\frac{\lambda}{4\pi d}\big)^2\) in dB; distance and frequency both appear squared, so each doubling costs 6 dB; in (c) compute with the simplified model and compare: the difference is tens of dB.''',
+ steps=[
+  r'''(a) \(\lambda=c/f=3\times10^8/9\times10^8=0.333\) m, \(P_t\) = 1 W = 30 dBm.''' + C('P<sub>r</sub> = 30 + 20 log₁₀(0.333 / (4π × 1000)) = 30 + 20 log₁₀(2.65×10⁻⁵) = 30 − 91.5 = −61.5 dBm') + r'''Path loss = 30 − (−61.5) = 91.5 dB (check with Part A's 32.44 + 20 log₁₀900 + 20 log₁₀1 = 91.5 dB).''',
+  r'''(b) \(P_r\propto d^{-2}\): doubling the distance costs 20 log₁₀2 = 6.0 dB (−67.6 dBm). \(P_r\propto\lambda^2\propto f^{-2}\): doubling the frequency costs another 6.0 dB (−73.6 dBm).''',
+  r'''(c) Simplified model:''' + C('P<sub>r</sub> = 30 + (−31.5) − 10 × 3.5 × log₁₀1000 = 30 − 31.5 − 105 = −106.5 dBm'),
+  r'''That is about 45 dB (over 30 000 times) below the free-space −61.5 dBm. In a city, buildings block and reflect the signal and the power falls much faster with distance (γ = 3.5 instead of 2); the free-space model would grossly overestimate the received power and get the coverage and outage completely wrong. When a question says "simplified path loss model", use it.'''],
+ ans='(a) P<sub>r</sub> ≈ −61.5 dBm, path loss ≈ 91.5 dB; (b) 6 dB each (−67.6 dBm, then −73.6 dBm); (c) −106.5 dBm, about 45 dB below free space, so free space would grossly overestimate',
+ official='none (self-written practice question); all numbers checked by src/p2build/verify_mock.py',
+ note='''A coincidence: at 900 MHz the free-space gain at 1 m, 20 log₁₀(λ/4π) = −31.5 dB, equals the K<sub>dB</sub> used in (c). So both models agree at 1 m and differ only in the exponent: per decade of distance, free space loses 20 dB while γ = 3.5 loses 35 dB. The lecturer warned that in a past quiz some students used the free-space model on a simplified-model question.''',
+ kp=[
+  ('What it tests', '''The free-space (Friis) formula and its d⁻², f⁻² behaviour; how it differs from the simplified path loss model (Ch 2 p.3–4, p.8). Not asked directly in the practices or past papers, but the lecturer warned that past quiz students used free space on a simplified-model question.'''),
+  ('Background', '''P<sub>r</sub> = P<sub>t</sub>G<sub>t</sub>G<sub>r</sub>(λ/4πd)²; λ = c/f; 1 W = 30 dBm; simplified model P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 10γ log₁₀(d/d₀).'''),
+  ('Method', '''(a) Find λ, then in dB P<sub>r</sub> = P<sub>t</sub> + 20 log₁₀(λ/4πd); (b) squared dependence → 6 dB per doubling; (c) use the simplified model and compare with (a).'''),
+  ('Key numbers', '''900 MHz, 1 km: path loss 91.5 dB; per decade of distance γ = 2 loses 20 dB, γ = 3.5 loses 35 dB; at 1 km the two models differ by about 45 dB.'''),
+  ('Common mistakes', '''If the question says simplified path loss model, do not use free space; convert W to dBm; 20 log₁₀, not 10 log₁₀ (λ/4πd is an amplitude ratio, its square is the power ratio).'''),
+  ('Intuition', '''Free space is the ideal "nothing in the way" case where power only spreads over a sphere; real cities block and reflect, so the power falls much faster.'''),
+  ('Link', '''Part A Ch 5 (n = 2); focused Q2 two-ray (n = 4); mock A·Q2 (simplified model).''')])
+
+EN['p8q11'] = dict(
+ idea=r'''Find the critical distance from λ; beyond it, use the two-ray formula directly (note that it contains no λ); for (c), read off the power of each quantity in the formula and convert to dB.''',
+ steps=[
+  r'''(a) \(\lambda=0.333\) m:''' + C('d<sub>c</sub> = 4 × 30 × 1.5 / 0.333 = 540 m'),
+  r'''(b) 5 km is far beyond 540 m, so the two-ray formula applies:''' + C('P<sub>r</sub> = 10 × (30 × 1.5)² / 5000⁴ = 10 × 2025 / 6.25×10¹⁴ = 3.24×10⁻¹¹ W = −74.9 dBm'),
+  r'''Free space at the same distance: \(P_r=10\times\big(\frac{0.333}{4\pi\times5000}\big)^2=2.81\times10^{-10}\) W = −65.5 dBm. The two-ray value is about 9.4 dB lower: far away the ground reflection nearly cancels the direct wave, so the power falls faster than in free space.''',
+  r'''(c)(i) \(P_r\propto d^{-4}\): doubling the distance costs 40 log₁₀2 = 12 dB (free space only 6 dB). (ii) There is no λ in the formula: doubling the frequency changes <b>nothing</b> (free space would lose 6 dB). (iii) \(P_r\propto h_t^2\): doubling the antenna height gains 20 log₁₀2 = 6 dB.'''],
+ ans='(a) d<sub>c</sub> = 540 m; (b) −74.9 dBm, about 9.4 dB below free space (−65.5 dBm); (c) doubling distance −12 dB, doubling frequency no change, doubling antenna height +6 dB',
+ official='none (self-written practice question); all numbers checked by src/p2build/verify_mock.py',
+ note='''For d &lt; d<sub>c</sub> the direct and reflected waves alternately add and cancel, so the power rises and falls with distance and the d⁻⁴ formula does not apply; only beyond d<sub>c</sub> does it fall steadily as d⁻⁴. This is the n = 2 (free space) and n = 4 (two-ray, far) of Part A Ch 5, and one reason why γ in the simplified model usually lies between 2 and 4.''',
+ kp=[
+  ('What it tests', '''The two-ray model: critical distance d<sub>c</sub> = 4h<sub>t</sub>h<sub>r</sub>/λ and P<sub>r</sub> ∝ (h<sub>t</sub>h<sub>r</sub>)²/d⁴ far away (Ch 2 p.5). Not asked directly in the practices or past papers.'''),
+  ('Background', '''λ = c/f; power in dBm = 10 log₁₀(W) + 30; powers to dB: if a quantity appears to the n-th power, doubling it changes the result by n × 3 dB.'''),
+  ('Method', '''(a) Substitute into d<sub>c</sub>; (b) check d &gt; d<sub>c</sub>, use the two-ray formula, then compare with free space; (c) read the powers of d, λ and h<sub>t</sub>: d⁻⁴ → −12 dB, λ⁰ → no change, h<sub>t</sub>² → +6 dB.'''),
+  ('Key numbers', '''d<sub>c</sub> = 540 m; at 5 km two-ray −74.9 dBm, free space −65.5 dBm, a 9.4 dB difference.'''),
+  ('Common mistakes', '''The d⁻⁴ formula is not valid for d &lt; d<sub>c</sub>; the far two-ray formula has no λ, so the power does not change with frequency; antenna height enters squared.'''),
+  ('Intuition', '''Far away the ground reflection is almost opposite in phase to the direct wave and cancels most of it, leaving a small difference, so the power falls faster than in free space; raising the antenna increases the path difference and recovers some power.'''),
+  ('Link', '''Part A Ch 5 (n = 4); focused Q1 free space (n = 2); the derivation box in section 2.1 of the learning page.''')])

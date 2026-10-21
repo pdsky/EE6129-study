@@ -98,7 +98,7 @@ def practice():
         s = re.sub(r'(<div class="group" id="P\d"><h2>.*?)(</h2>)',
                    lambda m: m.group(1) + ('<span class="qz in">Quiz 范围</span>' if inq else '<span class="qz out">Quiz 不考</span>') + m.group(2), s, count=1)
         if inq:
-            s = re.sub(r'(<article class="ex" id="p\dq\d">\s*<header><span class="pg">[^<]*</span><h3>.*?)(</h3>)',
+            s = re.sub(r'(<article class="ex" id="p\dq\d+">\s*<header><span class="pg">[^<]*</span><h3>.*?)(</h3>)',
                        lambda m: m.group(1) + IN + m.group(2), s, flags=re.S)
         f.write_text(s, encoding='utf-8')
 

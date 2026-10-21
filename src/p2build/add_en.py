@@ -38,7 +38,7 @@ def apply():
         s = f.read_text(encoding='utf-8')
         s = re.sub(r'    <!-- EN:(\w+) -->.*?<!-- /EN:\1 -->\n', '', s, flags=re.S)
         s = s.replace('<div class="sol">', '<div class="sol sol-zh">')
-        for qid in re.findall(r'<article class="ex" id="(p\dq\d)">', s):
+        for qid in re.findall(r'<article class="ex" id="(p\dq\d+)">', s):
             a = s.find(f'<article class="ex" id="{qid}">')
             d = s.find('    <div class="done">', a)
             s = s[:d] + render(qid, EN[qid]) + s[d:]

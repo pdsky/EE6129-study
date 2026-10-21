@@ -43,7 +43,7 @@ def apply():
         f = B / f'prac_{i}.html'
         s = f.read_text(encoding='utf-8')
         s = re.sub(r'    <!-- INTENT:(\w+) -->.*?<!-- /INTENT:\1 -->\n', '', s, flags=re.S)
-        for qid in re.findall(r'<article class="ex" id="(p\dq\d)">', s):
+        for qid in re.findall(r'<article class="ex" id="(p\dq\d+)">', s):
             if qid not in INTENT:
                 raise SystemExit(f'intent.py has no 题意讲解 for {qid}')
             a = s.find(f'<article class="ex" id="{qid}">')

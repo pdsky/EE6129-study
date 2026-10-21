@@ -107,3 +107,21 @@ print(f'(b) interference removed: C = {B*log2(1+snr)/1e6:.2f} Mbps ; gain x{log2
 gb, eps = lin(20), 0.01
 gmin = gb * log(1 / (1 - eps))
 print(f'(c) gamma_min = {gmin:.3f} ({dB(gmin):.2f} dB) ; C_eps = {B*log2(1+gmin)/1e6:.2f} Mbps ; AWGN at 20 dB = {B*log2(1+gb)/1e6:.2f} Mbps ; FM = {20-dB(gmin):.2f} dB')
+
+print('--- p8q10  free space vs simplified model')
+c = 3e8; f = 900e6; lam = c / f; Pt = 30  # dBm (1 W), Gt = Gr = 1
+fs = lambda d, lam=lam: Pt + 20 * log10(lam / (4 * pi * d))
+print(f'lambda = {lam:.4f} m ; (a) Pr(1 km) = {fs(1000):.2f} dBm ; PL = {Pt-fs(1000):.2f} dB ; check 32.44+20log f(MHz)+20log d(km) = {32.44+20*log10(900):.2f}')
+print(f'(b) 2 km: {fs(2000):.2f} dBm (diff {fs(1000)-fs(2000):.2f}) ; 1.8 GHz at 2 km: {fs(2000, c/1.8e9):.2f} dBm (diff {fs(2000)-fs(2000, c/1.8e9):.2f})')
+print(f'    K for free space at d0=1 m: 20log10(lam/4pi) = {20*log10(lam/(4*pi)):.2f} dB')
+simp = Pt - 31.5 - 35 * log10(1000)
+print(f'(c) simplified K=-31.5, gamma=3.5 at 1 km: {simp:.2f} dBm ; difference vs free space {fs(1000)-simp:.2f} dB')
+
+print('--- p8q11  two-ray model')
+ht, hr, Ptw = 30, 1.5, 10.0
+dc = 4 * ht * hr / lam
+tr = lambda d: 10 * log10(Ptw * (ht * hr) ** 2 / d ** 4) + 30
+fsw = lambda d: 10 * log10(Ptw * (lam / (4 * pi * d)) ** 2) + 30
+print(f'(a) dc = {dc:.1f} m')
+print(f'(b) 5 km two-ray: {tr(5000):.2f} dBm ; free space: {fsw(5000):.2f} dBm ; diff {fsw(5000)-tr(5000):.2f} dB')
+print(f'(c) two-ray 10 km: {tr(10000):.2f} (diff {tr(5000)-tr(10000):.2f}) ; free 10 km diff {fsw(5000)-fsw(10000):.2f} ; ht 60 m: +{20*log10(2):.2f} dB')
