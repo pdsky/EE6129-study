@@ -125,3 +125,32 @@ fsw = lambda d: 10 * log10(Ptw * (lam / (4 * pi * d)) ** 2) + 30
 print(f'(a) dc = {dc:.1f} m')
 print(f'(b) 5 km two-ray: {tr(5000):.2f} dBm ; free space: {fsw(5000):.2f} dBm ; diff {fsw(5000)-tr(5000):.2f} dB')
 print(f'(c) two-ray 10 km: {tr(10000):.2f} (diff {tr(5000)-tr(10000):.2f}) ; free 10 km diff {fsw(5000)-fsw(10000):.2f} ; ht 60 m: +{20*log10(2):.2f} dB')
+
+print('--- p8q12  one scenario: path loss, shadowing, Rayleigh, Rician, flat/selective, fast/slow')
+Pt, Kdb, gam, d, N = 30, -40, 3, 1000, -120
+Pr = Pt + Kdb - 10 * gam * log10(d)
+print(f'(a) Pr = {Pr:.1f} dBm ; mean SNR = {Pr-N:.1f} dB')
+Pmin, sig = -110, 8
+print(f'(b) margin {Pr-Pmin:.0f} dB ; Pout = Q({(Pr-Pmin)/sig:.2f}) = {Q((Pr-Pmin)/sig):.4f}')
+gb, g0 = lin(Pr - N), lin(10)
+print(f'(c) Rayleigh: g0/gbar = {g0/gb:.3f} ; Pout = {1-exp(-g0/gb):.4f}')
+Kr = 4.0
+print(f'(d) K = {Kr} = {dB(Kr):.2f} dB')
+# Rician outage numerically: SNR pdf p(g) = (1+K)/gb exp(-K -(1+K)g/gb) I0(2 sqrt(K(1+K)g/gb))
+def I0(x):
+    s, t, k = 1.0, 1.0, 1
+    while t > 1e-16 * s:
+        t *= (x / 2) ** 2 / (k * k); s += t; k += 1
+    return s
+def rice_cdf(g0, gb, K, n=20000):
+    h = g0 / n; tot = 0
+    for i in range(n + 1):
+        g = i * h; w = 0.5 if i in (0, n) else 1
+        tot += w * (1 + K) / gb * exp(-K - (1 + K) * g / gb) * I0(2 * sqrt(K * (1 + K) * g / gb))
+    return tot * h
+print(f'    Rician K=4 Pout = {rice_cdf(g0, gb, 4):.5f} ; K=0 check = {rice_cdf(g0, gb, 0):.5f} ; K=10 = {rice_cdf(g0, gb, 10):.2e}')
+sT, Rs = 2e-6, 10e3
+print(f'(e) sigma/Ts = {sT*Rs:.3f} -> flat ; at 1 Msps: {sT*1e6:.1f} -> selective')
+v, fc = 54 / 3.6, 2e9
+fm = v * fc / 3e8
+print(f'(f) fm = {fm:.0f} Hz ; Tc = {1e3/fm:.1f} ms vs Ts = {1e6/Rs:.0f} us -> slow')

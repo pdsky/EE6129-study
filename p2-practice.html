@@ -173,7 +173,7 @@ window.MathJax = {
   <a class="back" href="index.html">← 学习站目录</a>
   <div class="eyebrow">EE6129 · Part 2 · Practice 1–7 + 模拟 Quiz</div>
   <h1>Part 2 练习</h1>
-  <p class="lede">讲义配套的 7 份 Practice 共 21 道题，逐题给出中英对照的原题、考点、思路和分步解答，并和官方答案逐一核对；最后是按 10 月 23 日 Quiz 范围自编的 9 道模拟题（三套，每套 3 题），外加 2 道自由空间 / 双径专项题。解答默认是英文（考试要用英文作答），可以随时切换成中文。「随机练习」按同样的题型随机出数字，自动判分。</p>
+  <p class="lede">讲义配套的 7 份 Practice 共 21 道题，逐题给出中英对照的原题、考点、思路和分步解答，并和官方答案逐一核对；最后是按 10 月 23 日 Quiz 范围自编的 9 道模拟题（三套，每套 3 题），外加 3 道专项题（自由空间、双径、六种信道效应综合）。解答默认是英文（考试要用英文作答），可以随时切换成中文。「随机练习」按同样的题型随机出数字，自动判分。</p>
   <div class="notice">所有数字都用程序验算过。<b>20 道题与官方答案一致</b>（其中 P4 Q1 是论述题）；Practice 1 第 1 题按题目数据算不出官方的数字，题下写了原因和标准做法。模拟题是自编的，没有官方答案，数字都用 src/p2build/verify_mock.py 验算过。紫色"补充"框是课外内容。配套讲解见 <a href="p2-learn.html">Part 2 讲解页</a>。</div>
 
   <div class="tabs" role="tablist" aria-label="页面视图">
@@ -198,7 +198,7 @@ window.MathJax = {
       <tr><td><a href="#P5">Practice 5</a></td><td>12</td><td>注水、Alamouti 判决变量、分集-复用折中</td><td><a href="p2-learn.html#ch5">第五章</a>、<a href="p2-learn.html#ch4">4.4</a></td></tr>
       <tr><td><a href="#P6">Practice 6</a></td><td>13</td><td>ISI 误码率、迫零、MMSE 与 DFE</td><td><a href="p2-learn.html#ch6">第六章</a></td></tr>
       <tr><td><a href="#P7">Practice 7</a></td><td>13</td><td>OFDM 子载波数、H_k、等容量 vs 注水、CP</td><td><a href="p2-learn.html#ch7">第七章</a></td></tr>
-      <tr><td><a href="#P8">模拟 Quiz</a></td><td>10</td><td>自编 11 题：全概率与贝叶斯、路径损耗与阴影中断、时延扩展与衰落类型、瑞利中断与衰落余量、最小二乘拟合、香农容量与注水、宏分集增益、LCR 与错误符号数、SINR 与中断容量；专项：自由空间、双径模型</td><td><a href="p2-learn.html#ch1">第一章</a>、<a href="p2-learn.html#ch2">第二章</a></td></tr>
+      <tr><td><a href="#P8">模拟 Quiz</a></td><td>10</td><td>自编 12 题：全概率与贝叶斯、路径损耗与阴影中断、时延扩展与衰落类型、瑞利中断与衰落余量、最小二乘拟合、香农容量与注水、宏分集增益、LCR 与错误符号数、SINR 与中断容量；专项：自由空间、双径模型、六种信道效应综合</td><td><a href="p2-learn.html#ch1">第一章</a>、<a href="p2-learn.html#ch2">第二章</a></td></tr>
     </tbody>
   </table></div>
     <div class="filters" id="filters">
@@ -1864,7 +1864,7 @@ window.MathJax = {
     <!-- /EN:p7q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P8"><h2>模拟 Quiz · 自编 11 题<span class="qz in">Quiz 范围</span></h2><span>第 1b 章 + 第 2 章 · 三套（A、B、C）每套 3 题，按 30 分钟练；最后 2 道是自由空间 / 双径专项</span></div>
+  <div class="group" id="P8"><h2>模拟 Quiz · 自编 12 题<span class="qz in">Quiz 范围</span></h2><span>第 1b 章 + 第 2 章 · 三套（A、B、C）每套 3 题，按 30 分钟练；最后 3 道是专项（自由空间、双径、六种信道效应综合）</span></div>
 
   <article class="ex" id="p8q1">
     <header><span class="pg">模拟 A · Q1</span><h3>两种信道状态：全概率、贝叶斯与离散 SNR<span class="qz in">Quiz</span></h3></header>
@@ -3038,6 +3038,161 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The two-ray model: critical distance d<sub>c</sub> = 4h<sub>t</sub>h<sub>r</sub>/λ and P<sub>r</sub> ∝ (h<sub>t</sub>h<sub>r</sub>)²/d⁴ far away (Ch 2 p.5). Not asked directly in the practices or past papers.</dd><dt>Background</dt><dd>λ = c/f; power in dBm = 10 log₁₀(W) + 30; powers to dB: if a quantity appears to the n-th power, doubling it changes the result by n × 3 dB.</dd><dt>Method</dt><dd>(a) Substitute into d<sub>c</sub>; (b) check d &gt; d<sub>c</sub>, use the two-ray formula, then compare with free space; (c) read the powers of d, λ and h<sub>t</sub>: d⁻⁴ → −12 dB, λ⁰ → no change, h<sub>t</sub>² → +6 dB.</dd><dt>Key numbers</dt><dd>d<sub>c</sub> = 540 m; at 5 km two-ray −74.9 dBm, free space −65.5 dBm, a 9.4 dB difference.</dd><dt>Common mistakes</dt><dd>The d⁻⁴ formula is not valid for d &lt; d<sub>c</sub>; the far two-ray formula has no λ, so the power does not change with frequency; antenna height enters squared.</dd><dt>Intuition</dt><dd>Far away the ground reflection is almost opposite in phase to the direct wave and cancels most of it, leaving a small difference, so the power falls faster than in free space; raising the antenna increases the path difference and recovers some power.</dd><dt>Link</dt><dd>Part A Ch 5 (n = 4); focused Q1 free space (n = 2); the derivation box in section 2.1 of the learning page.</dd></dl></div>
     </div>
     <!-- /EN:p8q11 -->
+    <div class="done"><label><input type="checkbox">已掌握</label></div>
+  </article>
+
+  <article class="ex" id="p8q12">
+    <header><span class="pg">专项 · Q3</span><h3>一个场景里的六种信道效应：路径损耗、阴影、瑞利、莱斯、平坦/选择性、快/慢<span class="qz in">Quiz</span></h3></header>
+    <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Focused practice (self-written)</span></div>
+      <p>A mobile station is 1 km from a base station that transmits 1 W. The simplified path loss model applies with \(K_{dB}=-40\) dB, \(d_0=1\) m and γ = 3. The noise power at the receiver is −120 dBm. The system sends 10 k symbols/s on a 2 GHz carrier, the rms delay spread of the channel is 2 µs, and the mobile moves at 54 km/h.</p>
+      <p class="zh" lang="zh-CN">移动台离基站 1 km，基站发射 1 W。适用简化路径损耗模型：\(K_{dB}=-40\) dB，\(d_0=1\) m，γ = 3。接收机噪声功率为 −120 dBm。系统在 2 GHz 载频上以 10 k 符号/秒发送，信道的 rms 时延扩展为 2 µs，移动台速度为 54 km/h。</p>
+      <p>(a) Find the average received power and the average SNR. (1 mark)</p>
+      <p class="zh" lang="zh-CN">(a) 求平均接收功率和平均 SNR。（1 分）</p>
+      <p>(b) Log-normal shadowing with a standard deviation of 8 dB is present, and the receiver needs a received power of at least −110 dBm. Find the outage probability due to shadowing. (2 marks)</p>
+      <p class="zh" lang="zh-CN">(b) 存在标准差为 8 dB 的对数正态阴影，接收功率至少要 −110 dBm。求阴影造成的中断概率。（2 分）</p>
+      <p>(c) Ignore shadowing. With no line of sight the multipath fading is Rayleigh, with the average SNR found in (a). The receiver needs an instantaneous SNR of at least 10 dB. Find the outage probability. (2 marks)</p>
+      <p class="zh" lang="zh-CN">(c) 忽略阴影。没有直射径时，多径衰落为瑞利衰落，平均 SNR 为 (a) 的结果。接收机要求瞬时 SNR 至少为 10 dB。求中断概率。（2 分）</p>
+      <p>(d) A line-of-sight path now appears whose power is 4 times the total power of the scattered paths. Find the Rician K factor in dB and state, without calculation, how the outage probability of (c) changes. (2 marks)</p>
+      <p class="zh" lang="zh-CN">(d) 现在出现一条直射径，其功率是所有散射路径总功率的 4 倍。求莱斯因子 K（dB），并定性说明 (c) 的中断概率会怎样变化（不用计算）。（2 分）</p>
+      <p>(e) Is the fading flat or frequency-selective? Justify. (1 mark)</p>
+      <p class="zh" lang="zh-CN">(e) 衰落是平坦的还是频率选择性的？说明理由。（1 分）</p>
+      <p>(f) Is the fading fast or slow? Justify. (2 marks)</p>
+      <p class="zh" lang="zh-CN">(f) 衰落是快衰落还是慢衰落？说明理由。（2 分）</p>
+    </div>
+    <div class="chips"><span class="chip">简化路径损耗模型</span><span class="chip">阴影 Q(余量/σ)</span><span class="chip">瑞利 1 − e^(−γ₀/γ̄)</span><span class="chip">莱斯 K</span><span class="chip">平坦 / 选择性</span><span class="chip">快 / 慢</span><span class="chip src">讲义第 2 章 p.8–36</span></div>
+    <!-- INTENT:p8q12 -->
+      <details class="deep intent">
+        <summary>题意讲解：这道题到底要干嘛</summary>
+        <div class="deep-body">
+          <h4><span class="st">场景</span>题目在讲一件什么事</h4>
+          <p>同一个手机、同一个基站，把第 2 章讲的六种信道效应放在一起：路径损耗定平均功率，阴影让它慢慢起伏，多径（瑞利或莱斯）让它快速起伏；另外两问判断衰落是平坦还是选择性、是快还是慢。</p>
+          <p>每一问只看一种效应，用它自己的公式。这道题的目的就是练"先认出是哪种效应，再选公式"。</p>
+          <h4><span class="st">符号</span>题目里每个量是什么</h4>
+          <div class="tw"><table class="sym"><tbody><tr><td>\(K_{dB}=-40\) dB，γ = 3</td><td>简化路径损耗模型的参数</td></tr><tr><td>−120 dBm</td><td>噪声功率，用来把接收功率换成 SNR</td></tr><tr><td>σ = 8 dB</td><td>阴影的标准差（只用于 (b)）</td></tr><tr><td>10 dB</td><td>瑞利 / 莱斯部分要求的最低瞬时 SNR</td></tr><tr><td>K</td><td>莱斯因子 = 直射功率 / 散射功率</td></tr><tr><td>2 µs、54 km/h、2 GHz</td><td>时延扩展、车速、载频：用于判断平坦/选择性和快/慢</td></tr></tbody></table></div>
+          <h4><span class="st">要求</span>每一问在问什么</h4>
+          <ul>
+            <li><b>(a)</b> 路径损耗：算平均接收功率，再减噪声得到平均 SNR。</li>
+            <li><b>(b)</b> 阴影：有 σ，余量 ÷ σ，查 Q。</li>
+            <li><b>(c)</b> 瑞利：没有 σ，有平均 SNR，用 1 − e<sup>−γ₀/γ̄</sup>（线性值相除）。</li>
+            <li><b>(d)</b> 莱斯：由功率比算 K（换 dB），只要定性说中断变大还是变小。</li>
+            <li><b>(e)</b> 平坦还是选择性：σ/T<sub>s</sub> 和 0.1 比。</li>
+            <li><b>(f)</b> 快还是慢：算 f<sub>m</sub> 和 T<sub>C</sub>，和 T<sub>s</sub> 比。</li>
+          </ul>
+          <h4><span class="st">注意</span>读题容易误会的地方</h4>
+          <ul>
+            <li>(b) 和 (c) 都是中断概率，但公式完全不同：阴影用 Q，瑞利用指数。</li>
+            <li>瑞利公式里 γ₀、γ̄ 要用线性值。</li>
+            <li>(e)(f) 和瑞利/莱斯是两回事：前者说衰落和信号的关系，后者说幅度的分布。</li>
+          </ul>
+          <h4><span class="st">目的</span>这道题想让你明白什么</h4>
+          <p>第 2 章的效应各有各的公式，做题第一步是认出题目在问哪一种；路径损耗、阴影、多径是三层叠在一起的。</p>
+          <div class="ans">一句话：同一场景依次用路径损耗、阴影（Q）、瑞利（指数）、莱斯（K）、σ/T_s、T_C 回答六问，练"先认效应再选公式"。</div>
+        </div>
+      </details>
+    <!-- /INTENT:p8q12 -->
+    <button class="reveal" type="button">显示解答</button>
+    <div class="sol sol-zh">
+      <p class="idea"><b>思路：</b>每一问只看一种效应，用它自己的公式：路径损耗给平均值；阴影在 dB 上是高斯，用 Q；瑞利的 SNR 是指数分布，用 1 − e<sup>−γ₀/γ̄</sup>；莱斯只看 K；平坦/选择性比 σ 和 T<sub>s</sub>；快/慢比 T<sub>C</sub> 和 T<sub>s</sub>。</p>
+      <ol class="steps">
+        <li>(a) 路径损耗：<div class="calc">P_r = 30 + (−40) − 10 × 3 × log₁₀1000 = 30 − 40 − 90 = −100 dBm</div>平均 SNR = −100 − (−120) = 20 dB（线性 100）。</li>
+        <li>(b) 阴影：接收功率（dB）服从高斯，均值 −100 dBm、σ = 8 dB。余量 = −100 − (−110) = 10 dB：<div class="calc">P_out = Q(10 / 8) = Q(1.25) = 0.106</div></li>
+        <li>(c) 瑞利：瞬时 SNR 服从指数分布，γ₀/γ̄ = 10/100 = 0.1（先换线性值）：<div class="calc">P_out = 1 − e^(−0.1) = 0.0952</div></li>
+        <li>(d) 莱斯因子 K = 直射功率 / 散射功率 = 4，即 10 log₁₀4 = 6.0 dB。有了直射径，信号不容易掉进深坑，中断概率比 (c) 的 9.5% <b>小</b>。K = 0 时退化成瑞利，K → ∞ 时接近 AWGN（SNR 一直是 20 dB，不会中断）。</li>
+        <li>(e) \(T_s=1/10\text{k}=100\) µs，\(\sigma/T_s=2/100=0.02\lt0.1\) → <b>平坦衰落</b>。</li>
+        <li>(f) v = 54/3.6 = 15 m/s，\(f_m=vf_c/c=15\times2\times10^9/3\times10^8=100\) Hz，\(T_C\approx1/f_m=10\) ms ≫ \(T_s\) = 100 µs → <b>慢衰落</b>。综合 (e)(f)：平坦慢衰落。</li>
+      </ol>
+      <div class="ans">(a) −100 dBm，20 dB；(b) ≈ 10.6%；(c) ≈ 9.5%；(d) K = 6.0 dB，中断概率比 9.5% 小；(e) 平坦（0.02 &lt; 0.1）；(f) 慢（T_C ≈ 10 ms ≫ 100 µs）</div>
+      <div class="official"><b>官方答案：</b>无（自编练习题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
+      <div class="note">莱斯的数值参考（讲义之外，数值积分计算，考试不会让算）：同样平均 20 dB、门限 10 dB，K = 4 时中断约 1.6%，K = 10 时约 0.07%，K = 0 正好回到瑞利的 9.5%。直射径越强，深衰落越少。</div>
+      <details class="deep">
+        <summary>逐步详解：六种效应各管什么、用什么公式</summary>
+        <div class="deep-body">
+          <h4><span class="st">总表</span>一眼看清区别</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>效应</th><th>描述什么</th><th>随机吗</th><th>公式</th><th>本题怎么用</th><th>背不背</th></tr></thead><tbody>
+            <tr><td>路径损耗</td><td>大尺度：平均功率随距离下降</td><td>不随机</td><td>\(P_r=P_t+K_{dB}-10\gamma\log_{10}(d/d_0)\)</td><td>(a) 得平均功率</td><td>背</td></tr>
+            <tr><td>阴影</td><td>大尺度：楼、山遮挡，围绕平均值慢慢起伏</td><td>dB 值高斯</td><td>\(P_{r,dB}\sim\mathcal N(\text{平均},\sigma^2)\)</td><td>(b) Q(余量/σ)，dB 上相减</td><td>背</td></tr>
+            <tr><td>瑞利</td><td>小尺度：多径叠加，没有直射</td><td>SNR 指数分布</td><td>\(p(\gamma)=\frac1{\bar\gamma}e^{-\gamma/\bar\gamma}\)</td><td>(c) 1 − e<sup>−γ₀/γ̄</sup>，线性上相除</td><td>背</td></tr>
+            <tr><td>莱斯</td><td>小尺度：多径 + 一条直射</td><td>莱斯分布</td><td>\(K=s^2/2\sigma^2\)（PDF 考试给）</td><td>(d) 算 K，定性比较</td><td>懂 K 的含义</td></tr>
+            <tr><td>平坦 / 选择性</td><td>频率维度：回声比符号短还是长</td><td>是判断</td><td>\(\sigma_{T_m}/T_s\lt0.1\)，或 B<sub>s</sub> &lt; B<sub>C</sub></td><td>(e)</td><td>0.1 要背</td></tr>
+            <tr><td>快 / 慢</td><td>时间维度：一个符号内信道变不变</td><td>是判断</td><td>\(f_m=vf_c/c\)，\(T_C\approx1/f_m\)</td><td>(f) T<sub>s</sub> ≪ T<sub>C</sub> → 慢</td><td>建议记</td></tr>
+          </tbody></table></div>
+
+          <h4><span class="st">层次</span>前四个是叠在一起的</h4>
+          <p>实际收到的功率 = <b>路径损耗</b>定下的平均值（随距离变化，几百米到几公里才明显）+ <b>阴影</b>在它周围的慢起伏（走过一栋楼、几十米才变）+ <b>多径</b>造成的快起伏（瑞利或莱斯，走半个波长就变；2 GHz 时约 7.5 cm）。题目通常一次只让你考虑其中一层，所以要看清题目说的是哪一种。（三种尺度的直观比较是课外补充。）</p>
+
+          <h4><span class="st">易混</span>最容易搞错的三组</h4>
+          <ul>
+            <li><b>阴影 vs 瑞利：</b>阴影给 σ（dB），在 dB 上算余量、用 Q；瑞利给平均 SNR，没有 σ，换成线性值后相除、用指数公式。同样 10 dB 余量，本题阴影（σ = 8 dB）中断 10.6%，瑞利 9.5%，公式完全不同。</li>
+            <li><b>瑞利 vs 莱斯：</b>瑞利是莱斯的特例（K = 0，没有直射）。K 越大，直射越强，越接近不衰落；所以有直射径时中断概率会下降。</li>
+            <li><b>平坦/快慢 vs 瑞利/莱斯：</b>两类问题互不相干。平坦/选择性、快/慢说的是"衰落和信号的关系"（回声长不长、变得快不快）；瑞利/莱斯说的是"幅度服从什么分布"。一个信道可以同时是"平坦、慢、瑞利"。</li>
+          </ul>
+
+          <h4><span class="st">考试</span>英文写法</h4>
+          <div class="tmpl" lang="en">
+            <p>(a) \(P_r=30-40-30\log_{10}1000=-100\) dBm; average SNR = −100 − (−120) = 20 dB.</p>
+            <p>(b) Shadowing makes the received power in dB Gaussian with mean −100 dBm and σ = 8 dB; margin = 10 dB, so \(P_{out}=Q(10/8)=Q(1.25)=0.106\).</p>
+            <p>(c) In Rayleigh fading the SNR is exponential: \(P_{out}=1-e^{-\gamma_0/\bar\gamma}=1-e^{-10/100}=0.0952\).</p>
+            <p>(d) K = 4 = 6.0 dB. The line-of-sight component makes deep fades less likely, so the outage probability is lower than in (c); K = 0 gives Rayleigh and K → ∞ gives AWGN.</p>
+            <p>(e) \(\sigma_{T_m}/T_s=2\ \mu s/100\ \mu s=0.02\lt0.1\): flat fading. (f) \(f_m=vf_c/c=100\) Hz, \(T_C\approx1/f_m=10\) ms ≫ \(T_s\): slow fading.</p>
+          </div>
+          <div class="ans">一句话：路径损耗定平均值，阴影用 Q（dB 相减），瑞利用 1 − e<sup>−γ₀/γ̄</sup>（线性相除），莱斯看 K（K = 0 就是瑞利），平坦/选择性比 σ 和 T<sub>s</sub>，快/慢比 T<sub>C</sub> 和 T<sub>s</sub>。</div>
+        </div>
+      </details>
+      <!-- PKP:p8q12 -->
+      <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>第 2 章六种信道效应各自的公式和用法：简化路径损耗（p.8）、阴影中断（p.12–16）、瑞利中断（p.25–26）、莱斯因子（p.27–28）、平坦/选择性（p.31–33）、快/慢（p.34–36）。</dd><dt>前置知识</dt><dd>路径损耗 dB 式（背）；P<sub>out</sub> = Q(余量/σ)（背）；p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup> 和 1 − e<sup>−γ₀/γ̄</sup>（背）；K = s²/2σ²；σ/T<sub>s</sub> &lt; 0.1（背）；f<sub>m</sub> = v f<sub>c</sub>/c，T<sub>C</sub> ≈ 1/f<sub>m</sub>。</dd><dt>解题套路</dt><dd>先认题目在问哪种效应，再用它自己的公式：有 σ → Q；有平均 SNR、无直射 → 指数；有直射、给功率比 → K；问平坦 → 比 σ 和 T<sub>s</sub>；问快慢 → 比 T<sub>C</sub> 和 T<sub>s</sub>。</dd><dt>关键区别</dt><dd>阴影在 dB 上相减（余量/σ），瑞利在线性上相除（γ₀/γ̄）；瑞利 = 莱斯 K = 0；平坦/快慢是"衰落和信号的关系"，瑞利/莱斯是"幅度的分布"，两类互不相干。</dd><dt>易错</dt><dd>阴影题用了指数公式、瑞利题用了 Q；瑞利公式里代 dB 值；K 是功率比，换 dB 用 10 log₁₀；衰落类型只答一个维度。</dd><dt>数值感受</dt><dd>同样平均 20 dB、门限 10 dB：瑞利中断 9.5%，莱斯 K = 4 约 1.6%，K = 10 约 0.07%（数值积分，课外）。</dd><dt>联系</dt><dd>模拟 A · Q2（阴影）、B · Q1（瑞利）、A · Q3（平坦/快慢）、C · Q2（衰落类型）；讲解页第 2 章末尾"求中断概率用哪个公式"总表。</dd></dl></div>
+      <!-- /PKP:p8q12 -->
+    </div>
+    <!-- EN:p8q12 -->
+    <div class="sol sol-en" lang="en">
+      <p class="idea"><b>Approach:</b> Each part isolates one effect and uses its own formula: path loss gives the mean; shadowing is Gaussian in dB, so use Q; Rayleigh SNR is exponential, so use 1 − e<sup>−γ₀/γ̄</sup>; Rician needs only K; flat/selective compares σ with T<sub>s</sub>; fast/slow compares T<sub>C</sub> with T<sub>s</sub>.</p>
+      <ol class="steps">
+        <li>(a) Path loss:<div class="calc">P<sub>r</sub> = 30 + (−40) − 10 × 3 × log₁₀1000 = 30 − 40 − 90 = −100 dBm</div>Average SNR = −100 − (−120) = 20 dB (100 linear).</li>
+        <li>(b) Shadowing: the received power in dB is Gaussian with mean −100 dBm and σ = 8 dB. Margin = −100 − (−110) = 10 dB:<div class="calc">P<sub>out</sub> = Q(10 / 8) = Q(1.25) = 0.106</div></li>
+        <li>(c) Rayleigh: the instantaneous SNR is exponential; γ₀/γ̄ = 10/100 = 0.1 (convert to linear first):<div class="calc">P<sub>out</sub> = 1 − e<sup>−0.1</sup> = 0.0952</div></li>
+        <li>(d) Rician factor K = direct power / scattered power = 4, i.e. 10 log₁₀4 = 6.0 dB. With a line-of-sight path the signal is less likely to fall into deep fades, so the outage probability is <b>lower</b> than the 9.5% of (c). K = 0 reduces to Rayleigh; K → ∞ approaches AWGN (the SNR stays at 20 dB and there is no outage).</li>
+        <li>(e) \(T_s=1/10\text{k}=100\) µs and \(\sigma/T_s=2/100=0.02\lt0.1\) → <b>flat fading</b>.</li>
+        <li>(f) v = 54/3.6 = 15 m/s, \(f_m=vf_c/c=15\times2\times10^9/3\times10^8=100\) Hz, \(T_C\approx1/f_m=10\) ms ≫ \(T_s\) = 100 µs → <b>slow fading</b>. Together with (e): flat, slow fading.</li>
+      </ol>
+      <div class="ans">(a) −100 dBm, 20 dB; (b) ≈ 10.6%; (c) ≈ 9.5%; (d) K = 6.0 dB, outage below 9.5%; (e) flat (0.02 &lt; 0.1); (f) slow (T<sub>C</sub> ≈ 10 ms ≫ 100 µs)</div>
+      <div class="official"><b>Official answer:</b> none (self-written practice question); all numbers checked by src/p2build/verify_mock.py</div>
+      <div class="note">Rician numbers for reference (not in the slides; numerical integration; the quiz will not ask you to compute them): with the same 20 dB average and 10 dB threshold, K = 4 gives about 1.6% outage, K = 10 about 0.07%, and K = 0 returns exactly the Rayleigh 9.5%. The stronger the direct path, the fewer the deep fades.</div>
+      <details class="deep">
+        <summary>Step by step: what each of the six effects covers and which formula it uses</summary>
+        <div class="deep-body">
+          <h4><span class="st">Table</span>The differences at a glance</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>Effect</th><th>Describes</th><th>Random?</th><th>Formula</th><th>Used in</th><th>Memorise?</th></tr></thead><tbody>
+            <tr><td>Path loss</td><td>Large scale: mean power falls with distance</td><td>No</td><td>\(P_r=P_t+K_{dB}-10\gamma\log_{10}(d/d_0)\)</td><td>(a) mean power</td><td>Yes</td></tr>
+            <tr><td>Shadowing</td><td>Large scale: buildings and hills, slow fluctuation about the mean</td><td>Gaussian in dB</td><td>\(P_{r,dB}\sim\mathcal N(\text{mean},\sigma^2)\)</td><td>(b) Q(margin/σ), subtract in dB</td><td>Yes</td></tr>
+            <tr><td>Rayleigh</td><td>Small scale: multipath, no line of sight</td><td>Exponential SNR</td><td>\(p(\gamma)=\frac1{\bar\gamma}e^{-\gamma/\bar\gamma}\)</td><td>(c) 1 − e<sup>−γ₀/γ̄</sup>, divide in linear</td><td>Yes</td></tr>
+            <tr><td>Rician</td><td>Small scale: multipath plus a direct path</td><td>Rician</td><td>\(K=s^2/2\sigma^2\) (PDF given in the exam)</td><td>(d) K, qualitative</td><td>Know what K means</td></tr>
+            <tr><td>Flat / selective</td><td>Frequency: echoes shorter or longer than a symbol</td><td>A judgement</td><td>\(\sigma_{T_m}/T_s\lt0.1\), or B<sub>s</sub> &lt; B<sub>C</sub></td><td>(e)</td><td>Memorise 0.1</td></tr>
+            <tr><td>Fast / slow</td><td>Time: does the channel change within a symbol</td><td>A judgement</td><td>\(f_m=vf_c/c\), \(T_C\approx1/f_m\)</td><td>(f) T<sub>s</sub> ≪ T<sub>C</sub> → slow</td><td>Worth remembering</td></tr>
+          </tbody></table></div>
+
+          <h4><span class="st">Layers</span>The first four stack on top of each other</h4>
+          <p>The actual received power = the mean set by <b>path loss</b> (changes over hundreds of metres to kilometres) + the slow fluctuation of <b>shadowing</b> around it (changes when you pass a building, tens of metres) + the fast fluctuation of <b>multipath</b> (Rayleigh or Rician, changes within half a wavelength, about 7.5 cm at 2 GHz). A question usually asks about one layer at a time, so read carefully which one it means. (The comparison of the three scales is a supplement beyond the slides.)</p>
+
+          <h4><span class="st">Pitfalls</span>The three pairs most often confused</h4>
+          <ul>
+            <li><b>Shadowing vs Rayleigh:</b> shadowing gives σ (dB), so compute the margin in dB and use Q; Rayleigh gives an average SNR and no σ, so convert to linear, divide, and use the exponential formula. With the same 10 dB margin, shadowing (σ = 8 dB) gives 10.6% here and Rayleigh 9.5%, from completely different formulas.</li>
+            <li><b>Rayleigh vs Rician:</b> Rayleigh is the special case of Rician with K = 0 (no direct path). The larger K, the stronger the direct path and the closer to no fading, so a line-of-sight path lowers the outage probability.</li>
+            <li><b>Flat/fast vs Rayleigh/Rician:</b> independent questions. Flat/selective and fast/slow describe how the fading relates to the signal (are echoes long, does it change quickly); Rayleigh/Rician describe the distribution of the amplitude. A channel can be "flat, slow and Rayleigh" at the same time.</li>
+          </ul>
+
+          <h4><span class="st">Exam</span>Compact answer</h4>
+          <div class="tmpl">
+            <p>(a) \(P_r=30-40-30\log_{10}1000=-100\) dBm; average SNR = −100 − (−120) = 20 dB.</p>
+            <p>(b) Shadowing makes the received power in dB Gaussian with mean −100 dBm and σ = 8 dB; margin = 10 dB, so \(P_{out}=Q(10/8)=Q(1.25)=0.106\).</p>
+            <p>(c) In Rayleigh fading the SNR is exponential: \(P_{out}=1-e^{-\gamma_0/\bar\gamma}=1-e^{-10/100}=0.0952\).</p>
+            <p>(d) K = 4 = 6.0 dB. The line-of-sight component makes deep fades less likely, so the outage probability is lower than in (c); K = 0 gives Rayleigh and K → ∞ gives AWGN.</p>
+            <p>(e) \(\sigma_{T_m}/T_s=2\ \mu s/100\ \mu s=0.02\lt0.1\): flat fading. (f) \(f_m=vf_c/c=100\) Hz, \(T_C\approx1/f_m=10\) ms ≫ \(T_s\): slow fading.</p>
+          </div>
+          <div class="ans">In one line: path loss sets the mean, shadowing uses Q (subtract in dB), Rayleigh uses 1 − e<sup>−γ₀/γ̄</sup> (divide in linear), Rician is about K (K = 0 is Rayleigh), flat/selective compares σ with T<sub>s</sub>, fast/slow compares T<sub>C</sub> with T<sub>s</sub>.</div>
+        </div>
+      </details>
+      <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The formula and use of each of six Ch 2 channel effects: simplified path loss (p.8), shadowing outage (p.12–16), Rayleigh outage (p.25–26), Rician factor (p.27–28), flat/selective (p.31–33), fast/slow (p.34–36).</dd><dt>Background</dt><dd>Path loss in dB (memorise); P<sub>out</sub> = Q(margin/σ) (memorise); p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup> and 1 − e<sup>−γ₀/γ̄</sup> (memorise); K = s²/2σ²; σ/T<sub>s</sub> &lt; 0.1 (memorise); f<sub>m</sub> = v f<sub>c</sub>/c, T<sub>C</sub> ≈ 1/f<sub>m</sub>.</dd><dt>Method</dt><dd>First identify which effect the part asks about, then use its own formula: σ given → Q; average SNR and no line of sight → exponential; line of sight with a power ratio → K; flat? → σ vs T<sub>s</sub>; fast or slow? → T<sub>C</sub> vs T<sub>s</sub>.</dd><dt>Key differences</dt><dd>Shadowing subtracts in dB (margin/σ), Rayleigh divides in linear (γ₀/γ̄); Rayleigh = Rician with K = 0; flat/fast describe how the fading relates to the signal, Rayleigh/Rician describe the amplitude distribution, and the two classifications are independent.</dd><dt>Common mistakes</dt><dd>Using the exponential formula for shadowing or Q for Rayleigh; putting dB values into the Rayleigh formula; K is a power ratio, so use 10 log₁₀; answering only one dimension of the fading type.</dd><dt>Numbers</dt><dd>Same 20 dB average, 10 dB threshold: Rayleigh 9.5%, Rician K = 4 about 1.6%, K = 10 about 0.07% (numerical, beyond the slides).</dd><dt>Link</dt><dd>Mock A·Q2 (shadowing), B·Q1 (Rayleigh), A·Q3 (flat / fast-slow), C·Q2 (fading type); the "which outage formula" table at the end of Ch 2 on the learning page.</dd></dl></div>
+    </div>
+    <!-- /EN:p8q12 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 

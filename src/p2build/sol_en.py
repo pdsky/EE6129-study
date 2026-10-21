@@ -885,3 +885,59 @@ EN['p8q11'] = dict(
   ('Common mistakes', '''The d⁻⁴ formula is not valid for d &lt; d<sub>c</sub>; the far two-ray formula has no λ, so the power does not change with frequency; antenna height enters squared.'''),
   ('Intuition', '''Far away the ground reflection is almost opposite in phase to the direct wave and cancels most of it, leaving a small difference, so the power falls faster than in free space; raising the antenna increases the path difference and recovers some power.'''),
   ('Link', '''Part A Ch 5 (n = 4); focused Q1 free space (n = 2); the derivation box in section 2.1 of the learning page.''')])
+
+EN['p8q12'] = dict(
+ idea=r'''Each part isolates one effect and uses its own formula: path loss gives the mean; shadowing is Gaussian in dB, so use Q; Rayleigh SNR is exponential, so use 1 − e<sup>−γ₀/γ̄</sup>; Rician needs only K; flat/selective compares σ with T<sub>s</sub>; fast/slow compares T<sub>C</sub> with T<sub>s</sub>.''',
+ steps=[
+  r'''(a) Path loss:''' + C('P<sub>r</sub> = 30 + (−40) − 10 × 3 × log₁₀1000 = 30 − 40 − 90 = −100 dBm') + r'''Average SNR = −100 − (−120) = 20 dB (100 linear).''',
+  r'''(b) Shadowing: the received power in dB is Gaussian with mean −100 dBm and σ = 8 dB. Margin = −100 − (−110) = 10 dB:''' + C('P<sub>out</sub> = Q(10 / 8) = Q(1.25) = 0.106'),
+  r'''(c) Rayleigh: the instantaneous SNR is exponential; γ₀/γ̄ = 10/100 = 0.1 (convert to linear first):''' + C('P<sub>out</sub> = 1 − e<sup>−0.1</sup> = 0.0952'),
+  r'''(d) Rician factor K = direct power / scattered power = 4, i.e. 10 log₁₀4 = 6.0 dB. With a line-of-sight path the signal is less likely to fall into deep fades, so the outage probability is <b>lower</b> than the 9.5% of (c). K = 0 reduces to Rayleigh; K → ∞ approaches AWGN (the SNR stays at 20 dB and there is no outage).''',
+  r'''(e) \(T_s=1/10\text{k}=100\) µs and \(\sigma/T_s=2/100=0.02\lt0.1\) → <b>flat fading</b>.''',
+  r'''(f) v = 54/3.6 = 15 m/s, \(f_m=vf_c/c=15\times2\times10^9/3\times10^8=100\) Hz, \(T_C\approx1/f_m=10\) ms ≫ \(T_s\) = 100 µs → <b>slow fading</b>. Together with (e): flat, slow fading.'''],
+ ans='(a) −100 dBm, 20 dB; (b) ≈ 10.6%; (c) ≈ 9.5%; (d) K = 6.0 dB, outage below 9.5%; (e) flat (0.02 &lt; 0.1); (f) slow (T<sub>C</sub> ≈ 10 ms ≫ 100 µs)',
+ official='none (self-written practice question); all numbers checked by src/p2build/verify_mock.py',
+ note='''Rician numbers for reference (not in the slides; numerical integration; the quiz will not ask you to compute them): with the same 20 dB average and 10 dB threshold, K = 4 gives about 1.6% outage, K = 10 about 0.07%, and K = 0 returns exactly the Rayleigh 9.5%. The stronger the direct path, the fewer the deep fades.''',
+ kp=[
+  ('What it tests', '''The formula and use of each of six Ch 2 channel effects: simplified path loss (p.8), shadowing outage (p.12–16), Rayleigh outage (p.25–26), Rician factor (p.27–28), flat/selective (p.31–33), fast/slow (p.34–36).'''),
+  ('Background', '''Path loss in dB (memorise); P<sub>out</sub> = Q(margin/σ) (memorise); p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup> and 1 − e<sup>−γ₀/γ̄</sup> (memorise); K = s²/2σ²; σ/T<sub>s</sub> &lt; 0.1 (memorise); f<sub>m</sub> = v f<sub>c</sub>/c, T<sub>C</sub> ≈ 1/f<sub>m</sub>.'''),
+  ('Method', '''First identify which effect the part asks about, then use its own formula: σ given → Q; average SNR and no line of sight → exponential; line of sight with a power ratio → K; flat? → σ vs T<sub>s</sub>; fast or slow? → T<sub>C</sub> vs T<sub>s</sub>.'''),
+  ('Key differences', '''Shadowing subtracts in dB (margin/σ), Rayleigh divides in linear (γ₀/γ̄); Rayleigh = Rician with K = 0; flat/fast describe how the fading relates to the signal, Rayleigh/Rician describe the amplitude distribution, and the two classifications are independent.'''),
+  ('Common mistakes', '''Using the exponential formula for shadowing or Q for Rayleigh; putting dB values into the Rayleigh formula; K is a power ratio, so use 10 log₁₀; answering only one dimension of the fading type.'''),
+  ('Numbers', '''Same 20 dB average, 10 dB threshold: Rayleigh 9.5%, Rician K = 4 about 1.6%, K = 10 about 0.07% (numerical, beyond the slides).'''),
+  ('Link', '''Mock A·Q2 (shadowing), B·Q1 (Rayleigh), A·Q3 (flat / fast-slow), C·Q2 (fading type); the "which outage formula" table at the end of Ch 2 on the learning page.''')])
+
+EN['p8q12']['detail'] = r'''      <details class="deep">
+        <summary>Step by step: what each of the six effects covers and which formula it uses</summary>
+        <div class="deep-body">
+          <h4><span class="st">Table</span>The differences at a glance</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>Effect</th><th>Describes</th><th>Random?</th><th>Formula</th><th>Used in</th><th>Memorise?</th></tr></thead><tbody>
+            <tr><td>Path loss</td><td>Large scale: mean power falls with distance</td><td>No</td><td>\(P_r=P_t+K_{dB}-10\gamma\log_{10}(d/d_0)\)</td><td>(a) mean power</td><td>Yes</td></tr>
+            <tr><td>Shadowing</td><td>Large scale: buildings and hills, slow fluctuation about the mean</td><td>Gaussian in dB</td><td>\(P_{r,dB}\sim\mathcal N(\text{mean},\sigma^2)\)</td><td>(b) Q(margin/σ), subtract in dB</td><td>Yes</td></tr>
+            <tr><td>Rayleigh</td><td>Small scale: multipath, no line of sight</td><td>Exponential SNR</td><td>\(p(\gamma)=\frac1{\bar\gamma}e^{-\gamma/\bar\gamma}\)</td><td>(c) 1 − e<sup>−γ₀/γ̄</sup>, divide in linear</td><td>Yes</td></tr>
+            <tr><td>Rician</td><td>Small scale: multipath plus a direct path</td><td>Rician</td><td>\(K=s^2/2\sigma^2\) (PDF given in the exam)</td><td>(d) K, qualitative</td><td>Know what K means</td></tr>
+            <tr><td>Flat / selective</td><td>Frequency: echoes shorter or longer than a symbol</td><td>A judgement</td><td>\(\sigma_{T_m}/T_s\lt0.1\), or B<sub>s</sub> &lt; B<sub>C</sub></td><td>(e)</td><td>Memorise 0.1</td></tr>
+            <tr><td>Fast / slow</td><td>Time: does the channel change within a symbol</td><td>A judgement</td><td>\(f_m=vf_c/c\), \(T_C\approx1/f_m\)</td><td>(f) T<sub>s</sub> ≪ T<sub>C</sub> → slow</td><td>Worth remembering</td></tr>
+          </tbody></table></div>
+
+          <h4><span class="st">Layers</span>The first four stack on top of each other</h4>
+          <p>The actual received power = the mean set by <b>path loss</b> (changes over hundreds of metres to kilometres) + the slow fluctuation of <b>shadowing</b> around it (changes when you pass a building, tens of metres) + the fast fluctuation of <b>multipath</b> (Rayleigh or Rician, changes within half a wavelength, about 7.5 cm at 2 GHz). A question usually asks about one layer at a time, so read carefully which one it means. (The comparison of the three scales is a supplement beyond the slides.)</p>
+
+          <h4><span class="st">Pitfalls</span>The three pairs most often confused</h4>
+          <ul>
+            <li><b>Shadowing vs Rayleigh:</b> shadowing gives σ (dB), so compute the margin in dB and use Q; Rayleigh gives an average SNR and no σ, so convert to linear, divide, and use the exponential formula. With the same 10 dB margin, shadowing (σ = 8 dB) gives 10.6% here and Rayleigh 9.5%, from completely different formulas.</li>
+            <li><b>Rayleigh vs Rician:</b> Rayleigh is the special case of Rician with K = 0 (no direct path). The larger K, the stronger the direct path and the closer to no fading, so a line-of-sight path lowers the outage probability.</li>
+            <li><b>Flat/fast vs Rayleigh/Rician:</b> independent questions. Flat/selective and fast/slow describe how the fading relates to the signal (are echoes long, does it change quickly); Rayleigh/Rician describe the distribution of the amplitude. A channel can be "flat, slow and Rayleigh" at the same time.</li>
+          </ul>
+
+          <h4><span class="st">Exam</span>Compact answer</h4>
+          <div class="tmpl">
+            <p>(a) \(P_r=30-40-30\log_{10}1000=-100\) dBm; average SNR = −100 − (−120) = 20 dB.</p>
+            <p>(b) Shadowing makes the received power in dB Gaussian with mean −100 dBm and σ = 8 dB; margin = 10 dB, so \(P_{out}=Q(10/8)=Q(1.25)=0.106\).</p>
+            <p>(c) In Rayleigh fading the SNR is exponential: \(P_{out}=1-e^{-\gamma_0/\bar\gamma}=1-e^{-10/100}=0.0952\).</p>
+            <p>(d) K = 4 = 6.0 dB. The line-of-sight component makes deep fades less likely, so the outage probability is lower than in (c); K = 0 gives Rayleigh and K → ∞ gives AWGN.</p>
+            <p>(e) \(\sigma_{T_m}/T_s=2\ \mu s/100\ \mu s=0.02\lt0.1\): flat fading. (f) \(f_m=vf_c/c=100\) Hz, \(T_C\approx1/f_m=10\) ms ≫ \(T_s\): slow fading.</p>
+          </div>
+          <div class="ans">In one line: path loss sets the mean, shadowing uses Q (subtract in dB), Rayleigh uses 1 − e<sup>−γ₀/γ̄</sup> (divide in linear), Rician is about K (K = 0 is Rayleigh), flat/selective compares σ with T<sub>s</sub>, fast/slow compares T<sub>C</sub> with T<sub>s</sub>.</div>
+        </div>
+      </details>'''

@@ -186,7 +186,7 @@ OVERVIEW = f'''
       <tr><td><a href="#P5">Practice 5</a></td><td>12</td><td>注水、Alamouti 判决变量、分集-复用折中</td><td><a href="{learn_href}#ch5">第五章</a>、<a href="{learn_href}#ch4">4.4</a></td></tr>
       <tr><td><a href="#P6">Practice 6</a></td><td>13</td><td>ISI 误码率、迫零、MMSE 与 DFE</td><td><a href="{learn_href}#ch6">第六章</a></td></tr>
       <tr><td><a href="#P7">Practice 7</a></td><td>13</td><td>OFDM 子载波数、H_k、等容量 vs 注水、CP</td><td><a href="{learn_href}#ch7">第七章</a></td></tr>
-      <tr><td><a href="#P8">模拟 Quiz</a></td><td>10</td><td>自编 11 题：全概率与贝叶斯、路径损耗与阴影中断、时延扩展与衰落类型、瑞利中断与衰落余量、最小二乘拟合、香农容量与注水、宏分集增益、LCR 与错误符号数、SINR 与中断容量；专项：自由空间、双径模型</td><td><a href="{learn_href}#ch1">第一章</a>、<a href="{learn_href}#ch2">第二章</a></td></tr>
+      <tr><td><a href="#P8">模拟 Quiz</a></td><td>10</td><td>自编 12 题：全概率与贝叶斯、路径损耗与阴影中断、时延扩展与衰落类型、瑞利中断与衰落余量、最小二乘拟合、香农容量与注水、宏分集增益、LCR 与错误符号数、SINR 与中断容量；专项：自由空间、双径模型、六种信道效应综合</td><td><a href="{learn_href}#ch1">第一章</a>、<a href="{learn_href}#ch2">第二章</a></td></tr>
     </tbody>
   </table></div>'''
 
@@ -194,7 +194,7 @@ BODY = f'''<div class="wrap lang-en" id="root">
   <a class="back" href="index.html">← 学习站目录</a>
   <div class="eyebrow">EE6129 · Part 2 · Practice 1–7 + 模拟 Quiz</div>
   <h1>Part 2 练习</h1>
-  <p class="lede">讲义配套的 7 份 Practice 共 21 道题，逐题给出中英对照的原题、考点、思路和分步解答，并和官方答案逐一核对；最后是按 10 月 23 日 Quiz 范围自编的 9 道模拟题（三套，每套 3 题），外加 2 道自由空间 / 双径专项题。解答默认是英文（考试要用英文作答），可以随时切换成中文。「随机练习」按同样的题型随机出数字，自动判分。</p>
+  <p class="lede">讲义配套的 7 份 Practice 共 21 道题，逐题给出中英对照的原题、考点、思路和分步解答，并和官方答案逐一核对；最后是按 10 月 23 日 Quiz 范围自编的 9 道模拟题（三套，每套 3 题），外加 3 道专项题（自由空间、双径、六种信道效应综合）。解答默认是英文（考试要用英文作答），可以随时切换成中文。「随机练习」按同样的题型随机出数字，自动判分。</p>
   <div class="notice">所有数字都用程序验算过。<b>20 道题与官方答案一致</b>（其中 P4 Q1 是论述题）；Practice 1 第 1 题按题目数据算不出官方的数字，题下写了原因和标准做法。模拟题是自编的，没有官方答案，数字都用 src/p2build/verify_mock.py 验算过。紫色"补充"框是课外内容。配套讲解见 <a href="{learn_href}">Part 2 讲解页</a>。</div>
 
   <div class="tabs" role="tablist" aria-label="页面视图">
