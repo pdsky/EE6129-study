@@ -735,3 +735,54 @@ EN['p8q4']['detail'] = r'''      <details class="deep">
           <div class="ans">In one line: the multipath sum makes the envelope Rayleigh → the power (SNR) exponential → integrating the exponential from 0 to γ₀ gives P<sub>out</sub> = 1 − e<sup>−γ₀/γ̄</sup>.</div>
         </div>
       </details>'''
+
+EN['p8q5']['detail'] = r'''      <details class="deep">
+        <summary>Step by step: where the line comes from, how least squares works, why (c) uses Q and not the exponential formula</summary>
+        <div class="deep-body">
+          <h4><span class="st">Line</span>Where M = K<sub>dB</sub> − γx comes from</h4>
+          <p>Take \(10\log_{10}\) of \(P_r/P_t=K(d_0/d)^{\gamma}\): products become sums, the exponent becomes a factor, and \(d_0/d\) is the reciprocal of \(d/d_0\), giving a minus sign: \(M=K_{dB}-\gamma\cdot10\log_{10}(d/d_0)\). With \(d_0=1\) m and \(x=10\log_{10}d\) this is \(M=K_{dB}-\gamma x\): a line with intercept \(K_{dB}\) and slope −γ. Using 10 log₁₀d on the x axis makes the slope exactly −γ; with log₁₀d it would be −10γ.</p>
+          <h4><span class="st">Least squares</span>Two partial derivatives equal to 0</h4>
+          <p>Residual \(e_i=M_i-(K-\gamma x_i)\); minimise \(F=\sum e_i^2\) (squares: signs cannot cancel, it is differentiable, and the minimum is the shadowing variance). At the bottom of this bowl both slopes are 0:</p>
+          <ol>
+            <li>\(\partial F/\partial K=0\ \Rightarrow\ \sum(M_i-K+\gamma x_i)=0\ \Rightarrow\ K=\bar M+\gamma\bar x\): the line passes through the mean point and the residuals sum to 0.</li>
+            <li>\(\partial F/\partial\gamma=0\ \Rightarrow\ \sum x_i(M_i-K+\gamma x_i)=0\); substituting K and replacing \(x_i\) by \(x_i-\bar x\): \(\gamma=-\dfrac{\sum(x_i-\bar x)(M_i-\bar M)}{\sum(x_i-\bar x)^2}\).</li>
+          </ol>
+          <p>Here: x̄ = 15, M̄ = −87.5, Σ(x − x̄)(M − M̄) = −194.95, Σ(x − x̄)² = 57.92, slope −3.37 → γ = 3.37, K<sub>dB</sub> = −37.0 dB. Check: at d = 100 m, M = −37.0 − 3.37 × 20 = −104.3 dB against a measured −105 dB; the −0.7 dB difference is that point's residual (shadowing).</p>
+          <h4><span class="st">(c)</span>Why Q and not 1 − e<sup>−γ₀/γ̄</sup></h4>
+          <div class="tw"><table class="mini"><thead><tr><th></th><th>Shadowing</th><th>Rayleigh fading</th></tr></thead><tbody>
+            <tr><td>Cause</td><td>Buildings, hills block the path (large scale)</td><td>Multipath phases cancel (small scale)</td></tr>
+            <tr><td>Distribution</td><td>dB value is Gaussian (log-normal)</td><td>Linear SNR is exponential</td></tr>
+            <tr><td>Outage</td><td>Q(margin/σ), subtract in dB</td><td>1 − e<sup>−γ₀/γ̄</sup>, divide in linear</td></tr>
+            <tr><td>Parameters</td><td>Margin (dB) and σ (dB)</td><td>Threshold SNR and average SNR, no σ</td></tr>
+          </tbody></table></div>
+          <p>Clues here: "path loss alone … 8 dB above" means the mean is set by path loss and shadowing fluctuates around it, and (b) has just found the shadowing σ = 3.35 dB from the fit. So it is shadowing and Q applies: P<sub>out</sub> = Q(8/3.35) = Q(2.39) ≈ 0.84%.</p>
+          <p>For comparison, with "Rayleigh fading, average SNR 8 dB above the threshold": \(\gamma_0/\bar\gamma=10^{-0.8}=0.158\), \(P_{out}=1-e^{-0.158}\approx14.7\%\). The same 8 dB margin gives a much larger outage, because Rayleigh fades are much deeper.</p>
+          <div class="ans">In one line: in dB the model is a line with intercept K<sub>dB</sub> and slope −γ; least squares = both partial derivatives 0 → the line passes through the mean point and slope = covariance/variance; shadowing with σ uses Q, Rayleigh with an average SNR uses the exponential formula.</div>
+        </div>
+      </details>'''
+
+EN['p8q6']['detail'] = r'''      <details class="deep">
+        <summary>Step by step: what water-filling is and why it allocates power this way</summary>
+        <div class="deep-body">
+          <h4><span class="st">Question</span>What water-filling answers</h4>
+          <p>Given several parallel subchannels of different quality and a fixed total power, how should the power be split to maximise the total capacity? The transmitter must know the channel (informed transmitter).</p>
+          <h4><span class="st">Analogy</span>Pouring water into an uneven pool</h4>
+          <p>Each subchannel is one cell of a pool whose <b>floor height is 1/γ<sub>j</sub></b> (γ<sub>j</sub> is its SNR with all the power): the better the channel, the lower the floor. Pour the total power in like water; it settles to a flat surface at 1/γ₀. Each cell gets power = surface − floor: good channels get more, poor ones less, and a cell whose floor is above the surface gets none.</p>
+          <div class="eqb">\[\frac{P_j}{P}=\frac{1}{\gamma_0}-\frac{1}{\gamma_j}\ (\gamma_j\ge\gamma_0),\qquad \sum_j\Big(\frac{1}{\gamma_0}-\frac{1}{\gamma_j}\Big)=1,\qquad C=\sum_{\gamma_j\ge\gamma_0}B_j\log_2\frac{\gamma_j}{\gamma_0}\]</div>
+          <h4><span class="st">Steps</span>Assume all on, check, drop and redo if needed</h4>
+          <ol>
+            <li>Assume all n subchannels get power: \(n/\gamma_0=1+\sum1/\gamma_j\); solve for γ₀.</li>
+            <li>Check every \(\gamma_j\ge\gamma_0\); if one fails, drop the worst (n − 1) and solve again.</li>
+            <li>Compute the powers and the capacity.</li>
+          </ol>
+          <h4><span class="st">Here</span>Subchannel 2 is dropped</h4>
+          <p>Assume both on: 2/γ₀ = 1 + 1/20 + 1/0.5 = 3.05, γ₀ = 0.656; subchannel 2 has SNR 0.5 &lt; 0.656 (its floor 1/0.5 = 2 is above the surface 1/0.656 = 1.52), so drop it. One left: 1/γ₀ = 1.05, P₁/P = 1.05 − 0.05 = 1, C = log₂(20/0.952) = log₂21 = 4.39 Mbps. An equal split gives only log₂11 + log₂1.25 = 3.78 Mbps.</p>
+          <p>Compare Practice 5 Q1 (SNRs 80, 40, 40): γ₀ = 2.82, all three are above it and all get power (0.342, 0.329, 0.329), C ≈ 124.7 Mbps.</p>
+          <h4><span class="st">Why</span>This split is optimal</h4>
+          <p>Capacity is log₂(1 + SNR), which grows more and more slowly. Extra power on a poor channel barely raises its SNR; a good channel returns more per unit of power, but with diminishing returns too. At the optimum the surface is flat: the last bit of power earns the same on every channel used (the slides say γ₀ comes from a Lagrange multiplier; the formal derivation is not examined).</p>
+          <ul>
+            <li>Common mistakes: use linear γ<sub>j</sub>; always check γ<sub>j</sub> ≥ γ₀ or you get a negative power; capacity uses log₂(γ<sub>j</sub>/γ₀), not log₂(1 + γ<sub>j</sub>); update n after dropping a subchannel.</li>
+          </ul>
+          <div class="ans">In one line: treat 1/γ<sub>j</sub> as the pool floor and pour in the total power to a flat surface 1/γ₀; good channels get more, poor ones less, very poor ones none. Assume all on → solve γ₀ → check γ<sub>j</sub> ≥ γ₀ → drop and redo if needed.</div>
+        </div>
+      </details>'''

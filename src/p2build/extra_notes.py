@@ -1,16 +1,21 @@
-#!/usr/bin/python3
 """Extra explanation boxes on the Part 2 learning page, written from the user's questions (2026-10).
 
-Each note is a purple 课外补充 box inserted right after a formula card (found by its label) in a
-learn_NN.html fragment, between <!-- NOTE:id --> and <!-- /NOTE:id --> markers, so re-running is
-idempotent. Run before build_learn.py (any order relative to quiz_marks.py).
+Each note is a purple 课外补充 box (some with a collapsible worked-example block) inserted into a
+learn_NN.html fragment between <!-- NOTE:id --> and <!-- /NOTE:id --> markers, so re-running is
+idempotent. Where a note goes is given by an anchor:
+  ('card', label)      after the formula card whose label starts with `label`
+  ('after_p', text)    after the paragraph that starts with `text`
+  ('after', marker)    after the line containing `marker`
+  ('before_key', text) before the <div class="key"> box whose label contains `text`
+Notes sharing an anchor appear in reverse list order (each is inserted at the same spot).
+Numbers are checked by verify_notes.py. Run before build_learn.py (any order relative to quiz_marks.py).
 """
 import pathlib, re
 
 B = pathlib.Path(__file__).parent
 
 NOTES = [
- ('learn_02.html', '简化路径损耗模型（p.8）', 'dbm', r'''      <div class="extra">
+ ('learn_02.html', ('after_p', '<p><b>怎么从左边的式子得到右边</b>'), 'dbm', r'''      <div class="extra">
         <div class="lbl">课外补充 · dB 和 dBm：K 为什么是 dB，不是 dBm</div>
         <p><b>dBm 是绝对功率</b>（以 1 mW 为参考）：\(10\log_{10}(P/1\,\text{mW})\)，例如 100 mW = 20 dBm、1 mW = 0 dBm。<b>dB 是两个功率的比值</b>：\(10\log_{10}(P_1/P_2)\)，没有单位，例如衰减到 1/1000 是 −30 dB。可以记成：dBm 是"有多少"，dB 是"变了多少倍"。</p>
         <p>线性式 \(P_r=P_tK(d_0/d)^{\gamma}\) 里只有 \(P_t\)、\(P_r\) 是功率；K 和 \((d_0/d)^{\gamma}\) 都是乘在功率上的倍数（K 就是 d = d₀ 处的 \(P_r/P_t\)）。取对数后乘法变加法，所以只有 \(P_t\)、\(P_r\) 是 dBm，\(K_{dB}\) 和 \(10\gamma\log_{10}(d/d_0)\) 都是 dB：</p>
@@ -23,7 +28,7 @@ NOTES = [
         <p>所以余量（平均功率 − 门限，两个 dBm 相减）和阴影的标准差 σ 都是 dB。Practice 1 第 2 题原文把 σ 写成 "dBm"，严格说应该是 dB。</p>
       </div>
 '''),
- ('learn_02.html', '瑞利衰落（p.25–26）', 'rayout', r'''      <div class="extra">
+ ('learn_02.html', ('card', '瑞利衰落（p.25–26）'), 'rayout', r'''      <div class="extra">
         <div class="lbl">课外补充 · 瑞利中断 1 − e<sup>−γ₀/γ̄</sup> 是怎么积出来的（推导不考，帮助理解）</div>
         <p>老师说瑞利分布的推导不会让推，Quiz 也不考积分；这里只是说明公式从哪来，考试记住结果、会用就行。</p>
         <ol class="steps">
@@ -41,7 +46,7 @@ NOTES = [
         <p>用的时候：γ₀、γ̄ 先换成线性值（公式里是两者的比值，单位一致即可）；反求平均 SNR 用 \(\bar\gamma=\gamma_0/\ln\frac{1}{1-P_{out}}\)。</p>
       </div>
 '''),
- ('learn_02.html', 'AWGN 信道的香农容量', 'sinr', r'''      <div class="extra">
+ ('learn_02.html', ('card', 'AWGN 信道的香农容量'), 'sinr', r'''      <div class="extra">
         <div class="lbl">课外补充 · SNR、SIR、SINR 的区别，香农公式里该用哪个</div>
         <div class="tblwrap"><table><thead><tr><th>指标</th><th>分母</th><th>什么时候用</th></tr></thead><tbody>
           <tr><td>SNR = S/N</td><td>只有噪声</td><td>单用户、没有干扰，例如 AWGN 信道</td></tr>
@@ -56,25 +61,39 @@ NOTES = [
 ]
 
 
-def card_end(s, label):
-    a = s.find(f'<div class="flbl">{label}')
-    assert a >= 0, label
-    return s.find('\n      </div>\n', a) + len('\n      </div>\n')
+def locate(s, anchor):
+    kind, key = anchor
+    if kind == 'card':
+        a = s.find(f'<div class="flbl">{key}')
+        assert a >= 0, key
+        return s.find('\n      </div>\n', a) + len('\n      </div>\n')
+    if kind == 'after_p':
+        a = s.find(key)
+        assert a >= 0, key
+        return s.find('</p>\n', a) + len('</p>\n')
+    if kind == 'after':
+        a = s.find(key)
+        assert a >= 0, key
+        return s.find('\n', a) + 1
+    if kind == 'before_key':
+        a = s.find(key)
+        assert a >= 0, key
+        return s.rfind('      <div class="key">', 0, a)
+    raise ValueError(kind)
 
 
 def apply():
     for frag in sorted({n[0] for n in NOTES}):
         f = B / frag
         s = re.sub(r'<!-- NOTE:(\w+) -->\n.*?<!-- /NOTE:\1 -->\n', '', f.read_text(encoding='utf-8'), flags=re.S)
-        for fr, label, nid, html in NOTES:
+        for fr, anchor, nid, html in NOTES:
             if fr == frag:
-                e = card_end(s, label)
-                if nid == 'dbm':                 # after the paragraph that turns the model into dB form
-                    p = s.find('<p><b>怎么从左边的式子得到右边</b>', e)
-                    assert p >= 0
-                    e = s.find('</p>\n', p) + len('</p>\n')
+                e = locate(s, anchor)
                 s = s[:e] + f'<!-- NOTE:{nid} -->\n' + html + f'<!-- /NOTE:{nid} -->\n' + s[e:]
         f.write_text(s, encoding='utf-8')
     print('extra notes:', len(NOTES))
 
+
+from extra_notes_more import MORE
+NOTES += MORE
 apply()
