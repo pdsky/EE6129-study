@@ -125,6 +125,42 @@
       <div class="ans">(a) P_r,dB = P_t,dB + K_dB − 36 log₁₀d，300 m 处 ≈ −100.7 dBm；(b) P_out ≈ 6.0%；(c) d_max ≈ 223 m</div>
       <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
       <div class="note">300 m 处中断 6%，远高于 1% 的常用目标。要压到 1%，要么把覆盖半径缩到约 223 m，要么把发射功率提高 13.96 − 9.32 = 4.64 dB。</div>
+      <details class="deep">
+        <summary>逐步详解：dB 和 dBm，每个量是什么单位</summary>
+        <div class="deep-body">
+          <h4><span class="st">区别</span>dBm 是"有多少"，dB 是"变了多少倍"</h4>
+          <div class="tw"><table class="mini"><thead><tr><th></th><th>dB</th><th>dBm</th></tr></thead><tbody>
+            <tr><td>表示什么</td><td>两个功率的比值（倍数），没有单位</td><td>绝对功率，以 1 mW 为参考</td></tr>
+            <tr><td>定义</td><td>10 log₁₀(P₁/P₂)</td><td>10 log₁₀(P / 1 mW)</td></tr>
+            <tr><td>例子</td><td>放大 100 倍 = +20 dB；衰减到 1/1000 = −30 dB</td><td>100 mW = 20 dBm；1 mW = 0 dBm</td></tr>
+          </tbody></table></div>
+
+          <h4><span class="st">K</span>为什么是 dB，不是 dBm</h4>
+          <p>线性式 \(P_r=P_t\cdot K\cdot(d_0/d)^{\gamma}\) 里，\(P_r\)、\(P_t\) 是功率（mW），K 和 \((d_0/d)^{\gamma}\) 是乘在功率上的倍数，没有单位。K 的意思是"在参考距离 d₀ 处，接收功率是发射功率的多少倍"，所以是比值，取对数后是 dB。\(K_{dB}=-31.5\) dB 表示 1 m 处信号衰减到发射功率的 \(10^{-3.15}\approx1/1400\)。</p>
+          <p>取 dB 后乘法变加法，只有 \(P_t\) 带 dBm，其余都是 dB，结果自然是 dBm：</p>
+          <div class="eqb">\[\underbrace{P_{r,dBm}}_{\text{dBm}}=\underbrace{P_{t,dBm}}_{\text{dBm}}+\underbrace{K_{dB}}_{\text{dB}}-\underbrace{10\gamma\log_{10}(d/d_0)}_{\text{dB}}\]</div>
+          <div class="tw"><table class="mini"><thead><tr><th>运算</th><th>结果</th><th>意思</th></tr></thead><tbody>
+            <tr><td>dBm + dB</td><td>dBm</td><td>功率乘一个倍数，还是功率</td></tr>
+            <tr><td>dBm − dBm</td><td>dB</td><td>两个功率相除得倍数（余量、SNR）</td></tr>
+            <tr><td>dB + dB</td><td>dB</td><td>倍数乘倍数，还是倍数</td></tr>
+            <tr><td>dBm + dBm</td><td>没有意义</td><td>功率乘功率不是功率</td></tr>
+          </tbody></table></div>
+          <p>反过来验证：如果 K 也是 dBm，右边就成了 dBm + dBm，相当于"功率 × 功率"，没有物理意义。</p>
+
+          <h4><span class="st">本题</span>每个量的单位</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>量</th><th>值</th><th>单位</th></tr></thead><tbody>
+            <tr><td>发射功率</td><td>100 mW = 20</td><td>dBm（绝对功率）</td></tr>
+            <tr><td>K</td><td>−31.5</td><td>dB（比值）</td></tr>
+            <tr><td>路径损耗项 36 log₁₀300</td><td>89.18</td><td>dB（比值）</td></tr>
+            <tr><td>平均接收功率</td><td>−100.68</td><td>dBm</td></tr>
+            <tr><td>门限</td><td>−110</td><td>dBm</td></tr>
+            <tr><td>余量 = 接收功率 − 门限</td><td>9.32</td><td>dB（dBm − dBm）</td></tr>
+            <tr><td>阴影标准差 σ</td><td>6</td><td>dB（围绕平均值的起伏，也是比值）</td></tr>
+          </tbody></table></div>
+          <p>Practice 1 第 2 题原文把 σ 写成 "dBm"，严格说应该是 dB。</p>
+          <div class="ans">一句话：dBm 是绝对功率，dB 是比值。路径损耗模型里只有发射功率和接收功率是 dBm；K、路径损耗、阴影、余量都是 dB。</div>
+        </div>
+      </details>
       <!-- PKP:p8q2 -->
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>简化路径损耗模型的 dB 形式（必背）、阴影中断概率 P<sub>out</sub> = Q(余量/σ)（必背）、Q 函数反查（第 2 章 p.8、p.12–16）。</dd><dt>前置知识</dt><dd>P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 10γ log₁₀(d/d₀)；mW → dBm：10 log₁₀(mW 数)；Q(2.326) = 0.01。</dd><dt>解题套路</dt><dd>① 换单位；② 代模型得平均功率；③ 余量 = 平均功率 − 门限；④ P<sub>out</sub> = Q(余量/σ)。反求距离时倒过来：中断要求 → 反查 x → 余量 = xσ → 平均功率下限 → 解 d。</dd><dt>关键一步</dt><dd>(c) 余量 13.96 dB → 平均功率 ≥ −96.04 dBm → 36 log₁₀d ≤ 84.54 → d ≤ 223 m。</dd><dt>易错</dt><dd>100 mW 没换成 20 dBm 就代（会扣分）；10γ = 36，别写成 3.6；Q 的参数是余量除以 σ，不是除以 σ²。</dd><dt>举一反三</dt><dd>给定距离求所需发射功率；或给定中断概率求允许的最大 σ（2023-24 S2 Q1(a)(ii) 就这样问）。</dd><dt>联系</dt><dd>Practice 1 第 2 题（正算、反算中断概率）；Practice 1 第 1 题 (b)。</dd></dl></div>
       <!-- /PKP:p8q2 -->
@@ -142,6 +178,42 @@
       <div class="ans">(a) P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 36 log₁₀d, ≈ −100.7 dBm at 300 m; (b) P<sub>out</sub> ≈ 6.0%; (c) d<sub>max</sub> ≈ 223 m</div>
       <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
       <div class="note">At 300 m the outage is 6%, far above the usual 1% target. To reach 1%, either shrink the coverage radius to about 223 m or raise the transmit power by 13.96 − 9.32 = 4.64 dB.</div>
+      <details class="deep">
+        <summary>Step by step: dB versus dBm, and the unit of every quantity</summary>
+        <div class="deep-body">
+          <h4><span class="st">Difference</span>dBm is "how much", dB is "how many times"</h4>
+          <div class="tw"><table class="mini"><thead><tr><th></th><th>dB</th><th>dBm</th></tr></thead><tbody>
+            <tr><td>Meaning</td><td>Ratio of two powers, no unit</td><td>Absolute power, referenced to 1 mW</td></tr>
+            <tr><td>Definition</td><td>10 log₁₀(P₁/P₂)</td><td>10 log₁₀(P / 1 mW)</td></tr>
+            <tr><td>Examples</td><td>×100 = +20 dB; down to 1/1000 = −30 dB</td><td>100 mW = 20 dBm; 1 mW = 0 dBm</td></tr>
+          </tbody></table></div>
+
+          <h4><span class="st">K</span>Why K is in dB, not dBm</h4>
+          <p>In the linear form \(P_r=P_t\cdot K\cdot(d_0/d)^{\gamma}\), \(P_r\) and \(P_t\) are powers (mW) while K and \((d_0/d)^{\gamma}\) are unitless factors multiplying the power. K means "how many times the transmit power is received at the reference distance d₀", a ratio, so in log form it is in dB. \(K_{dB}=-31.5\) dB means the signal at 1 m is \(10^{-3.15}\approx1/1400\) of the transmit power.</p>
+          <p>Taking dB turns products into sums; only \(P_t\) is in dBm and everything else is in dB, so the result is in dBm:</p>
+          <div class="eqb">\[\underbrace{P_{r,dBm}}_{\text{dBm}}=\underbrace{P_{t,dBm}}_{\text{dBm}}+\underbrace{K_{dB}}_{\text{dB}}-\underbrace{10\gamma\log_{10}(d/d_0)}_{\text{dB}}\]</div>
+          <div class="tw"><table class="mini"><thead><tr><th>Operation</th><th>Result</th><th>Meaning</th></tr></thead><tbody>
+            <tr><td>dBm + dB</td><td>dBm</td><td>A power times a factor is still a power</td></tr>
+            <tr><td>dBm − dBm</td><td>dB</td><td>A ratio of two powers (margin, SNR)</td></tr>
+            <tr><td>dB + dB</td><td>dB</td><td>A factor times a factor is still a factor</td></tr>
+            <tr><td>dBm + dBm</td><td>Meaningless</td><td>Power times power is not a power</td></tr>
+          </tbody></table></div>
+          <p>Check: if K were in dBm, the right-hand side would be dBm + dBm, i.e. "power × power", which has no physical meaning.</p>
+
+          <h4><span class="st">Here</span>Unit of each quantity</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>Quantity</th><th>Value</th><th>Unit</th></tr></thead><tbody>
+            <tr><td>Transmit power</td><td>100 mW = 20</td><td>dBm (absolute power)</td></tr>
+            <tr><td>K</td><td>−31.5</td><td>dB (ratio)</td></tr>
+            <tr><td>Path loss term 36 log₁₀300</td><td>89.18</td><td>dB (ratio)</td></tr>
+            <tr><td>Average received power</td><td>−100.68</td><td>dBm</td></tr>
+            <tr><td>Threshold</td><td>−110</td><td>dBm</td></tr>
+            <tr><td>Margin = received power − threshold</td><td>9.32</td><td>dB (dBm − dBm)</td></tr>
+            <tr><td>Shadowing standard deviation σ</td><td>6</td><td>dB (a fluctuation about the mean, also a ratio)</td></tr>
+          </tbody></table></div>
+          <p>Practice 1 Q2 writes σ in "dBm"; strictly it should be dB.</p>
+          <div class="ans">In one line: dBm is an absolute power, dB is a ratio. In the path loss model only the transmit and received powers are in dBm; K, path loss, shadowing and margin are all in dB.</div>
+        </div>
+      </details>
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>dB form of the simplified path loss model (memorise), shadowing outage P<sub>out</sub> = Q(margin/σ) (memorise), inverse Q lookup (Ch 2 p.8, p.12–16).</dd><dt>Background</dt><dd>P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 10γ log₁₀(d/d₀); mW → dBm: 10 log₁₀(value in mW); Q(2.326) = 0.01.</dd><dt>Method</dt><dd>① Convert units; ② average power from the model; ③ margin = average − threshold; ④ P<sub>out</sub> = Q(margin/σ). For the distance, reverse it: outage target → inverse Q → margin = xσ → minimum average power → solve for d.</dd><dt>Key step</dt><dd>(c) Margin 13.96 dB → average power ≥ −96.04 dBm → 36 log₁₀d ≤ 84.54 → d ≤ 223 m.</dd><dt>Common mistakes</dt><dd>Using 100 mW without converting to 20 dBm (loses marks); 10γ = 36, not 3.6; Q takes margin over σ, not over σ².</dd><dt>Variations</dt><dd>Required transmit power for a given distance; or the largest allowed σ for a given outage (asked in 2023-24 S2 Q1(a)(ii)).</dd><dt>Link</dt><dd>Practice 1 Q2 (outage forwards and backwards); Practice 1 Q1 (b).</dd></dl></div>
     </div>
     <!-- /EN:p8q2 -->
@@ -395,6 +467,37 @@
       <div class="ans">(a) p(γ) = (1/γ̄)e^(−γ/γ̄)，P_out ≈ 4.9%；(b) γ̄ ≈ 27 dB，衰落余量 ≈ 20 dB；(c) e⁻¹ ≈ 0.368</div>
       <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
       <div class="note">(c) 说明瑞利衰落下，瞬时 SNR 高于平均值的时间只有约 37%，大部分时间都低于平均值，所以要留衰落余量。没有衰落的 AWGN 信道里 SNR 一直等于平均值，平均 7 dB 就够；瑞利信道要多留 20 dB。</div>
+      <details class="deep">
+        <summary>逐步详解：瑞利中断 1 − e<sup>−γ₀/γ̄</sup> 从哪来（推导不考，帮助理解）</summary>
+        <div class="deep-body">
+          <p>老师说瑞利分布的推导不会让推，Quiz 也不考积分；考试记住结果、会用就行。下面说明公式是怎么来的。</p>
+          <h4><span class="st">思路</span>多径 → 瑞利 → 指数 → 积分</h4>
+          <p>多径叠加 → I、Q 分量是高斯 → 包络 z 服从瑞利分布 → 功率 z²（以及 SNR γ）服从指数分布 → 对指数分布从 0 积到 γ₀，就是中断概率。</p>
+          <h4><span class="st">第 1 步</span>为什么包络是瑞利分布</h4>
+          <p>手机收到很多条相位随机的回波：\(r_I=\sum\alpha_n\cos\phi_n\)，\(r_Q=\sum\alpha_n\sin\phi_n\)。每个分量都是大量随机项之和，由中心极限定理近似为均值 0、方差 σ² 的独立高斯。包络是这个二维向量的长度 \(z=\sqrt{r_I^2+r_Q^2}\)，两个独立零均值高斯的"长度"服从瑞利分布：\(p(z)=\frac{z}{\sigma^2}e^{-z^2/(2\sigma^2)},\ z\ge0\)。</p>
+          <h4><span class="st">第 2 步</span>从包络到 SNR</h4>
+          <p>功率是幅度的平方：接收功率 z²，平均功率 E[z²] = 2σ²。SNR 和功率成正比：\(\gamma=z^2/N\)，平均 \(\bar\gamma=2\sigma^2/N\)。</p>
+          <h4><span class="st">第 3 步</span>直接积出中断概率</h4>
+          <p>"γ &lt; γ₀"等价于"z &lt; z₀"，\(z_0^2=\gamma_0N\)。换元 \(u=z^2/(2\sigma^2)\)、\(du=z\,dz/\sigma^2\)：</p>
+          <div class="eqb">\[P_{out}=\int_0^{z_0}\frac{z}{\sigma^2}e^{-z^2/(2\sigma^2)}dz=\int_0^{z_0^2/(2\sigma^2)}e^{-u}du=1-e^{-z_0^2/(2\sigma^2)}=1-e^{-\gamma_0/\bar\gamma}\]</div>
+          <p>最后一步用了 \(z_0^2/(2\sigma^2)=\gamma_0N/(\bar\gamma N)=\gamma_0/\bar\gamma\)。</p>
+          <h4><span class="st">另一条路</span>两个要背的公式是一对</h4>
+          <p>对 \(1-e^{-\gamma_0/\bar\gamma}\) 关于 γ₀ 求导，就是 SNR 的指数分布 \(p(\gamma)=\frac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}\)；反过来 \(\int_0^{\gamma_0}\frac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}d\gamma=1-e^{-\gamma_0/\bar\gamma}\)。指数分布是 PDF，中断概率是它的 CDF，记住一个就能得到另一个。</p>
+          <h4><span class="st">检查</span>合不合理</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>情况</th><th>代入</th><th>结果</th><th>含义</th></tr></thead><tbody>
+            <tr><td>γ₀ = 0</td><td>1 − e⁰</td><td>0</td><td>不要求 SNR，永远不中断</td></tr>
+            <tr><td>γ₀ → ∞</td><td>1 − e<sup>−∞</sup></td><td>1</td><td>永远达不到，总是中断</td></tr>
+            <tr><td>γ₀ = γ̄</td><td>1 − e⁻¹</td><td>0.632</td><td>63% 的时间低于平均值（本题 (c) 的另一面）</td></tr>
+            <tr><td>γ₀ ≪ γ̄</td><td>e<sup>−x</sup> ≈ 1 − x</td><td>≈ γ₀/γ̄</td><td>中断 1% 要 γ̄ ≈ 100γ₀，余量约 20 dB（本题 (b)）</td></tr>
+          </tbody></table></div>
+          <h4><span class="st">用法</span>代数时注意</h4>
+          <ul>
+            <li>γ₀、γ̄ 先换成线性值（7 dB → 5.01，20 dB → 100）；公式里是比值，单位一致就行。</li>
+            <li>反求平均 SNR：\(\bar\gamma=\gamma_0/\ln\frac{1}{1-P_{out}}\)。</li>
+          </ul>
+          <div class="ans">一句话：多径叠加使包络服从瑞利分布 → 功率（SNR）服从指数分布 → 指数分布从 0 积到 γ₀，得 P<sub>out</sub> = 1 − e<sup>−γ₀/γ̄</sup>。</div>
+        </div>
+      </details>
       <!-- PKP:p8q4 -->
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>瑞利衰落下 SNR 的指数分布（必背）、瑞利中断概率（必背）、衰落余量（尽量记）（第 2 章 p.25–26、p.51）。</dd><dt>前置知识</dt><dd>p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup>；P(γ &lt; γ₀) = 1 − e<sup>−γ₀/γ̄</sup>；P(γ &gt; x) = e<sup>−x/γ̄</sup>；ln(1/(1 − ε)) ≈ ε。</dd><dt>解题套路</dt><dd>dB 全部换成线性 → 代 1 − e<sup>−γ₀/γ̄</sup>；反求 γ̄ = γ₀ / ln(1/(1 − ε))；衰落余量 = γ̄<sub>dB</sub> − γ₀,<sub>dB</sub>。</dd><dt>关键一步</dt><dd>ε = 1% 时 ln(1/0.99) = 0.01005，所以 γ̄ ≈ 100γ₀，衰落余量 ≈ 20 dB。</dd><dt>易错</dt><dd>把 dB 值直接代进指数；要背的是 SNR 的指数分布，不是包络的瑞利 PDF；衰落余量是两个 dB 值相减。</dd><dt>速记</dt><dd>ε = 1% → 20 dB，0.5% → 23 dB，0.1% → 30 dB：中断要求每严 10 倍，余量多 10 dB。</dd><dt>联系</dt><dd>讲解页 2.3、2.7 节；2025-26 S2 Q1(a)(iii)（瑞利信道的中断容量与衰落余量）。</dd></dl></div>
       <!-- /PKP:p8q4 -->
@@ -412,6 +515,37 @@
       <div class="ans">(a) p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup>, P<sub>out</sub> ≈ 4.9%; (b) γ̄ ≈ 27 dB, fade margin ≈ 20 dB; (c) e⁻¹ ≈ 0.368</div>
       <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
       <div class="note">Part (c) shows that in Rayleigh fading the instantaneous SNR is above its average only about 37% of the time; most of the time it is below, which is why a fade margin is needed. In an AWGN channel without fading the SNR always equals its average, so an average of 7 dB would be enough; Rayleigh fading needs 20 dB more.</div>
+      <details class="deep">
+        <summary>Step by step: where the Rayleigh outage 1 − e<sup>−γ₀/γ̄</sup> comes from (not examined, for understanding)</summary>
+        <div class="deep-body">
+          <p>The lecturer said the Rayleigh derivation will not be asked and the Quiz has no integration; in the exam, remember the result and use it. This only shows where it comes from.</p>
+          <h4><span class="st">Idea</span>Multipath → Rayleigh → exponential → integrate</h4>
+          <p>Multipath sum → Gaussian I and Q components → Rayleigh envelope z → exponential power z² (and SNR γ) → integrating the exponential from 0 to γ₀ gives the outage probability.</p>
+          <h4><span class="st">Step 1</span>Why the envelope is Rayleigh</h4>
+          <p>The phone receives many echoes with random phases: \(r_I=\sum\alpha_n\cos\phi_n\), \(r_Q=\sum\alpha_n\sin\phi_n\). Each is a sum of many random terms, so by the central limit theorem they are approximately independent zero-mean Gaussians with variance σ². The envelope is the length of this 2-D vector, \(z=\sqrt{r_I^2+r_Q^2}\), and the length of two independent zero-mean Gaussians is Rayleigh: \(p(z)=\frac{z}{\sigma^2}e^{-z^2/(2\sigma^2)},\ z\ge0\).</p>
+          <h4><span class="st">Step 2</span>From envelope to SNR</h4>
+          <p>Power is amplitude squared: received power z², mean power E[z²] = 2σ². SNR is proportional to power: \(\gamma=z^2/N\), mean \(\bar\gamma=2\sigma^2/N\).</p>
+          <h4><span class="st">Step 3</span>Integrate for the outage</h4>
+          <p>"γ &lt; γ₀" is the same as "z &lt; z₀" with \(z_0^2=\gamma_0N\). Substitute \(u=z^2/(2\sigma^2)\), \(du=z\,dz/\sigma^2\):</p>
+          <div class="eqb">\[P_{out}=\int_0^{z_0}\frac{z}{\sigma^2}e^{-z^2/(2\sigma^2)}dz=\int_0^{z_0^2/(2\sigma^2)}e^{-u}du=1-e^{-z_0^2/(2\sigma^2)}=1-e^{-\gamma_0/\bar\gamma}\]</div>
+          <p>The last step uses \(z_0^2/(2\sigma^2)=\gamma_0N/(\bar\gamma N)=\gamma_0/\bar\gamma\).</p>
+          <h4><span class="st">Other way</span>The two formulas to memorise are a pair</h4>
+          <p>Differentiating \(1-e^{-\gamma_0/\bar\gamma}\) with respect to γ₀ gives the exponential SNR distribution \(p(\gamma)=\frac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}\); conversely \(\int_0^{\gamma_0}\frac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}d\gamma=1-e^{-\gamma_0/\bar\gamma}\). The exponential distribution is the PDF and the outage probability is its CDF: remember one and you get the other.</p>
+          <h4><span class="st">Check</span>Does it make sense?</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>Case</th><th>Substitute</th><th>Result</th><th>Meaning</th></tr></thead><tbody>
+            <tr><td>γ₀ = 0</td><td>1 − e⁰</td><td>0</td><td>No SNR required, never in outage</td></tr>
+            <tr><td>γ₀ → ∞</td><td>1 − e<sup>−∞</sup></td><td>1</td><td>Never reachable, always in outage</td></tr>
+            <tr><td>γ₀ = γ̄</td><td>1 − e⁻¹</td><td>0.632</td><td>Below the mean 63% of the time (the other side of part (c))</td></tr>
+            <tr><td>γ₀ ≪ γ̄</td><td>e<sup>−x</sup> ≈ 1 − x</td><td>≈ γ₀/γ̄</td><td>1% outage needs γ̄ ≈ 100γ₀, a margin of about 20 dB (part (b))</td></tr>
+          </tbody></table></div>
+          <h4><span class="st">Use</span>When substituting</h4>
+          <ul>
+            <li>Convert γ₀ and γ̄ to linear values first (7 dB → 5.01, 20 dB → 100); only their ratio matters, so any consistent unit works.</li>
+            <li>Average SNR backwards: \(\bar\gamma=\gamma_0/\ln\frac{1}{1-P_{out}}\).</li>
+          </ul>
+          <div class="ans">In one line: the multipath sum makes the envelope Rayleigh → the power (SNR) exponential → integrating the exponential from 0 to γ₀ gives P<sub>out</sub> = 1 − e<sup>−γ₀/γ̄</sup>.</div>
+        </div>
+      </details>
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Exponential SNR distribution in Rayleigh fading (memorise), Rayleigh outage (memorise), fade margin (try to remember) (Ch 2 p.25–26, p.51).</dd><dt>Background</dt><dd>p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup>; P(γ &lt; γ₀) = 1 − e<sup>−γ₀/γ̄</sup>; P(γ &gt; x) = e<sup>−x/γ̄</sup>; ln(1/(1 − ε)) ≈ ε.</dd><dt>Method</dt><dd>Convert every dB value to linear → 1 − e<sup>−γ₀/γ̄</sup>; backwards γ̄ = γ₀ / ln(1/(1 − ε)); fade margin = γ̄<sub>dB</sub> − γ<sub>0,dB</sub>.</dd><dt>Key step</dt><dd>For ε = 1%, ln(1/0.99) = 0.01005, so γ̄ ≈ 100γ₀ and the fade margin ≈ 20 dB.</dd><dt>Common mistakes</dt><dd>Putting dB values into the exponent; the formula to memorise is the exponential SNR distribution, not the Rayleigh envelope PDF; the fade margin is a difference of two dB values.</dd><dt>Quick rule</dt><dd>ε = 1% → 20 dB, 0.5% → 23 dB, 0.1% → 30 dB: each 10 times stricter outage needs 10 dB more margin.</dd><dt>Link</dt><dd>Learning page sections 2.3 and 2.7; 2025-26 S2 Q1(a)(iii) (outage capacity and fade margin of a Rayleigh channel).</dd></dl></div>
     </div>
     <!-- /EN:p8q4 -->

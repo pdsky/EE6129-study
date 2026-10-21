@@ -624,3 +624,114 @@ EN['p8q3']['detail'] = r'''      <details class="deep">
           <div class="ans">In one line: power-weighted μ and σ (divide by the total power) → σ vs T<sub>s</sub> for flat/selective, T<sub>C</sub> = 1/f<sub>m</sub> vs T<sub>s</sub> for fast/slow → square root of the power ratio gives ρ → AFD ÷ T<sub>s</sub> gives the symbols per fade.</div>
         </div>
       </details>'''
+
+# walk-throughs added from the user's questions (rendered by add_en.py after the note)
+EN['p2q3']['detail'] = r'''      <details class="deep">
+        <summary>Step by step: SNR, SIR, SINR, and why the denominator in (a) is 10 + 0.1</summary>
+        <div class="deep-body">
+          <h4><span class="st">Three ratios</span>They differ only in the denominator</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>Measure</th><th>Denominator</th><th>When used</th></tr></thead><tbody>
+            <tr><td>SNR = S/N</td><td>Noise only</td><td>Single user, no interference (AWGN channel)</td></tr>
+            <tr><td>SIR = S/I</td><td>Interference only</td><td>Interference far above noise, noise negligible (Part A co-channel reuse)</td></tr>
+            <tr><td>SINR = S/(I + N)</td><td>Interference + noise</td><td>The general case where neither can be ignored</td></tr>
+          </tbody></table></div>
+          <p>S is the wanted signal, I is the signal of other users or cells (interference), N is the receiver's thermal noise. SINR is the most complete: with I = 0 it becomes SNR, with N = 0 it becomes SIR, so SINR is smaller than both.</p>
+
+          <h4><span class="st">(a)</span>Why the denominator is 10 + 0.1, not 0.1</h4>
+          <p>Both users transmit at the same time on the same frequency, so the antenna receives the sum of user 1 (10 mW), user 2 (10 mW) and noise (0.1 mW). The receiver cannot "listen only to user 1".</p>
+          <div class="tw"><table class="mini"><thead><tr><th>Component</th><th>Power</th><th>For decoding user 1</th></tr></thead><tbody>
+            <tr><td>User 1's signal</td><td>10 mW</td><td>Wanted: numerator S</td></tr>
+            <tr><td>User 2's signal</td><td>10 mW</td><td>Unwanted: interference I</td></tr>
+            <tr><td>Thermal noise</td><td>0.1 mW</td><td>Unwanted: noise N</td></tr>
+          </tbody></table></div>
+          <p>User 2's signal is useful to user 2, but for decoding user 1 it blurs the signal just like noise, and it is 100 times stronger than the noise. Everything unwanted goes in the denominator: SINR₁ = 10/(10 + 0.1) = 0.99. Writing only 0.1 (giving 100) pretends user 2 is silent and badly overestimates the capacity.</p>
+          <p>Analogy: listening to friend A in a noisy room, the air conditioner is the noise (small) and friend B talking loudly at the same time is the interference. B's voice, not the air conditioner, is the main obstacle.</p>
+
+          <h4><span class="st">(b)</span>When the denominator is 0.1</h4>
+          <p>MUD first decodes user 1 and subtracts it, leaving "user 2 + noise". When user 2 is decoded only noise remains, so SNR₂ = 10/0.1 = 100. Compare: (a) user 2 is still present when decoding user 1 → 10 + 0.1; (b) user 1 has been removed when decoding user 2 → 0.1.</p>
+
+          <h4><span class="st">Shannon</span>Why the formula says SNR but SINR is used here</h4>
+          <p>Shannon's result is for the single-user AWGN channel y = x + w: one transmitter and Gaussian noise only, so I = 0 and SINR equals SNR. What the formula really needs is that everything in the denominator together is Gaussian noise. The question says user 2's signal behaves like noise (<b>assume it is AWGN</b>), so in \(y=x_1+(x_2+w)\) the term \(x_2+w\) is one larger Gaussian noise of 10 + 0.1 mW, and the formula still applies with N replaced by I + N.</p>
+          <div class="tw"><table class="mini"><thead><tr><th>Case</th><th>Denominator</th><th>Formula</th></tr></thead><tbody>
+            <tr><td>Single user (Shannon's model)</td><td>N</td><td>B log₂(1 + SNR)</td></tr>
+            <tr><td>Interference treated as Gaussian noise</td><td>I + N</td><td>B log₂(1 + SINR)</td></tr>
+          </tbody></table></div>
+          <p>Inside the bracket it is always "wanted power / all power treated as noise". Treating interference as Gaussian noise gives a conservative capacity; MUD does better because it uses the fact that the interference is another user's data, decodes it and subtracts it.</p>
+
+          <h4><span class="st">Exam</span>Compact answer</h4>
+          <div class="tmpl">
+            <p>(a) When user 1 is decoded, user 2's signal is treated as AWGN, so it adds to the noise: SINR₁ = P₁/(P₂ + N) = 10/(10 + 0.1) = 0.990, C₁ = B log₂(1 + SINR₁) = 19.86 Mbps.</p>
+            <p>(b) After MUD removes user 1, only noise remains for user 2: SNR₂ = P₂/N = 10/0.1 = 100, C₂ = B log₂(1 + SNR₂) = 133.16 Mbps.</p>
+          </div>
+          <div class="ans">In one line: the denominator is the sum of all unwanted power. User 2 is still present when user 1 is decoded, so 10 + 0.1; after user 1 is subtracted, user 2 sees only the 0.1 mW noise.</div>
+        </div>
+      </details>'''
+
+EN['p8q2']['detail'] = r'''      <details class="deep">
+        <summary>Step by step: dB versus dBm, and the unit of every quantity</summary>
+        <div class="deep-body">
+          <h4><span class="st">Difference</span>dBm is "how much", dB is "how many times"</h4>
+          <div class="tw"><table class="mini"><thead><tr><th></th><th>dB</th><th>dBm</th></tr></thead><tbody>
+            <tr><td>Meaning</td><td>Ratio of two powers, no unit</td><td>Absolute power, referenced to 1 mW</td></tr>
+            <tr><td>Definition</td><td>10 log₁₀(P₁/P₂)</td><td>10 log₁₀(P / 1 mW)</td></tr>
+            <tr><td>Examples</td><td>×100 = +20 dB; down to 1/1000 = −30 dB</td><td>100 mW = 20 dBm; 1 mW = 0 dBm</td></tr>
+          </tbody></table></div>
+
+          <h4><span class="st">K</span>Why K is in dB, not dBm</h4>
+          <p>In the linear form \(P_r=P_t\cdot K\cdot(d_0/d)^{\gamma}\), \(P_r\) and \(P_t\) are powers (mW) while K and \((d_0/d)^{\gamma}\) are unitless factors multiplying the power. K means "how many times the transmit power is received at the reference distance d₀", a ratio, so in log form it is in dB. \(K_{dB}=-31.5\) dB means the signal at 1 m is \(10^{-3.15}\approx1/1400\) of the transmit power.</p>
+          <p>Taking dB turns products into sums; only \(P_t\) is in dBm and everything else is in dB, so the result is in dBm:</p>
+          <div class="eqb">\[\underbrace{P_{r,dBm}}_{\text{dBm}}=\underbrace{P_{t,dBm}}_{\text{dBm}}+\underbrace{K_{dB}}_{\text{dB}}-\underbrace{10\gamma\log_{10}(d/d_0)}_{\text{dB}}\]</div>
+          <div class="tw"><table class="mini"><thead><tr><th>Operation</th><th>Result</th><th>Meaning</th></tr></thead><tbody>
+            <tr><td>dBm + dB</td><td>dBm</td><td>A power times a factor is still a power</td></tr>
+            <tr><td>dBm − dBm</td><td>dB</td><td>A ratio of two powers (margin, SNR)</td></tr>
+            <tr><td>dB + dB</td><td>dB</td><td>A factor times a factor is still a factor</td></tr>
+            <tr><td>dBm + dBm</td><td>Meaningless</td><td>Power times power is not a power</td></tr>
+          </tbody></table></div>
+          <p>Check: if K were in dBm, the right-hand side would be dBm + dBm, i.e. "power × power", which has no physical meaning.</p>
+
+          <h4><span class="st">Here</span>Unit of each quantity</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>Quantity</th><th>Value</th><th>Unit</th></tr></thead><tbody>
+            <tr><td>Transmit power</td><td>100 mW = 20</td><td>dBm (absolute power)</td></tr>
+            <tr><td>K</td><td>−31.5</td><td>dB (ratio)</td></tr>
+            <tr><td>Path loss term 36 log₁₀300</td><td>89.18</td><td>dB (ratio)</td></tr>
+            <tr><td>Average received power</td><td>−100.68</td><td>dBm</td></tr>
+            <tr><td>Threshold</td><td>−110</td><td>dBm</td></tr>
+            <tr><td>Margin = received power − threshold</td><td>9.32</td><td>dB (dBm − dBm)</td></tr>
+            <tr><td>Shadowing standard deviation σ</td><td>6</td><td>dB (a fluctuation about the mean, also a ratio)</td></tr>
+          </tbody></table></div>
+          <p>Practice 1 Q2 writes σ in "dBm"; strictly it should be dB.</p>
+          <div class="ans">In one line: dBm is an absolute power, dB is a ratio. In the path loss model only the transmit and received powers are in dBm; K, path loss, shadowing and margin are all in dB.</div>
+        </div>
+      </details>'''
+
+EN['p8q4']['detail'] = r'''      <details class="deep">
+        <summary>Step by step: where the Rayleigh outage 1 − e<sup>−γ₀/γ̄</sup> comes from (not examined, for understanding)</summary>
+        <div class="deep-body">
+          <p>The lecturer said the Rayleigh derivation will not be asked and the Quiz has no integration; in the exam, remember the result and use it. This only shows where it comes from.</p>
+          <h4><span class="st">Idea</span>Multipath → Rayleigh → exponential → integrate</h4>
+          <p>Multipath sum → Gaussian I and Q components → Rayleigh envelope z → exponential power z² (and SNR γ) → integrating the exponential from 0 to γ₀ gives the outage probability.</p>
+          <h4><span class="st">Step 1</span>Why the envelope is Rayleigh</h4>
+          <p>The phone receives many echoes with random phases: \(r_I=\sum\alpha_n\cos\phi_n\), \(r_Q=\sum\alpha_n\sin\phi_n\). Each is a sum of many random terms, so by the central limit theorem they are approximately independent zero-mean Gaussians with variance σ². The envelope is the length of this 2-D vector, \(z=\sqrt{r_I^2+r_Q^2}\), and the length of two independent zero-mean Gaussians is Rayleigh: \(p(z)=\frac{z}{\sigma^2}e^{-z^2/(2\sigma^2)},\ z\ge0\).</p>
+          <h4><span class="st">Step 2</span>From envelope to SNR</h4>
+          <p>Power is amplitude squared: received power z², mean power E[z²] = 2σ². SNR is proportional to power: \(\gamma=z^2/N\), mean \(\bar\gamma=2\sigma^2/N\).</p>
+          <h4><span class="st">Step 3</span>Integrate for the outage</h4>
+          <p>"γ &lt; γ₀" is the same as "z &lt; z₀" with \(z_0^2=\gamma_0N\). Substitute \(u=z^2/(2\sigma^2)\), \(du=z\,dz/\sigma^2\):</p>
+          <div class="eqb">\[P_{out}=\int_0^{z_0}\frac{z}{\sigma^2}e^{-z^2/(2\sigma^2)}dz=\int_0^{z_0^2/(2\sigma^2)}e^{-u}du=1-e^{-z_0^2/(2\sigma^2)}=1-e^{-\gamma_0/\bar\gamma}\]</div>
+          <p>The last step uses \(z_0^2/(2\sigma^2)=\gamma_0N/(\bar\gamma N)=\gamma_0/\bar\gamma\).</p>
+          <h4><span class="st">Other way</span>The two formulas to memorise are a pair</h4>
+          <p>Differentiating \(1-e^{-\gamma_0/\bar\gamma}\) with respect to γ₀ gives the exponential SNR distribution \(p(\gamma)=\frac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}\); conversely \(\int_0^{\gamma_0}\frac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}d\gamma=1-e^{-\gamma_0/\bar\gamma}\). The exponential distribution is the PDF and the outage probability is its CDF: remember one and you get the other.</p>
+          <h4><span class="st">Check</span>Does it make sense?</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>Case</th><th>Substitute</th><th>Result</th><th>Meaning</th></tr></thead><tbody>
+            <tr><td>γ₀ = 0</td><td>1 − e⁰</td><td>0</td><td>No SNR required, never in outage</td></tr>
+            <tr><td>γ₀ → ∞</td><td>1 − e<sup>−∞</sup></td><td>1</td><td>Never reachable, always in outage</td></tr>
+            <tr><td>γ₀ = γ̄</td><td>1 − e⁻¹</td><td>0.632</td><td>Below the mean 63% of the time (the other side of part (c))</td></tr>
+            <tr><td>γ₀ ≪ γ̄</td><td>e<sup>−x</sup> ≈ 1 − x</td><td>≈ γ₀/γ̄</td><td>1% outage needs γ̄ ≈ 100γ₀, a margin of about 20 dB (part (b))</td></tr>
+          </tbody></table></div>
+          <h4><span class="st">Use</span>When substituting</h4>
+          <ul>
+            <li>Convert γ₀ and γ̄ to linear values first (7 dB → 5.01, 20 dB → 100); only their ratio matters, so any consistent unit works.</li>
+            <li>Average SNR backwards: \(\bar\gamma=\gamma_0/\ln\frac{1}{1-P_{out}}\).</li>
+          </ul>
+          <div class="ans">In one line: the multipath sum makes the envelope Rayleigh → the power (SNR) exponential → integrating the exponential from 0 to γ₀ gives P<sub>out</sub> = 1 − e<sup>−γ₀/γ̄</sup>.</div>
+        </div>
+      </details>'''

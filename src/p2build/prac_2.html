@@ -307,6 +307,46 @@
       </ol>
       <div class="ans">(a) 19.86 Mbps；(b) 133.16 Mbps</div>
       <div class="official"><b>官方答案：</b>19.86 Mbps；133.16 Mbps ✓</div>
+      <details class="deep">
+        <summary>逐步详解：SNR、SIR、SINR，为什么 (a) 的分母是 10 + 0.1</summary>
+        <div class="deep-body">
+          <h4><span class="st">三个比值</span>差别只在分母</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>指标</th><th>分母</th><th>什么时候用</th></tr></thead><tbody>
+            <tr><td>SNR = S/N</td><td>只有噪声</td><td>单用户、没有干扰（AWGN 信道）</td></tr>
+            <tr><td>SIR = S/I</td><td>只有干扰</td><td>干扰远大于噪声，噪声可忽略（Part A 同频复用）</td></tr>
+            <tr><td>SINR = S/(I + N)</td><td>干扰 + 噪声</td><td>两者都不能忽略的一般情况</td></tr>
+          </tbody></table></div>
+          <p>S 是想要的信号，I 是别的用户、别的小区的信号（干扰），N 是接收机的热噪声。SINR 最完整：I = 0 时就是 SNR，N = 0 时就是 SIR，所以 SINR 比两者都小。</p>
+
+          <h4><span class="st">(a)</span>为什么分母是 10 + 0.1，不是 0.1</h4>
+          <p>两个用户同时、同频发，接收机天线上收到的是三样东西加在一起：用户 1（10 mW）+ 用户 2（10 mW）+ 噪声（0.1 mW）。接收机没法"只听用户 1"。</p>
+          <div class="tw"><table class="mini"><thead><tr><th>成分</th><th>功率</th><th>对解用户 1 来说</th></tr></thead><tbody>
+            <tr><td>用户 1 的信号</td><td>10 mW</td><td>有用的，分子 S</td></tr>
+            <tr><td>用户 2 的信号</td><td>10 mW</td><td>捣乱的，干扰 I</td></tr>
+            <tr><td>热噪声</td><td>0.1 mW</td><td>捣乱的，噪声 N</td></tr>
+          </tbody></table></div>
+          <p>用户 2 的信号对它自己有用，但对"解用户 1"来说和噪声一样会把信号弄模糊，而且比噪声强 100 倍，是主要的捣乱者。分母要把所有捣乱的都算上：SINR₁ = 10 /(10 + 0.1) = 0.99。只写 0.1（得 100）等于假装用户 2 没在发，严重高估。</p>
+          <p>类比：在嘈杂的房间里听朋友 A 说话，空调声是噪声（很小），朋友 B 同时大声说话是干扰。妨碍你的不只是空调声，B 的声音才是主要障碍。</p>
+
+          <h4><span class="st">(b)</span>什么时候分母才是 0.1</h4>
+          <p>用 MUD 先把用户 1 解出来、从接收信号里减掉，剩下"用户 2 + 噪声"。解用户 2 时捣乱的只剩噪声，所以 SNR₂ = 10 / 0.1 = 100。对比：(a) 解用户 1 时用户 2 还在 → 10 + 0.1；(b) 解用户 2 时用户 1 已减掉 → 0.1。</p>
+
+          <h4><span class="st">香农</span>公式为什么写 SNR，这里却用 SINR</h4>
+          <p>香农推导的是单用户 AWGN 信道 y = x + w：一个发射机、只有高斯噪声，I = 0，SINR 就等于 SNR，所以公式写成 SNR。公式真正的要求是"分母里的东西整体是高斯噪声"。题目说 user 2's signal behaves like noise (<b>assume it is AWGN</b>)，于是 \(y=x_1+(x_2+w)\) 里的 \(x_2+w\) 就是一个功率 10 + 0.1 mW 的大高斯噪声，公式照用，只是 N 换成 I + N。</p>
+          <div class="tw"><table class="mini"><thead><tr><th>情况</th><th>分母</th><th>写法</th></tr></thead><tbody>
+            <tr><td>只有一个用户（香农原始模型）</td><td>N</td><td>B log₂(1 + SNR)</td></tr>
+            <tr><td>有干扰，并当成高斯噪声</td><td>I + N</td><td>B log₂(1 + SINR)</td></tr>
+          </tbody></table></div>
+          <p>括号里永远是"想要的功率 / 所有当作噪声处理的功率"。把干扰当高斯噪声算出的是保守的容量；MUD 利用"干扰其实是另一个用户的数据"把它解出来减掉，所以能做得更好。</p>
+
+          <h4><span class="st">考试</span>英文写法</h4>
+          <div class="tmpl" lang="en">
+            <p>(a) When user 1 is decoded, user 2's signal is treated as AWGN, so it adds to the noise: SINR₁ = P₁/(P₂ + N) = 10/(10 + 0.1) = 0.990, C₁ = B log₂(1 + SINR₁) = 19.86 Mbps.</p>
+            <p>(b) After MUD removes user 1, only noise remains for user 2: SNR₂ = P₂/N = 10/0.1 = 100, C₂ = B log₂(1 + SNR₂) = 133.16 Mbps.</p>
+          </div>
+          <div class="ans">一句话：分母 = 所有不是你想要的功率之和。解用户 1 时用户 2 还在，所以是 10 + 0.1；减掉用户 1 后再解用户 2，只剩噪声 0.1。</div>
+        </div>
+      </details>
       <!-- PKP:p2q3 -->
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>香农容量、SINR（把干扰当噪声）、多用户检测 MUD / 连续干扰消除（第 1a 章 p.16；第 2 章 p.48）。</dd><dt>前置知识</dt><dd>C = B log₂(1 + SNR)，SNR 用线性值；log₂x = ln x / ln 2 = log₁₀x / 0.301。</dd><dt>解题套路</dt><dd>(a) SINR₁ = P₁/(P₂ + N)；(b) 用户 1 已被减掉，SNR₂ = P₂/N；分别代入香农公式。</dd><dt>检验</dt><dd>C₁ + C₂ = 19.86 + 133.16 = 153.02 Mbps = 20 log₂(1 + (10 + 10)/0.1)：<mark class="hl">连续消除的总容量等于两个用户功率合起来的单用户容量</mark>，和解码顺序无关。</dd><dt>易错</dt><dd>SINR 0.990 是线性值，不是 dB；log₂1.99 = 0.993；别忘了乘带宽 20 MHz；两个功率的单位要一致（都用 mW）。</dd><dt>举一反三</dt><dd>反过来先解用户 2，两个结果对调，总和不变。如果不用 MUD，两个用户都把对方当噪声，总容量只有 2 × 19.86 = 39.7 Mbps，不到 MUD 的 1/3，这就是多用户检测的价值。</dd></dl></div>
       <!-- /PKP:p2q3 -->
@@ -319,6 +359,46 @@
       </ol>
       <div class="ans">(a) 19.86 Mbps; (b) 133.16 Mbps</div>
       <div class="official"><b>Official answer:</b> 19.86 Mbps; 133.16 Mbps ✓</div>
+      <details class="deep">
+        <summary>Step by step: SNR, SIR, SINR, and why the denominator in (a) is 10 + 0.1</summary>
+        <div class="deep-body">
+          <h4><span class="st">Three ratios</span>They differ only in the denominator</h4>
+          <div class="tw"><table class="mini"><thead><tr><th>Measure</th><th>Denominator</th><th>When used</th></tr></thead><tbody>
+            <tr><td>SNR = S/N</td><td>Noise only</td><td>Single user, no interference (AWGN channel)</td></tr>
+            <tr><td>SIR = S/I</td><td>Interference only</td><td>Interference far above noise, noise negligible (Part A co-channel reuse)</td></tr>
+            <tr><td>SINR = S/(I + N)</td><td>Interference + noise</td><td>The general case where neither can be ignored</td></tr>
+          </tbody></table></div>
+          <p>S is the wanted signal, I is the signal of other users or cells (interference), N is the receiver's thermal noise. SINR is the most complete: with I = 0 it becomes SNR, with N = 0 it becomes SIR, so SINR is smaller than both.</p>
+
+          <h4><span class="st">(a)</span>Why the denominator is 10 + 0.1, not 0.1</h4>
+          <p>Both users transmit at the same time on the same frequency, so the antenna receives the sum of user 1 (10 mW), user 2 (10 mW) and noise (0.1 mW). The receiver cannot "listen only to user 1".</p>
+          <div class="tw"><table class="mini"><thead><tr><th>Component</th><th>Power</th><th>For decoding user 1</th></tr></thead><tbody>
+            <tr><td>User 1's signal</td><td>10 mW</td><td>Wanted: numerator S</td></tr>
+            <tr><td>User 2's signal</td><td>10 mW</td><td>Unwanted: interference I</td></tr>
+            <tr><td>Thermal noise</td><td>0.1 mW</td><td>Unwanted: noise N</td></tr>
+          </tbody></table></div>
+          <p>User 2's signal is useful to user 2, but for decoding user 1 it blurs the signal just like noise, and it is 100 times stronger than the noise. Everything unwanted goes in the denominator: SINR₁ = 10/(10 + 0.1) = 0.99. Writing only 0.1 (giving 100) pretends user 2 is silent and badly overestimates the capacity.</p>
+          <p>Analogy: listening to friend A in a noisy room, the air conditioner is the noise (small) and friend B talking loudly at the same time is the interference. B's voice, not the air conditioner, is the main obstacle.</p>
+
+          <h4><span class="st">(b)</span>When the denominator is 0.1</h4>
+          <p>MUD first decodes user 1 and subtracts it, leaving "user 2 + noise". When user 2 is decoded only noise remains, so SNR₂ = 10/0.1 = 100. Compare: (a) user 2 is still present when decoding user 1 → 10 + 0.1; (b) user 1 has been removed when decoding user 2 → 0.1.</p>
+
+          <h4><span class="st">Shannon</span>Why the formula says SNR but SINR is used here</h4>
+          <p>Shannon's result is for the single-user AWGN channel y = x + w: one transmitter and Gaussian noise only, so I = 0 and SINR equals SNR. What the formula really needs is that everything in the denominator together is Gaussian noise. The question says user 2's signal behaves like noise (<b>assume it is AWGN</b>), so in \(y=x_1+(x_2+w)\) the term \(x_2+w\) is one larger Gaussian noise of 10 + 0.1 mW, and the formula still applies with N replaced by I + N.</p>
+          <div class="tw"><table class="mini"><thead><tr><th>Case</th><th>Denominator</th><th>Formula</th></tr></thead><tbody>
+            <tr><td>Single user (Shannon's model)</td><td>N</td><td>B log₂(1 + SNR)</td></tr>
+            <tr><td>Interference treated as Gaussian noise</td><td>I + N</td><td>B log₂(1 + SINR)</td></tr>
+          </tbody></table></div>
+          <p>Inside the bracket it is always "wanted power / all power treated as noise". Treating interference as Gaussian noise gives a conservative capacity; MUD does better because it uses the fact that the interference is another user's data, decodes it and subtracts it.</p>
+
+          <h4><span class="st">Exam</span>Compact answer</h4>
+          <div class="tmpl">
+            <p>(a) When user 1 is decoded, user 2's signal is treated as AWGN, so it adds to the noise: SINR₁ = P₁/(P₂ + N) = 10/(10 + 0.1) = 0.990, C₁ = B log₂(1 + SINR₁) = 19.86 Mbps.</p>
+            <p>(b) After MUD removes user 1, only noise remains for user 2: SNR₂ = P₂/N = 10/0.1 = 100, C₂ = B log₂(1 + SNR₂) = 133.16 Mbps.</p>
+          </div>
+          <div class="ans">In one line: the denominator is the sum of all unwanted power. User 2 is still present when user 1 is decoded, so 10 + 0.1; after user 1 is subtracted, user 2 sees only the 0.1 mW noise.</div>
+        </div>
+      </details>
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Shannon capacity, SINR (interference treated as noise) and multi-user detection / successive interference cancellation (Ch 1a p.16; Ch 2 p.48).</dd><dt>Background</dt><dd>C = B log₂(1 + SNR) with SNR as a linear value; log₂x = ln x / ln 2 = log₁₀x / 0.301.</dd><dt>Method</dt><dd>(a) SINR₁ = P₁/(P₂ + N); (b) user 1 already subtracted, SNR₂ = P₂/N; substitute each into Shannon's formula.</dd><dt>Check</dt><dd>C₁ + C₂ = 19.86 + 133.16 = 153.02 Mbps = 20 log₂(1 + (10 + 10)/0.1): <mark class="hl">the sum capacity with successive cancellation equals the single-user capacity with the two powers combined</mark>, independent of the decoding order.</dd><dt>Common mistakes</dt><dd>SINR 0.990 is linear, not dB; log₂1.99 = 0.993; remember to multiply by the 20 MHz bandwidth; use the same unit (mW) for both powers.</dd><dt>Variations</dt><dd>Decoding user 2 first swaps the two results; the sum stays the same. Without MUD, each user treats the other as noise and the total is only 2 × 19.86 = 39.7 Mbps, less than a third of the MUD total. That is the value of multi-user detection.</dd></dl></div>
     </div>
     <!-- /EN:p2q3 -->
