@@ -1,0 +1,123 @@
+<section class="topic" id="t10">
+  <h2><span class="tn">10</span>电平通过率与平均衰落时长 · Level crossing rate (LCR) and average fade duration (AFD)</h2>
+  <div class="meta"><span class="st def">定义·必会</span><span class="st give">考试给</span><span class="st must">背</span><span class="freq">出现：期末 2/4 套（2024-25 S2 Q1(a)(ii)、2025-26 S2 Q1(a)(ii)）· Practice 2 Q1 · 模拟 A·Q3(c) · 模拟 C·Q2(b)(c) · 讲义第 2 章 p.41–47</span></div>
+  <p class="why">只有两种算法：(A) <b>计数法</b>：题目给“T 秒内看到 N 次深衰落”（或直接给 LCR）和 AFD，次数 ÷ 秒数 = LCR，AFD ÷ T<sub>s</sub> = 每次错几个，相乘 = 每秒错几个，两套期末都是这一类；(B) <b>公式法</b>：代题目给的瑞利 LCR/AFD 公式，难点只在把文字翻成 ρ 和 f<sub>m</sub>（Practice 2 Q1）。Quiz 题型接近期末、但更简单（老师说），多半就是这两种之一。老师说这类题数据多，先把已知量逐个写下来再算。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(L_Z\)（LCR）</td><td>电平通过率</td><td>level crossing rate</td><td>每秒信号<b>往下</b>穿过门限几次＝每秒进入几次深衰落</td><td>次/s</td></tr>
+    <tr><td>\(\bar\tau_Z\)（AFD，也写 \(\bar t_Z\)）</td><td>平均衰落时长</td><td>average fade duration</td><td>每次掉到门限以下，平均待多久才爬回来</td><td>s（常用 ms、µs）</td></tr>
+    <tr><td>\(z\)</td><td>信号包络（幅度）</td><td>signal envelope (amplitude)</td><td>接收信号的“强度”，随时间起伏；瑞利衰落时服从瑞利分布</td><td>V（相对值）</td></tr>
+    <tr><td>\(Z_{\min}\)</td><td>门限，最低可接受信号强度</td><td>threshold, minimum acceptable signal level</td><td>低于它就不能正常工作，这段时间叫深衰落（deep fade）</td><td>同 z</td></tr>
+    <tr><td>\(Z_{\rm rms}\)</td><td>信号的 rms 值</td><td>rms signal level</td><td>\(\sqrt{E[z^2]}\)，代表平均功率那一档</td><td>同 z</td></tr>
+    <tr><td>\(\rho\)</td><td>归一化门限（幅度比）</td><td>normalised threshold level</td><td>\(\rho=Z_{\min}/Z_{\rm rms}\)：门限是 rms 的几倍。“rms 值的 10%” → ρ = 0.1</td><td>无</td></tr>
+    <tr><td>\(\rho^2\)</td><td>功率比</td><td>power ratio</td><td>门限功率 ÷ 平均功率（就是 γ₀/γ̄）；换 dB 用 10 log₁₀ρ²</td><td>无（可写成 dB）</td></tr>
+    <tr><td>\(f_m\)（也写 \(f_D\)）</td><td>最大多普勒频移</td><td>maximum Doppler shift</td><td>\(f_m=vf_c/c\)；动得越快越大，深衰落来得越频繁、越短</td><td>Hz</td></tr>
+    <tr><td>\(v,\ f_c,\ c\)</td><td>车速、载频、光速</td><td>speed, carrier frequency, speed of light</td><td>v 用 m/s（km/h ÷ 3.6）；f<sub>c</sub> 用 Hz；c = 3×10⁸ m/s</td><td>m/s、Hz</td></tr>
+    <tr><td>\(T_s\)</td><td>符号时长</td><td>symbol duration</td><td>一个符号占多长时间</td><td>s</td></tr>
+    <tr><td>\(R_s\)</td><td>符号速率</td><td>symbol rate</td><td>\(R_s=1/T_s\)，每秒发几个符号；50 k 符号/s → T<sub>s</sub> = 20 µs</td><td>符号/s（sps）</td></tr>
+    <tr><td>\(N,\ T_{\rm obs}\)</td><td>观测到的深衰落次数、观测时长</td><td>number of deep fades observed, observation period</td><td>计数题的原始数据：“10 s 内 40 次”</td><td>次、s</td></tr>
+    <tr><td>\(N_{\rm sym}\)</td><td>每次衰落连错的符号数</td><td>(consecutive) symbol errors per fade</td><td>一次衰落盖住几个符号 = AFD ÷ T<sub>s</sub></td><td>个/次</td></tr>
+    <tr><td>\(N_{\rm err}\)</td><td>每秒误符号数</td><td>average number of symbol errors per second</td><td>LCR × N<sub>sym</sub></td><td>个/s</td></tr>
+    <tr><td>\(P_{\rm fade}\)</td><td>深衰落时间比例</td><td>fraction of time in deep fade</td><td>信号低于门限的时间占比 = LCR × AFD，也就是中断概率 P<sub>out</sub></td><td>无</td></tr>
+    <tr><td>SER</td><td>误符号率</td><td>symbol error rate</td><td>错的符号占全部符号的比例 = N<sub>err</sub> ÷ R<sub>s</sub></td><td>无</td></tr>
+  </tbody></table></div>
+  <p class="src">N、T<sub>obs</sub>、N<sub>sym</sub>、N<sub>err</sub>、P<sub>fade</sub> 是本页为了写清楚自己起的记号，讲义里没有；考试里用文字写（如 “symbol errors per fade”）即可。</p>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">LCR 的定义（计数）· LCR from a count <span class="st def">定义·必会</span></div><div class="fx">\[ L_Z=\frac{N}{T_{\rm obs}} \]</div><div class="fn">单位 次/s。N = 观测到的深衰落次数，T<sub>obs</sub> = 观测了几秒：“10 秒里 40 次” → 40/10 = 4 次/s。这一步不需要知道是不是瑞利衰落。</div></div>
+  <div class="fm"><div class="fl">每次衰落错几个符号 · Symbols in error per fade <span class="st def">定义·必会</span></div><div class="fx">\[ N_{\rm sym}=\frac{\bar\tau_Z}{T_s}=\bar\tau_Z\,R_s \]</div><div class="fn">老师课上讲的做法：一次衰落里错的符号数 = AFD ÷ T<sub>s</sub>；题目给的是符号<b>速率</b>就取倒数，即 AFD × R<sub>s</sub>。AFD 和 T<sub>s</sub> 先统一单位。讲义 p.45–47 例题（符号只要有一部分落在衰落里就算错）也是直接用 AFD × R<sub>s</sub>，不去 +1。</div></div>
+  <div class="fm"><div class="fl">每秒误符号数 · Symbol errors per second <span class="st def">定义·必会</span></div><div class="fx">\[ N_{\rm err}=L_Z\,N_{\rm sym}=L_Z\,\bar\tau_Z\,R_s \]</div><div class="fn">每秒几次衰落 × 每次错几个。前提是题目说深衰落里的符号都算错（“the affected symbol will be in error”）。错误是成串出现的：2025-26 S2 那题是每秒 4 串、每串 4 个。</div></div>
+  <div class="fm"><div class="fl">深衰落时间比例与误符号率 · Fraction of time in fade, SER <span class="st def">定义·必会</span></div><div class="fx">\[ P_{\rm fade}=L_Z\,\bar\tau_Z \]\[ \mathrm{SER}=\frac{N_{\rm err}}{R_s}=L_Z\,\bar\tau_Z \]</div><div class="fn">每秒有 L<sub>Z</sub> 次、每次 τ̄ 秒 → 每秒有 L<sub>Z</sub>τ̄ 秒在门限以下。对任何衰落都成立（讲义 p.42–43 推 AFD 公式的出发点就是它：AFD = 低于门限的时间比例 ÷ LCR）。深衰落里全错、外面全对时，误符号率就等于这个比例，和 R<sub>s</sub> 无关。</div></div>
+  <div class="fm"><div class="fl">瑞利衰落的 LCR 与 AFD · Rayleigh LCR and AFD <span class="st give">考试给</span></div><div class="fx">\[ L_Z=\sqrt{2\pi}\,f_m\,\rho\,e^{-\rho^2} \]\[ \bar\tau_Z=\frac{e^{\rho^2}-1}{\sqrt{2\pi}\,f_m\,\rho} \]</div><div class="fn">讲义第 2 章 p.41–43。考试会给公式，但不一定解释符号：老师要求会说出 ρ = Z<sub>min</sub>/Z<sub>rms</sub>、f<sub>m</sub> 是最大多普勒频移。省事算法：先算公共分母 √(2π) f<sub>m</sub> ρ（√(2π) = 2.5066；中间量多留一位，结果的最后一位才不会差 1），AFD = (e<sup>ρ²</sup> − 1) ÷ 分母，LCR = 分母 × e<sup>−ρ²</sup>。直觉：车越快（f<sub>m</sub> 大），衰落越频繁、越短；ρ 较小时，门限越低，深衰落越少、越短。</div></div>
+  <div class="fm"><div class="fl">两式相乘 = 低于门限的时间比例 · LCR × AFD for Rayleigh <span class="st must">背</span></div><div class="fx">\[ L_Z\,\bar\tau_Z=1-e^{-\rho^2}=P(z\lt Z_{\min}) \]\[ \Rightarrow\quad \rho^2=\ln\frac{1}{1-L_Z\bar\tau_Z} \]</div><div class="fn">f<sub>m</sub> 消掉了。它就是必背的瑞利中断 \(1-e^{-\gamma_0/\bar\gamma}\)（ρ² 就是 γ₀/γ̄），所以标“背”；忘了也能把上面两式相乘得到。用途：验算 LCR、AFD 有没有算错；由时间比例反求门限（模拟 C·Q2(c)）。</div></div>
+  <div class="fm"><div class="fl">ρ 怎么从题目文字读出来 · Reading ρ from the wording <span class="st def">定义·必会</span></div><div class="fx">\[ \rho=\frac{Z_{\min}}{Z_{\rm rms}},\qquad \rho^2=\frac{P_{\min}}{P_{\rm rms}} \]\[ \rho^2=10^{-X/10},\qquad \rho=10^{-X/20} \]</div><div class="fn">X = 门限比 rms 低多少 dB。说<b>幅度</b>（signal strength、envelope、“rms 值的 10%”）→ 这个数就是 ρ（老师特别提过：看到“rms 值的 10%”立刻想到 ρ = 0.1）；说<b>功率</b>或给 dB → 先得 ρ²，再开根号。常用：rms 值的 10% → ρ = 0.1、ρ² = 0.01（−20 dB）；功率低 10 dB → ρ² = 0.1、ρ = 0.3162；门限功率是平均功率的 1% → ρ = 0.1。dB ↔ 线性这一步要写出来，老师说漏写会扣分。</div></div>
+  <div class="fm"><div class="fl">最大多普勒频移 · Maximum Doppler shift <span class="st def">定义·必会</span></div><div class="fx">\[ f_m=\frac{v\,f_c}{c}=\frac{v}{\lambda} \]</div><div class="fn">讲义第 2 章 p.34–36。v 用 m/s（km/h ÷ 3.6，72 km/h = 20 m/s），f<sub>c</sub> 用 Hz，c = 3×10⁸ m/s。题目直接给 “maximum Doppler shift” 或 f<sub>D</sub> 时就是它，直接用。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>(A) 计数法：给了次数（或 LCR）和 AFD，数错误（两套期末都是这一类）</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2025-26 S2 Q1(a)(ii)）</th><th>模拟 C · Q2(b)</th></tr></thead><tbody>
+    <tr><td>⓪ 写已知</td><td>逐个列出，单位写全</td><td>T<sub>s</sub> = 5 ms，AFD = 20 ms，10 s 内 40 次</td><td>R<sub>s</sub> = 50 k 符号/s（T<sub>s</sub> = 20 µs），AFD = 0.5 ms，10 s 内 300 次</td></tr>
+    <tr><td>① LCR</td><td>次数 ÷ 观测秒数</td><td>40/10 = 4 次/s</td><td>300/10 = 30 次/s</td></tr>
+    <tr><td>② 每次衰落错几个符号</td><td>AFD ÷ T<sub>s</sub>（给的是符号率就乘 R<sub>s</sub>）</td><td>20 ms / 5 ms = 4 个</td><td>0.5 ms / 20 µs = 25 个</td></tr>
+    <tr><td>③ 每秒误符号数</td><td>① × ②</td><td>4 × 4 = 16 个/s</td><td>30 × 25 = 750 个/s</td></tr>
+    <tr><td>④ 深衰落时间比例</td><td>① × AFD</td><td>（原题没问）4 × 20 ms = 0.08</td><td>30 × 0.5 ms = 0.015（1.5%）</td></tr>
+    <tr><td>⑤ 自检 / 误符号率</td><td>③ ÷ R<sub>s</sub> 应等于 ④</td><td>16 ÷ 200 = 0.08 ✓（R<sub>s</sub> = 1/5 ms = 200 个/s）</td><td>750 ÷ 50 000 = 0.015 ✓</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：真题 = EE6129 2025-26 S2 期末 Q1(a)(ii)（T<sub>s</sub> = 5 ms、AFD = 20 ms、10 s 内 40 次深衰落，问 LCR 和平均每秒连续误符号数）；模拟 C · Q2(b) = 练习页自编模拟 Quiz C 第 2 题（模拟组第 8 题）：50 k 符号/s、10 s 内 300 次、AFD 0.5 ms，问 LCR、时间比例和每秒误符号数。</p>
+  <div class="eg"><div class="egh">另一道真题 · 2024-25 S2 Q1(a)(ii)（计数法的变形）：倒过来求 T<sub>s</sub>，“超过一半才算错”</div>
+    <p class="q">AFD = 6 × 10⁻⁶ s，LCR = 5（题目没写单位，按 次/s）。一次平均衰落正好盖住 3 个连续符号，求符号时长；若一个符号有一半以上落在深衰落里才算错，求平均每秒误符号数。</p>
+    <ol class="work">
+      <li>② 倒过来用：AFD = 3T<sub>s</sub> → T<sub>s</sub> = 6 µs ÷ 3 = 2 µs（R<sub>s</sub> = 500 k 符号/s）。</li>
+      <li>“超过一半才算错”：衰落长 3T<sub>s</sub>。和符号边界对齐时 3 个全在里面；不对齐时是 2 个完整符号加头尾两个碎片，两个碎片加起来正好一个符号长，必有一个超过一半（恰好各占一半是边界情况）→ 每次仍按 3 个错。</li>
+      <li>③ 每秒误符号数 = LCR × 3 = 5 × 3 = 15 个/s。</li>
+    </ol>
+    <p class="ans">答案：T<sub>s</sub> = 2 µs；平均每秒 15 个误符号</p></div>
+
+  <h4>(B) 公式法（瑞利，公式考试给）：给了门限的文字描述和 f<sub>m</sub> 或车速</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 2 · Q1</th><th>模拟 A · Q3(c)</th></tr></thead><tbody>
+    <tr><td>⓪ 写已知</td><td>门限怎么说、f<sub>m</sub>（或 v、f<sub>c</sub>）、符号率</td><td>f<sub>D</sub> = 50 Hz，最低信号强度 = rms 值的 0.1</td><td>f<sub>c</sub> = 1.8 GHz，72 km/h，50 k 符号/s，功率不能比 rms 低 10 dB 以上</td></tr>
+    <tr><td>① ρ</td><td>说幅度 → 直接是 ρ；说功率/dB → ρ² = 10<sup>−X/10</sup> 再开根号</td><td>说的是信号强度（幅度）的 0.1 → ρ = 0.1，ρ² = 0.01（−20 dB）</td><td>功率低 10 dB → ρ² = 10<sup>−1</sup> = 0.1，ρ = √0.1 = 0.31623</td></tr>
+    <tr><td>② f<sub>m</sub></td><td>给了就用；否则 v f<sub>c</sub>/c（km/h ÷ 3.6）</td><td>50 Hz（直接给）</td><td>72 ÷ 3.6 = 20 m/s；20 × 1.8×10⁹ / 3×10⁸ = 120 Hz</td></tr>
+    <tr><td>③ 公共分母</td><td>√(2π) f<sub>m</sub> ρ</td><td>2.5066 × 50 × 0.1 = 12.53</td><td>2.5066 × 120 × 0.31623 = 95.12</td></tr>
+    <tr><td>④ AFD</td><td>(e<sup>ρ²</sup> − 1) ÷ ③</td><td>0.01005 / 12.53 = 0.802 ms</td><td>0.1052 / 95.12 = 1.106 ms</td></tr>
+    <tr><td>⑤ LCR</td><td>③ × e<sup>−ρ²</sup></td><td>12.53 × 0.99005 = 12.41 次/s（原题没问）</td><td>95.12 × 0.90484 = 86.07 次/s（原题没问）</td></tr>
+    <tr><td>⑥ 验算</td><td>④ × ⑤ 应等于 1 − e<sup>−ρ²</sup></td><td>12.41 × 0.802 ms = 0.00995 ✓</td><td>86.07 × 1.106 ms = 0.0952 ✓</td></tr>
+    <tr><td>⑦ 每次错几个</td><td>AFD ÷ T<sub>s</sub></td><td>（没给符号率）</td><td>1.106 ms / 20 µs = 55.3 ≈ 55 个</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 2 · Q1（题目给出瑞利 AFD 公式，f<sub>D</sub> = 50 Hz，最低信号强度为 rms 值的 0.1，求 AFD；官方答案 0.8 ms）；模拟 A · Q3(c) = 自编模拟 Quiz A 第 3 题 (c) 问（题目给出 AFD 公式，求 AFD 和一次衰落影响几个符号）。讲义第 2 章 p.41–43。</p>
+
+  <h4>(C) 反求门限：已知 LCR × AFD（时间比例），假设瑞利，求 ρ 和 dB</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 2 · Q1（倒推验算）</th><th>模拟 C · Q2(c)</th></tr></thead><tbody>
+    <tr><td>① 时间比例</td><td>LCR × AFD</td><td>12.41 × 0.802 ms = 0.00995</td><td>30 × 0.5 ms = 0.015</td></tr>
+    <tr><td>② ρ²</td><td>1 − e<sup>−ρ²</sup> = ① → ρ² = ln[1/(1 − ①)]</td><td>ln(1/0.99005) = 0.0100</td><td>ln(1/0.985) = 0.01511</td></tr>
+    <tr><td>③ 换 dB</td><td>10 log₁₀ρ²（ρ² 是功率比）</td><td>−20.0 dB，ρ = 0.100 ✓</td><td>−18.21 dB，ρ = 0.1229</td></tr>
+    <tr><td>④ 反推 f<sub>m</sub>（自检）</td><td>LCR ÷ (√(2π) ρ e<sup>−ρ²</sup>)</td><td>12.41 / (2.5066 × 0.1 × 0.990) = 50.0 Hz ✓</td><td>30 / (2.5066 × 0.1229 × 0.985) ≈ 99 Hz（题目给 100 Hz）✓</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：模拟 C · Q2(c)（自编，题目给出两条瑞利公式，问深衰落门限比 rms 功率低多少 dB）；Practice 2 · Q1 这一列是把表 (B) 算出的 LCR、AFD 倒推回去，回到 ρ = 0.1、f<sub>D</sub> = 50 Hz，原题没问。期末卷没有考过反求门限。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 10 秒窗口，给的是符号速率（计数法）</div>
+    <p class="q">某链路符号速率 R<sub>s</sub> = 25 k 符号/s。记录 10 秒，共出现 150 次深衰落，平均衰落时长 0.8 ms，深衰落期间的符号全部出错。求：(a) LCR；(b) 每次衰落连错几个符号；(c) 平均每秒误符号数；(d) 误符号率；(e) 信道不变、符号速率提高到 100 k 符号/s 时，(c)(d) 变成多少？</p>
+    <ol class="work">
+      <li>(a) LCR = 150 ÷ 10 s = 15 次/s。</li>
+      <li>(b) 给的是速率，先求 T<sub>s</sub> = 1/25 000 = 40 µs；每次 = 0.8 ms ÷ 40 µs = 20 个（或 AFD × R<sub>s</sub> = 0.8×10⁻³ × 25×10³ = 20）。</li>
+      <li>(c) 每秒误符号数 = 15 × 20 = 300 个/s。</li>
+      <li>(d) SER = 300 ÷ 25 000 = 0.012；验算：LCR × AFD = 15 × 0.8 ms = 0.012 ✓（信号 1.2% 的时间在深衰落里）。</li>
+      <li>(e) LCR、AFD 是信道的性质，不随符号速率变：每次 = 0.8 ms × 100 k = 80 个，每秒 = 15 × 80 = 1200 个；SER 仍是 0.012。</li>
+    </ol>
+    <p class="ans">答案：(a) 15 次/s　(b) 20 个　(c) 300 个/s　(d) 0.012　(e) 1200 个/s，SER 不变</p></div>
+  <div class="eg"><div class="egh">例 2 · 公式法：门限是 rms 的 10%，900 MHz、60 km/h</div>
+    <p class="q">载频 900 MHz，车速 60 km/h，瑞利衰落；能正常工作的最低信号强度是 rms 值的 10%；符号速率 100 k 符号/s。已知 \(L_Z=\sqrt{2\pi}f_m\rho e^{-\rho^2}\)、\(\bar\tau_Z=\dfrac{e^{\rho^2}-1}{\sqrt{2\pi}f_m\rho}\)。求：(a) ρ 和 f<sub>m</sub>；(b) LCR 和 AFD；(c) 每次连错几个符号、每秒误符号数、10 秒内平均几次深衰落；(d) 车速提高到 120 km/h，哪些量变、哪些不变？</p>
+    <ol class="work">
+      <li>(a) 说的是信号强度（幅度）→ ρ = 0.1，ρ² = 0.01（门限比平均功率低 20 dB）。v = 60 ÷ 3.6 = 16.67 m/s，f<sub>m</sub> = v f<sub>c</sub>/c = 16.67 × 9×10⁸ / 3×10⁸ = 50.0 Hz（或 λ = c/f<sub>c</sub> = 0.3333 m，v/λ = 50.0 Hz）。</li>
+      <li>(b) 公共分母 √(2π) × 50 × 0.1 = 12.53；LCR = 12.53 × e<sup>−0.01</sup> = 12.41 次/s；AFD = (e<sup>0.01</sup> − 1)/12.53 = 0.01005/12.53 = 0.802 ms。f<sub>m</sub> 正好 50 Hz、ρ = 0.1，和 Practice 2 Q1 是同一组数。</li>
+      <li>(c) 每次 = AFD × R<sub>s</sub> = 0.802 ms × 100 k = 80.2 ≈ 80 个；每秒 = 12.41 × 80.2 = 995 个（验算：(1 − e<sup>−0.01</sup>) × 10⁵ = 995 ✓）；10 秒内约 12.41 × 10 = 124 次深衰落。</li>
+      <li>(d) 120 km/h → f<sub>m</sub> = 100 Hz：LCR 翻倍为 24.82 次/s，AFD 减半为 0.401 ms，每次只错 40.1 个；但 LCR × AFD = 1 − e<sup>−0.01</sup> = 0.00995 不变，每秒仍错 995 个。车速只改变错误怎么“成串”（串更多、更短），不改变错误总量。</li>
+    </ol>
+    <p class="ans">答案：(a) ρ = 0.1，f<sub>m</sub> = 50.0 Hz　(b) LCR = 12.41 次/s，AFD = 0.802 ms　(c) 每次约 80 个，每秒约 995 个，10 s 约 124 次　(d) LCR ×2、AFD ÷2，时间比例和每秒误符号数不变</p></div>
+  <div class="eg"><div class="egh">例 3 · 问误符号率：门限用 dB 给，最后倒求余量</div>
+    <p class="q">瑞利衰落链路，接收机能用的最低功率比信号的 rms（平均）功率低 15 dB，f<sub>m</sub> = 80 Hz，符号速率 40 k 符号/s。深衰落里的符号全错，其余全对。求：(a) 误符号率 SER；(b) LCR、AFD 和平均每秒误符号数；(c) 要求 SER ≤ 10⁻³，平均功率至少要比门限高多少 dB？</p>
+    <ol class="work">
+      <li>(a) 给的是功率 dB，先换线性：ρ² = 10<sup>−15/10</sup> = 10<sup>−1.5</sup> = 0.03162，ρ = √ρ² = 10<sup>−15/20</sup> = 0.17783。SER = 时间比例 = 1 − e<sup>−ρ²</sup> = 1 − e<sup>−0.03162</sup> = 0.03113（约 3.1%）。</li>
+      <li>(b) 公共分母 2.5066 × 80 × 0.17783 = 35.66；LCR = 35.66 × e<sup>−0.03162</sup> = 35.66 × 0.9689 = 34.55 次/s；AFD = (e<sup>0.03162</sup> − 1)/35.66 = 0.03213/35.66 = 0.901 ms。</li>
+      <li>每次 = 0.901 ms × 40 k = 36.04 个；每秒 = 34.55 × 36.04 = 1245 个；验算：SER × R<sub>s</sub> = 0.03113 × 40 000 = 1245 ✓。</li>
+      <li>(c) 1 − e<sup>−ρ²</sup> ≤ 10⁻³ → ρ² ≤ ln[1/(1 − 0.001)] = 1.0005×10⁻³ → 10 log₁₀(1/ρ²) ≥ 30.00 dB。平均功率至少比门限高 30.0 dB，这就是 ε = 0.1% 时的瑞利衰落余量 10 log₁₀[1/ln(1/(1 − ε))]（讲义 p.51，尽量记）。</li>
+    </ol>
+    <p class="ans">答案：(a) SER ≈ 0.0311　(b) LCR ≈ 34.55 次/s，AFD ≈ 0.901 ms，每秒约 1245 个　(c) 至少 30.0 dB</p></div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>ρ 是<b>幅度</b>比：“rms 值的 10%”、“0.1 of the rms value” → ρ = 0.1；“功率低 10 dB” → ρ² = 0.1、ρ = 0.3162。模拟 A·Q3 若错当 ρ = 0.1，AFD 会算成 0.334 ms，真值 1.106 ms，差 3 倍多。</li>
+    <li>公式里已经写了 ρ²：ρ = 0.1 时指数是 0.01，别再平方一次，也别把 −20 dB 直接代进指数。换 dB 时，功率比 ρ² 用 10 log₁₀，幅度比 ρ 用 20 log₁₀，结果一样（模拟 C：−18.21 dB）。</li>
+    <li>LCR 是“次/秒”：300 次是 10 秒的总数，要 ÷ 10。LCR 也不是每秒误符号数：模拟 C 是 30 次/s，却是 750 个/s。</li>
+    <li>单位统一：AFD 常是 ms、T<sub>s</sub> 常是 µs，0.5 ms ÷ 20 µs = 25（不是 0.025）；给符号速率时是 AFD × R<sub>s</sub>，不是 AFD ÷ R<sub>s</sub>；算 f<sub>m</sub> 前 km/h ÷ 3.6、MHz/GHz 换成 Hz。</li>
+    <li>“symbol error rate”（误符号率，无单位）≠ “symbol errors per second”（个/s）。2025-26 S2 问的是每秒“连续”误符号数：写 16 个/s，并注明每次衰落连续错 4 个，两个数都写最稳。</li>
+    <li>讲义 p.45–47 例题印的 AFD = 71.17 µs、每秒 9812 个；按讲义自己的公式是 72.17 µs、9950 个（9812 = 137.87 × 71.17，是拿印错的 AFD 乘出来的）。考试按公式自己算。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p><b>Counting:</b> The level crossing rate is the average number of times per second the signal envelope crosses the threshold downwards, i.e. enters a deep fade: LCR = 40/10 s = 4 fades/s. Each fade lasts AFD = 20 ms and covers AFD/T<sub>s</sub> = 20 ms/5 ms = 4 consecutive symbols, so the average number of symbol errors is 4 × 4 = 16 symbols/s.</p>
+    <p><b>Formula:</b> Here ρ = Z<sub>min</sub>/Z<sub>rms</sub> = 0.1 is the minimum acceptable signal level normalised to the rms level, and f<sub>D</sub> = 50 Hz is the maximum Doppler shift (f<sub>m</sub> = v f<sub>c</sub>/c). AFD = (e<sup>0.01</sup> − 1)/(√(2π) × 50 × 0.1) = 0.01005/12.53 = 0.802 ms. Check: LCR × AFD = 1 − e<sup>−ρ²</sup> = 0.00995, the fraction of time in deep fade (and the symbol error rate if every symbol inside a fade is lost).</p>
+  </div>
+</section>

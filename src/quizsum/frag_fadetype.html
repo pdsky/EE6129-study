@@ -1,0 +1,184 @@
+<section class="topic" id="t8">
+  <h2><span class="tn">8</span>时延扩展与平坦/频率选择性 · Delay spread, flat vs frequency-selective fading</h2>
+  <div class="meta"><span class="st give">考试给</span><span class="st must">背</span><span class="st def">定义·必会</span> <span class="freq">出现：期末 2/4 套（2023-24 Q1(a)(iii)、2025-26 S2 Q1(a)(i)）· 期末 OFDM 题用 B<sub>C</sub>（2023-24 Q2(b)(i)、2025-26 S1 Q2(b)(i)）· Practice 1 Q3 · 模拟 A·Q3 · 模拟 C·Q2 · 专项·Q3(e)</span></div>
+  <p class="why">考"回声拖多长"：把功率时延谱当成概率分布，求时延的加权均值 μ 和标准差 σ（公式考试给），再拿 σ 和符号时长 T<sub>s</sub> 比（σ/T<sub>s</sub> &lt; 0.1 要背），或拿信号带宽 B<sub>s</sub> 和相干带宽 B<sub>C</sub> 比，判断平坦还是频率选择性。Quiz 可能像 Practice 1 Q3、模拟 A·Q3 那样出：给几条回波（功率用 dB）求 μ、σ，再问"符号速率最高多少才平坦"或"现在是不是平坦"。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(\tau_k\)</td><td>超额时延</td><td>excess delay</td><td>第 k 条回波比第一条晚到多久，第一条 τ = 0（讲义 p.30）</td><td>µs</td></tr>
+    <tr><td>\(P_r(\tau)\)</td><td>功率时延谱</td><td>power delay profile (PDP)</td><td>晚到 τ 的那部分回波有多少功率；讲义用 dBm 画，算之前换成线性</td><td>dBm → mW</td></tr>
+    <tr><td>\(\mu_{T_m}\)</td><td>平均时延</td><td>mean delay (mean delay spread)</td><td>按功率加权的平均晚到时间，回波能量的"重心"</td><td>µs</td></tr>
+    <tr><td>\(\sigma_{T_m}\)</td><td>rms 时延扩展（均方根时延扩展）</td><td>rms delay spread</td><td>晚到时间的加权标准差：回波拖尾散得多开。几个时延量里判平坦只用它（不用最大时延）</td><td>µs</td></tr>
+    <tr><td>\(\tau_{\max}\)</td><td>最大时延扩展</td><td>maximum delay spread</td><td>最晚一条回波的时延（本页记号，讲义没有专门符号）；OFDM 保护间隔用它，判平坦不用它</td><td>µs</td></tr>
+    <tr><td>\(T_s\)</td><td>符号时长</td><td>symbol duration</td><td>一个符号占多长时间</td><td>µs、ms</td></tr>
+    <tr><td>\(R_s\)</td><td>符号速率</td><td>symbol rate</td><td>每秒发几个符号，R<sub>s</sub> = 1/T<sub>s</sub>；不是比特率</td><td>sps（符号/秒）</td></tr>
+    <tr><td>\(B_s\)</td><td>信号带宽</td><td>signal bandwidth</td><td>信号占多宽的频带；题目通常让你取 B<sub>s</sub> ≈ R<sub>s</sub> = 1/T<sub>s</sub></td><td>Hz</td></tr>
+    <tr><td>\(B_C\)（B<sub>c</sub>）</td><td>相干带宽</td><td>coherence bandwidth</td><td>相隔超过它的两个频率，衰落就互不相关；信道在多宽的频带里"看起来是平的"</td><td>Hz</td></tr>
+    <tr><td>—</td><td>平坦衰落</td><td>flat fading</td><td>整个信号带宽一起起伏，波形不失真，没有码间干扰</td><td>—</td></tr>
+    <tr><td>—</td><td>频率选择性衰落</td><td>frequency-selective fading</td><td>不同频率衰落不同；时域上回波拖进下一个符号，造成码间干扰 ISI（inter-symbol interference）</td><td>—</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">平均时延 Mean delay <span class="st give">考试给</span></div><div class="fx">\[ \mu_{T_m}=\frac{\sum_k \tau_k\,P_r(\tau_k)}{\sum_k P_r(\tau_k)} \]</div><div class="fn">讲义第 2 章 p.30。P<sub>r</sub> 必须是<b>线性</b>功率（它是权重）；分母是总功率，不是 1。连续谱把求和换成积分；Quiz 不考积分，遇到连续均匀谱（Practice 1 Q3）用下一张卡的捷径。</div></div>
+  <div class="fm"><div class="fl">rms 时延扩展 RMS delay spread <span class="st give">考试给</span></div><div class="fx">\[ \sigma_{T_m}=\sqrt{\frac{\sum_k(\tau_k-\mu_{T_m})^2P_r(\tau_k)}{\sum_kP_r(\tau_k)}}=\sqrt{E[\tau^2]-\mu_{T_m}^2} \]\[ E[\tau^2]=\frac{\sum_k\tau_k^2\,P_r(\tau_k)}{\sum_kP_r(\tau_k)} \]</div><div class="fn">讲义给的是左边的定义式；右边"平方的均值 − 均值的平方"就是第 1b 章的方差公式，列表算更快。[0, a] 上的均匀谱：μ = a/2，E[τ²] = a²/3，σ = a/√12 = a/3.464。</div></div>
+  <div class="fm"><div class="fl">dB → 线性 dB to linear <span class="st def">定义·必会</span></div><div class="fx">\[ P_{\text{lin}}=10^{P_{\text{dB}}/10},\qquad P_{\text{mW}}=10^{P_{\text{dBm}}/10} \]</div><div class="fn">0、−3、−6、−10 dB → 1、0.5012、0.2512、0.1。给 dBm（绝对功率）时同样换；也可以先都减去最强那条，变成相对 dB，比例不变。老师说没写 dB ↔ 线性换算会扣分。</div></div>
+  <div class="fm"><div class="fl">平坦衰落判据 Flat-fading rule of thumb <span class="st must">背</span></div><div class="fx">\[ \frac{\sigma_{T_m}}{T_s}\lt 0.1\ \Rightarrow\ \text{flat};\qquad \frac{\sigma_{T_m}}{T_s}\gg 1\ \Rightarrow\ \text{frequency-selective} \]</div><div class="fn">讲义 p.33；老师说这是蓝框公式，要背（发布的讲义 PDF 这一页看不到框，以课上录音为准）。反过来用：\(T_s\gt 10\,\sigma_{T_m}\)，即 \(R_s\lt 0.1/\sigma_{T_m}\)，求出来是上限。0.1 到 ≫ 1 之间是灰区：老师课上说比值只稍大于 0.1（如 0.15）时不能下结论，要远大于 0.1 才能说是频率选择性。比的是 rms 时延扩展，不是最大时延扩展。</div></div>
+  <div class="fm"><div class="fl">相干带宽与信号带宽 Coherence bandwidth vs signal bandwidth <span class="st def">定义·必会</span></div><div class="fx">\[ B_s\approx R_s=\frac{1}{T_s},\qquad B_C\approx\frac{1}{\sigma_{T_m}}\ \ (\text{order of magnitude}) \]\[ B_s\lt B_C\ \Rightarrow\ \text{flat},\qquad B_s\gt B_C\ \Rightarrow\ \text{frequency-selective} \]</div><div class="fn">讲义 p.31–32：B<sub>s</sub> &lt; B<sub>C</sub> 平坦，B<sub>s</sub> &gt; B<sub>C</sub> 频率选择性；老师的简单记法：信号带宽在相干带宽以内就是平坦。p.31 用时延谱的傅里叶变换定义 B<sub>C</sub>，没给 1/σ 前面的系数，所以 B<sub>C</sub> ≈ 1/σ 只是数量级：只用来估 B<sub>C</sub>、说明"σ 越大 B<sub>C</sub> 越小"，不要拿它把 B<sub>s</sub>/B<sub>C</sub> 换算成 σ/T<sub>s</sub> 再去套 0.1。题目给 σ 就用 σ/T<sub>s</sub> &lt; 0.1；<b>题目给了 B<sub>C</sub> 就直接比 B<sub>s</sub> 和 B<sub>C</sub></b>：2025-26 S1 Q2(b) 同时给了 B<sub>C</sub> = 30 kHz 和最大时延扩展 10 µs，(i) 直接按子载波带宽 500/N &lt; 30 kHz 得 N &gt; 16.67 → N<sub>min</sub> = 17（此时 500/17 = 29.4 kHz，只比 30 kHz 小一点，按 B<sub>s</sub> &lt; B<sub>C</sub> 就算平坦；OFDM 题，判平坦的方法一样）；10 µs 是最大时延，不是 σ，留给 (ii) 定保护间隔，不拿来判平坦。题目常写 assume T = 1/B。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型 1 · 由功率时延谱求 μ、σ，再定平坦条件</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 1 · Q3</th><th>模拟 A · Q3</th></tr></thead><tbody>
+    <tr><td>① 权重换线性</td><td>dB → 10<sup>dB/10</sup>；连续均匀谱直接看成均匀分布</td><td>P<sub>r</sub> = 1（0–10 µs），已是线性：[0, 10] µs 上的均匀分布</td><td>0、−3、−6 dB → 1、0.5012、0.2512；总和 1.752</td></tr>
+    <tr><td>② 平均时延 μ</td><td>ΣP<sub>k</sub>τ<sub>k</sub> ÷ ΣP<sub>k</sub></td><td>μ = a/2 = 10/2 = 5 µs</td><td>(0×1 + 1×0.5012 + 3×0.2512)/1.752 = 1.255/1.752 = 0.716 µs</td></tr>
+    <tr><td>③ 二阶矩 E[τ²]</td><td>ΣP<sub>k</sub>τ<sub>k</sub>² ÷ ΣP<sub>k</sub></td><td>a²/3 = 100/3 = 33.33 µs²</td><td>(0 + 1×0.5012 + 9×0.2512)/1.752 = 2.762/1.752 = 1.576 µs²</td></tr>
+    <tr><td>④ rms 扩展 σ</td><td>√(E[τ²] − μ²)</td><td>√(33.33 − 5²) = √8.33 = 2.89 µs（= 10/√12）</td><td>√(1.576 − 0.716²) = √1.063 = 1.03 µs</td></tr>
+    <tr><td>⑤ 平坦判据</td><td>σ/T<sub>s</sub> &lt; 0.1（背）；求速率就反解 T<sub>s</sub> &gt; 10σ</td><td>T<sub>s</sub> &gt; 28.9 µs → R<sub>s</sub> &lt; 34.6 ksps（上限）</td><td>T<sub>s</sub> = 1/50 k = 20 µs，1.03/20 = 0.052 &lt; 0.1 → 平坦（R<sub>s</sub> 上限 97.0 ksps）</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 1 · Q3（功率时延谱 P<sub>r</sub>(τ) = 1，0 ≤ τ ≤ 10 µs；官方答案 5 µs、2.89 µs、34.6 ksps）；模拟 A · Q3(a)(b)（自编：时延 0/1/3 µs，功率 0/−3/−6 dB，50 k 符号/s，1.8 GHz、72 km/h；数字经 verify_mock.py 验算）。讲义第 2 章 p.30、p.33。</p>
+
+  <h4>题型 2 · 给 σ 或 B<sub>C</sub>，判断平坦还是频率选择性</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2023-24 Q1(a)(iii)）</th><th>模拟 C · Q2(a)</th></tr></thead><tbody>
+    <tr><td>① 找可比的一对</td><td>时域：σ 和 T<sub>s</sub>；频域：B<sub>s</sub>（≈ 1/T<sub>s</sub>）和 B<sub>C</sub></td><td>σ = 0.01 ms，T<sub>s</sub> = 1 ms</td><td>B<sub>s</sub> ≈ 50 kHz（50 k 符号/s），B<sub>C</sub> = 200 kHz</td></tr>
+    <tr><td>② 算比值</td><td>σ/T<sub>s</sub> 或 B<sub>s</sub>/B<sub>C</sub></td><td>0.01/1 = 0.01</td><td>50/200 = 0.25</td></tr>
+    <tr><td>③ 对照判据</td><td>σ/T<sub>s</sub> &lt; 0.1 或 B<sub>s</sub> &lt; B<sub>C</sub> → 平坦；σ/T<sub>s</sub> ≫ 1 或 B<sub>s</sub> &gt; B<sub>C</sub> → 选择性（σ/T<sub>s</sub> 只稍大于 0.1：不能下结论）</td><td>0.01 &lt; 0.1 → 平坦</td><td>50 kHz &lt; 200 kHz → 平坦（题目给了 B<sub>C</sub>，直接比）</td></tr>
+    <tr><td>④ 写结论和理由</td><td>平坦/选择性 + 一句物理意义（有没有 ISI）</td><td>flat：σ ≪ T<sub>s</sub>，回波拖尾远短于符号，几乎没有 ISI</td><td>flat：B<sub>s</sub> &lt; B<sub>C</sub>，整个信号带宽内的衰落相关、一起起伏，频谱失真小</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：2023-24 S2 期末 Q1(a)(iii)（符号时长 1 ms，rms 时延扩展 0.01 ms，信道冲激响应时不变；完整结论是"平坦慢衰落"，"慢"的判断见 t9）；模拟 C · Q2(a)（自编：50 k 符号/s，信号带宽约 50 kHz，B<sub>C</sub> = 200 kHz，最大多普勒频移 100 Hz；练习页答案"平坦慢衰落"，经 verify_mock.py 验算）。讲义第 2 章 p.31–33。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 功率给 dBm（绝对值）+ 比值卡在灰区</div>
+    <p class="q">某信道有三条可分辨路径：时延 0、2、5 µs，接收功率分别为 −80、−84、−90 dBm。(a) 求平均时延和 rms 时延扩展；(b) 要平坦衰落，符号速率最高多少？(c) 系统用 100 k 符号/s，衰落是平坦的吗？</p>
+    <ol class="work">
+      <li>dBm → mW：−80 dBm = 1.000×10⁻⁸ mW，−84 dBm = 3.981×10⁻⁹ mW，−90 dBm = 1.000×10⁻⁹ mW。都除以最强那条（等于先换成相对 0、−4、−10 dB）：权重 1、0.3981、0.1，总和 1.498。</li>
+      <li>(a) μ = (0×1 + 2×0.3981 + 5×0.1)/1.498 = 1.296/1.498 = 0.8652 ≈ 0.865 µs（下一步要平方，先多留一位）。</li>
+      <li>E[τ²] = (0 + 4×0.3981 + 25×0.1)/1.498 = 4.092/1.498 = 2.732 µs²；σ² = 2.732 − 0.8652² = 2.732 − 0.7486 = 1.983，σ = 1.41 µs。</li>
+      <li>(b) σ/T<sub>s</sub> &lt; 0.1 → T<sub>s</sub> &gt; 10σ = 14.1 µs → R<sub>s</sub> &lt; 1/14.08 µs = 71.0 ksps。</li>
+      <li>(c) T<sub>s</sub> = 1/100 k = 10 µs，σ/T<sub>s</sub> = 1.41/10 = 0.141：大于 0.1，不满足平坦判据；又远没到 ≫ 1。老师说稍大于 0.1 时不能下结论，所以写"不能认为是平坦衰落，属于边界情况，可能有轻微 ISI"。</li>
+    </ol>
+    <p class="ans">答案：μ ≈ 0.865 µs，σ ≈ 1.41 µs；R<sub>s</sub> &lt; 71.0 ksps；100 ksps 时 σ/T<sub>s</sub> = 0.141 &gt; 0.1，不能算平坦（边界情况）</p></div>
+  <div class="eg"><div class="egh">例 2 · 连续均匀谱，高度不是 1，再估一下 B<sub>C</sub></div>
+    <p class="q">功率时延谱 P<sub>r</sub>(τ) = 2（0 ≤ τ ≤ 4 µs），其他为 0。(a) 求 μ、σ；(b) 符号速率 50 k 符号/s 时是不是平坦衰落？(c) 估计相干带宽。</p>
+    <ol class="work">
+      <li>高度 2 在分子、分母里同时出现，约掉：和高度 1 一样，就是 [0, 4] µs 上的均匀分布（分母 = 面积 = 2×4 = 8，不是 1）。</li>
+      <li>(a) μ = a/2 = 2 µs；E[τ²] = a²/3 = 16/3 = 5.333 µs²；σ² = 5.333 − 2² = 1.333，σ = 1.155 µs（= 4/√12 = 4/3.464）。</li>
+      <li>(b) T<sub>s</sub> = 1/50 k = 20 µs，σ/T<sub>s</sub> = 1.155/20 = 0.0577 &lt; 0.1 → 平坦（R<sub>s</sub> 上限 0.1/σ = 86.6 ksps）。</li>
+      <li>(c) B<sub>C</sub> ≈ 1/σ = 1/1.155 µs ≈ 866 kHz（只是数量级估计）。B<sub>s</sub> ≈ 50 kHz &lt; 866 kHz，频域看也是平坦（按这个估法 B<sub>s</sub>/B<sub>C</sub> 恰好等于 σ/T<sub>s</sub> = 0.0577，两种说法结论相同）。</li>
+    </ol>
+    <p class="ans">答案：μ = 2 µs，σ ≈ 1.155 µs；50 ksps 时 σ/T<sub>s</sub> = 0.0577 &lt; 0.1，平坦；B<sub>C</sub> 约 866 kHz（数量级）</p></div>
+  <div class="eg"><div class="egh">例 3 · 题目直接给 B<sub>C</sub>：频域判断 + 反求速率</div>
+    <p class="q">测得信道相干带宽 B<sub>C</sub> = 150 kHz，取 B<sub>s</sub> ≈ R<sub>s</sub>。(a) R<sub>s</sub> = 10 k 符号/s；(b) R<sub>s</sub> = 1 M 符号/s，频率维度上各是什么衰落？(c) 要平坦，R<sub>s</sub> 最高多少？</p>
+    <ol class="work">
+      <li>(a) B<sub>s</sub> ≈ 10 kHz &lt; B<sub>C</sub> = 150 kHz（B<sub>s</sub>/B<sub>C</sub> = 10/150 = 0.0667，小 15 倍）→ 平坦：整个信号带宽一起衰落。</li>
+      <li>(b) B<sub>s</sub> ≈ 1 MHz &gt; 150 kHz（大 6.67 倍）→ 频率选择性衰落：不同频率衰落不同，时域上有 ISI，要靠均衡或 OFDM。</li>
+      <li>(c) 按讲义 p.31 直接用 B<sub>s</sub> &lt; B<sub>C</sub>：R<sub>s</sub> ≈ B<sub>s</sub> &lt; 150 kHz → R<sub>s</sub> &lt; 150 ksps，是上限（2025-26 S1 Q2(b)(i) 求 N 也是这样直接比的）。题目给的是 B<sub>C</sub>，不要再用 B<sub>C</sub> ≈ 1/σ 换算成 σ/T<sub>s</sub> 去套 0.1。</li>
+    </ol>
+    <p class="ans">答案：(a) 平坦；(b) 频率选择性；(c) R<sub>s</sub> &lt; 150 ksps（上限）</p></div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>拿 dB 值当权重：0、−3、−6 dB 是负数，必须先换线性（1、0.5012、0.2512）；dBm 也要换。老师说没写 dB ↔ 线性换算会扣分。</li>
+    <li>忘了除总功率：模拟 A·Q3 要除 1.752；连续谱除面积（Practice 1 Q3 的分母是 10，不是 1）。</li>
+    <li>σ ≠ √E[τ²]，要减 μ²；σ 也不是"最大时延 − 最小时延"：模拟 A·Q3 时延差 3 µs，σ 只有 1.03 µs。题目给"最大时延扩展"（如 2025-26 S1 Q2(b) 的 10 µs）时它不是 σ，别拿去套 0.1。</li>
+    <li>不等号方向：平坦要符号<b>长</b>、速率<b>低</b>，算出来是上限（R<sub>s</sub> &lt; 34.6 ksps），不是"R<sub>s</sub> = 34.6 ksps"。R<sub>s</sub> 是符号速率：给比特率先除以 log₂M（4-QAM、200 kbit/s → 100 ksps）。</li>
+    <li>把 0.1 当成严格分界：σ/T<sub>s</sub> 稍大于 0.1（例 1 的 0.141）不能直接写"频率选择性"，讲义 p.33 选择性要 ≫ 1，老师也说要远大于 0.1。这个灰区只针对 σ/T<sub>s</sub>；题目给 B<sub>C</sub> 时按讲义直接比，B<sub>s</sub> &lt; B<sub>C</sub> 就写 flat（模拟 C·Q2：50 kHz &lt; 200 kHz → 平坦），不要自己再加"borderline"。</li>
+    <li>把 B<sub>C</sub> ≈ 1/σ 当精确公式，或拿最大时延去估 B<sub>C</sub>：题目给了 B<sub>C</sub> 就直接和 B<sub>s</sub> 比（2025-26 S1 Q2(b)：B<sub>C</sub> = 30 kHz 是测出来给你的；10 µs 是最大时延扩展，不是 σ）。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>Converting the powers to linear values (0, −3, −6 dB → 1, 0.5012, 0.2512), the mean delay is μ = ΣP<sub>k</sub>τ<sub>k</sub>/ΣP<sub>k</sub> = 1.255/1.752 = 0.716 µs and the rms delay spread is σ = √(E[τ²] − μ²) = √(1.576 − 0.716²) = 1.03 µs. With T<sub>s</sub> = 1/(50 ksps) = 20 µs, σ/T<sub>s</sub> = 0.052 &lt; 0.1, so the rule of thumb for flat fading is satisfied: the delay spread is much smaller than the symbol duration and ISI is negligible. If only bandwidths are given, compare them directly: B<sub>s</sub> ≈ 50 kHz &lt; B<sub>C</sub> = 200 kHz, so the whole signal bandwidth fades together and the fading is flat.</p>
+  </div>
+</section>
+
+<section class="topic" id="t9">
+  <h2><span class="tn">9</span>多普勒、快/慢衰落与衰落类型综合判别 · Doppler, fast vs slow fading, classifying the fading</h2>
+  <div class="meta"><span class="st def">定义·必会</span><span class="st must">背</span> <span class="freq">出现：期末 2/4 套（2023-24 Q1(a)(iii)、2025-26 S2 Q1(a)(i)）· 期末均衡题也用到快衰落的概念（2024-25 Q2(a)(i)：快衰落时信道系数 h 怎样变，属第 6 章，Quiz 不考）· 模拟 A·Q3(b) · 模拟 C·Q2(a) · 专项·Q3(f)</span></div>
+  <p class="why">考"信道随时间变多快"：由车速和载频算最大多普勒频移 f<sub>m</sub> 和相干时间 T<sub>C</sub> ≈ 1/f<sub>m</sub>（定义，自己要会），再和符号时长比，判快/慢；最后和 t8 的平坦/选择性（σ/T<sub>s</sub> &lt; 0.1 要背）合成完整的衰落类型。老师说问衰落类型只答一个维度只给一半分；2025-26 S2 Q1(a)(i) 直接让你解释 B<sub>C</sub>、B<sub>D</sub>、B<sub>s</sub> 怎样决定衰落类型。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(v\)</td><td>移动速度</td><td>speed of the mobile</td><td>手机（车）跑多快；km/h ÷ 3.6 = m/s</td><td>m/s</td></tr>
+    <tr><td>\(f_c\)</td><td>载频</td><td>carrier frequency</td><td>信号的中心频率</td><td>Hz</td></tr>
+    <tr><td>\(c\)</td><td>光速</td><td>speed of light</td><td>3×10⁸ m/s</td><td>m/s</td></tr>
+    <tr><td>\(\lambda\)</td><td>波长</td><td>wavelength</td><td>λ = c/f<sub>c</sub>；题目可能只给 λ 不给 f<sub>c</sub></td><td>m</td></tr>
+    <tr><td>\(\theta\)</td><td>到达角</td><td>angle of arrival</td><td>电波来的方向和前进方向的夹角</td><td>°</td></tr>
+    <tr><td>\(f_d\)</td><td>多普勒频移</td><td>Doppler shift</td><td>某一条回波的频率偏移：迎着走变高，背着走变低</td><td>Hz</td></tr>
+    <tr><td>\(f_m\)</td><td>最大多普勒频移</td><td>maximum Doppler shift</td><td>θ = 0 时的频移；LCR/AFD 公式里的 f<sub>m</sub> 就是它</td><td>Hz</td></tr>
+    <tr><td>\(B_D\)</td><td>多普勒扩展</td><td>Doppler spread</td><td>各回波频移不同，一根谱线被展宽成 f<sub>c</sub> ± f<sub>m</sub>；讲义取 B<sub>D</sub> = f<sub>m</sub></td><td>Hz</td></tr>
+    <tr><td>\(T_C\)（T<sub>c</sub>）</td><td>相干时间</td><td>coherence time</td><td>信道"基本不变"能维持多久</td><td>s、ms</td></tr>
+    <tr><td>\(T_s,\ B_s\)</td><td>符号时长、信号带宽</td><td>symbol duration, signal bandwidth</td><td>同 t8，B<sub>s</sub> ≈ 1/T<sub>s</sub></td><td>s、Hz</td></tr>
+    <tr><td>—</td><td>慢衰落</td><td>slow fading</td><td>一个符号内信道几乎不变（T<sub>s</sub> ≪ T<sub>C</sub>）</td><td>—</td></tr>
+    <tr><td>—</td><td>快衰落</td><td>fast fading</td><td>一个符号内信道就在变（T<sub>C</sub> 比 T<sub>s</sub> 短或相当）</td><td>—</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">多普勒频移 Doppler shift <span class="st def">定义·必会</span></div><div class="fx">\[ f_d=\frac{v}{\lambda}\cos\theta=\frac{v}{c}\,f_c\cos\theta \]</div><div class="fn">讲义 p.34。θ &lt; 90°（迎着电波走）为正，θ &gt; 90° 为负，θ = 90°（横着走）为 0。老师说多普勒<b>频移</b>本身不算失真，多普勒<b>扩展</b>才是（频率色散）。</div></div>
+  <div class="fm"><div class="fl">最大多普勒频移、多普勒扩展 Maximum Doppler shift, Doppler spread <span class="st def">定义·必会</span></div><div class="fx">\[ f_m=\frac{v\,f_c}{c}=\frac{v}{\lambda},\qquad B_D=f_m \]</div><div class="fn">讲义 p.34–35。v 用 m/s（km/h ÷ 3.6），f<sub>c</sub> 用 Hz。f<sub>m</sub> 也出现在 LCR/AFD 公式里（考试给），老师要求会说出它是最大多普勒频移。</div></div>
+  <div class="fm"><div class="fl">相干时间 Coherence time <span class="st def">定义·必会</span></div><div class="fx">\[ T_C\approx\frac{1}{B_D}=\frac{1}{f_m} \]</div><div class="fn">讲义 p.36：信道冲激响应基本不变的时长。动得越快，f<sub>m</sub> 越大，T<sub>C</sub> 越短；不动（时不变信道）时 f<sub>m</sub> = 0，T<sub>C</sub> → ∞。</div></div>
+  <div class="fm"><div class="fl">快/慢衰落判据 Slow vs fast fading <span class="st def">定义·必会</span></div><div class="fx">\[ T_s\ll T_C\ \Longleftrightarrow\ B_s\gg B_D\ \Rightarrow\ \text{slow fading} \]\[ T_s\ \text{comparable to or longer than}\ T_C\ \Rightarrow\ \text{fast fading} \]</div><div class="fn">讲义 p.37：符号时长比相干时间短、或信号带宽远大于多普勒扩展 → 一个符号内幅度和相位近似不变，慢衰落；相干时间比符号时长小 → 快衰落。因为 B<sub>s</sub> ≈ 1/T<sub>s</sub>、B<sub>D</sub> ≈ 1/T<sub>C</sub>，时域和频域两种说法等价。老师的简单记法：符号时长在相干时间以内就是慢衰落。</div></div>
+  <div class="fm"><div class="fl">两个维度合起来 Combined classification <span class="st def">定义·必会</span></div><div class="fx">\[ \sigma_{T_m}\ll T_s\ll T_C\ \ (\text{time}),\qquad B_D\ll B_s\lt B_C\ \ (\text{frequency})\quad\Rightarrow\quad\text{flat, slow fading} \]</div><div class="fn">时域里的 σ ≪ T<sub>s</sub> 就是要背的 σ/T<sub>s</sub> &lt; 0.1（t8）；频域按讲义 p.31 只要 B<sub>s</sub> &lt; B<sub>C</sub>。老师说时延扩展（时间色散）和多普勒扩展（频率色散）分开判断：σ（或 B<sub>C</sub>）只管平坦/选择性，T<sub>C</sub>（或 B<sub>D</sub>）只管快/慢，组合出四种：平坦慢、平坦快、选择性慢、选择性快（讲义 p.38–39 两张图）。提高符号速率 → T<sub>s</sub> 变短：更容易频率选择性，更不容易快衰落；"平坦"不等于"慢"。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型 1 · 给车速、载频、σ、符号速率 → 完整的衰落类型</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2023-24 Q1(a)(iii)）</th><th>专项 · Q3(e)(f)</th></tr></thead><tbody>
+    <tr><td>① 符号时长</td><td>T<sub>s</sub> = 1/R<sub>s</sub></td><td>T<sub>s</sub> = 1 ms（题目直接给）</td><td>1/10 k = 100 µs</td></tr>
+    <tr><td>② 平坦/选择性</td><td>σ/T<sub>s</sub> 和 0.1 比（t8）</td><td>0.01 ms/1 ms = 0.01 &lt; 0.1 → 平坦</td><td>2/100 = 0.02 &lt; 0.1 → 平坦</td></tr>
+    <tr><td>③ 速度换算</td><td>km/h ÷ 3.6 → m/s</td><td>信道冲激响应时不变（time invariant）：相当于不动</td><td>54/3.6 = 15 m/s</td></tr>
+    <tr><td>④ 最大多普勒 f<sub>m</sub></td><td>v f<sub>c</sub>/c</td><td>f<sub>m</sub> = 0（没有多普勒扩展）</td><td>15 × 2×10⁹ / (3×10⁸) = 100 Hz</td></tr>
+    <tr><td>⑤ 相干时间 T<sub>C</sub></td><td>≈ 1/f<sub>m</sub></td><td>T<sub>C</sub> → ∞</td><td>1/100 = 10 ms</td></tr>
+    <tr><td>⑥ 快/慢</td><td>T<sub>s</sub> ≪ T<sub>C</sub> → 慢；否则快</td><td>1 ms ≪ ∞ → 慢</td><td>100 µs ≪ 10 ms（T<sub>C</sub>/T<sub>s</sub> = 100）→ 慢</td></tr>
+    <tr><td>⑦ 结论</td><td>两个维度都写，各带理由</td><td>平坦慢衰落 flat, slow fading</td><td>平坦慢衰落 flat, slow fading</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：2023-24 S2 期末 Q1(a)(iii)（符号时长 1 ms，rms 时延扩展 0.01 ms，信道冲激响应时不变）；专项 · Q3(e)(f)（自编：10 k 符号/s，2 GHz，rms 时延扩展 2 µs，54 km/h；数字经 verify_mock.py 验算）。讲义第 2 章 p.33–37。</p>
+
+  <h4>题型 2 · 用 B<sub>C</sub>、B<sub>D</sub>、B<sub>s</sub> 判断（解释题）</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2025-26 S2 Q1(a)(i)）</th><th>模拟 C · Q2(a)</th></tr></thead><tbody>
+    <tr><td>① 写出三个量</td><td>B<sub>s</sub> ≈ R<sub>s</sub>；B<sub>C</sub> 给定（或 ≈ 1/σ）；B<sub>D</sub> = f<sub>m</sub></td><td>解释题没有数字：说明 B<sub>C</sub> 来自多径时延扩展，B<sub>D</sub> 来自移动（多普勒）</td><td>B<sub>s</sub> ≈ 50 kHz，B<sub>C</sub> = 200 kHz，B<sub>D</sub> = f<sub>m</sub> = 100 Hz</td></tr>
+    <tr><td>② 频率维度</td><td>B<sub>s</sub> 和 B<sub>C</sub> 比</td><td>B<sub>s</sub> &lt; B<sub>C</sub> → 平坦（整个带宽一起衰落）；B<sub>s</sub> &gt; B<sub>C</sub> → 频率选择性（有 ISI）</td><td>50 kHz &lt; 200 kHz → 平坦</td></tr>
+    <tr><td>③ 时间维度</td><td>B<sub>s</sub> 和 B<sub>D</sub> 比（等价 T<sub>s</sub> 和 T<sub>C</sub> 比）</td><td>B<sub>s</sub> ≫ B<sub>D</sub>（T<sub>s</sub> ≪ T<sub>C</sub> ≈ 1/B<sub>D</sub>）→ 慢；B<sub>s</sub> 接近或小于 B<sub>D</sub> → 快</td><td>50 kHz ≫ 100 Hz（500 倍）；T<sub>C</sub> ≈ 10 ms ≫ T<sub>s</sub> = 20 µs → 慢</td></tr>
+    <tr><td>④ 组合</td><td>四种里选一种</td><td>平坦慢、平坦快、选择性慢、选择性快（讲义 p.38–39 两张图）</td><td>平坦慢衰落 flat, slow fading</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：2025-26 S2 期末 Q1(a)(i)（解释如何用相干带宽、多普勒扩展和信号带宽判断衰落类型，无数字）；模拟 C · Q2(a)（自编：50 k 符号/s，B<sub>C</sub> = 200 kHz，f<sub>m</sub> = 100 Hz）。讲义第 2 章 p.31–32、p.35–39。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 只给波长；高铁 + 低符号速率 → 快衰落</div>
+    <p class="q">高铁时速 360 km/h，载波波长 λ = 5 cm，车上传感器以 1 k 符号/s 发数据，rms 时延扩展 1 µs。判断衰落类型。</p>
+    <ol class="work">
+      <li>v = 360/3.6 = 100 m/s。给的是波长，直接 f<sub>m</sub> = v/λ = 100/0.05 = 2000 Hz（等价于 f<sub>c</sub> = c/λ = 6 GHz，v f<sub>c</sub>/c 也是 2000 Hz）。</li>
+      <li>T<sub>C</sub> ≈ 1/f<sub>m</sub> = 0.5 ms；T<sub>s</sub> = 1/1 k = 1 ms。T<sub>s</sub>/T<sub>C</sub> = 2：符号比相干时间还长，一个符号内信道就在变 → 快衰落（频域：B<sub>s</sub> ≈ 1 kHz &lt; B<sub>D</sub> = 2 kHz）。</li>
+      <li>σ/T<sub>s</sub> = 1 µs/1 ms = 0.001 &lt; 0.1 → 平坦。</li>
+    </ol>
+    <p class="ans">答案：f<sub>m</sub> = 2000 Hz，T<sub>C</sub> ≈ 0.5 ms；平坦快衰落（flat, fast fading）</p></div>
+  <div class="eg"><div class="egh">例 2 · 反求：由相干时间求车速</div>
+    <p class="q">在 900 MHz 测得信道相干时间约 5 ms。(a) 估计移动台速度（km/h）；(b) 系统用 100 k 符号/s，是快衰落还是慢衰落？</p>
+    <ol class="work">
+      <li>(a) f<sub>m</sub> ≈ 1/T<sub>C</sub> = 1/5 ms = 200 Hz。</li>
+      <li>v = f<sub>m</sub>c/f<sub>c</sub> = 200 × 3×10⁸ / (9×10⁸) = 66.67 m/s（也可以先算 λ = c/f<sub>c</sub> = 0.3333 m，v = f<sub>m</sub>λ）；× 3.6 = 240 km/h。</li>
+      <li>(b) T<sub>s</sub> = 1/100 k = 10 µs，T<sub>C</sub>/T<sub>s</sub> = 500，T<sub>s</sub> ≪ T<sub>C</sub> → 慢衰落。</li>
+    </ol>
+    <p class="ans">答案：v ≈ 66.67 m/s ≈ 240 km/h；100 ksps 时是慢衰落</p></div>
+  <div class="eg"><div class="egh">例 3 · 同一个信道换符号速率：R<sub>s</sub> 怎样改变两个维度</div>
+    <p class="q">信道 rms 时延扩展 σ = 2 µs，最大多普勒频移 f<sub>m</sub> = 500 Hz。符号速率分别为 250 符号/s、20 k 符号/s、5 M 符号/s 时，各是什么衰落？</p>
+    <ol class="work">
+      <li>先算信道本身：T<sub>C</sub> ≈ 1/500 = 2 ms。σ 和 T<sub>C</sub> 不随 R<sub>s</sub> 变，变的只有 T<sub>s</sub>。</li>
+      <li>250 sps：T<sub>s</sub> = 4 ms。σ/T<sub>s</sub> = 0.0005 → 平坦；T<sub>s</sub>/T<sub>C</sub> = 2，符号比 T<sub>C</sub> 长 → 快。<b>平坦快衰落</b>。</li>
+      <li>20 ksps：T<sub>s</sub> = 50 µs。σ/T<sub>s</sub> = 0.04 → 平坦；T<sub>C</sub>/T<sub>s</sub> = 40 → 慢。<b>平坦慢衰落</b>。</li>
+      <li>5 Msps：T<sub>s</sub> = 0.2 µs。σ/T<sub>s</sub> = 10 ≫ 1 → 频率选择性；T<sub>C</sub>/T<sub>s</sub> = 10000 → 慢。<b>选择性慢衰落</b>。</li>
+      <li>规律：R<sub>s</sub> 越高（T<sub>s</sub> 越短），越容易频率选择性、越不容易快衰落。这个信道怎么调 R<sub>s</sub> 都得不到"选择性快"：那要 T<sub>s</sub> 远小于 σ = 2 µs，同时又不短于 T<sub>C</sub> = 2 ms，做不到。</li>
+    </ol>
+    <p class="ans">答案：250 sps 平坦快；20 ksps 平坦慢；5 Msps 频率选择性慢</p></div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>km/h 忘了 ÷ 3.6：54 km/h 当成 54 m/s，f<sub>m</sub> 会算成 360 Hz（正确是 100 Hz，大了 3.6 倍）；72 km/h = 20 m/s。GHz、MHz 换成 Hz，比较 T<sub>s</sub> 和 T<sub>C</sub> 前把 ms、µs 统一。计算器上除以 3×10⁸ 要加括号（或用 EXP 键输入 3E8），直接按 "÷ 3 × 10⁸" 会变成先除 3 再乘 10⁸。</li>
+    <li>衰落类型只答一个维度：老师说只给一半分。平坦/选择性写一句（σ/T<sub>s</sub>，或 B<sub>s</sub> 和 B<sub>C</sub> 比），快/慢写一句（T<sub>s</sub> 和 T<sub>C</sub> 比，或 B<sub>s</sub> 和 B<sub>D</sub> 比），合起来写 "flat, slow fading"。</li>
+    <li>"车快 = 快衰落"：快/慢看 T<sub>s</sub> 和 T<sub>C</sub> 的相对大小。例 1 同样 360 km/h，只要符号时长远小于 0.5 ms 就是慢衰落；"平坦"也不等于"慢"（例 3）。</li>
+    <li>两个不等号方向相反：平坦要 B<sub>s</sub> <b>小于</b> B<sub>C</sub>，慢要 B<sub>s</sub> <b>远大于</b> B<sub>D</sub>；时域里平坦要 T<sub>s</sub> 远大于 σ，慢要 T<sub>s</sub> 远小于 T<sub>C</sub>。</li>
+    <li>把多普勒频移当扩展：带 cos θ 的 f<sub>d</sub> 是单条回波的频移；判快/慢用 B<sub>D</sub> = f<sub>m</sub>（θ = 0 时的最大值）。</li>
+    <li>没给速度也能判：题目说 time-invariant channel，就是没有多普勒，T<sub>C</sub> → ∞，一定是慢衰落（2023-24 Q1(a)(iii)）。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>The coherence bandwidth B<sub>C</sub>, set by the multipath delay spread, is compared with the signal bandwidth B<sub>s</sub>: if B<sub>s</sub> &lt; B<sub>C</sub> the fading is flat, and if B<sub>s</sub> &gt; B<sub>C</sub> it is frequency-selective and causes ISI. The Doppler spread B<sub>D</sub> = f<sub>m</sub>, set by the motion, is also compared with B<sub>s</sub>: if B<sub>s</sub> ≫ B<sub>D</sub>, i.e. T<sub>s</sub> ≪ T<sub>C</sub> ≈ 1/B<sub>D</sub>, the fading is slow, otherwise it is fast; the two comparisons are independent and give four types (flat-slow, flat-fast, selective-slow, selective-fast).</p>
+    <p>Worked line: v = 54/3.6 = 15 m/s, f<sub>m</sub> = vf<sub>c</sub>/c = 15 × 2×10⁹/(3×10⁸) = 100 Hz and T<sub>C</sub> ≈ 1/f<sub>m</sub> = 10 ms ≫ T<sub>s</sub> = 100 µs, so the fading is slow; σ<sub>Tm</sub>/T<sub>s</sub> = 2/100 = 0.02 &lt; 0.1, so it is flat. Hence the signal experiences flat, slow fading.</p>
+  </div>
+</section>

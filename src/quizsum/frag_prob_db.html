@@ -1,0 +1,196 @@
+<section class="topic" id="t1">
+  <h2><span class="tn">1</span>概率基础 · Probability basics</h2>
+  <div class="meta"><span class="st must">背</span> <span class="st def">定义·必会</span> <span class="freq">出现：期末 0/4 套单独考第 1b 章；"离散 SNR 求平均"是 2023-24 Q1(b)(i)、2025-26 S1 Q1(b)(i) 的第一步（整题属第 4 章）· Practice 2 Q2（独立 → 相乘）· 模拟 A·Q1</span></div>
+  <p class="why">第 1b 章是 Quiz 范围里唯一不属于第 2 章的部分。考法参考模拟 A·Q1：给一张"状态—概率—条件概率"表，(a) 用全概率求平均误码率，(b) 用贝叶斯由"出错了"反推当时的状态，(c) 求离散 SNR 的均值和方差（dB 先换线性）。老师说不考积分，但离散分布的求和会考。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(A,\ B\)</td><td>事件</td><td>event</td><td>一件可能发生的事，如"比特出错""信道处于坏状态"</td><td>—</td></tr>
+    <tr><td>\(P(A)\)</td><td>概率</td><td>probability</td><td>A 发生的可能性，在 0 到 1 之间</td><td>无</td></tr>
+    <tr><td>\(A\cap B\)</td><td>交（且）</td><td>intersection (A and B)</td><td>A、B 同时发生</td><td>—</td></tr>
+    <tr><td>\(A\cup B\)</td><td>并（或）</td><td>union (A or B)</td><td>A、B 至少发生一个</td><td>—</td></tr>
+    <tr><td>\(P(B\mid A)\)</td><td>条件概率</td><td>conditional probability</td><td>已知 A 已经发生，B 发生的概率；竖线右边是"已知"</td><td>无</td></tr>
+    <tr><td>\(A_i\)</td><td>第 i 种情况（状态）</td><td>case / state (a partition)</td><td>各种情况互斥、合起来是全部：\(\sum_i P(A_i)=1\)，如好、坏两种信道</td><td>—</td></tr>
+    <tr><td>\(P(A_i)\)</td><td>先验概率</td><td>prior probability</td><td>还没看到结果时处于状态 i 的概率，题目直接给</td><td>无</td></tr>
+    <tr><td>\(P(A_i\mid B)\)</td><td>后验概率</td><td>posterior probability</td><td>看到结果 B 以后，回头算"当时是状态 i"的概率；贝叶斯求的就是它</td><td>无</td></tr>
+    <tr><td>\(X,\ x\)</td><td>随机变量、它的取值</td><td>random variable, one of its values</td><td>大写是随机变量，小写是具体取值（老师强调的记号）</td><td>同 X</td></tr>
+    <tr><td>\(P_X(x)\)</td><td>分布律（概率质量函数）</td><td>probability mass function (PMF)</td><td>离散变量 X 取值 x 的概率，所有取值加起来 = 1</td><td>无</td></tr>
+    <tr><td>\(E[X]\)，\(\bar\gamma\)</td><td>期望（均值）</td><td>expectation, mean</td><td>按概率加权的平均值；SNR 的均值记作 \(\bar\gamma\)</td><td>同 X</td></tr>
+    <tr><td>\(E[X^2]\)</td><td>平方的均值（二阶矩）</td><td>mean square (second moment)</td><td>先平方，再按概率加权平均</td><td>X 的单位²</td></tr>
+    <tr><td>\(\mathrm{Var}(X)=\sigma^2\)</td><td>方差</td><td>variance</td><td>偏离均值有多厉害（偏差平方的平均）</td><td>X 的单位²</td></tr>
+    <tr><td>\(\sigma\)</td><td>标准差</td><td>standard deviation</td><td>√方差，和 X 同单位；进 Q 函数用的是它</td><td>同 X</td></tr>
+    <tr><td>\(\gamma,\ \gamma_{\rm dB}\)</td><td>信噪比（线性 / dB）</td><td>SNR (linear / in dB)</td><td>\(\gamma_{\rm dB}=10\log_{10}\gamma\)；求平均、代公式都用线性 γ</td><td>无 / dB</td></tr>
+    <tr><td>\(P_e\)</td><td>误比特率</td><td>bit error probability</td><td>一个比特出错的概率；"平均误码率"就是用全概率算的</td><td>无</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">加法与乘法规则 Addition and multiplication rules <span class="st def">定义·必会</span></div><div class="fx">\[ P(A\cup B)=P(A)+P(B)-P(A\cap B) \]\[ P(A\cap B)=P(A)\,P(B\mid A)\ \xrightarrow{\ \text{independent}\ }\ P(A)\,P(B) \]</div><div class="fn">讲义第 1b 章 p.5–9。"或"用加法（减掉被数了两次的交集），"且"用乘法。讲义 p.3–4 摸弹珠（3 红 4 蓝）：先蓝后红 = 4/7 × 3/6 = 2/7。<b>独立</b>（互不影响）才能直接相乘：两条独立链路各有 10% 的时间中断，同时中断 = 0.1 × 0.1 = 0.01；Practice 2 Q2(b) 两个基站阴影独立，\(P_{out}=Q(\Delta/\sigma)\cdot Q(\Delta/\sigma)=[Q(\Delta/\sigma)]^2\)。<b>互斥</b>（不能同时发生）是 \(P(A\cap B)=0\)，和独立不是一回事。</div></div>
+  <div class="fm"><div class="fl">全概率公式 Law of total probability <span class="st def">定义·必会</span></div><div class="fx">\[ P(B)=\sum_{i}P(A_i)\,P(B\mid A_i)\qquad\Big(\textstyle\sum_i P(A_i)=1\Big) \]</div><div class="fn">分情况算，再按概率加权："平均误码率 = Σ 状态概率 × 该状态的误码率"。A<sub>i</sub> 必须互斥且凑满全部。老师点名的往年错误：只写一项 P(A₁)P(B | A₁)，<b>必须对所有 A<sub>i</sub> 求和</b>（第 8 周录音）。</div></div>
+  <div class="fm"><div class="fl">贝叶斯公式 Bayes' rule <span class="st must">背</span></div><div class="fx">\[ P(A_i\mid B)=\frac{P(A_i)\,P(B\mid A_i)}{\sum_j P(A_j)\,P(B\mid A_j)} \]</div><div class="fn">蓝框，要背（讲义第 1b 章 p.5–9）。分子 = 状态表里"所问那一行"的乘积，分母 = 全概率算出的总和 P(B)。由果推因：已知"出错了"，问"当时是坏状态"的概率。后验 ≠ 先验：模拟 A·Q1 里坏状态先验 0.3，知道出错后变成 0.977。</div></div>
+  <div class="fm"><div class="fl">期望 Expectation <span class="st must">背</span></div><div class="fx">\[ E[X]=\sum_x x\,P_X(x)\qquad\qquad E[g(X)]=\sum_x g(x)\,P_X(x) \]</div><div class="fn">讲义第 1b 章 p.10–11。E[X] = Σx·P(x) 是老师点名要背的；E[g(X)] 的一般式考试会给，乘的是 X 的概率 P<sub>X</sub>(x)，不是 g 的。E[g(X)] ≠ g(E[X])，老师说这是往年常见错误。</div></div>
+  <div class="fm"><div class="fl">方差 Variance <span class="st def">定义·必会</span></div><div class="fx">\[ E[X^2]=\sum_x x^2P_X(x) \]\[ \mathrm{Var}(X)=E[X^2]-\big(E[X]\big)^2,\qquad \sigma=\sqrt{\mathrm{Var}(X)} \]</div><div class="fn">讲义 p.10–11。老师课上的说法：方差 = 平方的均值 − 均值的平方。E[X²] ≠ (E[X])²：模拟 A·Q1 里 E[γ²] = 70.3，而 7.3² = 53.29，两者之差 17.01 就是方差。方差是两个接近的数相减，E[X] 要多留一两位再平方：2023-24 那组数 14.679² = 215.48，方差 5.47；若用 14.68² = 215.50，会得 5.45。方差的单位是 X 的单位²，进 Q 函数要用标准差 σ。</div></div>
+  <div class="fm"><div class="fl">线性变换与求和 aX + b and sums <span class="st def">定义·必会</span></div><div class="fx">\[ E[aX+b]=aE[X]+b,\qquad \mathrm{Var}(aX+b)=a^2\,\mathrm{Var}(X) \]\[ E[X+Y]=E[X]+E[Y],\qquad \mathrm{Var}(X+Y)\overset{\text{indep.}}{=}\mathrm{Var}(X)+\mathrm{Var}(Y) \]</div><div class="fn">讲义 p.10–11、p.14。加常数只平移、不改方差；乘 a，方差乘 a²；独立变量相加，相加的是<b>方差</b>（标准差不能直接加）。期末 2025-26 S1 Q1(a)(ii)（第 3 章题）用的就是这条：y = s + w，s = +1 固定、w 方差 0.25 → E[y] = 1，Var[y] = 0.25。</div></div>
+  <div class="fm"><div class="fl">dB 值求平均 Averaging values given in dB <span class="st def">定义·必会</span></div><div class="fx">\[ \bar\gamma=\sum_i p_i\,10^{\gamma_{i,\rm dB}/10} \]\[ \bar\gamma_{\rm dB}=10\log_{10}\bar\gamma\ \neq\ \sum_i p_i\,\gamma_{i,\rm dB} \]</div><div class="fn">dB 是对数：先把每个值换成线性 → 按概率加权平均 → 再换回 dB。直接平均 dB 只会偏小（所有取值相等时才一样），取值越分散差得越多：2023-24 Q1(b)(i) 错算 11.6 dB、正确 11.67 dB（差 0.07 dB）；模拟 A·Q1 错算 7 dB、正确 8.63 dB（差 1.63 dB）。老师说没写 dB ↔ 线性换算会扣分。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型一：状态表 → 全概率 + 贝叶斯</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>讲解页 1.2 例题（自编）</th><th>模拟 A · Q1 (a)(b)</th></tr></thead><tbody>
+    <tr><td>① 列状态表</td><td>每个状态写 P(A<sub>i</sub>) 和 P(错 | A<sub>i</sub>)，先查 ΣP(A<sub>i</sub>) = 1</td><td>好 0.8 / 10⁻⁴；深衰落 0.2 / 10⁻²（0.8 + 0.2 = 1）</td><td>好 0.7 / 10⁻⁴；坏 0.3 / 10⁻²（0.7 + 0.3 = 1）</td></tr>
+    <tr><td>② 每行相乘</td><td>P(A<sub>i</sub>) × P(错 | A<sub>i</sub>)（乘法规则）</td><td>0.8 × 10⁻⁴ = 8×10⁻⁵；0.2 × 10⁻² = 2×10⁻³</td><td>0.7 × 10⁻⁴ = 7×10⁻⁵；0.3 × 10⁻² = 3×10⁻³</td></tr>
+    <tr><td>③ 全概率</td><td>② 的所有行加起来 = 平均误码率</td><td>8×10⁻⁵ + 2×10⁻³ = 2.08×10⁻³</td><td>7×10⁻⁵ + 3×10⁻³ = 3.07×10⁻³</td></tr>
+    <tr><td>④ 贝叶斯</td><td>所问状态那一行 ÷ ③</td><td>P(深衰落 | 错) = 2×10⁻³ / 2.08×10⁻³ = 0.9615</td><td>P(坏 | 错) = 3×10⁻³ / 3.07×10⁻³ = 0.977</td></tr>
+    <tr><td>⑤ 检查</td><td>所有后验加起来 = 1</td><td>0.0385 + 0.9615 = 1</td><td>0.0228 + 0.9772 = 1</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：左列 = 讲解页第 1 章 1.2 节例题"信道好坏与误码"（自编：好状态 80%、误码率 10⁻⁴；深衰落 20%、10⁻²）；右列 = 模拟 A · Q1 (a)(b)（自编，verify_mock.py 验算）。<b>历年期末没有单独考过第 1b 章</b>；Practice 1–2 也没有离散的贝叶斯题（Practice 2 Q2 (b) 只用"独立 → 相乘"，(c) 是要积分的连续全概率，Quiz 不考积分），所以这张表两列都是自编题。期末里真正用到这套规则的是 2023-24 Q1(b)(i) 后半（第 4 章选择分集，Quiz 不考，只看概率部分）：两支路独立，选大的那支，两支都是 10 dB 时输出才是 10 dB：概率 = 0.2 × 0.2 = 0.04（乘法规则），为 12 dB 的概率 = 1 − 0.04 = 0.96；平均误符号率 = 0.04 × ½e<sup>−10</sup> + 0.96 × ½e<sup>−15.85</sup> ≈ 9.7×10⁻⁷（全概率）。</p>
+
+  <h4>题型二：离散 SNR（给 dB）→ 均值、方差</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2023-24 Q1(b)(i) 第一步）</th><th>模拟 A · Q1 (c)</th></tr></thead><tbody>
+    <tr><td>① dB → 线性</td><td>每个值都换：γ = 10<sup>γ<sub>dB</sub>/10</sup></td><td>10 dB → 10；12 dB → 15.85</td><td>10 dB → 10；0 dB → 1</td></tr>
+    <tr><td>② 均值</td><td>E[γ] = Σ γ<sub>i</sub> p<sub>i</sub></td><td>0.2 × 10 + 0.8 × 15.85 = 14.68</td><td>0.7 × 10 + 0.3 × 1 = 7.3</td></tr>
+    <tr><td>③ 换回 dB</td><td>10 log₁₀ E[γ]</td><td>10 log₁₀ 14.68 = 11.67 dB</td><td>10 log₁₀ 7.3 = 8.63 dB</td></tr>
+    <tr><td>④ 平方的均值</td><td>E[γ²] = Σ γ<sub>i</sub>² p<sub>i</sub></td><td>本题没问（练手：0.2 × 100 + 0.8 × 251.19 = 220.95）</td><td>0.7 × 100 + 0.3 × 1 = 70.3</td></tr>
+    <tr><td>⑤ 方差</td><td>Var = E[γ²] − (E[γ])²，σ = √Var</td><td>本题没问（练手：220.95 − 14.679² = 220.95 − 215.48 = 5.47）</td><td>70.3 − 7.3² = 70.3 − 53.29 = 17.01，σ = 4.12</td></tr>
+    <tr><td>⑥ 对照错法</td><td>直接平均 dB 值 ✗</td><td>0.2 × 10 + 0.8 × 12 = 11.6 dB ✗</td><td>0.7 × 10 + 0.3 × 0 = 7 dB ✗</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：左列 = 2023-24 期末 Q1(b)(i)（每支路 SNR 10 dB 概率 0.2、12 dB 概率 0.8，求平均 SNR，单位 dB）。整题是第 4 章选择分集，Quiz 不考；这里只用它的第一步，这一步就是第 1b 章的离散期望（后半题"平均误符号率 = Σ 概率 × 该情况的误符号率"也是全概率）。同类：2025-26 S1 Q1(b)(i)：11 / 12 / 13 dB（概率 0.2 / 0.5 / 0.3）→ 12.59 / 15.85 / 19.95 → 均值 16.43 → 12.16 dB（直接平均 dB 得 12.1 dB）；两支路 MRC 输出均值 = 2 × 16.43 = 32.86（15.17 dB），用的是 E[X + Y] = E[X] + E[Y]。右列 = 模拟 A · Q1 (c)（自编）。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 三种状态（状态表多一行）</div><p class="q">某链路有三种状态：好（概率 0.6，误比特率 10⁻⁴）、一般（0.3，10⁻³）、深衰落（0.1，10⁻²）。(a) 求平均误比特率；(b) 发现一个比特出错，它发生在深衰落里的概率是多少？发生在好状态的概率呢？</p><ol class="work">
+    <li>列表并检查：0.6 + 0.3 + 0.1 = 1 ✓。</li>
+    <li>每行相乘：0.6 × 10⁻⁴ = 6×10⁻⁵；0.3 × 10⁻³ = 3×10⁻⁴；0.1 × 10⁻² = 1×10⁻³。</li>
+    <li>(a) 全概率，三行都要加：\(P_e=6\times10^{-5}+3\times10^{-4}+1\times10^{-3}=1.36\times10^{-3}\)。</li>
+    <li>(b) 贝叶斯，每一行 ÷ 总和：P(深衰落 | 错) = 1×10⁻³ / 1.36×10⁻³ = 0.7353；P(好 | 错) = 6×10⁻⁵ / 1.36×10⁻³ = 0.0441；P(一般 | 错) = 3×10⁻⁴ / 1.36×10⁻³ = 0.2206。三者相加 = 1 ✓。</li>
+  </ol><p class="ans">答案：P<sub>e</sub> = 1.36×10⁻³；P(深衰落 | 错) ≈ 0.735，P(好 | 错) ≈ 0.044。只占 10% 时间的深衰落贡献了 73.5% 的错误。</p></div>
+  <div class="eg"><div class="egh">例 2 · 反着问：由平均误码率求坏状态占比</div><p class="q">两种状态：好状态误比特率 10⁻⁴，坏状态 10⁻²。实测平均误比特率为 2×10⁻³。求坏状态的时间比例 p，再求"出错时处于坏状态"的概率。</p><ol class="work">
+    <li>全概率写成方程，未知数是 p（好状态的概率就是 1 − p）：\(2\times10^{-3}=(1-p)\times10^{-4}+p\times10^{-2}\)。</li>
+    <li>移项：\(2\times10^{-3}-10^{-4}=p\,(10^{-2}-10^{-4})\ \Rightarrow\ p=\dfrac{1.9\times10^{-3}}{9.9\times10^{-3}}=0.1919\)。</li>
+    <li>代回验算：(1 − 0.1919) × 10⁻⁴ + 0.1919 × 10⁻² = 2.0×10⁻³ ✓。</li>
+    <li>贝叶斯：P(坏 | 错) = p × 10⁻² / P<sub>e</sub> = 0.1919 × 10⁻² / (2×10⁻³) = 0.9596。</li>
+  </ol><p class="ans">答案：p ≈ 0.192（约 19% 的时间是坏状态）；P(坏 | 错) ≈ 0.960。</p></div>
+  <div class="eg"><div class="egh">例 3 · SNR 以 dB 给出：均值、方差、中断，再把功率加倍</div><p class="q">接收 SNR 是离散随机变量：3 dB（概率 0.25）、10 dB（0.5）、15 dB（0.25）。(a) 求平均 SNR（线性和 dB）；(b) 求方差和标准差；(c) 门限 6 dB，求中断概率；(d) 发射功率加倍（每个 SNR 都 ×2），平均 SNR 和方差变成多少？</p><ol class="work">
+    <li>先换线性：3 dB → 10<sup>0.3</sup> = 1.995；10 dB → 10；15 dB → 10<sup>1.5</sup> = 31.623。</li>
+    <li>(a) \(E[\gamma]=0.25\times1.995+0.5\times10+0.25\times31.623=0.499+5+7.906=13.405\)，即 10 log₁₀13.405 = 11.27 dB。直接平均 dB 会得 0.25 × 3 + 0.5 × 10 + 0.25 × 15 = 9.5 dB，低了 1.77 dB ✗。</li>
+    <li>(b) 平方可以在指数上乘 2：(10<sup>0.3</sup>)² = 10<sup>0.6</sup> = 3.981，10² = 100，(10<sup>1.5</sup>)² = 10<sup>3</sup> = 1000。\(E[\gamma^2]=0.25\times3.981+0.5\times100+0.25\times1000=0.995+50+250=301.0\)；\(\mathrm{Var}=E[\gamma^2]-(E[\gamma])^2=301.0-13.405^2=301.0-179.7=121.3\)，σ = √121.3 = 11.01。</li>
+    <li>(c) 离散分布的中断概率 = 低于门限的那些取值的概率之和：只有 3 dB &lt; 6 dB，所以 P<sub>out</sub> = 0.25。</li>
+    <li>(d) 功率加倍：Y = 2γ，每个 dB 值都 + 3.01 dB。E[Y] = 2E[γ] = 2 × 13.405 = 26.81，即 11.27 + 3.01 = 14.28 dB；Var(Y) = 2² × 121.3 ≈ 485（系数要平方），标准差 = 2 × 11.01 ≈ 22.0（标准差只乘 2）。</li>
+  </ol><p class="ans">答案：(a) E[γ] ≈ 13.4（11.27 dB）；(b) Var ≈ 121.3，σ ≈ 11.01；(c) 0.25；(d) 均值 26.81（14.28 dB），方差 ≈ 485。</p></div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li><b>全概率只写一项</b>：P(B) = P(A₁)P(B | A₁) ✗。这是老师点名的往年错误，要对<b>所有</b>状态求和。</li>
+    <li><b>贝叶斯答成先验</b>：模拟 A·Q1(b) 答 0.3 ✗，正确是 0.977。分母一定是全概率算出的总和。</li>
+    <li><b>直接平均 dB 值</b>：模拟 A·Q1(c) 7 dB ✗，8.63 dB ✓。先换线性再平均，最后再换回 dB。</li>
+    <li><b>E[g(X)] 当成 g(E[X])</b>：E[γ²] = 70.3，不是 7.3² = 53.29；方差忘了减 (E[X])²。</li>
+    <li><b>Var(aX) 写成 a·Var(X)</b>：系数要平方；独立变量相加，加的是方差、不是标准差；进 Q 函数前方差要开根号。</li>
+    <li><b>把互斥当独立</b>：独立是 P(A∩B) = P(A)P(B)，互斥是 P(A∩B) = 0；题目说 independent 才能直接相乘。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div><p>Let G and B denote the good and bad states and e a bit error. By the law of total probability, \(P_e=P(G)P(e\mid G)+P(B)P(e\mid B)=0.7\times10^{-4}+0.3\times10^{-2}=3.07\times10^{-3}\). By Bayes' rule, \(P(B\mid e)=P(B)P(e\mid B)/P_e=(3\times10^{-3})/(3.07\times10^{-3})=0.977\). Converting the SNRs to linear scale (10 dB → 10, 0 dB → 1), the mean SNR is \(E[\gamma]=0.7\times10+0.3\times1=7.3\), i.e. \(10\log_{10}7.3=8.63\) dB, and \(E[\gamma^2]=0.7\times100+0.3\times1=70.3\), so \(\mathrm{Var}(\gamma)=70.3-7.3^2=17.01\). The dB values must not be averaged directly, because dB is a logarithmic scale.</p></div>
+</section>
+
+<section class="topic" id="t2">
+  <h2><span class="tn">2</span>dB 换算与 SNR · dB conversion and SNR</h2>
+  <div class="meta"><span class="st def">定义·必会</span> <span class="freq">出现：几乎每道计算题都要用 · 期末 2024-25 Q1(a)(iii)、2025-26 S2 Q1(a)(iii)（dB → 线性）· Practice 1 Q2、Practice 2 Q1 / Q3 · 模拟 A·Q3、B·Q3、专项·Q3</span></div>
+  <p class="why">dB 很少单独出题，却是每道计算题的第一步和最后一步：功率给 W 或 mW，要先换成 dBm 才能代路径损耗的 dB 式；SNR 给 dB，要先换成线性才能代香农、瑞利公式或求平均。老师说漏写 dB ↔ 线性换算会扣分，mW 没换成 dBm 也会扣分。Quiz 可能的问法：给发射功率（W）、损耗和噪声（dBm，或 N₀ 和带宽），求 SNR（dB 和线性）。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(P\)</td><td>功率（线性）</td><td>power (linear)</td><td>真正的瓦数</td><td>W，mW</td></tr>
+    <tr><td>\(P_{\rm dBm}\)</td><td>功率的 dBm 值</td><td>power in dBm</td><td>以 1 mW 为参考：10 log₁₀(P / 1 mW)；说的是"有多少"</td><td>dBm</td></tr>
+    <tr><td>\(P_{\rm dBW}\)</td><td>功率的 dBW 值</td><td>power in dBW</td><td>以 1 W 为参考，等于 dBm − 30</td><td>dBW</td></tr>
+    <tr><td>dB</td><td>分贝（比值）</td><td>decibel (a ratio)</td><td>两个功率之比取 10 log₁₀；说的是"变了多少倍"，没有单位</td><td>dB</td></tr>
+    <tr><td>\(K_{\rm dB},\ G,\ L\)</td><td>常数 / 增益 / 损耗</td><td>constant, gain, loss</td><td>乘在功率上的倍数，换成 dB 后直接加减</td><td>dB</td></tr>
+    <tr><td>\(S\) 或 \(P_r\)</td><td>接收信号功率</td><td>received signal power</td><td>想要的信号到了接收机还剩多少</td><td>mW / dBm</td></tr>
+    <tr><td>\(N\)</td><td>噪声功率</td><td>noise power</td><td>接收带宽内噪声的总功率</td><td>mW / dBm</td></tr>
+    <tr><td>\(N_0\)</td><td>噪声功率谱密度</td><td>noise power spectral density</td><td>每 1 Hz 带宽里的噪声功率，N = N₀B</td><td>W/Hz，dBm/Hz</td></tr>
+    <tr><td>\(B\)</td><td>带宽</td><td>bandwidth</td><td>代进 10 log₁₀B 时一定用 Hz</td><td>Hz</td></tr>
+    <tr><td>\(I\)</td><td>干扰功率</td><td>interference power</td><td>别的用户、别的小区的信号</td><td>mW / dBm</td></tr>
+    <tr><td>SNR，\(\gamma\)</td><td>信噪比</td><td>signal-to-noise ratio</td><td>S / N；可写成线性（无单位）或 dB</td><td>无 / dB</td></tr>
+    <tr><td>SIR，SINR</td><td>信干比、信干噪比</td><td>signal-to-interference (plus noise) ratio</td><td>S / I；S / (I + N)，分母是所有"不想要的"功率</td><td>无 / dB</td></tr>
+    <tr><td>\(\Delta\)</td><td>余量</td><td>margin</td><td>平均功率比门限高多少：两个 dBm 相减</td><td>dB</td></tr>
+    <tr><td>\(Z,\ \rho\)</td><td>包络（幅度）、幅度比</td><td>envelope (amplitude), amplitude ratio</td><td>幅度类的量；\(\rho=Z_{\min}/Z_{\rm rms}\)，换 dB 用 20 log</td><td>V / 无</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">功率 ↔ dBm Power ↔ dBm <span class="st def">定义·必会</span></div><div class="fx">\[ P_{\rm dBm}=10\log_{10}\frac{P}{1\ \text{mW}},\qquad P=10^{P_{\rm dBm}/10}\ \text{mW} \]\[ P_{\rm dBW}=P_{\rm dBm}-30 \]</div><div class="fn">1 W = 1000 mW → 30 dBm（= 0 dBW）。路径损耗 dB 式 \(P_{r,\rm dB}=P_{t,\rm dB}+K_{\rm dB}-10\gamma\log_{10}(d/d_0)\)（第 2 章 p.8，背）里 P<sub>t</sub>、P<sub>r</sub> 都是 dBm；讲义 p.10 例题第一步就是 1 mW → 0 dBm。老师说 mW 没换成 dBm 会扣分。</div></div>
+  <div class="fm"><div class="fl">比值 ↔ dB Ratio ↔ dB <span class="st def">定义·必会</span></div><div class="fx">\[ x_{\rm dB}=10\log_{10}x,\qquad x=10^{x_{\rm dB}/10} \]</div><div class="fn">SNR、增益、损耗、余量都是比值。乘 ↔ 加：×2 = +3.01 dB，×10 = +10 dB。期末 2024-25 Q1(a)(iii) 注水的第一步就是 18 / 10 / 3 dB → 63.1 / 10 / 2.0；2025-26 S2 Q1(a)(iii)：25 dB → 316.2。</div></div>
+  <div class="fm"><div class="fl">dB 加减的含义 What adding and subtracting dB means <span class="st def">定义·必会</span></div><div class="fx">\[ \underbrace{P_r}_{\rm dBm}=\underbrace{P_t}_{\rm dBm}+\underbrace{G}_{\rm dB}-\underbrace{L}_{\rm dB} \]\[ \underbrace{\text{SNR}}_{\rm dB}=\underbrace{S}_{\rm dBm}-\underbrace{N}_{\rm dBm} \]</div><div class="fn">dBm + dB = dBm（功率乘一个倍数，还是功率）；dBm − dBm = dB（两个功率之比：SNR、余量）；dB ± dB = dB；<b>dBm + dBm 没有意义</b>，功率相加要回到 mW。Practice 1 Q2：15 dBm − 10 dBm = 5 dB 余量（平均功率是门限的 3.16 倍），σ 也是 dB（原题写 "dBm" 不严谨），5/8 = 0.625 → Q(0.625) = 0.266。期末 2025-26 S2 Q1(b)(i)：15 dB − 12 dB = 3 dB → 10<sup>0.3</sup> ≈ 2，dB 相减就是线性相除。</div></div>
+  <div class="fm"><div class="fl">信噪比 SNR / SINR <span class="st def">定义·必会</span></div><div class="fx">\[ \text{SNR}=\frac{S}{N}\ \Longleftrightarrow\ \text{SNR}_{\rm dB}=S_{\rm dBm}-N_{\rm dBm} \]\[ \text{SINR}=\frac{S}{I+N} \]</div><div class="fn">两种算法结果一样：mW 相除，或 dBm 相减。有干扰时 I + N 必须先换回 mW 再相加。代香农 C = B log₂(1 + SNR)（第 2 章 p.48，背）、瑞利的 γ₀/γ̄、求平均时，一律用线性 SNR。</div></div>
+  <div class="fm"><div class="fl">噪声功率 Noise power N = N₀B <span class="st def">定义·必会</span></div><div class="fx">\[ N=N_0B\ \Longleftrightarrow\ N_{\rm dBm}=N_{0,\ \rm dBm/Hz}+10\log_{10}B_{\rm Hz} \]\[ \gamma=\frac{P}{N_0B} \]</div><div class="fn">讲义第 2 章 p.48 写 γ = P/(N₀B)。−174 dBm/Hz 是室温（约 290 K）热噪声谱密度的常用值（课外常识）：模拟 B·Q3 里是题目给的，老师点名要背的公式里没有它。B 一定用 Hz：5 MHz → 10 log₁₀(5×10⁶) = 66.99 dB。带宽翻倍 → 噪声 +3.01 dB → SNR −3.01 dB。</div></div>
+  <div class="fm"><div class="fl">10 log 还是 20 log Power ratio vs amplitude ratio <span class="st def">定义·必会</span></div><div class="fx">\[ 10\log_{10}\frac{P_1}{P_2}=20\log_{10}\frac{Z_1}{Z_2}\quad(P\propto Z^2) \]\[ \rho=\frac{Z_{\min}}{Z_{\rm rms}},\qquad \rho_{\rm dB}=20\log_{10}\rho=10\log_{10}\rho^2 \]</div><div class="fn">功率类（P、SNR、K、ρ²）用 10 log；幅度类（signal strength、包络 Z、电压、ρ）用 20 log。LCR / AFD 公式（第 2 章 p.41–43，考试给）里的 ρ 是幅度比：门限是 rms 值的 0.1 倍 → ρ = 0.1（功率低 20 dB）；"功率比 rms 低 10 dB" → ρ² = 0.1，ρ = 0.316。自由空间的 \((\lambda/4\pi d)^2\) 取 dB 时平方提到前面，也写成 20 log₁₀(λ/4πd)。</div></div>
+  <h4>速查表 · Quick conversions</h4>
+  <div class="tw"><table class="sym"><thead><tr><th>功率比</th><th>dB</th><th>绝对功率</th><th>dBm</th><th>幅度比</th><th>dB（20 log）</th></tr></thead><tbody>
+    <tr><td>×2</td><td>+3.01（≈ +3）</td><td>1 mW</td><td>0</td><td>×2</td><td>+6.02</td></tr>
+    <tr><td>×4</td><td>+6.02</td><td>100 mW</td><td>20</td><td>×10</td><td>+20</td></tr>
+    <tr><td>×10</td><td>+10</td><td>0.5 W</td><td>26.99</td><td>×0.5</td><td>−6.02</td></tr>
+    <tr><td>×100</td><td>+20</td><td>1 W</td><td>30</td><td>×0.316（√0.1）</td><td>−10</td></tr>
+    <tr><td>×1000</td><td>+30</td><td>10 W</td><td>40</td><td>×0.1</td><td>−20</td></tr>
+    <tr><td>×0.5</td><td>−3.01（≈ −3）</td><td>1 µW</td><td>−30</td><td></td><td></td></tr>
+    <tr><td>×0.1</td><td>−10</td><td>1 pW</td><td>−90</td><td></td><td></td></tr>
+    <tr><td>×0.01</td><td>−20</td><td></td><td></td><td></td><td></td></tr>
+  </tbody></table></div>
+  <p class="src">期末里出现过的 dB → 线性：3 dB → 2.0，10 dB → 10，18 dB → 63.1（2024-25 Q1(a)(iii)）；12 dB → 15.85（2023-24 Q1(b)(i)）；11 dB → 12.59，13 dB → 19.95（2025-26 S1 Q1(b)(i)）；25 dB → 316.2（2025-26 S2 Q1(a)(iii)）。</p>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型一：由功率求 SNR，再代公式</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 2 · Q3</th><th>模拟 B · Q3 (a)</th></tr></thead><tbody>
+    <tr><td>① 统一单位</td><td>全用 mW 做除法，或全用 dBm 做减法</td><td>全是 mW：S = 10，I = 10，N = 0.1</td><td>S = −90 dBm；N₀ = −174 dBm/Hz，B = 5 MHz</td></tr>
+    <tr><td>② 噪声功率</td><td>给了 N 直接用；给 N₀ 就 N = N₀ + 10 log₁₀B（dBm）</td><td>N = 0.1 mW（题目给）</td><td>−174 + 10 log₁₀(5×10⁶) = −174 + 66.99 = −107.01 dBm</td></tr>
+    <tr><td>③ SNR / SINR</td><td>mW 相除，或 dBm 相减；有干扰时 SINR = S / (I + N)</td><td>(b) SNR = 10 / 0.1 = 100；(a) SINR = 10 / (10 + 0.1) = 0.990</td><td>−90 − (−107.01) = 17.01 dB</td></tr>
+    <tr><td>④ 换另一种写法</td><td>dB = 10 log₁₀(线性)；线性 = 10<sup>dB/10</sup></td><td>100 → 20 dB；0.990 → −0.04 dB</td><td>17.01 dB → 10<sup>1.701</sup> = 50.2</td></tr>
+    <tr><td>⑤ 代香农</td><td>C = B log₂(1 + SNR)，SNR 用线性</td><td>(b) 20 MHz × log₂101 = 133.16 Mbps；(a) 20 MHz × log₂1.990 = 19.86 Mbps</td><td>5 MHz × log₂51.2 = 28.4 Mbps</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 2 Q3（两个用户各收到 10 mW，噪声 0.1 mW，每用户带宽 20 MHz；官方答案 19.86 / 133.16 Mbps）；模拟 B · Q3 (a)（−90 dBm、5 MHz、−174 dBm/Hz，自编，verify_mock.py 验算）。期末没有直接由功率求 SNR 的题。</p>
+
+  <h4>题型二：功率链 W → dBm → 加减 dB → SNR</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>讲义第 2 章 p.10 例题</th><th>专项 · Q3 (a)</th></tr></thead><tbody>
+    <tr><td>① 发射功率换 dBm</td><td>10 log₁₀(P / 1 mW)</td><td>1 mW → 0 dBm</td><td>1 W = 1000 mW → 30 dBm</td></tr>
+    <tr><td>② 损耗都写成 dB</td><td>K<sub>dB</sub> 直接用；距离项 10γ log₁₀(d/d₀)</td><td>K<sub>dB</sub> = −26.67；10 × 3.97 × log₁₀150 = 86.39 dB</td><td>K<sub>dB</sub> = −40；10 × 3 × log₁₀1000 = 90 dB</td></tr>
+    <tr><td>③ 接收功率</td><td>dBm + dB = dBm</td><td>0 − 26.67 − 86.39 = −113.06 dBm</td><td>30 − 40 − 90 = −100 dBm</td></tr>
+    <tr><td>④ SNR</td><td>P<sub>r</sub>(dBm) − N(dBm) = dB</td><td>本题只问 P<sub>r</sub></td><td>−100 − (−120) = 20 dB</td></tr>
+    <tr><td>⑤ 换线性</td><td>10<sup>dB/10</sup>，留给下一问用</td><td>—</td><td>10<sup>20/10</sup> = 100（(c) 瑞利用 γ₀/γ̄ = 10/100 = 0.1）</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：讲义第 2 章 p.10 例题（K<sub>dB</sub> = −26.67 dB，γ = 3.97，发射 1 mW，求 150 m 处接收功率）；专项 · Q3 (a)（发射 1 W，K<sub>dB</sub> = −40 dB，γ = 3，d = 1 km，噪声 −120 dBm；自编，verify_mock.py 验算）。这张表只看单位怎么处理。</p>
+
+  <h4>题型三：幅度比还是功率比（10 log / 20 log）</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 2 · Q1</th><th>模拟 A · Q3 (c)</th></tr></thead><tbody>
+    <tr><td>① 看题目说的是什么</td><td>signal strength / amplitude / envelope = 幅度；power = 功率</td><td>最小信号强度（signal strength）是 rms 值的 0.1 倍：幅度</td><td>接收功率（power）不能比 rms 值低 10 dB 以上：功率</td></tr>
+    <tr><td>② 求 ρ</td><td>ρ = Z<sub>min</sub>/Z<sub>rms</sub> 是幅度比；功率比 = ρ²</td><td>ρ = 0.1</td><td>功率比 10<sup>−10/10</sup> = 0.1 = ρ² → ρ = √0.1 = 0.316</td></tr>
+    <tr><td>③ 换成 dB</td><td>功率比 10 log，幅度比 20 log，是同一个数</td><td>20 log₁₀0.1 = −20 dB（功率比 ρ² = 0.01）</td><td>10 log₁₀0.1 = −10 dB = 20 log₁₀0.316</td></tr>
+    <tr><td>④ 代公式（AFD 考试给）</td><td>ρ 代进 (e<sup>ρ²</sup> − 1) / (√(2π) f<sub>m</sub> ρ)</td><td>f<sub>D</sub> = 50 Hz：AFD = 0.80 ms</td><td>f<sub>m</sub> = 120 Hz：AFD = 1.106 ms（误用 ρ = 0.1 得 0.334 ms ✗）</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 2 Q1（f<sub>D</sub> = 50 Hz，官方答案 0.8 ms）；模拟 A · Q3 (c)（72 km/h、1.8 GHz → f<sub>m</sub> = 120 Hz；自编，verify_mock.py 验算）。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 功率给 W、噪声给 N₀（一路算到容量）</div><p class="q">发射功率 0.5 W，链路总损耗 110 dB，带宽 200 kHz，噪声功率谱密度 −174 dBm/Hz。求接收功率（dBm）、SNR（dB 和线性）和香农容量。</p><ol class="work">
+    <li>换 dBm：0.5 W = 500 mW → 10 log₁₀500 = 26.99 dBm（1 W 是 30 dBm，减半就是 −3.01 dB）。</li>
+    <li>接收功率：dBm − dB = dBm，P<sub>r</sub> = 26.99 − 110 = −83.01 dBm。</li>
+    <li>噪声：N = −174 + 10 log₁₀(2×10⁵) = −174 + 53.01 = −120.99 dBm。</li>
+    <li>SNR = −83.01 − (−120.99) = 37.98 dB → 10<sup>3.798</sup> ≈ 6.28×10³。</li>
+    <li>香农（用线性 SNR）：C = 2×10⁵ × log₂(1 + 6280) = 2×10⁵ × 12.62 = 2.52 Mbps。</li>
+  </ol><p class="ans">答案：P<sub>r</sub> = −83.01 dBm；SNR = 37.98 dB ≈ 6.28×10³；C ≈ 2.52 Mbps。</p></div>
+  <div class="eg"><div class="egh">例 2 · 反着问：要求 SNR，求最小发射功率（换回 W）</div><p class="q">接收机带宽 1 MHz，噪声谱密度 −174 dBm/Hz，要求 SNR ≥ 15 dB；发射机到接收机的路径损耗是 125 dB。发射功率至少多大？分别用 dBm 和 W 表示。</p><ol class="work">
+    <li>噪声：N = −174 + 10 log₁₀10⁶ = −174 + 60 = −114 dBm。</li>
+    <li>需要的接收功率：P<sub>r</sub> ≥ N + SNR = −114 + 15 = −99 dBm（dBm + dB = dBm）。</li>
+    <li>发射功率：P<sub>t</sub> = P<sub>r</sub> + 损耗 = −99 + 125 = 26 dBm。</li>
+    <li>换回 W：10<sup>26/10</sup> mW = 398 mW ≈ 0.40 W。</li>
+  </ol><p class="ans">答案：P<sub>t,min</sub> = 26 dBm ≈ 0.40 W。</p></div>
+  <div class="eg"><div class="egh">例 3 · 有干扰：I + N 要回到 mW 相加</div><p class="q">接收信号 −80 dBm，同频干扰 −85 dBm，噪声 −90 dBm。求 SNR、SIR、SINR（dB）。</p><ol class="work">
+    <li>SNR、SIR 都是两个功率之比，dBm 直接相减：SNR = −80 − (−90) = 10 dB；SIR = −80 − (−85) = 5 dB。</li>
+    <li>I + N 是功率相加，必须回到 mW：I = 10<sup>−8.5</sup> = 3.162×10⁻⁹ mW，N = 10<sup>−9</sup> = 1×10⁻⁹ mW，I + N = 4.162×10⁻⁹ mW → 10 log₁₀(4.162×10⁻⁹) = −83.81 dBm。</li>
+    <li>SINR = −80 − (−83.81) = 3.81 dB → 10<sup>0.381</sup> = 2.40。</li>
+    <li>验算：1/(1/SIR + 1/SNR) = 1/(0.3162 + 0.1) = 2.40 ✓。SINR 比 SNR、SIR 都小，因为分母最大。写成 −85 + (−90) = −175 "dBm" 是错的：dBm 相加等于功率相乘，没有意义。</li>
+  </ol><p class="ans">答案：SNR = 10 dB，SIR = 5 dB，SINR = 3.81 dB（线性 2.40）。</p></div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li><b>W / mW 没换就代 dB 式</b>：1 W 不是 0 dBm，是 30 dBm。老师说 mW 没换成 dBm 会扣分，代数前先问"这个数是不是 dB"。</li>
+    <li><b>dBm 和 dBm 相加</b>：I + N、几路信号合在一起，都要回到 mW 再加；dBm 只能和 dB 加减。</li>
+    <li><b>该换线性没换</b>：香农、瑞利 1 − e<sup>−γ₀/γ̄</sup>、求平均都用线性 SNR；漏写换算会扣分。老师讲例题时说 8.5 dB 要先换成 10<sup>0.85</sup>，每年都强调还是有人不换。</li>
+    <li><b>不该换的也换了</b>：阴影 Q(余量/σ) 里余量和 σ 都是 dB，直接相除。老师讲 Practice 1 Q1 时特别提醒："10 dB above"的 10 是 dB，不要换成线性。</li>
+    <li><b>10 log 和 20 log 混用</b>：幅度（signal strength、ρ）用 20 log。"rms 值的 0.1 倍"→ ρ = 0.1；"功率低 10 dB"→ ρ = 0.316。</li>
+    <li><b>带宽忘了用 Hz</b>：10 log₁₀(5 MHz) 要算 10 log₁₀(5×10⁶) = 66.99，不是 10 log₁₀5。带宽翻倍噪声多 3.01 dB，所以模拟 B·Q3(b) 容量只从 28.4 涨到 47.1 Mbps（1.66 倍）。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div><p>The transmit power is \(P_t=1\ \text{W}=10\log_{10}(1000\ \text{mW}/1\ \text{mW})=30\) dBm. Using the dB form of the simplified path loss model, \(P_r=P_t+K_{\rm dB}-10\gamma\log_{10}(d/d_0)=30-40-30\log_{10}1000=-100\) dBm. With a noise power of −120 dBm, the average SNR is \(-100-(-120)=20\) dB, i.e. \(10^{20/10}=100\) in linear scale. When only \(N_0\) is given, the noise power is \(N=N_0B\); for \(N_0=-174\) dBm/Hz and \(B=5\) MHz, \(N=-174+10\log_{10}(5\times10^6)=-107.01\) dBm. Since signal strength is an amplitude, a threshold of 0.1 times the rms value gives \(\rho=0.1\), i.e. \(20\log_{10}0.1=-20\) dB (a power ratio of \(\rho^2=0.01\)).</p></div>
+</section>

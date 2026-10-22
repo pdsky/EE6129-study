@@ -1,0 +1,124 @@
+<section class="topic" id="t5">
+  <h2><span class="tn">5</span>对数正态阴影的中断概率与覆盖 · Log-normal shadowing: outage and coverage</h2>
+  <div class="meta"><span class="st must">背</span><span class="st give">考试给</span><span class="st def">定义·必会</span> <span class="freq">出现：期末 1/4 套（2023-24 S2 Q1(a)(ii)）· Practice 1 Q1(b)、Q2 · Practice 2 Q2 · 模拟 A · Q2 · 模拟 C · Q1 · 讲义第 2 章 p.16 例题</span></div>
+  <p class="why">阴影让接收功率的 dB 值变成高斯 \(\mathcal N(\bar P_r,\sigma^2)\)，"中断"就是它掉到门限以下的那块左尾面积，所有题都归结为一个式子 \(P_{\text{out}}=Q(M/\sigma)\)。Quiz 可能正着问（给距离或平均功率，求 \(P_{\text{out}}\)），也可能倒着问（给 \(P_{\text{out}}\) 目标，求允许的 σ²、所需余量或最大距离；2023-24 S2 期末 Q1(a)(ii) 就是求方差上限）。Practice 2 Q2 再加一层：两个基站都低于门限才算中断。老师说 Q 函数表一定会考到，正查、反查都要会（第 8、9 周录音）。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(P_t\)</td><td>发射功率</td><td>transmit power</td><td>基站发出的功率。题目常给 W 或 mW，代 dB 式之前先换成 dBm</td><td>dBm（W、mW）</td></tr>
+    <tr><td>\(P_{r,\mathrm{dB}}\)</td><td>接收功率（dB 值）</td><td>received power in dBm</td><td>手机实际收到的功率；有阴影时是随机变量</td><td>dBm</td></tr>
+    <tr><td>\(\bar P_r\)（\(\mu_\psi\)、W）</td><td>平均接收功率</td><td>mean received power (path loss alone)</td><td>只用路径损耗算出来的那个数。阴影均值为 0，所以它就是 \(P_{r,\mathrm{dB}}\) 的均值。Practice 1 Q2 写作 \(\mu_\psi\)，Practice 2 Q2 写作 W</td><td>dBm</td></tr>
+    <tr><td>\(P_{\min}\)（\(P_m\)、T）</td><td>最低接收功率、门限</td><td>minimum required power, threshold</td><td>低于它就听不清，也就是中断；Practice 2 Q2 写作 T</td><td>dBm</td></tr>
+    <tr><td>\(K_{\mathrm{dB}}\)、γ、\(d_0\)</td><td>路径损耗常数、指数、参考距离</td><td>path-loss constant, exponent, reference distance</td><td>用来算 \(\bar P_r\)。距离每大 10 倍，平均功率少 10γ dB；\(d_0\) 一般取 1 m</td><td>dB、—、m</td></tr>
+    <tr><td>\(\psi_{\mathrm{dB}}\)</td><td>阴影衰落</td><td>log-normal shadowing</td><td>楼、树挡住造成的随机起伏，dB 值 \(\sim\mathcal N(0,\sigma^2)\)；线性的 ψ 因此叫"对数正态"</td><td>dB</td></tr>
+    <tr><td>σ（\(\sigma_\psi\)）</td><td>阴影标准差</td><td>shadowing standard deviation</td><td>起伏有多大；Q 里除的就是它</td><td>dB</td></tr>
+    <tr><td>σ²（MSE）</td><td>阴影方差</td><td>shadowing variance</td><td>拟合直线的均方误差就是它；代进 Q 之前先开根号</td><td>dB²</td></tr>
+    <tr><td>M（x、Δ）</td><td>余量</td><td>(shadow) margin</td><td>\(\bar P_r-P_{\min}\)：平均比门限高几 dB；为负说明平均已经低于门限。讲义 p.15 用 x，Practice 2 用 Δ；本页单基站写 M，宏分集沿用 Practice 2 的 Δ</td><td>dB</td></tr>
+    <tr><td>\(P_{\text{out}}\)</td><td>中断概率</td><td>outage probability</td><td>接收功率低于门限的概率</td><td>0–1</td></tr>
+    <tr><td>Z</td><td>标准正态变量</td><td>standard normal variable</td><td>均值 0、方差 1 的高斯，\(Z=\psi_{\mathrm{dB}}/\sigma\)。别和 Practice 2 的 \(Z_1,Z_2\) 混：那两个是 \(\mathcal N(0,\sigma^2)\)，没有标准化</td><td>—</td></tr>
+    <tr><td>Q(x)</td><td>Q 函数</td><td>Q-function (Gaussian tail)</td><td>Z 大于 x 的概率，即钟形曲线<b>右尾</b>的面积；考卷附 Q 表</td><td>—</td></tr>
+    <tr><td>Φ(x)</td><td>标准正态 CDF</td><td>standard normal CDF</td><td>Z 不超过 x 的概率，即<b>左尾</b>面积；Φ(x) = 1 − Q(x)</td><td>—</td></tr>
+    <tr><td>\(Q^{-1}(p)\)、\(x_p\)</td><td>反查值</td><td>inverse Q-function</td><td>已知概率 p，在表里找 x 使 Q(x) = p，例如 \(Q^{-1}(0.01)=2.326\)</td><td>—</td></tr>
+    <tr><td>\(Z_1,\ Z_2\)</td><td>两条链路的阴影</td><td>shadowing of links 1 and 2</td><td>Practice 2 Q2：手机到基站 1、2 各自的阴影，都 \(\sim\mathcal N(0,\sigma^2)\)</td><td>dB</td></tr>
+    <tr><td>Y；\(Y_1,\ Y_2\)；a、b</td><td>共同阴影；各自阴影；权重</td><td>common / individual shadowing; weights</td><td>\(Z_i=aY_i+bY\)：Y 是两条链路共有的遮挡（比如手机所在的那栋楼），\(Y_i\) 是各自独有的；\(a^2+b^2=1\)，\(b^2\) 就是两路的相关系数</td><td>dB；—</td></tr>
+    <tr><td>\(M_{\text{eq}}\)、G</td><td>等效余量、宏分集增益</td><td>equivalent margin, macro-diversity gain</td><td>单基站要做到和宏分集一样的 \(P_{\text{out}}\)，需要多大余量；比实际余量多出的 dB 就是增益</td><td>dB</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">dBm 与 W 互换 · dBm ↔ W <span class="st def">定义·必会</span></div><div class="fx">\[ P_{\mathrm{dBm}}=10\log_{10}\frac{P}{1\ \mathrm{mW}},\qquad P=10^{P_{\mathrm{dBm}}/10}\ \mathrm{mW},\qquad 1\ \mathrm{W}=30\ \mathrm{dBm} \]</div><div class="fn">100 mW = 20 dBm；2 W = 2000 mW = 33.01 dBm。dBm 是绝对功率，dB 是倍数：dBm + dB = dBm（路径损耗式），dBm − dBm = dB（余量），所以余量和 σ 都是 dB。老师说 mW 没换成 dBm 会扣分（第 8、9 周录音）。</div></div>
+
+  <div class="fm"><div class="fl">简化路径损耗 + 阴影（讲义第 2 章 p.8、p.12）· Path loss with shadowing <span class="st must">背</span></div><div class="fx">\[ P_r=P_tK\Big(\frac{d_0}{d}\Big)^{\gamma}\psi\;\Longrightarrow\;P_{r,\mathrm{dB}}=\underbrace{P_{t,\mathrm{dBm}}+K_{\mathrm{dB}}-10\gamma\log_{10}\frac{d}{d_0}}_{\bar P_r\ (\text{确定的数})}+\underbrace{\psi_{\mathrm{dB}}}_{\sim\mathcal N(0,\,\sigma^2)} \]</div><div class="fn">线性和 dB 两种形式都要背，考试不给（第 8、9 周录音）。加了阴影以后 \(P_{r,\mathrm{dB}}\sim\mathcal N(\bar P_r,\sigma^2)\)：均值 = 不含阴影的路径损耗结果，方差 = 阴影方差（第 9 周录音）。题目直接给"平均功率"或"path loss alone 时比门限高几 dB"，这一步就省了。</div></div>
+
+  <div class="fm"><div class="fl">中断概率（讲义第 2 章 p.14–15）· Outage probability <span class="st must">背</span></div><div class="fx">\[ P_{\text{out}}=P\big(P_{r,\mathrm{dB}}\lt P_{\min}\big)=P\big(\psi_{\mathrm{dB}}\lt -M\big)=Q\Big(\frac{M}{\sigma}\Big),\qquad M=\bar P_r-P_{\min} \]</div><div class="fn">老师要求的写法（第 9 周录音）：把"\(P_r\lt P_{\min}\)"整理成"随机变量 \(\lt -M\)"（随机变量留在左边），再由高斯的对称性写成 Q(M/σ)。M 和 σ 都是 dB，直接相除，不换线性；σ 是标准差，给的是方差或 MSE 就先开根号。讲义 p.16：典型目标 \(P_{\text{out}}\lt 1\%\)，对应 \(M\ge 2.33\sigma\)。</div></div>
+
+  <div class="fm"><div class="fl">Q 函数、Φ 与对称性 · Q-function, Φ and symmetry <span class="st give">考试给</span><span class="st def">定义·必会</span></div><div class="fx">\[ Q(x)=P(Z\gt x)=\int_x^{\infty}\frac{1}{\sqrt{2\pi}}e^{-u^2/2}\,du,\qquad \Phi(x)=P(Z\le x)=1-Q(x),\qquad Q(-x)=1-Q(x) \]</div><div class="fn">考卷附的是 <b>Q 表</b>（右尾面积），数值不用背。习惯 Z 表 / Φ 表（左尾，也就是 CDF）的话，用 \(Q(x)=1-\Phi(x)\) 换算，所以也有 \(P_{\text{out}}=\Phi(-M/\sigma)\)。Q(0) = 0.5，x 越大 Q 越小。常用值：Q(1) = 0.1587，Q(1.282) ≈ 0.1，Q(1.645) = 0.05，Q(2) = 0.0228，Q(2.326) = 0.01，Q(3.09) = 0.001。</div></div>
+
+  <div class="fm"><div class="fl">倒着用：所需余量、允许的 σ、最大距离 · Inverse use <span class="st def">定义·必会</span></div><div class="fx">\[ P_{\text{out}}\le p\iff\frac{M}{\sigma}\ge x_p=Q^{-1}(p)\;\Longrightarrow\;M\ge x_p\,\sigma,\qquad \sigma\le\frac{M}{x_p} \]\[ \bar P_r(d)\ge P_{\min}+x_p\sigma\;\Longrightarrow\;d_{\max}=d_0\cdot10^{\,(P_{t,\mathrm{dBm}}+K_{\mathrm{dB}}-P_{\min}-x_p\sigma)/(10\gamma)} \]</div><div class="fn">就是上面必背的式子倒过来用，不用另背。Q 是减函数，"概率 ≤ p"要翻成"参数 ≥ \(x_p\)"。所需余量加门限就是平均功率的下限，再代回路径损耗式解 d（或解 \(P_t\)）。常用：\(x_{0.1}=1.282\)，\(x_{0.05}=1.645\)，\(x_{0.01}=2.326\)，\(x_{0.001}=3.09\)。</div></div>
+
+  <div class="fm"><div class="fl">宏分集，两路阴影独立（Practice 2 Q2(b)）· Macro-diversity, independent shadowing <span class="st def">定义·必会</span></div><div class="fx">\[ P_{\text{out}}=P\big(\{Z_1\lt-\Delta\}\cap\{Z_2\lt-\Delta\}\big)=P(Z_1\lt-\Delta)\,P(Z_2\lt-\Delta)=\Big[Q\Big(\frac{\Delta}{\sigma}\Big)\Big]^2 \]\[ M_{\text{eq}}=\sigma\,Q^{-1}\big(P_{\text{out}}\big),\qquad G=M_{\text{eq}}-\Delta\ \ (\mathrm{dB}) \]</div><div class="fn">两个都低于门限才中断；两路独立 → 概率相乘（第 1b 章的乘法规则），一步就能推出来，不用死背。第二行是模拟 C · Q1(c) 的问法：单基站要多大余量才能一样可靠，多出来的 dB 就是宏分集白送的增益。原理见讲义第 4 章 p.3–4：基站相隔很远，两条路被同一个障碍物同时挡住的机会小。</div></div>
+
+  <div class="fm"><div class="fl">宏分集，两路阴影相关（Practice 2 Q2(c)）· Correlated shadowing <span class="st give">考试给</span></div><div class="fx">\[ Z_i=aY_i+bY:\qquad P_{\text{out}}=\int_{-\infty}^{\infty}\frac{1}{\sqrt{2\pi}}\Big[Q\Big(\frac{\Delta+b\sigma y}{|a|\sigma}\Big)\Big]^2e^{-y^2/2}\,dy \]</div><div class="fn">这是 Practice 2 Q2(c) 印在题目里、让你"证明"的式子；式里的积分变量 y 其实是换元后的 u = Y/σ（题目原样照印）。老师说不会考积分（第 8–10 周录音）；他讲这题的方法（第 10 周录音）：先把共同阴影 Y 当成常数 → 两条链路条件独立，相乘 → 再对 Y 的 PDF 积分 → 换元 u = y/σ。结论：相关时<b>不能直接平方</b>；b = 0 退回 \([Q(\Delta/\sigma)]^2\)，a = 0（完全相关）就等于单基站的 \(Q(\Delta/\sigma)\)。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>A · 正查：已知平均功率（或距离），求 \(P_{\text{out}}\)</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 1 · Q2(a)</th><th>模拟 A · Q2(a)(b)</th></tr></thead><tbody>
+    <tr><td>① 统一单位</td><td>功率换成 dBm；给的是方差或 MSE 就开根号得 σ</td><td>已是 dBm：均值 15 dBm，门限 10 dBm，σ = 8 dB</td><td>\(P_t\) = 100 mW → 10 log₁₀100 = 20 dBm；σ = 6 dB</td></tr>
+    <tr><td>② 平均功率 \(\bar P_r\)</td><td>路径损耗 dB 式（不加阴影）；题目直接给均值就跳过</td><td>题目已给：\(\bar P_r=\mu_\psi\) = 15 dBm</td><td>20 − 31.5 − 36 log₁₀300 = 20 − 31.5 − 89.18 = −100.68 dBm</td></tr>
+    <tr><td>③ 余量 M</td><td>\(\bar P_r-P_{\min}\)（dBm − dBm = dB）</td><td>15 − 10 = 5 dB</td><td>−100.68 − (−110) = 9.32 dB</td></tr>
+    <tr><td>④ 除以 σ</td><td>M ÷ σ，一般舍到 2 位小数再查表（正好落在两行中间就插值）</td><td>5 / 8 = 0.625</td><td>9.32 / 6 = 1.553 ≈ 1.55</td></tr>
+    <tr><td>⑤ 查 Q 表</td><td>\(P_{\text{out}}=Q(M/\sigma)\)；参数为负用 \(1-Q(|x|)\)</td><td>Q(0.62) = 0.2676、Q(0.63) = 0.2643 → Q(0.625) ≈ 0.266（26.6%）</td><td>Q(1.55) = 0.0606（参数不舍入，按 1.553 插值是 0.0602），约 6%</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 1 · Q2(a)（接收功率对数正态，均值 15 dBm、σ = 8 dB、门限 10 dBm；官方答案 26%）；模拟 A · Q2(a)(b)（练习页自编模拟题：100 mW、K<sub>dB</sub> = −31.5 dB、γ = 3.6、d₀ = 1 m、门限 −110 dBm、σ = 6 dB、d = 300 m）。同类：Practice 1 · Q1(b)（余量 10 dB，σ² 取最小二乘拟合的 MSE。按题目数据拟合得 K ≈ −30.8 dB、γ ≈ 3.94、MSE = 11.87 dB²、σ = 3.45 dB，\(P_{\text{out}}\) = Q(2.90) = 1.87 × 10⁻³（练习页用不舍入的 2.902 算得 1.85 × 10⁻³）；官方答案 K = −31.4 dB、γ = 3.86、6.19 × 10⁻⁴ 用题目数据复现不出来，考试按自己算出的数代入）；讲义第 2 章 p.16 例题（150 m 处余量 4.94 dB，σ = √3.36 = 1.833 dB，Q(2.69) ≈ 0.0036）。</p>
+
+  <h4>B · 反查：已知 \(P_{\text{out}}\) 目标，求允许的 σ²、所需余量或最大距离</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2023-24 S2 Q1(a)(ii)）</th><th>模拟 A · Q2(c)</th></tr></thead><tbody>
+    <tr><td>① 列不等式</td><td>\(Q(M/\sigma)\le p\)；Q 递减 → \(M/\sigma\ge Q^{-1}(p)\)</td><td>Q(10/σ) &lt; 0.01 → 10/σ &gt; \(Q^{-1}(0.01)\)</td><td>Q(M/6) ≤ 0.01 → M/6 ≥ \(Q^{-1}(0.01)\)</td></tr>
+    <tr><td>② 反查 Q 表</td><td>在表里找 Q(x) = p 的 x</td><td>Q(2.32) = 0.0102、Q(2.33) = 0.0099 → x ≈ 2.33（精确 2.326）</td><td>x = 2.326</td></tr>
+    <tr><td>③ 解未知量</td><td>σ ≤ M / x，或 M ≥ xσ</td><td>σ &lt; 10 / 2.326 = 4.30 dB</td><td>M ≥ 2.326 × 6 = 13.96 dB</td></tr>
+    <tr><td>④ 按问的量作答</td><td>问方差就平方；问距离先求平均功率下限 \(P_{\min}+M\)</td><td>σ² &lt; 4.30² = 18.5 dB²（问的是<b>方差</b>；用 2.33 得 σ &lt; 4.29、σ² &lt; 18.4，同一题前后一致即可）</td><td>\(\bar P_r\) ≥ −110 + 13.96 = −96.04 dBm</td></tr>
+    <tr><td>⑤ 解距离</td><td>代回 dB 式，移项解 log₁₀d，再取 10 的幂；"最大"往小取</td><td>本题不用</td><td>20 − 31.5 − 36 log₁₀d ≥ −96.04 → 36 log₁₀d ≤ 84.54 → log₁₀d ≤ 2.348 → d ≤ 10<sup>2.348</sup> ≈ 223 m</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：2023-24 S2 期末 Q1(a)(ii)（\(P_{r,\mathrm{dB}}\) 的均值比不中断所需的最低功率高 10 dB，求使 \(P_{\text{out}}\lt 1\%\) 的 \(\psi_{\mathrm{dB}}\) 方差最大值）；模拟 A · Q2(c)（参数同表 A，求 \(P_{\text{out}}\le 1\%\) 的最大距离）。同类：Practice 1 · Q2(b)（σ = 4 dB、\(P_{\text{out}}\lt 1\%\)，求均值：\(\mu_\psi\gt 10+4\times2.326=19.3\) dBm，官方答案 19.32）。</p>
+
+  <h4>C · 宏分集：两个基站都低于门限才中断</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 2 · Q2（符号）</th><th>模拟 C · Q1</th></tr></thead><tbody>
+    <tr><td>① 写出模型</td><td>\(P_{r,i}=W+Z_i\)，门限 \(T=W-\Delta\)</td><td>(a) W：只由路径损耗决定的平均接收功率；\(Z_1,Z_2\sim\mathcal N(0,\sigma^2)\)：两条链路各自的阴影（dB）</td><td>W = −95 dBm，T = −105 dBm → Δ = 10 dB；σ = 8 dB</td></tr>
+    <tr><td>② 单站中断</td><td>\(P_{r,i}\lt T\iff Z_i\lt-\Delta\)，概率 \(Q(\Delta/\sigma)\)</td><td>\(P(Z_i\lt-\Delta)=Q(\Delta/\sigma)\)（高斯对称）</td><td>(a) Q(10/8) = Q(1.25) = 0.1056</td></tr>
+    <tr><td>③ 两站都断</td><td>两路独立 → 相乘</td><td>(b) \(P_{\text{out}}=[Q(\Delta/\sigma)]^2\)</td><td>(b) 0.1056² = 0.01115 ≈ 0.0112（1.12 × 10⁻²）</td></tr>
+    <tr><td>④ 等效余量</td><td>用 ③ 的概率反查 x → \(M_{\text{eq}}=x\sigma\)，\(G=M_{\text{eq}}-\Delta\)</td><td>题目没问</td><td>(c) Q(2.28) = 0.0113、Q(2.29) = 0.0110，0.01115 正好在中间 → 插值 x ≈ 2.285 → \(M_{\text{eq}}\) = 2.285 × 8 = 18.28 ≈ 18.3 dB → G = 18.3 − 10 = 8.3 dB（练习页直接取 2.29：2.29 × 8 = 18.32，也是 18.3 dB）</td></tr>
+    <tr><td>⑤ 相关时</td><td>不能平方：固定 Y → 条件独立、相乘 → 对 Y 的 PDF 积分</td><td>(c) 给定 Y = y：\(Z_i\sim\mathcal N(by,\,a^2\sigma^2)\)，\(P(Z_i\lt-\Delta\mid y)=Q\big(\frac{\Delta+by}{|a|\sigma}\big)\)；平方后对 y 积分，换元 u = y/σ</td><td>题目说两路独立，不需要这一步</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 2 · Q2（手机在两个基站之间，\(P_{r,i}=W+Z_i\)，两个都低于 T = W − Δ 才中断；(b) \(Z_1,Z_2\) 独立，(c) \(Z_i=aY_i+bY\) 相关）；模拟 C · Q1（练习页自编模拟题：两站平均都是 −95 dBm、门限 −105 dBm、σ = 8 dB、两路独立）。宏分集原理：讲义第 4 章 p.3–4。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 功率给 W、方差给 MSE、余量为负（正查）</div>
+    <p class="q">某基站发射功率 2 W，传播服从简化路径损耗模型：K<sub>dB</sub> = −38 dB，γ = 3.2，d₀ = 1 m。手机接收功率低于 −100 dBm 就中断。实测拟合得到阴影的均方误差 MSE = 30.25 dB²。求 (a) d = 400 m，(b) d = 1 km 处的中断概率。</p>
+    <ol class="work">
+      <li>换单位：2 W = 2000 mW，\(P_t\) = 10 log₁₀2000 = 33.01 dBm。MSE 就是方差：σ = √30.25 = 5.5 dB。</li>
+      <li>(a) \(\bar P_r\) = 33.01 − 38 − 32 log₁₀400 = 33.01 − 38 − 83.27 = −88.26 dBm；余量 M = −88.26 − (−100) = 11.74 dB。</li>
+      <li>M/σ = 11.74 / 5.5 = 2.1345 ≈ 2.13，\(P_{\text{out}}\) = Q(2.13) = 0.0166（不舍入算是 0.0164）。</li>
+      <li>(b) \(\bar P_r\) = 33.01 − 38 − 32 × 3 = −100.99 dBm，M = −100.99 − (−100) = −0.99 dB：平均已经比门限低，余量为负。</li>
+      <li>M/σ = −0.99 / 5.5 = −0.18。表里只有正数，用 Q(−x) = 1 − Q(x)：\(P_{\text{out}}\) = 1 − Q(0.18) = 1 − 0.4286 = 0.571。用 Φ 表结果一样：\(P_{\text{out}}=\Phi(0.18)\) = 0.571。</li>
+    </ol>
+    <p class="ans">答案：(a) 0.0166 ≈ 1.7%；(b) ≈ 57%（平均功率低于门限，一半以上的时间中断）</p>
+  </div>
+
+  <div class="eg"><div class="egh">例 2 · 反查三问：5% 目标求最大距离、求发射功率、0.1% 目标求 σ²</div>
+    <p class="q">微蜂窝：\(P_t\) = 100 mW，K<sub>dB</sub> = −40 dB，γ = 3，d₀ = 1 m，门限 −95 dBm，阴影 σ = 6 dB。(a) 要求 \(P_{\text{out}}\le 5\%\)，最大覆盖距离是多少？(b) 要覆盖到 200 m（仍要求 \(P_{\text{out}}\le 5\%\)），发射功率至少多少？(c) 发射功率仍是 100 mW，要求 100 m 处 \(P_{\text{out}}\le 0.1\%\)，阴影方差最大允许多少？</p>
+    <ol class="work">
+      <li>\(P_t\) = 10 log₁₀100 = 20 dBm。(a) 反查：Q(1.64) = 0.0505、Q(1.65) = 0.0495 → x = 1.645。所需余量 M ≥ 1.645 × 6 = 9.87 dB，平均功率下限 = −95 + 9.87 = −85.13 dBm。</li>
+      <li>代回模型：20 − 40 − 30 log₁₀d ≥ −85.13 → 30 log₁₀d ≤ 65.13 → log₁₀d ≤ 2.171 → d ≤ 10<sup>2.171</sup> = 148.3 m。</li>
+      <li>(b) 30 log₁₀200 = 69.03 dB。要求 \(P_t\) − 40 − 69.03 ≥ −85.13 → \(P_t\) ≥ 23.90 dBm = 10<sup>2.390</sup> mW = 245.5 mW（比 100 mW 多 3.90 dB，即 10<sup>0.390</sup> ≈ 2.45 倍）。</li>
+      <li>(c) \(\bar P_r\) = 20 − 40 − 30 × 2 = −80 dBm，M = −80 − (−95) = 15 dB。反查 Q(3.09) = 0.001 → x = 3.09。σ ≤ 15 / 3.09 = 4.854 dB，σ² ≤ 4.854² = 23.56 dB²。</li>
+    </ol>
+    <p class="ans">答案：(a) d<sub>max</sub> ≈ 148 m；(b) \(P_t\) ≥ 23.90 dBm ≈ 245.5 mW；(c) σ² ≤ 23.6 dB²（σ ≤ 4.85 dB）</p>
+  </div>
+
+  <div class="eg"><div class="egh">例 3 · 宏分集：两站概率、等效余量、反求每站余量、完全相关</div>
+    <p class="q">手机在两个基站正中间。只考虑路径损耗时，每个基站送来的平均功率都是 −92 dBm；门限 −104 dBm；两条链路的阴影独立，σ = 8 dB。(a) 只用一个基站时 \(P_{\text{out}}\) 是多少？(b) 宏分集（两个都低于门限才中断）时 \(P_{\text{out}}\) 是多少？单基站要多大余量才一样可靠？(c) 要求宏分集后 \(P_{\text{out}}\le 1\%\)，每条链路的余量至少多少？单基站要多少？(d) 若两条链路总被同一栋楼一起挡住（完全相关），(b) 的答案变成多少？</p>
+    <ol class="work">
+      <li>(a) Δ = −92 − (−104) = 12 dB，Δ/σ = 12 / 8 = 1.5，\(P_{\text{out},1}\) = Q(1.5) = 0.0668。</li>
+      <li>(b) 独立 → 相乘：\(P_{\text{out},2}\) = 0.0668² = 4.46 × 10⁻³。反查：Q(2.61) = 0.00453、Q(2.62) = 0.00440 → x ≈ 2.615，\(M_{\text{eq}}\) = 2.615 × 8 = 20.92 dB，宏分集增益 G = 20.92 − 12 = 8.92 dB。</li>
+      <li>(c) 两路相同且独立：\([Q(\Delta/\sigma)]^2\le 0.01\) → \(Q(\Delta/\sigma)\le\sqrt{0.01}=0.1\)。Q(1.28) = 0.1003、Q(1.29) = 0.0985 → x = 1.282，Δ ≥ 1.282 × 8 = 10.26 dB。单基站要 Δ ≥ 2.326 × 8 = 18.61 dB，宏分集少要 8.35 dB。</li>
+      <li>(d) 完全相关时 \(Z_1=Z_2\)，"两个都低于"就等于"一个低于"：\(P_{\text{out}}\) = Q(1.5) = 0.0668，和单基站一样，宏分集没有用。部分相关时结果介于两者之间，例如 \(b^2=0.5\) 时数值积分约 0.0183（Quiz 不会让你算这个积分）。</li>
+    </ol>
+    <p class="ans">答案：(a) 0.0668；(b) 4.46 × 10⁻³，相当于单站余量 20.9 dB，增益约 8.9 dB；(c) 每站 ≥ 10.26 dB（单站要 18.61 dB）；(d) 0.0668</p>
+  </div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li><b>σ 和 σ² 混用</b>：Q 里除的是标准差。给 MSE 或方差要先开根号：讲义 p.16 例题 σ = √3.36 = 1.833 dB，Q(4.94/1.833) ≈ Q(2.69) ≈ 0.0036；错除 3.36 得 Q(1.47) ≈ 0.071，大了约 20 倍。反过来，2023-24 期末问的是<b>方差</b>最大值，要平方成 σ² &lt; 18.5 dB²，只写 σ &lt; 4.30 dB 没答完。</li>
+    <li><b>单位</b>：W、mW 先换 dBm（2 W = 33.01 dBm，不是 3.01，3.01 是 dBW）；距离项是 10γ log₁₀d（γ = 3.6 时系数是 36）；dBm − dBm 得到的余量是 dB。老师说没写 dB ↔ 线性换算会扣分（第 8–10 周录音）。</li>
+    <li><b>把余量换成线性</b>：Q(M/σ) 是在 dB 上推出来的，M 和 σ 都用 dB 直接相除。老师讲 Practice 1 Q1 时专门提醒，"10 dB above"的 10 就是 dB，不要换成线性（第 10 周录音）。瑞利中断 \(1-e^{-\gamma_0/\bar\gamma}\) 才要线性值，两者别混。</li>
+    <li><b>表查反了</b>：Q 是右尾、递减，反查时不等号要翻（\(P_{\text{out}}\lt 1\%\iff M/\sigma\gt 2.326\)）。余量为负时 \(Q(-x)=1-Q(x)\)，答案大于 50%；手上是 Φ 表（左尾）时 \(Q(x)=1-\Phi(x)\)。用计算器核对的话，Casio 统计菜单里的 Q( 是 0 到 t 的面积，不是本课的 Q 函数，右尾对应的是 R(。</li>
+    <li><b>宏分集写成"任意一个"</b>：两个<b>都</b>低于门限才中断，所以是 p²；写成 \(1-(1-p)^2\) 是"任意一个断就算中断"，意思反了。只有独立才能平方；求等效余量时反查的是 p²，不是 p。</li>
+    <li><b>舍入</b>：Q 的参数一般先舍到 2 位小数再查表（0.625 这种正好在两行中间就插值）；中间结果多留一位小数，最后再舍入，别对已经舍过的数再舍一次（2.1345 舍到 2 位是 2.13，不是先变 2.135 再变 2.14）。上下限答案要带不等号（d ≤ 223 m、σ² &lt; 18.5 dB²）；想保守可以上限往小取、下限往大取（148.3 m 写 148 m），本页其余数字按四舍五入写。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>With log-normal shadowing, \(P_{r,\mathrm{dB}}=\bar P_r+\psi_{\mathrm{dB}}\) with \(\psi_{\mathrm{dB}}\sim\mathcal N(0,\sigma_\psi^2)\), so outage occurs when \(\psi_{\mathrm{dB}}\lt-M\), where \(M=\bar P_r-P_{\min}\) is the margin in dB; by the symmetry of the Gaussian, \(P_{\text{out}}=P(\psi_{\mathrm{dB}}\lt-M)=Q(M/\sigma_\psi)\).</p>
+    <p>Here \(P_t=10\log_{10}100=20\) dBm, \(\bar P_r=20-31.5-36\log_{10}300=-100.68\) dBm and \(M=-100.68-(-110)=9.32\) dB, hence \(P_{\text{out}}=Q(9.32/6)=Q(1.55)=0.0606\).</p>
+    <p>Since Q is decreasing, \(P_{\text{out}}\lt 1\%\) requires \(M/\sigma_\psi\gt Q^{-1}(0.01)=2.326\); with M = 10 dB this gives \(\sigma_\psi\lt 4.30\) dB, so the variance of \(\psi_{\mathrm{dB}}\) must be below \(18.5\ \mathrm{dB}^2\).</p>
+    <p>With macro-diversity, outage requires both links to be below the threshold; if the shadowing on the two links is independent, \(P_{\text{out}}=P(Z_1\lt-\Delta)\,P(Z_2\lt-\Delta)=[Q(\Delta/\sigma)]^2\). The base stations are far apart, so both links are rarely blocked at the same time.</p>
+  </div>
+</section>

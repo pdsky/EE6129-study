@@ -1,0 +1,281 @@
+<section class="topic" id="t11">
+  <h2><span class="tn">11</span>香农容量与 SNR / SIR / SINR · Shannon capacity and SINR</h2>
+  <div class="meta"><span class="st must">背</span><span class="st def">定义·必会</span><span class="freq">出现：Practice 2 Q3 · 模拟 B·Q3 (a)(b) · 模拟 C·Q3 (a)(b) · 期末没单独考 AWGN 容量，但 4 套都出现 log₂(1 + ·)（2023-24、2025-26 S2 的中断容量；2024-25、2025-26 S1 的 MIMO 容量）</span></div>
+  <p class="why">香农公式是蓝框，必背，老师说这是通信工程师最基本的公式。Quiz 可能给接收功率、噪声功率（或噪声谱密度 N<sub>0</sub>）和带宽求容量；也可能有两个用户或同频干扰，考你分母里放什么（SINR），再问干扰消掉以后、带宽翻倍以后容量变成多少。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(C\)</td><td>信道容量</td><td>channel capacity</td><td>能做到误码率任意小的最高速率；只有传输速率 R &lt; C 才可能无错</td><td>bit/s（问 per Hz 时 bit/s/Hz）</td></tr>
+    <tr><td>\(B\)</td><td>带宽</td><td>bandwidth</td><td>信号占的频带宽度。它在公式里起两次作用：括号外乘 B，括号里的噪声 N<sub>0</sub>B 也跟着变</td><td>Hz</td></tr>
+    <tr><td>\(S\)（\(P_r\)）</td><td>接收信号功率</td><td>received signal power</td><td>你想要的那个信号到达接收机时的功率</td><td>W、mW、dBm</td></tr>
+    <tr><td>\(N\)</td><td>噪声功率</td><td>noise power</td><td>接收机带宽内热噪声的总功率，\(N=N_0B\)</td><td>W、mW、dBm</td></tr>
+    <tr><td>\(N_0\)</td><td>噪声功率谱密度</td><td>noise power spectral density</td><td>每 1 Hz 带宽里的噪声功率；带宽越宽，收进来的噪声越多</td><td>W/Hz、dBm/Hz</td></tr>
+    <tr><td>\(I\)</td><td>干扰功率</td><td>interference power</td><td>别的用户、别的小区同频信号的功率；对你来说和噪声一样是“捣乱的”</td><td>W、mW</td></tr>
+    <tr><td>SNR（\(\gamma\)）</td><td>信噪比</td><td>signal-to-noise ratio</td><td>S/N，分母只有噪声</td><td>线性（无单位）或 dB</td></tr>
+    <tr><td>SIR</td><td>信干比</td><td>signal-to-interference ratio</td><td>S/I，分母只有干扰；干扰远大于噪声时用</td><td>线性或 dB</td></tr>
+    <tr><td>SINR</td><td>信干噪比</td><td>signal-to-interference-plus-noise ratio</td><td>S/(I + N)，干扰和噪声都算进分母；一定比 SNR、SIR 都小</td><td>线性或 dB</td></tr>
+    <tr><td>AWGN</td><td>加性高斯白噪声</td><td>additive white Gaussian noise</td><td>香农公式成立的信道：只有高斯噪声加在信号上，没有衰落</td><td>—</td></tr>
+    <tr><td>MUD / SIC</td><td>多用户检测 / 连续干扰消除</td><td>multi-user detection / successive interference cancellation</td><td>先解出一个用户，从接收信号里减掉，再解下一个；最后解的那个用户分母只剩噪声</td><td>—</td></tr>
+    <tr><td>\(\log_2\)</td><td>以 2 为底的对数</td><td>base-2 logarithm</td><td>计算器没有 log₂ 键时：\(\log_2x=\log_{10}x/0.3010=\ln x/0.6931\)</td><td>—</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">香农容量 · Shannon capacity（讲义第 2 章 p.48）<span class="st must">背</span></div><div class="fx">\[ C=B\log_2(1+\mathrm{SNR}),\qquad \mathrm{SNR}=\frac{S}{N}=\frac{S}{N_0B} \]\[ R\le C\quad\Longleftrightarrow\quad \mathrm{SNR}\ge 2^{R/B}-1 \]</div><div class="fn">SNR 必须是<b>线性值</b>（17.01 dB 先换成 50.2 再代）。B 用 Hz，结果是 bit/s；题目问 per Hz（bit/s/Hz）就不乘 B。第二行是反着用：要可靠地传 R bit/s，SNR 至少 2<sup>R/B</sup> − 1。</div></div>
+  <div class="fm"><div class="fl">三个比值 · SNR, SIR, SINR（Practice 2 Q3；讲义第 1a 章 p.16 多用户检测）<span class="st def">定义·必会</span></div><div class="fx">\[ \mathrm{SNR}=\frac{S}{N},\qquad \mathrm{SIR}=\frac{S}{I},\qquad \mathrm{SINR}=\frac{S}{I+N} \]\[ C=B\log_2(1+\mathrm{SINR}) \]</div><div class="fn">分母 = 所有<b>不是你想要、又被当成噪声</b>的功率。题目说 treat the interference as (Gaussian) noise 或 assume it is AWGN，就用 SINR 代香农；MUD 或干扰消除器把干扰完全去掉后 I = 0，回到 SNR。I ≫ N 时 SINR ≈ SIR，叫“干扰受限”。</div></div>
+  <div class="fm"><div class="fl">噪声功率 · noise power（p.48）<span class="st def">定义·必会</span></div><div class="fx">\[ N=N_0B\qquad\Longleftrightarrow\qquad N_{\mathrm{dBm}}=N_{0,\,\mathrm{dBm/Hz}}+10\log_{10}B \]</div><div class="fn">乘法在 dB 里变加法：−174 dBm/Hz、B = 5 MHz → −174 + 66.99 = −107.01 dBm。B 翻倍 → N 多 10 log₁₀2 = 3.01 dB → 功率不变时 SNR 减半。</div></div>
+  <div class="fm"><div class="fl">dB ↔ 线性 · dB conversion<span class="st def">定义·必会</span></div><div class="fx">\[ x_{\mathrm{dB}}=10\log_{10}x,\qquad x=10^{x_{\mathrm{dB}}/10} \]\[ P_{\mathrm{dBm}}=10\log_{10}\frac{P}{1\ \mathrm{mW}},\qquad \mathrm{SNR}_{\mathrm{dB}}=S_{\mathrm{dBm}}-N_{\mathrm{dBm}} \]</div><div class="fn">dBm − dBm = dB（比值）；mW 和 dBm 不能直接相加。老师说<b>没写 dB ↔ 线性换算会扣分</b>，每次都写出来，例如“17.01 dB → 10<sup>1.701</sup> = 50.2”。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型 1：有干扰 / 两个用户：分母放什么</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 2 · Q3</th><th>模拟 C · Q3 (a)(b)</th></tr></thead><tbody>
+    <tr><td>① 统一单位</td><td>功率全用 mW（或全用 W），已知量先列出来</td><td>S = 10 mW，I = 10 mW（用户 2），N = 0.1 mW，B = 20 MHz</td><td>S = 2 mW，I = 0.5 mW，N = 0.05 mW，B = 10 MHz</td></tr>
+    <tr><td>② 写分母</td><td>干扰当 AWGN：SINR = S/(I + N)，线性值</td><td>10/(10 + 0.1) = 0.990（−0.04 dB）</td><td>2/(0.5 + 0.05) = 3.64（5.61 dB）；题目还要 SNR = 2/0.05 = 40（16.02 dB）、SIR = 2/0.5 = 4（6.02 dB）</td></tr>
+    <tr><td>③ 代香农</td><td>C = B log₂(1 + SINR)</td><td>20 MHz × log₂1.990 = 20 × 0.993 = 19.86 Mbps</td><td>10 MHz × log₂4.636 = 10 × 2.213 = 22.1 Mbps</td></tr>
+    <tr><td>④ 干扰去掉</td><td>MUD / 干扰消除后分母只剩 N：SNR = S/N，再代香农</td><td>10/0.1 = 100（20 dB）→ 20 × log₂101 = 20 × 6.658 = 133.16 Mbps</td><td>2/0.05 = 40 → 10 × log₂41 = 10 × 5.358 = 53.6 Mbps（约 2.42 倍）</td></tr>
+    <tr><td>⑤ 自检</td><td>SINR 最小；两个用户先解再减时，和容量 = B log₂(1 + (P₁ + P₂)/N)</td><td>19.86 + 133.16 = 153.02 = 20 × log₂201 ✓</td><td>3.64 &lt; 4 &lt; 40 ✓；I 是 N 的 10 倍 → 干扰受限，SINR ≈ SIR</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 2 第 3 题（两个用户各 10 mW、噪声 0.1 mW、每用户 20 MHz；(a) 先解用户 1、用户 2 当 AWGN，(b) MUD 去掉用户 1 后解用户 2）；练习页 模拟 C · Q3 (a)(b)（自编模拟题：信号 2 mW、邻区同频干扰 0.5 mW、噪声 0.05 mW、10 MHz，(b) 干扰消除器完全去掉干扰）。期末没有单独考过这一类。</p>
+
+  <h4>题型 2：给噪声谱密度 N<sub>0</sub>：先求 N = N<sub>0</sub>B，再看带宽翻倍</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>模拟 B · Q3 (a)：B = 5 MHz</th><th>模拟 B · Q3 (b)：B = 10 MHz</th></tr></thead><tbody>
+    <tr><td>① 噪声功率</td><td>N(dBm) = N<sub>0</sub>(dBm/Hz) + 10 log₁₀B</td><td>−174 + 66.99 = −107.01 dBm</td><td>−174 + 70.00 = −104.00 dBm</td></tr>
+    <tr><td>② SNR（dB）</td><td>S(dBm) − N(dBm)</td><td>−90 − (−107.01) = 17.01 dB</td><td>−90 − (−104.00) = 14.00 dB</td></tr>
+    <tr><td>③ 换线性</td><td>10<sup>dB/10</sup></td><td>10<sup>1.701</sup> = 50.2</td><td>10<sup>1.400</sup> = 25.1</td></tr>
+    <tr><td>④ 代香农</td><td>C = B log₂(1 + SNR)</td><td>5 MHz × log₂51.2 = 5 × 5.68 = 28.4 Mbps</td><td>10 MHz × log₂26.1 = 10 × 4.71 = 47.1 Mbps</td></tr>
+    <tr><td>⑤ 下结论</td><td>比较前后两个 C</td><td>—</td><td>47.1 / 28.4 = 1.66 倍，不翻倍：B 翻倍 → N 多 3.01 dB → SNR 减半</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：练习页 模拟 B · Q3 (a)(b)（自编模拟题：接收 −90 dBm、N<sub>0</sub> = −174 dBm/Hz、5 MHz，(b) 功率不变、带宽加到 10 MHz）。Practice 和期末都没有直接给 N<sub>0</sub> 的题，所以这张表两列是同一题的 (a)(b)，正好对比带宽翻倍前后。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 功率用 mW、N<sub>0</sub> 用 W/Hz（先统一单位）+ 带宽翻倍</div>
+    <p class="q">接收信号功率 S = 10 mW，噪声功率谱密度 N<sub>0</sub> = 10<sup>−9</sup> W/Hz，带宽 B = 1 MHz。(a) 求 SNR（线性和 dB）和香农容量。(b) 功率不变，带宽加到 2 MHz，容量多少？翻倍了吗？</p>
+    <ol class="work">
+      <li>统一成 W：S = 10 mW = 0.01 W；噪声 N = N<sub>0</sub>B = 10<sup>−9</sup> × 10<sup>6</sup> = 10<sup>−3</sup> W（= 1 mW = 0 dBm）。</li>
+      <li>SNR = 0.01 / 0.001 = 10 → 10 log₁₀10 = 10 dB。</li>
+      <li>C = 10<sup>6</sup> × log₂(1 + 10) = 10<sup>6</sup> × 3.459 = 3.46 Mbps。</li>
+      <li>(b) N = 10<sup>−9</sup> × 2×10<sup>6</sup> = 2×10<sup>−3</sup> W（3.01 dBm），SNR = 0.01/0.002 = 5（6.99 dB），C = 2×10<sup>6</sup> × log₂6 = 2 × 2.585 = 5.17 Mbps。</li>
+      <li>5.17 / 3.46 = 1.49 倍，不到 2 倍：带宽翻倍，噪声 N<sub>0</sub>B 也翻倍，SNR 从 10 掉到 5。只有 SNR 不变（比如功率也加到 20 mW）时才正好翻倍：2 MHz × log₂11 = 6.92 Mbps。</li>
+    </ol>
+    <p class="ans">答案：(a) SNR = 10（10 dB），C ≈ 3.46 Mbps；(b) C ≈ 5.17 Mbps，约 1.49 倍，没有翻倍</p>
+  </div>
+  <div class="eg"><div class="egh">例 2 · 反着问：给速率，求最小 SNR 和最小接收功率</div>
+    <p class="q">带宽 5 MHz，要可靠地传 20 Mbps。(a) 所需最小 SNR（线性和 dB）？(b) 噪声功率为 −100 dBm，接收功率至少多少 dBm？(c) 如果 SNR 只有 10 dB，最多能传多快？</p>
+    <ol class="work">
+      <li>R ≤ C = B log₂(1 + SNR) → log₂(1 + SNR) ≥ R/B = 20/5 = 4。</li>
+      <li>SNR ≥ 2<sup>4</sup> − 1 = 15 → 10 log₁₀15 = 11.76 dB。</li>
+      <li>(b) 在 dB 里相加：S ≥ −100 + 11.76 = −88.24 dBm。</li>
+      <li>(c) 10 dB → 10<sup>1</sup> = 10，C = 5 MHz × log₂11 = 5 × 3.459 = 17.3 Mbps &lt; 20 Mbps，传不了。</li>
+    </ol>
+    <p class="ans">答案：(a) 15（11.76 dB）；(b) −88.24 dBm；(c) 17.3 Mbps，不够 20 Mbps</p>
+  </div>
+  <div class="eg"><div class="egh">例 3 · 两个用户功率不同：先解谁，分母就不同</div>
+    <p class="q">两个用户同时同频向基站发送，接收功率 P₁ = 8 mW、P₂ = 2 mW，噪声 0.2 mW，每个用户带宽 10 MHz。(a) 先解用户 1（用户 2 当 AWGN），再用 MUD 减掉用户 1 解用户 2，求两个容量。(b) 顺序反过来呢？(c) 不用 MUD（两个都把对方当噪声），总容量多少？</p>
+    <ol class="work">
+      <li>(a) 解用户 1：SINR₁ = 8/(2 + 0.2) = 3.64（5.61 dB），C₁ = 10 × log₂4.636 = 10 × 2.213 = 22.1 Mbps。</li>
+      <li>减掉用户 1 后只剩噪声：SNR₂ = 2/0.2 = 10（10 dB），C₂ = 10 × log₂11 = 10 × 3.459 = 34.6 Mbps。总和 56.7 Mbps。</li>
+      <li>(b) 先解用户 2：SINR₂ = 2/(8 + 0.2) = 0.244（−6.13 dB），C₂ = 10 × log₂1.244 = 10 × 0.315 = 3.15 Mbps；再解用户 1：SNR₁ = 8/0.2 = 40（16.02 dB），C₁ = 10 × log₂41 = 53.6 Mbps。总和还是 56.7 Mbps。</li>
+      <li>自检：和容量 = 10 × log₂(1 + (8 + 2)/0.2) = 10 × log₂51 = 56.7 Mbps，和解码顺序无关。</li>
+      <li>(c) 都不消除：22.1 + 3.15 = 25.3 Mbps，不到 MUD 的一半。</li>
+    </ol>
+    <p class="ans">答案：(a) C₁ ≈ 22.1 Mbps，C₂ ≈ 34.6 Mbps；(b) C₂ ≈ 3.15 Mbps，C₁ ≈ 53.6 Mbps，两种顺序总和都是 56.7 Mbps；(c) 25.3 Mbps</p>
+  </div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>SNR 用 dB 直接代进 log₂：模拟 B·Q3 的 17.01 dB 要先换成 50.2，log₂(1 + 50.2) = 5.68；写成 log₂(1 + 17.01) = 4.17 就错了。</li>
+    <li>带宽翻倍忘了噪声 N = N<sub>0</sub>B 也翻倍：功率不变时 SNR 减半，容量不到 2 倍（例 1 是 1.49 倍，模拟 B·Q3 是 1.66 倍）。只有 SNR 保持不变时才正好翻倍。</li>
+    <li>有干扰时分母要写 I + N。Practice 2 Q3 (a) 写成 10/0.1 = 100 等于假装用户 2 不存在；只有 MUD 把对方减掉以后，后解的用户分母才只剩 N。</li>
+    <li>单位混用：mW 和 W 要统一；dBm 和 mW 不能直接相加减；dBm − dBm 得到的是 dB（比值）。</li>
+    <li>SINR 0.990 是线性值（约 −0.04 dB），不要把它当成 dB 再换一次。</li>
+    <li>问容量要乘 B 并写单位 bit/s（Mbps）；问 per Hz 才不乘 B。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>When user 1 is decoded, user 2's signal is treated as AWGN, so the denominator contains both interference and noise: SINR₁ = P₁/(P₂ + N) = 10/(10 + 0.1) = 0.990 (linear). By Shannon's formula, C₁ = B log₂(1 + SINR₁) = 20×10⁶ × log₂(1.990) = 19.86 Mbps.</p>
+    <p>After multi-user detection removes user 1, user 2 sees only noise: SNR₂ = P₂/N = 10/0.1 = 100 (20 dB), so C₂ = 20×10⁶ × log₂(101) = 133.16 Mbps.</p>
+    <p>With the signal power fixed, doubling the bandwidth also doubles the noise power N = N₀B, so the SNR halves (17.01 dB → 14.00 dB, i.e. 50.2 → 25.1) and the capacity rises only from 28.4 to 47.1 Mbps, about 1.66 times, not double.</p>
+  </div>
+</section>
+
+<section class="topic" id="t12">
+  <h2><span class="tn">12</span>瑞利信道的中断容量与衰落余量 · Outage capacity and fade margin</h2>
+  <div class="meta"><span class="st must">背</span><span class="st give">考试给</span><span class="st try">尽量记</span><span class="freq">出现：期末 2/4 套（2023-24 Q1(a)(iv)、2025-26 S2 Q1(a)(iii)）· 模拟 B·Q1 (b) · 模拟 C·Q3 (c)</span></div>
+  <p class="why">瑞利衰落下 SNR 时高时低，想让 1 − ε 的时间都能通信，只能按很低的最小 SNR γ<sub>min</sub> 设计速率；和没有衰落的 AWGN 信道比，平均 SNR 要多给的那部分就是衰落余量。期末两次都把 C<sub>ε</sub> 公式印在题里：2025-26 S2 给 γ̄ = 25 dB 和 ε = 0.005，问最小 SNR 和衰落余量；2023-24 只给 ε = 0.1%，只问衰落余量。也可以反过来问需要多大的平均 SNR（模拟 B·Q1 (b)）。遍历容量要对 SNR 分布积分，Quiz 不考积分，Jensen 不等式老师说只要求懂概念。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(\gamma\)</td><td>瞬时 SNR</td><td>instantaneous SNR</td><td>衰落信道里 SNR 是随机变量，每一时刻都不一样</td><td>线性或 dB</td></tr>
+    <tr><td>\(\bar\gamma\)（\(\bar\gamma_R\)）</td><td>平均 SNR</td><td>average SNR</td><td>γ 的平均值；瑞利衰落下 γ 服从均值为 γ̄ 的指数分布</td><td>线性或 dB</td></tr>
+    <tr><td>\(\varepsilon\)</td><td>中断概率</td><td>outage probability</td><td>允许“不够用”的时间比例，例如 0.5% = 0.005</td><td>无单位</td></tr>
+    <tr><td>\(\gamma_{\min}\)（\(\gamma_0\)）</td><td>最小 SNR（门限）</td><td>minimum SNR (threshold)</td><td>只有 ε 的时间会低于它；速率按它来设计</td><td>线性或 dB</td></tr>
+    <tr><td>\(C_\varepsilon\)</td><td>中断容量</td><td>outage capacity</td><td>允许 ε 的时间中断，其余 1 − ε 的时间能保证的速率</td><td>bit/s（per Hz 时 bit/s/Hz）</td></tr>
+    <tr><td>\((1-\varepsilon)C_\varepsilon\)</td><td>平均无错速率</td><td>average rate correctly received</td><td>中断的那 ε 时间收不到，长期平均只剩这么多</td><td>bit/s</td></tr>
+    <tr><td>\(\gamma_{\mathrm{AWGN}}\)</td><td>等效 AWGN 信道的 SNR</td><td>SNR of the equivalent AWGN channel</td><td>没有衰落时要达到同样的 C<sub>ε</sub> 需要的 SNR，就等于 γ<sub>min</sub></td><td>线性或 dB</td></tr>
+    <tr><td>FM</td><td>衰落余量</td><td>fade margin</td><td>为了扛住衰落，平均 SNR 要比 γ<sub>min</sub> 多出的量：γ̄<sub>dB</sub> − γ<sub>min,dB</sub></td><td>dB</td></tr>
+    <tr><td>\(\ln\)</td><td>自然对数</td><td>natural logarithm</td><td>以 e 为底，计算器上的 ln 键，不是 log</td><td>—</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">瑞利中断 · Rayleigh outage（讲义第 2 章 p.25–26）<span class="st must">背</span></div><div class="fx">\[ P_{out}=P(\gamma\lt\gamma_0)=1-e^{-\gamma_0/\bar\gamma} \]</div><div class="fn">老师说这个公式“经常出现”。γ<sub>0</sub>、γ̄ 都用线性值。令它等于 ε，两步就能反解出下面的 γ<sub>min</sub>：\(e^{-\gamma_{\min}/\bar\gamma}=1-\varepsilon\)，两边取 ln。</div></div>
+  <div class="fm"><div class="fl">中断容量与最小 SNR · outage capacity（p.50）<span class="st give">考试给</span></div><div class="fx">\[ C_\varepsilon=B\log_2\!\Big(1+\bar\gamma\ln\frac{1}{1-\varepsilon}\Big),\qquad \gamma_{\min}=\bar\gamma\ln\frac{1}{1-\varepsilon} \]</div><div class="fn">2023-24 和 2025-26 S2 期末都把 C<sub>ε</sub> 印在题里。括号里 γ̄ ln(1/(1 − ε)) 这一项就是最小 SNR，所以 C<sub>ε</sub> 等于 SNR 为 γ<sub>min</sub> 的 AWGN 信道的容量。没印公式时，从背的瑞利中断反解即可。平均无错速率 = (1 − ε)C<sub>ε</sub>。</div></div>
+  <div class="fm"><div class="fl">衰落余量 · fade margin（p.51）<span class="st try">尽量记</span></div><div class="fx">\[ \mathrm{FM}=\bar\gamma_{\mathrm{dB}}-\gamma_{\min,\mathrm{dB}}=10\log_{10}\frac{\bar\gamma}{\gamma_{\min}} \]\[ \mathrm{FM}=10\log_{10}\frac{1}{\ln\frac{1}{1-\varepsilon}}\ \mathrm{dB}\ \approx\ 10\log_{10}\frac{1}{\varepsilon} \]</div><div class="fn">老师说瑞利的衰落余量公式“有点难记，但要尽量记”。记不住就从第一行的比值推：γ̄/γ<sub>min</sub> = 1/ln(1/(1 − ε))，γ̄ 约掉了，所以 <b>FM 只和 ε 有关</b>。速记：ε = 1% → 19.98 ≈ 20 dB，0.5% → 23.00 dB，0.1% → 30.00 dB；中断要求每严 10 倍，余量多约 10 dB。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型 1：给 γ̄ 和 ε：求最小 SNR、衰落余量（和中断容量）</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2025-26 S2 Q1(a)(iii)）</th><th>模拟 C · Q3 (c)</th></tr></thead><tbody>
+    <tr><td>① γ̄ 换线性</td><td>10<sup>dB/10</sup></td><td>25 dB → 10<sup>2.5</sup> = 316.2</td><td>20 dB → 10<sup>2</sup> = 100</td></tr>
+    <tr><td>② 算 ln 项</td><td>ln(1/(1 − ε))，自然对数，ε 用小数</td><td>ln(1/0.995) = 0.005013</td><td>ln(1/0.99) = 0.01005</td></tr>
+    <tr><td>③ 最小 SNR</td><td>γ<sub>min</sub> = γ̄ × ②，再换 dB</td><td>316.2 × 0.005013 = 1.585 → 10 log₁₀1.585 = 2.00 dB</td><td>100 × 0.01005 = 1.005 → 0.02 dB（约 0 dB）</td></tr>
+    <tr><td>④ 衰落余量</td><td>FM = γ̄<sub>dB</sub> − γ<sub>min,dB</sub></td><td>25 − 2.00 = 23.0 dB</td><td>20 − 0.02 = 19.98 ≈ 20 dB</td></tr>
+    <tr><td>⑤ 中断容量</td><td>问到才算：C<sub>ε</sub> = B log₂(1 + γ<sub>min</sub>)，和 AWGN 的 B log₂(1 + γ̄) 比</td><td>题目没问（若算每 Hz：log₂2.585 = 1.370 bit/s/Hz）</td><td>10 MHz × log₂2.005 = 10 × 1.004 = 10.0 Mbps；AWGN：10 × log₂101 = 66.6 Mbps，约 6.6 倍</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：期末 2025-26 S2 Q1(a)(iii)（瑞利信道，题目印出 C<sub>ε</sub> = B log₂[1 + γ̄<sub>R</sub> ln(1/(1 − ε))]，γ̄<sub>R</sub> = 25 dB，ε = 0.005，求 minimum SNR 和相对 AWGN 的 Fade Margin）；练习页 模拟 C · Q3 (c)（自编模拟题：无干扰、瑞利衰落，平均 SNR 20 dB，ε = 1%，B = 10 MHz，求 C<sub>ε</sub> 并和 AWGN 比）。</p>
+
+  <h4>题型 2：只给 ε：直接求衰落余量（或所需平均 SNR）</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2023-24 Q1(a)(iv)）</th><th>模拟 B · Q1 (b)</th></tr></thead><tbody>
+    <tr><td>① 读出 ε</td><td>百分数换小数；有门限就换线性</td><td>ε = 0.1% = 0.001（没给 γ̄，也不需要）</td><td>ε = 1% = 0.01；门限 γ<sub>0</sub> = 7 dB → 10<sup>0.7</sup> = 5.012</td></tr>
+    <tr><td>② 算 ln 项</td><td>ln(1/(1 − ε))</td><td>ln(1/0.999) = 0.0010005</td><td>ln(1/0.99) = 0.01005</td></tr>
+    <tr><td>③ 衰落余量</td><td>FM = 10 log₁₀[1/②]</td><td>10 log₁₀(1/0.0010005) = 10 log₁₀999.5 = 30.0 dB</td><td>10 log₁₀(1/0.01005) = 10 log₁₀99.50 = 19.98 ≈ 20 dB</td></tr>
+    <tr><td>④ 平均 SNR</td><td>问到才算：γ̄<sub>dB</sub> = γ<sub>0,dB</sub> + FM，或 γ̄ = γ<sub>0</sub>/②</td><td>题目没问</td><td>5.012 / 0.01005 = 498.7 → 26.98 dB（= 7 + 19.98）</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：期末 2023-24 Q1(a)(iv)（瑞利信道，题目印出每 Hz 中断容量 C<sub>ε</sub> = log₂[1 + γ̄<sub>R</sub> ln(1/(1 − ε))]，求中断概率 0.1% 时的衰落余量）；练习页 模拟 B · Q1 (b)（自编模拟题：瑞利信道、接收机要求瞬时 SNR 至少 7 dB，求把中断降到 1% 所需的平均 SNR 和相对 7 dB 的衰落余量）。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · ε = 2%、带宽 1 MHz：最小 SNR、C<sub>ε</sub>、平均无错速率，和 AWGN 比</div>
+    <p class="q">瑞利信道平均 SNR 为 30 dB，带宽 1 MHz，允许中断概率 2%。已知 C<sub>ε</sub> = B log₂[1 + γ̄ ln(1/(1 − ε))]。(a) 求最小 SNR（线性和 dB）和衰落余量。(b) 求 C<sub>ε</sub> 和平均无错速率 (1 − ε)C<sub>ε</sub>。(c) 和 SNR 同为 30 dB 的 AWGN 信道比较。</p>
+    <ol class="work">
+      <li>换线性：γ̄ = 30 dB → 10<sup>3</sup> = 1000；ε = 2% = 0.02，ln(1/0.98) = 0.02020。</li>
+      <li>γ<sub>min</sub> = 1000 × 0.02020 = 20.20 → 10 log₁₀20.20 = 13.05 dB。</li>
+      <li>FM = 30 − 13.05 = 16.95 dB（用公式检查：10 log₁₀(1/0.02020) = 16.95 dB ✓）。</li>
+      <li>(b) C<sub>ε</sub> = 10<sup>6</sup> × log₂(1 + 20.20) = 10<sup>6</sup> × log₂21.20 = 4.41 Mbps；平均无错速率 = 0.98 × 4.406 = 4.32 Mbps。</li>
+      <li>(c) AWGN：10<sup>6</sup> × log₂(1 + 1000) = 9.97 Mbps。瑞利信道能保证的速率不到它的一半。</li>
+      <li>自检：1 − e<sup>−20.20/1000</sup> = 1 − e<sup>−0.02020</sup> = 0.0200 = ε ✓。</li>
+    </ol>
+    <p class="ans">答案：γ<sub>min</sub> ≈ 20.2（13.05 dB），FM ≈ 16.95 dB；C<sub>ε</sub> ≈ 4.41 Mbps，平均无错速率 ≈ 4.32 Mbps；AWGN 为 9.97 Mbps</p>
+  </div>
+  <div class="eg"><div class="egh">例 2 · 反着问：要保证 2 bit/s/Hz，平均 SNR 至少多少</div>
+    <p class="q">瑞利信道，允许中断概率 1%，要求能保证 C<sub>ε</sub>/B = 2 bit/s/Hz。平均 SNR 至少要多少 dB？对应的衰落余量是多少？</p>
+    <ol class="work">
+      <li>先由速率求最小 SNR：log₂(1 + γ<sub>min</sub>) = 2 → γ<sub>min</sub> = 2<sup>2</sup> − 1 = 3 → 10 log₁₀3 = 4.77 dB。</li>
+      <li>由 γ<sub>min</sub> = γ̄ ln(1/(1 − ε)) 反求：γ̄ = 3 / ln(1/0.99) = 3 / 0.01005 = 298.5。</li>
+      <li>换 dB：10 log₁₀298.5 = 24.75 dB。</li>
+      <li>FM = 24.75 − 4.77 = 19.98 dB ≈ 20 dB，正是 ε = 1% 的余量：要求的速率变了，余量不变。</li>
+    </ol>
+    <p class="ans">答案：γ̄ ≥ 298.5（24.75 dB）；FM ≈ 19.98 dB</p>
+  </div>
+  <div class="eg"><div class="egh">例 3 · 只问余量：γ̄ 换了余量不变；ε 从 5% 收紧到 0.5%</div>
+    <p class="q">(a) 允许中断概率 5%，瑞利信道的衰落余量是多少？分别取 γ̄ = 15 dB 和 25 dB 求最小 SNR，验证余量相同。(b) 用近似式 10 log₁₀(1/ε) 算，差多少？(c) 中断要求收紧到 0.5%，平均 SNR 要再多给多少 dB？</p>
+    <ol class="work">
+      <li>ln(1/0.95) = 0.05129，FM = 10 log₁₀(1/0.05129) = 12.90 dB。</li>
+      <li>γ̄ = 15 dB → 10<sup>1.5</sup> = 31.62：γ<sub>min</sub> = 31.62 × 0.05129 = 1.622（2.10 dB），FM = 15 − 2.10 = 12.90 dB。</li>
+      <li>γ̄ = 25 dB → 10<sup>2.5</sup> = 316.2：γ<sub>min</sub> = 316.2 × 0.05129 = 16.22（12.10 dB），FM = 25 − 12.10 = 12.90 dB。两次一样，因为 γ̄ 在 γ̄/γ<sub>min</sub> 里约掉了。</li>
+      <li>(b) 近似：10 log₁₀(1/0.05) = 13.01 dB，比精确值大 0.11 dB；ε 越小，近似越准。</li>
+      <li>(c) ε = 0.5%：FM = 23.00 dB，要多给 23.00 − 12.90 = 10.10 dB。中断要求严 10 倍，余量多约 10 dB。</li>
+    </ol>
+    <p class="ans">答案：FM ≈ 12.90 dB（与 γ̄ 无关）；近似值 13.01 dB；收紧到 0.5% 要多给 10.10 dB</p>
+  </div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>ln 不是 log₁₀：2025-26 S2 那题如果用 log₁₀(1/0.995) = 0.002177，会得到 γ<sub>min</sub> = 0.688（−1.62 dB）、FM = 26.6 dB，全错。</li>
+    <li>γ̄ 要先换成线性再乘：25 dB → 316.2，不能写成 25 × 0.005013。</li>
+    <li>ε 用小数代：0.5% = 0.005，0.1% = 0.001，不能代 0.5 或 0.1。</li>
+    <li>FM 是两个 dB 值相减（等于线性相除），只取决于 ε，与 γ̄、B 都无关；不要用 316.2 − 1.585 这种线性差。</li>
+    <li>问 minimum SNR 时线性和 dB 都写（1.585 → 2.00 dB），老师说漏写 dB ↔ 线性换算会扣分。</li>
+    <li>近似 10 log₁₀(1/ε) 只在 ε 小时准：ε = 10% 时精确值 9.77 dB，近似 10.00 dB；有时间就用精确式。C<sub>ε</sub> 是能保证的速率，平均无错速率还要乘 (1 − ε)。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>In Rayleigh fading the SNR is exponentially distributed, so P(γ &lt; γ<sub>min</sub>) = 1 − e<sup>−γ<sub>min</sub>/γ̄</sup> = ε, which gives γ<sub>min</sub> = γ̄ ln[1/(1 − ε)].</p>
+    <p>With γ̄<sub>R</sub> = 25 dB = 316.2 and ε = 0.005: γ<sub>min</sub> = 316.2 × ln(1/0.995) = 316.2 × 0.005013 = 1.585, i.e. 2.0 dB. This is the minimum SNR, and C<sub>ε</sub> equals the capacity of an AWGN channel with this SNR.</p>
+    <p>The fade margin compared with the AWGN channel is FM = γ̄<sub>dB</sub> − γ<sub>min,dB</sub> = 25 − 2.0 = 23.0 dB = 10 log₁₀[1/ln(1/(1 − ε))]; it depends only on ε, not on γ̄.</p>
+  </div>
+</section>
+
+<section class="topic" id="t13">
+  <h2><span class="tn">13</span>注水法功率分配 · Water-filling power allocation</h2>
+  <div class="meta"><span class="st try">尽量记</span><span class="freq">出现：期末 1/4 套（2024-25 Q1(a)(iii)）· 模拟 B·Q3 (c) · 讲义第 2 章 p.56–57 例题 · 第 5、7 章也用（Practice 5 Q1、Practice 7 Q1(d)，属期末范围）</span></div>
+  <p class="why">频率选择性信道切成几个子带（子信道），好坏不同，总功率固定：好的多给、差的少给、太差的干脆不给。老师说注水“很重要，要会算”。Quiz 可能给 2–3 个子带的 SNR（dB）和总功率 P，求每个子带分多少瓦（和总容量）。关键是先假设全开解 γ<sub>0</sub>，检查，不满足就去掉最差的重算。时变信道的注水老师说只要求概念，不会让算。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(\gamma_i\)</td><td>第 i 个子信道的 SNR</td><td>SNR of sub-channel i</td><td>把<b>全部</b>功率 P 都给它时的 SNR；越大信道越好</td><td>线性（dB 先换）</td></tr>
+    <tr><td>\(\gamma_0\)</td><td>截止 SNR（门限）</td><td>cutoff SNR (threshold)</td><td>γ<sub>i</sub> 低于它的子信道一点功率都不给；由总功率约束解出来</td><td>线性</td></tr>
+    <tr><td>\(1/\gamma_0\)</td><td>水位</td><td>water level</td><td>倒进去的水最后的平面高度，所有开着的子信道都到这个高度</td><td>—</td></tr>
+    <tr><td>\(1/\gamma_i\)</td><td>池底高度</td><td>floor of sub-channel i</td><td>信道越好池底越低，能装的水（功率）越多；池底高过水位的就没水</td><td>—</td></tr>
+    <tr><td>\(P\)</td><td>总发射功率</td><td>total transmit power</td><td>各子信道功率之和必须等于它</td><td>W</td></tr>
+    <tr><td>\(P_i\)</td><td>分给第 i 个子信道的功率</td><td>power allocated to sub-channel i</td><td>（水位 − 池底）× P</td><td>W</td></tr>
+    <tr><td>\(n\)</td><td>分到功率的子信道个数</td><td>number of active sub-channels</td><td>去掉一个就减 1，重算时一定要改</td><td>—</td></tr>
+    <tr><td>\(B_i\)</td><td>子信道带宽</td><td>sub-channel bandwidth</td><td>每段约等于相干带宽，各自近似平坦衰落</td><td>Hz</td></tr>
+    <tr><td>\(C\)</td><td>总容量</td><td>total capacity</td><td>只对分到功率的子信道求和</td><td>bit/s</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">功率分配 · power allocation（讲义第 2 章 p.54）<span class="st try">尽量记</span></div><div class="fx">\[ \frac{P_i}{P}=\begin{cases}\dfrac{1}{\gamma_0}-\dfrac{1}{\gamma_i}, & \gamma_i\ge\gamma_0\\[6pt] 0, & \gamma_i\lt\gamma_0\end{cases} \]</div><div class="fn">老师说这个分配式尽量记，注水要会算。2024-25 期末把它印在题里（写成 P<sub>i</sub> = P(1/γ<sub>0</sub> − 1/γ<sub>i</sub>)），但只给了这一式，γ<sub>0</sub> 要自己用 ΣP<sub>i</sub> = P 解；Quiz 不保证会印。P 不是 1 W 时别忘了乘 P。</div></div>
+  <div class="fm"><div class="fl">求水位 · solving for γ<sub>0</sub>（由 ΣP<sub>i</sub> = P 推出）<span class="st try">尽量记</span></div><div class="fx">\[ \sum_{\text{on}}\Big(\frac{1}{\gamma_0}-\frac{1}{\gamma_i}\Big)=1\qquad\Longrightarrow\qquad \frac{1}{\gamma_0}=\frac{1}{n}\Big(1+\sum_{\text{on}}\frac{1}{\gamma_i}\Big) \]</div><div class="fn">只对“开着”的 n 个子信道求和。第一次假设全部都开；解出 γ<sub>0</sub> 后检查每个 γ<sub>i</sub> ≥ γ<sub>0</sub>，有不满足的就去掉最差的那个，n 减 1 再解，<b>直到剩下的全部满足</b>。</div></div>
+  <div class="fm"><div class="fl">总容量 · total capacity（p.54）<span class="st try">尽量记</span></div><div class="fx">\[ C=\sum_{\gamma_i\ge\gamma_0}B_i\log_2\frac{\gamma_i}{\gamma_0}\qquad\Big(=\sum B_i\log_2\Big(1+\gamma_i\frac{P_i}{P}\Big)\Big) \]</div><div class="fn">括号里的写法说明它就是香农公式：子信道 i 拿到 P<sub>i</sub>，SNR 变成 γ<sub>i</sub>P<sub>i</sub>/P，而 1 + γ<sub>i</sub>(1/γ<sub>0</sub> − 1/γ<sub>i</sub>) = γ<sub>i</sub>/γ<sub>0</sub>。记不住就用香农现算。γ<sub>i</sub>/γ<sub>0</sub> = γ<sub>i</sub> × (1/γ<sub>0</sub>)，直接乘水位更快。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2024-25 Q1(a)(iii)）</th><th>模拟 B · Q3 (c)</th></tr></thead><tbody>
+    <tr><td>① 换线性</td><td>γ<sub>i</sub> = 10<sup>dB/10</sup>，再算 1/γ<sub>i</sub></td><td>18、10、3 dB → 63.10、10.00、1.995；1/γ = 0.01585、0.1000、0.5012</td><td>20、0.5（已是线性）；1/γ = 0.05、2</td></tr>
+    <tr><td>② 全开求水位</td><td>1/γ<sub>0</sub> = (1 + Σ1/γ<sub>i</sub>)/n</td><td>(1 + 0.01585 + 0.1 + 0.5012)/3 = 1.6170/3 = 0.5390 → γ<sub>0</sub> = 1.855（2.68 dB）</td><td>(1 + 0.05 + 2)/2 = 1.525 → γ<sub>0</sub> = 0.656</td></tr>
+    <tr><td>③ 检查</td><td>γ<sub>i</sub> ≥ γ<sub>0</sub>？不满足 → 去掉最差的，n − 1，回到 ②</td><td>最差的 1.995 ≥ 1.855 ✓，三个都开</td><td>0.5 &lt; 0.656 ✗ → 去掉第 2 条；重算 1/γ<sub>0</sub> = (1 + 0.05)/1 = 1.05，γ<sub>0</sub> = 0.952，20 ≥ 0.952 ✓</td></tr>
+    <tr><td>④ 分功率</td><td>P<sub>i</sub> = P(1/γ<sub>0</sub> − 1/γ<sub>i</sub>)，自检 ΣP<sub>i</sub> = P</td><td>0.5390 − 0.01585 = 0.523 W；0.5390 − 0.1 = 0.439 W；0.5390 − 0.5012 = 0.038 W；和 = 1 W ✓</td><td>P₁ = P(1.05 − 0.05) = P，P₂ = 0</td></tr>
+    <tr><td>⑤ 容量</td><td>问到才算：C = ΣB<sub>i</sub> log₂(γ<sub>i</sub>/γ<sub>0</sub>)，只算开着的</td><td>题目没问（若各子带带宽都是 B：C = 7.62B，即 7.62 bit/s/Hz）</td><td>1 MHz × log₂(20/0.952) = log₂21 = 4.39 Mbps；平分功率只有 3.78 Mbps</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：期末 2024-25 Q1(a)(iii)（频率选择性信道分成三个子带，SNR 18、10、3 dB，总功率 P = 1 W，题目印出分配式，求三个子带的功率）；练习页 模拟 B · Q3 (c)（自编模拟题：两条 1 MHz 子信道，全部功率给它时 SNR 为 20 和 0.5，用注水求功率分配和总容量）。讲义第 2 章 p.56–57 的例题（γ = 17.77、2.63、0.087）也是第三个被去掉。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 两个子带都开，总功率 2 W（P 不是 1 W）</div>
+    <p class="q">两个子带各 1 MHz，把全部功率 P = 2 W 给其中一个时 SNR 分别为 12 dB、6 dB。用注水法求每个子带分多少瓦、总容量，并和平分功率比较。</p>
+    <ol class="work">
+      <li>换线性：12 dB → 10<sup>1.2</sup> = 15.85，6 dB → 10<sup>0.6</sup> = 3.981；1/γ = 0.0631、0.2512。</li>
+      <li>假设都开：1/γ<sub>0</sub> = (1 + 0.0631 + 0.2512)/2 = 1.3143/2 = 0.6571 → γ<sub>0</sub> = 1.522（1.82 dB）。</li>
+      <li>检查：3.981 ≥ 1.522 ✓，两个都开。</li>
+      <li>功率要乘 P = 2 W：P₁ = 2 × (0.6571 − 0.0631) = 1.188 W；P₂ = 2 × (0.6571 − 0.2512) = 0.812 W；和 = 2 W ✓。</li>
+      <li>容量：C = 1 MHz × [log₂(15.85 × 0.6571) + log₂(3.981 × 0.6571)] = log₂10.42 + log₂2.616 = 3.381 + 1.387 = 4.77 Mbps。</li>
+      <li>平分：每个 1 W，SNR 减半为 7.924 和 1.991：log₂8.924 + log₂2.991 = 3.158 + 1.581 = 4.74 Mbps。两个子带都不差时注水只多一点；子带差距大时（模拟 B·Q3：4.39 对 3.78 Mbps）差别才明显。</li>
+    </ol>
+    <p class="ans">答案：P₁ ≈ 1.188 W，P₂ ≈ 0.812 W；C ≈ 4.77 Mbps（平分为 4.74 Mbps）</p>
+  </div>
+  <div class="eg"><div class="egh">例 2 · 三个子带：最差的要关掉，再重算</div>
+    <p class="q">频率选择性信道分成三个子带，各 1 MHz。把全部功率 P = 1 W 给某个子带时，SNR 分别为 15 dB、6 dB、−3 dB。用注水法求各子带的功率和总容量。</p>
+    <ol class="work">
+      <li>换线性：15 dB → 10<sup>1.5</sup> = 31.62，6 dB → 10<sup>0.6</sup> = 3.981，−3 dB → 10<sup>−0.3</sup> = 0.5012；1/γ = 0.03162、0.2512、1.995。</li>
+      <li>假设三个都开：1/γ<sub>0</sub> = (1 + 0.03162 + 0.2512 + 1.995)/3 = 3.278/3 = 1.093 → γ<sub>0</sub> = 0.915。</li>
+      <li>检查：γ₃ = 0.5012 &lt; 0.915 ✗。如果硬算，P₃ = 1.0927 − 1.9953 = −0.9026 W，功率是负的，说明第 3 个子带该关掉。</li>
+      <li>去掉第 3 个，n = 2 重算：1/γ<sub>0</sub> = (1 + 0.03162 + 0.2512)/2 = 1.283/2 = 0.6414 → γ<sub>0</sub> = 1.559（1.93 dB）。再检查：γ₂ = 3.981 ≥ 1.559 ✓。</li>
+      <li>功率：P₁ = 0.6414 − 0.03162 = 0.610 W，P₂ = 0.6414 − 0.2512 = 0.390 W，P₃ = 0；0.610 + 0.390 = 1 W ✓。</li>
+      <li>容量：C = 1 MHz × [log₂(31.62 × 0.6414) + log₂(3.981 × 0.6414)] = log₂20.28 + log₂2.553 = 4.342 + 1.352 = 5.69 Mbps。</li>
+    </ol>
+    <p class="ans">答案：P₁ ≈ 0.610 W，P₂ ≈ 0.390 W，P₃ = 0；C ≈ 5.69 Mbps</p>
+  </div>
+  <div class="eg"><div class="egh">例 3 · 四个子带：要去掉两次，每次重算后全部重新检查</div>
+    <p class="q">四个子带各 1 MHz，全部功率给它时 SNR 为 20、10、0、−5 dB，总功率 P = 1 W。求功率分配和总容量。</p>
+    <ol class="work">
+      <li>换线性：100、10、1、10<sup>−0.5</sup> = 0.3162；1/γ = 0.01、0.1、1、3.162。</li>
+      <li>第 1 轮（4 个都开）：1/γ<sub>0</sub> = (1 + 0.01 + 0.1 + 1 + 3.162)/4 = 5.272/4 = 1.318 → γ<sub>0</sub> = 0.759。γ₄ = 0.3162 &lt; 0.759 ✗，去掉第 4 个。此时 γ₃ = 1 ≥ 0.759，看起来没问题。</li>
+      <li>第 2 轮（3 个）：1/γ<sub>0</sub> = (1 + 0.01 + 0.1 + 1)/3 = 2.11/3 = 0.7033 → γ<sub>0</sub> = 1.422。重新检查：γ₃ = 1 &lt; 1.422 ✗，第 3 个也要去掉。</li>
+      <li>第 3 轮（2 个）：1/γ<sub>0</sub> = (1 + 0.01 + 0.1)/2 = 1.11/2 = 0.555 → γ<sub>0</sub> = 1.802。γ₂ = 10 ≥ 1.802 ✓，结束。</li>
+      <li>功率：P₁ = 0.555 − 0.01 = 0.545 W，P₂ = 0.555 − 0.1 = 0.455 W，P₃ = P₄ = 0；和 = 1 W ✓。</li>
+      <li>容量：C = log₂(100 × 0.555) + log₂(10 × 0.555) = log₂55.5 + log₂5.55 = 5.794 + 2.472 = 8.27 Mbps。</li>
+    </ol>
+    <p class="ans">答案：P = 0.545 / 0.455 / 0 / 0 W；C ≈ 8.27 Mbps</p>
+  </div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>γ<sub>i</sub> 一定用线性值：18 dB 是 63.1，不是 18。</li>
+    <li>不检查 γ<sub>i</sub> ≥ γ<sub>0</sub> 就会算出负功率（例 2 硬算得 P₃ = −0.9026 W）；负功率就说明这个子带该关掉。</li>
+    <li>去掉子带后 n 要跟着改（3 → 2），括号里的“1”（代表总功率 P/P）别漏。</li>
+    <li>每次重算后要把剩下的<b>全部</b>重新检查：例 3 第一轮第 3 个子带过关（1 ≥ 0.759），去掉第 4 个后水位从 1.318 降到 0.7033，它就不过关了（1 &lt; 1.422）。</li>
+    <li>容量是 log₂(γ<sub>i</sub>/γ<sub>0</sub>)，不是 log₂(1 + γ<sub>i</sub>)；只对开着的子带求和。</li>
+    <li>P 不是 1 W 时 P<sub>i</sub> = P × (1/γ<sub>0</sub> − 1/γ<sub>i</sub>)；最后自检 ΣP<sub>i</sub> = P。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>Converting the SNRs to linear values gives γ₁ = 63.1, γ₂ = 10.0 and γ₃ = 1.995. Assuming all three sub-bands receive power, Σ(1/γ₀ − 1/γᵢ) = 1 gives 1/γ₀ = (1 + 1/63.1 + 1/10 + 1/1.995)/3 = 0.539, so γ₀ = 1.855 (2.68 dB).</p>
+    <p>Since every γᵢ ≥ γ₀, the assumption holds, and Pᵢ = P(1/γ₀ − 1/γᵢ) gives P₁ = 0.523 W, P₂ = 0.439 W and P₃ = 0.038 W, which add up to P = 1 W.</p>
+    <p>If a sub-band had γᵢ &lt; γ₀, it would receive no power; it is removed and γ₀ is recomputed with the remaining sub-bands until all of them satisfy γᵢ ≥ γ₀. The capacity is then C = Σ Bᵢ log₂(γᵢ/γ₀) over the active sub-bands.</p>
+  </div>
+</section>

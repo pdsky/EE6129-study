@@ -1,0 +1,144 @@
+<section class="topic" id="t6">
+  <h2><span class="tn">6</span>瑞利衰落：中断概率与衰落余量 · Rayleigh fading: outage and fade margin</h2>
+  <div class="meta"><span class="st must">背</span><span class="st try">尽量记</span><span class="freq">出现：期末 2/4 套考衰落余量（2023-24 Q1(a)(iv)、2025-26 S2 Q1(a)(iii)）；正着算中断只在第 4 章题 2024-25 Q1(b)(i) 的第一步出现过 · 模拟 B · Q1 · 专项 · Q3(c) · 模拟 C · Q3(c)</span></div>
+  <p class="why">瑞利衰落 = 没有直射径、只有大量散射回波，瞬时 SNR γ 是随机变量（指数分布）。Quiz 可能：① 已知平均 SNR 和门限，求中断概率；② 已知中断要求 ε，倒推所需平均 SNR、最小 SNR 或衰落余量（期末 2023-24、2025-26 S2 都考了衰落余量）；③ 同样余量下和阴影比谁中断多。老师说瑞利中断公式"经常出现"。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(\gamma\)</td><td>瞬时信噪比</td><td>instantaneous SNR</td><td>这一刻的 SNR。AWGN 信道里它是常数；衰落信道里它是随机变量，一直在跳</td><td>线性（无单位）或 dB</td></tr>
+    <tr><td>\(\bar\gamma\)（真题写 \(\bar\gamma_R\)）</td><td>平均信噪比</td><td>average SNR</td><td>γ 的平均值，由路径损耗和噪声决定：γ̄<sub>dB</sub> = P<sub>r</sub>(dBm) − N(dBm)</td><td>线性 / dB</td></tr>
+    <tr><td>\(\gamma_0\)（\(\gamma_{\min}\)）</td><td>门限 SNR、最低 SNR</td><td>threshold (minimum required) SNR</td><td>低于它就通信失败（中断）。讲义的 γ<sub>AWGN</sub> 在衰落余量公式里就是这个数</td><td>线性 / dB</td></tr>
+    <tr><td>\(p(\gamma)\)</td><td>SNR 的概率密度</td><td>PDF of the SNR</td><td>瑞利衰落下是指数分布；曲线下的面积才是概率</td><td>—</td></tr>
+    <tr><td>\(P_{out}\)，\(\varepsilon\)</td><td>中断概率</td><td>outage probability</td><td>γ 低于 γ<sub>0</sub> 的概率 = 中断时间占的比例。老师说中断既可以对功率说也可以对 SNR 说，本质一样</td><td>无（0–1 或 %）</td></tr>
+    <tr><td>FM</td><td>衰落余量</td><td>fade margin</td><td>为了扛住衰落，平均 SNR 要比门限多留的 dB 数</td><td>dB</td></tr>
+    <tr><td>\(z\)</td><td>包络</td><td>envelope (amplitude)</td><td>接收信号的幅度，服从瑞利分布（它的 PDF 不用背）</td><td>V</td></tr>
+    <tr><td>\(2\sigma^2\)</td><td>平均接收功率</td><td>average received power</td><td>E[z²]；σ² 是 I、Q 两个高斯分量各自的方差</td><td>W</td></tr>
+    <tr><td>\(\rho\)</td><td>幅度门限比</td><td>normalised threshold level</td><td>ρ = Z<sub>min</sub>/Z<sub>rms</sub>（幅度比），平方后才是功率比：ρ² = γ<sub>0</sub>/γ̄</td><td>无</td></tr>
+    <tr><td>ln</td><td>自然对数</td><td>natural logarithm</td><td>计算器的 ln 键（以 e 为底），不是 log</td><td>—</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">SNR 的指数分布 · Exponential PDF of the SNR <span class="st must">背</span></div><div class="fx">\[ p(\gamma)=\frac{1}{\bar\gamma}\,e^{-\gamma/\bar\gamma},\qquad \gamma\ge 0 \]</div><div class="fn">讲义第 2 章 p.25–26。瑞利衰落时包络 z 服从瑞利分布，功率 z² 和 SNR γ 服从指数分布。老师说要背的是这一个，不是包络的瑞利 PDF \(\frac{z}{\sigma^2}e^{-z^2/(2\sigma^2)}\)；推导不会让推。</div></div>
+  <div class="fm"><div class="fl">瑞利中断概率 · Rayleigh outage probability <span class="st must">背</span></div><div class="fx">\[ P_{out}=P(\gamma\lt\gamma_0)=1-e^{-\gamma_0/\bar\gamma}\;\approx\;\frac{\gamma_0}{\bar\gamma}\quad(\gamma_0\ll\bar\gamma) \]</div><div class="fn">γ<sub>0</sub>、γ̄ 先换成线性值再相除（是比值，单位一致即可）。近似只在比值小时用：x ≈ 0.05 时偏高 2.5%，x = 0.1 时偏高 5.1%，x = 0.5 时偏高 27%，答题写精确值。口诀：门限比平均低 10 dB → 9.52%，低 20 dB → 0.995%，低 30 dB → 0.100%。反面：高于某个值 γ<sub>1</sub> 的概率 \(P(\gamma\gt\gamma_1)=e^{-\gamma_1/\bar\gamma}\)，取 γ<sub>1</sub> = γ̄ 得高于平均值的概率只有 e<sup>−1</sup> = 0.368。门限按幅度给（信号强度是 rms 值的 ρ 倍）时 γ<sub>0</sub>/γ̄ = ρ²：Practice 2 Q1 的 ρ = 0.1 → 1 − e<sup>−0.01</sup> = 0.00995（该题本身求 AFD；0.00995 是练习页解答里顺带算的"低于门限的时间比例"）。</div></div>
+  <div class="fm"><div class="fl">倒着解：所需平均 SNR / 最小 SNR · Solving backwards <span class="st def">会反解</span></div><div class="fx">\[ \bar\gamma=\frac{\gamma_0}{\ln\frac{1}{1-\varepsilon}},\qquad \gamma_{\min}=\bar\gamma\,\ln\frac{1}{1-\varepsilon} \]</div><div class="fn">不用另背：令 ε = 1 − e<sup>−γ<sub>0</sub>/γ̄</sup>，两边整理后取 ln 就得到。ε 小时 ln(1/(1−ε)) ≈ ε，所以 γ̄ ≈ γ<sub>0</sub>/ε。真题印的中断容量公式 \(C_\varepsilon=B\log_2\!\big[1+\bar\gamma_R\ln\frac{1}{1-\varepsilon}\big]\)（考试给）里，\(\bar\gamma_R\ln\frac{1}{1-\varepsilon}\) 就是 γ<sub>min</sub>；中断容量本身见第 12 类。</div></div>
+  <div class="fm"><div class="fl">衰落余量（瑞利）· Fade margin (Rayleigh) <span class="st try">尽量记</span></div><div class="fx">\[ \mathrm{FM}=\bar\gamma_{\mathrm{dB}}-\gamma_{0,\mathrm{dB}}=10\log_{10}\frac{\bar\gamma}{\gamma_0}=10\log_{10}\frac{1}{\ln\frac{1}{1-\varepsilon}}\ \mathrm{dB}\;\approx\;10\log_{10}\frac{1}{\varepsilon} \]</div><div class="fn">讲义 p.51，老师说"有点难记，但要尽量记"；记不住就用上一条现推。讲义写成 γ̄<sub>dB</sub> − γ<sub>AWGN,dB</sub>：不衰落的 AWGN 信道只要 SNR = γ<sub>0</sub>，瑞利信道要多给 FM。只和 ε 有关、和 γ̄ 无关：ε = 10% → 9.77 dB，5% → 12.90 dB，1% → 19.98 dB，0.5% → 23.00 dB，0.1% → 30.00 dB。中断要求每严 10 倍，余量多 10 dB。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型 A · 正着算：已知平均 SNR 和门限，求中断概率</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2024-25 Q1(b)(i) 第一步）</th><th>模拟 B · Q1 (a)</th></tr></thead><tbody>
+    <tr><td>① 平均 SNR</td><td>dB → 线性 10<sup>dB/10</sup>；给功率就先 P<sub>r</sub>(dBm) − N(dBm)；已是线性就直接用</td><td>式中的 30 就是每支路平均 SNR γ̄，已是线性（不是 dB），不用换</td><td>γ̄ = 20 dB → 10<sup>2</sup> = 100</td></tr>
+    <tr><td>② 门限</td><td>同样换成线性（给的是误码率要求就先反查 Q 表求 γ<sub>0</sub>）</td><td>Q(√(2γ<sub>b</sub>)) = 1.35×10<sup>−3</sup> → 查表 √(2γ<sub>b</sub>) = 3.0 → γ<sub>0</sub> = γ<sub>b</sub> = 4.5（线性）</td><td>γ<sub>0</sub> = 7 dB → 10<sup>0.7</sup> = 5.012</td></tr>
+    <tr><td>③ 比值</td><td>x = γ<sub>0</sub> / γ̄（线性相除）</td><td>4.5 / 30 = 0.15</td><td>5.012 / 100 = 0.05012</td></tr>
+    <tr><td>④ 中断概率</td><td>P<sub>out</sub> = 1 − e<sup>−x</sup></td><td>1 − e<sup>−0.15</sup> = 0.139（13.9%）</td><td>1 − e<sup>−0.05012</sup> = 0.0489（4.89%）</td></tr>
+    <tr><td>⑤ 估算核对</td><td>x 小时 P<sub>out</sub> ≈ x</td><td>≈ 0.15，偏高 7.7%，仍接近 ✓</td><td>≈ 0.0501，接近 ✓</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：真题＝2024-25 期末 Q1(b)(i)（BPSK 选择分集：题目印了 P<sub>out</sub> = (1 − e<sup>−γ<sub>b</sub>/30</sup>)<sup>M</sup>，误码率要求 P<sub>b</sub> = Q(√(2γ<sub>b</sub>)) = 1.35×10<sup>−3</sup>，P<sub>out</sub> ≈ 0.02 时求支路数 M）。整题是第 4 章分集，Quiz 不考；这里只用它的第一步：单支路（M = 1）的中断就是瑞利中断 1 − e<sup>−γ<sub>0</sub>/γ̄</sup>，30 是每支路平均 SNR（线性）。后面 0.139<sup>M</sup> ≈ 0.02 → M = 2 属第 4 章。模拟 B · Q1 (a)＝练习页自编模拟 Quiz B 第 1 题（瑞利，平均 SNR 20 dB，要求瞬时 SNR ≥ 7 dB）。同类：专项 · Q3 (c)＝练习页专项第 3 题（P<sub>t</sub> = 1 W = 30 dBm、K<sub>dB</sub> = −40 dB、γ = 3、d = 1 km、噪声 −120 dBm：P<sub>r</sub> = 30 − 40 − 30 log<sub>10</sub>1000 = −100 dBm，γ̄ = −100 − (−120) = 20 dB → 100；要求瞬时 SNR ≥ 10 dB → 10，P<sub>out</sub> = 1 − e<sup>−10/100</sup> = 0.0952）。历年期末的第 2 章题没有单独考正着算这一步。</p>
+
+  <h4>题型 B · 倒着算：已知中断要求 ε，求最小 SNR / 所需平均 SNR / 衰落余量</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2025-26 S2 Q1(a)(iii)）</th><th>模拟 B · Q1 (b)</th></tr></thead><tbody>
+    <tr><td>① 已知量换线性</td><td>dB → 线性；ε 写成小数</td><td>γ̄<sub>R</sub> = 25 dB → 10<sup>2.5</sup> = 316.2；ε = 0.005</td><td>γ<sub>0</sub> = 7 dB → 5.012；ε = 1% = 0.01</td></tr>
+    <tr><td>② 算 ln(1/(1−ε))</td><td>自然对数 ln</td><td>ln(1/0.995) = 0.005013</td><td>ln(1/0.99) = 0.01005</td></tr>
+    <tr><td>③ 解未知 SNR</td><td>求最小：γ<sub>min</sub> = γ̄ × ②；求平均：γ̄ = γ<sub>0</sub> ÷ ②</td><td>γ<sub>min</sub> = 316.2 × 0.005013 = 1.585 → 2.00 dB</td><td>γ̄ = 5.012 ÷ 0.01005 = 498.7 → 26.98 dB</td></tr>
+    <tr><td>④ 衰落余量</td><td>FM = 平均（dB）− 门限（dB）</td><td>25 − 2.00 = 23.0 dB</td><td>26.98 − 7 = 19.98 ≈ 20.0 dB</td></tr>
+    <tr><td>⑤ 公式核对</td><td>FM = 10 log<sub>10</sub>(1/②)</td><td>10 log<sub>10</sub>(1/0.005013) = 23.0 dB ✓</td><td>10 log<sub>10</sub>(1/0.01005) = 19.98 dB ✓</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：真题＝2025-26 第二学期期末 Q1(a)(iii)（瑞利信道，题目印了 C<sub>ε</sub> = B log<sub>2</sub>[1 + γ̄<sub>R</sub> ln(1/(1 − ε))]，γ̄<sub>R</sub> = 25 dB，ε = 0.005，求最小 SNR 和相对 AWGN 信道的衰落余量）；模拟 B · Q1 (b)＝练习页自编模拟 Quiz B 第 1 题 (b)（把中断降到 1%，求所需平均 SNR 和相对 7 dB 要求的衰落余量）。同类真题：2023-24 期末 Q1(a)(iv) 只问 ε = 0.1% 的衰落余量：10 log<sub>10</sub>(1/0.0010005) = 30.0 dB。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 给的是 dBm 功率；再问"高于"的概率</div><p class="q">手机平均接收功率 −92 dBm，噪声功率 −110 dBm，信道是瑞利衰落。(a) 接收机要求瞬时 SNR 至少 6 dB，求中断概率。(b) 瞬时 SNR 比平均值高 3 dB 以上的概率是多少？</p><ol class="work">
+    <li>平均 SNR：γ̄ = −92 − (−110) = 18 dB（dBm − dBm = dB）→ γ̄ = 10<sup>1.8</sup> = 63.10。</li>
+    <li>门限：γ<sub>0</sub> = 6 dB → 10<sup>0.6</sup> = 3.981。</li>
+    <li>比值：x = 3.981 / 63.10 = 0.06310（也可以直接 10<sup>(6−18)/10</sup> = 10<sup>−1.2</sup>：门限比平均低 12 dB）。</li>
+    <li>(a) P<sub>out</sub> = 1 − e<sup>−0.06310</sup> = 0.0611；估算 ≈ 0.0631，接近 ✓。</li>
+    <li>(b) "高于"用反面：\(P(\gamma\gt\gamma_1)=e^{-\gamma_1/\bar\gamma}\)。γ<sub>1</sub> = 18 + 3 = 21 dB → 125.9，125.9 / 63.10 = 1.995（= 10<sup>0.3</sup>），P = e<sup>−1.995</sup> = 0.136。</li>
+  </ol><p class="ans">答案：(a) P<sub>out</sub> ≈ 0.0611（6.11%）；(b) ≈ 0.136</p></div>
+  <div class="eg"><div class="egh">例 2 · 倒着求平均 SNR 和余量，再求最远距离</div><p class="q">瑞利信道，接收机门限 SNR 8 dB，要求中断概率不超过 2%。(a) 平均 SNR 至少要多少？衰落余量多少？(b) 发射功率 1 W，简化路径损耗模型 K<sub>dB</sub> = −40 dB、路径损耗指数 γ = 3.5（这个 γ 不是 SNR）、d<sub>0</sub> = 1 m，噪声功率 −115 dBm。满足 (a) 的最远距离是多少？</p><ol class="work">
+    <li>γ<sub>0</sub> = 8 dB → 10<sup>0.8</sup> = 6.310；ln(1/(1 − 0.02)) = ln(1/0.98) = 0.020203。</li>
+    <li>γ̄ = 6.310 / 0.020203 = 312.3 → 10 log<sub>10</sub>312.3 = 24.95 dB。</li>
+    <li>FM = 24.95 − 8 = 16.95 dB；核对 10 log<sub>10</sub>(1/0.020203) = 16.95 dB（近似 10 log<sub>10</sub>50 = 16.99 dB）。</li>
+    <li>(b) 所需平均接收功率 = 噪声 + 平均 SNR = −115 + 24.95 = −90.05 dBm；P<sub>t</sub> = 1 W = 1000 mW → 30 dBm。</li>
+    <li>30 + (−40) − 35 log<sub>10</sub>d ≥ −90.05 → 35 log<sub>10</sub>d ≤ 80.05 → log<sub>10</sub>d ≤ 2.2873 → d ≤ 193.8 m。</li>
+  </ol><p class="ans">答案：(a) γ̄ ≥ 24.95 dB，FM ≈ 16.95 dB；(b) d ≤ 193.8 m（"最远"往小取，约 193 m）</p></div>
+  <div class="eg"><div class="egh">例 3 · 同样余量：阴影和瑞利谁中断多？</div><p class="q">两条链路的平均接收功率都比门限高 15 dB。链路 A 只有阴影衰落（σ = 6 dB），链路 B 是瑞利衰落（没有阴影）。哪条的中断概率大？</p><ol class="work">
+    <li>A 是阴影，在 dB 上相减、用 Q：P<sub>out</sub> = Q(15/6) = Q(2.50) = 0.00621（查 Q 表）。</li>
+    <li>B 是瑞利，在线性上相除、用指数：γ<sub>0</sub>/γ̄ = 10<sup>−15/10</sup> = 10<sup>−1.5</sup> = 0.03162，P<sub>out</sub> = 1 − e<sup>−0.03162</sup> = 0.0311。</li>
+    <li>比较：B 约是 A 的 5 倍，瑞利的深坑更深。</li>
+    <li>但这不是定律：专项 · Q3 余量 10 dB、σ = 8 dB 时，阴影 Q(1.25) = 0.106，瑞利 1 − e<sup>−0.1</sup> = 0.0952，反而阴影大。同样 σ = 8 dB，余量 15 dB 时两者差不多（阴影 0.0304 对瑞利 0.0311），20 dB 时瑞利大（阴影 0.00621 对瑞利 0.00995）。原因：瑞利余量每多 10 dB，中断只降 10 倍；阴影的 Q(余量/σ) 在余量/σ 大时降得快得多。</li>
+  </ol><p class="ans">答案：本题 B（瑞利）大：B 3.11% 对 A 0.621%。考试两个都算出来再比，别凭感觉。</p></div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>把 dB 直接代进指数：1 − e<sup>−7/20</sup> = 0.295 ✗，正确是 1 − e<sup>−5.012/100</sup> = 0.0489。老师讲第 3 章用这个公式的例题时说：8.5 dB 要先换成 10<sup>0.85</sup>，每年都强调还是有人不换；没写 dB ↔ 线性换算会扣分。</li>
+    <li>ln 按成 log：ε = 1% 时 log<sub>10</sub>(1/0.99) = 0.004365 → 算出 23.60 dB ✗，用 ln 才是 19.98 dB。</li>
+    <li>衰落余量用线性相减：498.7 − 5.012 = 493.7 没有意义 ✗。FM 是 dB 相减，等于线性相除再取 10 log。</li>
+    <li>阴影、瑞利公式用反：给了 σ（dB）→ Q(余量/σ)；只给平均 SNR、没有 σ → 1 − e<sup>−γ<sub>0</sub>/γ̄</sup>。</li>
+    <li>以为 SNR 一半时间高于平均：指数分布不对称，P(γ &gt; γ̄) = e<sup>−1</sup> = 0.368，有 63.2% 的时间低于平均值。</li>
+    <li>门限按幅度给（rms 的 ρ 倍）忘了平方：ρ = 0.1 时写 1 − e<sup>−0.1</sup> = 0.0952 ✗，应为 1 − e<sup>−0.01</sup> = 0.00995。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>In Rayleigh fading the instantaneous SNR γ is exponentially distributed, \(p(\gamma)=\frac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}\), so the outage probability is \(P_{out}=P(\gamma\lt\gamma_0)=1-e^{-\gamma_0/\bar\gamma}\). In linear terms \(\bar\gamma\) = 20 dB = 100 and \(\gamma_0\) = 7 dB = 5.012, so \(P_{out}=1-e^{-5.012/100}=0.0489\).</p>
+    <p>With \(\bar\gamma_R\) = 25 dB = 316.2 and ε = 0.005, setting \(1-e^{-\gamma_{\min}/\bar\gamma}=\varepsilon\) gives \(\gamma_{\min}=\bar\gamma\ln\frac{1}{1-\varepsilon}\) = 316.2 × 0.005013 = 1.585, i.e. 10 log<sub>10</sub>1.585 = 2.00 dB, so the fade margin relative to an AWGN channel is 25 − 2.00 = 23.0 dB \(=10\log_{10}\big[1/\ln\frac{1}{1-\varepsilon}\big]\), which depends only on ε.</p>
+  </div>
+</section>
+
+<section class="topic" id="t7">
+  <h2><span class="tn">7</span>莱斯衰落与 K 因子 · Rician fading and the K-factor</h2>
+  <div class="meta"><span class="st give">考试给</span><span class="st def">定义·必会</span><span class="freq">出现：期末 0/4 套 · 专项 · Q3(d) · 讲义第 2 章 p.27–28</span></div>
+  <p class="why">莱斯 = 多径散射 + 一条直射径（LOS）。Quiz 若考，多半是由功率比求 K 并换成 dB，再定性说深衰落、中断比瑞利多还是少（专项 · Q3(d) 就是这种问法）。莱斯分布考试给，懂 K 的含义即可；老师说只要知道直射分量越强，越接近没有衰落的 AWGN。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>LOS</td><td>直射径</td><td>line of sight (specular) component</td><td>能直接"看见"基站的那一条波，幅度固定，不随机</td><td>—</td></tr>
+    <tr><td>\(s^2\)</td><td>直射分量功率</td><td>LOS power</td><td>直射那一条的功率（s 是它的幅度）</td><td>W</td></tr>
+    <tr><td>\(2\sigma^2\)</td><td>散射分量总功率</td><td>total scattered (diffuse) power</td><td>所有散射、反射回波加起来的平均功率</td><td>W</td></tr>
+    <tr><td>\(K\)</td><td>莱斯因子</td><td>Rician K-factor</td><td>直射功率 ÷ 散射总功率</td><td>无（线性）</td></tr>
+    <tr><td>\(K_{\mathrm{dB}}\)</td><td>K 的 dB 值</td><td>K in dB</td><td>10 log<sub>10</sub>K</td><td>dB</td></tr>
+    <tr><td>\(z\)</td><td>包络</td><td>envelope</td><td>合成信号的幅度，服从莱斯分布</td><td>V</td></tr>
+    <tr><td>\(I_0(\cdot)\)</td><td>零阶修正贝塞尔函数</td><td>zeroth-order modified Bessel function</td><td>只出现在莱斯 PDF 里，不用会算；I<sub>0</sub>(0) = 1</td><td>—</td></tr>
+    <tr><td>\(s^2+2\sigma^2\)</td><td>总平均功率</td><td>total average power</td><td>直射 + 散射</td><td>W</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">莱斯因子 · Rician K-factor <span class="st give">考试给</span></div><div class="fx">\[ K=\frac{s^2}{2\sigma^2}=\frac{\text{LOS power}}{\text{total scattered power}} \]</div><div class="fn">讲义 p.27–28。式子考试给，但含义自己要会说：直射功率 ÷ 散射总功率（功率比）。K = 0 → 没有直射 → 瑞利（最差）；K → ∞ → 只剩直射 → 不衰落（AWGN）。同一平均 SNR、同一门限下（门限低于平均 SNR，也就是正常留了余量的情况），K 越大，深衰落越少，中断越小。</div></div>
+  <div class="fm"><div class="fl">K 的 dB 与功率拆分 · K in dB and the power split <span class="st def">定义·必会</span></div><div class="fx">\[ K_{\mathrm{dB}}=10\log_{10}K,\qquad \frac{s^2}{s^2+2\sigma^2}=\frac{K}{K+1},\qquad \frac{2\sigma^2}{s^2+2\sigma^2}=\frac{1}{K+1} \]</div><div class="fn">K 是功率比，用 10 log（不是 20 log）。K = 0 dB 的意思是 K = 1（直射、散射各 50%），不是瑞利；瑞利是 K = 0，即 −∞ dB。讲义 p.28 的图画了 K = −∞ dB（瑞利）、6 dB、∞ dB 三条曲线。</div></div>
+  <div class="fm"><div class="fl">莱斯分布（包络）· Rician envelope PDF <span class="st give">考试给</span></div><div class="fx">\[ p_z(z)=\frac{z}{\sigma^2}\,e^{-\frac{z^2+s^2}{2\sigma^2}}\,I_0\!\left(\frac{zs}{\sigma^2}\right),\qquad z\ge 0 \]</div><div class="fn">不用背，I<sub>0</sub> 不用会算。看到它要认出 s² 是直射功率、2σ² 是散射功率。令 s = 0：I<sub>0</sub>(0) = 1，就变回瑞利 PDF \(\frac{z}{\sigma^2}e^{-z^2/(2\sigma^2)}\)，所以瑞利是莱斯 K = 0 的特例。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>专项 · Q3 (d)</th><th>讲义第 2 章 p.28 图（K = 6 dB）</th></tr></thead><tbody>
+    <tr><td>① 认出两部分</td><td>直射 = LOS 那一条；散射 = 其余全部之和</td><td>直射功率 = 4 × 散射总功率</td><td>曲线标 K = 6 dB</td></tr>
+    <tr><td>② K（线性）</td><td>K = 直射 ÷ 散射；给 dB 就 10<sup>K<sub>dB</sub>/10</sup></td><td>K = 4</td><td>K = 10<sup>0.6</sup> = 3.981</td></tr>
+    <tr><td>③ K<sub>dB</sub></td><td>10 log<sub>10</sub>K</td><td>10 log<sub>10</sub>4 = 6.02 dB</td><td>6 dB（已给）</td></tr>
+    <tr><td>④ 功率拆分</td><td>直射占 K/(K+1)，散射占 1/(K+1)</td><td>4/5 = 80% 直射，20% 散射</td><td>3.981/4.981 = 79.9% 直射，20.1% 散射</td></tr>
+    <tr><td>⑤ 判断趋势</td><td>K = 0 瑞利 … K → ∞ AWGN；K 越大深衰落越少</td><td>中断比 (c) 瑞利的 9.52% 小（课外数值积分约 1.63%）</td><td>介于瑞利（−∞ dB）和不衰落（∞ dB）之间，靠近 0 的部分比瑞利少</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：专项 · Q3 (d)＝练习页专项第 3 题（同一场景平均 SNR 20 dB、门限 10 dB；出现一条直射径，功率是散射路径总功率的 4 倍，求 K（dB）并不经计算说明 (c) 的中断概率怎么变）；讲义第 2 章 p.27–28（莱斯分布与 K，p.28 的图画了 K = −∞、6、∞ dB 三条曲线）。历年期末和 Practice 1–2 都没有考莱斯。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 散射分量有好几条，给的是 dBm</div><p class="q">某接收点直射分量功率 −80 dBm，另有三条散射分量，功率分别为 −90、−92、−95 dBm。求莱斯因子 K（线性和 dB），以及直射功率占总功率的比例。</p><ol class="work">
+    <li>换成 mW（dBm 不能直接相加）：直射 10<sup>−8</sup> = 1.000×10<sup>−8</sup> mW；散射 1.000×10<sup>−9</sup>、6.310×10<sup>−10</sup>、3.162×10<sup>−10</sup> mW。</li>
+    <li>散射总功率 = 1.947×10<sup>−9</sup> mW（= −87.11 dBm）。</li>
+    <li>K = 1.000×10<sup>−8</sup> / 1.947×10<sup>−9</sup> = 5.136；K<sub>dB</sub> = 10 log<sub>10</sub>5.136 = 7.11 dB（也等于 −80 − (−87.11)，dBm − dBm = dB）。</li>
+    <li>直射占比 = K/(K+1) = 5.136 / 6.136 = 83.7%。</li>
+  </ol><p class="ans">答案：K ≈ 5.14（7.11 dB）；直射约占总功率的 83.7%</p></div>
+  <div class="eg"><div class="egh">例 2 · 倒着读 K<sub>dB</sub>；直射被挡住会怎样</div><p class="q">(a) 某信道 K<sub>dB</sub> = −3 dB，直射功率占总功率多少？它更像瑞利还是 AWGN？(b) 用户从开阔地（K = 10 dB）走进楼群，直射径被完全挡住。假设平均 SNR 仍是 20 dB、门限仍是 10 dB，衰落分布和中断概率怎么变？</p><ol class="work">
+    <li>(a) K = 10<sup>−3/10</sup> = 10<sup>−0.3</sup> = 0.5012；直射占 0.5012 / 1.5012 = 33.4%，散射占 66.6%。</li>
+    <li>散射为主，更接近瑞利；但 K = −3 dB 不是瑞利（瑞利是 K = 0，即 −∞ dB）。</li>
+    <li>(b) 直射被挡 → s² = 0 → K = 0 → 包络从莱斯变成瑞利 → 深衰落变多 → 中断概率变大。</li>
+    <li>瑞利那一端能算：1 − e<sup>−10/100</sup> = 0.0952。课外数值（莱斯要数值计算，只为建立感觉）：K = 10 dB（K = 10）约 0.074%，K = 4（6.02 dB，就是专项 · Q3 (d)）约 1.63%，K = 0 dB（K = 1）约 7.33%，到瑞利（K = 0）9.52%，比 K = 10 dB 时大约 129 倍。</li>
+  </ol><p class="ans">答案：(a) 直射约 33.4%，偏瑞利但不是瑞利；(b) 变成瑞利衰落，中断概率变大（升到 9.52%）</p></div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>K<sub>dB</sub> 用 20 log：K = 4 → 20 log<sub>10</sub>4 = 12.04 dB ✗，应为 10 log<sub>10</sub>4 = 6.02 dB（K 是功率比）。</li>
+    <li>给的是幅度比忘了平方：直射幅度是散射 rms 幅度 √(2σ²) 的 2 倍 → K = 2² = 4（6.02 dB），不是 2（3.01 dB）。</li>
+    <li>把 K = 0 dB 当成瑞利 ✗：0 dB 是 K = 1（直射、散射各 50%）；瑞利是 K = 0 = −∞ dB。</li>
+    <li>散射总功率用 dBm 直接相加，或只取最强的一条 ✗（例 1 只取 −90 dBm 那条会得 K<sub>dB</sub> = −80 − (−90) = 10 dB，正确是 7.11 dB）：先换 mW 全部加起来，再求 K。</li>
+    <li>把"瑞利 / 莱斯"和"平坦 / 选择性、快 / 慢"混为一谈：前者说幅度服从什么分布，后者说衰落和信号的关系；一个信道可以同时是"平坦、慢、莱斯"。</li>
+    <li>说"有直射径就不会中断" ✗：只是比瑞利小；K → ∞ 才接近 AWGN。比较时要说明是同一平均 SNR、同一门限。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>The Rician K-factor is the ratio of the power in the line-of-sight component to the total power in the scattered components, \(K=s^2/(2\sigma^2)\). Here K = 4, i.e. \(K_{\mathrm{dB}}=10\log_{10}4=6.02\) dB. Because of the direct path the envelope is Rician rather than Rayleigh, so deep fades are less likely and, for the same average SNR (20 dB) and threshold (10 dB), the outage probability is lower than the Rayleigh value of 0.0952. K = 0 reduces to Rayleigh fading and K → ∞ to an AWGN channel with no fading.</p>
+  </div>
+</section>

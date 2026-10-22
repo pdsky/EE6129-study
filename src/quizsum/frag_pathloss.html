@@ -1,0 +1,211 @@
+<section class="topic" id="t3">
+  <h2><span class="tn">3</span>简化路径损耗模型 · Simplified path loss model</h2>
+  <div class="meta"><span class="st must">背</span><span class="st def">定义·必会</span><span class="freq">出现：期末 2/4 套（2023-24 Q1(a)(i)、2024-25 Q1(a)(i)）· Practice 1 Q1 · 模拟 A·Q2、B·Q2 · 专项 Q1、Q3</span></div>
+  <p class="why">把 \(P_r=P_tK(d_0/d)^{\gamma}\) 取 dB 变成一条直线，然后有三种问法：正着代 d 求接收功率；倒着由“最多能损耗多少 dB”求最远距离；从直线图读截距（K<sub>dB</sub>）和斜率（γ）。两套期末都放在 Q1(a)(i) 第一小问；模拟 A·Q2 也是先算它，再接阴影中断（第 5 类）。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(P_t\)</td><td>发射功率</td><td>transmit power</td><td>发射机送出去的功率</td><td>W、mW</td></tr>
+    <tr><td>\(P_r\)</td><td>接收功率</td><td>received power</td><td>接收机收到的功率，几百米外常常只有 10<sup>−10</sup> W 甚至更小</td><td>W、mW</td></tr>
+    <tr><td>\(P_{t,\mathrm{dB}}\)、\(P_{r,\mathrm{dB}}\)</td><td>功率的 dB 值</td><td>power in dBm</td><td>10 log₁₀(P / 1 mW)，绝对功率“有多少”</td><td>dBm</td></tr>
+    <tr><td>\(K\)</td><td>路径损耗常数</td><td>path loss constant</td><td>参考距离 d₀ 处的 P<sub>r</sub>/P<sub>t</sub>，一个小于 1 的倍数；和天线、环境有关，靠实测拟合</td><td>无（倍数）</td></tr>
+    <tr><td>\(K_{\mathrm{dB}}\)</td><td>K 的 dB 值</td><td>K in dB</td><td>10 log₁₀K，通常是负数：−30 dB 就是 K = 10<sup>−3</sup></td><td>dB</td></tr>
+    <tr><td>\(\gamma\)</td><td>路径损耗指数</td><td>path loss exponent</td><td>距离每变 10 倍，损耗多 10γ dB；题目只说 “exponent = 3.5” 时就是 γ</td><td>无</td></tr>
+    <tr><td>\(d\)</td><td>收发距离</td><td>Tx–Rx distance</td><td>发射机到接收机的距离</td><td>m</td></tr>
+    <tr><td>\(d_0\)</td><td>参考距离</td><td>reference distance</td><td>K 就是在这个距离上定的；默认 1 m，题目给 10 m 就用 10 m</td><td>m</td></tr>
+    <tr><td>\(P_{L,\mathrm{dB}}\)</td><td>路径损耗</td><td>path loss</td><td>P<sub>t</sub> − P<sub>r</sub>（dB），正数，越远越大</td><td>dB</td></tr>
+    <tr><td>\(\psi_{\mathrm{dB}}\)</td><td>阴影衰落</td><td>shadowing</td><td>零均值高斯随机量，把实测点打散在直线两侧（2023-24 的式子里有它）</td><td>dB</td></tr>
+    <tr><td>\(\lambda\)</td><td>波长</td><td>wavelength</td><td>λ = c/f；只在自由空间、双径公式里出现，简化模型里没有</td><td>m</td></tr>
+    <tr><td>\(G_t\)、\(G_r\)</td><td>天线增益</td><td>antenna gains</td><td>自由空间公式里的收、发天线增益，没给就取 1</td><td>无</td></tr>
+    <tr><td>\(h_t\)、\(h_r\)、\(d_c\)</td><td>天线高度、临界距离</td><td>antenna heights, critical distance</td><td>双径模型用：d &gt; d<sub>c</sub> = 4h<sub>t</sub>h<sub>r</sub>/λ 以后才按 d<sup>−4</sup> 下降</td><td>m</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">简化路径损耗模型（线性）· Simplified path loss model, linear <span class="st must">背</span></div><div class="fx">\[ P_r = P_t\,K\left(\frac{d_0}{d}\right)^{\gamma} \]</div><div class="fn">讲义第 2 章 p.8 蓝框，考试不给。K 用线性倍数（K<sub>dB</sub> = −30 dB 要先换成 K = 10<sup>−3</sup>），P<sub>t</sub>、P<sub>r</sub> 用同一单位。题目写成 \(P_r=P_tKd^{-\gamma}\) 或 \(P_tK[1/d]^{\gamma}\) 也是它（d₀ = 1 m）。老师强调：这个模型里没有随机量，算出来是确定的一个数；γ 的典型取值表（p.9）不用背，题目会给 γ 或让你算。</div></div>
+  <div class="fm"><div class="fl">简化路径损耗模型（dB）· dB form <span class="st must">背</span></div><div class="fx">\[ \begin{aligned} P_{r,\mathrm{dBm}} &amp;= P_{t,\mathrm{dBm}} + K_{\mathrm{dB}}\\ &amp;\quad - 10\gamma\log_{10}\frac{d}{d_0}\\ P_{L,\mathrm{dB}} &amp;= P_{t,\mathrm{dBm}} - P_{r,\mathrm{dBm}}\\ &amp;= -K_{\mathrm{dB}} + 10\gamma\log_{10}\frac{d}{d_0} \end{aligned} \]</div><div class="fn">两边取 10 log₁₀：乘法变加法，\((d_0/d)^{\gamma}\) 变成 \(-10\gamma\log_{10}(d/d_0)\)。dBm + dB = dBm：只有 P<sub>t</sub>、P<sub>r</sub> 是 dBm，K<sub>dB</sub> 和距离项是 dB。线性、dB 两种形式都要背，老师说按题目给的量选方便的那种。<b>画成图</b>：横轴取 \(10\log_{10}d\) 时，P<sub>L</sub> 是截距 −K<sub>dB</sub>（d = d₀ = 1 m 处）、斜率 γ 的直线；横轴取 \(\log_{10}d\) 时斜率是 10γ（每十倍距离 10γ dB）；纵轴画 \((P_r/P_t)_{\mathrm{dB}}\) 时线往下走，截距是 +K<sub>dB</sub>。</div></div>
+  <div class="fm"><div class="fl">加上阴影 · With shadowing（讲义 p.12）<span class="st def">定义·必会</span></div><div class="fx">\[ \begin{aligned} P_r &amp;= P_tK\,d^{-\gamma}\,\psi\\ P_{r,\mathrm{dB}} &amp;= P_{t,\mathrm{dB}} + K_{\mathrm{dB}}\\ &amp;\quad - 10\gamma\log_{10}d + \psi_{\mathrm{dB}}\\ \psi_{\mathrm{dB}} &amp;\sim \mathcal{N}(0,\sigma_\psi^2) \end{aligned} \]</div><div class="fn">2023-24 Q1(a)(i) 原题给的就是第一行的线性式（d₀ = 1 m），要你化成第二行。不用另背：就是上面的 dB 式再加一项 ψ<sub>dB</sub>（乘 ψ，取 dB 后变成加 ψ<sub>dB</sub>）。老师：阴影零均值，所以平均接收功率 = 不含阴影的路径损耗结果，方差 = σ<sub>ψ</sub>²。</div></div>
+  <div class="fm"><div class="fl">功率单位 · dBm ↔ mW <span class="st def">定义·必会</span></div><div class="fx">\[ \begin{gathered} P_{\mathrm{dBm}} = 10\log_{10}\frac{P}{1\ \mathrm{mW}}\\ P = 10^{P_{\mathrm{dBm}}/10}\ \mathrm{mW}\\ 1\ \mathrm{W} = 30\ \mathrm{dBm} \end{gathered} \]</div><div class="fn">倍数（比值）的 dB 不带 m：K<sub>dB</sub> = 10 log₁₀K。例：100 mW = 20 dBm，4 W = 4000 mW = 36.02 dBm，10<sup>−3</sup> = −30 dB。老师：mW 没换成 dBm 会扣分，dB ↔ 线性的换算要写出来。</div></div>
+  <div class="fm"><div class="fl">自由空间（p.4）与双径（p.5）· Free space and two-ray —— 只作对照，不是简化模型</div><div class="fx">\[ P_r = P_tG_tG_r\left(\frac{\lambda}{4\pi d}\right)^{2} \]\[ \begin{gathered} P_r \approx P_tG_tG_r\,\frac{(h_th_r)^2}{d^4}\\ d \gt d_c = \frac{4h_th_r}{\lambda} \end{gathered} \]</div><div class="fn">Quiz 标记和录音都没把这两个列为必背，放在这里是为了分清。自由空间 ∝ d<sup>−2</sup>（相当于 γ = 2，每十倍距离 20 dB），取 dB 要用 <b>20</b> log₁₀(λ/4πd)，λ = c/f（定义·必会）；双径远处 ∝ d<sup>−4</sup>（每十倍距离 40 dB），和频率无关。老师提醒：往年 Quiz 有学生把 simplified path loss model 的题用成了自由空间。题目说 simplified，就只用 K、γ。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型 ①：正算接收功率 · 反算最远距离（读直线图也属于这一类）</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2024-25 Q1(a)(i)）</th><th>模拟 A · Q2</th></tr></thead><tbody>
+    <tr><td>① 换单位</td><td>功率换成 dBm：mW 直接取 10 log₁₀；W 先 ×1000 变 mW，或 10 log₁₀(瓦数) + 30</td><td>只给 K<sub>dB</sub> = −30 dB、γ = 3.5，没有功率要换；原图纵轴标 Path Loss，但线往下走 → 按 (P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> 读</td><td>100 mW → 10 log₁₀100 = 20 dBm</td></tr>
+    <tr><td>② 写 dB 式</td><td>P<sub>r</sub> = P<sub>t</sub> + K<sub>dB</sub> − 10γ log₁₀(d/d₀)，先把 10γ 算出来</td><td>(P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> = −30 − 35 log₁₀d（10γ = 35）</td><td>P<sub>r</sub> = 20 − 31.5 − 36 log₁₀d（10γ = 36）</td></tr>
+    <tr><td>③ 正算：代 d</td><td>算 10γ log₁₀(d/d₀)，再加减</td><td>d = 1 m：log₁₀1 = 0 → A = K<sub>dB</sub> = −30 dB</td><td>d = 300 m：36 × 2.4771 = 89.18 dB → P<sub>r</sub> = 20 − 31.5 − 89.18 = −100.68 dBm</td></tr>
+    <tr><td>④ 反算：求 d</td><td>令 10γ log₁₀(d/d₀) = 允许的损耗（dB），d = d₀ × 10<sup>允许/(10γ)</sup></td><td>A 到 B 降了 88 dB：35 × B = 88 → B = log₁₀d = 2.51（d ≈ 327 m）</td><td>中断 ≤ 1%：平均 P<sub>r</sub> ≥ −110 + 2.326 × 6 = −96.04 dBm；36 log₁₀d ≤ 84.54 → log₁₀d ≤ 2.348 → d ≈ 223 m</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：真题（2024-25 Q1(a)(i)）＝ 2024-25 期末 Q1(a)(i)：P<sub>r</sub> = P<sub>t</sub>K(d)<sup>−3.5</sup>，K<sub>dB</sub> = −30 dB，Figure 1 画 path loss（dB）对 log₁₀(d) 的直线，A 在 d = 1 m 处，A 到横轴上 B 点的高度差标为 88 dB，求 A、B。模拟 A · Q2 ＝ 练习页自编模拟题：发射 100 mW，K<sub>dB</sub> = −31.5 dB，d₀ = 1 m，γ = 3.6，门限 −110 dBm，阴影 σ = 6 dB；(a) 300 m 处的平均接收功率，(c) 中断不超过 1% 的最大距离。讲义第 2 章 p.8–10。</p>
+
+  <h4>题型 ②：把模型化成 dB 式，画路径损耗直线（含阴影）</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2023-24 Q1(a)(i)）</th><th>模拟 B · Q2</th></tr></thead><tbody>
+    <tr><td>① 取 10 log₁₀</td><td>乘法变加法，幂变系数，d₀/d 变负号</td><td>P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 10γ log₁₀d + ψ<sub>dB</sub></td><td>M = (P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> = K<sub>dB</sub> − γ × (10 log₁₀d)</td></tr>
+    <tr><td>② 选纵轴</td><td>画 P<sub>L</sub> = P<sub>t</sub> − P<sub>r</sub>（线往上）或 P<sub>r</sub>/P<sub>t</sub>（线往下）</td><td>P<sub>L,dB</sub> = −K<sub>dB</sub> + γ × (10 log₁₀d) − ψ<sub>dB</sub></td><td>拟合结果：M = −37.01 − 3.366x，x = 10 log₁₀d</td></tr>
+    <tr><td>③ 标截距</td><td>d = d₀ = 1 m（横轴 0）处的纵坐标</td><td>−K<sub>dB</sub></td><td>K<sub>dB</sub> = −37.0 dB</td></tr>
+    <tr><td>④ 标斜率</td><td>横轴 10 log₁₀d → 斜率 γ；横轴 log₁₀d → 斜率 10γ</td><td>γ（横轴每增加 1 dB，P<sub>L</sub> 多 γ dB）</td><td>斜率 −3.37 → γ = 3.37</td></tr>
+    <tr><td>⑤ 标阴影</td><td>实测点散在线两侧，点到线的竖直距离就是该点的 ψ<sub>dB</sub></td><td>ψ<sub>dB</sub> 零均值高斯 → 点在线两侧随机散开</td><td>d = 100 m（x = 20）：线上 −104.33 dB，实测 −105 dB，差 −0.67 dB</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：真题（2023-24 Q1(a)(i)）＝ 2023-24 期末 Q1(a)(i)：给出含阴影的模型 P<sub>r</sub> = P<sub>t</sub>K(d)<sup>−γ</sup>ψ，要求化成 dB 形式，画 path loss（dB）对 distance（dB）的草图并标出 K<sub>dB</sub>、γ（紧接的 (ii) 问阴影方差上限：σ² &lt; 18.5 dB²，见第 5 类）。模拟 B · Q2 ＝ 练习页自编模拟题：4 个测量点 d = 10、20、50、100 m，最小二乘得 K<sub>dB</sub> = −37.0 dB、γ = 3.37；原题问的是拟合（见第 4 类），这里借它的结果演示怎么标图。讲义第 2 章 p.8、p.12。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 功率给瓦、K 给线性值：两种形式各算一遍（变形：单位换算）</div>
+    <p class="q">发射功率 4 W，简化路径损耗模型 K = 5×10<sup>−4</sup>（线性值），γ = 3，d₀ = 1 m。(a) 求 200 m 处的接收功率，用 dBm 和 W 各写一次。(b) 距离加倍到 400 m，接收功率降多少 dB？是原来的几分之一？</p>
+    <ol class="work">
+      <li>先换单位：P<sub>t</sub> = 4 W = 4000 mW → 10 log₁₀4000 = 36.02 dBm；K<sub>dB</sub> = 10 log₁₀(5×10<sup>−4</sup>) = −33.01 dB。</li>
+      <li>dB 式：距离项 10γ log₁₀(d/d₀) = 30 × log₁₀200 = 30 × 2.301 = 69.03 dB；P<sub>r</sub> = 36.02 − 33.01 − 69.03 = −66.02 dBm。</li>
+      <li>线性式核对：\(P_r = 4\times5\times10^{-4}\times(1/200)^3\) \(= 2\times10^{-3}\times1.25\times10^{-7}\) \(= 2.5\times10^{-10}\) W = 2.5×10<sup>−7</sup> mW → 10 log₁₀(2.5×10<sup>−7</sup>) = −66.02 dBm，两种算法一致。</li>
+      <li>(b) 距离加倍多损耗 10γ log₁₀2 = 30 × 0.301 = 9.03 dB；线性上 P<sub>r</sub> ∝ d<sup>−3</sup>，变成原来的 1/2³ = 1/8。P<sub>r</sub>(400 m) = −66.02 − 9.03 = −75.05 dBm = 3.125×10<sup>−11</sup> W。</li>
+    </ol>
+    <p class="ans">答案：(a) −66.02 dBm = 2.5×10<sup>−10</sup> W；(b) 降 9.03 dB，即 1/8</p>
+  </div>
+  <div class="eg"><div class="egh">例 2 · 反求最远距离，参考距离 d₀ = 10 m（变形：倒着问 + d₀ 不是 1 m）</div>
+    <p class="q">发射功率 1 W，K<sub>dB</sub> = −50 dB（在 d₀ = 10 m 处定的），γ = 4，接收机最低需要 −100 dBm，不考虑阴影。(a) 最远能覆盖多远？(b) 要覆盖 2 km，发射功率至少多少瓦？</p>
+    <ol class="work">
+      <li>P<sub>t</sub> = 1 W = 30 dBm。要求 P<sub>r</sub> ≥ −100 dBm：30 − 50 − 40 log₁₀(d/10) ≥ −100。</li>
+      <li>移项：40 log₁₀(d/10) ≤ 80 → log₁₀(d/10) ≤ 2 → d/10 ≤ 100 → d ≤ 1000 m。（忘了除以 d₀ 会解出 d ≤ 100 m，差 10 倍。）</li>
+      <li>(b) d = 2000 m：40 log₁₀(2000/10) = 40 × 2.301 = 92.04 dB；P<sub>t</sub> ≥ −100 + 50 + 92.04 = 42.04 dBm。</li>
+      <li>换回瓦：10<sup>42.04/10</sup> mW = 16&nbsp;000 mW = 16.0 W。对照：从 1 km 加倍到 2 km 多损耗 40 log₁₀2 = 12.04 dB，功率要 ×16。</li>
+    </ol>
+    <p class="ans">答案：(a) d<sub>max</sub> = 1000 m；(b) P<sub>t</sub> ≥ 42.04 dBm ≈ 16.0 W</p>
+  </div>
+  <div class="eg"><div class="egh">例 3 · 从路径损耗图读 K、γ，再识破“自由空间”陷阱（变形：读图 + 选模型）</div>
+    <p class="q">实测路径损耗 P<sub>L</sub>（dB）对 log₁₀d 画成一条往上走的直线：d = 1 m（log₁₀d = 0）处 P<sub>L</sub> = 40 dB，log₁₀d = 3 处 P<sub>L</sub> = 145 dB。(a) 求 K<sub>dB</sub> 和 γ。(b) P<sub>t</sub> = 20 dBm，求 200 m 处的 P<sub>r</sub>。(c) 有同学改用自由空间公式（f = 2 GHz，G<sub>t</sub> = G<sub>r</sub> = 1）算 200 m 处的 P<sub>r</sub>，会得到多少？差多少？</p>
+    <ol class="work">
+      <li>(a) 截距：P<sub>L</sub>(1 m) = −K<sub>dB</sub> = 40 dB → K<sub>dB</sub> = −40 dB。斜率：(145 − 40)/3 = 35 dB/十倍距离 = 10γ → γ = 3.5。（横轴如果是 10 log₁₀d，斜率直接就是 γ。）</li>
+      <li>(b) P<sub>L</sub>(200 m) = 40 + 35 log₁₀200 = 40 + 35 × 2.301 = 40 + 80.54 = 120.54 dB；P<sub>r</sub> = 20 − 120.54 = −100.54 dBm。</li>
+      <li>(c) 自由空间：λ = c/f = 3×10<sup>8</sup>/2×10<sup>9</sup> = 0.150 m；P<sub>L</sub> = 20 log₁₀(4πd/λ) = 20 log₁₀(4π × 200/0.150) = 20 log₁₀(16&nbsp;755) = 84.48 dB → P<sub>r</sub> = 20 − 84.48 = −64.48 dBm。</li>
+      <li>两者差 120.54 − 84.48 ≈ 36.1 dB，约 4.0×10³ 倍：自由空间每十倍距离只多 20 dB，这里实测是 35 dB。题目给了 simplified path loss model（K、γ 或图），就只能用它。</li>
+    </ol>
+    <p class="ans">答案：(a) K<sub>dB</sub> = −40 dB，γ = 3.5；(b) −100.54 dBm；(c) −64.48 dBm，高估约 36 dB（用错模型）</p>
+  </div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>题目写 simplified path loss model（或给了 K、γ）却套自由空间 (λ/4πd)²：老师说往年 Quiz 真有人这样错。自由空间每十倍距离只降 20 dB，γ = 3.5 时降 35 dB；专项 Q1 里 1 km 处两者差约 45 dB。</li>
+    <li>功率没换成 dBm 就代进 dB 式（老师：会扣分）。只有 P<sub>t</sub>、P<sub>r</sub> 是 dBm，K<sub>dB</sub> 和 10γ log₁₀(d/d₀) 是 dB。反过来，线性式里的 K 要用倍数（−30 dB → 10<sup>−3</sup>），不能代 −30。</li>
+    <li>把 10γ 写成 γ：γ = 3.6 时距离项是 36 log₁₀d，不是 3.6 log₁₀d。读图同理：横轴是 log₁₀d 时斜率 = 10γ，横轴是 10 log₁₀d 时斜率才 = γ。</li>
+    <li>忘了除以 d₀：d₀ = 10 m 时要用 log₁₀(d/10)，例 2 忘了会把 1000 m 算成 100 m。K 是在 d₀ 处定义的，d₀ 换了，K 也跟着变。</li>
+    <li>读图先看纵轴画的是什么：画 P<sub>L</sub>（线往上）截距是 −K<sub>dB</sub>；画 P<sub>r</sub>/P<sub>t</sub>（线往下）截距是 +K<sub>dB</sub>。2024-25 的图纵轴标的是 Path Loss，但线往下走，只能按 (P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> 读，所以 A = K<sub>dB</sub> = −30 dB；按正的路径损耗理解则 A = 30 dB（那样线应该往上走），B 两种理解都是 2.51。</li>
+    <li>反算距离最后一步是取 10 的幂：log₁₀d ≤ 2.348 → d ≤ 10<sup>2.348</sup> ≈ 223 m，别把 2.348 当成距离；“最远距离”往小的方向舍入。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>Taking 10 log₁₀ of both sides of \(P_r=P_tK(d_0/d)^{\gamma}\) gives \(P_{r,\mathrm{dBm}}=P_{t,\mathrm{dBm}}+K_{\mathrm{dB}}\) \({}-10\gamma\log_{10}(d/d_0)\).</p>
+    <p>With \(P_t\) = 100 mW = 10 log₁₀100 = 20 dBm, \(K_{\mathrm{dB}}\) = −31.5 dB and γ = 3.6, at d = 300 m: \(P_r = 20-31.5-36\log_{10}300\) \(= -100.68\) dBm.</p>
+    <p>The path loss \(P_{L,\mathrm{dB}}=-K_{\mathrm{dB}}+\gamma\,(10\log_{10}d)\) is a straight line against 10 log₁₀d: its intercept at d = 1 m is −K<sub>dB</sub> and its slope is γ (10γ dB per decade against log₁₀d). Shadowing ψ<sub>dB</sub> scatters the measured points on both sides of the line.</p>
+    <p>For the maximum distance, set the received power equal to the required minimum and solve for log₁₀d: 36 log₁₀d ≤ 84.54 gives d ≤ 10<sup>2.348</sup> ≈ 223 m.</p>
+  </div>
+</section>
+
+<section class="topic" id="t4">
+  <h2><span class="tn">4</span>最小二乘拟合 K、γ 与阴影方差 · Least-squares fit of K, γ and σ²</h2>
+  <div class="meta"><span class="st must">背</span><span class="st def">会算</span><span class="st def">定义·必会</span><span class="freq">出现：Practice 1 Q1（老师第 10 周课上讲过）· 模拟 B·Q2 · 期末 4 套都没出</span></div>
+  <p class="why">给几组实测点 (d<sub>i</sub>, (P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub>)，取 dB 后模型是直线 M = K<sub>dB</sub> − γx，用最小二乘求截距和斜率；点偏离直线的均方值（MSE）就是阴影方差 σ<sub>ψ</sub>²，再接 P<sub>out</sub> = Q(余量/σ)。Practice 1 Q1 就是这题（6 个点），模拟 B · Q2 是 4 个点的版本。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(d_i\)</td><td>第 i 个测量距离</td><td>i-th measurement distance</td><td>在离发射机 d<sub>i</sub> 处测了一次</td><td>m</td></tr>
+    <tr><td>\(d_0\)</td><td>参考距离</td><td>reference distance</td><td>默认 1 m；拟合出来的 K 就是这个距离上的增益</td><td>m</td></tr>
+    <tr><td>\(n\)</td><td>测量点数</td><td>number of measurements</td><td>表里有几行就是几</td><td>个</td></tr>
+    <tr><td>\(x_i\)</td><td>横坐标（距离的 dB）</td><td>distance in dB</td><td>10 log₁₀(d<sub>i</sub>/d₀)；d 每 ×10，x 加 10</td><td>dB</td></tr>
+    <tr><td>\(M_i\)</td><td>实测路径增益</td><td>measured path gain</td><td>(P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> = P<sub>r</sub>(dBm) − P<sub>t</sub>(dBm)，是负数</td><td>dB</td></tr>
+    <tr><td>\(\bar x\)、\(\bar M\)</td><td>平均值</td><td>sample means</td><td>所有 x、所有 M 各自的平均；最佳直线一定经过 (\(\bar x\), \(\bar M\))</td><td>dB</td></tr>
+    <tr><td>\(S_{xy}\)、\(S_{xx}\)</td><td>离差乘积和、离差平方和</td><td>sum of cross deviations, sum of squared deviations</td><td>S<sub>xy</sub> = Σ(x<sub>i</sub> − \(\bar x\))(M<sub>i</sub> − \(\bar M\))，S<sub>xx</sub> = Σ(x<sub>i</sub> − \(\bar x\))²（本页用的简写）</td><td>dB²</td></tr>
+    <tr><td>\(K_{\mathrm{dB}}\)、\(\gamma\)</td><td>截距、路径损耗指数</td><td>intercept, path loss exponent</td><td>直线 M = K<sub>dB</sub> − γx 的截距和“斜率的相反数”</td><td>dB、无</td></tr>
+    <tr><td>\(\hat M_i\)</td><td>预测值</td><td>fitted value</td><td>直线在 x<sub>i</sub> 处的值 K<sub>dB</sub> − γx<sub>i</sub></td><td>dB</td></tr>
+    <tr><td>\(e_i\)</td><td>残差</td><td>residual</td><td>实测 − 预测 = M<sub>i</sub> − \(\hat M_i\)，就是这个点的阴影</td><td>dB</td></tr>
+    <tr><td>\(F(K,\gamma)\)</td><td>均方误差</td><td>mean squared error (MSE)</td><td>(1/n)Σe<sub>i</sub>²；最小二乘就是让它最小</td><td>dB²</td></tr>
+    <tr><td>\(\sigma_\psi^2\)、\(\sigma_\psi\)</td><td>阴影方差、标准差</td><td>shadowing variance, standard deviation</td><td>σ<sub>ψ</sub>² = 最小的 MSE；Q 函数里用开根号后的 σ<sub>ψ</sub></td><td>dB²、dB</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">直线模型 · The dB straight line <span class="st must">背</span></div><div class="fx">\[ \begin{gathered} M_i = \left.\frac{P_r}{P_t}\right|_{\mathrm{dB}} = K_{\mathrm{dB}} - \gamma\,x_i\\ x_i = 10\log_{10}\frac{d_i}{d_0} \end{gathered} \]</div><div class="fn">就是第 3 类必背的 dB 式两边减去 P<sub>t</sub>。横坐标用 10 log₁₀d，斜率才正好是 −γ；用 log₁₀d，斜率会变成 −10γ。老师：K、γ 都由实测数据拟合（empirical）。</div></div>
+  <div class="fm"><div class="fl">最小二乘的目标（讲义 p.13）· Least-squares criterion <span class="st def">会算</span></div><div class="fx">\[ \begin{gathered} F(K,\gamma) = \frac{1}{n}\sum_{i=1}^{n}e_i^2\\ e_i = M_i - K_{\mathrm{dB}} + \gamma x_i\\ \frac{\partial F}{\partial K}=0,\qquad \frac{\partial F}{\partial \gamma}=0 \end{gathered} \]</div><div class="fn">老师第 10 周讲 Practice 1 Q1 就是这样做的：写出 F，分别对 K、γ 求偏导令其为 0，解两个一次方程。录音没把它列进蓝框，也没说考试给，按“自己会写、会解”准备。</div></div>
+  <div class="fm"><div class="fl">解法一：离差形式 · Solution, deviation form <span class="st def">会算</span></div><div class="fx">\[ \begin{aligned} \gamma &amp;= -\frac{S_{xy}}{S_{xx}}\\ &amp;= -\frac{\sum_i (x_i-\bar x)(M_i-\bar M)}{\sum_i (x_i-\bar x)^2}\\ K_{\mathrm{dB}} &amp;= \bar M + \gamma\,\bar x \end{aligned} \]</div><div class="fn">分式是直线的斜率（负数），γ 取它的相反数。第一个偏导方程化简就是 K<sub>dB</sub> = \(\bar M\) + γ\(\bar x\)：最佳直线过平均点 (\(\bar x\), \(\bar M\))，而且残差加起来等于 0，可以拿来自检。手算列 x、M、x − \(\bar x\)、M − \(\bar M\)、乘积、平方几列。</div></div>
+  <div class="fm"><div class="fl">解法二：四列求和的正规方程 · Normal equations with sums <span class="st def">会算</span></div><div class="fx">\[ \begin{gathered} nK_{\mathrm{dB}} - \gamma\sum x_i = \sum M_i\\ K_{\mathrm{dB}}\sum x_i - \gamma\sum x_i^2 = \sum x_iM_i \end{gathered} \]\[ \begin{gathered} -\gamma = \frac{n\sum x_iM_i - \sum x_i\sum M_i}{n\sum x_i^2 - \left(\sum x_i\right)^2}\\ K_{\mathrm{dB}} = \frac{\sum M_i + \gamma\sum x_i}{n} \end{gathered} \]</div><div class="fn">讲解页 2.1 节推导框的写法：两个偏导 = 0 直接展开。结果和解法一完全相同，只是改成列 x、M、x²、xM 四列求和；\(\bar x\) 不是整数时用它可以不算离差。</div></div>
+  <div class="fm"><div class="fl">阴影方差 = 最小 MSE · Shadowing variance <span class="st def">定义·必会</span></div><div class="fx">\[ \begin{gathered} e_i = M_i - \big(K_{\mathrm{dB}} - \gamma x_i\big)\\ \sigma_\psi^2 = F_{\min} = \frac{1}{n}\sum_{i=1}^{n} e_i^2\\ \sigma_\psi = \sqrt{\sigma_\psi^2} \end{gathered} \]</div><div class="fn">讲义 p.13 写的就是 “MSE = σ<sub>ψdB</sub>²”，除以 n。老师：题目只给 MSE 时它就是 σ²，开根号才是 σ。</div></div>
+  <div class="fm"><div class="fl">接中断概率 · Outage <span class="st must">背</span></div><div class="fx">\[ P_{\mathrm{out}} = Q\!\left(\frac{\bar P_{r,\mathrm{dB}} - P_{\min,\mathrm{dB}}}{\sigma_\psi}\right) \]</div><div class="fn">讲义 p.15 蓝框（详见第 5 类）。分子是余量（dB），分母是标准差（dB）。老师提醒 Practice 1 Q1(b) “10 dB above” 的 10 就是 dB，公式本来就是 dB 形式推出来的，不要换成线性。Q 表考卷附。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 1 · Q1</th><th>模拟 B · Q2</th></tr></thead><tbody>
+    <tr><td>① 横坐标</td><td>x<sub>i</sub> = 10 log₁₀(d<sub>i</sub>/d₀)；纵坐标就是表里的 M<sub>i</sub></td><td>d = 5、25、65、110、400、1000 m → x = 6.99、13.98、18.13、20.41、26.02、30.00</td><td>d = 10、20、50、100 m → x = 10、13.01、16.99、20</td></tr>
+    <tr><td>② 平均点</td><td>\(\bar x\) = Σx/n，\(\bar M\) = ΣM/n</td><td>\(\bar x\) = 19.26，\(\bar M\) = −640/6 = −106.67</td><td>\(\bar x\) = 15.00，\(\bar M\) = −350/4 = −87.50</td></tr>
+    <tr><td>③ 两个和</td><td>S<sub>xy</sub> = Σ(x − \(\bar x\))(M − \(\bar M\))，S<sub>xx</sub> = Σ(x − \(\bar x\))²</td><td>S<sub>xy</sub> = −1348.08，S<sub>xx</sub> = 342.11</td><td>S<sub>xy</sub> = −194.95，S<sub>xx</sub> = 57.92</td></tr>
+    <tr><td>④ γ</td><td>γ = −S<sub>xy</sub>/S<sub>xx</sub>（斜率的相反数）</td><td>1348.08/342.11 = 3.94</td><td>194.95/57.92 = 3.37</td></tr>
+    <tr><td>⑤ K<sub>dB</sub></td><td>K<sub>dB</sub> = \(\bar M\) + γ\(\bar x\)</td><td>−106.67 + 3.940 × 19.26 = −30.79 dB</td><td>−87.5 + 3.366 × 15 = −37.01 dB</td></tr>
+    <tr><td>⑥ 残差、σ²</td><td>e<sub>i</sub> = M<sub>i</sub> − (K<sub>dB</sub> − γx<sub>i</sub>)，σ<sub>ψ</sub>² = Σe²/n；自检 Σe = 0</td><td>e = −1.67、+5.88、−2.77、−3.77、+3.32、−0.99；Σe² = 71.23 → σ² = 71.23/6 = 11.87 dB²</td><td>e = +2.67、−5.20、+3.20、−0.67；Σe² = 44.81 → σ² = 44.81/4 = 11.20 dB²</td></tr>
+    <tr><td>⑦ 中断</td><td>σ = √σ²，P<sub>out</sub> = Q(余量/σ)</td><td>σ = 3.45 dB，余量 10 dB：Q(10/3.45) = Q(2.90) = 1.87×10<sup>−3</sup>（查表；参数不舍入为 1.85×10<sup>−3</sup>）</td><td>σ = 3.35 dB，余量 8 dB：Q(8/3.35) = Q(2.39) = 8.42×10<sup>−3</sup></td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 1 · Q1 ＝ 练习 1 第 1 题：6 个测量点 d = 5、25、65、110、400、1000 m，(P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> = −60、−80、−105、−115、−130、−150 dB；(a) 拟合 K（dB）和 γ，(b) 只算路径损耗时比不中断所需的最低功率高 10 dB，求中断概率。它的官方答案复现不出来，见易错最后一条。模拟 B · Q2 ＝ 练习页自编模拟题：d = 10、20、50、100 m，(P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> = −68、−86、−91、−105 dB，(c) 余量 8 dB。期末四套都没考过拟合，所以第三列用 Practice 题。讲义第 2 章 p.12–15。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 四个点，完整列表 + 残差表（离差公式，d₀ = 1 m）</div>
+    <p class="q">在 d = 5、50、500、5000 m 处测得 (P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> = −56、−92、−118、−155 dB，d₀ = 1 m。(a) 用最小二乘求 K<sub>dB</sub> 和 γ；(b) 求阴影方差；(c) 某处只算路径损耗时比门限高 5 dB，求中断概率。</p>
+    <ol class="work">
+      <li>横坐标：10 log₁₀5 = 6.99，d 每 ×10，x 加 10 → x = 6.99、16.99、26.99、36.99；\(\bar x\) = 21.99，\(\bar M\) = (−56 − 92 − 118 − 155)/4 = −421/4 = −105.25。</li>
+      <li>列表求 S<sub>xy</sub>、S<sub>xx</sub>：
+        <div class="tw"><table><thead><tr><th>d (m)</th><th>\(x_i\)</th><th>\(M_i\)</th><th>\(x_i-\bar x\)</th><th>\(M_i-\bar M\)</th><th>\((x_i-\bar x)(M_i-\bar M)\)</th><th>\((x_i-\bar x)^2\)</th></tr></thead><tbody>
+          <tr><td>5</td><td>6.99</td><td>−56</td><td>−15</td><td>+49.25</td><td>−738.75</td><td>225</td></tr>
+          <tr><td>50</td><td>16.99</td><td>−92</td><td>−5</td><td>+13.25</td><td>−66.25</td><td>25</td></tr>
+          <tr><td>500</td><td>26.99</td><td>−118</td><td>+5</td><td>−12.75</td><td>−63.75</td><td>25</td></tr>
+          <tr><td>5000</td><td>36.99</td><td>−155</td><td>+15</td><td>−49.75</td><td>−746.25</td><td>225</td></tr>
+          <tr><td>平均 / 合计</td><td>\(\bar x\) = 21.99</td><td>\(\bar M\) = −105.25</td><td>0</td><td>0</td><td>S<sub>xy</sub> = −1615</td><td>S<sub>xx</sub> = 500</td></tr>
+        </tbody></table></div></li>
+      <li>(a) γ = −S<sub>xy</sub>/S<sub>xx</sub> = 1615/500 = 3.23；K<sub>dB</sub> = \(\bar M\) + γ\(\bar x\) = −105.25 + 3.23 × 21.99 = −34.22 dB。</li>
+      <li>(b) 残差表（预测 \(\hat M\) = −34.22 − 3.23x）：
+        <div class="tw"><table><thead><tr><th>d (m)</th><th>\(\gamma x_i\)</th><th>预测 \(\hat M_i\)</th><th>实测 \(M_i\)</th><th>残差 \(e_i\)</th><th>\(e_i^2\)</th></tr></thead><tbody>
+          <tr><td>5</td><td>22.58</td><td>−56.80</td><td>−56</td><td>+0.80</td><td>0.64</td></tr>
+          <tr><td>50</td><td>54.88</td><td>−89.10</td><td>−92</td><td>−2.90</td><td>8.41</td></tr>
+          <tr><td>500</td><td>87.18</td><td>−121.40</td><td>−118</td><td>+3.40</td><td>11.56</td></tr>
+          <tr><td>5000</td><td>119.48</td><td>−153.70</td><td>−155</td><td>−1.30</td><td>1.69</td></tr>
+          <tr><td>合计</td><td></td><td></td><td></td><td>0（自检通过）</td><td>22.30</td></tr>
+        </tbody></table></div>
+        σ<sub>ψ</sub>² = 22.30/4 = 5.575 dB²，σ<sub>ψ</sub> = √5.575 = 2.36 dB。</li>
+      <li>(c) P<sub>out</sub> = Q(5/2.361) = Q(2.12) = 0.0170，约 1.7%。</li>
+    </ol>
+    <p class="ans">答案：γ = 3.23，K<sub>dB</sub> = −34.22 dB；σ<sub>ψ</sub>² = 5.575 dB²（σ = 2.36 dB）；P<sub>out</sub> ≈ 0.0170</p>
+  </div>
+  <div class="eg"><div class="egh">例 2 · 给的是 P<sub>r</sub>（dBm），d₀ = 10 m，用四列求和（变形：先减 P<sub>t</sub> + 换参考距离 + 解法二）</div>
+    <p class="q">发射功率 1 W，参考距离 d₀ = 10 m。在 20、100、500 m 处测得接收功率 −40、−61、−88 dBm。用最小二乘求 10 m 处的 K<sub>dB</sub> 和 γ，并求阴影的标准差。</p>
+    <ol class="work">
+      <li>先变成比值：P<sub>t</sub> = 1 W = 30 dBm，M = P<sub>r</sub> − P<sub>t</sub> = −70、−91、−118 dB。横坐标用 d/d₀：x = 10 log₁₀(20/10)、10 log₁₀(100/10)、10 log₁₀(500/10) = 3.0103、10.0000、16.9897。</li>
+      <li>四列求和（n = 3）：
+        <div class="tw"><table><thead><tr><th>d (m)</th><th>\(M_i\)</th><th>\(x_i\)</th><th>\(x_i^2\)</th><th>\(x_iM_i\)</th></tr></thead><tbody>
+          <tr><td>20</td><td>−70</td><td>3.0103</td><td>9.062</td><td>−210.721</td></tr>
+          <tr><td>100</td><td>−91</td><td>10.0000</td><td>100.000</td><td>−910.000</td></tr>
+          <tr><td>500</td><td>−118</td><td>16.9897</td><td>288.650</td><td>−2004.785</td></tr>
+          <tr><td>Σ</td><td>−279</td><td>30.0000</td><td>397.712</td><td>−3125.506</td></tr>
+        </tbody></table></div></li>
+      <li>分子 nΣxM − ΣxΣM = 3 × (−3125.506) − 30 × (−279) = −9376.52 + 8370.00 = −1006.52；分母 nΣx² − (Σx)² = 3 × 397.712 − 30² = 1193.14 − 900.00 = 293.14；−γ = −1006.52/293.14 = −3.4336 → γ = 3.43。</li>
+      <li>K<sub>dB</sub> = (ΣM + γΣx)/n = (−279 + 3.4336 × 30)/3 = (−279 + 103.01)/3 = −175.99/3 = −58.66 dB（这是 10 m 处的值）。</li>
+      <li>残差：预测 −69.00、−93.00、−117.00，e = −1.00、+2.00、−1.00（和为 0）；σ<sub>ψ</sub>² = (1 + 4 + 1)/3 = 2.00 dB²，σ<sub>ψ</sub> = 1.41 dB。</li>
+    </ol>
+    <p class="ans">答案：K<sub>dB</sub> = −58.66 dB（d₀ = 10 m），γ = 3.43，σ<sub>ψ</sub> = 1.41 dB</p>
+  </div>
+  <div class="eg"><div class="egh">例 3 · 只给残差平方和，倒着求 σ、中断概率和所需余量（变形：反着问）</div>
+    <p class="q">用 5 个测量点拟合简化路径损耗模型，残差平方和 Σe<sub>i</sub>² = 101.25 dB²。(a) 阴影的方差、标准差各是多少？(b) 平均接收功率比门限高 9 dB 时的中断概率？(c) 要把中断概率降到 1%，平均功率还要再提高多少 dB？</p>
+    <ol class="work">
+      <li>(a) 按讲义除以 n：σ<sub>ψ</sub>² = 101.25/5 = 20.25 dB²，σ<sub>ψ</sub> = √20.25 = 4.50 dB。</li>
+      <li>(b) P<sub>out</sub> = Q(9/4.50) = Q(2.00) = 0.0228。</li>
+      <li>(c) 反查 Q 表：Q(x) = 0.01 → x = 2.326，余量至少 2.326 × 4.50 = 10.47 dB，比现在的 9 dB 还差 1.47 dB。</li>
+      <li>对比两种常见错法：除以 n − 2 = 3 得 33.75 dB²、σ = 5.81 dB，Q(9/5.81) = Q(1.55) = 0.0606；把方差当标准差，Q(9/20.25) = Q(0.44) = 0.330。都和正确的 0.0228 差很远。</li>
+    </ol>
+    <p class="ans">答案：σ<sub>ψ</sub>² = 20.25 dB²，σ<sub>ψ</sub> = 4.50 dB；P<sub>out</sub> ≈ 0.0228；还要再提高约 1.47 dB</p>
+  </div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>横坐标用了 log₁₀d 或直接用 d：只有 x = 10 log₁₀(d/d₀) 时斜率才是 −γ。Practice 1 Q1 若用 log₁₀d，会算出 γ = 39.4，大了 10 倍。</li>
+    <li>斜率丢负号：S<sub>xy</sub>/S<sub>xx</sub> 算出来是负数，γ 是它的相反数（正数）；γ 出现负数，一定是符号错了。</li>
+    <li>MSE 除以 n（讲义 p.13 的定义），不是 n − 1 或 n − 2。它是方差（dB²），代进 Q 前要开根号：老师说题目只给 MSE 时它就是 σ²，开根号才是 σ。</li>
+    <li>数据给的是 P<sub>r</sub>（dBm）时先减 P<sub>t</sub> 得 M；给的是 mW 先换 dBm。d₀ = 10 m 时 x 要用 10 log₁₀(d/10)：例 2 若误用 d₀ = 1 m，γ 不变（3.43），K<sub>dB</sub> 却变成 −24.33 dB（那是 1 m 处的值，不是题目要的 10 m 处）。</li>
+    <li>余量别换线性：老师提醒 Practice 1 Q1(b) “10 dB above” 的 10 是 dB，公式本来就是 dB 形式推出来的，直接算 Q(10/σ)。</li>
+    <li>Practice 1 Q1 的官方答案 K = −31.4 dB、γ = 3.86、P<sub>out</sub> = 6.19×10<sup>−4</sup> 按题目数据复现不出来：把它代回 6 个点，MSE = 13.1，比最小二乘的 11.87 还大；6.19×10<sup>−4</sup> 来自老师课上代的 MSE = 9.656（10/√9.656 = 3.22，老师取 3.23，查 Q(3.23)）。老师说结果取决于小数取舍，在 −31.4、3.86 附近就可以。考试写清方法，用自己算出的数（K ≈ −30.8 dB、γ ≈ 3.94、σ² ≈ 11.87 dB²）。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>In dB the simplified path loss model is the straight line \(M = K_{\mathrm{dB}} - \gamma x\) with \(x = 10\log_{10}(d/d_0)\). Least squares minimises \(F(K,\gamma) = \frac{1}{n}\sum_i e_i^2\) with residuals \(e_i = M_i - K_{\mathrm{dB}} + \gamma x_i\); setting \(\partial F/\partial K = \partial F/\partial\gamma = 0\) gives:</p>
+    <p>\(\gamma = -S_{xy}/S_{xx}\) with \(S_{xy} = \sum(x_i-\bar x)(M_i-\bar M)\) and \(S_{xx} = \sum(x_i-\bar x)^2\), so \(\gamma = 194.95/57.92 = 3.37\) and \(K_{\mathrm{dB}} = \bar M + \gamma\bar x\) \(= -87.5 + 3.366\times15\) \(= -37.01\) dB.</p>
+    <p>The minimum MSE is the shadowing variance: \(\sigma_\psi^2 = 44.81/4 = 11.20\) dB², so \(\sigma_\psi = 3.35\) dB. With an 8 dB margin, \(P_{\mathrm{out}} = Q(8/3.35)\) \(= Q(2.39) = 8.42\times10^{-3}\).</p>
+  </div>
+</section>

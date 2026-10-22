@@ -1,0 +1,1438 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>EE6129 Quiz 例题总结</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#eceff0; --surface:#fff; --surface-2:#e3e9e9; --border:#cbd6d7;
+  --text:#13201f; --muted:#4e615f;
+  --accent:#0f766e; --accent-strong:#0a5a53; --accent-soft:#d7eeeb; --on-accent:#fff;
+  --must:#1f4fb8; --must-soft:#e2eafb; --try:#8a5a0b; --try-soft:#f7ead2;
+  --give:#4e615f; --give-soft:#e3e9e9; --def:#137a3f; --def-soft:#dcf1e3;
+  --bad:#a3261e; --bad-soft:#fbe3e0; --en:#6b46b0; --en-soft:#f2ecfb;
+  --shadow:0 1px 2px rgba(19,32,31,.06),0 8px 22px rgba(19,32,31,.07);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0b1413; --surface:#111e1c; --surface-2:#182825; --border:#273a36;
+    --text:#e6f0ed; --muted:#9ab3ad;
+    --accent:#33d1bf; --accent-strong:#7ceede; --accent-soft:#113330; --on-accent:#08100e;
+    --must:#8fb0ff; --must-soft:#16233f; --try:#f0b56a; --try-soft:#2f2210;
+    --give:#9ab3ad; --give-soft:#182825; --def:#4fd087; --def-soft:#12301f;
+    --bad:#f2857c; --bad-soft:#351816; --en:#b79cf0; --en-soft:rgba(183,156,240,.12);
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.4);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0b1413; --surface:#111e1c; --surface-2:#182825; --border:#273a36;
+  --text:#e6f0ed; --muted:#9ab3ad;
+  --accent:#33d1bf; --accent-strong:#7ceede; --accent-soft:#113330; --on-accent:#08100e;
+  --must:#8fb0ff; --must-soft:#16233f; --try:#f0b56a; --try-soft:#2f2210;
+  --give:#9ab3ad; --give-soft:#182825; --def:#4fd087; --def-soft:#12301f;
+  --bad:#f2857c; --bad-soft:#351816; --en:#b79cf0; --en-soft:rgba(183,156,240,.12);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 22px rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'IBM Plex Sans','Noto Sans CJK SC','PingFang SC','Microsoft YaHei',system-ui,sans-serif;line-height:1.7;-webkit-font-smoothing:antialiased}
+.wrap{max-width:940px;margin:0 auto;padding-inline:16px;padding-block:28px 90px}
+h1,h2,h3,h4{font-family:'Barlow Condensed','Noto Sans CJK SC','Microsoft YaHei',sans-serif;font-weight:700;margin:0 0 .3em;text-wrap:balance;line-height:1.2;letter-spacing:.01em}
+h1{font-size:2.4rem} h2{font-size:1.6rem} h3{font-size:1.15rem;margin-top:1.5em;color:var(--accent-strong)} h4{font-size:1.02rem;margin-top:1.1em}
+a{color:var(--accent-strong)}
+.back{font-size:.82rem;text-decoration:none;color:var(--muted)}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:.7rem;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-strong);margin:14px 0 6px}
+.lede{color:var(--muted);max-width:68ch;margin:.2em 0 .9em}
+.notice{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;font-size:.9rem;max-width:76ch;margin:0 0 12px}
+.notice p{margin:.3em 0}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:.84rem;color:var(--muted);margin:8px 0 0}
+.st{display:inline-block;vertical-align:middle;font-family:'IBM Plex Mono','Noto Sans CJK SC',monospace;font-size:.72rem;font-weight:700;line-height:1.5;padding:1px 9px;border-radius:999px;border:1px solid;white-space:nowrap;margin-right:4px}
+.st.must{color:var(--must);border-color:var(--must);background:var(--must-soft)}
+.st.try{color:var(--try);border-color:var(--try);background:var(--try-soft)}
+.st.give{color:var(--give);border-color:var(--border);background:var(--give-soft)}
+.st.def{color:var(--def);border-color:var(--def);background:var(--def-soft)}
+nav.toc{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 0 8px;margin:18px 0 8px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+nav.toc a{font-size:.8rem;font-weight:600;text-decoration:none;color:var(--muted);background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:3px 11px;white-space:nowrap}
+nav.toc a:hover,nav.toc a:focus-visible{color:var(--accent-strong);border-color:var(--accent)}
+nav.toc .spacer{flex:1}
+.toggle{display:flex;align-items:center;gap:6px;font-size:.82rem;color:var(--muted);cursor:pointer}
+.toggle input{accent-color:var(--accent);width:16px;height:16px}
+.part{font-family:'IBM Plex Mono',monospace;font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-strong);margin:44px 0 0;padding-top:10px;border-top:2px solid var(--accent)}
+section.topic{background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:22px 24px 20px;margin:16px 0 26px;scroll-margin-top:70px}
+section.topic h2 .tn{display:inline-grid;place-items:center;min-width:1.7em;height:1.7em;margin-right:.45em;border-radius:8px;background:var(--accent);color:var(--on-accent);font-size:.85em;vertical-align:.08em;padding:0 .25em}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:4px 0 8px}
+.freq{font-size:.8rem;color:var(--muted)}
+.why{background:var(--accent-soft);border-radius:8px;padding:8px 12px;margin:6px 0 4px;max-width:none}
+.tw{overflow-x:auto;margin:8px 0;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;font-size:.88rem;width:100%;font-variant-numeric:tabular-nums}
+th,td{border:1px solid var(--border);padding:6px 9px;text-align:left;vertical-align:top}
+thead th{background:var(--surface-2);font-weight:600;white-space:nowrap}
+table.sym td:first-child{white-space:nowrap;font-weight:600}
+table.steps td:first-child{white-space:nowrap;font-weight:700;color:var(--accent-strong)}
+table.steps th:nth-child(3),table.steps th:nth-child(4){color:var(--accent-strong)}
+.src{font-size:.8rem;color:var(--muted);margin:4px 0 0}
+.fm{border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:8px;padding:8px 14px;margin:10px 0;background:var(--surface)}
+.fm .fl{font-weight:600;font-size:.92rem}
+.fm .fl .st{margin-left:6px}
+.fm .fx{overflow-x:auto;overflow-y:hidden;margin:2px 0}
+.fm .fn{font-size:.86rem;color:var(--muted)}
+.eg{border:1px solid var(--border);border-radius:10px;padding:10px 16px 8px;margin:12px 0;background:var(--surface)}
+.egh{font-weight:700;color:var(--accent-strong)}
+.eg .q{margin:.3em 0 .2em}
+.eg ol.work{margin:.3em 0;padding-left:1.4em}
+.eg ol.work li{margin:.15em 0}
+.eg .ans{font-weight:600;background:var(--def-soft);border-radius:6px;padding:4px 10px;margin:.4em 0 .3em;display:inline-block}
+.reveal{display:none;font:inherit;font-size:.82rem;font-weight:600;padding:3px 12px;border-radius:999px;border:1px solid var(--accent);background:var(--surface);color:var(--accent-strong);cursor:pointer;margin:4px 0}
+body.selftest .eg:not(.open) .work,body.selftest .eg:not(.open) .ans{display:none}
+body.selftest .eg .reveal{display:inline-block}
+ul.trap{padding-left:0;list-style:none;margin:6px 0}
+ul.trap li{position:relative;padding:4px 10px 4px 30px;margin:4px 0;background:var(--bad-soft);border-radius:6px}
+ul.trap li::before{content:"✗";position:absolute;left:11px;top:4px;color:var(--bad);font-weight:700}
+.en{border:1px solid var(--en);border-radius:10px;background:var(--en-soft);padding:8px 14px;margin:16px 0 4px}
+.enl{font-family:'IBM Plex Mono',monospace;font-size:.72rem;letter-spacing:.06em;color:var(--en);font-weight:600}
+.en p{margin:.3em 0}
+table.cheat td:nth-child(2){white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+td mjx-container{overflow:visible!important}
+@media (max-width:640px){mjx-container:not([display="true"]){display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}
+  h1{font-size:1.9rem} section.topic{padding:16px 14px} nav.toc a{font-size:.75rem;padding:2px 9px}}
+footer{margin-top:40px;font-size:.8rem;color:var(--muted);max-width:76ch}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+  svg: { fontCache: 'global' },
+  options: { skipHtmlTags: ['script','noscript','style','textarea','pre','code'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js" async></script>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← 学习站目录</a>
+  <div class="eyebrow">EE6129 Part 2 · CA2 Quiz · Fri 23 Oct 2026</div>
+  <h1>Quiz 例题总结</h1>
+  <p class="lede">Quiz 范围内的 13 类题，每类都按同一个顺序写：先把符号和含义用中英文列出来，再给公式（标出要背还是考试给），然后用一张“步骤 × 真题 × 模拟题”的对照表走一遍，最后用几个中文例子练变形，附易错点和英文答题句。所有数字都用脚本算过两遍。</p>
+  <div class="notice">
+    <p><b>时间地点</b>：10 月 23 日（周五）3:00–3:30 pm，LT23，闭卷 30 分钟，3 道短题。带认可的计算器、带照片的证件。</p>
+    <p><b>范围</b>：第 1b 章概率、第 2 章无线信道、Practice 1–2。不考第 1a 章、第 3–7 章、积分计算。考卷附 Q 函数表。</p>
+    <p><b>答题</b>：dB ↔ 线性的换算要写出来，单位写清楚；中间结果保留 3–4 位有效数字，最后再四舍五入。</p>
+    <div class="legend"><span><span class="st must">背</span>讲义蓝框，考试不给</span><span><span class="st try">尽量记</span>老师说试着记</span><span><span class="st give">考试给</span>懂含义、会代数</span><span><span class="st def">定义·必会</span>一行定义，自己要会</span></div>
+  </div>
+  <nav class="toc" aria-label="目录"><a href="#t1">1 概率</a><a href="#t2">2 dB / SNR</a><a href="#t3">3 路径损耗</a><a href="#t4">4 最小二乘</a><a href="#t5">5 阴影中断</a><a href="#t6">6 瑞利</a><a href="#t7">7 莱斯 K</a><a href="#t8">8 时延扩展</a><a href="#t9">9 多普勒·衰落类型</a><a href="#t10">10 LCR / AFD</a><a href="#t11">11 香农·SINR</a><a href="#t12">12 中断容量</a><a href="#t13">13 注水</a><a href="#cheat">公式总表</a><span class="spacer"></span><label class="toggle"><input type="checkbox" id="selftest">自测模式（遮住例子的步骤）</label></nav>
+
+  <div class="part">第 1 部分 · 概率与 dB</div>
+<section class="topic" id="t1">
+  <h2><span class="tn">1</span>概率基础 · Probability basics</h2>
+  <div class="meta"><span class="st must">背</span> <span class="st def">定义·必会</span> <span class="freq">出现：期末 0/4 套单独考第 1b 章；"离散 SNR 求平均"是 2023-24 Q1(b)(i)、2025-26 S1 Q1(b)(i) 的第一步（整题属第 4 章）· Practice 2 Q2（独立 → 相乘）· 模拟 A·Q1</span></div>
+  <p class="why">第 1b 章是 Quiz 范围里唯一不属于第 2 章的部分。考法参考模拟 A·Q1：给一张"状态—概率—条件概率"表，(a) 用全概率求平均误码率，(b) 用贝叶斯由"出错了"反推当时的状态，(c) 求离散 SNR 的均值和方差（dB 先换线性）。老师说不考积分，但离散分布的求和会考。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(A,\ B\)</td><td>事件</td><td>event</td><td>一件可能发生的事，如"比特出错""信道处于坏状态"</td><td>—</td></tr>
+    <tr><td>\(P(A)\)</td><td>概率</td><td>probability</td><td>A 发生的可能性，在 0 到 1 之间</td><td>无</td></tr>
+    <tr><td>\(A\cap B\)</td><td>交（且）</td><td>intersection (A and B)</td><td>A、B 同时发生</td><td>—</td></tr>
+    <tr><td>\(A\cup B\)</td><td>并（或）</td><td>union (A or B)</td><td>A、B 至少发生一个</td><td>—</td></tr>
+    <tr><td>\(P(B\mid A)\)</td><td>条件概率</td><td>conditional probability</td><td>已知 A 已经发生，B 发生的概率；竖线右边是"已知"</td><td>无</td></tr>
+    <tr><td>\(A_i\)</td><td>第 i 种情况（状态）</td><td>case / state (a partition)</td><td>各种情况互斥、合起来是全部：\(\sum_i P(A_i)=1\)，如好、坏两种信道</td><td>—</td></tr>
+    <tr><td>\(P(A_i)\)</td><td>先验概率</td><td>prior probability</td><td>还没看到结果时处于状态 i 的概率，题目直接给</td><td>无</td></tr>
+    <tr><td>\(P(A_i\mid B)\)</td><td>后验概率</td><td>posterior probability</td><td>看到结果 B 以后，回头算"当时是状态 i"的概率；贝叶斯求的就是它</td><td>无</td></tr>
+    <tr><td>\(X,\ x\)</td><td>随机变量、它的取值</td><td>random variable, one of its values</td><td>大写是随机变量，小写是具体取值（老师强调的记号）</td><td>同 X</td></tr>
+    <tr><td>\(P_X(x)\)</td><td>分布律（概率质量函数）</td><td>probability mass function (PMF)</td><td>离散变量 X 取值 x 的概率，所有取值加起来 = 1</td><td>无</td></tr>
+    <tr><td>\(E[X]\)，\(\bar\gamma\)</td><td>期望（均值）</td><td>expectation, mean</td><td>按概率加权的平均值；SNR 的均值记作 \(\bar\gamma\)</td><td>同 X</td></tr>
+    <tr><td>\(E[X^2]\)</td><td>平方的均值（二阶矩）</td><td>mean square (second moment)</td><td>先平方，再按概率加权平均</td><td>X 的单位²</td></tr>
+    <tr><td>\(\mathrm{Var}(X)=\sigma^2\)</td><td>方差</td><td>variance</td><td>偏离均值有多厉害（偏差平方的平均）</td><td>X 的单位²</td></tr>
+    <tr><td>\(\sigma\)</td><td>标准差</td><td>standard deviation</td><td>√方差，和 X 同单位；进 Q 函数用的是它</td><td>同 X</td></tr>
+    <tr><td>\(\gamma,\ \gamma_{\rm dB}\)</td><td>信噪比（线性 / dB）</td><td>SNR (linear / in dB)</td><td>\(\gamma_{\rm dB}=10\log_{10}\gamma\)；求平均、代公式都用线性 γ</td><td>无 / dB</td></tr>
+    <tr><td>\(P_e\)</td><td>误比特率</td><td>bit error probability</td><td>一个比特出错的概率；"平均误码率"就是用全概率算的</td><td>无</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">加法与乘法规则 Addition and multiplication rules <span class="st def">定义·必会</span></div><div class="fx">\[ P(A\cup B)=P(A)+P(B)-P(A\cap B) \]\[ P(A\cap B)=P(A)\,P(B\mid A)\ \xrightarrow{\ \text{independent}\ }\ P(A)\,P(B) \]</div><div class="fn">讲义第 1b 章 p.5–9。"或"用加法（减掉被数了两次的交集），"且"用乘法。讲义 p.3–4 摸弹珠（3 红 4 蓝）：先蓝后红 = 4/7 × 3/6 = 2/7。<b>独立</b>（互不影响）才能直接相乘：两条独立链路各有 10% 的时间中断，同时中断 = 0.1 × 0.1 = 0.01；Practice 2 Q2(b) 两个基站阴影独立，\(P_{out}=Q(\Delta/\sigma)\cdot Q(\Delta/\sigma)=[Q(\Delta/\sigma)]^2\)。<b>互斥</b>（不能同时发生）是 \(P(A\cap B)=0\)，和独立不是一回事。</div></div>
+  <div class="fm"><div class="fl">全概率公式 Law of total probability <span class="st def">定义·必会</span></div><div class="fx">\[ P(B)=\sum_{i}P(A_i)\,P(B\mid A_i)\qquad\Big(\textstyle\sum_i P(A_i)=1\Big) \]</div><div class="fn">分情况算，再按概率加权："平均误码率 = Σ 状态概率 × 该状态的误码率"。A<sub>i</sub> 必须互斥且凑满全部。老师点名的往年错误：只写一项 P(A₁)P(B | A₁)，<b>必须对所有 A<sub>i</sub> 求和</b>（第 8 周录音）。</div></div>
+  <div class="fm"><div class="fl">贝叶斯公式 Bayes' rule <span class="st must">背</span></div><div class="fx">\[ P(A_i\mid B)=\frac{P(A_i)\,P(B\mid A_i)}{\sum_j P(A_j)\,P(B\mid A_j)} \]</div><div class="fn">蓝框，要背（讲义第 1b 章 p.5–9）。分子 = 状态表里"所问那一行"的乘积，分母 = 全概率算出的总和 P(B)。由果推因：已知"出错了"，问"当时是坏状态"的概率。后验 ≠ 先验：模拟 A·Q1 里坏状态先验 0.3，知道出错后变成 0.977。</div></div>
+  <div class="fm"><div class="fl">期望 Expectation <span class="st must">背</span></div><div class="fx">\[ E[X]=\sum_x x\,P_X(x)\qquad\qquad E[g(X)]=\sum_x g(x)\,P_X(x) \]</div><div class="fn">讲义第 1b 章 p.10–11。E[X] = Σx·P(x) 是老师点名要背的；E[g(X)] 的一般式考试会给，乘的是 X 的概率 P<sub>X</sub>(x)，不是 g 的。E[g(X)] ≠ g(E[X])，老师说这是往年常见错误。</div></div>
+  <div class="fm"><div class="fl">方差 Variance <span class="st def">定义·必会</span></div><div class="fx">\[ E[X^2]=\sum_x x^2P_X(x) \]\[ \mathrm{Var}(X)=E[X^2]-\big(E[X]\big)^2,\qquad \sigma=\sqrt{\mathrm{Var}(X)} \]</div><div class="fn">讲义 p.10–11。老师课上的说法：方差 = 平方的均值 − 均值的平方。E[X²] ≠ (E[X])²：模拟 A·Q1 里 E[γ²] = 70.3，而 7.3² = 53.29，两者之差 17.01 就是方差。方差是两个接近的数相减，E[X] 要多留一两位再平方：2023-24 那组数 14.679² = 215.48，方差 5.47；若用 14.68² = 215.50，会得 5.45。方差的单位是 X 的单位²，进 Q 函数要用标准差 σ。</div></div>
+  <div class="fm"><div class="fl">线性变换与求和 aX + b and sums <span class="st def">定义·必会</span></div><div class="fx">\[ E[aX+b]=aE[X]+b,\qquad \mathrm{Var}(aX+b)=a^2\,\mathrm{Var}(X) \]\[ E[X+Y]=E[X]+E[Y],\qquad \mathrm{Var}(X+Y)\overset{\text{indep.}}{=}\mathrm{Var}(X)+\mathrm{Var}(Y) \]</div><div class="fn">讲义 p.10–11、p.14。加常数只平移、不改方差；乘 a，方差乘 a²；独立变量相加，相加的是<b>方差</b>（标准差不能直接加）。期末 2025-26 S1 Q1(a)(ii)（第 3 章题）用的就是这条：y = s + w，s = +1 固定、w 方差 0.25 → E[y] = 1，Var[y] = 0.25。</div></div>
+  <div class="fm"><div class="fl">dB 值求平均 Averaging values given in dB <span class="st def">定义·必会</span></div><div class="fx">\[ \bar\gamma=\sum_i p_i\,10^{\gamma_{i,\rm dB}/10} \]\[ \bar\gamma_{\rm dB}=10\log_{10}\bar\gamma\ \neq\ \sum_i p_i\,\gamma_{i,\rm dB} \]</div><div class="fn">dB 是对数：先把每个值换成线性 → 按概率加权平均 → 再换回 dB。直接平均 dB 只会偏小（所有取值相等时才一样），取值越分散差得越多：2023-24 Q1(b)(i) 错算 11.6 dB、正确 11.67 dB（差 0.07 dB）；模拟 A·Q1 错算 7 dB、正确 8.63 dB（差 1.63 dB）。老师说没写 dB ↔ 线性换算会扣分。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型一：状态表 → 全概率 + 贝叶斯</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>讲解页 1.2 例题（自编）</th><th>模拟 A · Q1 (a)(b)</th></tr></thead><tbody>
+    <tr><td>① 列状态表</td><td>每个状态写 P(A<sub>i</sub>) 和 P(错 | A<sub>i</sub>)，先查 ΣP(A<sub>i</sub>) = 1</td><td>好 0.8 / 10⁻⁴；深衰落 0.2 / 10⁻²（0.8 + 0.2 = 1）</td><td>好 0.7 / 10⁻⁴；坏 0.3 / 10⁻²（0.7 + 0.3 = 1）</td></tr>
+    <tr><td>② 每行相乘</td><td>P(A<sub>i</sub>) × P(错 | A<sub>i</sub>)（乘法规则）</td><td>0.8 × 10⁻⁴ = 8×10⁻⁵；0.2 × 10⁻² = 2×10⁻³</td><td>0.7 × 10⁻⁴ = 7×10⁻⁵；0.3 × 10⁻² = 3×10⁻³</td></tr>
+    <tr><td>③ 全概率</td><td>② 的所有行加起来 = 平均误码率</td><td>8×10⁻⁵ + 2×10⁻³ = 2.08×10⁻³</td><td>7×10⁻⁵ + 3×10⁻³ = 3.07×10⁻³</td></tr>
+    <tr><td>④ 贝叶斯</td><td>所问状态那一行 ÷ ③</td><td>P(深衰落 | 错) = 2×10⁻³ / 2.08×10⁻³ = 0.9615</td><td>P(坏 | 错) = 3×10⁻³ / 3.07×10⁻³ = 0.977</td></tr>
+    <tr><td>⑤ 检查</td><td>所有后验加起来 = 1</td><td>0.0385 + 0.9615 = 1</td><td>0.0228 + 0.9772 = 1</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：左列 = 讲解页第 1 章 1.2 节例题"信道好坏与误码"（自编：好状态 80%、误码率 10⁻⁴；深衰落 20%、10⁻²）；右列 = 模拟 A · Q1 (a)(b)（自编，verify_mock.py 验算）。<b>历年期末没有单独考过第 1b 章</b>；Practice 1–2 也没有离散的贝叶斯题（Practice 2 Q2 (b) 只用"独立 → 相乘"，(c) 是要积分的连续全概率，Quiz 不考积分），所以这张表两列都是自编题。期末里真正用到这套规则的是 2023-24 Q1(b)(i) 后半（第 4 章选择分集，Quiz 不考，只看概率部分）：两支路独立，选大的那支，两支都是 10 dB 时输出才是 10 dB：概率 = 0.2 × 0.2 = 0.04（乘法规则），为 12 dB 的概率 = 1 − 0.04 = 0.96；平均误符号率 = 0.04 × ½e<sup>−10</sup> + 0.96 × ½e<sup>−15.85</sup> ≈ 9.7×10⁻⁷（全概率）。</p>
+
+  <h4>题型二：离散 SNR（给 dB）→ 均值、方差</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2023-24 Q1(b)(i) 第一步）</th><th>模拟 A · Q1 (c)</th></tr></thead><tbody>
+    <tr><td>① dB → 线性</td><td>每个值都换：γ = 10<sup>γ<sub>dB</sub>/10</sup></td><td>10 dB → 10；12 dB → 15.85</td><td>10 dB → 10；0 dB → 1</td></tr>
+    <tr><td>② 均值</td><td>E[γ] = Σ γ<sub>i</sub> p<sub>i</sub></td><td>0.2 × 10 + 0.8 × 15.85 = 14.68</td><td>0.7 × 10 + 0.3 × 1 = 7.3</td></tr>
+    <tr><td>③ 换回 dB</td><td>10 log₁₀ E[γ]</td><td>10 log₁₀ 14.68 = 11.67 dB</td><td>10 log₁₀ 7.3 = 8.63 dB</td></tr>
+    <tr><td>④ 平方的均值</td><td>E[γ²] = Σ γ<sub>i</sub>² p<sub>i</sub></td><td>本题没问（练手：0.2 × 100 + 0.8 × 251.19 = 220.95）</td><td>0.7 × 100 + 0.3 × 1 = 70.3</td></tr>
+    <tr><td>⑤ 方差</td><td>Var = E[γ²] − (E[γ])²，σ = √Var</td><td>本题没问（练手：220.95 − 14.679² = 220.95 − 215.48 = 5.47）</td><td>70.3 − 7.3² = 70.3 − 53.29 = 17.01，σ = 4.12</td></tr>
+    <tr><td>⑥ 对照错法</td><td>直接平均 dB 值 ✗</td><td>0.2 × 10 + 0.8 × 12 = 11.6 dB ✗</td><td>0.7 × 10 + 0.3 × 0 = 7 dB ✗</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：左列 = 2023-24 期末 Q1(b)(i)（每支路 SNR 10 dB 概率 0.2、12 dB 概率 0.8，求平均 SNR，单位 dB）。整题是第 4 章选择分集，Quiz 不考；这里只用它的第一步，这一步就是第 1b 章的离散期望（后半题"平均误符号率 = Σ 概率 × 该情况的误符号率"也是全概率）。同类：2025-26 S1 Q1(b)(i)：11 / 12 / 13 dB（概率 0.2 / 0.5 / 0.3）→ 12.59 / 15.85 / 19.95 → 均值 16.43 → 12.16 dB（直接平均 dB 得 12.1 dB）；两支路 MRC 输出均值 = 2 × 16.43 = 32.86（15.17 dB），用的是 E[X + Y] = E[X] + E[Y]。右列 = 模拟 A · Q1 (c)（自编）。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 三种状态（状态表多一行）</div><p class="q">某链路有三种状态：好（概率 0.6，误比特率 10⁻⁴）、一般（0.3，10⁻³）、深衰落（0.1，10⁻²）。(a) 求平均误比特率；(b) 发现一个比特出错，它发生在深衰落里的概率是多少？发生在好状态的概率呢？</p><ol class="work">
+    <li>列表并检查：0.6 + 0.3 + 0.1 = 1 ✓。</li>
+    <li>每行相乘：0.6 × 10⁻⁴ = 6×10⁻⁵；0.3 × 10⁻³ = 3×10⁻⁴；0.1 × 10⁻² = 1×10⁻³。</li>
+    <li>(a) 全概率，三行都要加：\(P_e=6\times10^{-5}+3\times10^{-4}+1\times10^{-3}=1.36\times10^{-3}\)。</li>
+    <li>(b) 贝叶斯，每一行 ÷ 总和：P(深衰落 | 错) = 1×10⁻³ / 1.36×10⁻³ = 0.7353；P(好 | 错) = 6×10⁻⁵ / 1.36×10⁻³ = 0.0441；P(一般 | 错) = 3×10⁻⁴ / 1.36×10⁻³ = 0.2206。三者相加 = 1 ✓。</li>
+  </ol><p class="ans">答案：P<sub>e</sub> = 1.36×10⁻³；P(深衰落 | 错) ≈ 0.735，P(好 | 错) ≈ 0.044。只占 10% 时间的深衰落贡献了 73.5% 的错误。</p></div>
+  <div class="eg"><div class="egh">例 2 · 反着问：由平均误码率求坏状态占比</div><p class="q">两种状态：好状态误比特率 10⁻⁴，坏状态 10⁻²。实测平均误比特率为 2×10⁻³。求坏状态的时间比例 p，再求"出错时处于坏状态"的概率。</p><ol class="work">
+    <li>全概率写成方程，未知数是 p（好状态的概率就是 1 − p）：\(2\times10^{-3}=(1-p)\times10^{-4}+p\times10^{-2}\)。</li>
+    <li>移项：\(2\times10^{-3}-10^{-4}=p\,(10^{-2}-10^{-4})\ \Rightarrow\ p=\dfrac{1.9\times10^{-3}}{9.9\times10^{-3}}=0.1919\)。</li>
+    <li>代回验算：(1 − 0.1919) × 10⁻⁴ + 0.1919 × 10⁻² = 2.0×10⁻³ ✓。</li>
+    <li>贝叶斯：P(坏 | 错) = p × 10⁻² / P<sub>e</sub> = 0.1919 × 10⁻² / (2×10⁻³) = 0.9596。</li>
+  </ol><p class="ans">答案：p ≈ 0.192（约 19% 的时间是坏状态）；P(坏 | 错) ≈ 0.960。</p></div>
+  <div class="eg"><div class="egh">例 3 · SNR 以 dB 给出：均值、方差、中断，再把功率加倍</div><p class="q">接收 SNR 是离散随机变量：3 dB（概率 0.25）、10 dB（0.5）、15 dB（0.25）。(a) 求平均 SNR（线性和 dB）；(b) 求方差和标准差；(c) 门限 6 dB，求中断概率；(d) 发射功率加倍（每个 SNR 都 ×2），平均 SNR 和方差变成多少？</p><ol class="work">
+    <li>先换线性：3 dB → 10<sup>0.3</sup> = 1.995；10 dB → 10；15 dB → 10<sup>1.5</sup> = 31.623。</li>
+    <li>(a) \(E[\gamma]=0.25\times1.995+0.5\times10+0.25\times31.623=0.499+5+7.906=13.405\)，即 10 log₁₀13.405 = 11.27 dB。直接平均 dB 会得 0.25 × 3 + 0.5 × 10 + 0.25 × 15 = 9.5 dB，低了 1.77 dB ✗。</li>
+    <li>(b) 平方可以在指数上乘 2：(10<sup>0.3</sup>)² = 10<sup>0.6</sup> = 3.981，10² = 100，(10<sup>1.5</sup>)² = 10<sup>3</sup> = 1000。\(E[\gamma^2]=0.25\times3.981+0.5\times100+0.25\times1000=0.995+50+250=301.0\)；\(\mathrm{Var}=E[\gamma^2]-(E[\gamma])^2=301.0-13.405^2=301.0-179.7=121.3\)，σ = √121.3 = 11.01。</li>
+    <li>(c) 离散分布的中断概率 = 低于门限的那些取值的概率之和：只有 3 dB &lt; 6 dB，所以 P<sub>out</sub> = 0.25。</li>
+    <li>(d) 功率加倍：Y = 2γ，每个 dB 值都 + 3.01 dB。E[Y] = 2E[γ] = 2 × 13.405 = 26.81，即 11.27 + 3.01 = 14.28 dB；Var(Y) = 2² × 121.3 ≈ 485（系数要平方），标准差 = 2 × 11.01 ≈ 22.0（标准差只乘 2）。</li>
+  </ol><p class="ans">答案：(a) E[γ] ≈ 13.4（11.27 dB）；(b) Var ≈ 121.3，σ ≈ 11.01；(c) 0.25；(d) 均值 26.81（14.28 dB），方差 ≈ 485。</p></div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li><b>全概率只写一项</b>：P(B) = P(A₁)P(B | A₁) ✗。这是老师点名的往年错误，要对<b>所有</b>状态求和。</li>
+    <li><b>贝叶斯答成先验</b>：模拟 A·Q1(b) 答 0.3 ✗，正确是 0.977。分母一定是全概率算出的总和。</li>
+    <li><b>直接平均 dB 值</b>：模拟 A·Q1(c) 7 dB ✗，8.63 dB ✓。先换线性再平均，最后再换回 dB。</li>
+    <li><b>E[g(X)] 当成 g(E[X])</b>：E[γ²] = 70.3，不是 7.3² = 53.29；方差忘了减 (E[X])²。</li>
+    <li><b>Var(aX) 写成 a·Var(X)</b>：系数要平方；独立变量相加，加的是方差、不是标准差；进 Q 函数前方差要开根号。</li>
+    <li><b>把互斥当独立</b>：独立是 P(A∩B) = P(A)P(B)，互斥是 P(A∩B) = 0；题目说 independent 才能直接相乘。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div><p>Let G and B denote the good and bad states and e a bit error. By the law of total probability, \(P_e=P(G)P(e\mid G)+P(B)P(e\mid B)=0.7\times10^{-4}+0.3\times10^{-2}=3.07\times10^{-3}\). By Bayes' rule, \(P(B\mid e)=P(B)P(e\mid B)/P_e=(3\times10^{-3})/(3.07\times10^{-3})=0.977\). Converting the SNRs to linear scale (10 dB → 10, 0 dB → 1), the mean SNR is \(E[\gamma]=0.7\times10+0.3\times1=7.3\), i.e. \(10\log_{10}7.3=8.63\) dB, and \(E[\gamma^2]=0.7\times100+0.3\times1=70.3\), so \(\mathrm{Var}(\gamma)=70.3-7.3^2=17.01\). The dB values must not be averaged directly, because dB is a logarithmic scale.</p></div>
+</section>
+<section class="topic" id="t2">
+  <h2><span class="tn">2</span>dB 换算与 SNR · dB conversion and SNR</h2>
+  <div class="meta"><span class="st def">定义·必会</span> <span class="freq">出现：几乎每道计算题都要用 · 期末 2024-25 Q1(a)(iii)、2025-26 S2 Q1(a)(iii)（dB → 线性）· Practice 1 Q2、Practice 2 Q1 / Q3 · 模拟 A·Q3、B·Q3、专项·Q3</span></div>
+  <p class="why">dB 很少单独出题，却是每道计算题的第一步和最后一步：功率给 W 或 mW，要先换成 dBm 才能代路径损耗的 dB 式；SNR 给 dB，要先换成线性才能代香农、瑞利公式或求平均。老师说漏写 dB ↔ 线性换算会扣分，mW 没换成 dBm 也会扣分。Quiz 可能的问法：给发射功率（W）、损耗和噪声（dBm，或 N₀ 和带宽），求 SNR（dB 和线性）。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(P\)</td><td>功率（线性）</td><td>power (linear)</td><td>真正的瓦数</td><td>W，mW</td></tr>
+    <tr><td>\(P_{\rm dBm}\)</td><td>功率的 dBm 值</td><td>power in dBm</td><td>以 1 mW 为参考：10 log₁₀(P / 1 mW)；说的是"有多少"</td><td>dBm</td></tr>
+    <tr><td>\(P_{\rm dBW}\)</td><td>功率的 dBW 值</td><td>power in dBW</td><td>以 1 W 为参考，等于 dBm − 30</td><td>dBW</td></tr>
+    <tr><td>dB</td><td>分贝（比值）</td><td>decibel (a ratio)</td><td>两个功率之比取 10 log₁₀；说的是"变了多少倍"，没有单位</td><td>dB</td></tr>
+    <tr><td>\(K_{\rm dB},\ G,\ L\)</td><td>常数 / 增益 / 损耗</td><td>constant, gain, loss</td><td>乘在功率上的倍数，换成 dB 后直接加减</td><td>dB</td></tr>
+    <tr><td>\(S\) 或 \(P_r\)</td><td>接收信号功率</td><td>received signal power</td><td>想要的信号到了接收机还剩多少</td><td>mW / dBm</td></tr>
+    <tr><td>\(N\)</td><td>噪声功率</td><td>noise power</td><td>接收带宽内噪声的总功率</td><td>mW / dBm</td></tr>
+    <tr><td>\(N_0\)</td><td>噪声功率谱密度</td><td>noise power spectral density</td><td>每 1 Hz 带宽里的噪声功率，N = N₀B</td><td>W/Hz，dBm/Hz</td></tr>
+    <tr><td>\(B\)</td><td>带宽</td><td>bandwidth</td><td>代进 10 log₁₀B 时一定用 Hz</td><td>Hz</td></tr>
+    <tr><td>\(I\)</td><td>干扰功率</td><td>interference power</td><td>别的用户、别的小区的信号</td><td>mW / dBm</td></tr>
+    <tr><td>SNR，\(\gamma\)</td><td>信噪比</td><td>signal-to-noise ratio</td><td>S / N；可写成线性（无单位）或 dB</td><td>无 / dB</td></tr>
+    <tr><td>SIR，SINR</td><td>信干比、信干噪比</td><td>signal-to-interference (plus noise) ratio</td><td>S / I；S / (I + N)，分母是所有"不想要的"功率</td><td>无 / dB</td></tr>
+    <tr><td>\(\Delta\)</td><td>余量</td><td>margin</td><td>平均功率比门限高多少：两个 dBm 相减</td><td>dB</td></tr>
+    <tr><td>\(Z,\ \rho\)</td><td>包络（幅度）、幅度比</td><td>envelope (amplitude), amplitude ratio</td><td>幅度类的量；\(\rho=Z_{\min}/Z_{\rm rms}\)，换 dB 用 20 log</td><td>V / 无</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">功率 ↔ dBm Power ↔ dBm <span class="st def">定义·必会</span></div><div class="fx">\[ P_{\rm dBm}=10\log_{10}\frac{P}{1\ \text{mW}},\qquad P=10^{P_{\rm dBm}/10}\ \text{mW} \]\[ P_{\rm dBW}=P_{\rm dBm}-30 \]</div><div class="fn">1 W = 1000 mW → 30 dBm（= 0 dBW）。路径损耗 dB 式 \(P_{r,\rm dB}=P_{t,\rm dB}+K_{\rm dB}-10\gamma\log_{10}(d/d_0)\)（第 2 章 p.8，背）里 P<sub>t</sub>、P<sub>r</sub> 都是 dBm；讲义 p.10 例题第一步就是 1 mW → 0 dBm。老师说 mW 没换成 dBm 会扣分。</div></div>
+  <div class="fm"><div class="fl">比值 ↔ dB Ratio ↔ dB <span class="st def">定义·必会</span></div><div class="fx">\[ x_{\rm dB}=10\log_{10}x,\qquad x=10^{x_{\rm dB}/10} \]</div><div class="fn">SNR、增益、损耗、余量都是比值。乘 ↔ 加：×2 = +3.01 dB，×10 = +10 dB。期末 2024-25 Q1(a)(iii) 注水的第一步就是 18 / 10 / 3 dB → 63.1 / 10 / 2.0；2025-26 S2 Q1(a)(iii)：25 dB → 316.2。</div></div>
+  <div class="fm"><div class="fl">dB 加减的含义 What adding and subtracting dB means <span class="st def">定义·必会</span></div><div class="fx">\[ \underbrace{P_r}_{\rm dBm}=\underbrace{P_t}_{\rm dBm}+\underbrace{G}_{\rm dB}-\underbrace{L}_{\rm dB} \]\[ \underbrace{\text{SNR}}_{\rm dB}=\underbrace{S}_{\rm dBm}-\underbrace{N}_{\rm dBm} \]</div><div class="fn">dBm + dB = dBm（功率乘一个倍数，还是功率）；dBm − dBm = dB（两个功率之比：SNR、余量）；dB ± dB = dB；<b>dBm + dBm 没有意义</b>，功率相加要回到 mW。Practice 1 Q2：15 dBm − 10 dBm = 5 dB 余量（平均功率是门限的 3.16 倍），σ 也是 dB（原题写 "dBm" 不严谨），5/8 = 0.625 → Q(0.625) = 0.266。期末 2025-26 S2 Q1(b)(i)：15 dB − 12 dB = 3 dB → 10<sup>0.3</sup> ≈ 2，dB 相减就是线性相除。</div></div>
+  <div class="fm"><div class="fl">信噪比 SNR / SINR <span class="st def">定义·必会</span></div><div class="fx">\[ \text{SNR}=\frac{S}{N}\ \Longleftrightarrow\ \text{SNR}_{\rm dB}=S_{\rm dBm}-N_{\rm dBm} \]\[ \text{SINR}=\frac{S}{I+N} \]</div><div class="fn">两种算法结果一样：mW 相除，或 dBm 相减。有干扰时 I + N 必须先换回 mW 再相加。代香农 C = B log₂(1 + SNR)（第 2 章 p.48，背）、瑞利的 γ₀/γ̄、求平均时，一律用线性 SNR。</div></div>
+  <div class="fm"><div class="fl">噪声功率 Noise power N = N₀B <span class="st def">定义·必会</span></div><div class="fx">\[ N=N_0B\ \Longleftrightarrow\ N_{\rm dBm}=N_{0,\ \rm dBm/Hz}+10\log_{10}B_{\rm Hz} \]\[ \gamma=\frac{P}{N_0B} \]</div><div class="fn">讲义第 2 章 p.48 写 γ = P/(N₀B)。−174 dBm/Hz 是室温（约 290 K）热噪声谱密度的常用值（课外常识）：模拟 B·Q3 里是题目给的，老师点名要背的公式里没有它。B 一定用 Hz：5 MHz → 10 log₁₀(5×10⁶) = 66.99 dB。带宽翻倍 → 噪声 +3.01 dB → SNR −3.01 dB。</div></div>
+  <div class="fm"><div class="fl">10 log 还是 20 log Power ratio vs amplitude ratio <span class="st def">定义·必会</span></div><div class="fx">\[ 10\log_{10}\frac{P_1}{P_2}=20\log_{10}\frac{Z_1}{Z_2}\quad(P\propto Z^2) \]\[ \rho=\frac{Z_{\min}}{Z_{\rm rms}},\qquad \rho_{\rm dB}=20\log_{10}\rho=10\log_{10}\rho^2 \]</div><div class="fn">功率类（P、SNR、K、ρ²）用 10 log；幅度类（signal strength、包络 Z、电压、ρ）用 20 log。LCR / AFD 公式（第 2 章 p.41–43，考试给）里的 ρ 是幅度比：门限是 rms 值的 0.1 倍 → ρ = 0.1（功率低 20 dB）；"功率比 rms 低 10 dB" → ρ² = 0.1，ρ = 0.316。自由空间的 \((\lambda/4\pi d)^2\) 取 dB 时平方提到前面，也写成 20 log₁₀(λ/4πd)。</div></div>
+  <h4>速查表 · Quick conversions</h4>
+  <div class="tw"><table class="sym"><thead><tr><th>功率比</th><th>dB</th><th>绝对功率</th><th>dBm</th><th>幅度比</th><th>dB（20 log）</th></tr></thead><tbody>
+    <tr><td>×2</td><td>+3.01（≈ +3）</td><td>1 mW</td><td>0</td><td>×2</td><td>+6.02</td></tr>
+    <tr><td>×4</td><td>+6.02</td><td>100 mW</td><td>20</td><td>×10</td><td>+20</td></tr>
+    <tr><td>×10</td><td>+10</td><td>0.5 W</td><td>26.99</td><td>×0.5</td><td>−6.02</td></tr>
+    <tr><td>×100</td><td>+20</td><td>1 W</td><td>30</td><td>×0.316（√0.1）</td><td>−10</td></tr>
+    <tr><td>×1000</td><td>+30</td><td>10 W</td><td>40</td><td>×0.1</td><td>−20</td></tr>
+    <tr><td>×0.5</td><td>−3.01（≈ −3）</td><td>1 µW</td><td>−30</td><td></td><td></td></tr>
+    <tr><td>×0.1</td><td>−10</td><td>1 pW</td><td>−90</td><td></td><td></td></tr>
+    <tr><td>×0.01</td><td>−20</td><td></td><td></td><td></td><td></td></tr>
+  </tbody></table></div>
+  <p class="src">期末里出现过的 dB → 线性：3 dB → 2.0，10 dB → 10，18 dB → 63.1（2024-25 Q1(a)(iii)）；12 dB → 15.85（2023-24 Q1(b)(i)）；11 dB → 12.59，13 dB → 19.95（2025-26 S1 Q1(b)(i)）；25 dB → 316.2（2025-26 S2 Q1(a)(iii)）。</p>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型一：由功率求 SNR，再代公式</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 2 · Q3</th><th>模拟 B · Q3 (a)</th></tr></thead><tbody>
+    <tr><td>① 统一单位</td><td>全用 mW 做除法，或全用 dBm 做减法</td><td>全是 mW：S = 10，I = 10，N = 0.1</td><td>S = −90 dBm；N₀ = −174 dBm/Hz，B = 5 MHz</td></tr>
+    <tr><td>② 噪声功率</td><td>给了 N 直接用；给 N₀ 就 N = N₀ + 10 log₁₀B（dBm）</td><td>N = 0.1 mW（题目给）</td><td>−174 + 10 log₁₀(5×10⁶) = −174 + 66.99 = −107.01 dBm</td></tr>
+    <tr><td>③ SNR / SINR</td><td>mW 相除，或 dBm 相减；有干扰时 SINR = S / (I + N)</td><td>(b) SNR = 10 / 0.1 = 100；(a) SINR = 10 / (10 + 0.1) = 0.990</td><td>−90 − (−107.01) = 17.01 dB</td></tr>
+    <tr><td>④ 换另一种写法</td><td>dB = 10 log₁₀(线性)；线性 = 10<sup>dB/10</sup></td><td>100 → 20 dB；0.990 → −0.04 dB</td><td>17.01 dB → 10<sup>1.701</sup> = 50.2</td></tr>
+    <tr><td>⑤ 代香农</td><td>C = B log₂(1 + SNR)，SNR 用线性</td><td>(b) 20 MHz × log₂101 = 133.16 Mbps；(a) 20 MHz × log₂1.990 = 19.86 Mbps</td><td>5 MHz × log₂51.2 = 28.4 Mbps</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 2 Q3（两个用户各收到 10 mW，噪声 0.1 mW，每用户带宽 20 MHz；官方答案 19.86 / 133.16 Mbps）；模拟 B · Q3 (a)（−90 dBm、5 MHz、−174 dBm/Hz，自编，verify_mock.py 验算）。期末没有直接由功率求 SNR 的题。</p>
+
+  <h4>题型二：功率链 W → dBm → 加减 dB → SNR</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>讲义第 2 章 p.10 例题</th><th>专项 · Q3 (a)</th></tr></thead><tbody>
+    <tr><td>① 发射功率换 dBm</td><td>10 log₁₀(P / 1 mW)</td><td>1 mW → 0 dBm</td><td>1 W = 1000 mW → 30 dBm</td></tr>
+    <tr><td>② 损耗都写成 dB</td><td>K<sub>dB</sub> 直接用；距离项 10γ log₁₀(d/d₀)</td><td>K<sub>dB</sub> = −26.67；10 × 3.97 × log₁₀150 = 86.39 dB</td><td>K<sub>dB</sub> = −40；10 × 3 × log₁₀1000 = 90 dB</td></tr>
+    <tr><td>③ 接收功率</td><td>dBm + dB = dBm</td><td>0 − 26.67 − 86.39 = −113.06 dBm</td><td>30 − 40 − 90 = −100 dBm</td></tr>
+    <tr><td>④ SNR</td><td>P<sub>r</sub>(dBm) − N(dBm) = dB</td><td>本题只问 P<sub>r</sub></td><td>−100 − (−120) = 20 dB</td></tr>
+    <tr><td>⑤ 换线性</td><td>10<sup>dB/10</sup>，留给下一问用</td><td>—</td><td>10<sup>20/10</sup> = 100（(c) 瑞利用 γ₀/γ̄ = 10/100 = 0.1）</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：讲义第 2 章 p.10 例题（K<sub>dB</sub> = −26.67 dB，γ = 3.97，发射 1 mW，求 150 m 处接收功率）；专项 · Q3 (a)（发射 1 W，K<sub>dB</sub> = −40 dB，γ = 3，d = 1 km，噪声 −120 dBm；自编，verify_mock.py 验算）。这张表只看单位怎么处理。</p>
+
+  <h4>题型三：幅度比还是功率比（10 log / 20 log）</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 2 · Q1</th><th>模拟 A · Q3 (c)</th></tr></thead><tbody>
+    <tr><td>① 看题目说的是什么</td><td>signal strength / amplitude / envelope = 幅度；power = 功率</td><td>最小信号强度（signal strength）是 rms 值的 0.1 倍：幅度</td><td>接收功率（power）不能比 rms 值低 10 dB 以上：功率</td></tr>
+    <tr><td>② 求 ρ</td><td>ρ = Z<sub>min</sub>/Z<sub>rms</sub> 是幅度比；功率比 = ρ²</td><td>ρ = 0.1</td><td>功率比 10<sup>−10/10</sup> = 0.1 = ρ² → ρ = √0.1 = 0.316</td></tr>
+    <tr><td>③ 换成 dB</td><td>功率比 10 log，幅度比 20 log，是同一个数</td><td>20 log₁₀0.1 = −20 dB（功率比 ρ² = 0.01）</td><td>10 log₁₀0.1 = −10 dB = 20 log₁₀0.316</td></tr>
+    <tr><td>④ 代公式（AFD 考试给）</td><td>ρ 代进 (e<sup>ρ²</sup> − 1) / (√(2π) f<sub>m</sub> ρ)</td><td>f<sub>D</sub> = 50 Hz：AFD = 0.80 ms</td><td>f<sub>m</sub> = 120 Hz：AFD = 1.106 ms（误用 ρ = 0.1 得 0.334 ms ✗）</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 2 Q1（f<sub>D</sub> = 50 Hz，官方答案 0.8 ms）；模拟 A · Q3 (c)（72 km/h、1.8 GHz → f<sub>m</sub> = 120 Hz；自编，verify_mock.py 验算）。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 功率给 W、噪声给 N₀（一路算到容量）</div><p class="q">发射功率 0.5 W，链路总损耗 110 dB，带宽 200 kHz，噪声功率谱密度 −174 dBm/Hz。求接收功率（dBm）、SNR（dB 和线性）和香农容量。</p><ol class="work">
+    <li>换 dBm：0.5 W = 500 mW → 10 log₁₀500 = 26.99 dBm（1 W 是 30 dBm，减半就是 −3.01 dB）。</li>
+    <li>接收功率：dBm − dB = dBm，P<sub>r</sub> = 26.99 − 110 = −83.01 dBm。</li>
+    <li>噪声：N = −174 + 10 log₁₀(2×10⁵) = −174 + 53.01 = −120.99 dBm。</li>
+    <li>SNR = −83.01 − (−120.99) = 37.98 dB → 10<sup>3.798</sup> ≈ 6.28×10³。</li>
+    <li>香农（用线性 SNR）：C = 2×10⁵ × log₂(1 + 6280) = 2×10⁵ × 12.62 = 2.52 Mbps。</li>
+  </ol><p class="ans">答案：P<sub>r</sub> = −83.01 dBm；SNR = 37.98 dB ≈ 6.28×10³；C ≈ 2.52 Mbps。</p></div>
+  <div class="eg"><div class="egh">例 2 · 反着问：要求 SNR，求最小发射功率（换回 W）</div><p class="q">接收机带宽 1 MHz，噪声谱密度 −174 dBm/Hz，要求 SNR ≥ 15 dB；发射机到接收机的路径损耗是 125 dB。发射功率至少多大？分别用 dBm 和 W 表示。</p><ol class="work">
+    <li>噪声：N = −174 + 10 log₁₀10⁶ = −174 + 60 = −114 dBm。</li>
+    <li>需要的接收功率：P<sub>r</sub> ≥ N + SNR = −114 + 15 = −99 dBm（dBm + dB = dBm）。</li>
+    <li>发射功率：P<sub>t</sub> = P<sub>r</sub> + 损耗 = −99 + 125 = 26 dBm。</li>
+    <li>换回 W：10<sup>26/10</sup> mW = 398 mW ≈ 0.40 W。</li>
+  </ol><p class="ans">答案：P<sub>t,min</sub> = 26 dBm ≈ 0.40 W。</p></div>
+  <div class="eg"><div class="egh">例 3 · 有干扰：I + N 要回到 mW 相加</div><p class="q">接收信号 −80 dBm，同频干扰 −85 dBm，噪声 −90 dBm。求 SNR、SIR、SINR（dB）。</p><ol class="work">
+    <li>SNR、SIR 都是两个功率之比，dBm 直接相减：SNR = −80 − (−90) = 10 dB；SIR = −80 − (−85) = 5 dB。</li>
+    <li>I + N 是功率相加，必须回到 mW：I = 10<sup>−8.5</sup> = 3.162×10⁻⁹ mW，N = 10<sup>−9</sup> = 1×10⁻⁹ mW，I + N = 4.162×10⁻⁹ mW → 10 log₁₀(4.162×10⁻⁹) = −83.81 dBm。</li>
+    <li>SINR = −80 − (−83.81) = 3.81 dB → 10<sup>0.381</sup> = 2.40。</li>
+    <li>验算：1/(1/SIR + 1/SNR) = 1/(0.3162 + 0.1) = 2.40 ✓。SINR 比 SNR、SIR 都小，因为分母最大。写成 −85 + (−90) = −175 "dBm" 是错的：dBm 相加等于功率相乘，没有意义。</li>
+  </ol><p class="ans">答案：SNR = 10 dB，SIR = 5 dB，SINR = 3.81 dB（线性 2.40）。</p></div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li><b>W / mW 没换就代 dB 式</b>：1 W 不是 0 dBm，是 30 dBm。老师说 mW 没换成 dBm 会扣分，代数前先问"这个数是不是 dB"。</li>
+    <li><b>dBm 和 dBm 相加</b>：I + N、几路信号合在一起，都要回到 mW 再加；dBm 只能和 dB 加减。</li>
+    <li><b>该换线性没换</b>：香农、瑞利 1 − e<sup>−γ₀/γ̄</sup>、求平均都用线性 SNR；漏写换算会扣分。老师讲例题时说 8.5 dB 要先换成 10<sup>0.85</sup>，每年都强调还是有人不换。</li>
+    <li><b>不该换的也换了</b>：阴影 Q(余量/σ) 里余量和 σ 都是 dB，直接相除。老师讲 Practice 1 Q1 时特别提醒："10 dB above"的 10 是 dB，不要换成线性。</li>
+    <li><b>10 log 和 20 log 混用</b>：幅度（signal strength、ρ）用 20 log。"rms 值的 0.1 倍"→ ρ = 0.1；"功率低 10 dB"→ ρ = 0.316。</li>
+    <li><b>带宽忘了用 Hz</b>：10 log₁₀(5 MHz) 要算 10 log₁₀(5×10⁶) = 66.99，不是 10 log₁₀5。带宽翻倍噪声多 3.01 dB，所以模拟 B·Q3(b) 容量只从 28.4 涨到 47.1 Mbps（1.66 倍）。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div><p>The transmit power is \(P_t=1\ \text{W}=10\log_{10}(1000\ \text{mW}/1\ \text{mW})=30\) dBm. Using the dB form of the simplified path loss model, \(P_r=P_t+K_{\rm dB}-10\gamma\log_{10}(d/d_0)=30-40-30\log_{10}1000=-100\) dBm. With a noise power of −120 dBm, the average SNR is \(-100-(-120)=20\) dB, i.e. \(10^{20/10}=100\) in linear scale. When only \(N_0\) is given, the noise power is \(N=N_0B\); for \(N_0=-174\) dBm/Hz and \(B=5\) MHz, \(N=-174+10\log_{10}(5\times10^6)=-107.01\) dBm. Since signal strength is an amplitude, a threshold of 0.1 times the rms value gives \(\rho=0.1\), i.e. \(20\log_{10}0.1=-20\) dB (a power ratio of \(\rho^2=0.01\)).</p></div>
+</section>
+
+  <div class="part">第 2 部分 · 大尺度：路径损耗与阴影</div>
+<section class="topic" id="t3">
+  <h2><span class="tn">3</span>简化路径损耗模型 · Simplified path loss model</h2>
+  <div class="meta"><span class="st must">背</span><span class="st def">定义·必会</span><span class="freq">出现：期末 2/4 套（2023-24 Q1(a)(i)、2024-25 Q1(a)(i)）· Practice 1 Q1 · 模拟 A·Q2、B·Q2 · 专项 Q1、Q3</span></div>
+  <p class="why">把 \(P_r=P_tK(d_0/d)^{\gamma}\) 取 dB 变成一条直线，然后有三种问法：正着代 d 求接收功率；倒着由“最多能损耗多少 dB”求最远距离；从直线图读截距（K<sub>dB</sub>）和斜率（γ）。两套期末都放在 Q1(a)(i) 第一小问；模拟 A·Q2 也是先算它，再接阴影中断（第 5 类）。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(P_t\)</td><td>发射功率</td><td>transmit power</td><td>发射机送出去的功率</td><td>W、mW</td></tr>
+    <tr><td>\(P_r\)</td><td>接收功率</td><td>received power</td><td>接收机收到的功率，几百米外常常只有 10<sup>−10</sup> W 甚至更小</td><td>W、mW</td></tr>
+    <tr><td>\(P_{t,\mathrm{dB}}\)、\(P_{r,\mathrm{dB}}\)</td><td>功率的 dB 值</td><td>power in dBm</td><td>10 log₁₀(P / 1 mW)，绝对功率“有多少”</td><td>dBm</td></tr>
+    <tr><td>\(K\)</td><td>路径损耗常数</td><td>path loss constant</td><td>参考距离 d₀ 处的 P<sub>r</sub>/P<sub>t</sub>，一个小于 1 的倍数；和天线、环境有关，靠实测拟合</td><td>无（倍数）</td></tr>
+    <tr><td>\(K_{\mathrm{dB}}\)</td><td>K 的 dB 值</td><td>K in dB</td><td>10 log₁₀K，通常是负数：−30 dB 就是 K = 10<sup>−3</sup></td><td>dB</td></tr>
+    <tr><td>\(\gamma\)</td><td>路径损耗指数</td><td>path loss exponent</td><td>距离每变 10 倍，损耗多 10γ dB；题目只说 “exponent = 3.5” 时就是 γ</td><td>无</td></tr>
+    <tr><td>\(d\)</td><td>收发距离</td><td>Tx–Rx distance</td><td>发射机到接收机的距离</td><td>m</td></tr>
+    <tr><td>\(d_0\)</td><td>参考距离</td><td>reference distance</td><td>K 就是在这个距离上定的；默认 1 m，题目给 10 m 就用 10 m</td><td>m</td></tr>
+    <tr><td>\(P_{L,\mathrm{dB}}\)</td><td>路径损耗</td><td>path loss</td><td>P<sub>t</sub> − P<sub>r</sub>（dB），正数，越远越大</td><td>dB</td></tr>
+    <tr><td>\(\psi_{\mathrm{dB}}\)</td><td>阴影衰落</td><td>shadowing</td><td>零均值高斯随机量，把实测点打散在直线两侧（2023-24 的式子里有它）</td><td>dB</td></tr>
+    <tr><td>\(\lambda\)</td><td>波长</td><td>wavelength</td><td>λ = c/f；只在自由空间、双径公式里出现，简化模型里没有</td><td>m</td></tr>
+    <tr><td>\(G_t\)、\(G_r\)</td><td>天线增益</td><td>antenna gains</td><td>自由空间公式里的收、发天线增益，没给就取 1</td><td>无</td></tr>
+    <tr><td>\(h_t\)、\(h_r\)、\(d_c\)</td><td>天线高度、临界距离</td><td>antenna heights, critical distance</td><td>双径模型用：d &gt; d<sub>c</sub> = 4h<sub>t</sub>h<sub>r</sub>/λ 以后才按 d<sup>−4</sup> 下降</td><td>m</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">简化路径损耗模型（线性）· Simplified path loss model, linear <span class="st must">背</span></div><div class="fx">\[ P_r = P_t\,K\left(\frac{d_0}{d}\right)^{\gamma} \]</div><div class="fn">讲义第 2 章 p.8 蓝框，考试不给。K 用线性倍数（K<sub>dB</sub> = −30 dB 要先换成 K = 10<sup>−3</sup>），P<sub>t</sub>、P<sub>r</sub> 用同一单位。题目写成 \(P_r=P_tKd^{-\gamma}\) 或 \(P_tK[1/d]^{\gamma}\) 也是它（d₀ = 1 m）。老师强调：这个模型里没有随机量，算出来是确定的一个数；γ 的典型取值表（p.9）不用背，题目会给 γ 或让你算。</div></div>
+  <div class="fm"><div class="fl">简化路径损耗模型（dB）· dB form <span class="st must">背</span></div><div class="fx">\[ \begin{aligned} P_{r,\mathrm{dBm}} &amp;= P_{t,\mathrm{dBm}} + K_{\mathrm{dB}}\\ &amp;\quad - 10\gamma\log_{10}\frac{d}{d_0}\\ P_{L,\mathrm{dB}} &amp;= P_{t,\mathrm{dBm}} - P_{r,\mathrm{dBm}}\\ &amp;= -K_{\mathrm{dB}} + 10\gamma\log_{10}\frac{d}{d_0} \end{aligned} \]</div><div class="fn">两边取 10 log₁₀：乘法变加法，\((d_0/d)^{\gamma}\) 变成 \(-10\gamma\log_{10}(d/d_0)\)。dBm + dB = dBm：只有 P<sub>t</sub>、P<sub>r</sub> 是 dBm，K<sub>dB</sub> 和距离项是 dB。线性、dB 两种形式都要背，老师说按题目给的量选方便的那种。<b>画成图</b>：横轴取 \(10\log_{10}d\) 时，P<sub>L</sub> 是截距 −K<sub>dB</sub>（d = d₀ = 1 m 处）、斜率 γ 的直线；横轴取 \(\log_{10}d\) 时斜率是 10γ（每十倍距离 10γ dB）；纵轴画 \((P_r/P_t)_{\mathrm{dB}}\) 时线往下走，截距是 +K<sub>dB</sub>。</div></div>
+  <div class="fm"><div class="fl">加上阴影 · With shadowing（讲义 p.12）<span class="st def">定义·必会</span></div><div class="fx">\[ \begin{aligned} P_r &amp;= P_tK\,d^{-\gamma}\,\psi\\ P_{r,\mathrm{dB}} &amp;= P_{t,\mathrm{dB}} + K_{\mathrm{dB}}\\ &amp;\quad - 10\gamma\log_{10}d + \psi_{\mathrm{dB}}\\ \psi_{\mathrm{dB}} &amp;\sim \mathcal{N}(0,\sigma_\psi^2) \end{aligned} \]</div><div class="fn">2023-24 Q1(a)(i) 原题给的就是第一行的线性式（d₀ = 1 m），要你化成第二行。不用另背：就是上面的 dB 式再加一项 ψ<sub>dB</sub>（乘 ψ，取 dB 后变成加 ψ<sub>dB</sub>）。老师：阴影零均值，所以平均接收功率 = 不含阴影的路径损耗结果，方差 = σ<sub>ψ</sub>²。</div></div>
+  <div class="fm"><div class="fl">功率单位 · dBm ↔ mW <span class="st def">定义·必会</span></div><div class="fx">\[ \begin{gathered} P_{\mathrm{dBm}} = 10\log_{10}\frac{P}{1\ \mathrm{mW}}\\ P = 10^{P_{\mathrm{dBm}}/10}\ \mathrm{mW}\\ 1\ \mathrm{W} = 30\ \mathrm{dBm} \end{gathered} \]</div><div class="fn">倍数（比值）的 dB 不带 m：K<sub>dB</sub> = 10 log₁₀K。例：100 mW = 20 dBm，4 W = 4000 mW = 36.02 dBm，10<sup>−3</sup> = −30 dB。老师：mW 没换成 dBm 会扣分，dB ↔ 线性的换算要写出来。</div></div>
+  <div class="fm"><div class="fl">自由空间（p.4）与双径（p.5）· Free space and two-ray —— 只作对照，不是简化模型</div><div class="fx">\[ P_r = P_tG_tG_r\left(\frac{\lambda}{4\pi d}\right)^{2} \]\[ \begin{gathered} P_r \approx P_tG_tG_r\,\frac{(h_th_r)^2}{d^4}\\ d \gt d_c = \frac{4h_th_r}{\lambda} \end{gathered} \]</div><div class="fn">Quiz 标记和录音都没把这两个列为必背，放在这里是为了分清。自由空间 ∝ d<sup>−2</sup>（相当于 γ = 2，每十倍距离 20 dB），取 dB 要用 <b>20</b> log₁₀(λ/4πd)，λ = c/f（定义·必会）；双径远处 ∝ d<sup>−4</sup>（每十倍距离 40 dB），和频率无关。老师提醒：往年 Quiz 有学生把 simplified path loss model 的题用成了自由空间。题目说 simplified，就只用 K、γ。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型 ①：正算接收功率 · 反算最远距离（读直线图也属于这一类）</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2024-25 Q1(a)(i)）</th><th>模拟 A · Q2</th></tr></thead><tbody>
+    <tr><td>① 换单位</td><td>功率换成 dBm：mW 直接取 10 log₁₀；W 先 ×1000 变 mW，或 10 log₁₀(瓦数) + 30</td><td>只给 K<sub>dB</sub> = −30 dB、γ = 3.5，没有功率要换；原图纵轴标 Path Loss，但线往下走 → 按 (P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> 读</td><td>100 mW → 10 log₁₀100 = 20 dBm</td></tr>
+    <tr><td>② 写 dB 式</td><td>P<sub>r</sub> = P<sub>t</sub> + K<sub>dB</sub> − 10γ log₁₀(d/d₀)，先把 10γ 算出来</td><td>(P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> = −30 − 35 log₁₀d（10γ = 35）</td><td>P<sub>r</sub> = 20 − 31.5 − 36 log₁₀d（10γ = 36）</td></tr>
+    <tr><td>③ 正算：代 d</td><td>算 10γ log₁₀(d/d₀)，再加减</td><td>d = 1 m：log₁₀1 = 0 → A = K<sub>dB</sub> = −30 dB</td><td>d = 300 m：36 × 2.4771 = 89.18 dB → P<sub>r</sub> = 20 − 31.5 − 89.18 = −100.68 dBm</td></tr>
+    <tr><td>④ 反算：求 d</td><td>令 10γ log₁₀(d/d₀) = 允许的损耗（dB），d = d₀ × 10<sup>允许/(10γ)</sup></td><td>A 到 B 降了 88 dB：35 × B = 88 → B = log₁₀d = 2.51（d ≈ 327 m）</td><td>中断 ≤ 1%：平均 P<sub>r</sub> ≥ −110 + 2.326 × 6 = −96.04 dBm；36 log₁₀d ≤ 84.54 → log₁₀d ≤ 2.348 → d ≈ 223 m</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：真题（2024-25 Q1(a)(i)）＝ 2024-25 期末 Q1(a)(i)：P<sub>r</sub> = P<sub>t</sub>K(d)<sup>−3.5</sup>，K<sub>dB</sub> = −30 dB，Figure 1 画 path loss（dB）对 log₁₀(d) 的直线，A 在 d = 1 m 处，A 到横轴上 B 点的高度差标为 88 dB，求 A、B。模拟 A · Q2 ＝ 练习页自编模拟题：发射 100 mW，K<sub>dB</sub> = −31.5 dB，d₀ = 1 m，γ = 3.6，门限 −110 dBm，阴影 σ = 6 dB；(a) 300 m 处的平均接收功率，(c) 中断不超过 1% 的最大距离。讲义第 2 章 p.8–10。</p>
+
+  <h4>题型 ②：把模型化成 dB 式，画路径损耗直线（含阴影）</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2023-24 Q1(a)(i)）</th><th>模拟 B · Q2</th></tr></thead><tbody>
+    <tr><td>① 取 10 log₁₀</td><td>乘法变加法，幂变系数，d₀/d 变负号</td><td>P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 10γ log₁₀d + ψ<sub>dB</sub></td><td>M = (P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> = K<sub>dB</sub> − γ × (10 log₁₀d)</td></tr>
+    <tr><td>② 选纵轴</td><td>画 P<sub>L</sub> = P<sub>t</sub> − P<sub>r</sub>（线往上）或 P<sub>r</sub>/P<sub>t</sub>（线往下）</td><td>P<sub>L,dB</sub> = −K<sub>dB</sub> + γ × (10 log₁₀d) − ψ<sub>dB</sub></td><td>拟合结果：M = −37.01 − 3.366x，x = 10 log₁₀d</td></tr>
+    <tr><td>③ 标截距</td><td>d = d₀ = 1 m（横轴 0）处的纵坐标</td><td>−K<sub>dB</sub></td><td>K<sub>dB</sub> = −37.0 dB</td></tr>
+    <tr><td>④ 标斜率</td><td>横轴 10 log₁₀d → 斜率 γ；横轴 log₁₀d → 斜率 10γ</td><td>γ（横轴每增加 1 dB，P<sub>L</sub> 多 γ dB）</td><td>斜率 −3.37 → γ = 3.37</td></tr>
+    <tr><td>⑤ 标阴影</td><td>实测点散在线两侧，点到线的竖直距离就是该点的 ψ<sub>dB</sub></td><td>ψ<sub>dB</sub> 零均值高斯 → 点在线两侧随机散开</td><td>d = 100 m（x = 20）：线上 −104.33 dB，实测 −105 dB，差 −0.67 dB</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：真题（2023-24 Q1(a)(i)）＝ 2023-24 期末 Q1(a)(i)：给出含阴影的模型 P<sub>r</sub> = P<sub>t</sub>K(d)<sup>−γ</sup>ψ，要求化成 dB 形式，画 path loss（dB）对 distance（dB）的草图并标出 K<sub>dB</sub>、γ（紧接的 (ii) 问阴影方差上限：σ² &lt; 18.5 dB²，见第 5 类）。模拟 B · Q2 ＝ 练习页自编模拟题：4 个测量点 d = 10、20、50、100 m，最小二乘得 K<sub>dB</sub> = −37.0 dB、γ = 3.37；原题问的是拟合（见第 4 类），这里借它的结果演示怎么标图。讲义第 2 章 p.8、p.12。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 功率给瓦、K 给线性值：两种形式各算一遍（变形：单位换算）</div>
+    <p class="q">发射功率 4 W，简化路径损耗模型 K = 5×10<sup>−4</sup>（线性值），γ = 3，d₀ = 1 m。(a) 求 200 m 处的接收功率，用 dBm 和 W 各写一次。(b) 距离加倍到 400 m，接收功率降多少 dB？是原来的几分之一？</p>
+    <ol class="work">
+      <li>先换单位：P<sub>t</sub> = 4 W = 4000 mW → 10 log₁₀4000 = 36.02 dBm；K<sub>dB</sub> = 10 log₁₀(5×10<sup>−4</sup>) = −33.01 dB。</li>
+      <li>dB 式：距离项 10γ log₁₀(d/d₀) = 30 × log₁₀200 = 30 × 2.301 = 69.03 dB；P<sub>r</sub> = 36.02 − 33.01 − 69.03 = −66.02 dBm。</li>
+      <li>线性式核对：\(P_r = 4\times5\times10^{-4}\times(1/200)^3\) \(= 2\times10^{-3}\times1.25\times10^{-7}\) \(= 2.5\times10^{-10}\) W = 2.5×10<sup>−7</sup> mW → 10 log₁₀(2.5×10<sup>−7</sup>) = −66.02 dBm，两种算法一致。</li>
+      <li>(b) 距离加倍多损耗 10γ log₁₀2 = 30 × 0.301 = 9.03 dB；线性上 P<sub>r</sub> ∝ d<sup>−3</sup>，变成原来的 1/2³ = 1/8。P<sub>r</sub>(400 m) = −66.02 − 9.03 = −75.05 dBm = 3.125×10<sup>−11</sup> W。</li>
+    </ol>
+    <p class="ans">答案：(a) −66.02 dBm = 2.5×10<sup>−10</sup> W；(b) 降 9.03 dB，即 1/8</p>
+  </div>
+  <div class="eg"><div class="egh">例 2 · 反求最远距离，参考距离 d₀ = 10 m（变形：倒着问 + d₀ 不是 1 m）</div>
+    <p class="q">发射功率 1 W，K<sub>dB</sub> = −50 dB（在 d₀ = 10 m 处定的），γ = 4，接收机最低需要 −100 dBm，不考虑阴影。(a) 最远能覆盖多远？(b) 要覆盖 2 km，发射功率至少多少瓦？</p>
+    <ol class="work">
+      <li>P<sub>t</sub> = 1 W = 30 dBm。要求 P<sub>r</sub> ≥ −100 dBm：30 − 50 − 40 log₁₀(d/10) ≥ −100。</li>
+      <li>移项：40 log₁₀(d/10) ≤ 80 → log₁₀(d/10) ≤ 2 → d/10 ≤ 100 → d ≤ 1000 m。（忘了除以 d₀ 会解出 d ≤ 100 m，差 10 倍。）</li>
+      <li>(b) d = 2000 m：40 log₁₀(2000/10) = 40 × 2.301 = 92.04 dB；P<sub>t</sub> ≥ −100 + 50 + 92.04 = 42.04 dBm。</li>
+      <li>换回瓦：10<sup>42.04/10</sup> mW = 16&nbsp;000 mW = 16.0 W。对照：从 1 km 加倍到 2 km 多损耗 40 log₁₀2 = 12.04 dB，功率要 ×16。</li>
+    </ol>
+    <p class="ans">答案：(a) d<sub>max</sub> = 1000 m；(b) P<sub>t</sub> ≥ 42.04 dBm ≈ 16.0 W</p>
+  </div>
+  <div class="eg"><div class="egh">例 3 · 从路径损耗图读 K、γ，再识破“自由空间”陷阱（变形：读图 + 选模型）</div>
+    <p class="q">实测路径损耗 P<sub>L</sub>（dB）对 log₁₀d 画成一条往上走的直线：d = 1 m（log₁₀d = 0）处 P<sub>L</sub> = 40 dB，log₁₀d = 3 处 P<sub>L</sub> = 145 dB。(a) 求 K<sub>dB</sub> 和 γ。(b) P<sub>t</sub> = 20 dBm，求 200 m 处的 P<sub>r</sub>。(c) 有同学改用自由空间公式（f = 2 GHz，G<sub>t</sub> = G<sub>r</sub> = 1）算 200 m 处的 P<sub>r</sub>，会得到多少？差多少？</p>
+    <ol class="work">
+      <li>(a) 截距：P<sub>L</sub>(1 m) = −K<sub>dB</sub> = 40 dB → K<sub>dB</sub> = −40 dB。斜率：(145 − 40)/3 = 35 dB/十倍距离 = 10γ → γ = 3.5。（横轴如果是 10 log₁₀d，斜率直接就是 γ。）</li>
+      <li>(b) P<sub>L</sub>(200 m) = 40 + 35 log₁₀200 = 40 + 35 × 2.301 = 40 + 80.54 = 120.54 dB；P<sub>r</sub> = 20 − 120.54 = −100.54 dBm。</li>
+      <li>(c) 自由空间：λ = c/f = 3×10<sup>8</sup>/2×10<sup>9</sup> = 0.150 m；P<sub>L</sub> = 20 log₁₀(4πd/λ) = 20 log₁₀(4π × 200/0.150) = 20 log₁₀(16&nbsp;755) = 84.48 dB → P<sub>r</sub> = 20 − 84.48 = −64.48 dBm。</li>
+      <li>两者差 120.54 − 84.48 ≈ 36.1 dB，约 4.0×10³ 倍：自由空间每十倍距离只多 20 dB，这里实测是 35 dB。题目给了 simplified path loss model（K、γ 或图），就只能用它。</li>
+    </ol>
+    <p class="ans">答案：(a) K<sub>dB</sub> = −40 dB，γ = 3.5；(b) −100.54 dBm；(c) −64.48 dBm，高估约 36 dB（用错模型）</p>
+  </div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>题目写 simplified path loss model（或给了 K、γ）却套自由空间 (λ/4πd)²：老师说往年 Quiz 真有人这样错。自由空间每十倍距离只降 20 dB，γ = 3.5 时降 35 dB；专项 Q1 里 1 km 处两者差约 45 dB。</li>
+    <li>功率没换成 dBm 就代进 dB 式（老师：会扣分）。只有 P<sub>t</sub>、P<sub>r</sub> 是 dBm，K<sub>dB</sub> 和 10γ log₁₀(d/d₀) 是 dB。反过来，线性式里的 K 要用倍数（−30 dB → 10<sup>−3</sup>），不能代 −30。</li>
+    <li>把 10γ 写成 γ：γ = 3.6 时距离项是 36 log₁₀d，不是 3.6 log₁₀d。读图同理：横轴是 log₁₀d 时斜率 = 10γ，横轴是 10 log₁₀d 时斜率才 = γ。</li>
+    <li>忘了除以 d₀：d₀ = 10 m 时要用 log₁₀(d/10)，例 2 忘了会把 1000 m 算成 100 m。K 是在 d₀ 处定义的，d₀ 换了，K 也跟着变。</li>
+    <li>读图先看纵轴画的是什么：画 P<sub>L</sub>（线往上）截距是 −K<sub>dB</sub>；画 P<sub>r</sub>/P<sub>t</sub>（线往下）截距是 +K<sub>dB</sub>。2024-25 的图纵轴标的是 Path Loss，但线往下走，只能按 (P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> 读，所以 A = K<sub>dB</sub> = −30 dB；按正的路径损耗理解则 A = 30 dB（那样线应该往上走），B 两种理解都是 2.51。</li>
+    <li>反算距离最后一步是取 10 的幂：log₁₀d ≤ 2.348 → d ≤ 10<sup>2.348</sup> ≈ 223 m，别把 2.348 当成距离；“最远距离”往小的方向舍入。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>Taking 10 log₁₀ of both sides of \(P_r=P_tK(d_0/d)^{\gamma}\) gives \(P_{r,\mathrm{dBm}}=P_{t,\mathrm{dBm}}+K_{\mathrm{dB}}\) \({}-10\gamma\log_{10}(d/d_0)\).</p>
+    <p>With \(P_t\) = 100 mW = 10 log₁₀100 = 20 dBm, \(K_{\mathrm{dB}}\) = −31.5 dB and γ = 3.6, at d = 300 m: \(P_r = 20-31.5-36\log_{10}300\) \(= -100.68\) dBm.</p>
+    <p>The path loss \(P_{L,\mathrm{dB}}=-K_{\mathrm{dB}}+\gamma\,(10\log_{10}d)\) is a straight line against 10 log₁₀d: its intercept at d = 1 m is −K<sub>dB</sub> and its slope is γ (10γ dB per decade against log₁₀d). Shadowing ψ<sub>dB</sub> scatters the measured points on both sides of the line.</p>
+    <p>For the maximum distance, set the received power equal to the required minimum and solve for log₁₀d: 36 log₁₀d ≤ 84.54 gives d ≤ 10<sup>2.348</sup> ≈ 223 m.</p>
+  </div>
+</section>
+<section class="topic" id="t4">
+  <h2><span class="tn">4</span>最小二乘拟合 K、γ 与阴影方差 · Least-squares fit of K, γ and σ²</h2>
+  <div class="meta"><span class="st must">背</span><span class="st def">会算</span><span class="st def">定义·必会</span><span class="freq">出现：Practice 1 Q1（老师第 10 周课上讲过）· 模拟 B·Q2 · 期末 4 套都没出</span></div>
+  <p class="why">给几组实测点 (d<sub>i</sub>, (P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub>)，取 dB 后模型是直线 M = K<sub>dB</sub> − γx，用最小二乘求截距和斜率；点偏离直线的均方值（MSE）就是阴影方差 σ<sub>ψ</sub>²，再接 P<sub>out</sub> = Q(余量/σ)。Practice 1 Q1 就是这题（6 个点），模拟 B · Q2 是 4 个点的版本。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(d_i\)</td><td>第 i 个测量距离</td><td>i-th measurement distance</td><td>在离发射机 d<sub>i</sub> 处测了一次</td><td>m</td></tr>
+    <tr><td>\(d_0\)</td><td>参考距离</td><td>reference distance</td><td>默认 1 m；拟合出来的 K 就是这个距离上的增益</td><td>m</td></tr>
+    <tr><td>\(n\)</td><td>测量点数</td><td>number of measurements</td><td>表里有几行就是几</td><td>个</td></tr>
+    <tr><td>\(x_i\)</td><td>横坐标（距离的 dB）</td><td>distance in dB</td><td>10 log₁₀(d<sub>i</sub>/d₀)；d 每 ×10，x 加 10</td><td>dB</td></tr>
+    <tr><td>\(M_i\)</td><td>实测路径增益</td><td>measured path gain</td><td>(P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> = P<sub>r</sub>(dBm) − P<sub>t</sub>(dBm)，是负数</td><td>dB</td></tr>
+    <tr><td>\(\bar x\)、\(\bar M\)</td><td>平均值</td><td>sample means</td><td>所有 x、所有 M 各自的平均；最佳直线一定经过 (\(\bar x\), \(\bar M\))</td><td>dB</td></tr>
+    <tr><td>\(S_{xy}\)、\(S_{xx}\)</td><td>离差乘积和、离差平方和</td><td>sum of cross deviations, sum of squared deviations</td><td>S<sub>xy</sub> = Σ(x<sub>i</sub> − \(\bar x\))(M<sub>i</sub> − \(\bar M\))，S<sub>xx</sub> = Σ(x<sub>i</sub> − \(\bar x\))²（本页用的简写）</td><td>dB²</td></tr>
+    <tr><td>\(K_{\mathrm{dB}}\)、\(\gamma\)</td><td>截距、路径损耗指数</td><td>intercept, path loss exponent</td><td>直线 M = K<sub>dB</sub> − γx 的截距和“斜率的相反数”</td><td>dB、无</td></tr>
+    <tr><td>\(\hat M_i\)</td><td>预测值</td><td>fitted value</td><td>直线在 x<sub>i</sub> 处的值 K<sub>dB</sub> − γx<sub>i</sub></td><td>dB</td></tr>
+    <tr><td>\(e_i\)</td><td>残差</td><td>residual</td><td>实测 − 预测 = M<sub>i</sub> − \(\hat M_i\)，就是这个点的阴影</td><td>dB</td></tr>
+    <tr><td>\(F(K,\gamma)\)</td><td>均方误差</td><td>mean squared error (MSE)</td><td>(1/n)Σe<sub>i</sub>²；最小二乘就是让它最小</td><td>dB²</td></tr>
+    <tr><td>\(\sigma_\psi^2\)、\(\sigma_\psi\)</td><td>阴影方差、标准差</td><td>shadowing variance, standard deviation</td><td>σ<sub>ψ</sub>² = 最小的 MSE；Q 函数里用开根号后的 σ<sub>ψ</sub></td><td>dB²、dB</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">直线模型 · The dB straight line <span class="st must">背</span></div><div class="fx">\[ \begin{gathered} M_i = \left.\frac{P_r}{P_t}\right|_{\mathrm{dB}} = K_{\mathrm{dB}} - \gamma\,x_i\\ x_i = 10\log_{10}\frac{d_i}{d_0} \end{gathered} \]</div><div class="fn">就是第 3 类必背的 dB 式两边减去 P<sub>t</sub>。横坐标用 10 log₁₀d，斜率才正好是 −γ；用 log₁₀d，斜率会变成 −10γ。老师：K、γ 都由实测数据拟合（empirical）。</div></div>
+  <div class="fm"><div class="fl">最小二乘的目标（讲义 p.13）· Least-squares criterion <span class="st def">会算</span></div><div class="fx">\[ \begin{gathered} F(K,\gamma) = \frac{1}{n}\sum_{i=1}^{n}e_i^2\\ e_i = M_i - K_{\mathrm{dB}} + \gamma x_i\\ \frac{\partial F}{\partial K}=0,\qquad \frac{\partial F}{\partial \gamma}=0 \end{gathered} \]</div><div class="fn">老师第 10 周讲 Practice 1 Q1 就是这样做的：写出 F，分别对 K、γ 求偏导令其为 0，解两个一次方程。录音没把它列进蓝框，也没说考试给，按“自己会写、会解”准备。</div></div>
+  <div class="fm"><div class="fl">解法一：离差形式 · Solution, deviation form <span class="st def">会算</span></div><div class="fx">\[ \begin{aligned} \gamma &amp;= -\frac{S_{xy}}{S_{xx}}\\ &amp;= -\frac{\sum_i (x_i-\bar x)(M_i-\bar M)}{\sum_i (x_i-\bar x)^2}\\ K_{\mathrm{dB}} &amp;= \bar M + \gamma\,\bar x \end{aligned} \]</div><div class="fn">分式是直线的斜率（负数），γ 取它的相反数。第一个偏导方程化简就是 K<sub>dB</sub> = \(\bar M\) + γ\(\bar x\)：最佳直线过平均点 (\(\bar x\), \(\bar M\))，而且残差加起来等于 0，可以拿来自检。手算列 x、M、x − \(\bar x\)、M − \(\bar M\)、乘积、平方几列。</div></div>
+  <div class="fm"><div class="fl">解法二：四列求和的正规方程 · Normal equations with sums <span class="st def">会算</span></div><div class="fx">\[ \begin{gathered} nK_{\mathrm{dB}} - \gamma\sum x_i = \sum M_i\\ K_{\mathrm{dB}}\sum x_i - \gamma\sum x_i^2 = \sum x_iM_i \end{gathered} \]\[ \begin{gathered} -\gamma = \frac{n\sum x_iM_i - \sum x_i\sum M_i}{n\sum x_i^2 - \left(\sum x_i\right)^2}\\ K_{\mathrm{dB}} = \frac{\sum M_i + \gamma\sum x_i}{n} \end{gathered} \]</div><div class="fn">讲解页 2.1 节推导框的写法：两个偏导 = 0 直接展开。结果和解法一完全相同，只是改成列 x、M、x²、xM 四列求和；\(\bar x\) 不是整数时用它可以不算离差。</div></div>
+  <div class="fm"><div class="fl">阴影方差 = 最小 MSE · Shadowing variance <span class="st def">定义·必会</span></div><div class="fx">\[ \begin{gathered} e_i = M_i - \big(K_{\mathrm{dB}} - \gamma x_i\big)\\ \sigma_\psi^2 = F_{\min} = \frac{1}{n}\sum_{i=1}^{n} e_i^2\\ \sigma_\psi = \sqrt{\sigma_\psi^2} \end{gathered} \]</div><div class="fn">讲义 p.13 写的就是 “MSE = σ<sub>ψdB</sub>²”，除以 n。老师：题目只给 MSE 时它就是 σ²，开根号才是 σ。</div></div>
+  <div class="fm"><div class="fl">接中断概率 · Outage <span class="st must">背</span></div><div class="fx">\[ P_{\mathrm{out}} = Q\!\left(\frac{\bar P_{r,\mathrm{dB}} - P_{\min,\mathrm{dB}}}{\sigma_\psi}\right) \]</div><div class="fn">讲义 p.15 蓝框（详见第 5 类）。分子是余量（dB），分母是标准差（dB）。老师提醒 Practice 1 Q1(b) “10 dB above” 的 10 就是 dB，公式本来就是 dB 形式推出来的，不要换成线性。Q 表考卷附。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 1 · Q1</th><th>模拟 B · Q2</th></tr></thead><tbody>
+    <tr><td>① 横坐标</td><td>x<sub>i</sub> = 10 log₁₀(d<sub>i</sub>/d₀)；纵坐标就是表里的 M<sub>i</sub></td><td>d = 5、25、65、110、400、1000 m → x = 6.99、13.98、18.13、20.41、26.02、30.00</td><td>d = 10、20、50、100 m → x = 10、13.01、16.99、20</td></tr>
+    <tr><td>② 平均点</td><td>\(\bar x\) = Σx/n，\(\bar M\) = ΣM/n</td><td>\(\bar x\) = 19.26，\(\bar M\) = −640/6 = −106.67</td><td>\(\bar x\) = 15.00，\(\bar M\) = −350/4 = −87.50</td></tr>
+    <tr><td>③ 两个和</td><td>S<sub>xy</sub> = Σ(x − \(\bar x\))(M − \(\bar M\))，S<sub>xx</sub> = Σ(x − \(\bar x\))²</td><td>S<sub>xy</sub> = −1348.08，S<sub>xx</sub> = 342.11</td><td>S<sub>xy</sub> = −194.95，S<sub>xx</sub> = 57.92</td></tr>
+    <tr><td>④ γ</td><td>γ = −S<sub>xy</sub>/S<sub>xx</sub>（斜率的相反数）</td><td>1348.08/342.11 = 3.94</td><td>194.95/57.92 = 3.37</td></tr>
+    <tr><td>⑤ K<sub>dB</sub></td><td>K<sub>dB</sub> = \(\bar M\) + γ\(\bar x\)</td><td>−106.67 + 3.940 × 19.26 = −30.79 dB</td><td>−87.5 + 3.366 × 15 = −37.01 dB</td></tr>
+    <tr><td>⑥ 残差、σ²</td><td>e<sub>i</sub> = M<sub>i</sub> − (K<sub>dB</sub> − γx<sub>i</sub>)，σ<sub>ψ</sub>² = Σe²/n；自检 Σe = 0</td><td>e = −1.67、+5.88、−2.77、−3.77、+3.32、−0.99；Σe² = 71.23 → σ² = 71.23/6 = 11.87 dB²</td><td>e = +2.67、−5.20、+3.20、−0.67；Σe² = 44.81 → σ² = 44.81/4 = 11.20 dB²</td></tr>
+    <tr><td>⑦ 中断</td><td>σ = √σ²，P<sub>out</sub> = Q(余量/σ)</td><td>σ = 3.45 dB，余量 10 dB：Q(10/3.45) = Q(2.90) = 1.87×10<sup>−3</sup>（查表；参数不舍入为 1.85×10<sup>−3</sup>）</td><td>σ = 3.35 dB，余量 8 dB：Q(8/3.35) = Q(2.39) = 8.42×10<sup>−3</sup></td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 1 · Q1 ＝ 练习 1 第 1 题：6 个测量点 d = 5、25、65、110、400、1000 m，(P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> = −60、−80、−105、−115、−130、−150 dB；(a) 拟合 K（dB）和 γ，(b) 只算路径损耗时比不中断所需的最低功率高 10 dB，求中断概率。它的官方答案复现不出来，见易错最后一条。模拟 B · Q2 ＝ 练习页自编模拟题：d = 10、20、50、100 m，(P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> = −68、−86、−91、−105 dB，(c) 余量 8 dB。期末四套都没考过拟合，所以第三列用 Practice 题。讲义第 2 章 p.12–15。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 四个点，完整列表 + 残差表（离差公式，d₀ = 1 m）</div>
+    <p class="q">在 d = 5、50、500、5000 m 处测得 (P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub> = −56、−92、−118、−155 dB，d₀ = 1 m。(a) 用最小二乘求 K<sub>dB</sub> 和 γ；(b) 求阴影方差；(c) 某处只算路径损耗时比门限高 5 dB，求中断概率。</p>
+    <ol class="work">
+      <li>横坐标：10 log₁₀5 = 6.99，d 每 ×10，x 加 10 → x = 6.99、16.99、26.99、36.99；\(\bar x\) = 21.99，\(\bar M\) = (−56 − 92 − 118 − 155)/4 = −421/4 = −105.25。</li>
+      <li>列表求 S<sub>xy</sub>、S<sub>xx</sub>：
+        <div class="tw"><table><thead><tr><th>d (m)</th><th>\(x_i\)</th><th>\(M_i\)</th><th>\(x_i-\bar x\)</th><th>\(M_i-\bar M\)</th><th>\((x_i-\bar x)(M_i-\bar M)\)</th><th>\((x_i-\bar x)^2\)</th></tr></thead><tbody>
+          <tr><td>5</td><td>6.99</td><td>−56</td><td>−15</td><td>+49.25</td><td>−738.75</td><td>225</td></tr>
+          <tr><td>50</td><td>16.99</td><td>−92</td><td>−5</td><td>+13.25</td><td>−66.25</td><td>25</td></tr>
+          <tr><td>500</td><td>26.99</td><td>−118</td><td>+5</td><td>−12.75</td><td>−63.75</td><td>25</td></tr>
+          <tr><td>5000</td><td>36.99</td><td>−155</td><td>+15</td><td>−49.75</td><td>−746.25</td><td>225</td></tr>
+          <tr><td>平均 / 合计</td><td>\(\bar x\) = 21.99</td><td>\(\bar M\) = −105.25</td><td>0</td><td>0</td><td>S<sub>xy</sub> = −1615</td><td>S<sub>xx</sub> = 500</td></tr>
+        </tbody></table></div></li>
+      <li>(a) γ = −S<sub>xy</sub>/S<sub>xx</sub> = 1615/500 = 3.23；K<sub>dB</sub> = \(\bar M\) + γ\(\bar x\) = −105.25 + 3.23 × 21.99 = −34.22 dB。</li>
+      <li>(b) 残差表（预测 \(\hat M\) = −34.22 − 3.23x）：
+        <div class="tw"><table><thead><tr><th>d (m)</th><th>\(\gamma x_i\)</th><th>预测 \(\hat M_i\)</th><th>实测 \(M_i\)</th><th>残差 \(e_i\)</th><th>\(e_i^2\)</th></tr></thead><tbody>
+          <tr><td>5</td><td>22.58</td><td>−56.80</td><td>−56</td><td>+0.80</td><td>0.64</td></tr>
+          <tr><td>50</td><td>54.88</td><td>−89.10</td><td>−92</td><td>−2.90</td><td>8.41</td></tr>
+          <tr><td>500</td><td>87.18</td><td>−121.40</td><td>−118</td><td>+3.40</td><td>11.56</td></tr>
+          <tr><td>5000</td><td>119.48</td><td>−153.70</td><td>−155</td><td>−1.30</td><td>1.69</td></tr>
+          <tr><td>合计</td><td></td><td></td><td></td><td>0（自检通过）</td><td>22.30</td></tr>
+        </tbody></table></div>
+        σ<sub>ψ</sub>² = 22.30/4 = 5.575 dB²，σ<sub>ψ</sub> = √5.575 = 2.36 dB。</li>
+      <li>(c) P<sub>out</sub> = Q(5/2.361) = Q(2.12) = 0.0170，约 1.7%。</li>
+    </ol>
+    <p class="ans">答案：γ = 3.23，K<sub>dB</sub> = −34.22 dB；σ<sub>ψ</sub>² = 5.575 dB²（σ = 2.36 dB）；P<sub>out</sub> ≈ 0.0170</p>
+  </div>
+  <div class="eg"><div class="egh">例 2 · 给的是 P<sub>r</sub>（dBm），d₀ = 10 m，用四列求和（变形：先减 P<sub>t</sub> + 换参考距离 + 解法二）</div>
+    <p class="q">发射功率 1 W，参考距离 d₀ = 10 m。在 20、100、500 m 处测得接收功率 −40、−61、−88 dBm。用最小二乘求 10 m 处的 K<sub>dB</sub> 和 γ，并求阴影的标准差。</p>
+    <ol class="work">
+      <li>先变成比值：P<sub>t</sub> = 1 W = 30 dBm，M = P<sub>r</sub> − P<sub>t</sub> = −70、−91、−118 dB。横坐标用 d/d₀：x = 10 log₁₀(20/10)、10 log₁₀(100/10)、10 log₁₀(500/10) = 3.0103、10.0000、16.9897。</li>
+      <li>四列求和（n = 3）：
+        <div class="tw"><table><thead><tr><th>d (m)</th><th>\(M_i\)</th><th>\(x_i\)</th><th>\(x_i^2\)</th><th>\(x_iM_i\)</th></tr></thead><tbody>
+          <tr><td>20</td><td>−70</td><td>3.0103</td><td>9.062</td><td>−210.721</td></tr>
+          <tr><td>100</td><td>−91</td><td>10.0000</td><td>100.000</td><td>−910.000</td></tr>
+          <tr><td>500</td><td>−118</td><td>16.9897</td><td>288.650</td><td>−2004.785</td></tr>
+          <tr><td>Σ</td><td>−279</td><td>30.0000</td><td>397.712</td><td>−3125.506</td></tr>
+        </tbody></table></div></li>
+      <li>分子 nΣxM − ΣxΣM = 3 × (−3125.506) − 30 × (−279) = −9376.52 + 8370.00 = −1006.52；分母 nΣx² − (Σx)² = 3 × 397.712 − 30² = 1193.14 − 900.00 = 293.14；−γ = −1006.52/293.14 = −3.4336 → γ = 3.43。</li>
+      <li>K<sub>dB</sub> = (ΣM + γΣx)/n = (−279 + 3.4336 × 30)/3 = (−279 + 103.01)/3 = −175.99/3 = −58.66 dB（这是 10 m 处的值）。</li>
+      <li>残差：预测 −69.00、−93.00、−117.00，e = −1.00、+2.00、−1.00（和为 0）；σ<sub>ψ</sub>² = (1 + 4 + 1)/3 = 2.00 dB²，σ<sub>ψ</sub> = 1.41 dB。</li>
+    </ol>
+    <p class="ans">答案：K<sub>dB</sub> = −58.66 dB（d₀ = 10 m），γ = 3.43，σ<sub>ψ</sub> = 1.41 dB</p>
+  </div>
+  <div class="eg"><div class="egh">例 3 · 只给残差平方和，倒着求 σ、中断概率和所需余量（变形：反着问）</div>
+    <p class="q">用 5 个测量点拟合简化路径损耗模型，残差平方和 Σe<sub>i</sub>² = 101.25 dB²。(a) 阴影的方差、标准差各是多少？(b) 平均接收功率比门限高 9 dB 时的中断概率？(c) 要把中断概率降到 1%，平均功率还要再提高多少 dB？</p>
+    <ol class="work">
+      <li>(a) 按讲义除以 n：σ<sub>ψ</sub>² = 101.25/5 = 20.25 dB²，σ<sub>ψ</sub> = √20.25 = 4.50 dB。</li>
+      <li>(b) P<sub>out</sub> = Q(9/4.50) = Q(2.00) = 0.0228。</li>
+      <li>(c) 反查 Q 表：Q(x) = 0.01 → x = 2.326，余量至少 2.326 × 4.50 = 10.47 dB，比现在的 9 dB 还差 1.47 dB。</li>
+      <li>对比两种常见错法：除以 n − 2 = 3 得 33.75 dB²、σ = 5.81 dB，Q(9/5.81) = Q(1.55) = 0.0606；把方差当标准差，Q(9/20.25) = Q(0.44) = 0.330。都和正确的 0.0228 差很远。</li>
+    </ol>
+    <p class="ans">答案：σ<sub>ψ</sub>² = 20.25 dB²，σ<sub>ψ</sub> = 4.50 dB；P<sub>out</sub> ≈ 0.0228；还要再提高约 1.47 dB</p>
+  </div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>横坐标用了 log₁₀d 或直接用 d：只有 x = 10 log₁₀(d/d₀) 时斜率才是 −γ。Practice 1 Q1 若用 log₁₀d，会算出 γ = 39.4，大了 10 倍。</li>
+    <li>斜率丢负号：S<sub>xy</sub>/S<sub>xx</sub> 算出来是负数，γ 是它的相反数（正数）；γ 出现负数，一定是符号错了。</li>
+    <li>MSE 除以 n（讲义 p.13 的定义），不是 n − 1 或 n − 2。它是方差（dB²），代进 Q 前要开根号：老师说题目只给 MSE 时它就是 σ²，开根号才是 σ。</li>
+    <li>数据给的是 P<sub>r</sub>（dBm）时先减 P<sub>t</sub> 得 M；给的是 mW 先换 dBm。d₀ = 10 m 时 x 要用 10 log₁₀(d/10)：例 2 若误用 d₀ = 1 m，γ 不变（3.43），K<sub>dB</sub> 却变成 −24.33 dB（那是 1 m 处的值，不是题目要的 10 m 处）。</li>
+    <li>余量别换线性：老师提醒 Practice 1 Q1(b) “10 dB above” 的 10 是 dB，公式本来就是 dB 形式推出来的，直接算 Q(10/σ)。</li>
+    <li>Practice 1 Q1 的官方答案 K = −31.4 dB、γ = 3.86、P<sub>out</sub> = 6.19×10<sup>−4</sup> 按题目数据复现不出来：把它代回 6 个点，MSE = 13.1，比最小二乘的 11.87 还大；6.19×10<sup>−4</sup> 来自老师课上代的 MSE = 9.656（10/√9.656 = 3.22，老师取 3.23，查 Q(3.23)）。老师说结果取决于小数取舍，在 −31.4、3.86 附近就可以。考试写清方法，用自己算出的数（K ≈ −30.8 dB、γ ≈ 3.94、σ² ≈ 11.87 dB²）。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>In dB the simplified path loss model is the straight line \(M = K_{\mathrm{dB}} - \gamma x\) with \(x = 10\log_{10}(d/d_0)\). Least squares minimises \(F(K,\gamma) = \frac{1}{n}\sum_i e_i^2\) with residuals \(e_i = M_i - K_{\mathrm{dB}} + \gamma x_i\); setting \(\partial F/\partial K = \partial F/\partial\gamma = 0\) gives:</p>
+    <p>\(\gamma = -S_{xy}/S_{xx}\) with \(S_{xy} = \sum(x_i-\bar x)(M_i-\bar M)\) and \(S_{xx} = \sum(x_i-\bar x)^2\), so \(\gamma = 194.95/57.92 = 3.37\) and \(K_{\mathrm{dB}} = \bar M + \gamma\bar x\) \(= -87.5 + 3.366\times15\) \(= -37.01\) dB.</p>
+    <p>The minimum MSE is the shadowing variance: \(\sigma_\psi^2 = 44.81/4 = 11.20\) dB², so \(\sigma_\psi = 3.35\) dB. With an 8 dB margin, \(P_{\mathrm{out}} = Q(8/3.35)\) \(= Q(2.39) = 8.42\times10^{-3}\).</p>
+  </div>
+</section>
+<section class="topic" id="t5">
+  <h2><span class="tn">5</span>对数正态阴影的中断概率与覆盖 · Log-normal shadowing: outage and coverage</h2>
+  <div class="meta"><span class="st must">背</span><span class="st give">考试给</span><span class="st def">定义·必会</span> <span class="freq">出现：期末 1/4 套（2023-24 S2 Q1(a)(ii)）· Practice 1 Q1(b)、Q2 · Practice 2 Q2 · 模拟 A · Q2 · 模拟 C · Q1 · 讲义第 2 章 p.16 例题</span></div>
+  <p class="why">阴影让接收功率的 dB 值变成高斯 \(\mathcal N(\bar P_r,\sigma^2)\)，"中断"就是它掉到门限以下的那块左尾面积，所有题都归结为一个式子 \(P_{\text{out}}=Q(M/\sigma)\)。Quiz 可能正着问（给距离或平均功率，求 \(P_{\text{out}}\)），也可能倒着问（给 \(P_{\text{out}}\) 目标，求允许的 σ²、所需余量或最大距离；2023-24 S2 期末 Q1(a)(ii) 就是求方差上限）。Practice 2 Q2 再加一层：两个基站都低于门限才算中断。老师说 Q 函数表一定会考到，正查、反查都要会（第 8、9 周录音）。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(P_t\)</td><td>发射功率</td><td>transmit power</td><td>基站发出的功率。题目常给 W 或 mW，代 dB 式之前先换成 dBm</td><td>dBm（W、mW）</td></tr>
+    <tr><td>\(P_{r,\mathrm{dB}}\)</td><td>接收功率（dB 值）</td><td>received power in dBm</td><td>手机实际收到的功率；有阴影时是随机变量</td><td>dBm</td></tr>
+    <tr><td>\(\bar P_r\)（\(\mu_\psi\)、W）</td><td>平均接收功率</td><td>mean received power (path loss alone)</td><td>只用路径损耗算出来的那个数。阴影均值为 0，所以它就是 \(P_{r,\mathrm{dB}}\) 的均值。Practice 1 Q2 写作 \(\mu_\psi\)，Practice 2 Q2 写作 W</td><td>dBm</td></tr>
+    <tr><td>\(P_{\min}\)（\(P_m\)、T）</td><td>最低接收功率、门限</td><td>minimum required power, threshold</td><td>低于它就听不清，也就是中断；Practice 2 Q2 写作 T</td><td>dBm</td></tr>
+    <tr><td>\(K_{\mathrm{dB}}\)、γ、\(d_0\)</td><td>路径损耗常数、指数、参考距离</td><td>path-loss constant, exponent, reference distance</td><td>用来算 \(\bar P_r\)。距离每大 10 倍，平均功率少 10γ dB；\(d_0\) 一般取 1 m</td><td>dB、—、m</td></tr>
+    <tr><td>\(\psi_{\mathrm{dB}}\)</td><td>阴影衰落</td><td>log-normal shadowing</td><td>楼、树挡住造成的随机起伏，dB 值 \(\sim\mathcal N(0,\sigma^2)\)；线性的 ψ 因此叫"对数正态"</td><td>dB</td></tr>
+    <tr><td>σ（\(\sigma_\psi\)）</td><td>阴影标准差</td><td>shadowing standard deviation</td><td>起伏有多大；Q 里除的就是它</td><td>dB</td></tr>
+    <tr><td>σ²（MSE）</td><td>阴影方差</td><td>shadowing variance</td><td>拟合直线的均方误差就是它；代进 Q 之前先开根号</td><td>dB²</td></tr>
+    <tr><td>M（x、Δ）</td><td>余量</td><td>(shadow) margin</td><td>\(\bar P_r-P_{\min}\)：平均比门限高几 dB；为负说明平均已经低于门限。讲义 p.15 用 x，Practice 2 用 Δ；本页单基站写 M，宏分集沿用 Practice 2 的 Δ</td><td>dB</td></tr>
+    <tr><td>\(P_{\text{out}}\)</td><td>中断概率</td><td>outage probability</td><td>接收功率低于门限的概率</td><td>0–1</td></tr>
+    <tr><td>Z</td><td>标准正态变量</td><td>standard normal variable</td><td>均值 0、方差 1 的高斯，\(Z=\psi_{\mathrm{dB}}/\sigma\)。别和 Practice 2 的 \(Z_1,Z_2\) 混：那两个是 \(\mathcal N(0,\sigma^2)\)，没有标准化</td><td>—</td></tr>
+    <tr><td>Q(x)</td><td>Q 函数</td><td>Q-function (Gaussian tail)</td><td>Z 大于 x 的概率，即钟形曲线<b>右尾</b>的面积；考卷附 Q 表</td><td>—</td></tr>
+    <tr><td>Φ(x)</td><td>标准正态 CDF</td><td>standard normal CDF</td><td>Z 不超过 x 的概率，即<b>左尾</b>面积；Φ(x) = 1 − Q(x)</td><td>—</td></tr>
+    <tr><td>\(Q^{-1}(p)\)、\(x_p\)</td><td>反查值</td><td>inverse Q-function</td><td>已知概率 p，在表里找 x 使 Q(x) = p，例如 \(Q^{-1}(0.01)=2.326\)</td><td>—</td></tr>
+    <tr><td>\(Z_1,\ Z_2\)</td><td>两条链路的阴影</td><td>shadowing of links 1 and 2</td><td>Practice 2 Q2：手机到基站 1、2 各自的阴影，都 \(\sim\mathcal N(0,\sigma^2)\)</td><td>dB</td></tr>
+    <tr><td>Y；\(Y_1,\ Y_2\)；a、b</td><td>共同阴影；各自阴影；权重</td><td>common / individual shadowing; weights</td><td>\(Z_i=aY_i+bY\)：Y 是两条链路共有的遮挡（比如手机所在的那栋楼），\(Y_i\) 是各自独有的；\(a^2+b^2=1\)，\(b^2\) 就是两路的相关系数</td><td>dB；—</td></tr>
+    <tr><td>\(M_{\text{eq}}\)、G</td><td>等效余量、宏分集增益</td><td>equivalent margin, macro-diversity gain</td><td>单基站要做到和宏分集一样的 \(P_{\text{out}}\)，需要多大余量；比实际余量多出的 dB 就是增益</td><td>dB</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">dBm 与 W 互换 · dBm ↔ W <span class="st def">定义·必会</span></div><div class="fx">\[ P_{\mathrm{dBm}}=10\log_{10}\frac{P}{1\ \mathrm{mW}},\qquad P=10^{P_{\mathrm{dBm}}/10}\ \mathrm{mW},\qquad 1\ \mathrm{W}=30\ \mathrm{dBm} \]</div><div class="fn">100 mW = 20 dBm；2 W = 2000 mW = 33.01 dBm。dBm 是绝对功率，dB 是倍数：dBm + dB = dBm（路径损耗式），dBm − dBm = dB（余量），所以余量和 σ 都是 dB。老师说 mW 没换成 dBm 会扣分（第 8、9 周录音）。</div></div>
+
+  <div class="fm"><div class="fl">简化路径损耗 + 阴影（讲义第 2 章 p.8、p.12）· Path loss with shadowing <span class="st must">背</span></div><div class="fx">\[ P_r=P_tK\Big(\frac{d_0}{d}\Big)^{\gamma}\psi\;\Longrightarrow\;P_{r,\mathrm{dB}}=\underbrace{P_{t,\mathrm{dBm}}+K_{\mathrm{dB}}-10\gamma\log_{10}\frac{d}{d_0}}_{\bar P_r\ (\text{确定的数})}+\underbrace{\psi_{\mathrm{dB}}}_{\sim\mathcal N(0,\,\sigma^2)} \]</div><div class="fn">线性和 dB 两种形式都要背，考试不给（第 8、9 周录音）。加了阴影以后 \(P_{r,\mathrm{dB}}\sim\mathcal N(\bar P_r,\sigma^2)\)：均值 = 不含阴影的路径损耗结果，方差 = 阴影方差（第 9 周录音）。题目直接给"平均功率"或"path loss alone 时比门限高几 dB"，这一步就省了。</div></div>
+
+  <div class="fm"><div class="fl">中断概率（讲义第 2 章 p.14–15）· Outage probability <span class="st must">背</span></div><div class="fx">\[ P_{\text{out}}=P\big(P_{r,\mathrm{dB}}\lt P_{\min}\big)=P\big(\psi_{\mathrm{dB}}\lt -M\big)=Q\Big(\frac{M}{\sigma}\Big),\qquad M=\bar P_r-P_{\min} \]</div><div class="fn">老师要求的写法（第 9 周录音）：把"\(P_r\lt P_{\min}\)"整理成"随机变量 \(\lt -M\)"（随机变量留在左边），再由高斯的对称性写成 Q(M/σ)。M 和 σ 都是 dB，直接相除，不换线性；σ 是标准差，给的是方差或 MSE 就先开根号。讲义 p.16：典型目标 \(P_{\text{out}}\lt 1\%\)，对应 \(M\ge 2.33\sigma\)。</div></div>
+
+  <div class="fm"><div class="fl">Q 函数、Φ 与对称性 · Q-function, Φ and symmetry <span class="st give">考试给</span><span class="st def">定义·必会</span></div><div class="fx">\[ Q(x)=P(Z\gt x)=\int_x^{\infty}\frac{1}{\sqrt{2\pi}}e^{-u^2/2}\,du,\qquad \Phi(x)=P(Z\le x)=1-Q(x),\qquad Q(-x)=1-Q(x) \]</div><div class="fn">考卷附的是 <b>Q 表</b>（右尾面积），数值不用背。习惯 Z 表 / Φ 表（左尾，也就是 CDF）的话，用 \(Q(x)=1-\Phi(x)\) 换算，所以也有 \(P_{\text{out}}=\Phi(-M/\sigma)\)。Q(0) = 0.5，x 越大 Q 越小。常用值：Q(1) = 0.1587，Q(1.282) ≈ 0.1，Q(1.645) = 0.05，Q(2) = 0.0228，Q(2.326) = 0.01，Q(3.09) = 0.001。</div></div>
+
+  <div class="fm"><div class="fl">倒着用：所需余量、允许的 σ、最大距离 · Inverse use <span class="st def">定义·必会</span></div><div class="fx">\[ P_{\text{out}}\le p\iff\frac{M}{\sigma}\ge x_p=Q^{-1}(p)\;\Longrightarrow\;M\ge x_p\,\sigma,\qquad \sigma\le\frac{M}{x_p} \]\[ \bar P_r(d)\ge P_{\min}+x_p\sigma\;\Longrightarrow\;d_{\max}=d_0\cdot10^{\,(P_{t,\mathrm{dBm}}+K_{\mathrm{dB}}-P_{\min}-x_p\sigma)/(10\gamma)} \]</div><div class="fn">就是上面必背的式子倒过来用，不用另背。Q 是减函数，"概率 ≤ p"要翻成"参数 ≥ \(x_p\)"。所需余量加门限就是平均功率的下限，再代回路径损耗式解 d（或解 \(P_t\)）。常用：\(x_{0.1}=1.282\)，\(x_{0.05}=1.645\)，\(x_{0.01}=2.326\)，\(x_{0.001}=3.09\)。</div></div>
+
+  <div class="fm"><div class="fl">宏分集，两路阴影独立（Practice 2 Q2(b)）· Macro-diversity, independent shadowing <span class="st def">定义·必会</span></div><div class="fx">\[ P_{\text{out}}=P\big(\{Z_1\lt-\Delta\}\cap\{Z_2\lt-\Delta\}\big)=P(Z_1\lt-\Delta)\,P(Z_2\lt-\Delta)=\Big[Q\Big(\frac{\Delta}{\sigma}\Big)\Big]^2 \]\[ M_{\text{eq}}=\sigma\,Q^{-1}\big(P_{\text{out}}\big),\qquad G=M_{\text{eq}}-\Delta\ \ (\mathrm{dB}) \]</div><div class="fn">两个都低于门限才中断；两路独立 → 概率相乘（第 1b 章的乘法规则），一步就能推出来，不用死背。第二行是模拟 C · Q1(c) 的问法：单基站要多大余量才能一样可靠，多出来的 dB 就是宏分集白送的增益。原理见讲义第 4 章 p.3–4：基站相隔很远，两条路被同一个障碍物同时挡住的机会小。</div></div>
+
+  <div class="fm"><div class="fl">宏分集，两路阴影相关（Practice 2 Q2(c)）· Correlated shadowing <span class="st give">考试给</span></div><div class="fx">\[ Z_i=aY_i+bY:\qquad P_{\text{out}}=\int_{-\infty}^{\infty}\frac{1}{\sqrt{2\pi}}\Big[Q\Big(\frac{\Delta+b\sigma y}{|a|\sigma}\Big)\Big]^2e^{-y^2/2}\,dy \]</div><div class="fn">这是 Practice 2 Q2(c) 印在题目里、让你"证明"的式子；式里的积分变量 y 其实是换元后的 u = Y/σ（题目原样照印）。老师说不会考积分（第 8–10 周录音）；他讲这题的方法（第 10 周录音）：先把共同阴影 Y 当成常数 → 两条链路条件独立，相乘 → 再对 Y 的 PDF 积分 → 换元 u = y/σ。结论：相关时<b>不能直接平方</b>；b = 0 退回 \([Q(\Delta/\sigma)]^2\)，a = 0（完全相关）就等于单基站的 \(Q(\Delta/\sigma)\)。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>A · 正查：已知平均功率（或距离），求 \(P_{\text{out}}\)</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 1 · Q2(a)</th><th>模拟 A · Q2(a)(b)</th></tr></thead><tbody>
+    <tr><td>① 统一单位</td><td>功率换成 dBm；给的是方差或 MSE 就开根号得 σ</td><td>已是 dBm：均值 15 dBm，门限 10 dBm，σ = 8 dB</td><td>\(P_t\) = 100 mW → 10 log₁₀100 = 20 dBm；σ = 6 dB</td></tr>
+    <tr><td>② 平均功率 \(\bar P_r\)</td><td>路径损耗 dB 式（不加阴影）；题目直接给均值就跳过</td><td>题目已给：\(\bar P_r=\mu_\psi\) = 15 dBm</td><td>20 − 31.5 − 36 log₁₀300 = 20 − 31.5 − 89.18 = −100.68 dBm</td></tr>
+    <tr><td>③ 余量 M</td><td>\(\bar P_r-P_{\min}\)（dBm − dBm = dB）</td><td>15 − 10 = 5 dB</td><td>−100.68 − (−110) = 9.32 dB</td></tr>
+    <tr><td>④ 除以 σ</td><td>M ÷ σ，一般舍到 2 位小数再查表（正好落在两行中间就插值）</td><td>5 / 8 = 0.625</td><td>9.32 / 6 = 1.553 ≈ 1.55</td></tr>
+    <tr><td>⑤ 查 Q 表</td><td>\(P_{\text{out}}=Q(M/\sigma)\)；参数为负用 \(1-Q(|x|)\)</td><td>Q(0.62) = 0.2676、Q(0.63) = 0.2643 → Q(0.625) ≈ 0.266（26.6%）</td><td>Q(1.55) = 0.0606（参数不舍入，按 1.553 插值是 0.0602），约 6%</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 1 · Q2(a)（接收功率对数正态，均值 15 dBm、σ = 8 dB、门限 10 dBm；官方答案 26%）；模拟 A · Q2(a)(b)（练习页自编模拟题：100 mW、K<sub>dB</sub> = −31.5 dB、γ = 3.6、d₀ = 1 m、门限 −110 dBm、σ = 6 dB、d = 300 m）。同类：Practice 1 · Q1(b)（余量 10 dB，σ² 取最小二乘拟合的 MSE。按题目数据拟合得 K ≈ −30.8 dB、γ ≈ 3.94、MSE = 11.87 dB²、σ = 3.45 dB，\(P_{\text{out}}\) = Q(2.90) = 1.87 × 10⁻³（练习页用不舍入的 2.902 算得 1.85 × 10⁻³）；官方答案 K = −31.4 dB、γ = 3.86、6.19 × 10⁻⁴ 用题目数据复现不出来，考试按自己算出的数代入）；讲义第 2 章 p.16 例题（150 m 处余量 4.94 dB，σ = √3.36 = 1.833 dB，Q(2.69) ≈ 0.0036）。</p>
+
+  <h4>B · 反查：已知 \(P_{\text{out}}\) 目标，求允许的 σ²、所需余量或最大距离</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2023-24 S2 Q1(a)(ii)）</th><th>模拟 A · Q2(c)</th></tr></thead><tbody>
+    <tr><td>① 列不等式</td><td>\(Q(M/\sigma)\le p\)；Q 递减 → \(M/\sigma\ge Q^{-1}(p)\)</td><td>Q(10/σ) &lt; 0.01 → 10/σ &gt; \(Q^{-1}(0.01)\)</td><td>Q(M/6) ≤ 0.01 → M/6 ≥ \(Q^{-1}(0.01)\)</td></tr>
+    <tr><td>② 反查 Q 表</td><td>在表里找 Q(x) = p 的 x</td><td>Q(2.32) = 0.0102、Q(2.33) = 0.0099 → x ≈ 2.33（精确 2.326）</td><td>x = 2.326</td></tr>
+    <tr><td>③ 解未知量</td><td>σ ≤ M / x，或 M ≥ xσ</td><td>σ &lt; 10 / 2.326 = 4.30 dB</td><td>M ≥ 2.326 × 6 = 13.96 dB</td></tr>
+    <tr><td>④ 按问的量作答</td><td>问方差就平方；问距离先求平均功率下限 \(P_{\min}+M\)</td><td>σ² &lt; 4.30² = 18.5 dB²（问的是<b>方差</b>；用 2.33 得 σ &lt; 4.29、σ² &lt; 18.4，同一题前后一致即可）</td><td>\(\bar P_r\) ≥ −110 + 13.96 = −96.04 dBm</td></tr>
+    <tr><td>⑤ 解距离</td><td>代回 dB 式，移项解 log₁₀d，再取 10 的幂；"最大"往小取</td><td>本题不用</td><td>20 − 31.5 − 36 log₁₀d ≥ −96.04 → 36 log₁₀d ≤ 84.54 → log₁₀d ≤ 2.348 → d ≤ 10<sup>2.348</sup> ≈ 223 m</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：2023-24 S2 期末 Q1(a)(ii)（\(P_{r,\mathrm{dB}}\) 的均值比不中断所需的最低功率高 10 dB，求使 \(P_{\text{out}}\lt 1\%\) 的 \(\psi_{\mathrm{dB}}\) 方差最大值）；模拟 A · Q2(c)（参数同表 A，求 \(P_{\text{out}}\le 1\%\) 的最大距离）。同类：Practice 1 · Q2(b)（σ = 4 dB、\(P_{\text{out}}\lt 1\%\)，求均值：\(\mu_\psi\gt 10+4\times2.326=19.3\) dBm，官方答案 19.32）。</p>
+
+  <h4>C · 宏分集：两个基站都低于门限才中断</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 2 · Q2（符号）</th><th>模拟 C · Q1</th></tr></thead><tbody>
+    <tr><td>① 写出模型</td><td>\(P_{r,i}=W+Z_i\)，门限 \(T=W-\Delta\)</td><td>(a) W：只由路径损耗决定的平均接收功率；\(Z_1,Z_2\sim\mathcal N(0,\sigma^2)\)：两条链路各自的阴影（dB）</td><td>W = −95 dBm，T = −105 dBm → Δ = 10 dB；σ = 8 dB</td></tr>
+    <tr><td>② 单站中断</td><td>\(P_{r,i}\lt T\iff Z_i\lt-\Delta\)，概率 \(Q(\Delta/\sigma)\)</td><td>\(P(Z_i\lt-\Delta)=Q(\Delta/\sigma)\)（高斯对称）</td><td>(a) Q(10/8) = Q(1.25) = 0.1056</td></tr>
+    <tr><td>③ 两站都断</td><td>两路独立 → 相乘</td><td>(b) \(P_{\text{out}}=[Q(\Delta/\sigma)]^2\)</td><td>(b) 0.1056² = 0.01115 ≈ 0.0112（1.12 × 10⁻²）</td></tr>
+    <tr><td>④ 等效余量</td><td>用 ③ 的概率反查 x → \(M_{\text{eq}}=x\sigma\)，\(G=M_{\text{eq}}-\Delta\)</td><td>题目没问</td><td>(c) Q(2.28) = 0.0113、Q(2.29) = 0.0110，0.01115 正好在中间 → 插值 x ≈ 2.285 → \(M_{\text{eq}}\) = 2.285 × 8 = 18.28 ≈ 18.3 dB → G = 18.3 − 10 = 8.3 dB（练习页直接取 2.29：2.29 × 8 = 18.32，也是 18.3 dB）</td></tr>
+    <tr><td>⑤ 相关时</td><td>不能平方：固定 Y → 条件独立、相乘 → 对 Y 的 PDF 积分</td><td>(c) 给定 Y = y：\(Z_i\sim\mathcal N(by,\,a^2\sigma^2)\)，\(P(Z_i\lt-\Delta\mid y)=Q\big(\frac{\Delta+by}{|a|\sigma}\big)\)；平方后对 y 积分，换元 u = y/σ</td><td>题目说两路独立，不需要这一步</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 2 · Q2（手机在两个基站之间，\(P_{r,i}=W+Z_i\)，两个都低于 T = W − Δ 才中断；(b) \(Z_1,Z_2\) 独立，(c) \(Z_i=aY_i+bY\) 相关）；模拟 C · Q1（练习页自编模拟题：两站平均都是 −95 dBm、门限 −105 dBm、σ = 8 dB、两路独立）。宏分集原理：讲义第 4 章 p.3–4。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 功率给 W、方差给 MSE、余量为负（正查）</div>
+    <p class="q">某基站发射功率 2 W，传播服从简化路径损耗模型：K<sub>dB</sub> = −38 dB，γ = 3.2，d₀ = 1 m。手机接收功率低于 −100 dBm 就中断。实测拟合得到阴影的均方误差 MSE = 30.25 dB²。求 (a) d = 400 m，(b) d = 1 km 处的中断概率。</p>
+    <ol class="work">
+      <li>换单位：2 W = 2000 mW，\(P_t\) = 10 log₁₀2000 = 33.01 dBm。MSE 就是方差：σ = √30.25 = 5.5 dB。</li>
+      <li>(a) \(\bar P_r\) = 33.01 − 38 − 32 log₁₀400 = 33.01 − 38 − 83.27 = −88.26 dBm；余量 M = −88.26 − (−100) = 11.74 dB。</li>
+      <li>M/σ = 11.74 / 5.5 = 2.1345 ≈ 2.13，\(P_{\text{out}}\) = Q(2.13) = 0.0166（不舍入算是 0.0164）。</li>
+      <li>(b) \(\bar P_r\) = 33.01 − 38 − 32 × 3 = −100.99 dBm，M = −100.99 − (−100) = −0.99 dB：平均已经比门限低，余量为负。</li>
+      <li>M/σ = −0.99 / 5.5 = −0.18。表里只有正数，用 Q(−x) = 1 − Q(x)：\(P_{\text{out}}\) = 1 − Q(0.18) = 1 − 0.4286 = 0.571。用 Φ 表结果一样：\(P_{\text{out}}=\Phi(0.18)\) = 0.571。</li>
+    </ol>
+    <p class="ans">答案：(a) 0.0166 ≈ 1.7%；(b) ≈ 57%（平均功率低于门限，一半以上的时间中断）</p>
+  </div>
+
+  <div class="eg"><div class="egh">例 2 · 反查三问：5% 目标求最大距离、求发射功率、0.1% 目标求 σ²</div>
+    <p class="q">微蜂窝：\(P_t\) = 100 mW，K<sub>dB</sub> = −40 dB，γ = 3，d₀ = 1 m，门限 −95 dBm，阴影 σ = 6 dB。(a) 要求 \(P_{\text{out}}\le 5\%\)，最大覆盖距离是多少？(b) 要覆盖到 200 m（仍要求 \(P_{\text{out}}\le 5\%\)），发射功率至少多少？(c) 发射功率仍是 100 mW，要求 100 m 处 \(P_{\text{out}}\le 0.1\%\)，阴影方差最大允许多少？</p>
+    <ol class="work">
+      <li>\(P_t\) = 10 log₁₀100 = 20 dBm。(a) 反查：Q(1.64) = 0.0505、Q(1.65) = 0.0495 → x = 1.645。所需余量 M ≥ 1.645 × 6 = 9.87 dB，平均功率下限 = −95 + 9.87 = −85.13 dBm。</li>
+      <li>代回模型：20 − 40 − 30 log₁₀d ≥ −85.13 → 30 log₁₀d ≤ 65.13 → log₁₀d ≤ 2.171 → d ≤ 10<sup>2.171</sup> = 148.3 m。</li>
+      <li>(b) 30 log₁₀200 = 69.03 dB。要求 \(P_t\) − 40 − 69.03 ≥ −85.13 → \(P_t\) ≥ 23.90 dBm = 10<sup>2.390</sup> mW = 245.5 mW（比 100 mW 多 3.90 dB，即 10<sup>0.390</sup> ≈ 2.45 倍）。</li>
+      <li>(c) \(\bar P_r\) = 20 − 40 − 30 × 2 = −80 dBm，M = −80 − (−95) = 15 dB。反查 Q(3.09) = 0.001 → x = 3.09。σ ≤ 15 / 3.09 = 4.854 dB，σ² ≤ 4.854² = 23.56 dB²。</li>
+    </ol>
+    <p class="ans">答案：(a) d<sub>max</sub> ≈ 148 m；(b) \(P_t\) ≥ 23.90 dBm ≈ 245.5 mW；(c) σ² ≤ 23.6 dB²（σ ≤ 4.85 dB）</p>
+  </div>
+
+  <div class="eg"><div class="egh">例 3 · 宏分集：两站概率、等效余量、反求每站余量、完全相关</div>
+    <p class="q">手机在两个基站正中间。只考虑路径损耗时，每个基站送来的平均功率都是 −92 dBm；门限 −104 dBm；两条链路的阴影独立，σ = 8 dB。(a) 只用一个基站时 \(P_{\text{out}}\) 是多少？(b) 宏分集（两个都低于门限才中断）时 \(P_{\text{out}}\) 是多少？单基站要多大余量才一样可靠？(c) 要求宏分集后 \(P_{\text{out}}\le 1\%\)，每条链路的余量至少多少？单基站要多少？(d) 若两条链路总被同一栋楼一起挡住（完全相关），(b) 的答案变成多少？</p>
+    <ol class="work">
+      <li>(a) Δ = −92 − (−104) = 12 dB，Δ/σ = 12 / 8 = 1.5，\(P_{\text{out},1}\) = Q(1.5) = 0.0668。</li>
+      <li>(b) 独立 → 相乘：\(P_{\text{out},2}\) = 0.0668² = 4.46 × 10⁻³。反查：Q(2.61) = 0.00453、Q(2.62) = 0.00440 → x ≈ 2.615，\(M_{\text{eq}}\) = 2.615 × 8 = 20.92 dB，宏分集增益 G = 20.92 − 12 = 8.92 dB。</li>
+      <li>(c) 两路相同且独立：\([Q(\Delta/\sigma)]^2\le 0.01\) → \(Q(\Delta/\sigma)\le\sqrt{0.01}=0.1\)。Q(1.28) = 0.1003、Q(1.29) = 0.0985 → x = 1.282，Δ ≥ 1.282 × 8 = 10.26 dB。单基站要 Δ ≥ 2.326 × 8 = 18.61 dB，宏分集少要 8.35 dB。</li>
+      <li>(d) 完全相关时 \(Z_1=Z_2\)，"两个都低于"就等于"一个低于"：\(P_{\text{out}}\) = Q(1.5) = 0.0668，和单基站一样，宏分集没有用。部分相关时结果介于两者之间，例如 \(b^2=0.5\) 时数值积分约 0.0183（Quiz 不会让你算这个积分）。</li>
+    </ol>
+    <p class="ans">答案：(a) 0.0668；(b) 4.46 × 10⁻³，相当于单站余量 20.9 dB，增益约 8.9 dB；(c) 每站 ≥ 10.26 dB（单站要 18.61 dB）；(d) 0.0668</p>
+  </div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li><b>σ 和 σ² 混用</b>：Q 里除的是标准差。给 MSE 或方差要先开根号：讲义 p.16 例题 σ = √3.36 = 1.833 dB，Q(4.94/1.833) ≈ Q(2.69) ≈ 0.0036；错除 3.36 得 Q(1.47) ≈ 0.071，大了约 20 倍。反过来，2023-24 期末问的是<b>方差</b>最大值，要平方成 σ² &lt; 18.5 dB²，只写 σ &lt; 4.30 dB 没答完。</li>
+    <li><b>单位</b>：W、mW 先换 dBm（2 W = 33.01 dBm，不是 3.01，3.01 是 dBW）；距离项是 10γ log₁₀d（γ = 3.6 时系数是 36）；dBm − dBm 得到的余量是 dB。老师说没写 dB ↔ 线性换算会扣分（第 8–10 周录音）。</li>
+    <li><b>把余量换成线性</b>：Q(M/σ) 是在 dB 上推出来的，M 和 σ 都用 dB 直接相除。老师讲 Practice 1 Q1 时专门提醒，"10 dB above"的 10 就是 dB，不要换成线性（第 10 周录音）。瑞利中断 \(1-e^{-\gamma_0/\bar\gamma}\) 才要线性值，两者别混。</li>
+    <li><b>表查反了</b>：Q 是右尾、递减，反查时不等号要翻（\(P_{\text{out}}\lt 1\%\iff M/\sigma\gt 2.326\)）。余量为负时 \(Q(-x)=1-Q(x)\)，答案大于 50%；手上是 Φ 表（左尾）时 \(Q(x)=1-\Phi(x)\)。用计算器核对的话，Casio 统计菜单里的 Q( 是 0 到 t 的面积，不是本课的 Q 函数，右尾对应的是 R(。</li>
+    <li><b>宏分集写成"任意一个"</b>：两个<b>都</b>低于门限才中断，所以是 p²；写成 \(1-(1-p)^2\) 是"任意一个断就算中断"，意思反了。只有独立才能平方；求等效余量时反查的是 p²，不是 p。</li>
+    <li><b>舍入</b>：Q 的参数一般先舍到 2 位小数再查表（0.625 这种正好在两行中间就插值）；中间结果多留一位小数，最后再舍入，别对已经舍过的数再舍一次（2.1345 舍到 2 位是 2.13，不是先变 2.135 再变 2.14）。上下限答案要带不等号（d ≤ 223 m、σ² &lt; 18.5 dB²）；想保守可以上限往小取、下限往大取（148.3 m 写 148 m），本页其余数字按四舍五入写。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>With log-normal shadowing, \(P_{r,\mathrm{dB}}=\bar P_r+\psi_{\mathrm{dB}}\) with \(\psi_{\mathrm{dB}}\sim\mathcal N(0,\sigma_\psi^2)\), so outage occurs when \(\psi_{\mathrm{dB}}\lt-M\), where \(M=\bar P_r-P_{\min}\) is the margin in dB; by the symmetry of the Gaussian, \(P_{\text{out}}=P(\psi_{\mathrm{dB}}\lt-M)=Q(M/\sigma_\psi)\).</p>
+    <p>Here \(P_t=10\log_{10}100=20\) dBm, \(\bar P_r=20-31.5-36\log_{10}300=-100.68\) dBm and \(M=-100.68-(-110)=9.32\) dB, hence \(P_{\text{out}}=Q(9.32/6)=Q(1.55)=0.0606\).</p>
+    <p>Since Q is decreasing, \(P_{\text{out}}\lt 1\%\) requires \(M/\sigma_\psi\gt Q^{-1}(0.01)=2.326\); with M = 10 dB this gives \(\sigma_\psi\lt 4.30\) dB, so the variance of \(\psi_{\mathrm{dB}}\) must be below \(18.5\ \mathrm{dB}^2\).</p>
+    <p>With macro-diversity, outage requires both links to be below the threshold; if the shadowing on the two links is independent, \(P_{\text{out}}=P(Z_1\lt-\Delta)\,P(Z_2\lt-\Delta)=[Q(\Delta/\sigma)]^2\). The base stations are far apart, so both links are rarely blocked at the same time.</p>
+  </div>
+</section>
+
+  <div class="part">第 3 部分 · 小尺度：多径衰落</div>
+<section class="topic" id="t6">
+  <h2><span class="tn">6</span>瑞利衰落：中断概率与衰落余量 · Rayleigh fading: outage and fade margin</h2>
+  <div class="meta"><span class="st must">背</span><span class="st try">尽量记</span><span class="freq">出现：期末 2/4 套考衰落余量（2023-24 Q1(a)(iv)、2025-26 S2 Q1(a)(iii)）；正着算中断只在第 4 章题 2024-25 Q1(b)(i) 的第一步出现过 · 模拟 B · Q1 · 专项 · Q3(c) · 模拟 C · Q3(c)</span></div>
+  <p class="why">瑞利衰落 = 没有直射径、只有大量散射回波，瞬时 SNR γ 是随机变量（指数分布）。Quiz 可能：① 已知平均 SNR 和门限，求中断概率；② 已知中断要求 ε，倒推所需平均 SNR、最小 SNR 或衰落余量（期末 2023-24、2025-26 S2 都考了衰落余量）；③ 同样余量下和阴影比谁中断多。老师说瑞利中断公式"经常出现"。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(\gamma\)</td><td>瞬时信噪比</td><td>instantaneous SNR</td><td>这一刻的 SNR。AWGN 信道里它是常数；衰落信道里它是随机变量，一直在跳</td><td>线性（无单位）或 dB</td></tr>
+    <tr><td>\(\bar\gamma\)（真题写 \(\bar\gamma_R\)）</td><td>平均信噪比</td><td>average SNR</td><td>γ 的平均值，由路径损耗和噪声决定：γ̄<sub>dB</sub> = P<sub>r</sub>(dBm) − N(dBm)</td><td>线性 / dB</td></tr>
+    <tr><td>\(\gamma_0\)（\(\gamma_{\min}\)）</td><td>门限 SNR、最低 SNR</td><td>threshold (minimum required) SNR</td><td>低于它就通信失败（中断）。讲义的 γ<sub>AWGN</sub> 在衰落余量公式里就是这个数</td><td>线性 / dB</td></tr>
+    <tr><td>\(p(\gamma)\)</td><td>SNR 的概率密度</td><td>PDF of the SNR</td><td>瑞利衰落下是指数分布；曲线下的面积才是概率</td><td>—</td></tr>
+    <tr><td>\(P_{out}\)，\(\varepsilon\)</td><td>中断概率</td><td>outage probability</td><td>γ 低于 γ<sub>0</sub> 的概率 = 中断时间占的比例。老师说中断既可以对功率说也可以对 SNR 说，本质一样</td><td>无（0–1 或 %）</td></tr>
+    <tr><td>FM</td><td>衰落余量</td><td>fade margin</td><td>为了扛住衰落，平均 SNR 要比门限多留的 dB 数</td><td>dB</td></tr>
+    <tr><td>\(z\)</td><td>包络</td><td>envelope (amplitude)</td><td>接收信号的幅度，服从瑞利分布（它的 PDF 不用背）</td><td>V</td></tr>
+    <tr><td>\(2\sigma^2\)</td><td>平均接收功率</td><td>average received power</td><td>E[z²]；σ² 是 I、Q 两个高斯分量各自的方差</td><td>W</td></tr>
+    <tr><td>\(\rho\)</td><td>幅度门限比</td><td>normalised threshold level</td><td>ρ = Z<sub>min</sub>/Z<sub>rms</sub>（幅度比），平方后才是功率比：ρ² = γ<sub>0</sub>/γ̄</td><td>无</td></tr>
+    <tr><td>ln</td><td>自然对数</td><td>natural logarithm</td><td>计算器的 ln 键（以 e 为底），不是 log</td><td>—</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">SNR 的指数分布 · Exponential PDF of the SNR <span class="st must">背</span></div><div class="fx">\[ p(\gamma)=\frac{1}{\bar\gamma}\,e^{-\gamma/\bar\gamma},\qquad \gamma\ge 0 \]</div><div class="fn">讲义第 2 章 p.25–26。瑞利衰落时包络 z 服从瑞利分布，功率 z² 和 SNR γ 服从指数分布。老师说要背的是这一个，不是包络的瑞利 PDF \(\frac{z}{\sigma^2}e^{-z^2/(2\sigma^2)}\)；推导不会让推。</div></div>
+  <div class="fm"><div class="fl">瑞利中断概率 · Rayleigh outage probability <span class="st must">背</span></div><div class="fx">\[ P_{out}=P(\gamma\lt\gamma_0)=1-e^{-\gamma_0/\bar\gamma}\;\approx\;\frac{\gamma_0}{\bar\gamma}\quad(\gamma_0\ll\bar\gamma) \]</div><div class="fn">γ<sub>0</sub>、γ̄ 先换成线性值再相除（是比值，单位一致即可）。近似只在比值小时用：x ≈ 0.05 时偏高 2.5%，x = 0.1 时偏高 5.1%，x = 0.5 时偏高 27%，答题写精确值。口诀：门限比平均低 10 dB → 9.52%，低 20 dB → 0.995%，低 30 dB → 0.100%。反面：高于某个值 γ<sub>1</sub> 的概率 \(P(\gamma\gt\gamma_1)=e^{-\gamma_1/\bar\gamma}\)，取 γ<sub>1</sub> = γ̄ 得高于平均值的概率只有 e<sup>−1</sup> = 0.368。门限按幅度给（信号强度是 rms 值的 ρ 倍）时 γ<sub>0</sub>/γ̄ = ρ²：Practice 2 Q1 的 ρ = 0.1 → 1 − e<sup>−0.01</sup> = 0.00995（该题本身求 AFD；0.00995 是练习页解答里顺带算的"低于门限的时间比例"）。</div></div>
+  <div class="fm"><div class="fl">倒着解：所需平均 SNR / 最小 SNR · Solving backwards <span class="st def">会反解</span></div><div class="fx">\[ \bar\gamma=\frac{\gamma_0}{\ln\frac{1}{1-\varepsilon}},\qquad \gamma_{\min}=\bar\gamma\,\ln\frac{1}{1-\varepsilon} \]</div><div class="fn">不用另背：令 ε = 1 − e<sup>−γ<sub>0</sub>/γ̄</sup>，两边整理后取 ln 就得到。ε 小时 ln(1/(1−ε)) ≈ ε，所以 γ̄ ≈ γ<sub>0</sub>/ε。真题印的中断容量公式 \(C_\varepsilon=B\log_2\!\big[1+\bar\gamma_R\ln\frac{1}{1-\varepsilon}\big]\)（考试给）里，\(\bar\gamma_R\ln\frac{1}{1-\varepsilon}\) 就是 γ<sub>min</sub>；中断容量本身见第 12 类。</div></div>
+  <div class="fm"><div class="fl">衰落余量（瑞利）· Fade margin (Rayleigh) <span class="st try">尽量记</span></div><div class="fx">\[ \mathrm{FM}=\bar\gamma_{\mathrm{dB}}-\gamma_{0,\mathrm{dB}}=10\log_{10}\frac{\bar\gamma}{\gamma_0}=10\log_{10}\frac{1}{\ln\frac{1}{1-\varepsilon}}\ \mathrm{dB}\;\approx\;10\log_{10}\frac{1}{\varepsilon} \]</div><div class="fn">讲义 p.51，老师说"有点难记，但要尽量记"；记不住就用上一条现推。讲义写成 γ̄<sub>dB</sub> − γ<sub>AWGN,dB</sub>：不衰落的 AWGN 信道只要 SNR = γ<sub>0</sub>，瑞利信道要多给 FM。只和 ε 有关、和 γ̄ 无关：ε = 10% → 9.77 dB，5% → 12.90 dB，1% → 19.98 dB，0.5% → 23.00 dB，0.1% → 30.00 dB。中断要求每严 10 倍，余量多 10 dB。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型 A · 正着算：已知平均 SNR 和门限，求中断概率</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2024-25 Q1(b)(i) 第一步）</th><th>模拟 B · Q1 (a)</th></tr></thead><tbody>
+    <tr><td>① 平均 SNR</td><td>dB → 线性 10<sup>dB/10</sup>；给功率就先 P<sub>r</sub>(dBm) − N(dBm)；已是线性就直接用</td><td>式中的 30 就是每支路平均 SNR γ̄，已是线性（不是 dB），不用换</td><td>γ̄ = 20 dB → 10<sup>2</sup> = 100</td></tr>
+    <tr><td>② 门限</td><td>同样换成线性（给的是误码率要求就先反查 Q 表求 γ<sub>0</sub>）</td><td>Q(√(2γ<sub>b</sub>)) = 1.35×10<sup>−3</sup> → 查表 √(2γ<sub>b</sub>) = 3.0 → γ<sub>0</sub> = γ<sub>b</sub> = 4.5（线性）</td><td>γ<sub>0</sub> = 7 dB → 10<sup>0.7</sup> = 5.012</td></tr>
+    <tr><td>③ 比值</td><td>x = γ<sub>0</sub> / γ̄（线性相除）</td><td>4.5 / 30 = 0.15</td><td>5.012 / 100 = 0.05012</td></tr>
+    <tr><td>④ 中断概率</td><td>P<sub>out</sub> = 1 − e<sup>−x</sup></td><td>1 − e<sup>−0.15</sup> = 0.139（13.9%）</td><td>1 − e<sup>−0.05012</sup> = 0.0489（4.89%）</td></tr>
+    <tr><td>⑤ 估算核对</td><td>x 小时 P<sub>out</sub> ≈ x</td><td>≈ 0.15，偏高 7.7%，仍接近 ✓</td><td>≈ 0.0501，接近 ✓</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：真题＝2024-25 期末 Q1(b)(i)（BPSK 选择分集：题目印了 P<sub>out</sub> = (1 − e<sup>−γ<sub>b</sub>/30</sup>)<sup>M</sup>，误码率要求 P<sub>b</sub> = Q(√(2γ<sub>b</sub>)) = 1.35×10<sup>−3</sup>，P<sub>out</sub> ≈ 0.02 时求支路数 M）。整题是第 4 章分集，Quiz 不考；这里只用它的第一步：单支路（M = 1）的中断就是瑞利中断 1 − e<sup>−γ<sub>0</sub>/γ̄</sup>，30 是每支路平均 SNR（线性）。后面 0.139<sup>M</sup> ≈ 0.02 → M = 2 属第 4 章。模拟 B · Q1 (a)＝练习页自编模拟 Quiz B 第 1 题（瑞利，平均 SNR 20 dB，要求瞬时 SNR ≥ 7 dB）。同类：专项 · Q3 (c)＝练习页专项第 3 题（P<sub>t</sub> = 1 W = 30 dBm、K<sub>dB</sub> = −40 dB、γ = 3、d = 1 km、噪声 −120 dBm：P<sub>r</sub> = 30 − 40 − 30 log<sub>10</sub>1000 = −100 dBm，γ̄ = −100 − (−120) = 20 dB → 100；要求瞬时 SNR ≥ 10 dB → 10，P<sub>out</sub> = 1 − e<sup>−10/100</sup> = 0.0952）。历年期末的第 2 章题没有单独考正着算这一步。</p>
+
+  <h4>题型 B · 倒着算：已知中断要求 ε，求最小 SNR / 所需平均 SNR / 衰落余量</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2025-26 S2 Q1(a)(iii)）</th><th>模拟 B · Q1 (b)</th></tr></thead><tbody>
+    <tr><td>① 已知量换线性</td><td>dB → 线性；ε 写成小数</td><td>γ̄<sub>R</sub> = 25 dB → 10<sup>2.5</sup> = 316.2；ε = 0.005</td><td>γ<sub>0</sub> = 7 dB → 5.012；ε = 1% = 0.01</td></tr>
+    <tr><td>② 算 ln(1/(1−ε))</td><td>自然对数 ln</td><td>ln(1/0.995) = 0.005013</td><td>ln(1/0.99) = 0.01005</td></tr>
+    <tr><td>③ 解未知 SNR</td><td>求最小：γ<sub>min</sub> = γ̄ × ②；求平均：γ̄ = γ<sub>0</sub> ÷ ②</td><td>γ<sub>min</sub> = 316.2 × 0.005013 = 1.585 → 2.00 dB</td><td>γ̄ = 5.012 ÷ 0.01005 = 498.7 → 26.98 dB</td></tr>
+    <tr><td>④ 衰落余量</td><td>FM = 平均（dB）− 门限（dB）</td><td>25 − 2.00 = 23.0 dB</td><td>26.98 − 7 = 19.98 ≈ 20.0 dB</td></tr>
+    <tr><td>⑤ 公式核对</td><td>FM = 10 log<sub>10</sub>(1/②)</td><td>10 log<sub>10</sub>(1/0.005013) = 23.0 dB ✓</td><td>10 log<sub>10</sub>(1/0.01005) = 19.98 dB ✓</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：真题＝2025-26 第二学期期末 Q1(a)(iii)（瑞利信道，题目印了 C<sub>ε</sub> = B log<sub>2</sub>[1 + γ̄<sub>R</sub> ln(1/(1 − ε))]，γ̄<sub>R</sub> = 25 dB，ε = 0.005，求最小 SNR 和相对 AWGN 信道的衰落余量）；模拟 B · Q1 (b)＝练习页自编模拟 Quiz B 第 1 题 (b)（把中断降到 1%，求所需平均 SNR 和相对 7 dB 要求的衰落余量）。同类真题：2023-24 期末 Q1(a)(iv) 只问 ε = 0.1% 的衰落余量：10 log<sub>10</sub>(1/0.0010005) = 30.0 dB。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 给的是 dBm 功率；再问"高于"的概率</div><p class="q">手机平均接收功率 −92 dBm，噪声功率 −110 dBm，信道是瑞利衰落。(a) 接收机要求瞬时 SNR 至少 6 dB，求中断概率。(b) 瞬时 SNR 比平均值高 3 dB 以上的概率是多少？</p><ol class="work">
+    <li>平均 SNR：γ̄ = −92 − (−110) = 18 dB（dBm − dBm = dB）→ γ̄ = 10<sup>1.8</sup> = 63.10。</li>
+    <li>门限：γ<sub>0</sub> = 6 dB → 10<sup>0.6</sup> = 3.981。</li>
+    <li>比值：x = 3.981 / 63.10 = 0.06310（也可以直接 10<sup>(6−18)/10</sup> = 10<sup>−1.2</sup>：门限比平均低 12 dB）。</li>
+    <li>(a) P<sub>out</sub> = 1 − e<sup>−0.06310</sup> = 0.0611；估算 ≈ 0.0631，接近 ✓。</li>
+    <li>(b) "高于"用反面：\(P(\gamma\gt\gamma_1)=e^{-\gamma_1/\bar\gamma}\)。γ<sub>1</sub> = 18 + 3 = 21 dB → 125.9，125.9 / 63.10 = 1.995（= 10<sup>0.3</sup>），P = e<sup>−1.995</sup> = 0.136。</li>
+  </ol><p class="ans">答案：(a) P<sub>out</sub> ≈ 0.0611（6.11%）；(b) ≈ 0.136</p></div>
+  <div class="eg"><div class="egh">例 2 · 倒着求平均 SNR 和余量，再求最远距离</div><p class="q">瑞利信道，接收机门限 SNR 8 dB，要求中断概率不超过 2%。(a) 平均 SNR 至少要多少？衰落余量多少？(b) 发射功率 1 W，简化路径损耗模型 K<sub>dB</sub> = −40 dB、路径损耗指数 γ = 3.5（这个 γ 不是 SNR）、d<sub>0</sub> = 1 m，噪声功率 −115 dBm。满足 (a) 的最远距离是多少？</p><ol class="work">
+    <li>γ<sub>0</sub> = 8 dB → 10<sup>0.8</sup> = 6.310；ln(1/(1 − 0.02)) = ln(1/0.98) = 0.020203。</li>
+    <li>γ̄ = 6.310 / 0.020203 = 312.3 → 10 log<sub>10</sub>312.3 = 24.95 dB。</li>
+    <li>FM = 24.95 − 8 = 16.95 dB；核对 10 log<sub>10</sub>(1/0.020203) = 16.95 dB（近似 10 log<sub>10</sub>50 = 16.99 dB）。</li>
+    <li>(b) 所需平均接收功率 = 噪声 + 平均 SNR = −115 + 24.95 = −90.05 dBm；P<sub>t</sub> = 1 W = 1000 mW → 30 dBm。</li>
+    <li>30 + (−40) − 35 log<sub>10</sub>d ≥ −90.05 → 35 log<sub>10</sub>d ≤ 80.05 → log<sub>10</sub>d ≤ 2.2873 → d ≤ 193.8 m。</li>
+  </ol><p class="ans">答案：(a) γ̄ ≥ 24.95 dB，FM ≈ 16.95 dB；(b) d ≤ 193.8 m（"最远"往小取，约 193 m）</p></div>
+  <div class="eg"><div class="egh">例 3 · 同样余量：阴影和瑞利谁中断多？</div><p class="q">两条链路的平均接收功率都比门限高 15 dB。链路 A 只有阴影衰落（σ = 6 dB），链路 B 是瑞利衰落（没有阴影）。哪条的中断概率大？</p><ol class="work">
+    <li>A 是阴影，在 dB 上相减、用 Q：P<sub>out</sub> = Q(15/6) = Q(2.50) = 0.00621（查 Q 表）。</li>
+    <li>B 是瑞利，在线性上相除、用指数：γ<sub>0</sub>/γ̄ = 10<sup>−15/10</sup> = 10<sup>−1.5</sup> = 0.03162，P<sub>out</sub> = 1 − e<sup>−0.03162</sup> = 0.0311。</li>
+    <li>比较：B 约是 A 的 5 倍，瑞利的深坑更深。</li>
+    <li>但这不是定律：专项 · Q3 余量 10 dB、σ = 8 dB 时，阴影 Q(1.25) = 0.106，瑞利 1 − e<sup>−0.1</sup> = 0.0952，反而阴影大。同样 σ = 8 dB，余量 15 dB 时两者差不多（阴影 0.0304 对瑞利 0.0311），20 dB 时瑞利大（阴影 0.00621 对瑞利 0.00995）。原因：瑞利余量每多 10 dB，中断只降 10 倍；阴影的 Q(余量/σ) 在余量/σ 大时降得快得多。</li>
+  </ol><p class="ans">答案：本题 B（瑞利）大：B 3.11% 对 A 0.621%。考试两个都算出来再比，别凭感觉。</p></div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>把 dB 直接代进指数：1 − e<sup>−7/20</sup> = 0.295 ✗，正确是 1 − e<sup>−5.012/100</sup> = 0.0489。老师讲第 3 章用这个公式的例题时说：8.5 dB 要先换成 10<sup>0.85</sup>，每年都强调还是有人不换；没写 dB ↔ 线性换算会扣分。</li>
+    <li>ln 按成 log：ε = 1% 时 log<sub>10</sub>(1/0.99) = 0.004365 → 算出 23.60 dB ✗，用 ln 才是 19.98 dB。</li>
+    <li>衰落余量用线性相减：498.7 − 5.012 = 493.7 没有意义 ✗。FM 是 dB 相减，等于线性相除再取 10 log。</li>
+    <li>阴影、瑞利公式用反：给了 σ（dB）→ Q(余量/σ)；只给平均 SNR、没有 σ → 1 − e<sup>−γ<sub>0</sub>/γ̄</sup>。</li>
+    <li>以为 SNR 一半时间高于平均：指数分布不对称，P(γ &gt; γ̄) = e<sup>−1</sup> = 0.368，有 63.2% 的时间低于平均值。</li>
+    <li>门限按幅度给（rms 的 ρ 倍）忘了平方：ρ = 0.1 时写 1 − e<sup>−0.1</sup> = 0.0952 ✗，应为 1 − e<sup>−0.01</sup> = 0.00995。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>In Rayleigh fading the instantaneous SNR γ is exponentially distributed, \(p(\gamma)=\frac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}\), so the outage probability is \(P_{out}=P(\gamma\lt\gamma_0)=1-e^{-\gamma_0/\bar\gamma}\). In linear terms \(\bar\gamma\) = 20 dB = 100 and \(\gamma_0\) = 7 dB = 5.012, so \(P_{out}=1-e^{-5.012/100}=0.0489\).</p>
+    <p>With \(\bar\gamma_R\) = 25 dB = 316.2 and ε = 0.005, setting \(1-e^{-\gamma_{\min}/\bar\gamma}=\varepsilon\) gives \(\gamma_{\min}=\bar\gamma\ln\frac{1}{1-\varepsilon}\) = 316.2 × 0.005013 = 1.585, i.e. 10 log<sub>10</sub>1.585 = 2.00 dB, so the fade margin relative to an AWGN channel is 25 − 2.00 = 23.0 dB \(=10\log_{10}\big[1/\ln\frac{1}{1-\varepsilon}\big]\), which depends only on ε.</p>
+  </div>
+</section>
+<section class="topic" id="t7">
+  <h2><span class="tn">7</span>莱斯衰落与 K 因子 · Rician fading and the K-factor</h2>
+  <div class="meta"><span class="st give">考试给</span><span class="st def">定义·必会</span><span class="freq">出现：期末 0/4 套 · 专项 · Q3(d) · 讲义第 2 章 p.27–28</span></div>
+  <p class="why">莱斯 = 多径散射 + 一条直射径（LOS）。Quiz 若考，多半是由功率比求 K 并换成 dB，再定性说深衰落、中断比瑞利多还是少（专项 · Q3(d) 就是这种问法）。莱斯分布考试给，懂 K 的含义即可；老师说只要知道直射分量越强，越接近没有衰落的 AWGN。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>LOS</td><td>直射径</td><td>line of sight (specular) component</td><td>能直接"看见"基站的那一条波，幅度固定，不随机</td><td>—</td></tr>
+    <tr><td>\(s^2\)</td><td>直射分量功率</td><td>LOS power</td><td>直射那一条的功率（s 是它的幅度）</td><td>W</td></tr>
+    <tr><td>\(2\sigma^2\)</td><td>散射分量总功率</td><td>total scattered (diffuse) power</td><td>所有散射、反射回波加起来的平均功率</td><td>W</td></tr>
+    <tr><td>\(K\)</td><td>莱斯因子</td><td>Rician K-factor</td><td>直射功率 ÷ 散射总功率</td><td>无（线性）</td></tr>
+    <tr><td>\(K_{\mathrm{dB}}\)</td><td>K 的 dB 值</td><td>K in dB</td><td>10 log<sub>10</sub>K</td><td>dB</td></tr>
+    <tr><td>\(z\)</td><td>包络</td><td>envelope</td><td>合成信号的幅度，服从莱斯分布</td><td>V</td></tr>
+    <tr><td>\(I_0(\cdot)\)</td><td>零阶修正贝塞尔函数</td><td>zeroth-order modified Bessel function</td><td>只出现在莱斯 PDF 里，不用会算；I<sub>0</sub>(0) = 1</td><td>—</td></tr>
+    <tr><td>\(s^2+2\sigma^2\)</td><td>总平均功率</td><td>total average power</td><td>直射 + 散射</td><td>W</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">莱斯因子 · Rician K-factor <span class="st give">考试给</span></div><div class="fx">\[ K=\frac{s^2}{2\sigma^2}=\frac{\text{LOS power}}{\text{total scattered power}} \]</div><div class="fn">讲义 p.27–28。式子考试给，但含义自己要会说：直射功率 ÷ 散射总功率（功率比）。K = 0 → 没有直射 → 瑞利（最差）；K → ∞ → 只剩直射 → 不衰落（AWGN）。同一平均 SNR、同一门限下（门限低于平均 SNR，也就是正常留了余量的情况），K 越大，深衰落越少，中断越小。</div></div>
+  <div class="fm"><div class="fl">K 的 dB 与功率拆分 · K in dB and the power split <span class="st def">定义·必会</span></div><div class="fx">\[ K_{\mathrm{dB}}=10\log_{10}K,\qquad \frac{s^2}{s^2+2\sigma^2}=\frac{K}{K+1},\qquad \frac{2\sigma^2}{s^2+2\sigma^2}=\frac{1}{K+1} \]</div><div class="fn">K 是功率比，用 10 log（不是 20 log）。K = 0 dB 的意思是 K = 1（直射、散射各 50%），不是瑞利；瑞利是 K = 0，即 −∞ dB。讲义 p.28 的图画了 K = −∞ dB（瑞利）、6 dB、∞ dB 三条曲线。</div></div>
+  <div class="fm"><div class="fl">莱斯分布（包络）· Rician envelope PDF <span class="st give">考试给</span></div><div class="fx">\[ p_z(z)=\frac{z}{\sigma^2}\,e^{-\frac{z^2+s^2}{2\sigma^2}}\,I_0\!\left(\frac{zs}{\sigma^2}\right),\qquad z\ge 0 \]</div><div class="fn">不用背，I<sub>0</sub> 不用会算。看到它要认出 s² 是直射功率、2σ² 是散射功率。令 s = 0：I<sub>0</sub>(0) = 1，就变回瑞利 PDF \(\frac{z}{\sigma^2}e^{-z^2/(2\sigma^2)}\)，所以瑞利是莱斯 K = 0 的特例。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>专项 · Q3 (d)</th><th>讲义第 2 章 p.28 图（K = 6 dB）</th></tr></thead><tbody>
+    <tr><td>① 认出两部分</td><td>直射 = LOS 那一条；散射 = 其余全部之和</td><td>直射功率 = 4 × 散射总功率</td><td>曲线标 K = 6 dB</td></tr>
+    <tr><td>② K（线性）</td><td>K = 直射 ÷ 散射；给 dB 就 10<sup>K<sub>dB</sub>/10</sup></td><td>K = 4</td><td>K = 10<sup>0.6</sup> = 3.981</td></tr>
+    <tr><td>③ K<sub>dB</sub></td><td>10 log<sub>10</sub>K</td><td>10 log<sub>10</sub>4 = 6.02 dB</td><td>6 dB（已给）</td></tr>
+    <tr><td>④ 功率拆分</td><td>直射占 K/(K+1)，散射占 1/(K+1)</td><td>4/5 = 80% 直射，20% 散射</td><td>3.981/4.981 = 79.9% 直射，20.1% 散射</td></tr>
+    <tr><td>⑤ 判断趋势</td><td>K = 0 瑞利 … K → ∞ AWGN；K 越大深衰落越少</td><td>中断比 (c) 瑞利的 9.52% 小（课外数值积分约 1.63%）</td><td>介于瑞利（−∞ dB）和不衰落（∞ dB）之间，靠近 0 的部分比瑞利少</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：专项 · Q3 (d)＝练习页专项第 3 题（同一场景平均 SNR 20 dB、门限 10 dB；出现一条直射径，功率是散射路径总功率的 4 倍，求 K（dB）并不经计算说明 (c) 的中断概率怎么变）；讲义第 2 章 p.27–28（莱斯分布与 K，p.28 的图画了 K = −∞、6、∞ dB 三条曲线）。历年期末和 Practice 1–2 都没有考莱斯。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 散射分量有好几条，给的是 dBm</div><p class="q">某接收点直射分量功率 −80 dBm，另有三条散射分量，功率分别为 −90、−92、−95 dBm。求莱斯因子 K（线性和 dB），以及直射功率占总功率的比例。</p><ol class="work">
+    <li>换成 mW（dBm 不能直接相加）：直射 10<sup>−8</sup> = 1.000×10<sup>−8</sup> mW；散射 1.000×10<sup>−9</sup>、6.310×10<sup>−10</sup>、3.162×10<sup>−10</sup> mW。</li>
+    <li>散射总功率 = 1.947×10<sup>−9</sup> mW（= −87.11 dBm）。</li>
+    <li>K = 1.000×10<sup>−8</sup> / 1.947×10<sup>−9</sup> = 5.136；K<sub>dB</sub> = 10 log<sub>10</sub>5.136 = 7.11 dB（也等于 −80 − (−87.11)，dBm − dBm = dB）。</li>
+    <li>直射占比 = K/(K+1) = 5.136 / 6.136 = 83.7%。</li>
+  </ol><p class="ans">答案：K ≈ 5.14（7.11 dB）；直射约占总功率的 83.7%</p></div>
+  <div class="eg"><div class="egh">例 2 · 倒着读 K<sub>dB</sub>；直射被挡住会怎样</div><p class="q">(a) 某信道 K<sub>dB</sub> = −3 dB，直射功率占总功率多少？它更像瑞利还是 AWGN？(b) 用户从开阔地（K = 10 dB）走进楼群，直射径被完全挡住。假设平均 SNR 仍是 20 dB、门限仍是 10 dB，衰落分布和中断概率怎么变？</p><ol class="work">
+    <li>(a) K = 10<sup>−3/10</sup> = 10<sup>−0.3</sup> = 0.5012；直射占 0.5012 / 1.5012 = 33.4%，散射占 66.6%。</li>
+    <li>散射为主，更接近瑞利；但 K = −3 dB 不是瑞利（瑞利是 K = 0，即 −∞ dB）。</li>
+    <li>(b) 直射被挡 → s² = 0 → K = 0 → 包络从莱斯变成瑞利 → 深衰落变多 → 中断概率变大。</li>
+    <li>瑞利那一端能算：1 − e<sup>−10/100</sup> = 0.0952。课外数值（莱斯要数值计算，只为建立感觉）：K = 10 dB（K = 10）约 0.074%，K = 4（6.02 dB，就是专项 · Q3 (d)）约 1.63%，K = 0 dB（K = 1）约 7.33%，到瑞利（K = 0）9.52%，比 K = 10 dB 时大约 129 倍。</li>
+  </ol><p class="ans">答案：(a) 直射约 33.4%，偏瑞利但不是瑞利；(b) 变成瑞利衰落，中断概率变大（升到 9.52%）</p></div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>K<sub>dB</sub> 用 20 log：K = 4 → 20 log<sub>10</sub>4 = 12.04 dB ✗，应为 10 log<sub>10</sub>4 = 6.02 dB（K 是功率比）。</li>
+    <li>给的是幅度比忘了平方：直射幅度是散射 rms 幅度 √(2σ²) 的 2 倍 → K = 2² = 4（6.02 dB），不是 2（3.01 dB）。</li>
+    <li>把 K = 0 dB 当成瑞利 ✗：0 dB 是 K = 1（直射、散射各 50%）；瑞利是 K = 0 = −∞ dB。</li>
+    <li>散射总功率用 dBm 直接相加，或只取最强的一条 ✗（例 1 只取 −90 dBm 那条会得 K<sub>dB</sub> = −80 − (−90) = 10 dB，正确是 7.11 dB）：先换 mW 全部加起来，再求 K。</li>
+    <li>把"瑞利 / 莱斯"和"平坦 / 选择性、快 / 慢"混为一谈：前者说幅度服从什么分布，后者说衰落和信号的关系；一个信道可以同时是"平坦、慢、莱斯"。</li>
+    <li>说"有直射径就不会中断" ✗：只是比瑞利小；K → ∞ 才接近 AWGN。比较时要说明是同一平均 SNR、同一门限。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>The Rician K-factor is the ratio of the power in the line-of-sight component to the total power in the scattered components, \(K=s^2/(2\sigma^2)\). Here K = 4, i.e. \(K_{\mathrm{dB}}=10\log_{10}4=6.02\) dB. Because of the direct path the envelope is Rician rather than Rayleigh, so deep fades are less likely and, for the same average SNR (20 dB) and threshold (10 dB), the outage probability is lower than the Rayleigh value of 0.0952. K = 0 reduces to Rayleigh fading and K → ∞ to an AWGN channel with no fading.</p>
+  </div>
+</section>
+<section class="topic" id="t8">
+  <h2><span class="tn">8</span>时延扩展与平坦/频率选择性 · Delay spread, flat vs frequency-selective fading</h2>
+  <div class="meta"><span class="st give">考试给</span><span class="st must">背</span><span class="st def">定义·必会</span> <span class="freq">出现：期末 2/4 套（2023-24 Q1(a)(iii)、2025-26 S2 Q1(a)(i)）· 期末 OFDM 题用 B<sub>C</sub>（2023-24 Q2(b)(i)、2025-26 S1 Q2(b)(i)）· Practice 1 Q3 · 模拟 A·Q3 · 模拟 C·Q2 · 专项·Q3(e)</span></div>
+  <p class="why">考"回声拖多长"：把功率时延谱当成概率分布，求时延的加权均值 μ 和标准差 σ（公式考试给），再拿 σ 和符号时长 T<sub>s</sub> 比（σ/T<sub>s</sub> &lt; 0.1 要背），或拿信号带宽 B<sub>s</sub> 和相干带宽 B<sub>C</sub> 比，判断平坦还是频率选择性。Quiz 可能像 Practice 1 Q3、模拟 A·Q3 那样出：给几条回波（功率用 dB）求 μ、σ，再问"符号速率最高多少才平坦"或"现在是不是平坦"。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(\tau_k\)</td><td>超额时延</td><td>excess delay</td><td>第 k 条回波比第一条晚到多久，第一条 τ = 0（讲义 p.30）</td><td>µs</td></tr>
+    <tr><td>\(P_r(\tau)\)</td><td>功率时延谱</td><td>power delay profile (PDP)</td><td>晚到 τ 的那部分回波有多少功率；讲义用 dBm 画，算之前换成线性</td><td>dBm → mW</td></tr>
+    <tr><td>\(\mu_{T_m}\)</td><td>平均时延</td><td>mean delay (mean delay spread)</td><td>按功率加权的平均晚到时间，回波能量的"重心"</td><td>µs</td></tr>
+    <tr><td>\(\sigma_{T_m}\)</td><td>rms 时延扩展（均方根时延扩展）</td><td>rms delay spread</td><td>晚到时间的加权标准差：回波拖尾散得多开。几个时延量里判平坦只用它（不用最大时延）</td><td>µs</td></tr>
+    <tr><td>\(\tau_{\max}\)</td><td>最大时延扩展</td><td>maximum delay spread</td><td>最晚一条回波的时延（本页记号，讲义没有专门符号）；OFDM 保护间隔用它，判平坦不用它</td><td>µs</td></tr>
+    <tr><td>\(T_s\)</td><td>符号时长</td><td>symbol duration</td><td>一个符号占多长时间</td><td>µs、ms</td></tr>
+    <tr><td>\(R_s\)</td><td>符号速率</td><td>symbol rate</td><td>每秒发几个符号，R<sub>s</sub> = 1/T<sub>s</sub>；不是比特率</td><td>sps（符号/秒）</td></tr>
+    <tr><td>\(B_s\)</td><td>信号带宽</td><td>signal bandwidth</td><td>信号占多宽的频带；题目通常让你取 B<sub>s</sub> ≈ R<sub>s</sub> = 1/T<sub>s</sub></td><td>Hz</td></tr>
+    <tr><td>\(B_C\)（B<sub>c</sub>）</td><td>相干带宽</td><td>coherence bandwidth</td><td>相隔超过它的两个频率，衰落就互不相关；信道在多宽的频带里"看起来是平的"</td><td>Hz</td></tr>
+    <tr><td>—</td><td>平坦衰落</td><td>flat fading</td><td>整个信号带宽一起起伏，波形不失真，没有码间干扰</td><td>—</td></tr>
+    <tr><td>—</td><td>频率选择性衰落</td><td>frequency-selective fading</td><td>不同频率衰落不同；时域上回波拖进下一个符号，造成码间干扰 ISI（inter-symbol interference）</td><td>—</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">平均时延 Mean delay <span class="st give">考试给</span></div><div class="fx">\[ \mu_{T_m}=\frac{\sum_k \tau_k\,P_r(\tau_k)}{\sum_k P_r(\tau_k)} \]</div><div class="fn">讲义第 2 章 p.30。P<sub>r</sub> 必须是<b>线性</b>功率（它是权重）；分母是总功率，不是 1。连续谱把求和换成积分；Quiz 不考积分，遇到连续均匀谱（Practice 1 Q3）用下一张卡的捷径。</div></div>
+  <div class="fm"><div class="fl">rms 时延扩展 RMS delay spread <span class="st give">考试给</span></div><div class="fx">\[ \sigma_{T_m}=\sqrt{\frac{\sum_k(\tau_k-\mu_{T_m})^2P_r(\tau_k)}{\sum_kP_r(\tau_k)}}=\sqrt{E[\tau^2]-\mu_{T_m}^2} \]\[ E[\tau^2]=\frac{\sum_k\tau_k^2\,P_r(\tau_k)}{\sum_kP_r(\tau_k)} \]</div><div class="fn">讲义给的是左边的定义式；右边"平方的均值 − 均值的平方"就是第 1b 章的方差公式，列表算更快。[0, a] 上的均匀谱：μ = a/2，E[τ²] = a²/3，σ = a/√12 = a/3.464。</div></div>
+  <div class="fm"><div class="fl">dB → 线性 dB to linear <span class="st def">定义·必会</span></div><div class="fx">\[ P_{\text{lin}}=10^{P_{\text{dB}}/10},\qquad P_{\text{mW}}=10^{P_{\text{dBm}}/10} \]</div><div class="fn">0、−3、−6、−10 dB → 1、0.5012、0.2512、0.1。给 dBm（绝对功率）时同样换；也可以先都减去最强那条，变成相对 dB，比例不变。老师说没写 dB ↔ 线性换算会扣分。</div></div>
+  <div class="fm"><div class="fl">平坦衰落判据 Flat-fading rule of thumb <span class="st must">背</span></div><div class="fx">\[ \frac{\sigma_{T_m}}{T_s}\lt 0.1\ \Rightarrow\ \text{flat};\qquad \frac{\sigma_{T_m}}{T_s}\gg 1\ \Rightarrow\ \text{frequency-selective} \]</div><div class="fn">讲义 p.33；老师说这是蓝框公式，要背（发布的讲义 PDF 这一页看不到框，以课上录音为准）。反过来用：\(T_s\gt 10\,\sigma_{T_m}\)，即 \(R_s\lt 0.1/\sigma_{T_m}\)，求出来是上限。0.1 到 ≫ 1 之间是灰区：老师课上说比值只稍大于 0.1（如 0.15）时不能下结论，要远大于 0.1 才能说是频率选择性。比的是 rms 时延扩展，不是最大时延扩展。</div></div>
+  <div class="fm"><div class="fl">相干带宽与信号带宽 Coherence bandwidth vs signal bandwidth <span class="st def">定义·必会</span></div><div class="fx">\[ B_s\approx R_s=\frac{1}{T_s},\qquad B_C\approx\frac{1}{\sigma_{T_m}}\ \ (\text{order of magnitude}) \]\[ B_s\lt B_C\ \Rightarrow\ \text{flat},\qquad B_s\gt B_C\ \Rightarrow\ \text{frequency-selective} \]</div><div class="fn">讲义 p.31–32：B<sub>s</sub> &lt; B<sub>C</sub> 平坦，B<sub>s</sub> &gt; B<sub>C</sub> 频率选择性；老师的简单记法：信号带宽在相干带宽以内就是平坦。p.31 用时延谱的傅里叶变换定义 B<sub>C</sub>，没给 1/σ 前面的系数，所以 B<sub>C</sub> ≈ 1/σ 只是数量级：只用来估 B<sub>C</sub>、说明"σ 越大 B<sub>C</sub> 越小"，不要拿它把 B<sub>s</sub>/B<sub>C</sub> 换算成 σ/T<sub>s</sub> 再去套 0.1。题目给 σ 就用 σ/T<sub>s</sub> &lt; 0.1；<b>题目给了 B<sub>C</sub> 就直接比 B<sub>s</sub> 和 B<sub>C</sub></b>：2025-26 S1 Q2(b) 同时给了 B<sub>C</sub> = 30 kHz 和最大时延扩展 10 µs，(i) 直接按子载波带宽 500/N &lt; 30 kHz 得 N &gt; 16.67 → N<sub>min</sub> = 17（此时 500/17 = 29.4 kHz，只比 30 kHz 小一点，按 B<sub>s</sub> &lt; B<sub>C</sub> 就算平坦；OFDM 题，判平坦的方法一样）；10 µs 是最大时延，不是 σ，留给 (ii) 定保护间隔，不拿来判平坦。题目常写 assume T = 1/B。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型 1 · 由功率时延谱求 μ、σ，再定平坦条件</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 1 · Q3</th><th>模拟 A · Q3</th></tr></thead><tbody>
+    <tr><td>① 权重换线性</td><td>dB → 10<sup>dB/10</sup>；连续均匀谱直接看成均匀分布</td><td>P<sub>r</sub> = 1（0–10 µs），已是线性：[0, 10] µs 上的均匀分布</td><td>0、−3、−6 dB → 1、0.5012、0.2512；总和 1.752</td></tr>
+    <tr><td>② 平均时延 μ</td><td>ΣP<sub>k</sub>τ<sub>k</sub> ÷ ΣP<sub>k</sub></td><td>μ = a/2 = 10/2 = 5 µs</td><td>(0×1 + 1×0.5012 + 3×0.2512)/1.752 = 1.255/1.752 = 0.716 µs</td></tr>
+    <tr><td>③ 二阶矩 E[τ²]</td><td>ΣP<sub>k</sub>τ<sub>k</sub>² ÷ ΣP<sub>k</sub></td><td>a²/3 = 100/3 = 33.33 µs²</td><td>(0 + 1×0.5012 + 9×0.2512)/1.752 = 2.762/1.752 = 1.576 µs²</td></tr>
+    <tr><td>④ rms 扩展 σ</td><td>√(E[τ²] − μ²)</td><td>√(33.33 − 5²) = √8.33 = 2.89 µs（= 10/√12）</td><td>√(1.576 − 0.716²) = √1.063 = 1.03 µs</td></tr>
+    <tr><td>⑤ 平坦判据</td><td>σ/T<sub>s</sub> &lt; 0.1（背）；求速率就反解 T<sub>s</sub> &gt; 10σ</td><td>T<sub>s</sub> &gt; 28.9 µs → R<sub>s</sub> &lt; 34.6 ksps（上限）</td><td>T<sub>s</sub> = 1/50 k = 20 µs，1.03/20 = 0.052 &lt; 0.1 → 平坦（R<sub>s</sub> 上限 97.0 ksps）</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 1 · Q3（功率时延谱 P<sub>r</sub>(τ) = 1，0 ≤ τ ≤ 10 µs；官方答案 5 µs、2.89 µs、34.6 ksps）；模拟 A · Q3(a)(b)（自编：时延 0/1/3 µs，功率 0/−3/−6 dB，50 k 符号/s，1.8 GHz、72 km/h；数字经 verify_mock.py 验算）。讲义第 2 章 p.30、p.33。</p>
+
+  <h4>题型 2 · 给 σ 或 B<sub>C</sub>，判断平坦还是频率选择性</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2023-24 Q1(a)(iii)）</th><th>模拟 C · Q2(a)</th></tr></thead><tbody>
+    <tr><td>① 找可比的一对</td><td>时域：σ 和 T<sub>s</sub>；频域：B<sub>s</sub>（≈ 1/T<sub>s</sub>）和 B<sub>C</sub></td><td>σ = 0.01 ms，T<sub>s</sub> = 1 ms</td><td>B<sub>s</sub> ≈ 50 kHz（50 k 符号/s），B<sub>C</sub> = 200 kHz</td></tr>
+    <tr><td>② 算比值</td><td>σ/T<sub>s</sub> 或 B<sub>s</sub>/B<sub>C</sub></td><td>0.01/1 = 0.01</td><td>50/200 = 0.25</td></tr>
+    <tr><td>③ 对照判据</td><td>σ/T<sub>s</sub> &lt; 0.1 或 B<sub>s</sub> &lt; B<sub>C</sub> → 平坦；σ/T<sub>s</sub> ≫ 1 或 B<sub>s</sub> &gt; B<sub>C</sub> → 选择性（σ/T<sub>s</sub> 只稍大于 0.1：不能下结论）</td><td>0.01 &lt; 0.1 → 平坦</td><td>50 kHz &lt; 200 kHz → 平坦（题目给了 B<sub>C</sub>，直接比）</td></tr>
+    <tr><td>④ 写结论和理由</td><td>平坦/选择性 + 一句物理意义（有没有 ISI）</td><td>flat：σ ≪ T<sub>s</sub>，回波拖尾远短于符号，几乎没有 ISI</td><td>flat：B<sub>s</sub> &lt; B<sub>C</sub>，整个信号带宽内的衰落相关、一起起伏，频谱失真小</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：2023-24 S2 期末 Q1(a)(iii)（符号时长 1 ms，rms 时延扩展 0.01 ms，信道冲激响应时不变；完整结论是"平坦慢衰落"，"慢"的判断见 t9）；模拟 C · Q2(a)（自编：50 k 符号/s，信号带宽约 50 kHz，B<sub>C</sub> = 200 kHz，最大多普勒频移 100 Hz；练习页答案"平坦慢衰落"，经 verify_mock.py 验算）。讲义第 2 章 p.31–33。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 功率给 dBm（绝对值）+ 比值卡在灰区</div>
+    <p class="q">某信道有三条可分辨路径：时延 0、2、5 µs，接收功率分别为 −80、−84、−90 dBm。(a) 求平均时延和 rms 时延扩展；(b) 要平坦衰落，符号速率最高多少？(c) 系统用 100 k 符号/s，衰落是平坦的吗？</p>
+    <ol class="work">
+      <li>dBm → mW：−80 dBm = 1.000×10⁻⁸ mW，−84 dBm = 3.981×10⁻⁹ mW，−90 dBm = 1.000×10⁻⁹ mW。都除以最强那条（等于先换成相对 0、−4、−10 dB）：权重 1、0.3981、0.1，总和 1.498。</li>
+      <li>(a) μ = (0×1 + 2×0.3981 + 5×0.1)/1.498 = 1.296/1.498 = 0.8652 ≈ 0.865 µs（下一步要平方，先多留一位）。</li>
+      <li>E[τ²] = (0 + 4×0.3981 + 25×0.1)/1.498 = 4.092/1.498 = 2.732 µs²；σ² = 2.732 − 0.8652² = 2.732 − 0.7486 = 1.983，σ = 1.41 µs。</li>
+      <li>(b) σ/T<sub>s</sub> &lt; 0.1 → T<sub>s</sub> &gt; 10σ = 14.1 µs → R<sub>s</sub> &lt; 1/14.08 µs = 71.0 ksps。</li>
+      <li>(c) T<sub>s</sub> = 1/100 k = 10 µs，σ/T<sub>s</sub> = 1.41/10 = 0.141：大于 0.1，不满足平坦判据；又远没到 ≫ 1。老师说稍大于 0.1 时不能下结论，所以写"不能认为是平坦衰落，属于边界情况，可能有轻微 ISI"。</li>
+    </ol>
+    <p class="ans">答案：μ ≈ 0.865 µs，σ ≈ 1.41 µs；R<sub>s</sub> &lt; 71.0 ksps；100 ksps 时 σ/T<sub>s</sub> = 0.141 &gt; 0.1，不能算平坦（边界情况）</p></div>
+  <div class="eg"><div class="egh">例 2 · 连续均匀谱，高度不是 1，再估一下 B<sub>C</sub></div>
+    <p class="q">功率时延谱 P<sub>r</sub>(τ) = 2（0 ≤ τ ≤ 4 µs），其他为 0。(a) 求 μ、σ；(b) 符号速率 50 k 符号/s 时是不是平坦衰落？(c) 估计相干带宽。</p>
+    <ol class="work">
+      <li>高度 2 在分子、分母里同时出现，约掉：和高度 1 一样，就是 [0, 4] µs 上的均匀分布（分母 = 面积 = 2×4 = 8，不是 1）。</li>
+      <li>(a) μ = a/2 = 2 µs；E[τ²] = a²/3 = 16/3 = 5.333 µs²；σ² = 5.333 − 2² = 1.333，σ = 1.155 µs（= 4/√12 = 4/3.464）。</li>
+      <li>(b) T<sub>s</sub> = 1/50 k = 20 µs，σ/T<sub>s</sub> = 1.155/20 = 0.0577 &lt; 0.1 → 平坦（R<sub>s</sub> 上限 0.1/σ = 86.6 ksps）。</li>
+      <li>(c) B<sub>C</sub> ≈ 1/σ = 1/1.155 µs ≈ 866 kHz（只是数量级估计）。B<sub>s</sub> ≈ 50 kHz &lt; 866 kHz，频域看也是平坦（按这个估法 B<sub>s</sub>/B<sub>C</sub> 恰好等于 σ/T<sub>s</sub> = 0.0577，两种说法结论相同）。</li>
+    </ol>
+    <p class="ans">答案：μ = 2 µs，σ ≈ 1.155 µs；50 ksps 时 σ/T<sub>s</sub> = 0.0577 &lt; 0.1，平坦；B<sub>C</sub> 约 866 kHz（数量级）</p></div>
+  <div class="eg"><div class="egh">例 3 · 题目直接给 B<sub>C</sub>：频域判断 + 反求速率</div>
+    <p class="q">测得信道相干带宽 B<sub>C</sub> = 150 kHz，取 B<sub>s</sub> ≈ R<sub>s</sub>。(a) R<sub>s</sub> = 10 k 符号/s；(b) R<sub>s</sub> = 1 M 符号/s，频率维度上各是什么衰落？(c) 要平坦，R<sub>s</sub> 最高多少？</p>
+    <ol class="work">
+      <li>(a) B<sub>s</sub> ≈ 10 kHz &lt; B<sub>C</sub> = 150 kHz（B<sub>s</sub>/B<sub>C</sub> = 10/150 = 0.0667，小 15 倍）→ 平坦：整个信号带宽一起衰落。</li>
+      <li>(b) B<sub>s</sub> ≈ 1 MHz &gt; 150 kHz（大 6.67 倍）→ 频率选择性衰落：不同频率衰落不同，时域上有 ISI，要靠均衡或 OFDM。</li>
+      <li>(c) 按讲义 p.31 直接用 B<sub>s</sub> &lt; B<sub>C</sub>：R<sub>s</sub> ≈ B<sub>s</sub> &lt; 150 kHz → R<sub>s</sub> &lt; 150 ksps，是上限（2025-26 S1 Q2(b)(i) 求 N 也是这样直接比的）。题目给的是 B<sub>C</sub>，不要再用 B<sub>C</sub> ≈ 1/σ 换算成 σ/T<sub>s</sub> 去套 0.1。</li>
+    </ol>
+    <p class="ans">答案：(a) 平坦；(b) 频率选择性；(c) R<sub>s</sub> &lt; 150 ksps（上限）</p></div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>拿 dB 值当权重：0、−3、−6 dB 是负数，必须先换线性（1、0.5012、0.2512）；dBm 也要换。老师说没写 dB ↔ 线性换算会扣分。</li>
+    <li>忘了除总功率：模拟 A·Q3 要除 1.752；连续谱除面积（Practice 1 Q3 的分母是 10，不是 1）。</li>
+    <li>σ ≠ √E[τ²]，要减 μ²；σ 也不是"最大时延 − 最小时延"：模拟 A·Q3 时延差 3 µs，σ 只有 1.03 µs。题目给"最大时延扩展"（如 2025-26 S1 Q2(b) 的 10 µs）时它不是 σ，别拿去套 0.1。</li>
+    <li>不等号方向：平坦要符号<b>长</b>、速率<b>低</b>，算出来是上限（R<sub>s</sub> &lt; 34.6 ksps），不是"R<sub>s</sub> = 34.6 ksps"。R<sub>s</sub> 是符号速率：给比特率先除以 log₂M（4-QAM、200 kbit/s → 100 ksps）。</li>
+    <li>把 0.1 当成严格分界：σ/T<sub>s</sub> 稍大于 0.1（例 1 的 0.141）不能直接写"频率选择性"，讲义 p.33 选择性要 ≫ 1，老师也说要远大于 0.1。这个灰区只针对 σ/T<sub>s</sub>；题目给 B<sub>C</sub> 时按讲义直接比，B<sub>s</sub> &lt; B<sub>C</sub> 就写 flat（模拟 C·Q2：50 kHz &lt; 200 kHz → 平坦），不要自己再加"borderline"。</li>
+    <li>把 B<sub>C</sub> ≈ 1/σ 当精确公式，或拿最大时延去估 B<sub>C</sub>：题目给了 B<sub>C</sub> 就直接和 B<sub>s</sub> 比（2025-26 S1 Q2(b)：B<sub>C</sub> = 30 kHz 是测出来给你的；10 µs 是最大时延扩展，不是 σ）。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>Converting the powers to linear values (0, −3, −6 dB → 1, 0.5012, 0.2512), the mean delay is μ = ΣP<sub>k</sub>τ<sub>k</sub>/ΣP<sub>k</sub> = 1.255/1.752 = 0.716 µs and the rms delay spread is σ = √(E[τ²] − μ²) = √(1.576 − 0.716²) = 1.03 µs. With T<sub>s</sub> = 1/(50 ksps) = 20 µs, σ/T<sub>s</sub> = 0.052 &lt; 0.1, so the rule of thumb for flat fading is satisfied: the delay spread is much smaller than the symbol duration and ISI is negligible. If only bandwidths are given, compare them directly: B<sub>s</sub> ≈ 50 kHz &lt; B<sub>C</sub> = 200 kHz, so the whole signal bandwidth fades together and the fading is flat.</p>
+  </div>
+</section>
+<section class="topic" id="t9">
+  <h2><span class="tn">9</span>多普勒、快/慢衰落与衰落类型综合判别 · Doppler, fast vs slow fading, classifying the fading</h2>
+  <div class="meta"><span class="st def">定义·必会</span><span class="st must">背</span> <span class="freq">出现：期末 2/4 套（2023-24 Q1(a)(iii)、2025-26 S2 Q1(a)(i)）· 期末均衡题也用到快衰落的概念（2024-25 Q2(a)(i)：快衰落时信道系数 h 怎样变，属第 6 章，Quiz 不考）· 模拟 A·Q3(b) · 模拟 C·Q2(a) · 专项·Q3(f)</span></div>
+  <p class="why">考"信道随时间变多快"：由车速和载频算最大多普勒频移 f<sub>m</sub> 和相干时间 T<sub>C</sub> ≈ 1/f<sub>m</sub>（定义，自己要会），再和符号时长比，判快/慢；最后和 t8 的平坦/选择性（σ/T<sub>s</sub> &lt; 0.1 要背）合成完整的衰落类型。老师说问衰落类型只答一个维度只给一半分；2025-26 S2 Q1(a)(i) 直接让你解释 B<sub>C</sub>、B<sub>D</sub>、B<sub>s</sub> 怎样决定衰落类型。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(v\)</td><td>移动速度</td><td>speed of the mobile</td><td>手机（车）跑多快；km/h ÷ 3.6 = m/s</td><td>m/s</td></tr>
+    <tr><td>\(f_c\)</td><td>载频</td><td>carrier frequency</td><td>信号的中心频率</td><td>Hz</td></tr>
+    <tr><td>\(c\)</td><td>光速</td><td>speed of light</td><td>3×10⁸ m/s</td><td>m/s</td></tr>
+    <tr><td>\(\lambda\)</td><td>波长</td><td>wavelength</td><td>λ = c/f<sub>c</sub>；题目可能只给 λ 不给 f<sub>c</sub></td><td>m</td></tr>
+    <tr><td>\(\theta\)</td><td>到达角</td><td>angle of arrival</td><td>电波来的方向和前进方向的夹角</td><td>°</td></tr>
+    <tr><td>\(f_d\)</td><td>多普勒频移</td><td>Doppler shift</td><td>某一条回波的频率偏移：迎着走变高，背着走变低</td><td>Hz</td></tr>
+    <tr><td>\(f_m\)</td><td>最大多普勒频移</td><td>maximum Doppler shift</td><td>θ = 0 时的频移；LCR/AFD 公式里的 f<sub>m</sub> 就是它</td><td>Hz</td></tr>
+    <tr><td>\(B_D\)</td><td>多普勒扩展</td><td>Doppler spread</td><td>各回波频移不同，一根谱线被展宽成 f<sub>c</sub> ± f<sub>m</sub>；讲义取 B<sub>D</sub> = f<sub>m</sub></td><td>Hz</td></tr>
+    <tr><td>\(T_C\)（T<sub>c</sub>）</td><td>相干时间</td><td>coherence time</td><td>信道"基本不变"能维持多久</td><td>s、ms</td></tr>
+    <tr><td>\(T_s,\ B_s\)</td><td>符号时长、信号带宽</td><td>symbol duration, signal bandwidth</td><td>同 t8，B<sub>s</sub> ≈ 1/T<sub>s</sub></td><td>s、Hz</td></tr>
+    <tr><td>—</td><td>慢衰落</td><td>slow fading</td><td>一个符号内信道几乎不变（T<sub>s</sub> ≪ T<sub>C</sub>）</td><td>—</td></tr>
+    <tr><td>—</td><td>快衰落</td><td>fast fading</td><td>一个符号内信道就在变（T<sub>C</sub> 比 T<sub>s</sub> 短或相当）</td><td>—</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">多普勒频移 Doppler shift <span class="st def">定义·必会</span></div><div class="fx">\[ f_d=\frac{v}{\lambda}\cos\theta=\frac{v}{c}\,f_c\cos\theta \]</div><div class="fn">讲义 p.34。θ &lt; 90°（迎着电波走）为正，θ &gt; 90° 为负，θ = 90°（横着走）为 0。老师说多普勒<b>频移</b>本身不算失真，多普勒<b>扩展</b>才是（频率色散）。</div></div>
+  <div class="fm"><div class="fl">最大多普勒频移、多普勒扩展 Maximum Doppler shift, Doppler spread <span class="st def">定义·必会</span></div><div class="fx">\[ f_m=\frac{v\,f_c}{c}=\frac{v}{\lambda},\qquad B_D=f_m \]</div><div class="fn">讲义 p.34–35。v 用 m/s（km/h ÷ 3.6），f<sub>c</sub> 用 Hz。f<sub>m</sub> 也出现在 LCR/AFD 公式里（考试给），老师要求会说出它是最大多普勒频移。</div></div>
+  <div class="fm"><div class="fl">相干时间 Coherence time <span class="st def">定义·必会</span></div><div class="fx">\[ T_C\approx\frac{1}{B_D}=\frac{1}{f_m} \]</div><div class="fn">讲义 p.36：信道冲激响应基本不变的时长。动得越快，f<sub>m</sub> 越大，T<sub>C</sub> 越短；不动（时不变信道）时 f<sub>m</sub> = 0，T<sub>C</sub> → ∞。</div></div>
+  <div class="fm"><div class="fl">快/慢衰落判据 Slow vs fast fading <span class="st def">定义·必会</span></div><div class="fx">\[ T_s\ll T_C\ \Longleftrightarrow\ B_s\gg B_D\ \Rightarrow\ \text{slow fading} \]\[ T_s\ \text{comparable to or longer than}\ T_C\ \Rightarrow\ \text{fast fading} \]</div><div class="fn">讲义 p.37：符号时长比相干时间短、或信号带宽远大于多普勒扩展 → 一个符号内幅度和相位近似不变，慢衰落；相干时间比符号时长小 → 快衰落。因为 B<sub>s</sub> ≈ 1/T<sub>s</sub>、B<sub>D</sub> ≈ 1/T<sub>C</sub>，时域和频域两种说法等价。老师的简单记法：符号时长在相干时间以内就是慢衰落。</div></div>
+  <div class="fm"><div class="fl">两个维度合起来 Combined classification <span class="st def">定义·必会</span></div><div class="fx">\[ \sigma_{T_m}\ll T_s\ll T_C\ \ (\text{time}),\qquad B_D\ll B_s\lt B_C\ \ (\text{frequency})\quad\Rightarrow\quad\text{flat, slow fading} \]</div><div class="fn">时域里的 σ ≪ T<sub>s</sub> 就是要背的 σ/T<sub>s</sub> &lt; 0.1（t8）；频域按讲义 p.31 只要 B<sub>s</sub> &lt; B<sub>C</sub>。老师说时延扩展（时间色散）和多普勒扩展（频率色散）分开判断：σ（或 B<sub>C</sub>）只管平坦/选择性，T<sub>C</sub>（或 B<sub>D</sub>）只管快/慢，组合出四种：平坦慢、平坦快、选择性慢、选择性快（讲义 p.38–39 两张图）。提高符号速率 → T<sub>s</sub> 变短：更容易频率选择性，更不容易快衰落；"平坦"不等于"慢"。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型 1 · 给车速、载频、σ、符号速率 → 完整的衰落类型</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2023-24 Q1(a)(iii)）</th><th>专项 · Q3(e)(f)</th></tr></thead><tbody>
+    <tr><td>① 符号时长</td><td>T<sub>s</sub> = 1/R<sub>s</sub></td><td>T<sub>s</sub> = 1 ms（题目直接给）</td><td>1/10 k = 100 µs</td></tr>
+    <tr><td>② 平坦/选择性</td><td>σ/T<sub>s</sub> 和 0.1 比（t8）</td><td>0.01 ms/1 ms = 0.01 &lt; 0.1 → 平坦</td><td>2/100 = 0.02 &lt; 0.1 → 平坦</td></tr>
+    <tr><td>③ 速度换算</td><td>km/h ÷ 3.6 → m/s</td><td>信道冲激响应时不变（time invariant）：相当于不动</td><td>54/3.6 = 15 m/s</td></tr>
+    <tr><td>④ 最大多普勒 f<sub>m</sub></td><td>v f<sub>c</sub>/c</td><td>f<sub>m</sub> = 0（没有多普勒扩展）</td><td>15 × 2×10⁹ / (3×10⁸) = 100 Hz</td></tr>
+    <tr><td>⑤ 相干时间 T<sub>C</sub></td><td>≈ 1/f<sub>m</sub></td><td>T<sub>C</sub> → ∞</td><td>1/100 = 10 ms</td></tr>
+    <tr><td>⑥ 快/慢</td><td>T<sub>s</sub> ≪ T<sub>C</sub> → 慢；否则快</td><td>1 ms ≪ ∞ → 慢</td><td>100 µs ≪ 10 ms（T<sub>C</sub>/T<sub>s</sub> = 100）→ 慢</td></tr>
+    <tr><td>⑦ 结论</td><td>两个维度都写，各带理由</td><td>平坦慢衰落 flat, slow fading</td><td>平坦慢衰落 flat, slow fading</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：2023-24 S2 期末 Q1(a)(iii)（符号时长 1 ms，rms 时延扩展 0.01 ms，信道冲激响应时不变）；专项 · Q3(e)(f)（自编：10 k 符号/s，2 GHz，rms 时延扩展 2 µs，54 km/h；数字经 verify_mock.py 验算）。讲义第 2 章 p.33–37。</p>
+
+  <h4>题型 2 · 用 B<sub>C</sub>、B<sub>D</sub>、B<sub>s</sub> 判断（解释题）</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2025-26 S2 Q1(a)(i)）</th><th>模拟 C · Q2(a)</th></tr></thead><tbody>
+    <tr><td>① 写出三个量</td><td>B<sub>s</sub> ≈ R<sub>s</sub>；B<sub>C</sub> 给定（或 ≈ 1/σ）；B<sub>D</sub> = f<sub>m</sub></td><td>解释题没有数字：说明 B<sub>C</sub> 来自多径时延扩展，B<sub>D</sub> 来自移动（多普勒）</td><td>B<sub>s</sub> ≈ 50 kHz，B<sub>C</sub> = 200 kHz，B<sub>D</sub> = f<sub>m</sub> = 100 Hz</td></tr>
+    <tr><td>② 频率维度</td><td>B<sub>s</sub> 和 B<sub>C</sub> 比</td><td>B<sub>s</sub> &lt; B<sub>C</sub> → 平坦（整个带宽一起衰落）；B<sub>s</sub> &gt; B<sub>C</sub> → 频率选择性（有 ISI）</td><td>50 kHz &lt; 200 kHz → 平坦</td></tr>
+    <tr><td>③ 时间维度</td><td>B<sub>s</sub> 和 B<sub>D</sub> 比（等价 T<sub>s</sub> 和 T<sub>C</sub> 比）</td><td>B<sub>s</sub> ≫ B<sub>D</sub>（T<sub>s</sub> ≪ T<sub>C</sub> ≈ 1/B<sub>D</sub>）→ 慢；B<sub>s</sub> 接近或小于 B<sub>D</sub> → 快</td><td>50 kHz ≫ 100 Hz（500 倍）；T<sub>C</sub> ≈ 10 ms ≫ T<sub>s</sub> = 20 µs → 慢</td></tr>
+    <tr><td>④ 组合</td><td>四种里选一种</td><td>平坦慢、平坦快、选择性慢、选择性快（讲义 p.38–39 两张图）</td><td>平坦慢衰落 flat, slow fading</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：2025-26 S2 期末 Q1(a)(i)（解释如何用相干带宽、多普勒扩展和信号带宽判断衰落类型，无数字）；模拟 C · Q2(a)（自编：50 k 符号/s，B<sub>C</sub> = 200 kHz，f<sub>m</sub> = 100 Hz）。讲义第 2 章 p.31–32、p.35–39。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 只给波长；高铁 + 低符号速率 → 快衰落</div>
+    <p class="q">高铁时速 360 km/h，载波波长 λ = 5 cm，车上传感器以 1 k 符号/s 发数据，rms 时延扩展 1 µs。判断衰落类型。</p>
+    <ol class="work">
+      <li>v = 360/3.6 = 100 m/s。给的是波长，直接 f<sub>m</sub> = v/λ = 100/0.05 = 2000 Hz（等价于 f<sub>c</sub> = c/λ = 6 GHz，v f<sub>c</sub>/c 也是 2000 Hz）。</li>
+      <li>T<sub>C</sub> ≈ 1/f<sub>m</sub> = 0.5 ms；T<sub>s</sub> = 1/1 k = 1 ms。T<sub>s</sub>/T<sub>C</sub> = 2：符号比相干时间还长，一个符号内信道就在变 → 快衰落（频域：B<sub>s</sub> ≈ 1 kHz &lt; B<sub>D</sub> = 2 kHz）。</li>
+      <li>σ/T<sub>s</sub> = 1 µs/1 ms = 0.001 &lt; 0.1 → 平坦。</li>
+    </ol>
+    <p class="ans">答案：f<sub>m</sub> = 2000 Hz，T<sub>C</sub> ≈ 0.5 ms；平坦快衰落（flat, fast fading）</p></div>
+  <div class="eg"><div class="egh">例 2 · 反求：由相干时间求车速</div>
+    <p class="q">在 900 MHz 测得信道相干时间约 5 ms。(a) 估计移动台速度（km/h）；(b) 系统用 100 k 符号/s，是快衰落还是慢衰落？</p>
+    <ol class="work">
+      <li>(a) f<sub>m</sub> ≈ 1/T<sub>C</sub> = 1/5 ms = 200 Hz。</li>
+      <li>v = f<sub>m</sub>c/f<sub>c</sub> = 200 × 3×10⁸ / (9×10⁸) = 66.67 m/s（也可以先算 λ = c/f<sub>c</sub> = 0.3333 m，v = f<sub>m</sub>λ）；× 3.6 = 240 km/h。</li>
+      <li>(b) T<sub>s</sub> = 1/100 k = 10 µs，T<sub>C</sub>/T<sub>s</sub> = 500，T<sub>s</sub> ≪ T<sub>C</sub> → 慢衰落。</li>
+    </ol>
+    <p class="ans">答案：v ≈ 66.67 m/s ≈ 240 km/h；100 ksps 时是慢衰落</p></div>
+  <div class="eg"><div class="egh">例 3 · 同一个信道换符号速率：R<sub>s</sub> 怎样改变两个维度</div>
+    <p class="q">信道 rms 时延扩展 σ = 2 µs，最大多普勒频移 f<sub>m</sub> = 500 Hz。符号速率分别为 250 符号/s、20 k 符号/s、5 M 符号/s 时，各是什么衰落？</p>
+    <ol class="work">
+      <li>先算信道本身：T<sub>C</sub> ≈ 1/500 = 2 ms。σ 和 T<sub>C</sub> 不随 R<sub>s</sub> 变，变的只有 T<sub>s</sub>。</li>
+      <li>250 sps：T<sub>s</sub> = 4 ms。σ/T<sub>s</sub> = 0.0005 → 平坦；T<sub>s</sub>/T<sub>C</sub> = 2，符号比 T<sub>C</sub> 长 → 快。<b>平坦快衰落</b>。</li>
+      <li>20 ksps：T<sub>s</sub> = 50 µs。σ/T<sub>s</sub> = 0.04 → 平坦；T<sub>C</sub>/T<sub>s</sub> = 40 → 慢。<b>平坦慢衰落</b>。</li>
+      <li>5 Msps：T<sub>s</sub> = 0.2 µs。σ/T<sub>s</sub> = 10 ≫ 1 → 频率选择性；T<sub>C</sub>/T<sub>s</sub> = 10000 → 慢。<b>选择性慢衰落</b>。</li>
+      <li>规律：R<sub>s</sub> 越高（T<sub>s</sub> 越短），越容易频率选择性、越不容易快衰落。这个信道怎么调 R<sub>s</sub> 都得不到"选择性快"：那要 T<sub>s</sub> 远小于 σ = 2 µs，同时又不短于 T<sub>C</sub> = 2 ms，做不到。</li>
+    </ol>
+    <p class="ans">答案：250 sps 平坦快；20 ksps 平坦慢；5 Msps 频率选择性慢</p></div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>km/h 忘了 ÷ 3.6：54 km/h 当成 54 m/s，f<sub>m</sub> 会算成 360 Hz（正确是 100 Hz，大了 3.6 倍）；72 km/h = 20 m/s。GHz、MHz 换成 Hz，比较 T<sub>s</sub> 和 T<sub>C</sub> 前把 ms、µs 统一。计算器上除以 3×10⁸ 要加括号（或用 EXP 键输入 3E8），直接按 "÷ 3 × 10⁸" 会变成先除 3 再乘 10⁸。</li>
+    <li>衰落类型只答一个维度：老师说只给一半分。平坦/选择性写一句（σ/T<sub>s</sub>，或 B<sub>s</sub> 和 B<sub>C</sub> 比），快/慢写一句（T<sub>s</sub> 和 T<sub>C</sub> 比，或 B<sub>s</sub> 和 B<sub>D</sub> 比），合起来写 "flat, slow fading"。</li>
+    <li>"车快 = 快衰落"：快/慢看 T<sub>s</sub> 和 T<sub>C</sub> 的相对大小。例 1 同样 360 km/h，只要符号时长远小于 0.5 ms 就是慢衰落；"平坦"也不等于"慢"（例 3）。</li>
+    <li>两个不等号方向相反：平坦要 B<sub>s</sub> <b>小于</b> B<sub>C</sub>，慢要 B<sub>s</sub> <b>远大于</b> B<sub>D</sub>；时域里平坦要 T<sub>s</sub> 远大于 σ，慢要 T<sub>s</sub> 远小于 T<sub>C</sub>。</li>
+    <li>把多普勒频移当扩展：带 cos θ 的 f<sub>d</sub> 是单条回波的频移；判快/慢用 B<sub>D</sub> = f<sub>m</sub>（θ = 0 时的最大值）。</li>
+    <li>没给速度也能判：题目说 time-invariant channel，就是没有多普勒，T<sub>C</sub> → ∞，一定是慢衰落（2023-24 Q1(a)(iii)）。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>The coherence bandwidth B<sub>C</sub>, set by the multipath delay spread, is compared with the signal bandwidth B<sub>s</sub>: if B<sub>s</sub> &lt; B<sub>C</sub> the fading is flat, and if B<sub>s</sub> &gt; B<sub>C</sub> it is frequency-selective and causes ISI. The Doppler spread B<sub>D</sub> = f<sub>m</sub>, set by the motion, is also compared with B<sub>s</sub>: if B<sub>s</sub> ≫ B<sub>D</sub>, i.e. T<sub>s</sub> ≪ T<sub>C</sub> ≈ 1/B<sub>D</sub>, the fading is slow, otherwise it is fast; the two comparisons are independent and give four types (flat-slow, flat-fast, selective-slow, selective-fast).</p>
+    <p>Worked line: v = 54/3.6 = 15 m/s, f<sub>m</sub> = vf<sub>c</sub>/c = 15 × 2×10⁹/(3×10⁸) = 100 Hz and T<sub>C</sub> ≈ 1/f<sub>m</sub> = 10 ms ≫ T<sub>s</sub> = 100 µs, so the fading is slow; σ<sub>Tm</sub>/T<sub>s</sub> = 2/100 = 0.02 &lt; 0.1, so it is flat. Hence the signal experiences flat, slow fading.</p>
+  </div>
+</section>
+<section class="topic" id="t10">
+  <h2><span class="tn">10</span>电平通过率与平均衰落时长 · Level crossing rate (LCR) and average fade duration (AFD)</h2>
+  <div class="meta"><span class="st def">定义·必会</span><span class="st give">考试给</span><span class="st must">背</span><span class="freq">出现：期末 2/4 套（2024-25 S2 Q1(a)(ii)、2025-26 S2 Q1(a)(ii)）· Practice 2 Q1 · 模拟 A·Q3(c) · 模拟 C·Q2(b)(c) · 讲义第 2 章 p.41–47</span></div>
+  <p class="why">只有两种算法：(A) <b>计数法</b>：题目给“T 秒内看到 N 次深衰落”（或直接给 LCR）和 AFD，次数 ÷ 秒数 = LCR，AFD ÷ T<sub>s</sub> = 每次错几个，相乘 = 每秒错几个，两套期末都是这一类；(B) <b>公式法</b>：代题目给的瑞利 LCR/AFD 公式，难点只在把文字翻成 ρ 和 f<sub>m</sub>（Practice 2 Q1）。Quiz 题型接近期末、但更简单（老师说），多半就是这两种之一。老师说这类题数据多，先把已知量逐个写下来再算。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(L_Z\)（LCR）</td><td>电平通过率</td><td>level crossing rate</td><td>每秒信号<b>往下</b>穿过门限几次＝每秒进入几次深衰落</td><td>次/s</td></tr>
+    <tr><td>\(\bar\tau_Z\)（AFD，也写 \(\bar t_Z\)）</td><td>平均衰落时长</td><td>average fade duration</td><td>每次掉到门限以下，平均待多久才爬回来</td><td>s（常用 ms、µs）</td></tr>
+    <tr><td>\(z\)</td><td>信号包络（幅度）</td><td>signal envelope (amplitude)</td><td>接收信号的“强度”，随时间起伏；瑞利衰落时服从瑞利分布</td><td>V（相对值）</td></tr>
+    <tr><td>\(Z_{\min}\)</td><td>门限，最低可接受信号强度</td><td>threshold, minimum acceptable signal level</td><td>低于它就不能正常工作，这段时间叫深衰落（deep fade）</td><td>同 z</td></tr>
+    <tr><td>\(Z_{\rm rms}\)</td><td>信号的 rms 值</td><td>rms signal level</td><td>\(\sqrt{E[z^2]}\)，代表平均功率那一档</td><td>同 z</td></tr>
+    <tr><td>\(\rho\)</td><td>归一化门限（幅度比）</td><td>normalised threshold level</td><td>\(\rho=Z_{\min}/Z_{\rm rms}\)：门限是 rms 的几倍。“rms 值的 10%” → ρ = 0.1</td><td>无</td></tr>
+    <tr><td>\(\rho^2\)</td><td>功率比</td><td>power ratio</td><td>门限功率 ÷ 平均功率（就是 γ₀/γ̄）；换 dB 用 10 log₁₀ρ²</td><td>无（可写成 dB）</td></tr>
+    <tr><td>\(f_m\)（也写 \(f_D\)）</td><td>最大多普勒频移</td><td>maximum Doppler shift</td><td>\(f_m=vf_c/c\)；动得越快越大，深衰落来得越频繁、越短</td><td>Hz</td></tr>
+    <tr><td>\(v,\ f_c,\ c\)</td><td>车速、载频、光速</td><td>speed, carrier frequency, speed of light</td><td>v 用 m/s（km/h ÷ 3.6）；f<sub>c</sub> 用 Hz；c = 3×10⁸ m/s</td><td>m/s、Hz</td></tr>
+    <tr><td>\(T_s\)</td><td>符号时长</td><td>symbol duration</td><td>一个符号占多长时间</td><td>s</td></tr>
+    <tr><td>\(R_s\)</td><td>符号速率</td><td>symbol rate</td><td>\(R_s=1/T_s\)，每秒发几个符号；50 k 符号/s → T<sub>s</sub> = 20 µs</td><td>符号/s（sps）</td></tr>
+    <tr><td>\(N,\ T_{\rm obs}\)</td><td>观测到的深衰落次数、观测时长</td><td>number of deep fades observed, observation period</td><td>计数题的原始数据：“10 s 内 40 次”</td><td>次、s</td></tr>
+    <tr><td>\(N_{\rm sym}\)</td><td>每次衰落连错的符号数</td><td>(consecutive) symbol errors per fade</td><td>一次衰落盖住几个符号 = AFD ÷ T<sub>s</sub></td><td>个/次</td></tr>
+    <tr><td>\(N_{\rm err}\)</td><td>每秒误符号数</td><td>average number of symbol errors per second</td><td>LCR × N<sub>sym</sub></td><td>个/s</td></tr>
+    <tr><td>\(P_{\rm fade}\)</td><td>深衰落时间比例</td><td>fraction of time in deep fade</td><td>信号低于门限的时间占比 = LCR × AFD，也就是中断概率 P<sub>out</sub></td><td>无</td></tr>
+    <tr><td>SER</td><td>误符号率</td><td>symbol error rate</td><td>错的符号占全部符号的比例 = N<sub>err</sub> ÷ R<sub>s</sub></td><td>无</td></tr>
+  </tbody></table></div>
+  <p class="src">N、T<sub>obs</sub>、N<sub>sym</sub>、N<sub>err</sub>、P<sub>fade</sub> 是本页为了写清楚自己起的记号，讲义里没有；考试里用文字写（如 “symbol errors per fade”）即可。</p>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">LCR 的定义（计数）· LCR from a count <span class="st def">定义·必会</span></div><div class="fx">\[ L_Z=\frac{N}{T_{\rm obs}} \]</div><div class="fn">单位 次/s。N = 观测到的深衰落次数，T<sub>obs</sub> = 观测了几秒：“10 秒里 40 次” → 40/10 = 4 次/s。这一步不需要知道是不是瑞利衰落。</div></div>
+  <div class="fm"><div class="fl">每次衰落错几个符号 · Symbols in error per fade <span class="st def">定义·必会</span></div><div class="fx">\[ N_{\rm sym}=\frac{\bar\tau_Z}{T_s}=\bar\tau_Z\,R_s \]</div><div class="fn">老师课上讲的做法：一次衰落里错的符号数 = AFD ÷ T<sub>s</sub>；题目给的是符号<b>速率</b>就取倒数，即 AFD × R<sub>s</sub>。AFD 和 T<sub>s</sub> 先统一单位。讲义 p.45–47 例题（符号只要有一部分落在衰落里就算错）也是直接用 AFD × R<sub>s</sub>，不去 +1。</div></div>
+  <div class="fm"><div class="fl">每秒误符号数 · Symbol errors per second <span class="st def">定义·必会</span></div><div class="fx">\[ N_{\rm err}=L_Z\,N_{\rm sym}=L_Z\,\bar\tau_Z\,R_s \]</div><div class="fn">每秒几次衰落 × 每次错几个。前提是题目说深衰落里的符号都算错（“the affected symbol will be in error”）。错误是成串出现的：2025-26 S2 那题是每秒 4 串、每串 4 个。</div></div>
+  <div class="fm"><div class="fl">深衰落时间比例与误符号率 · Fraction of time in fade, SER <span class="st def">定义·必会</span></div><div class="fx">\[ P_{\rm fade}=L_Z\,\bar\tau_Z \]\[ \mathrm{SER}=\frac{N_{\rm err}}{R_s}=L_Z\,\bar\tau_Z \]</div><div class="fn">每秒有 L<sub>Z</sub> 次、每次 τ̄ 秒 → 每秒有 L<sub>Z</sub>τ̄ 秒在门限以下。对任何衰落都成立（讲义 p.42–43 推 AFD 公式的出发点就是它：AFD = 低于门限的时间比例 ÷ LCR）。深衰落里全错、外面全对时，误符号率就等于这个比例，和 R<sub>s</sub> 无关。</div></div>
+  <div class="fm"><div class="fl">瑞利衰落的 LCR 与 AFD · Rayleigh LCR and AFD <span class="st give">考试给</span></div><div class="fx">\[ L_Z=\sqrt{2\pi}\,f_m\,\rho\,e^{-\rho^2} \]\[ \bar\tau_Z=\frac{e^{\rho^2}-1}{\sqrt{2\pi}\,f_m\,\rho} \]</div><div class="fn">讲义第 2 章 p.41–43。考试会给公式，但不一定解释符号：老师要求会说出 ρ = Z<sub>min</sub>/Z<sub>rms</sub>、f<sub>m</sub> 是最大多普勒频移。省事算法：先算公共分母 √(2π) f<sub>m</sub> ρ（√(2π) = 2.5066；中间量多留一位，结果的最后一位才不会差 1），AFD = (e<sup>ρ²</sup> − 1) ÷ 分母，LCR = 分母 × e<sup>−ρ²</sup>。直觉：车越快（f<sub>m</sub> 大），衰落越频繁、越短；ρ 较小时，门限越低，深衰落越少、越短。</div></div>
+  <div class="fm"><div class="fl">两式相乘 = 低于门限的时间比例 · LCR × AFD for Rayleigh <span class="st must">背</span></div><div class="fx">\[ L_Z\,\bar\tau_Z=1-e^{-\rho^2}=P(z\lt Z_{\min}) \]\[ \Rightarrow\quad \rho^2=\ln\frac{1}{1-L_Z\bar\tau_Z} \]</div><div class="fn">f<sub>m</sub> 消掉了。它就是必背的瑞利中断 \(1-e^{-\gamma_0/\bar\gamma}\)（ρ² 就是 γ₀/γ̄），所以标“背”；忘了也能把上面两式相乘得到。用途：验算 LCR、AFD 有没有算错；由时间比例反求门限（模拟 C·Q2(c)）。</div></div>
+  <div class="fm"><div class="fl">ρ 怎么从题目文字读出来 · Reading ρ from the wording <span class="st def">定义·必会</span></div><div class="fx">\[ \rho=\frac{Z_{\min}}{Z_{\rm rms}},\qquad \rho^2=\frac{P_{\min}}{P_{\rm rms}} \]\[ \rho^2=10^{-X/10},\qquad \rho=10^{-X/20} \]</div><div class="fn">X = 门限比 rms 低多少 dB。说<b>幅度</b>（signal strength、envelope、“rms 值的 10%”）→ 这个数就是 ρ（老师特别提过：看到“rms 值的 10%”立刻想到 ρ = 0.1）；说<b>功率</b>或给 dB → 先得 ρ²，再开根号。常用：rms 值的 10% → ρ = 0.1、ρ² = 0.01（−20 dB）；功率低 10 dB → ρ² = 0.1、ρ = 0.3162；门限功率是平均功率的 1% → ρ = 0.1。dB ↔ 线性这一步要写出来，老师说漏写会扣分。</div></div>
+  <div class="fm"><div class="fl">最大多普勒频移 · Maximum Doppler shift <span class="st def">定义·必会</span></div><div class="fx">\[ f_m=\frac{v\,f_c}{c}=\frac{v}{\lambda} \]</div><div class="fn">讲义第 2 章 p.34–36。v 用 m/s（km/h ÷ 3.6，72 km/h = 20 m/s），f<sub>c</sub> 用 Hz，c = 3×10⁸ m/s。题目直接给 “maximum Doppler shift” 或 f<sub>D</sub> 时就是它，直接用。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>(A) 计数法：给了次数（或 LCR）和 AFD，数错误（两套期末都是这一类）</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2025-26 S2 Q1(a)(ii)）</th><th>模拟 C · Q2(b)</th></tr></thead><tbody>
+    <tr><td>⓪ 写已知</td><td>逐个列出，单位写全</td><td>T<sub>s</sub> = 5 ms，AFD = 20 ms，10 s 内 40 次</td><td>R<sub>s</sub> = 50 k 符号/s（T<sub>s</sub> = 20 µs），AFD = 0.5 ms，10 s 内 300 次</td></tr>
+    <tr><td>① LCR</td><td>次数 ÷ 观测秒数</td><td>40/10 = 4 次/s</td><td>300/10 = 30 次/s</td></tr>
+    <tr><td>② 每次衰落错几个符号</td><td>AFD ÷ T<sub>s</sub>（给的是符号率就乘 R<sub>s</sub>）</td><td>20 ms / 5 ms = 4 个</td><td>0.5 ms / 20 µs = 25 个</td></tr>
+    <tr><td>③ 每秒误符号数</td><td>① × ②</td><td>4 × 4 = 16 个/s</td><td>30 × 25 = 750 个/s</td></tr>
+    <tr><td>④ 深衰落时间比例</td><td>① × AFD</td><td>（原题没问）4 × 20 ms = 0.08</td><td>30 × 0.5 ms = 0.015（1.5%）</td></tr>
+    <tr><td>⑤ 自检 / 误符号率</td><td>③ ÷ R<sub>s</sub> 应等于 ④</td><td>16 ÷ 200 = 0.08 ✓（R<sub>s</sub> = 1/5 ms = 200 个/s）</td><td>750 ÷ 50 000 = 0.015 ✓</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：真题 = EE6129 2025-26 S2 期末 Q1(a)(ii)（T<sub>s</sub> = 5 ms、AFD = 20 ms、10 s 内 40 次深衰落，问 LCR 和平均每秒连续误符号数）；模拟 C · Q2(b) = 练习页自编模拟 Quiz C 第 2 题（模拟组第 8 题）：50 k 符号/s、10 s 内 300 次、AFD 0.5 ms，问 LCR、时间比例和每秒误符号数。</p>
+  <div class="eg"><div class="egh">另一道真题 · 2024-25 S2 Q1(a)(ii)（计数法的变形）：倒过来求 T<sub>s</sub>，“超过一半才算错”</div>
+    <p class="q">AFD = 6 × 10⁻⁶ s，LCR = 5（题目没写单位，按 次/s）。一次平均衰落正好盖住 3 个连续符号，求符号时长；若一个符号有一半以上落在深衰落里才算错，求平均每秒误符号数。</p>
+    <ol class="work">
+      <li>② 倒过来用：AFD = 3T<sub>s</sub> → T<sub>s</sub> = 6 µs ÷ 3 = 2 µs（R<sub>s</sub> = 500 k 符号/s）。</li>
+      <li>“超过一半才算错”：衰落长 3T<sub>s</sub>。和符号边界对齐时 3 个全在里面；不对齐时是 2 个完整符号加头尾两个碎片，两个碎片加起来正好一个符号长，必有一个超过一半（恰好各占一半是边界情况）→ 每次仍按 3 个错。</li>
+      <li>③ 每秒误符号数 = LCR × 3 = 5 × 3 = 15 个/s。</li>
+    </ol>
+    <p class="ans">答案：T<sub>s</sub> = 2 µs；平均每秒 15 个误符号</p></div>
+
+  <h4>(B) 公式法（瑞利，公式考试给）：给了门限的文字描述和 f<sub>m</sub> 或车速</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 2 · Q1</th><th>模拟 A · Q3(c)</th></tr></thead><tbody>
+    <tr><td>⓪ 写已知</td><td>门限怎么说、f<sub>m</sub>（或 v、f<sub>c</sub>）、符号率</td><td>f<sub>D</sub> = 50 Hz，最低信号强度 = rms 值的 0.1</td><td>f<sub>c</sub> = 1.8 GHz，72 km/h，50 k 符号/s，功率不能比 rms 低 10 dB 以上</td></tr>
+    <tr><td>① ρ</td><td>说幅度 → 直接是 ρ；说功率/dB → ρ² = 10<sup>−X/10</sup> 再开根号</td><td>说的是信号强度（幅度）的 0.1 → ρ = 0.1，ρ² = 0.01（−20 dB）</td><td>功率低 10 dB → ρ² = 10<sup>−1</sup> = 0.1，ρ = √0.1 = 0.31623</td></tr>
+    <tr><td>② f<sub>m</sub></td><td>给了就用；否则 v f<sub>c</sub>/c（km/h ÷ 3.6）</td><td>50 Hz（直接给）</td><td>72 ÷ 3.6 = 20 m/s；20 × 1.8×10⁹ / 3×10⁸ = 120 Hz</td></tr>
+    <tr><td>③ 公共分母</td><td>√(2π) f<sub>m</sub> ρ</td><td>2.5066 × 50 × 0.1 = 12.53</td><td>2.5066 × 120 × 0.31623 = 95.12</td></tr>
+    <tr><td>④ AFD</td><td>(e<sup>ρ²</sup> − 1) ÷ ③</td><td>0.01005 / 12.53 = 0.802 ms</td><td>0.1052 / 95.12 = 1.106 ms</td></tr>
+    <tr><td>⑤ LCR</td><td>③ × e<sup>−ρ²</sup></td><td>12.53 × 0.99005 = 12.41 次/s（原题没问）</td><td>95.12 × 0.90484 = 86.07 次/s（原题没问）</td></tr>
+    <tr><td>⑥ 验算</td><td>④ × ⑤ 应等于 1 − e<sup>−ρ²</sup></td><td>12.41 × 0.802 ms = 0.00995 ✓</td><td>86.07 × 1.106 ms = 0.0952 ✓</td></tr>
+    <tr><td>⑦ 每次错几个</td><td>AFD ÷ T<sub>s</sub></td><td>（没给符号率）</td><td>1.106 ms / 20 µs = 55.3 ≈ 55 个</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 2 · Q1（题目给出瑞利 AFD 公式，f<sub>D</sub> = 50 Hz，最低信号强度为 rms 值的 0.1，求 AFD；官方答案 0.8 ms）；模拟 A · Q3(c) = 自编模拟 Quiz A 第 3 题 (c) 问（题目给出 AFD 公式，求 AFD 和一次衰落影响几个符号）。讲义第 2 章 p.41–43。</p>
+
+  <h4>(C) 反求门限：已知 LCR × AFD（时间比例），假设瑞利，求 ρ 和 dB</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 2 · Q1（倒推验算）</th><th>模拟 C · Q2(c)</th></tr></thead><tbody>
+    <tr><td>① 时间比例</td><td>LCR × AFD</td><td>12.41 × 0.802 ms = 0.00995</td><td>30 × 0.5 ms = 0.015</td></tr>
+    <tr><td>② ρ²</td><td>1 − e<sup>−ρ²</sup> = ① → ρ² = ln[1/(1 − ①)]</td><td>ln(1/0.99005) = 0.0100</td><td>ln(1/0.985) = 0.01511</td></tr>
+    <tr><td>③ 换 dB</td><td>10 log₁₀ρ²（ρ² 是功率比）</td><td>−20.0 dB，ρ = 0.100 ✓</td><td>−18.21 dB，ρ = 0.1229</td></tr>
+    <tr><td>④ 反推 f<sub>m</sub>（自检）</td><td>LCR ÷ (√(2π) ρ e<sup>−ρ²</sup>)</td><td>12.41 / (2.5066 × 0.1 × 0.990) = 50.0 Hz ✓</td><td>30 / (2.5066 × 0.1229 × 0.985) ≈ 99 Hz（题目给 100 Hz）✓</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：模拟 C · Q2(c)（自编，题目给出两条瑞利公式，问深衰落门限比 rms 功率低多少 dB）；Practice 2 · Q1 这一列是把表 (B) 算出的 LCR、AFD 倒推回去，回到 ρ = 0.1、f<sub>D</sub> = 50 Hz，原题没问。期末卷没有考过反求门限。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 10 秒窗口，给的是符号速率（计数法）</div>
+    <p class="q">某链路符号速率 R<sub>s</sub> = 25 k 符号/s。记录 10 秒，共出现 150 次深衰落，平均衰落时长 0.8 ms，深衰落期间的符号全部出错。求：(a) LCR；(b) 每次衰落连错几个符号；(c) 平均每秒误符号数；(d) 误符号率；(e) 信道不变、符号速率提高到 100 k 符号/s 时，(c)(d) 变成多少？</p>
+    <ol class="work">
+      <li>(a) LCR = 150 ÷ 10 s = 15 次/s。</li>
+      <li>(b) 给的是速率，先求 T<sub>s</sub> = 1/25 000 = 40 µs；每次 = 0.8 ms ÷ 40 µs = 20 个（或 AFD × R<sub>s</sub> = 0.8×10⁻³ × 25×10³ = 20）。</li>
+      <li>(c) 每秒误符号数 = 15 × 20 = 300 个/s。</li>
+      <li>(d) SER = 300 ÷ 25 000 = 0.012；验算：LCR × AFD = 15 × 0.8 ms = 0.012 ✓（信号 1.2% 的时间在深衰落里）。</li>
+      <li>(e) LCR、AFD 是信道的性质，不随符号速率变：每次 = 0.8 ms × 100 k = 80 个，每秒 = 15 × 80 = 1200 个；SER 仍是 0.012。</li>
+    </ol>
+    <p class="ans">答案：(a) 15 次/s　(b) 20 个　(c) 300 个/s　(d) 0.012　(e) 1200 个/s，SER 不变</p></div>
+  <div class="eg"><div class="egh">例 2 · 公式法：门限是 rms 的 10%，900 MHz、60 km/h</div>
+    <p class="q">载频 900 MHz，车速 60 km/h，瑞利衰落；能正常工作的最低信号强度是 rms 值的 10%；符号速率 100 k 符号/s。已知 \(L_Z=\sqrt{2\pi}f_m\rho e^{-\rho^2}\)、\(\bar\tau_Z=\dfrac{e^{\rho^2}-1}{\sqrt{2\pi}f_m\rho}\)。求：(a) ρ 和 f<sub>m</sub>；(b) LCR 和 AFD；(c) 每次连错几个符号、每秒误符号数、10 秒内平均几次深衰落；(d) 车速提高到 120 km/h，哪些量变、哪些不变？</p>
+    <ol class="work">
+      <li>(a) 说的是信号强度（幅度）→ ρ = 0.1，ρ² = 0.01（门限比平均功率低 20 dB）。v = 60 ÷ 3.6 = 16.67 m/s，f<sub>m</sub> = v f<sub>c</sub>/c = 16.67 × 9×10⁸ / 3×10⁸ = 50.0 Hz（或 λ = c/f<sub>c</sub> = 0.3333 m，v/λ = 50.0 Hz）。</li>
+      <li>(b) 公共分母 √(2π) × 50 × 0.1 = 12.53；LCR = 12.53 × e<sup>−0.01</sup> = 12.41 次/s；AFD = (e<sup>0.01</sup> − 1)/12.53 = 0.01005/12.53 = 0.802 ms。f<sub>m</sub> 正好 50 Hz、ρ = 0.1，和 Practice 2 Q1 是同一组数。</li>
+      <li>(c) 每次 = AFD × R<sub>s</sub> = 0.802 ms × 100 k = 80.2 ≈ 80 个；每秒 = 12.41 × 80.2 = 995 个（验算：(1 − e<sup>−0.01</sup>) × 10⁵ = 995 ✓）；10 秒内约 12.41 × 10 = 124 次深衰落。</li>
+      <li>(d) 120 km/h → f<sub>m</sub> = 100 Hz：LCR 翻倍为 24.82 次/s，AFD 减半为 0.401 ms，每次只错 40.1 个；但 LCR × AFD = 1 − e<sup>−0.01</sup> = 0.00995 不变，每秒仍错 995 个。车速只改变错误怎么“成串”（串更多、更短），不改变错误总量。</li>
+    </ol>
+    <p class="ans">答案：(a) ρ = 0.1，f<sub>m</sub> = 50.0 Hz　(b) LCR = 12.41 次/s，AFD = 0.802 ms　(c) 每次约 80 个，每秒约 995 个，10 s 约 124 次　(d) LCR ×2、AFD ÷2，时间比例和每秒误符号数不变</p></div>
+  <div class="eg"><div class="egh">例 3 · 问误符号率：门限用 dB 给，最后倒求余量</div>
+    <p class="q">瑞利衰落链路，接收机能用的最低功率比信号的 rms（平均）功率低 15 dB，f<sub>m</sub> = 80 Hz，符号速率 40 k 符号/s。深衰落里的符号全错，其余全对。求：(a) 误符号率 SER；(b) LCR、AFD 和平均每秒误符号数；(c) 要求 SER ≤ 10⁻³，平均功率至少要比门限高多少 dB？</p>
+    <ol class="work">
+      <li>(a) 给的是功率 dB，先换线性：ρ² = 10<sup>−15/10</sup> = 10<sup>−1.5</sup> = 0.03162，ρ = √ρ² = 10<sup>−15/20</sup> = 0.17783。SER = 时间比例 = 1 − e<sup>−ρ²</sup> = 1 − e<sup>−0.03162</sup> = 0.03113（约 3.1%）。</li>
+      <li>(b) 公共分母 2.5066 × 80 × 0.17783 = 35.66；LCR = 35.66 × e<sup>−0.03162</sup> = 35.66 × 0.9689 = 34.55 次/s；AFD = (e<sup>0.03162</sup> − 1)/35.66 = 0.03213/35.66 = 0.901 ms。</li>
+      <li>每次 = 0.901 ms × 40 k = 36.04 个；每秒 = 34.55 × 36.04 = 1245 个；验算：SER × R<sub>s</sub> = 0.03113 × 40 000 = 1245 ✓。</li>
+      <li>(c) 1 − e<sup>−ρ²</sup> ≤ 10⁻³ → ρ² ≤ ln[1/(1 − 0.001)] = 1.0005×10⁻³ → 10 log₁₀(1/ρ²) ≥ 30.00 dB。平均功率至少比门限高 30.0 dB，这就是 ε = 0.1% 时的瑞利衰落余量 10 log₁₀[1/ln(1/(1 − ε))]（讲义 p.51，尽量记）。</li>
+    </ol>
+    <p class="ans">答案：(a) SER ≈ 0.0311　(b) LCR ≈ 34.55 次/s，AFD ≈ 0.901 ms，每秒约 1245 个　(c) 至少 30.0 dB</p></div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>ρ 是<b>幅度</b>比：“rms 值的 10%”、“0.1 of the rms value” → ρ = 0.1；“功率低 10 dB” → ρ² = 0.1、ρ = 0.3162。模拟 A·Q3 若错当 ρ = 0.1，AFD 会算成 0.334 ms，真值 1.106 ms，差 3 倍多。</li>
+    <li>公式里已经写了 ρ²：ρ = 0.1 时指数是 0.01，别再平方一次，也别把 −20 dB 直接代进指数。换 dB 时，功率比 ρ² 用 10 log₁₀，幅度比 ρ 用 20 log₁₀，结果一样（模拟 C：−18.21 dB）。</li>
+    <li>LCR 是“次/秒”：300 次是 10 秒的总数，要 ÷ 10。LCR 也不是每秒误符号数：模拟 C 是 30 次/s，却是 750 个/s。</li>
+    <li>单位统一：AFD 常是 ms、T<sub>s</sub> 常是 µs，0.5 ms ÷ 20 µs = 25（不是 0.025）；给符号速率时是 AFD × R<sub>s</sub>，不是 AFD ÷ R<sub>s</sub>；算 f<sub>m</sub> 前 km/h ÷ 3.6、MHz/GHz 换成 Hz。</li>
+    <li>“symbol error rate”（误符号率，无单位）≠ “symbol errors per second”（个/s）。2025-26 S2 问的是每秒“连续”误符号数：写 16 个/s，并注明每次衰落连续错 4 个，两个数都写最稳。</li>
+    <li>讲义 p.45–47 例题印的 AFD = 71.17 µs、每秒 9812 个；按讲义自己的公式是 72.17 µs、9950 个（9812 = 137.87 × 71.17，是拿印错的 AFD 乘出来的）。考试按公式自己算。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p><b>Counting:</b> The level crossing rate is the average number of times per second the signal envelope crosses the threshold downwards, i.e. enters a deep fade: LCR = 40/10 s = 4 fades/s. Each fade lasts AFD = 20 ms and covers AFD/T<sub>s</sub> = 20 ms/5 ms = 4 consecutive symbols, so the average number of symbol errors is 4 × 4 = 16 symbols/s.</p>
+    <p><b>Formula:</b> Here ρ = Z<sub>min</sub>/Z<sub>rms</sub> = 0.1 is the minimum acceptable signal level normalised to the rms level, and f<sub>D</sub> = 50 Hz is the maximum Doppler shift (f<sub>m</sub> = v f<sub>c</sub>/c). AFD = (e<sup>0.01</sup> − 1)/(√(2π) × 50 × 0.1) = 0.01005/12.53 = 0.802 ms. Check: LCR × AFD = 1 − e<sup>−ρ²</sup> = 0.00995, the fraction of time in deep fade (and the symbol error rate if every symbol inside a fade is lost).</p>
+  </div>
+</section>
+
+  <div class="part">第 4 部分 · 信道容量</div>
+<section class="topic" id="t11">
+  <h2><span class="tn">11</span>香农容量与 SNR / SIR / SINR · Shannon capacity and SINR</h2>
+  <div class="meta"><span class="st must">背</span><span class="st def">定义·必会</span><span class="freq">出现：Practice 2 Q3 · 模拟 B·Q3 (a)(b) · 模拟 C·Q3 (a)(b) · 期末没单独考 AWGN 容量，但 4 套都出现 log₂(1 + ·)（2023-24、2025-26 S2 的中断容量；2024-25、2025-26 S1 的 MIMO 容量）</span></div>
+  <p class="why">香农公式是蓝框，必背，老师说这是通信工程师最基本的公式。Quiz 可能给接收功率、噪声功率（或噪声谱密度 N<sub>0</sub>）和带宽求容量；也可能有两个用户或同频干扰，考你分母里放什么（SINR），再问干扰消掉以后、带宽翻倍以后容量变成多少。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(C\)</td><td>信道容量</td><td>channel capacity</td><td>能做到误码率任意小的最高速率；只有传输速率 R &lt; C 才可能无错</td><td>bit/s（问 per Hz 时 bit/s/Hz）</td></tr>
+    <tr><td>\(B\)</td><td>带宽</td><td>bandwidth</td><td>信号占的频带宽度。它在公式里起两次作用：括号外乘 B，括号里的噪声 N<sub>0</sub>B 也跟着变</td><td>Hz</td></tr>
+    <tr><td>\(S\)（\(P_r\)）</td><td>接收信号功率</td><td>received signal power</td><td>你想要的那个信号到达接收机时的功率</td><td>W、mW、dBm</td></tr>
+    <tr><td>\(N\)</td><td>噪声功率</td><td>noise power</td><td>接收机带宽内热噪声的总功率，\(N=N_0B\)</td><td>W、mW、dBm</td></tr>
+    <tr><td>\(N_0\)</td><td>噪声功率谱密度</td><td>noise power spectral density</td><td>每 1 Hz 带宽里的噪声功率；带宽越宽，收进来的噪声越多</td><td>W/Hz、dBm/Hz</td></tr>
+    <tr><td>\(I\)</td><td>干扰功率</td><td>interference power</td><td>别的用户、别的小区同频信号的功率；对你来说和噪声一样是“捣乱的”</td><td>W、mW</td></tr>
+    <tr><td>SNR（\(\gamma\)）</td><td>信噪比</td><td>signal-to-noise ratio</td><td>S/N，分母只有噪声</td><td>线性（无单位）或 dB</td></tr>
+    <tr><td>SIR</td><td>信干比</td><td>signal-to-interference ratio</td><td>S/I，分母只有干扰；干扰远大于噪声时用</td><td>线性或 dB</td></tr>
+    <tr><td>SINR</td><td>信干噪比</td><td>signal-to-interference-plus-noise ratio</td><td>S/(I + N)，干扰和噪声都算进分母；一定比 SNR、SIR 都小</td><td>线性或 dB</td></tr>
+    <tr><td>AWGN</td><td>加性高斯白噪声</td><td>additive white Gaussian noise</td><td>香农公式成立的信道：只有高斯噪声加在信号上，没有衰落</td><td>—</td></tr>
+    <tr><td>MUD / SIC</td><td>多用户检测 / 连续干扰消除</td><td>multi-user detection / successive interference cancellation</td><td>先解出一个用户，从接收信号里减掉，再解下一个；最后解的那个用户分母只剩噪声</td><td>—</td></tr>
+    <tr><td>\(\log_2\)</td><td>以 2 为底的对数</td><td>base-2 logarithm</td><td>计算器没有 log₂ 键时：\(\log_2x=\log_{10}x/0.3010=\ln x/0.6931\)</td><td>—</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">香农容量 · Shannon capacity（讲义第 2 章 p.48）<span class="st must">背</span></div><div class="fx">\[ C=B\log_2(1+\mathrm{SNR}),\qquad \mathrm{SNR}=\frac{S}{N}=\frac{S}{N_0B} \]\[ R\le C\quad\Longleftrightarrow\quad \mathrm{SNR}\ge 2^{R/B}-1 \]</div><div class="fn">SNR 必须是<b>线性值</b>（17.01 dB 先换成 50.2 再代）。B 用 Hz，结果是 bit/s；题目问 per Hz（bit/s/Hz）就不乘 B。第二行是反着用：要可靠地传 R bit/s，SNR 至少 2<sup>R/B</sup> − 1。</div></div>
+  <div class="fm"><div class="fl">三个比值 · SNR, SIR, SINR（Practice 2 Q3；讲义第 1a 章 p.16 多用户检测）<span class="st def">定义·必会</span></div><div class="fx">\[ \mathrm{SNR}=\frac{S}{N},\qquad \mathrm{SIR}=\frac{S}{I},\qquad \mathrm{SINR}=\frac{S}{I+N} \]\[ C=B\log_2(1+\mathrm{SINR}) \]</div><div class="fn">分母 = 所有<b>不是你想要、又被当成噪声</b>的功率。题目说 treat the interference as (Gaussian) noise 或 assume it is AWGN，就用 SINR 代香农；MUD 或干扰消除器把干扰完全去掉后 I = 0，回到 SNR。I ≫ N 时 SINR ≈ SIR，叫“干扰受限”。</div></div>
+  <div class="fm"><div class="fl">噪声功率 · noise power（p.48）<span class="st def">定义·必会</span></div><div class="fx">\[ N=N_0B\qquad\Longleftrightarrow\qquad N_{\mathrm{dBm}}=N_{0,\,\mathrm{dBm/Hz}}+10\log_{10}B \]</div><div class="fn">乘法在 dB 里变加法：−174 dBm/Hz、B = 5 MHz → −174 + 66.99 = −107.01 dBm。B 翻倍 → N 多 10 log₁₀2 = 3.01 dB → 功率不变时 SNR 减半。</div></div>
+  <div class="fm"><div class="fl">dB ↔ 线性 · dB conversion<span class="st def">定义·必会</span></div><div class="fx">\[ x_{\mathrm{dB}}=10\log_{10}x,\qquad x=10^{x_{\mathrm{dB}}/10} \]\[ P_{\mathrm{dBm}}=10\log_{10}\frac{P}{1\ \mathrm{mW}},\qquad \mathrm{SNR}_{\mathrm{dB}}=S_{\mathrm{dBm}}-N_{\mathrm{dBm}} \]</div><div class="fn">dBm − dBm = dB（比值）；mW 和 dBm 不能直接相加。老师说<b>没写 dB ↔ 线性换算会扣分</b>，每次都写出来，例如“17.01 dB → 10<sup>1.701</sup> = 50.2”。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型 1：有干扰 / 两个用户：分母放什么</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>Practice 2 · Q3</th><th>模拟 C · Q3 (a)(b)</th></tr></thead><tbody>
+    <tr><td>① 统一单位</td><td>功率全用 mW（或全用 W），已知量先列出来</td><td>S = 10 mW，I = 10 mW（用户 2），N = 0.1 mW，B = 20 MHz</td><td>S = 2 mW，I = 0.5 mW，N = 0.05 mW，B = 10 MHz</td></tr>
+    <tr><td>② 写分母</td><td>干扰当 AWGN：SINR = S/(I + N)，线性值</td><td>10/(10 + 0.1) = 0.990（−0.04 dB）</td><td>2/(0.5 + 0.05) = 3.64（5.61 dB）；题目还要 SNR = 2/0.05 = 40（16.02 dB）、SIR = 2/0.5 = 4（6.02 dB）</td></tr>
+    <tr><td>③ 代香农</td><td>C = B log₂(1 + SINR)</td><td>20 MHz × log₂1.990 = 20 × 0.993 = 19.86 Mbps</td><td>10 MHz × log₂4.636 = 10 × 2.213 = 22.1 Mbps</td></tr>
+    <tr><td>④ 干扰去掉</td><td>MUD / 干扰消除后分母只剩 N：SNR = S/N，再代香农</td><td>10/0.1 = 100（20 dB）→ 20 × log₂101 = 20 × 6.658 = 133.16 Mbps</td><td>2/0.05 = 40 → 10 × log₂41 = 10 × 5.358 = 53.6 Mbps（约 2.42 倍）</td></tr>
+    <tr><td>⑤ 自检</td><td>SINR 最小；两个用户先解再减时，和容量 = B log₂(1 + (P₁ + P₂)/N)</td><td>19.86 + 133.16 = 153.02 = 20 × log₂201 ✓</td><td>3.64 &lt; 4 &lt; 40 ✓；I 是 N 的 10 倍 → 干扰受限，SINR ≈ SIR</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：Practice 2 第 3 题（两个用户各 10 mW、噪声 0.1 mW、每用户 20 MHz；(a) 先解用户 1、用户 2 当 AWGN，(b) MUD 去掉用户 1 后解用户 2）；练习页 模拟 C · Q3 (a)(b)（自编模拟题：信号 2 mW、邻区同频干扰 0.5 mW、噪声 0.05 mW、10 MHz，(b) 干扰消除器完全去掉干扰）。期末没有单独考过这一类。</p>
+
+  <h4>题型 2：给噪声谱密度 N<sub>0</sub>：先求 N = N<sub>0</sub>B，再看带宽翻倍</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>模拟 B · Q3 (a)：B = 5 MHz</th><th>模拟 B · Q3 (b)：B = 10 MHz</th></tr></thead><tbody>
+    <tr><td>① 噪声功率</td><td>N(dBm) = N<sub>0</sub>(dBm/Hz) + 10 log₁₀B</td><td>−174 + 66.99 = −107.01 dBm</td><td>−174 + 70.00 = −104.00 dBm</td></tr>
+    <tr><td>② SNR（dB）</td><td>S(dBm) − N(dBm)</td><td>−90 − (−107.01) = 17.01 dB</td><td>−90 − (−104.00) = 14.00 dB</td></tr>
+    <tr><td>③ 换线性</td><td>10<sup>dB/10</sup></td><td>10<sup>1.701</sup> = 50.2</td><td>10<sup>1.400</sup> = 25.1</td></tr>
+    <tr><td>④ 代香农</td><td>C = B log₂(1 + SNR)</td><td>5 MHz × log₂51.2 = 5 × 5.68 = 28.4 Mbps</td><td>10 MHz × log₂26.1 = 10 × 4.71 = 47.1 Mbps</td></tr>
+    <tr><td>⑤ 下结论</td><td>比较前后两个 C</td><td>—</td><td>47.1 / 28.4 = 1.66 倍，不翻倍：B 翻倍 → N 多 3.01 dB → SNR 减半</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：练习页 模拟 B · Q3 (a)(b)（自编模拟题：接收 −90 dBm、N<sub>0</sub> = −174 dBm/Hz、5 MHz，(b) 功率不变、带宽加到 10 MHz）。Practice 和期末都没有直接给 N<sub>0</sub> 的题，所以这张表两列是同一题的 (a)(b)，正好对比带宽翻倍前后。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 功率用 mW、N<sub>0</sub> 用 W/Hz（先统一单位）+ 带宽翻倍</div>
+    <p class="q">接收信号功率 S = 10 mW，噪声功率谱密度 N<sub>0</sub> = 10<sup>−9</sup> W/Hz，带宽 B = 1 MHz。(a) 求 SNR（线性和 dB）和香农容量。(b) 功率不变，带宽加到 2 MHz，容量多少？翻倍了吗？</p>
+    <ol class="work">
+      <li>统一成 W：S = 10 mW = 0.01 W；噪声 N = N<sub>0</sub>B = 10<sup>−9</sup> × 10<sup>6</sup> = 10<sup>−3</sup> W（= 1 mW = 0 dBm）。</li>
+      <li>SNR = 0.01 / 0.001 = 10 → 10 log₁₀10 = 10 dB。</li>
+      <li>C = 10<sup>6</sup> × log₂(1 + 10) = 10<sup>6</sup> × 3.459 = 3.46 Mbps。</li>
+      <li>(b) N = 10<sup>−9</sup> × 2×10<sup>6</sup> = 2×10<sup>−3</sup> W（3.01 dBm），SNR = 0.01/0.002 = 5（6.99 dB），C = 2×10<sup>6</sup> × log₂6 = 2 × 2.585 = 5.17 Mbps。</li>
+      <li>5.17 / 3.46 = 1.49 倍，不到 2 倍：带宽翻倍，噪声 N<sub>0</sub>B 也翻倍，SNR 从 10 掉到 5。只有 SNR 不变（比如功率也加到 20 mW）时才正好翻倍：2 MHz × log₂11 = 6.92 Mbps。</li>
+    </ol>
+    <p class="ans">答案：(a) SNR = 10（10 dB），C ≈ 3.46 Mbps；(b) C ≈ 5.17 Mbps，约 1.49 倍，没有翻倍</p>
+  </div>
+  <div class="eg"><div class="egh">例 2 · 反着问：给速率，求最小 SNR 和最小接收功率</div>
+    <p class="q">带宽 5 MHz，要可靠地传 20 Mbps。(a) 所需最小 SNR（线性和 dB）？(b) 噪声功率为 −100 dBm，接收功率至少多少 dBm？(c) 如果 SNR 只有 10 dB，最多能传多快？</p>
+    <ol class="work">
+      <li>R ≤ C = B log₂(1 + SNR) → log₂(1 + SNR) ≥ R/B = 20/5 = 4。</li>
+      <li>SNR ≥ 2<sup>4</sup> − 1 = 15 → 10 log₁₀15 = 11.76 dB。</li>
+      <li>(b) 在 dB 里相加：S ≥ −100 + 11.76 = −88.24 dBm。</li>
+      <li>(c) 10 dB → 10<sup>1</sup> = 10，C = 5 MHz × log₂11 = 5 × 3.459 = 17.3 Mbps &lt; 20 Mbps，传不了。</li>
+    </ol>
+    <p class="ans">答案：(a) 15（11.76 dB）；(b) −88.24 dBm；(c) 17.3 Mbps，不够 20 Mbps</p>
+  </div>
+  <div class="eg"><div class="egh">例 3 · 两个用户功率不同：先解谁，分母就不同</div>
+    <p class="q">两个用户同时同频向基站发送，接收功率 P₁ = 8 mW、P₂ = 2 mW，噪声 0.2 mW，每个用户带宽 10 MHz。(a) 先解用户 1（用户 2 当 AWGN），再用 MUD 减掉用户 1 解用户 2，求两个容量。(b) 顺序反过来呢？(c) 不用 MUD（两个都把对方当噪声），总容量多少？</p>
+    <ol class="work">
+      <li>(a) 解用户 1：SINR₁ = 8/(2 + 0.2) = 3.64（5.61 dB），C₁ = 10 × log₂4.636 = 10 × 2.213 = 22.1 Mbps。</li>
+      <li>减掉用户 1 后只剩噪声：SNR₂ = 2/0.2 = 10（10 dB），C₂ = 10 × log₂11 = 10 × 3.459 = 34.6 Mbps。总和 56.7 Mbps。</li>
+      <li>(b) 先解用户 2：SINR₂ = 2/(8 + 0.2) = 0.244（−6.13 dB），C₂ = 10 × log₂1.244 = 10 × 0.315 = 3.15 Mbps；再解用户 1：SNR₁ = 8/0.2 = 40（16.02 dB），C₁ = 10 × log₂41 = 53.6 Mbps。总和还是 56.7 Mbps。</li>
+      <li>自检：和容量 = 10 × log₂(1 + (8 + 2)/0.2) = 10 × log₂51 = 56.7 Mbps，和解码顺序无关。</li>
+      <li>(c) 都不消除：22.1 + 3.15 = 25.3 Mbps，不到 MUD 的一半。</li>
+    </ol>
+    <p class="ans">答案：(a) C₁ ≈ 22.1 Mbps，C₂ ≈ 34.6 Mbps；(b) C₂ ≈ 3.15 Mbps，C₁ ≈ 53.6 Mbps，两种顺序总和都是 56.7 Mbps；(c) 25.3 Mbps</p>
+  </div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>SNR 用 dB 直接代进 log₂：模拟 B·Q3 的 17.01 dB 要先换成 50.2，log₂(1 + 50.2) = 5.68；写成 log₂(1 + 17.01) = 4.17 就错了。</li>
+    <li>带宽翻倍忘了噪声 N = N<sub>0</sub>B 也翻倍：功率不变时 SNR 减半，容量不到 2 倍（例 1 是 1.49 倍，模拟 B·Q3 是 1.66 倍）。只有 SNR 保持不变时才正好翻倍。</li>
+    <li>有干扰时分母要写 I + N。Practice 2 Q3 (a) 写成 10/0.1 = 100 等于假装用户 2 不存在；只有 MUD 把对方减掉以后，后解的用户分母才只剩 N。</li>
+    <li>单位混用：mW 和 W 要统一；dBm 和 mW 不能直接相加减；dBm − dBm 得到的是 dB（比值）。</li>
+    <li>SINR 0.990 是线性值（约 −0.04 dB），不要把它当成 dB 再换一次。</li>
+    <li>问容量要乘 B 并写单位 bit/s（Mbps）；问 per Hz 才不乘 B。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>When user 1 is decoded, user 2's signal is treated as AWGN, so the denominator contains both interference and noise: SINR₁ = P₁/(P₂ + N) = 10/(10 + 0.1) = 0.990 (linear). By Shannon's formula, C₁ = B log₂(1 + SINR₁) = 20×10⁶ × log₂(1.990) = 19.86 Mbps.</p>
+    <p>After multi-user detection removes user 1, user 2 sees only noise: SNR₂ = P₂/N = 10/0.1 = 100 (20 dB), so C₂ = 20×10⁶ × log₂(101) = 133.16 Mbps.</p>
+    <p>With the signal power fixed, doubling the bandwidth also doubles the noise power N = N₀B, so the SNR halves (17.01 dB → 14.00 dB, i.e. 50.2 → 25.1) and the capacity rises only from 28.4 to 47.1 Mbps, about 1.66 times, not double.</p>
+  </div>
+</section>
+<section class="topic" id="t12">
+  <h2><span class="tn">12</span>瑞利信道的中断容量与衰落余量 · Outage capacity and fade margin</h2>
+  <div class="meta"><span class="st must">背</span><span class="st give">考试给</span><span class="st try">尽量记</span><span class="freq">出现：期末 2/4 套（2023-24 Q1(a)(iv)、2025-26 S2 Q1(a)(iii)）· 模拟 B·Q1 (b) · 模拟 C·Q3 (c)</span></div>
+  <p class="why">瑞利衰落下 SNR 时高时低，想让 1 − ε 的时间都能通信，只能按很低的最小 SNR γ<sub>min</sub> 设计速率；和没有衰落的 AWGN 信道比，平均 SNR 要多给的那部分就是衰落余量。期末两次都把 C<sub>ε</sub> 公式印在题里：2025-26 S2 给 γ̄ = 25 dB 和 ε = 0.005，问最小 SNR 和衰落余量；2023-24 只给 ε = 0.1%，只问衰落余量。也可以反过来问需要多大的平均 SNR（模拟 B·Q1 (b)）。遍历容量要对 SNR 分布积分，Quiz 不考积分，Jensen 不等式老师说只要求懂概念。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(\gamma\)</td><td>瞬时 SNR</td><td>instantaneous SNR</td><td>衰落信道里 SNR 是随机变量，每一时刻都不一样</td><td>线性或 dB</td></tr>
+    <tr><td>\(\bar\gamma\)（\(\bar\gamma_R\)）</td><td>平均 SNR</td><td>average SNR</td><td>γ 的平均值；瑞利衰落下 γ 服从均值为 γ̄ 的指数分布</td><td>线性或 dB</td></tr>
+    <tr><td>\(\varepsilon\)</td><td>中断概率</td><td>outage probability</td><td>允许“不够用”的时间比例，例如 0.5% = 0.005</td><td>无单位</td></tr>
+    <tr><td>\(\gamma_{\min}\)（\(\gamma_0\)）</td><td>最小 SNR（门限）</td><td>minimum SNR (threshold)</td><td>只有 ε 的时间会低于它；速率按它来设计</td><td>线性或 dB</td></tr>
+    <tr><td>\(C_\varepsilon\)</td><td>中断容量</td><td>outage capacity</td><td>允许 ε 的时间中断，其余 1 − ε 的时间能保证的速率</td><td>bit/s（per Hz 时 bit/s/Hz）</td></tr>
+    <tr><td>\((1-\varepsilon)C_\varepsilon\)</td><td>平均无错速率</td><td>average rate correctly received</td><td>中断的那 ε 时间收不到，长期平均只剩这么多</td><td>bit/s</td></tr>
+    <tr><td>\(\gamma_{\mathrm{AWGN}}\)</td><td>等效 AWGN 信道的 SNR</td><td>SNR of the equivalent AWGN channel</td><td>没有衰落时要达到同样的 C<sub>ε</sub> 需要的 SNR，就等于 γ<sub>min</sub></td><td>线性或 dB</td></tr>
+    <tr><td>FM</td><td>衰落余量</td><td>fade margin</td><td>为了扛住衰落，平均 SNR 要比 γ<sub>min</sub> 多出的量：γ̄<sub>dB</sub> − γ<sub>min,dB</sub></td><td>dB</td></tr>
+    <tr><td>\(\ln\)</td><td>自然对数</td><td>natural logarithm</td><td>以 e 为底，计算器上的 ln 键，不是 log</td><td>—</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">瑞利中断 · Rayleigh outage（讲义第 2 章 p.25–26）<span class="st must">背</span></div><div class="fx">\[ P_{out}=P(\gamma\lt\gamma_0)=1-e^{-\gamma_0/\bar\gamma} \]</div><div class="fn">老师说这个公式“经常出现”。γ<sub>0</sub>、γ̄ 都用线性值。令它等于 ε，两步就能反解出下面的 γ<sub>min</sub>：\(e^{-\gamma_{\min}/\bar\gamma}=1-\varepsilon\)，两边取 ln。</div></div>
+  <div class="fm"><div class="fl">中断容量与最小 SNR · outage capacity（p.50）<span class="st give">考试给</span></div><div class="fx">\[ C_\varepsilon=B\log_2\!\Big(1+\bar\gamma\ln\frac{1}{1-\varepsilon}\Big),\qquad \gamma_{\min}=\bar\gamma\ln\frac{1}{1-\varepsilon} \]</div><div class="fn">2023-24 和 2025-26 S2 期末都把 C<sub>ε</sub> 印在题里。括号里 γ̄ ln(1/(1 − ε)) 这一项就是最小 SNR，所以 C<sub>ε</sub> 等于 SNR 为 γ<sub>min</sub> 的 AWGN 信道的容量。没印公式时，从背的瑞利中断反解即可。平均无错速率 = (1 − ε)C<sub>ε</sub>。</div></div>
+  <div class="fm"><div class="fl">衰落余量 · fade margin（p.51）<span class="st try">尽量记</span></div><div class="fx">\[ \mathrm{FM}=\bar\gamma_{\mathrm{dB}}-\gamma_{\min,\mathrm{dB}}=10\log_{10}\frac{\bar\gamma}{\gamma_{\min}} \]\[ \mathrm{FM}=10\log_{10}\frac{1}{\ln\frac{1}{1-\varepsilon}}\ \mathrm{dB}\ \approx\ 10\log_{10}\frac{1}{\varepsilon} \]</div><div class="fn">老师说瑞利的衰落余量公式“有点难记，但要尽量记”。记不住就从第一行的比值推：γ̄/γ<sub>min</sub> = 1/ln(1/(1 − ε))，γ̄ 约掉了，所以 <b>FM 只和 ε 有关</b>。速记：ε = 1% → 19.98 ≈ 20 dB，0.5% → 23.00 dB，0.1% → 30.00 dB；中断要求每严 10 倍，余量多约 10 dB。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <h4>题型 1：给 γ̄ 和 ε：求最小 SNR、衰落余量（和中断容量）</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2025-26 S2 Q1(a)(iii)）</th><th>模拟 C · Q3 (c)</th></tr></thead><tbody>
+    <tr><td>① γ̄ 换线性</td><td>10<sup>dB/10</sup></td><td>25 dB → 10<sup>2.5</sup> = 316.2</td><td>20 dB → 10<sup>2</sup> = 100</td></tr>
+    <tr><td>② 算 ln 项</td><td>ln(1/(1 − ε))，自然对数，ε 用小数</td><td>ln(1/0.995) = 0.005013</td><td>ln(1/0.99) = 0.01005</td></tr>
+    <tr><td>③ 最小 SNR</td><td>γ<sub>min</sub> = γ̄ × ②，再换 dB</td><td>316.2 × 0.005013 = 1.585 → 10 log₁₀1.585 = 2.00 dB</td><td>100 × 0.01005 = 1.005 → 0.02 dB（约 0 dB）</td></tr>
+    <tr><td>④ 衰落余量</td><td>FM = γ̄<sub>dB</sub> − γ<sub>min,dB</sub></td><td>25 − 2.00 = 23.0 dB</td><td>20 − 0.02 = 19.98 ≈ 20 dB</td></tr>
+    <tr><td>⑤ 中断容量</td><td>问到才算：C<sub>ε</sub> = B log₂(1 + γ<sub>min</sub>)，和 AWGN 的 B log₂(1 + γ̄) 比</td><td>题目没问（若算每 Hz：log₂2.585 = 1.370 bit/s/Hz）</td><td>10 MHz × log₂2.005 = 10 × 1.004 = 10.0 Mbps；AWGN：10 × log₂101 = 66.6 Mbps，约 6.6 倍</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：期末 2025-26 S2 Q1(a)(iii)（瑞利信道，题目印出 C<sub>ε</sub> = B log₂[1 + γ̄<sub>R</sub> ln(1/(1 − ε))]，γ̄<sub>R</sub> = 25 dB，ε = 0.005，求 minimum SNR 和相对 AWGN 的 Fade Margin）；练习页 模拟 C · Q3 (c)（自编模拟题：无干扰、瑞利衰落，平均 SNR 20 dB，ε = 1%，B = 10 MHz，求 C<sub>ε</sub> 并和 AWGN 比）。</p>
+
+  <h4>题型 2：只给 ε：直接求衰落余量（或所需平均 SNR）</h4>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2023-24 Q1(a)(iv)）</th><th>模拟 B · Q1 (b)</th></tr></thead><tbody>
+    <tr><td>① 读出 ε</td><td>百分数换小数；有门限就换线性</td><td>ε = 0.1% = 0.001（没给 γ̄，也不需要）</td><td>ε = 1% = 0.01；门限 γ<sub>0</sub> = 7 dB → 10<sup>0.7</sup> = 5.012</td></tr>
+    <tr><td>② 算 ln 项</td><td>ln(1/(1 − ε))</td><td>ln(1/0.999) = 0.0010005</td><td>ln(1/0.99) = 0.01005</td></tr>
+    <tr><td>③ 衰落余量</td><td>FM = 10 log₁₀[1/②]</td><td>10 log₁₀(1/0.0010005) = 10 log₁₀999.5 = 30.0 dB</td><td>10 log₁₀(1/0.01005) = 10 log₁₀99.50 = 19.98 ≈ 20 dB</td></tr>
+    <tr><td>④ 平均 SNR</td><td>问到才算：γ̄<sub>dB</sub> = γ<sub>0,dB</sub> + FM，或 γ̄ = γ<sub>0</sub>/②</td><td>题目没问</td><td>5.012 / 0.01005 = 498.7 → 26.98 dB（= 7 + 19.98）</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：期末 2023-24 Q1(a)(iv)（瑞利信道，题目印出每 Hz 中断容量 C<sub>ε</sub> = log₂[1 + γ̄<sub>R</sub> ln(1/(1 − ε))]，求中断概率 0.1% 时的衰落余量）；练习页 模拟 B · Q1 (b)（自编模拟题：瑞利信道、接收机要求瞬时 SNR 至少 7 dB，求把中断降到 1% 所需的平均 SNR 和相对 7 dB 的衰落余量）。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · ε = 2%、带宽 1 MHz：最小 SNR、C<sub>ε</sub>、平均无错速率，和 AWGN 比</div>
+    <p class="q">瑞利信道平均 SNR 为 30 dB，带宽 1 MHz，允许中断概率 2%。已知 C<sub>ε</sub> = B log₂[1 + γ̄ ln(1/(1 − ε))]。(a) 求最小 SNR（线性和 dB）和衰落余量。(b) 求 C<sub>ε</sub> 和平均无错速率 (1 − ε)C<sub>ε</sub>。(c) 和 SNR 同为 30 dB 的 AWGN 信道比较。</p>
+    <ol class="work">
+      <li>换线性：γ̄ = 30 dB → 10<sup>3</sup> = 1000；ε = 2% = 0.02，ln(1/0.98) = 0.02020。</li>
+      <li>γ<sub>min</sub> = 1000 × 0.02020 = 20.20 → 10 log₁₀20.20 = 13.05 dB。</li>
+      <li>FM = 30 − 13.05 = 16.95 dB（用公式检查：10 log₁₀(1/0.02020) = 16.95 dB ✓）。</li>
+      <li>(b) C<sub>ε</sub> = 10<sup>6</sup> × log₂(1 + 20.20) = 10<sup>6</sup> × log₂21.20 = 4.41 Mbps；平均无错速率 = 0.98 × 4.406 = 4.32 Mbps。</li>
+      <li>(c) AWGN：10<sup>6</sup> × log₂(1 + 1000) = 9.97 Mbps。瑞利信道能保证的速率不到它的一半。</li>
+      <li>自检：1 − e<sup>−20.20/1000</sup> = 1 − e<sup>−0.02020</sup> = 0.0200 = ε ✓。</li>
+    </ol>
+    <p class="ans">答案：γ<sub>min</sub> ≈ 20.2（13.05 dB），FM ≈ 16.95 dB；C<sub>ε</sub> ≈ 4.41 Mbps，平均无错速率 ≈ 4.32 Mbps；AWGN 为 9.97 Mbps</p>
+  </div>
+  <div class="eg"><div class="egh">例 2 · 反着问：要保证 2 bit/s/Hz，平均 SNR 至少多少</div>
+    <p class="q">瑞利信道，允许中断概率 1%，要求能保证 C<sub>ε</sub>/B = 2 bit/s/Hz。平均 SNR 至少要多少 dB？对应的衰落余量是多少？</p>
+    <ol class="work">
+      <li>先由速率求最小 SNR：log₂(1 + γ<sub>min</sub>) = 2 → γ<sub>min</sub> = 2<sup>2</sup> − 1 = 3 → 10 log₁₀3 = 4.77 dB。</li>
+      <li>由 γ<sub>min</sub> = γ̄ ln(1/(1 − ε)) 反求：γ̄ = 3 / ln(1/0.99) = 3 / 0.01005 = 298.5。</li>
+      <li>换 dB：10 log₁₀298.5 = 24.75 dB。</li>
+      <li>FM = 24.75 − 4.77 = 19.98 dB ≈ 20 dB，正是 ε = 1% 的余量：要求的速率变了，余量不变。</li>
+    </ol>
+    <p class="ans">答案：γ̄ ≥ 298.5（24.75 dB）；FM ≈ 19.98 dB</p>
+  </div>
+  <div class="eg"><div class="egh">例 3 · 只问余量：γ̄ 换了余量不变；ε 从 5% 收紧到 0.5%</div>
+    <p class="q">(a) 允许中断概率 5%，瑞利信道的衰落余量是多少？分别取 γ̄ = 15 dB 和 25 dB 求最小 SNR，验证余量相同。(b) 用近似式 10 log₁₀(1/ε) 算，差多少？(c) 中断要求收紧到 0.5%，平均 SNR 要再多给多少 dB？</p>
+    <ol class="work">
+      <li>ln(1/0.95) = 0.05129，FM = 10 log₁₀(1/0.05129) = 12.90 dB。</li>
+      <li>γ̄ = 15 dB → 10<sup>1.5</sup> = 31.62：γ<sub>min</sub> = 31.62 × 0.05129 = 1.622（2.10 dB），FM = 15 − 2.10 = 12.90 dB。</li>
+      <li>γ̄ = 25 dB → 10<sup>2.5</sup> = 316.2：γ<sub>min</sub> = 316.2 × 0.05129 = 16.22（12.10 dB），FM = 25 − 12.10 = 12.90 dB。两次一样，因为 γ̄ 在 γ̄/γ<sub>min</sub> 里约掉了。</li>
+      <li>(b) 近似：10 log₁₀(1/0.05) = 13.01 dB，比精确值大 0.11 dB；ε 越小，近似越准。</li>
+      <li>(c) ε = 0.5%：FM = 23.00 dB，要多给 23.00 − 12.90 = 10.10 dB。中断要求严 10 倍，余量多约 10 dB。</li>
+    </ol>
+    <p class="ans">答案：FM ≈ 12.90 dB（与 γ̄ 无关）；近似值 13.01 dB；收紧到 0.5% 要多给 10.10 dB</p>
+  </div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>ln 不是 log₁₀：2025-26 S2 那题如果用 log₁₀(1/0.995) = 0.002177，会得到 γ<sub>min</sub> = 0.688（−1.62 dB）、FM = 26.6 dB，全错。</li>
+    <li>γ̄ 要先换成线性再乘：25 dB → 316.2，不能写成 25 × 0.005013。</li>
+    <li>ε 用小数代：0.5% = 0.005，0.1% = 0.001，不能代 0.5 或 0.1。</li>
+    <li>FM 是两个 dB 值相减（等于线性相除），只取决于 ε，与 γ̄、B 都无关；不要用 316.2 − 1.585 这种线性差。</li>
+    <li>问 minimum SNR 时线性和 dB 都写（1.585 → 2.00 dB），老师说漏写 dB ↔ 线性换算会扣分。</li>
+    <li>近似 10 log₁₀(1/ε) 只在 ε 小时准：ε = 10% 时精确值 9.77 dB，近似 10.00 dB；有时间就用精确式。C<sub>ε</sub> 是能保证的速率，平均无错速率还要乘 (1 − ε)。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>In Rayleigh fading the SNR is exponentially distributed, so P(γ &lt; γ<sub>min</sub>) = 1 − e<sup>−γ<sub>min</sub>/γ̄</sup> = ε, which gives γ<sub>min</sub> = γ̄ ln[1/(1 − ε)].</p>
+    <p>With γ̄<sub>R</sub> = 25 dB = 316.2 and ε = 0.005: γ<sub>min</sub> = 316.2 × ln(1/0.995) = 316.2 × 0.005013 = 1.585, i.e. 2.0 dB. This is the minimum SNR, and C<sub>ε</sub> equals the capacity of an AWGN channel with this SNR.</p>
+    <p>The fade margin compared with the AWGN channel is FM = γ̄<sub>dB</sub> − γ<sub>min,dB</sub> = 25 − 2.0 = 23.0 dB = 10 log₁₀[1/ln(1/(1 − ε))]; it depends only on ε, not on γ̄.</p>
+  </div>
+</section>
+<section class="topic" id="t13">
+  <h2><span class="tn">13</span>注水法功率分配 · Water-filling power allocation</h2>
+  <div class="meta"><span class="st try">尽量记</span><span class="freq">出现：期末 1/4 套（2024-25 Q1(a)(iii)）· 模拟 B·Q3 (c) · 讲义第 2 章 p.56–57 例题 · 第 5、7 章也用（Practice 5 Q1、Practice 7 Q1(d)，属期末范围）</span></div>
+  <p class="why">频率选择性信道切成几个子带（子信道），好坏不同，总功率固定：好的多给、差的少给、太差的干脆不给。老师说注水“很重要，要会算”。Quiz 可能给 2–3 个子带的 SNR（dB）和总功率 P，求每个子带分多少瓦（和总容量）。关键是先假设全开解 γ<sub>0</sub>，检查，不满足就去掉最差的重算。时变信道的注水老师说只要求概念，不会让算。</p>
+
+  <h3>符号与含义 · Symbols</h3>
+  <div class="tw"><table class="sym"><thead><tr><th>符号</th><th>中文</th><th>English</th><th>含义（大白话）</th><th>单位</th></tr></thead><tbody>
+    <tr><td>\(\gamma_i\)</td><td>第 i 个子信道的 SNR</td><td>SNR of sub-channel i</td><td>把<b>全部</b>功率 P 都给它时的 SNR；越大信道越好</td><td>线性（dB 先换）</td></tr>
+    <tr><td>\(\gamma_0\)</td><td>截止 SNR（门限）</td><td>cutoff SNR (threshold)</td><td>γ<sub>i</sub> 低于它的子信道一点功率都不给；由总功率约束解出来</td><td>线性</td></tr>
+    <tr><td>\(1/\gamma_0\)</td><td>水位</td><td>water level</td><td>倒进去的水最后的平面高度，所有开着的子信道都到这个高度</td><td>—</td></tr>
+    <tr><td>\(1/\gamma_i\)</td><td>池底高度</td><td>floor of sub-channel i</td><td>信道越好池底越低，能装的水（功率）越多；池底高过水位的就没水</td><td>—</td></tr>
+    <tr><td>\(P\)</td><td>总发射功率</td><td>total transmit power</td><td>各子信道功率之和必须等于它</td><td>W</td></tr>
+    <tr><td>\(P_i\)</td><td>分给第 i 个子信道的功率</td><td>power allocated to sub-channel i</td><td>（水位 − 池底）× P</td><td>W</td></tr>
+    <tr><td>\(n\)</td><td>分到功率的子信道个数</td><td>number of active sub-channels</td><td>去掉一个就减 1，重算时一定要改</td><td>—</td></tr>
+    <tr><td>\(B_i\)</td><td>子信道带宽</td><td>sub-channel bandwidth</td><td>每段约等于相干带宽，各自近似平坦衰落</td><td>Hz</td></tr>
+    <tr><td>\(C\)</td><td>总容量</td><td>total capacity</td><td>只对分到功率的子信道求和</td><td>bit/s</td></tr>
+  </tbody></table></div>
+
+  <h3>公式 · Formulas</h3>
+  <div class="fm"><div class="fl">功率分配 · power allocation（讲义第 2 章 p.54）<span class="st try">尽量记</span></div><div class="fx">\[ \frac{P_i}{P}=\begin{cases}\dfrac{1}{\gamma_0}-\dfrac{1}{\gamma_i}, & \gamma_i\ge\gamma_0\\[6pt] 0, & \gamma_i\lt\gamma_0\end{cases} \]</div><div class="fn">老师说这个分配式尽量记，注水要会算。2024-25 期末把它印在题里（写成 P<sub>i</sub> = P(1/γ<sub>0</sub> − 1/γ<sub>i</sub>)），但只给了这一式，γ<sub>0</sub> 要自己用 ΣP<sub>i</sub> = P 解；Quiz 不保证会印。P 不是 1 W 时别忘了乘 P。</div></div>
+  <div class="fm"><div class="fl">求水位 · solving for γ<sub>0</sub>（由 ΣP<sub>i</sub> = P 推出）<span class="st try">尽量记</span></div><div class="fx">\[ \sum_{\text{on}}\Big(\frac{1}{\gamma_0}-\frac{1}{\gamma_i}\Big)=1\qquad\Longrightarrow\qquad \frac{1}{\gamma_0}=\frac{1}{n}\Big(1+\sum_{\text{on}}\frac{1}{\gamma_i}\Big) \]</div><div class="fn">只对“开着”的 n 个子信道求和。第一次假设全部都开；解出 γ<sub>0</sub> 后检查每个 γ<sub>i</sub> ≥ γ<sub>0</sub>，有不满足的就去掉最差的那个，n 减 1 再解，<b>直到剩下的全部满足</b>。</div></div>
+  <div class="fm"><div class="fl">总容量 · total capacity（p.54）<span class="st try">尽量记</span></div><div class="fx">\[ C=\sum_{\gamma_i\ge\gamma_0}B_i\log_2\frac{\gamma_i}{\gamma_0}\qquad\Big(=\sum B_i\log_2\Big(1+\gamma_i\frac{P_i}{P}\Big)\Big) \]</div><div class="fn">括号里的写法说明它就是香农公式：子信道 i 拿到 P<sub>i</sub>，SNR 变成 γ<sub>i</sub>P<sub>i</sub>/P，而 1 + γ<sub>i</sub>(1/γ<sub>0</sub> − 1/γ<sub>i</sub>) = γ<sub>i</sub>/γ<sub>0</sub>。记不住就用香农现算。γ<sub>i</sub>/γ<sub>0</sub> = γ<sub>i</sub> × (1/γ<sub>0</sub>)，直接乘水位更快。</div></div>
+
+  <h3>解题步骤 · Steps</h3>
+  <div class="tw"><table class="steps"><thead><tr><th>步骤</th><th>做法</th><th>真题（2024-25 Q1(a)(iii)）</th><th>模拟 B · Q3 (c)</th></tr></thead><tbody>
+    <tr><td>① 换线性</td><td>γ<sub>i</sub> = 10<sup>dB/10</sup>，再算 1/γ<sub>i</sub></td><td>18、10、3 dB → 63.10、10.00、1.995；1/γ = 0.01585、0.1000、0.5012</td><td>20、0.5（已是线性）；1/γ = 0.05、2</td></tr>
+    <tr><td>② 全开求水位</td><td>1/γ<sub>0</sub> = (1 + Σ1/γ<sub>i</sub>)/n</td><td>(1 + 0.01585 + 0.1 + 0.5012)/3 = 1.6170/3 = 0.5390 → γ<sub>0</sub> = 1.855（2.68 dB）</td><td>(1 + 0.05 + 2)/2 = 1.525 → γ<sub>0</sub> = 0.656</td></tr>
+    <tr><td>③ 检查</td><td>γ<sub>i</sub> ≥ γ<sub>0</sub>？不满足 → 去掉最差的，n − 1，回到 ②</td><td>最差的 1.995 ≥ 1.855 ✓，三个都开</td><td>0.5 &lt; 0.656 ✗ → 去掉第 2 条；重算 1/γ<sub>0</sub> = (1 + 0.05)/1 = 1.05，γ<sub>0</sub> = 0.952，20 ≥ 0.952 ✓</td></tr>
+    <tr><td>④ 分功率</td><td>P<sub>i</sub> = P(1/γ<sub>0</sub> − 1/γ<sub>i</sub>)，自检 ΣP<sub>i</sub> = P</td><td>0.5390 − 0.01585 = 0.523 W；0.5390 − 0.1 = 0.439 W；0.5390 − 0.5012 = 0.038 W；和 = 1 W ✓</td><td>P₁ = P(1.05 − 0.05) = P，P₂ = 0</td></tr>
+    <tr><td>⑤ 容量</td><td>问到才算：C = ΣB<sub>i</sub> log₂(γ<sub>i</sub>/γ<sub>0</sub>)，只算开着的</td><td>题目没问（若各子带带宽都是 B：C = 7.62B，即 7.62 bit/s/Hz）</td><td>1 MHz × log₂(20/0.952) = log₂21 = 4.39 Mbps；平分功率只有 3.78 Mbps</td></tr>
+  </tbody></table></div>
+  <p class="src">来源：期末 2024-25 Q1(a)(iii)（频率选择性信道分成三个子带，SNR 18、10、3 dB，总功率 P = 1 W，题目印出分配式，求三个子带的功率）；练习页 模拟 B · Q3 (c)（自编模拟题：两条 1 MHz 子信道，全部功率给它时 SNR 为 20 和 0.5，用注水求功率分配和总容量）。讲义第 2 章 p.56–57 的例题（γ = 17.77、2.63、0.087）也是第三个被去掉。</p>
+
+  <h3>中文例子 · 怎么用</h3>
+  <div class="eg"><div class="egh">例 1 · 两个子带都开，总功率 2 W（P 不是 1 W）</div>
+    <p class="q">两个子带各 1 MHz，把全部功率 P = 2 W 给其中一个时 SNR 分别为 12 dB、6 dB。用注水法求每个子带分多少瓦、总容量，并和平分功率比较。</p>
+    <ol class="work">
+      <li>换线性：12 dB → 10<sup>1.2</sup> = 15.85，6 dB → 10<sup>0.6</sup> = 3.981；1/γ = 0.0631、0.2512。</li>
+      <li>假设都开：1/γ<sub>0</sub> = (1 + 0.0631 + 0.2512)/2 = 1.3143/2 = 0.6571 → γ<sub>0</sub> = 1.522（1.82 dB）。</li>
+      <li>检查：3.981 ≥ 1.522 ✓，两个都开。</li>
+      <li>功率要乘 P = 2 W：P₁ = 2 × (0.6571 − 0.0631) = 1.188 W；P₂ = 2 × (0.6571 − 0.2512) = 0.812 W；和 = 2 W ✓。</li>
+      <li>容量：C = 1 MHz × [log₂(15.85 × 0.6571) + log₂(3.981 × 0.6571)] = log₂10.42 + log₂2.616 = 3.381 + 1.387 = 4.77 Mbps。</li>
+      <li>平分：每个 1 W，SNR 减半为 7.924 和 1.991：log₂8.924 + log₂2.991 = 3.158 + 1.581 = 4.74 Mbps。两个子带都不差时注水只多一点；子带差距大时（模拟 B·Q3：4.39 对 3.78 Mbps）差别才明显。</li>
+    </ol>
+    <p class="ans">答案：P₁ ≈ 1.188 W，P₂ ≈ 0.812 W；C ≈ 4.77 Mbps（平分为 4.74 Mbps）</p>
+  </div>
+  <div class="eg"><div class="egh">例 2 · 三个子带：最差的要关掉，再重算</div>
+    <p class="q">频率选择性信道分成三个子带，各 1 MHz。把全部功率 P = 1 W 给某个子带时，SNR 分别为 15 dB、6 dB、−3 dB。用注水法求各子带的功率和总容量。</p>
+    <ol class="work">
+      <li>换线性：15 dB → 10<sup>1.5</sup> = 31.62，6 dB → 10<sup>0.6</sup> = 3.981，−3 dB → 10<sup>−0.3</sup> = 0.5012；1/γ = 0.03162、0.2512、1.995。</li>
+      <li>假设三个都开：1/γ<sub>0</sub> = (1 + 0.03162 + 0.2512 + 1.995)/3 = 3.278/3 = 1.093 → γ<sub>0</sub> = 0.915。</li>
+      <li>检查：γ₃ = 0.5012 &lt; 0.915 ✗。如果硬算，P₃ = 1.0927 − 1.9953 = −0.9026 W，功率是负的，说明第 3 个子带该关掉。</li>
+      <li>去掉第 3 个，n = 2 重算：1/γ<sub>0</sub> = (1 + 0.03162 + 0.2512)/2 = 1.283/2 = 0.6414 → γ<sub>0</sub> = 1.559（1.93 dB）。再检查：γ₂ = 3.981 ≥ 1.559 ✓。</li>
+      <li>功率：P₁ = 0.6414 − 0.03162 = 0.610 W，P₂ = 0.6414 − 0.2512 = 0.390 W，P₃ = 0；0.610 + 0.390 = 1 W ✓。</li>
+      <li>容量：C = 1 MHz × [log₂(31.62 × 0.6414) + log₂(3.981 × 0.6414)] = log₂20.28 + log₂2.553 = 4.342 + 1.352 = 5.69 Mbps。</li>
+    </ol>
+    <p class="ans">答案：P₁ ≈ 0.610 W，P₂ ≈ 0.390 W，P₃ = 0；C ≈ 5.69 Mbps</p>
+  </div>
+  <div class="eg"><div class="egh">例 3 · 四个子带：要去掉两次，每次重算后全部重新检查</div>
+    <p class="q">四个子带各 1 MHz，全部功率给它时 SNR 为 20、10、0、−5 dB，总功率 P = 1 W。求功率分配和总容量。</p>
+    <ol class="work">
+      <li>换线性：100、10、1、10<sup>−0.5</sup> = 0.3162；1/γ = 0.01、0.1、1、3.162。</li>
+      <li>第 1 轮（4 个都开）：1/γ<sub>0</sub> = (1 + 0.01 + 0.1 + 1 + 3.162)/4 = 5.272/4 = 1.318 → γ<sub>0</sub> = 0.759。γ₄ = 0.3162 &lt; 0.759 ✗，去掉第 4 个。此时 γ₃ = 1 ≥ 0.759，看起来没问题。</li>
+      <li>第 2 轮（3 个）：1/γ<sub>0</sub> = (1 + 0.01 + 0.1 + 1)/3 = 2.11/3 = 0.7033 → γ<sub>0</sub> = 1.422。重新检查：γ₃ = 1 &lt; 1.422 ✗，第 3 个也要去掉。</li>
+      <li>第 3 轮（2 个）：1/γ<sub>0</sub> = (1 + 0.01 + 0.1)/2 = 1.11/2 = 0.555 → γ<sub>0</sub> = 1.802。γ₂ = 10 ≥ 1.802 ✓，结束。</li>
+      <li>功率：P₁ = 0.555 − 0.01 = 0.545 W，P₂ = 0.555 − 0.1 = 0.455 W，P₃ = P₄ = 0；和 = 1 W ✓。</li>
+      <li>容量：C = log₂(100 × 0.555) + log₂(10 × 0.555) = log₂55.5 + log₂5.55 = 5.794 + 2.472 = 8.27 Mbps。</li>
+    </ol>
+    <p class="ans">答案：P = 0.545 / 0.455 / 0 / 0 W；C ≈ 8.27 Mbps</p>
+  </div>
+
+  <h3>易错 · Traps</h3>
+  <ul class="trap">
+    <li>γ<sub>i</sub> 一定用线性值：18 dB 是 63.1，不是 18。</li>
+    <li>不检查 γ<sub>i</sub> ≥ γ<sub>0</sub> 就会算出负功率（例 2 硬算得 P₃ = −0.9026 W）；负功率就说明这个子带该关掉。</li>
+    <li>去掉子带后 n 要跟着改（3 → 2），括号里的“1”（代表总功率 P/P）别漏。</li>
+    <li>每次重算后要把剩下的<b>全部</b>重新检查：例 3 第一轮第 3 个子带过关（1 ≥ 0.759），去掉第 4 个后水位从 1.318 降到 0.7033，它就不过关了（1 &lt; 1.422）。</li>
+    <li>容量是 log₂(γ<sub>i</sub>/γ<sub>0</sub>)，不是 log₂(1 + γ<sub>i</sub>)；只对开着的子带求和。</li>
+    <li>P 不是 1 W 时 P<sub>i</sub> = P × (1/γ<sub>0</sub> − 1/γ<sub>i</sub>)；最后自检 ΣP<sub>i</sub> = P。</li>
+  </ul>
+
+  <div class="en"><div class="enl">英文答题模板 · Exam English</div>
+    <p>Converting the SNRs to linear values gives γ₁ = 63.1, γ₂ = 10.0 and γ₃ = 1.995. Assuming all three sub-bands receive power, Σ(1/γ₀ − 1/γᵢ) = 1 gives 1/γ₀ = (1 + 1/63.1 + 1/10 + 1/1.995)/3 = 0.539, so γ₀ = 1.855 (2.68 dB).</p>
+    <p>Since every γᵢ ≥ γ₀, the assumption holds, and Pᵢ = P(1/γ₀ − 1/γᵢ) gives P₁ = 0.523 W, P₂ = 0.439 W and P₃ = 0.038 W, which add up to P = 1 W.</p>
+    <p>If a sub-band had γᵢ &lt; γ₀, it would receive no power; it is removed and γ₀ is recomputed with the remaining sub-bands until all of them satisfy γᵢ ≥ γ₀. The capacity is then C = Σ Bᵢ log₂(γᵢ/γ₀) over the active sub-bands.</p>
+  </div>
+</section>
+
+  <div class="part" id="cheat">考前最后看</div>
+  <section class="topic">
+    <h2>公式状态总表 · Formula checklist</h2>
+    <p class="why">进考场前把这张表从上到下默念一遍：“背”的能默写，“考试给”的知道每个字母是什么。</p>
+    <div class="tw"><table class="cheat"><thead><tr><th>公式</th><th>状态</th><th>一句话用法</th></tr></thead><tbody>
+      <tr><td>贝叶斯 \(P(A|B)=\dfrac{P(B|A)P(A)}{P(B)}\)；全概率 \(P(B)=\sum_i P(B|A_i)P(A_i)\)</td><td><span class="st must">背</span> <span class="st def">全概率会用</span></td><td>先用全概率求分母（对所有 A<sub>i</sub> 求和），再代贝叶斯</td></tr>
+      <tr><td>\(E[X]=\sum x\,P(x)\)，\(\mathrm{Var}=E[X^2]-(E[X])^2\)</td><td><span class="st must">E[X] 背</span> <span class="st def">Var 会用</span></td><td>离散求和，SNR 要先换成线性再平均；平方前 E[X] 多留几位</td></tr>
+      <tr><td>\(P(\mathrm{dBm})=10\log_{10}(P/1\,\mathrm{mW})\)；1 W = 30 dBm</td><td><span class="st def">定义·必会</span></td><td>dBm − dBm = dB；SNR = P<sub>r</sub>(dBm) − N(dBm)</td></tr>
+      <tr><td>\(P_r=P_tK(d_0/d)^{\gamma}\)；\(P_{r,\mathrm{dB}}=P_{t,\mathrm{dB}}+K_{\mathrm{dB}}-10\gamma\log_{10}(d/d_0)\)</td><td><span class="st must">背</span></td><td>题目写 simplified path loss model 就用它，别用自由空间</td></tr>
+      <tr><td>最小二乘 \(\gamma=-\dfrac{\sum(x_i-\bar x)(M_i-\bar M)}{\sum(x_i-\bar x)^2}\)，\(K_{\mathrm{dB}}=\bar M+\gamma\bar x\)，\(\sigma^2=\) 残差平方平均</td><td><span class="st def">会算</span></td><td>\(x_i=10\log_{10}(d_i/d_0)\)，列表算</td></tr>
+      <tr><td>\(P_{out}=Q\!\left(\dfrac{\bar P_r-P_{min}}{\sigma}\right)\)</td><td><span class="st must">背</span></td><td>余量 ÷ σ 再查 Q 表；反查得所需余量</td></tr>
+      <tr><td>\(p(\gamma)=\dfrac{1}{\bar\gamma}e^{-\gamma/\bar\gamma}\)；\(P_{out}=1-e^{-\gamma_0/\bar\gamma}\)</td><td><span class="st must">背</span></td><td>瑞利：γ<sub>0</sub>、γ̄ 都用线性</td></tr>
+      <tr><td>\(FM=10\log_{10}\dfrac{1}{\ln\frac{1}{1-\varepsilon}}\)（\(\approx 10\log_{10}(1/\varepsilon)\)）</td><td><span class="st try">尽量记</span></td><td>只和 ε 有关，ε = 1% 时约 20 dB</td></tr>
+      <tr><td>莱斯 \(K=\) 直射功率 / 散射总功率</td><td><span class="st give">考试给</span></td><td>K = 0 是瑞利，K 越大越接近不衰落</td></tr>
+      <tr><td>\(\mu_{T_m}=\dfrac{\sum P_i\tau_i}{\sum P_i}\)，\(\sigma_{T_m}=\sqrt{E[\tau^2]-\mu^2}\)</td><td><span class="st give">考试给</span></td><td>功率先 dB → 线性再加权</td></tr>
+      <tr><td>平坦衰落 \(\sigma_{T_m}/T_s\lt 0.1\)</td><td><span class="st must">背</span></td><td>满足就是平坦；\(\sigma_{T_m}/T_s\gg 1\) 是频率选择性（有 ISI），夹在中间别硬判</td></tr>
+      <tr><td>\(f_m=vf_c/c\)，\(T_c\approx 1/f_m\)，\(B_c\approx 1/\sigma_{T_m}\)</td><td><span class="st def">定义·必会</span></td><td>km/h ÷ 3.6；\(T_s\ll T_c\) 慢衰落</td></tr>
+      <tr><td>瑞利 LCR \(L_Z=\sqrt{2\pi}f_m\rho e^{-\rho^2}\)，AFD \(\bar t_Z=\dfrac{e^{\rho^2}-1}{\sqrt{2\pi}f_m\rho}\)</td><td><span class="st give">考试给</span></td><td>会解释 ρ = Z<sub>min</sub>/Z<sub>rms</sub>（幅度比）和 f<sub>m</sub></td></tr>
+      <tr><td>时间比例 = LCR × AFD；每秒误符号 = LCR × AFD ÷ T<sub>s</sub></td><td><span class="st def">定义·必会</span></td><td>观测 10 秒要先 ÷ 10 得 LCR</td></tr>
+      <tr><td>\(C=B\log_2(1+\mathrm{SNR})\)；SINR \(=S/(I+N)\)</td><td><span class="st must">背</span></td><td>SNR 用线性值</td></tr>
+      <tr><td>\(C_\varepsilon=B\log_2\!\left(1+\bar\gamma\ln\frac{1}{1-\varepsilon}\right)\)</td><td><span class="st give">考试给</span></td><td>真题都把它印在题里</td></tr>
+      <tr><td>注水 \(\dfrac{P_i}{P}=\dfrac{1}{\gamma_0}-\dfrac{1}{\gamma_i}\)（\(\gamma_i\ge\gamma_0\)，否则 0）</td><td><span class="st try">尽量记</span></td><td>先假设全开解 γ<sub>0</sub>，有 γ<sub>i</sub> &lt; γ<sub>0</sub> 就去掉重算</td></tr>
+    </tbody></table></div>
+  </section>
+
+  <footer>相关页面：<a href="p2-learn.html">Part 2 讲解</a> · <a href="p2-practice.html">Part 2 练习（Practice 1–2、模拟题 A/B/C、专项）</a> · <a href="exams.html">历年期末真题</a>。<br>题号对照：模拟 A · Q1–Q3、B · Q1–Q3、C · Q1–Q3、专项 · Q1–Q3 都在练习页的“模拟 Quiz”分组。数字核对脚本在仓库 src/quizsum/（check_*.py、_verify_*.py）。</footer>
+</div>
+<script>
+(function(){
+  var box = document.getElementById('selftest');
+  document.querySelectorAll('.eg').forEach(function(eg){
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'reveal'; b.textContent = '显示步骤和答案';
+    b.addEventListener('click', function(){ eg.classList.toggle('open'); b.textContent = eg.classList.contains('open') ? '收起' : '显示步骤和答案'; });
+    var at = eg.querySelector('.q') || eg.querySelector('.egh');
+    if (at) at.insertAdjacentElement('afterend', b); else eg.prepend(b);
+  });
+  function set(on){ document.body.classList.toggle('selftest', on); try { localStorage.setItem('qs-selftest', on ? '1' : '0'); } catch(e){} }
+  var on = false; try { on = localStorage.getItem('qs-selftest') === '1'; } catch(e){}
+  box.checked = on; set(on);
+  box.addEventListener('change', function(){ set(box.checked); });
+})();
+</script>
+</body>
+</html>
