@@ -14,6 +14,9 @@ Run before build_learn.py and build_practice.py.
 import pathlib, re
 
 B = pathlib.Path(__file__).parent
+# 'final' (after the 23 Oct Quiz): drop all Quiz badges/boxes, keep only the formula-status lines
+# (背 / 尽量记 / 考试给) under the formula cards. 'quiz' restores the Quiz-scope marks.
+MODE = 'final'
 
 IN, OUT = '<span class="qz in">Quiz</span>', '<span class="qz out">Quiz 不考</span>'
 BADGE = {'must': '背', 'try': '尽量记', 'give': '考试给', 'note': 'Quiz'}
@@ -39,7 +42,7 @@ CARDS = [
   ('learn_02.html', '瑞利衰落的 LCR 与 AFD', 'give', '公式考试会给，要会解释 ρ 和 f<sub>m</sub>。'),
   ('learn_02.html', 'AWGN 信道的香农容量', 'must', 'C = B log₂(1 + SNR) 要背，SNR 用线性值。'),
   ('learn_02.html', '瑞利衰落的衰落余量', 'try', '尽量记：老师说"有点难记，但要试着记"。'),
-  ('learn_02.html', '注水法（p.54）', 'try', '功率分配式尽量记，注水法要会算。'),
+  ('learn_02.html', '注水法（p.54）', 'must', '功率分配式和求水位的 Σ(1/γ₀ − 1/γ<sub>j</sub>) = 1 都要背：第 12 周老师说"把公式给了就等于没出题"。注水法要会算。'),
 ]
 # inline 背 badge after an exact anchor string
 INLINE = [('learn_02.html', '<mark class="hl">\\(\\sigma_{T_m}/T_s<0.1\\)：平坦衰落</mark>')]
@@ -64,7 +67,7 @@ def learn():
     for i in range(1, 8):
         f = B / f'learn_{i:02d}.html'
         s = strip(f.read_text(encoding='utf-8'))
-        for ch, badge in CHAPTER.items():
+        for ch, badge in (CHAPTER.items() if MODE == 'quiz' else ()):
             m = re.search(rf'<section class="chapter" id="{ch}">\s*<div class="chapter-head">.*?</h2>', s, re.S)
             if m:
                 s = s[:m.end()] + badge + s[m.end():]
@@ -72,8 +75,9 @@ def learn():
             num = m.group(1)
             tag = OUT if num in SECTION_OUT else IN if num in SECTION_IN else ''
             return m.group(0)[:-5] + tag + '</h3>'
-        s = re.sub(r'<h3><span class="zh-num">([\d.]+)</span>.*?</h3>', h3, s)
-        if f.name == 'learn_01.html':
+        if MODE == 'quiz':
+            s = re.sub(r'<h3><span class="zh-num">([\d.]+)</span>.*?</h3>', h3, s)
+        if MODE == 'quiz' and f.name == 'learn_01.html':
             m = re.search(r'<section class="chapter" id="ch0">\s*<div class="chapter-head">.*?</div>\n', s, re.S)
             s = s[:m.end()] + BOX + s[m.end():]
         for frag, label, kind, text in CARDS:
@@ -94,6 +98,9 @@ def practice():
     for i in range(1, 9):                                # prac_8 = self-written mock Quiz
         f = B / f'prac_{i}.html'
         s = strip(f.read_text(encoding='utf-8'))
+        if MODE != 'quiz':
+            f.write_text(s, encoding='utf-8')
+            continue
         inq = i <= 2 or i == 8
         s = re.sub(r'(<div class="group" id="P\d"><h2>.*?)(</h2>)',
                    lambda m: m.group(1) + ('<span class="qz in">Quiz 范围</span>' if inq else '<span class="qz out">Quiz 不考</span>') + m.group(2), s, count=1)
@@ -105,4 +112,4 @@ def practice():
 
 learn()
 practice()
-print('quiz marks: learn_01–07, prac_1–8')
+print(f'quiz marks ({MODE}): learn_01–07, prac_1–8')

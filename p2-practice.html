@@ -208,10 +208,10 @@ window.MathJax = {
       <button class="chipbtn" type="button" data-f="p5">P5</button><button class="chipbtn" type="button" data-f="p6">P6</button>
       <button class="chipbtn" type="button" data-f="p7">P7</button><button class="chipbtn" type="button" data-f="p8">模拟 Quiz</button>
     </div>
-  <div class="group" id="P1"><h2>Practice 1 · 无线信道 1<span class="qz in">Quiz 范围</span></h2><span>讲义第 2 章 p.8–33 · 第 8 周</span></div>
+  <div class="group" id="P1"><h2>Practice 1 · 无线信道 1</h2><span>讲义第 2 章 p.8–33 · 第 8 周</span></div>
 
   <article class="ex" id="p1q1">
-    <header><span class="pg">P1 · Q1</span><h3>拟合路径损耗模型，再求中断概率<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">P1 · Q1</span><h3>拟合路径损耗模型，再求中断概率</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 1</span></div>
       <p>A set of empirical path loss measurements is given in Table 1, where \(P_t\) and \(P_r\) are the transmitted power and received power respectively.</p>
       <p class="zh" lang="zh-CN">表 1 给出了一组实测路径损耗数据，其中 \(P_t\) 和 \(P_r\) 分别是发射功率和接收功率。</p>
@@ -300,7 +300,7 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Fitting K and γ of the simplified path-loss model to measured data by least squares, then using the fitted MSE as the shadowing variance to find the outage probability (Ch 2 p.8, p.12–15).</dd><dt>Background</dt><dd>dB arithmetic; least squares (set the partial derivatives with respect to K and γ to zero, see the derivation box in Section 2.1 of the learning page); the Q function (Ch 1b).</dd><dt>Method</dt><dd>① x<sub>i</sub> = 10 log₁₀(d<sub>i</sub>/d₀); ② tabulate x, M, x², xM and sum each column; ③ solve the two normal equations for K and γ; ④ compute the residuals e<sub>i</sub> = measured − predicted, MSE = σ<sub>ψ</sub>²; ⑤ P<sub>out</sub> = Q(margin/σ<sub>ψ</sub>).</dd><dt>Key formulas</dt><dd>γ = −Σ(x<sub>i</sub> − x̄)(M<sub>i</sub> − M̄) / Σ(x<sub>i</sub> − x̄)²; K<sub>dB</sub> = M̄ + γx̄; σ<sub>ψ</sub>² = (1/n)Σe<sub>i</sub>²; P<sub>out</sub> = Q(10/σ<sub>ψ</sub>).</dd><dt>Common mistakes</dt><dd>The slope of the line is −γ, so keep the minus sign. Use 10 log₁₀d, not log₁₀d (otherwise γ comes out 10 times too large). The MSE is a variance: take the square root before putting it in Q. "10 dB above" means a 10 dB margin.</dd><dt>Check</dt><dd>The residuals sum to 0; the fitted line passes through the mean point (19.26, −106.67); Σe² = 71.23 from the table in step 4.</dd><dt>Variations</dt><dd>Given K, γ and σ, find the outage probability at some distance, or the maximum coverage distance for a target outage (lecture p.16 example, Section 2.2 of the learning page). See the note above on why the official answer cannot be reproduced.</dd></dl></div>
     </div>
     <!-- /EN:p1q1 -->
-<!-- TEACH:begin 24 --><style id="teach-css">
+<!-- TEACH:begin 38 --><style id="teach-css">
 :root{--teach:#a3214f;--teach-soft:#fcebf1;--teach-line:#eba3bd;}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--teach:#f58db4;--teach-soft:rgba(245,141,180,.11);--teach-line:rgba(245,141,180,.4);}}
 :root[data-theme="dark"]{--teach:#f58db4;--teach-soft:rgba(245,141,180,.11);--teach-line:rgba(245,141,180,.4);}
@@ -312,12 +312,12 @@ window.MathJax = {
 .teach li{margin-bottom:.35em;}
 .teach mark.hl{background:linear-gradient(to bottom,transparent 45%,var(--teach-line) 45%);color:inherit;font-weight:600;}
 .exam .ex:not(.open) .teach{display:none;}
-</style><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 10 周录音</span></div><ul><li>老师课上的做法：写出均方误差 F(K, γ)，分别对 K、γ 求偏导令其为 0，解两个方程。他说结果<b>取决于小数怎么取舍，不一定完全一样，在 K ≈ −31.4、γ ≈ 3.86 附近就可以</b>。</li><li>(b) 他代入的是 MSE = 9.656，算出 10/√9.656 ≈ 3.23，查表 Q(3.23) = 6.19×10⁻⁴，这就是官方答案的来源。我们按题目数据算出的标准最小二乘结果是 11.87（见上面的残差表）。考试按自己算出的 MSE 代入、写清楚步骤即可。</li><li>他特别提醒："10 dB above"里的 10 是 dB，这个公式是 dB 形式推出来的，不要换成线性。</li></ul></div><!-- TEACH:end 24 -->
+</style><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 10 周录音</span></div><ul><li>老师课上的做法：写出均方误差 F(K, γ)，分别对 K、γ 求偏导令其为 0，解两个方程。他说结果<b>取决于小数怎么取舍，不一定完全一样，在 K ≈ −31.4、γ ≈ 3.86 附近就可以</b>。</li><li>(b) 他代入的是 MSE = 9.656，算出 10/√9.656 ≈ 3.23，查表 Q(3.23) = 6.19×10⁻⁴，这就是官方答案的来源。我们按题目数据算出的标准最小二乘结果是 11.87（见上面的残差表）。考试按自己算出的 MSE 代入、写清楚步骤即可。</li><li>他特别提醒："10 dB above"里的 10 是 dB，这个公式是 dB 形式推出来的，不要换成线性。</li></ul></div><!-- TEACH:end 38 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
   <article class="ex" id="p1q2">
-    <header><span class="pg">P1 · Q2</span><h3>对数正态阴影下的中断概率<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">P1 · Q2</span><h3>对数正态阴影下的中断概率</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 1</span></div>
       <p>Consider a cellular system where the received signal power has a log-normal distribution with mean \(\mu_\psi\) dBm and standard deviation \(\sigma_\psi\) dBm. In order to avoid outage, the received signal power is required to be above 10 dBm.</p>
       <p class="zh" lang="zh-CN">考虑一个蜂窝系统，接收信号功率服从对数正态分布，均值为 \(\mu_\psi\) dBm，标准差为 \(\sigma_\psi\) dBm。为避免中断，接收信号功率必须高于 10 dBm。</p>
@@ -379,12 +379,12 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Log-normal shadowing means the dB value is Gaussian; outage probability computed forwards and backwards (Ch 2 p.11–15).</dd><dt>Background</dt><dd>Standardisation: (threshold − mean)/standard deviation; Q is decreasing and Q(−x) = 1 − Q(x); common values Q(1.645) = 0.05, Q(2.326) = 0.01, Q(3.09) = 10⁻³.</dd><dt>Method</dt><dd>(a) How many standard deviations is the threshold from the mean → Q. (b) Treat μ as unknown, write Q((μ − 10)/σ) &lt; 0.01 and invert: (μ − 10)/σ &gt; 2.326.</dd><dt>Key formula</dt><dd>P<sub>out</sub> = P(P<sub>r</sub> &lt; P<sub>min</sub>) = Q((μ<sub>ψ</sub> − P<sub>min</sub>)/σ<sub>ψ</sub>). The difference μ − P<sub>min</sub> is the shadowing margin.</dd><dt>Common mistakes</dt><dd>Q is decreasing, so "probability &lt; 1%" becomes "argument &gt; 2.326". Do not confuse σ with σ². The difference of two dBm values is in dB.</dd><dt>Variations</dt><dd>A larger σ needs a larger margin for the same outage: with σ = 8 dB, μ must exceed 10 + 8 × 2.326 = 28.6 dBm, 9.3 dB more than with σ = 4 dB.</dd><dt>Physical meaning</dt><dd>Shadowing is large-scale, slowly varying fading (blocking by buildings and terrain), so it is handled with a margin; small-scale multipath fading is handled with diversity (Ch 4).</dd></dl></div>
     </div>
     <!-- /EN:p1q2 -->
-<!-- TEACH:begin 25 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 10 周录音</span></div><ul><li>题目里的 15 dBm 是<b>不含阴影的平均接收功率</b>（阴影零均值，所以整体均值就是简化路径损耗的结果）；10 dBm 是最低要求。</li></ul></div><!-- TEACH:end 25 -->
+<!-- TEACH:begin 39 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 10 周录音</span></div><ul><li>题目里的 15 dBm 是<b>不含阴影的平均接收功率</b>（阴影零均值，所以整体均值就是简化路径损耗的结果）；10 dBm 是最低要求。</li></ul></div><!-- TEACH:end 39 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
   <article class="ex" id="p1q3">
-    <header><span class="pg">P1 · Q3</span><h3>均匀功率时延分布的时延扩展<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">P1 · Q3</span><h3>均匀功率时延分布的时延扩展</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 1</span></div>
       <p>Consider a channel with the following power delay profile.</p>
       <p class="zh" lang="zh-CN">考虑一个具有如下功率时延谱（power delay profile）的信道。</p>
@@ -445,13 +445,13 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Mean delay and rms delay spread from a power delay profile, and the flat / frequency-selective decision (Ch 2 p.29–33).</dd><dt>Background</dt><dd>Normalise P(τ) and treat it as a probability density; E[τ], E[τ²] and variance = E[τ²] − (E[τ])² (Ch 1b).</dd><dt>Method</dt><dd>① μ = ∫τP(τ)dτ / ∫P(τ)dτ; ② E[τ²] = ∫τ²P(τ)dτ / ∫P(τ)dτ; ③ σ = √(E[τ²] − μ²); ④ flat if σ/T<sub>s</sub> &lt; 0.1 → lower bound on T<sub>s</sub> → upper bound on R<sub>s</sub>.</dd><dt>Key formula</dt><dd>Uniform on [0, a]: μ = a/2, σ = a/√12. Here a = 10 µs → 5 µs and 2.89 µs.</dd><dt>Common mistakes</dt><dd>The denominator is ∫P = 10, not 1. Flat fading needs long symbols (low rate), so keep the inequality the right way round; 34.6 ksps is an upper limit.</dd><dt>Variations</dt><dd>"Is a 1 MHz signal (T<sub>s</sub> = 1 µs) flat?" σ/T<sub>s</sub> = 2.89 &gt; 0.1 → frequency-selective, needs equalisation or OFDM. For a discrete profile (a few echoes) replace the integrals by weighted sums (Section 2.4 example on the learning page).</dd><dt>Link</dt><dd>Larger delay spread means smaller coherence bandwidth (B<sub>C</sub> ∝ 1/σ<sub>Tm</sub>); the same σ appears in the Ch 3 error floor (σ<sub>Tm</sub>/T<sub>b</sub>)².</dd></dl></div>
     </div>
     <!-- /EN:p1q3 -->
-<!-- TEACH:begin 26 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 10 周录音</span></div><ul><li>平均时延和 rms 时延扩展的公式考试会给，不用背；但判断平坦衰落的 σ/T<sub>s</sub> &lt; 0.1 要背。</li></ul></div><!-- TEACH:end 26 -->
+<!-- TEACH:begin 40 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 10 周录音</span></div><ul><li>平均时延和 rms 时延扩展的公式考试会给，不用背；但判断平坦衰落的 σ/T<sub>s</sub> &lt; 0.1 要背。</li></ul></div><!-- TEACH:end 40 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P2"><h2>Practice 2 · 无线信道 2<span class="qz in">Quiz 范围</span></h2><span>讲义第 2 章 p.40–49 · 第 9 周</span></div>
+  <div class="group" id="P2"><h2>Practice 2 · 无线信道 2</h2><span>讲义第 2 章 p.40–49 · 第 9 周</span></div>
 
   <article class="ex" id="p2q1">
-    <header><span class="pg">P2 · Q1</span><h3>平均衰落时长<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">P2 · Q1</span><h3>平均衰落时长</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 2</span></div>
       <p>For Rayleigh fading channels, the average fade duration can be expressed as,</p>
       <p class="zh" lang="zh-CN">对于瑞利衰落信道，平均衰落持续时间（AFD）可以表示为：</p>
@@ -511,12 +511,12 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Average fade duration (AFD) in Rayleigh fading (Ch 2 p.42–43).</dd><dt>Background</dt><dd>ρ = Z<sub>min</sub>/Z<sub>rms</sub> is an <b>amplitude</b> ratio; Rayleigh P(z &lt; Z<sub>min</sub>) = 1 − e<sup>−ρ²</sup>; Doppler f<sub>D</sub> = v f<sub>c</sub>/c.</dd><dt>Method</dt><dd>Find ρ → e<sup>ρ²</sup> − 1 → denominator √(2π) f<sub>D</sub> ρ → divide.</dd><dt>Key formulas</dt><dd>AFD = (e<sup>ρ²</sup> − 1)/(√(2π) f<sub>D</sub> ρ); LCR = √(2π) f<sub>D</sub> ρ e<sup>−ρ²</sup>; AFD × LCR = 1 − e<sup>−ρ²</sup> (fraction of time below the threshold).</dd><dt>Common mistakes</dt><dd>"0.1 of the rms value" is an amplitude, so ρ = 0.1 (power 20 dB down). If a question says "0.1 of the power", then ρ = √0.1 = 0.316.</dd><dt>Variations</dt><dd>Given vehicle speed and carrier frequency, compute f<sub>D</sub> first. Number of symbols lost per fade = AFD × symbol rate: at 1 Msps, 0.8 ms ≈ 800 symbols (Section 2.6 example on the learning page).</dd><dt>Intuition</dt><dd>For small ρ, AFD ≈ ρ/(√(2π) f<sub>D</sub>): the lower the threshold, the shorter the time spent below it; the faster the vehicle (larger f<sub>D</sub>), the shorter but more frequent the fades.</dd></dl></div>
     </div>
     <!-- /EN:p2q1 -->
-<!-- TEACH:begin 27 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 10 周录音</span></div><ul><li>老师强调要会解释 ρ：最小信号强度与 rms 值之比。题目"0.1 of the rms value"就是 ρ = 0.1，再代进给定的公式。</li></ul></div><!-- TEACH:end 27 -->
+<!-- TEACH:begin 41 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 10 周录音</span></div><ul><li>老师强调要会解释 ρ：最小信号强度与 rms 值之比。题目"0.1 of the rms value"就是 ρ = 0.1，再代进给定的公式。</li></ul></div><!-- TEACH:end 41 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
   <article class="ex" id="p2q2">
-    <header><span class="pg">P2 · Q2</span><h3>两个基站的宏分集：独立与相关阴影<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">P2 · Q2</span><h3>两个基站的宏分集：独立与相关阴影</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 2</span></div>
       <p>Consider a mobile station located between two base stations in a cellular network. The received signal powers (in dBm) from the base stations are given by</p>
       <p class="zh" lang="zh-CN">考虑蜂窝网络中一个位于两个基站之间的移动台。它从两个基站收到的信号功率（dBm）为</p>
@@ -711,12 +711,12 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Outage with macro-diversity for independent and correlated shadowing; conditional probability plus total probability (Ch 2 p.12–15; Ch 4 p.3–4, p.21).</dd><dt>Background</dt><dd>Independent events multiply; a linear combination of independent Gaussians is Gaussian, aY₁ + bY ~ N(0, (a² + b²)σ²); continuous total probability P(A) = ∫P(A | y)p(y)dy.</dd><dt>Method</dt><dd>(b) Single-link outage P(Z<sub>i</sub> &lt; −Δ) = Q(Δ/σ), independent → square. (c) Fix the shared Y ("condition on it"), the links are then independent → multiply the conditional outages → integrate over the PDF of Y.</dd><dt>Key step</dt><dd>Let Y = σu, u ~ N(0, 1). Given u: Z<sub>i</sub> ~ N(bσu, a²σ²), P(Z<sub>i</sub> &lt; −Δ | u) = Q((Δ + bσu)/(|a|σ)).</dd><dt>Hidden assumption</dt><dd>To be consistent with Z<sub>i</sub> ~ N(0, σ²) we need a² + b² = 1. The correlation coefficient of Z₁ and Z₂ is then b²: the larger b, the more alike the two links.</dd><dt>Check</dt><dd>b = 0 gives the [Q(Δ/σ)]² of part (b); a = 0 (fully correlated) makes the links identical, P<sub>out</sub> = Q(Δ/σ), no diversity at all.</dd><dt>Link</dt><dd>Practice 4 Q1 explains the same idea in words; Ch 4 p.21 "correlation reduces diversity"; Practice 4 Q2(c) is a discrete version with shared shadowing.</dd></dl></div>
     </div>
     <!-- /EN:p2q2 -->
-<!-- TEACH:begin 28 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 10 周录音</span></div><ul><li>老师讲的方法：两个随机变量同时出现时，<b>先把其中一个当成常数</b>，只剩一个随机变量，求出中间结果；再把它变回随机变量，对它的 PDF 积分。最后一步是换元 u = y/σ。</li></ul></div><!-- TEACH:end 28 -->
+<!-- TEACH:begin 42 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 10 周录音</span></div><ul><li>老师讲的方法：两个随机变量同时出现时，<b>先把其中一个当成常数</b>，只剩一个随机变量，求出中间结果；再把它变回随机变量，对它的 PDF 积分。最后一步是换元 u = y/σ。</li></ul></div><!-- TEACH:end 42 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
   <article class="ex" id="p2q3">
-    <header><span class="pg">P2 · Q3</span><h3>两个用户：干扰当噪声 vs 多用户检测<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">P2 · Q3</span><h3>两个用户：干扰当噪声 vs 多用户检测</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Practice 2</span></div>
       <p>Two users transmit simultaneously to a single receiver over an AWGN channel. The power received from each transmitter is 10mW. The total received noise power is 0.1mW. The channel bandwidth for each user is 20MHz.</p>
       <p class="zh" lang="zh-CN">两个用户通过 AWGN 信道同时向同一个接收机发送信号。来自每个发射机的接收功率都是 10 mW，总接收噪声功率为 0.1 mW，每个用户的信道带宽为 20 MHz。</p>
@@ -856,7 +856,7 @@ window.MathJax = {
     <!-- /EN:p2q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P3"><h2>Practice 3 · 信号检测<span class="qz out">Quiz 不考</span></h2><span>讲义第 3 章 · 第 10 周</span></div>
+  <div class="group" id="P3"><h2>Practice 3 · 信号检测</h2><span>讲义第 3 章 · 第 10 周</span></div>
 
   <article class="ex" id="p3q1">
     <header><span class="pg">P3 · Q1</span><h3>正交基与信号空间维数</h3></header>
@@ -919,6 +919,7 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Signal space: orthonormal basis and dimension (Ch 3 p.4–11).</dd><dt>Background</dt><dd>Angle-sum identity cos(a + b) = cos a cos b − sin a sin b; ∫₀<sup>T</sup> cos²(2πt/T) dt = T/2; inner product = multiply and integrate.</dd><dt>Method</dt><dd>① Write the signal as a linear combination of a few fixed waveforms; ② check they are mutually orthogonal; ③ divide each by √energy to normalise; ④ the number of basis functions is the dimension.</dd><dt>Key result</dt><dd>ψ₁ = √(2/T) cos(2πt/T), ψ₂ = √(2/T) sin(2πt/T). Coordinates (A<sub>i</sub>cosφ<sub>j</sub>√(T/2), −A<sub>i</sub>sinφ<sub>j</sub>√(T/2)); distance from the origin A<sub>i</sub>√(T/2) = √E.</dd><dt>Common mistakes</dt><dd>Forgetting the normalising factor √(2/T); thinking many values of A<sub>i</sub>, φ<sub>j</sub> mean many dimensions (the dimension only counts basis functions, D ≤ M); the minus sign of the sin term belongs in the coordinate.</dd><dt>Variations</dt><dd>Amplitude only (φ fixed) → 1-D (PAM); phase only → 2-D (PSK); both → 2-D (QAM, as here). 2025-26 S1 Q1(a)(i): sketch the ±1 constellation, dimension 1, distance 2.</dd></dl></div>
     </div>
     <!-- /EN:p3q1 -->
+<!-- TEACH:begin 43 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 10 周录音（Quiz 当天）</span></div><ul><li>老师说这类题<b>可以直接出成考题</b>。他出题就是对着 Practice 题追问"还能怎么问"，所以练习时要自己多问一句，比如先问"这是什么调制"（幅度和相位都调 → QAM）。</li><li>他的做法：用和角公式把 cos(2πt/T + φ) 拆开，含 t 的项就是基函数（cos 和 sin）；再用正交归一条件（互乘积分为 0、自乘积分为 1）定系数 C₁ = C₂ = √(2/T)；两个基函数，所以维数是 2。</li><li>老师提醒：有的题答案很简单，别想太多，答案一行的题不用写三四页。</li></ul></div><!-- TEACH:end 43 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -990,6 +991,7 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Non-standard ML detection: the two hypotheses have different noise variances (Ch 3 p.18–20).</dd><dt>Background</dt><dd>Gaussian PDF (keep the factor 1/(√(2π)σ)); ln is increasing, so likelihoods can be compared after taking logs; roots of a quadratic; the Q function.</dd><dt>Method</dt><dd>① Write both conditional PDFs; ② compare likelihoods, take logs, rearrange to g(y) &gt; 0; ③ solve g(ỹ) = 0 for the threshold; ④ compute the two error events separately; ⑤ weight by the priors (½ each).</dd><dt>Key formulas</dt><dd>g(y) = y²/(2σ₀²) − (y − 1)²/(2σ₁²) + ln(σ₀/σ₁); P<sub>e</sub> = ½[Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀)].</dd><dt>Numerical example</dt><dd>σ₀² = 0.1, σ₁² = 0.4: ỹ ≈ 0.46, P<sub>e</sub> = ½[Q(0.54/0.632) + Q(0.46/0.316)] = ½[Q(0.85) + Q(1.46)] ≈ 0.135.</dd><dt>Common mistakes</dt><dd>Comparing only the exponents and dropping 1/σ gives the wrong threshold; each error event uses its own σ; the quadratic has two roots, take the one between 0 and 1.</dd><dt>Variations</dt><dd>Equal variances → ỹ = 0.5, P<sub>e</sub> = Q(0.5/σ). Unequal priors → MAP, add ln P(x) inside the log; the threshold moves towards the less likely symbol.</dd></dl></div>
     </div>
     <!-- /EN:p3q2 -->
+<!-- TEACH:begin 44 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 10 周录音（Quiz 当天）</span></div><ul><li>ML 判决规则的写法要熟：在 x 的可能取值里，选让 f(y | x) 最大的那个。考试问到时要会用文字解释这句话。</li><li>y 的 PDF 和噪声的 PDF 形状一样，只是均值移到了 x（x = 0 时均值 0，x = 1 时均值 1）。两个似然相除大于 1 就判 1，化简后是 y 的二次式；门限只取正的那个根。</li><li>(b) 求误码率这一步老师特别强调：后面的 Practice 还会反复出现，<b>期末经常以不同形式考到</b>，要自己练熟。关键是写对积分区间（判成 0 是 −∞ 到门限，判成 1 是门限到 ∞），再换元化成 Q 函数的标准形式，所以要熟悉 Q 函数长什么样。</li></ul></div><!-- TEACH:end 44 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -1049,9 +1051,10 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The irreducible error floor caused by delay spread; converting between bit and symbol durations (Ch 3 p.35).</dd><dt>Background</dt><dd>M-ary signalling carries log₂M bits per symbol: R<sub>b</sub> = log₂M / T<sub>s</sub>; QPSK has M = 4.</dd><dt>Method</dt><dd>From the floor requirement find the shortest symbol duration T = σ<sub>Tm</sub>/√P<sub>floor</sub>, then convert to a bit rate.</dd><dt>Key formula</dt><dd>(σ<sub>Tm</sub>/T)² = P<sub>floor</sub> → T = 3 µs / √10⁻³ = 3/0.0316 = 94.9 µs → R<sub>b</sub> = 2/94.9 µs = 21.08 kbps.</dd><dt>Common mistakes</dt><dd>T in the formula is the <b>symbol</b> duration (ISI depends on how long the echo is compared with one symbol); treating it as a bit duration gives 10.54 kbps. σ<sub>Tm</sub> is the rms delay spread, not the maximum delay.</dd><dt>Contrast</dt><dd>The Doppler floor ½(πf<sub>D</sub>T<sub>b</sub>)² needs <b>short</b> symbols (a minimum rate); the delay-spread floor needs <b>long</b> symbols (a maximum rate). With both present, the rate must lie between the two limits.</dd><dt>Physical meaning</dt><dd>A "floor" means the error rate stops falling however high the SNR: the errors come from the signal's own echoes, not from noise. The remedies are equalisation (Ch 6) or OFDM (Ch 7).</dd></dl></div>
     </div>
     <!-- /EN:p3q3 -->
+<!-- TEACH:begin 45 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 10 周录音（Quiz 当天）</span></div><ul><li>老师的做法：由误码平台公式反解出符号时长 94.87 µs；BPSK 一个符号 1 bit，速率是 1/T；QPSK 一个符号 2 bit，速率翻倍。</li></ul></div><!-- TEACH:end 45 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P4"><h2>Practice 4 · 分集<span class="qz out">Quiz 不考</span></h2><span>讲义第 4 章 · 第 11 周</span></div>
+  <div class="group" id="P4"><h2>Practice 4 · 分集</h2><span>讲义第 4 章 · 第 11 周</span></div>
 
   <article class="ex" id="p4q1">
     <header><span class="pg">P4 · Q1</span><h3>宏分集为什么能降低中断概率</h3></header>
@@ -1110,6 +1113,7 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The principle of macro-diversity (essay question, Ch 4 p.3–6).</dd><dt>Answer outline</dt><dd>① Outage is mainly due to <b>shadowing</b> (large-scale, slowly varying; extra power is an inefficient fix); ② base stations at different locations have different propagation paths, so the shadowing is roughly independent; ③ selecting the strongest base station or combining means outage only when <b>all</b> links are poor, P<sub>out</sub> = ΠP<sub>out,i</sub>; ④ condition: correlated links reduce the gain (p.21).</dd><dt>Do not confuse</dt><dd>Macro-diversity combats shadowing, with base stations far apart; micro-diversity combats multipath, with antennas only a few wavelengths apart (p.4–5).</dd><dt>Numbers</dt><dd>One link in outage 10%: two independent base stations 1%, three 0.1%.</dd><dt>Link</dt><dd>Practice 2 Q2 gives the quantitative formula: [Q(Δ/σ)]² when independent; when correlated, condition first and then integrate.</dd><dt>Writing tip</dt><dd>Write an essay answer as four sentences, "cause → mechanism → formula → condition", one point each. That earns marks more reliably than one long paragraph.</dd></dl></div>
     </div>
     <!-- /EN:p4q1 -->
+<!-- TEACH:begin 46 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 11 周录音</span></div><ul><li>老师说这题很简单，答两点就够：① 先说宏分集是什么（同一信息经不同路径传送）；② 再说为什么能降低中断：所有路径同时中断的可能性很小。</li><li>期末也会有解释题：先描述这个东西是什么，再解释，通常几句话就够；英文不好就写成要点。写多了不扣分，但<b>写多了又写错会扣分</b>，不需要写两三页。</li></ul></div><!-- TEACH:end 46 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -1184,6 +1188,7 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Mean SNR and mean error rate for a discrete SNR distribution; MRC; array gain g and diversity gain d; correlated branches (Ch 4 p.16, p.21, p.27–28).</dd><dt>Background</dt><dd>Discrete expectation Σx·p; independent events multiply; E[f(X)] ≠ f(E[X]); for independent variables E[g(X)h(Y)] = E[g(X)]E[h(Y)].</dd><dt>Method</dt><dd>(a) Take the expectation directly. (b) Tabulate the 2 × 2 combinations → output SNR = sum of the branches → weight by probability. (c) Split e<sup>−γ<sub>Σ</sub></sup> into a product of independent factors and average each.</dd><dt>Key formulas</dt><dd>g = γ̄<sub>Σ</sub>/γ̄; d = −log₁₀P̄<sub>s</sub> / log₁₀γ̄ (γ̄ is the mean SNR at the combiner <b>input</b>).</dd><dt>Shortcut</dt><dd>(b) needs no table: for independent branches E[e<sup>−(γ₁+γ₂)</sup>] = (E[e<sup>−γ</sup>])², and (a) already gives E[e<sup>−γ</sup>] = 2 × 6.15×10⁻⁵ = 1.23×10⁻⁴, so P̄<sub>s</sub> = ½ × (1.23×10⁻⁴)² = 7.56×10⁻⁹.</dd><dt>Common mistakes</dt><dd>8 + 11 occurs in two orders, (8, 11) and (11, 8), probability 4/9. Keep enough significant figures for tiny numbers like e⁻¹⁶. Use the input SNR 10 for d, not the output 20. In (c) the shared β enters the exponent as 2β.</dd><dt>Conclusion</dt><dd>In (b) and (c) the mean SNR is 20 and g = 2, but correlation raises the error rate 2.7 times and lowers d from 8.1 to 7.7.</dd></dl></div>
     </div>
     <!-- /EN:p4q2 -->
+<!-- TEACH:begin 47 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 11 周录音</span></div><ul><li>期末 Part 2 <b>没有公式表</b>：像 DPSK 的 ½e<sup>−γ</sup> 这种公式会在题目里给出，但仍要看懂它只依赖 SNR 这一个参数。</li><li>先问自己：这些数是瓦还是 dB？<mark class="hl">该换没换会扣分</mark>（方法分照给，扣换算那部分）。</li><li>(a) 发射功率、噪声功率都是 1 W，所以 γ 就等于 α，α 的分布就是 γ 的分布。平均 SNR = Σ 取值 × 概率；平均误码率 = Σ P<sub>s</sub>(取值) × 概率。老师说这是复习第 1b 章的热身。</li><li>(b) MRC 的<b>瞬时</b>输出 SNR = 两路之和：16、19、22，概率 1/9、4/9、4/9（19 有两种排列）。阵列增益 = 输出平均 SNR ÷ 输入平均 SNR = 20/10 = 2；要 dB 时先换成 dB 再相减。<b>阵列增益和分集增益的公式要背</b>。</li><li>(c) 两个随机变量的处理和 Practice 2 一样：<b>先把 β 当常数</b>求条件误码率，再对 β 的各个取值加权平均。结论：相关时阵列增益不变，分集增益变差。</li></ul></div><!-- TEACH:end 47 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -1252,9 +1257,10 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>BPSK error rate when the fading factor is Gaussian; equal-weight combining (Ch 4 p.19; sums of independent Gaussians, Ch 1b).</dd><dt>Background</dt><dd>A sum of independent Gaussians is Gaussian with means and variances adding; Var(cX) = c²Var(X), so Var(α√E) = σ₁²E.</dd><dt>Method</dt><dd>Assume b = +1 (symmetric) → mean and variance of the decision variable z → error when z ≤ 0 → P = Q(mean / standard deviation).</dd><dt>Key result</dt><dd>Summing M branches with equal weights multiplies the mean by M and the variance by M, so the standard deviation grows by √M and the Q argument by √M.</dd><dt>Common mistakes</dt><dd>Do not forget the factor E in σ₁²E; the standard deviation is √(σ₁²E + σ₂²), not σ₁√E + σ₂.</dd><dt>Physical meaning</dt><dd>Even without noise (σ₂ = 0) the error rate is Q(α₀/σ₁) ≠ 0: the fading factor itself can become negative and flip the symbol, a fading-induced floor. Combining M branches lowers it to Q(√M α₀/σ₁).</dd><dt>Variation</dt><dd>If the receiver knew each α<sub>k</sub> it could weight by α<sub>k</sub> (MRC, p.15); here it does not, so equal weights are used.</dd></dl></div>
     </div>
     <!-- /EN:p4q3 -->
+<!-- TEACH:begin 48 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 11 周录音</span></div><ul><li>从题目里框出来的接收信号 y<sub>k</sub> 出发。α 是乘性噪声（乘在信号上），w 是加性噪声。</li><li>老师总结的三步：① b 等概取 ±1，只算 b = +1 就行（两种情况结果一样）；② 判决变量是两个随机变量之和时，先算出<b>总均值和总方差</b>，改写成"均值 + 零均值噪声"，他说这一步最关键；③ 把噪声留在左边、其余移到右边，写出 Q 函数，分母是标准差。</li><li>(b) <b>等权合并（equal weight）不是等增益合并（EGC）</b>：EGC 说的是信道增益，等权就是所有 y<sub>k</sub> 直接相加。算出总均值和总方差后，用同样的三步。</li><li>老师说 Practice 4 的三题从简单到复杂，期末<b>不会比这更难</b>；题目会变，但风格相同。</li></ul></div><!-- TEACH:end 48 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P5"><h2>Practice 5 · MIMO<span class="qz out">Quiz 不考</span></h2><span>讲义第 4 章 p.30–34、第 5 章 · 第 12 周</span></div>
+  <div class="group" id="P5"><h2>Practice 5 · MIMO</h2><span>讲义第 4 章 p.30–34、第 5 章 · 第 12 周</span></div>
 
   <article class="ex" id="p5q1">
     <header><span class="pg">P5 · Q1</span><h3>三个子信道的注水容量</h3></header>
@@ -1313,6 +1319,7 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>MIMO capacity with an informed transmitter: eigen-sub-channels plus water-filling (Ch 5 p.19, p.40; Ch 2 p.54–57).</dd><dt>Background</dt><dd>The SVD splits a MIMO channel into non-interfering parallel sub-channels; the water-filling formulas.</dd><dt>Method</dt><dd>① Assume every sub-channel gets power and find γ₀ from Σ(1/γ₀ − 1/γ<sub>i</sub>) = 1; ② check that the weakest γ<sub>i</sub> ≥ γ₀, otherwise drop it and repeat; ③ P<sub>i</sub>/P = 1/γ₀ − 1/γ<sub>i</sub>; ④ C = B Σ log₂(γ<sub>i</sub>/γ₀).</dd><dt>Key numbers</dt><dd>γ₀ = 3/1.0625 = 2.82; powers 0.342, 0.329, 0.329 (sum 1); C = 10 MHz × (4.82 + 7.65) = 124.7 Mbps.</dd><dt>Comparison 1</dt><dd>Equal power (uninformed transmitter): the SNRs become 80/3, 40/3, 40/3 and C = 122.1 Mbps, only 2% less. At high SNR channel knowledge at the transmitter matters little (p.41–42).</dd><dt>Comparison 2</dt><dd>At low SNR the difference is large: dividing all three SNRs by 100 (0.8, 0.4, 0.4), water-filling uses only the first sub-channel and gives 0.85 bit/s/Hz, while equal power gives 0.70 bit/s/Hz, 21% less.</dd><dt>Common mistakes</dt><dd>The γ<sub>i</sub> in water-filling is the SNR if <b>all</b> the power went to that sub-channel; with equal power each gets only P/3; multiply by B at the end.</dd></dl></div>
     </div>
     <!-- /EN:p5q1 -->
+<!-- TEACH:begin 49 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 12 周录音</span></div><ul><li>和今年 Quiz 第 3 题是同一类：用 Σ(1/γ₀ − 1/γ<sub>j</sub>) = 1 求出 γ₀ ≈ 2.8，三个 SNR 都比它大，所以三个子信道都分功率；容量用化简后的 C = B Σ log₂(γ<sub>j</sub>/γ₀) 直接算。</li></ul></div><!-- TEACH:end 49 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -1377,6 +1384,7 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>Reception, decision variables and diversity order of the Alamouti space-time block code (Ch 5 p.21–26).</dd><dt>Background</dt><dd>Complex conjugate (ab)* = a*b*; 2 × 2 matrix multiplication; multiplying noise by a complex c scales its variance by |c|².</dd><dt>Method</dt><dd>① Write y₁ and y₂ for the two slots; ② conjugate y₂ so u₁ and u₂ appear without conjugates; ③ write ỹ = Fu + ṽ; ④ pre-multiply by F<sup>H</sup>; ⑤ divide by ‖h‖ to normalise.</dd><dt>Key properties</dt><dd>X X<sup>H</sup> = ‖s‖²I (orthogonal code) → F<sup>H</sup>F = (|h<sub>A</sub>|² + |h<sub>B</sub>|²)I (the receiver can separate the two symbols completely).</dd><dt>Common mistakes</dt><dd>In slot 2 antenna A sends −u₂* (both the minus sign and the conjugate); the noise in z₁ is h<sub>A</sub>*w₁ + h<sub>B</sub>w₂*, variance (|h<sub>A</sub>|² + |h<sub>B</sub>|²)N₀.</dd><dt>Why order 2</dt><dd>The effective gain |h<sub>A</sub>|² + |h<sub>B</sub>|² is a sum of two independently fading terms; both being small at once is much less likely than one being small. And the transmitter does not need the channel.</dd><dt>Variations</dt><dd>2 transmit, M receive antennas: the gain is a sum of 2M terms |h|², diversity 2M (full diversity). 2025-26 S2 asks for the statistics of ŝ: unbiased, variance σ²/‖h‖². Compared with 1 × 2 MRC the diversity is the same but 3 dB is lost (power split between two antennas, p.30).</dd></dl></div>
     </div>
     <!-- /EN:p5q2 -->
+<!-- TEACH:begin 50 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 12 周录音</span></div><ul><li>老师的习惯（他说不强求，考试时也不用画）：先画个草图，标出天线 A、B 和时隙 1、2 各发什么，再写出两个时隙的接收信号 y₁、y₂。</li><li>第二个式子里是 u₁*、u₂*，两个方程有四个未知数，解不出来。<b>把 y₂ 整个取共轭</b>，两个式子就只含 u₁、u₂。这就是讲义里用矩阵做的那步转换的标量版本。</li><li>写成向量形式后，u₁、u₂ 各乘的是一个向量，还不能当判决变量。用 h₁/‖h₁‖、h₂/‖h₂‖ 去投影（做内积），两个向量正交，交叉项为 0，得到 z₁、z₂。</li><li>判决变量要满足两点：<b>含有要检测的那个符号</b>，而且它乘的是<b>标量</b>，不是向量。</li></ul></div><!-- TEACH:end 50 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
 
@@ -1443,9 +1451,10 @@ window.MathJax = {
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The diversity-multiplexing trade-off d(r) = (N − r)(M − r) and the rate R = r log₂SNR (Ch 4 p.31–34).</dd><dt>Background</dt><dd>Diversity gain d: how fast the error rate falls when the SNR doubles, at most N × M. Multiplexing gain r: how many extra bit/s/Hz per doubling of SNR, at most min(N, M).</dd><dt>Method</dt><dd>① From P<sub>e</sub> = γ<sup>−d</sup> ≤ target find the minimum d; ② list d for r = 0 … min(N, M); ③ take the largest r that meets it; ④ R = r log₂γ, P<sub>e</sub> = γ<sup>−d(r)</sup>.</dd><dt>Key numbers</dt><dd>γ = 10 → d ≥ 3; d(3) = 5 ≥ 3, d(4) = 0 &lt; 3 → r = 3; R = 3 × 3.32 = 9.97 bit/s/Hz, P<sub>e</sub> = 10⁻⁵.</dd><dt>Common mistakes</dt><dd>Use the linear SNR (10 dB → 10, 20 dB → 100); d must be an integer, round up; r cannot exceed min(N, M) = 4.</dd><dt>Variations</dt><dd>At SNR = 20 dB (100): 100<sup>−d</sup> ≤ 10⁻³ → d ≥ 1.5 → 2; r = 3 (d = 5) still works, r = 4 does not → R = 3 log₂100 = 19.9 bit/s/Hz. Given P<sub>e</sub> and d, the SNR is P<sub>e</sub><sup>−1/d</sup>.</dd><dt>Physical meaning</dt><dd>r is the number of independent data streams sent at once, d is the robustness against fading: the antennas can be used either to send more or to send more reliably.</dd></dl></div>
     </div>
     <!-- /EN:p5q3 -->
+<!-- TEACH:begin 51 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 12 周录音</span></div><ul><li>老师的解法：由 P<sub>e</sub> ≤ 10⁻³、SNR = 10 得 d = 3；解 (8 − r)(4 − r) = 3 得 r ≈ 3.35 或 8.65。r 不能超过 min(N, M) = 4，又要取整数，所以 r = 3，再用标准公式算最高速率。(b) 把 r = 3 代回折中公式求 d，再求新的误码率。</li></ul></div><!-- TEACH:end 51 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P6"><h2>Practice 6 · 均衡<span class="qz out">Quiz 不考</span></h2><span>讲义第 6 章 · 第 13 周</span></div>
+  <div class="group" id="P6"><h2>Practice 6 · 均衡</h2><span>讲义第 6 章 · 第 13 周</span></div>
 
   <article class="ex" id="p6q1">
     <header><span class="pg">P6 · Q1</span><h3>二进制 PAM：加不加这个均衡器</h3></header>
@@ -1664,7 +1673,7 @@ window.MathJax = {
     <!-- /EN:p6q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P7"><h2>Practice 7 · OFDM<span class="qz out">Quiz 不考</span></h2><span>讲义第 7 章 · 第 13 周</span></div>
+  <div class="group" id="P7"><h2>Practice 7 · OFDM</h2><span>讲义第 7 章 · 第 13 周</span></div>
 
   <article class="ex" id="p7q1">
     <header><span class="pg">P7 · Q1</span><h3>两径信道上的 OFDM：选 N、算 H_k、分功率</h3></header>
@@ -1864,10 +1873,10 @@ window.MathJax = {
     <!-- /EN:p7q3 -->
     <div class="done"><label><input type="checkbox">已掌握</label></div>
   </article>
-  <div class="group" id="P8"><h2>模拟 Quiz · 自编 12 题<span class="qz in">Quiz 范围</span></h2><span>第 1b 章 + 第 2 章 · 三套（A、B、C）每套 3 题，按 30 分钟练；最后 3 道是专项（自由空间、双径、六种信道效应综合）</span></div>
+  <div class="group" id="P8"><h2>模拟 Quiz · 自编 12 题</h2><span>第 1b 章 + 第 2 章 · 三套（A、B、C）每套 3 题，按 30 分钟练；最后 3 道是专项（自由空间、双径、六种信道效应综合）</span></div>
 
   <article class="ex" id="p8q1">
-    <header><span class="pg">模拟 A · Q1</span><h3>两种信道状态：全概率、贝叶斯与离散 SNR<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">模拟 A · Q1</span><h3>两种信道状态：全概率、贝叶斯与离散 SNR</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz A (self-written)</span></div>
       <p>A wireless link alternates between two states. In the "good" state, which occurs with probability 0.7, the bit error probability is \(10^{-4}\). In the "bad" state, which occurs with probability 0.3, the bit error probability is \(10^{-2}\).</p>
       <p class="zh" lang="zh-CN">一条无线链路在两种状态之间切换。"好"状态出现的概率为 0.7，此时误比特率为 \(10^{-4}\)；"坏"状态出现的概率为 0.3，此时误比特率为 \(10^{-2}\)。</p>
@@ -1940,7 +1949,7 @@ window.MathJax = {
   </article>
 
   <article class="ex" id="p8q2">
-    <header><span class="pg">模拟 A · Q2</span><h3>简化路径损耗模型 + 阴影：中断概率与最大覆盖距离<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">模拟 A · Q2</span><h3>简化路径损耗模型 + 阴影：中断概率与最大覆盖距离</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz A (self-written)</span></div>
       <p>A base station transmits 100 mW. Propagation follows the simplified path loss model \(P_r=P_tK(d_0/d)^{\gamma}\) with \(K_{dB}=-31.5\) dB, \(d_0=1\) m and \(\gamma=3.6\). The receiver needs a received power of at least −110 dBm to avoid outage. Log-normal shadowing with a standard deviation of 6 dB is present.</p>
       <p class="zh" lang="zh-CN">基站发射功率为 100 mW。传播服从简化路径损耗模型 \(P_r=P_tK(d_0/d)^{\gamma}\)，其中 \(K_{dB}=-31.5\) dB，\(d_0=1\) m，\(\gamma=3.6\)。接收功率至少要 −110 dBm 才不中断。存在对数正态阴影，标准差为 6 dB。</p>
@@ -2087,7 +2096,7 @@ window.MathJax = {
   </article>
 
   <article class="ex" id="p8q3">
-    <header><span class="pg">模拟 A · Q3</span><h3>离散时延谱、多普勒、衰落类型与 AFD<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">模拟 A · Q3</span><h3>离散时延谱、多普勒、衰落类型与 AFD</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz A (self-written)</span></div>
       <p>A mobile channel has the discrete power delay profile below. The system transmits 50 k symbols/s on a 1.8 GHz carrier, and the mobile moves at 72 km/h.</p>
       <p class="zh" lang="zh-CN">某移动信道的离散功率时延谱如下表。系统在 1.8 GHz 载频上以 50 k 符号/秒发送，移动台速度为 72 km/h。</p>
@@ -2282,7 +2291,7 @@ window.MathJax = {
   </article>
 
   <article class="ex" id="p8q4">
-    <header><span class="pg">模拟 B · Q1</span><h3>瑞利衰落：中断概率与衰落余量<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">模拟 B · Q1</span><h3>瑞利衰落：中断概率与衰落余量</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz B (self-written)</span></div>
       <p>A link operates over a Rayleigh fading channel with an average received SNR of 20 dB. The receiver needs an instantaneous SNR of at least 7 dB.</p>
       <p class="zh" lang="zh-CN">某链路工作在瑞利衰落信道上，平均接收 SNR 为 20 dB。接收机要求瞬时 SNR 至少为 7 dB。</p>
@@ -2419,7 +2428,7 @@ window.MathJax = {
   </article>
 
   <article class="ex" id="p8q5">
-    <header><span class="pg">模拟 B · Q2</span><h3>四个测量点拟合路径损耗模型，再求中断概率<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">模拟 B · Q2</span><h3>四个测量点拟合路径损耗模型，再求中断概率</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz B (self-written)</span></div>
       <p>The path gain measurements below were taken at four distances from a transmitter. The reference distance is \(d_0=1\) m.</p>
       <p class="zh" lang="zh-CN">在离发射机四个不同距离处测得以下路径增益，参考距离 \(d_0=1\) m。</p>
@@ -2544,7 +2553,7 @@ window.MathJax = {
   </article>
 
   <article class="ex" id="p8q6">
-    <header><span class="pg">模拟 B · Q3</span><h3>香农容量、带宽翻倍与注水<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">模拟 B · Q3</span><h3>香农容量、带宽翻倍与注水</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz B (self-written)</span></div>
       <p>A receiver gets a signal power of −90 dBm over a bandwidth of 5 MHz. The noise power spectral density is −174 dBm/Hz.</p>
       <p class="zh" lang="zh-CN">接收机在 5 MHz 带宽内收到 −90 dBm 的信号功率，噪声功率谱密度为 −174 dBm/Hz。</p>
@@ -2672,7 +2681,7 @@ window.MathJax = {
   </article>
 
   <article class="ex" id="p8q7">
-    <header><span class="pg">模拟 C · Q1</span><h3>宏分集：中断概率降多少、相当于省了多少 dB<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">模拟 C · Q1</span><h3>宏分集：中断概率降多少、相当于省了多少 dB</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz C (self-written)</span></div>
       <p>A mobile station is served by two base stations at the same distance. From each base station the average received power due to path loss alone is −95 dBm, and the receiver needs at least −105 dBm to avoid outage. Each link experiences log-normal shadowing with a standard deviation of 8 dB, and the shadowing of the two links is statistically independent.</p>
       <p class="zh" lang="zh-CN">一个移动台由两个距离相同的基站服务。只考虑路径损耗时，从每个基站收到的平均功率都是 −95 dBm，接收机至少需要 −105 dBm 才不中断。每条链路都有标准差为 8 dB 的对数正态阴影，两条链路的阴影统计独立。</p>
@@ -2745,7 +2754,7 @@ window.MathJax = {
   </article>
 
   <article class="ex" id="p8q8">
-    <header><span class="pg">模拟 C · Q2</span><h3>衰落类型判断，从观测次数求 LCR 和每秒错误符号数<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">模拟 C · Q2</span><h3>衰落类型判断，从观测次数求 LCR 和每秒错误符号数</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz C (self-written)</span></div>
       <p>A system transmits 50 k symbols/s (take the signal bandwidth to be about 50 kHz) over a mobile channel with a coherence bandwidth of 200 kHz and a maximum Doppler shift of 100 Hz.</p>
       <p class="zh" lang="zh-CN">某系统以 50 k 符号/秒发送（信号带宽取约 50 kHz），信道的相干带宽为 200 kHz，最大多普勒频移为 100 Hz。</p>
@@ -2821,7 +2830,7 @@ window.MathJax = {
   </article>
 
   <article class="ex" id="p8q9">
-    <header><span class="pg">模拟 C · Q3</span><h3>SNR、SIR、SINR，干扰消除，瑞利信道的中断容量<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">模拟 C · Q3</span><h3>SNR、SIR、SINR，干扰消除，瑞利信道的中断容量</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Mock Quiz C (self-written)</span></div>
       <p>A user's received signal power is 2 mW over a bandwidth of 10 MHz. Co-channel interference from a neighbouring cell arrives with a power of 0.5 mW, and the noise power is 0.05 mW. Treat the interference as Gaussian noise.</p>
       <p class="zh" lang="zh-CN">某用户在 10 MHz 带宽内的接收信号功率为 2 mW。邻区的同频干扰功率为 0.5 mW，噪声功率为 0.05 mW。把干扰当作高斯噪声处理。</p>
@@ -2896,7 +2905,7 @@ window.MathJax = {
   </article>
 
   <article class="ex" id="p8q10">
-    <header><span class="pg">专项 · Q1</span><h3>自由空间模型，以及为什么不能拿它代替简化模型<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">专项 · Q1</span><h3>自由空间模型，以及为什么不能拿它代替简化模型</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Focused practice (self-written)</span></div>
       <p>A transmitter radiates 1 W at 900 MHz. Both antennas have unity gain (\(G_t=G_r=1\)).</p>
       <p class="zh" lang="zh-CN">某发射机在 900 MHz 上发射 1 W，收发天线增益都是 1（\(G_t=G_r=1\)）。</p>
@@ -2969,7 +2978,7 @@ window.MathJax = {
   </article>
 
   <article class="ex" id="p8q11">
-    <header><span class="pg">专项 · Q2</span><h3>双径模型：临界距离和 d⁻⁴<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">专项 · Q2</span><h3>双径模型：临界距离和 d⁻⁴</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Focused practice (self-written)</span></div>
       <p>A base station antenna at height \(h_t=30\) m transmits 10 W at 900 MHz to a mobile antenna at height \(h_r=1.5\) m. Both antennas have unity gain. Use the two-ray model \(P_r\approx P_tG_tG_r\dfrac{(h_th_r)^2}{d^4}\) for \(d>d_c=\dfrac{4h_th_r}{\lambda}\).</p>
       <p class="zh" lang="zh-CN">基站天线高 \(h_t=30\) m，在 900 MHz 上发射 10 W，移动台天线高 \(h_r=1.5\) m，两根天线增益都是 1。当 \(d>d_c=\dfrac{4h_th_r}{\lambda}\) 时使用双径模型 \(P_r\approx P_tG_tG_r\dfrac{(h_th_r)^2}{d^4}\)。</p>
@@ -3042,7 +3051,7 @@ window.MathJax = {
   </article>
 
   <article class="ex" id="p8q12">
-    <header><span class="pg">专项 · Q3</span><h3>一个场景里的六种信道效应：路径损耗、阴影、瑞利、莱斯、平坦/选择性、快/慢<span class="qz in">Quiz</span></h3></header>
+    <header><span class="pg">专项 · Q3</span><h3>一个场景里的六种信道效应：路径损耗、阴影、瑞利、莱斯、平坦/选择性、快/慢</h3></header>
     <div class="orig" lang="en"><div class="orig-lab"><span>Original question · 中英对照</span><span>Focused practice (self-written)</span></div>
       <p>A mobile station is 1 km from a base station that transmits 1 W. The simplified path loss model applies with \(K_{dB}=-40\) dB, \(d_0=1\) m and γ = 3. The noise power at the receiver is −120 dBm. The system sends 10 k symbols/s on a 2 GHz carrier, the rms delay spread of the channel is 2 µs, and the mobile moves at 54 km/h.</p>
       <p class="zh" lang="zh-CN">移动台离基站 1 km，基站发射 1 W。适用简化路径损耗模型：\(K_{dB}=-40\) dB，\(d_0=1\) m，γ = 3。接收机噪声功率为 −120 dBm。系统在 2 GHz 载频上以 10 k 符号/秒发送，信道的 rms 时延扩展为 2 µs，移动台速度为 54 km/h。</p>

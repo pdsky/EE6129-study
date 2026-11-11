@@ -152,12 +152,12 @@ JS = r'''
 
 HEAD = '''<div class="wrap">
   <a class="back" href="index.html">← 学习站目录</a>
-  <div class="eyebrow">EE6129 Part 2 · CA2 Quiz · Fri 23 Oct 2026</div>
-  <h1>Quiz 例题总结</h1>
-  <p class="lede">Quiz 范围内的 13 类题，每类都按同一个顺序写：先把符号和含义用中英文列出来，再给公式（标出要背还是考试给），然后用一张“步骤 × 真题 × 模拟题”的对照表走一遍，最后用几个中文例子练变形，附易错点和英文答题句。所有数字都用脚本算过两遍。</p>
+  <div class="eyebrow">EE6129 Part 2 · 第 1b–2 章 · 期末 Q1(a)</div>
+  <h1>第 1b–2 章题型总结</h1>
+  <p class="lede">第 1b 章概率和第 2 章无线信道的 13 类计算题（原为 10 月 23 日 Quiz 准备；期末 Q1(a) 四年里有三年考第 2 章），每类都按同一个顺序写：先把符号和含义用中英文列出来，再给公式（标出要背还是考试给），然后用一张“步骤 × 真题 × 模拟题”的对照表走一遍，最后用几个中文例子练变形，附易错点和英文答题句。所有数字都用脚本算过两遍。</p>
   <div class="notice">
-    <p><b>时间地点</b>：10 月 23 日（周五）3:00–3:30 pm，LT23，闭卷 30 分钟，3 道短题。带认可的计算器、带照片的证件。</p>
-    <p><b>范围</b>：第 1b 章概率、第 2 章无线信道、Practice 1–2。不考第 1a 章、第 3–7 章、积分计算。考卷附 Q 函数表。</p>
+    <p><b>期末</b>：11 月 27 日（周五）2:30 pm，3 小时，HALL N。第 2 章的路径损耗、阴影中断、衰落类型、LCR/AFD、衰落余量、注水在历年 Q1(a) 反复出现。</p>
+    <p><b>范围</b>：本页只覆盖第 1b、2 章和 Practice 1–2；第 3–7 章在「Part 2」讲解页。不考第 1a 章和积分计算。考卷附 Q 函数表。</p>
     <p><b>答题</b>：dB ↔ 线性的换算要写出来，单位写清楚；中间结果保留 3–4 位有效数字，最后再四舍五入。</p>
     <div class="legend"><span><span class="st must">背</span>讲义蓝框，考试不给</span><span><span class="st try">尽量记</span>老师说试着记</span><span><span class="st give">考试给</span>懂含义、会代数</span><span><span class="st def">定义·必会</span>一行定义，自己要会</span></div>
   </div>
@@ -185,7 +185,7 @@ CHEAT = '''
       <tr><td>时间比例 = LCR × AFD；每秒误符号 = LCR × AFD ÷ T<sub>s</sub></td><td><span class="st def">定义·必会</span></td><td>观测 10 秒要先 ÷ 10 得 LCR</td></tr>
       <tr><td>\\(C=B\\log_2(1+\\mathrm{SNR})\\)；SINR \\(=S/(I+N)\\)</td><td><span class="st must">背</span></td><td>SNR 用线性值</td></tr>
       <tr><td>\\(C_\\varepsilon=B\\log_2\\!\\left(1+\\bar\\gamma\\ln\\frac{1}{1-\\varepsilon}\\right)\\)</td><td><span class="st give">考试给</span></td><td>真题都把它印在题里</td></tr>
-      <tr><td>注水 \\(\\dfrac{P_i}{P}=\\dfrac{1}{\\gamma_0}-\\dfrac{1}{\\gamma_i}\\)（\\(\\gamma_i\\ge\\gamma_0\\)，否则 0）</td><td><span class="st try">尽量记</span></td><td>先假设全开解 γ<sub>0</sub>，有 γ<sub>i</sub> &lt; γ<sub>0</sub> 就去掉重算</td></tr>
+      <tr><td>注水 \\(\\dfrac{P_i}{P}=\\dfrac{1}{\\gamma_0}-\\dfrac{1}{\\gamma_i}\\)（\\(\\gamma_i\\ge\\gamma_0\\)，否则 0）</td><td><span class="st must">背</span></td><td>先假设全开解 γ<sub>0</sub>，有 γ<sub>i</sub> &lt; γ<sub>0</sub> 就去掉重算</td></tr>
     </tbody></table></div>
   </section>
 '''
@@ -219,7 +219,7 @@ def body(standalone):
 
 
 def page(standalone):
-    head = ('<title>EE6129 Quiz 例题总结</title>\n'
+    head = ('<title>EE6129 第1b–2章题型总结</title>\n'
             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">\n'
             f'<style>{CSS}</style>\n{MATHJAX}\n')
     if not standalone:
