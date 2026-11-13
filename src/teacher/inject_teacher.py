@@ -4,6 +4,7 @@
 Idempotent: each box sits between <!-- TEACH:begin id --> and <!-- TEACH:end id -->.
 Called at the end of build_exams.py --inject (so build_learn.py / build_bc_learn.py run it) and by build_practice.py.
 Can also be run on its own after hand-editing partA.html.
+Finishes by running ../anim/inject_anim.py (animated figures beside each section).
 """
 import pathlib, re, sys
 
@@ -89,3 +90,7 @@ if __name__ == '__main__':
         b = inject(ART / fn, page)
         out.append(f'{page} {a}/{b}')
     print('teacher notes:', ', '.join(out))
+    # animations wrap the finished sections, so they go in last
+    sys.path.insert(0, str(T.parent / 'anim'))
+    import inject_anim
+    inject_anim.main()

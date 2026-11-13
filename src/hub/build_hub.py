@@ -118,11 +118,85 @@ ol.steps li{margin:.35em 0}
 .note{background:var(--warn-soft);border-radius:8px;padding:8px 12px;font-size:.88rem;margin:12px 0}
 .loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:.9rem;pointer-events:none}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.xmap{display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:12px;margin:10px 0 4px}
+.xq{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px 10px}
+.xq h3{margin:0 0 2px;font-size:1rem;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.xq h3 .qn{font-family:'Barlow Condensed',sans-serif;font-size:1.35rem;color:var(--accent-strong)}
+.xq .sub{font-size:.8rem;color:var(--muted);margin-bottom:6px}
+.xr{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:4px 10px;padding:5px 2px;border-top:1px dashed var(--border);font-size:.86rem;line-height:1.4}
+.xr a{color:inherit;text-decoration:none}
+.xr a:hover,.xr a:focus-visible{color:var(--accent-strong);text-decoration:underline}
+.xr .num{font-family:'Barlow Condensed',sans-serif;font-weight:700;color:var(--muted);margin-right:4px}
+.xr .dots{display:inline-flex;gap:3px}
+.xr .dots i{width:10px;height:10px;border-radius:50%;border:1.6px solid var(--hc);opacity:.45}
+.xr .dots i.on{background:var(--hc);opacity:1}
+.xr .cnt{font-size:.75rem;font-weight:700;color:var(--hc);white-space:nowrap}
+.xr .qs{grid-column:2 / 4;font-size:.74rem;color:var(--muted)}
+.h4{--hc:#c23a32} .h3,.h2{--hc:var(--pa)} .h1{--hc:var(--p2)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .h4{--hc:#f08a7e}}
+:root[data-theme="dark"] .h4{--hc:#f08a7e}
+.xleg{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:.8rem;color:var(--muted);margin:4px 0}
+.xleg span{display:inline-flex;align-items:center;gap:5px}
+.xleg i{width:10px;height:10px;border-radius:50%;background:var(--hc);display:inline-block}
+@media (max-width:440px){.xmap{grid-template-columns:1fr}}
 @media (max-width:640px){nav.tabs .long{display:none} nav.tabs .short{display:inline} .brand{font-size:1.15rem}}
 '''
 
 def tab_link(t, text):
     return f'<a href="#{t}" data-tab="{t}">{text}</a>'
+
+def exam_map():
+    """考试重点图: for each final-exam question, the lecture sections it tested in the 4 past papers."""
+    sys.path.insert(0, str(REPO / 'src' / 'anim'))
+    import re as _re
+    from exam_hits import HITS, PAPERS, SHORT, load_questions
+    from inject_anim import sections_of, strip, PAGES
+    qs = load_questions()
+    titles, has_anim = {}, set()
+    for pg, fn in PAGES.items():
+        src = (ART / fn).read_text(encoding='utf-8')
+        has_anim |= {pg + ':' + m.replace('_', '.') for m in _re.findall(rf'id="asec-{pg}-([\d_]+)"', src)}
+        st = strip(src)
+        for sec, (a, b, e) in sections_of(st).items():
+            h = st[a:b]
+            h = _re.sub(r'<span class="zh-num">.*?</span>|<span class="imp[^"]*">.*?</span>', '', h)
+            titles[pg + ':' + sec] = _re.sub(r'<[^>]+>', '', h).strip()
+    groups = [('Q1', 'Part 2 · 信道、检测、分集、MIMO', '第 2–5 章'), ('Q2', 'Part 2 · 均衡 + OFDM', '第 6–7 章'),
+              ('Q3', 'Part A · 蜂窝计算', 'Erlang、复用、SIR、扇区'), ('Q4', 'Part A/B/C · 简答', 'IoT 几乎每年')]
+    tab = {'p2': 'p2', 'A': 'A', 'B': 'B', 'C': 'C'}
+    pname = {'p2': 'Part 2', 'A': 'Part A', 'B': 'Part B', 'C': 'Part C'}
+    order = [p for p, _ in PAPERS]
+    cards = []
+    for g, name, sub in groups:
+        rows = {}
+        for qid, secs in HITS.items():
+            q = qs[qid]
+            if not q['q'].startswith(g):
+                continue
+            for sec in secs:
+                rows.setdefault(sec, []).append(q)
+        def key(sec):
+            pg, n = sec.split(':')
+            return (-len({q['paper'] for q in rows[sec]}), list(tab).index(pg), [int(x) for x in n.split('.')])
+        out = []
+        for sec in sorted(rows, key=key):
+            pg, n = sec.split(':')
+            hit = {q['paper'] for q in rows[sec]}
+            y = len(hit)
+            dots = ''.join(f'<i class="{"on" if p in hit else ""}" title="{nm}"></i>' for p, nm in PAPERS)
+            cnt = '4 年都考' if y == 4 else f'{y} / 4 年'
+            anchor = f'asec-{pg}-{n.replace(".", "_")}' if sec in has_anim else ''
+            ql = ' · '.join(f'{SHORT[q["paper"]]} {q["q"]}' for q in sorted(rows[sec], key=lambda q: order.index(q['paper'])))
+            out.append(f'<div class="xr h{y}"><span class="dots">{dots}</span>'
+                       f'<a href="#{tab[pg]}" data-tab="{tab[pg]}" data-anchor="{anchor}"><span class="num">{pname[pg] if pg != "p2" else ""} {n}</span>{titles[sec]}</a>'
+                       f'<span class="cnt">{cnt}</span><span class="qs">{ql}</span></div>')
+        cards.append(f'<div class="xq"><h3><span class="qn">{g}</span>{name}</h3><div class="sub">{sub} · 点小节名直接跳到讲解</div>{"".join(out)}</div>')
+    legend = ('<div class="xleg"><span>四个圆点 = 2023-24 S2 · 2024-25 S2 · 2025-26 S1 · 2025-26 S2，实心 = 那份卷考了</span>'
+              '<span class="h4"><i></i>4 年都考</span><span class="h3"><i></i>考过 2–3 年</span><span class="h1"><i></i>考过 1 次</span></div>')
+    return legend + '<div class="xmap">' + ''.join(cards) + '</div>'
+
+
+XMAP = exam_map()
 
 GUIDE_LEARN = f'''
 <div class="guide">
@@ -145,11 +219,16 @@ GUIDE_LEARN = f'''
     </tbody>
   </table></div>
 
+  <h2>考试重点图（按 4 份历年卷，哪一节考过几次）</h2>
+  <p class="lede">每道大题下面列出历年真题实际考到的讲义小节，考的次数越多排越前。讲解页里这些小节的标题下面也有同样的「🎯 期末考点」标记，点上面的题号可以跳到章末那道真题。</p>
+  {XMAP}
+
   <h2>老师说过的期末规则</h2>
   <ul>
     <li>Part 2：讲义里<b>蓝框公式要背</b>，没框的公式考试会给但要懂符号含义；不考积分；按步骤给分，dB ↔ 线性换算不写会扣分。</li>
     <li>Part 2 期末题出自 <b>Practice 题或讲义例题，或它们的变形</b>；把讲义和 7 份 Practice 吃透就够，不用看课外材料。老师说他出的两题比 Quiz 难。</li>
     <li>每份讲解页里粉色的「▶ 老师课上强调」框，是按上课录音整理的重点；章末附了对应的历年真题。</li>
+    <li>每一小节都配了「▶ 动画示意」：窗口够宽时在正文右边，跟着你往下滚；手机或窄窗口时在小节标题下面。分步的点「下一步 ▶」一步步看，带滑块的可以拖动改参数，看结果怎么变。</li>
   </ul>
 
   <h2>建议的复习顺序</h2>
@@ -279,7 +358,7 @@ JS = r'''
   tabs.forEach(function(b){ b.addEventListener('click', function(){ show(b.dataset.tab); }); });
   document.getElementById('guide').addEventListener('click', function(e){
     var a = e.target.closest('a[data-tab]'); if (!a) return;
-    e.preventDefault(); show(a.dataset.tab);
+    e.preventDefault(); show(a.dataset.tab, a.dataset.anchor || null);
   });
   window.addEventListener('hashchange', function(){ show(location.hash.slice(1) || 'guide'); });
   show(location.hash.slice(1) || 'guide');

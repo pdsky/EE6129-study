@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>动画测试台</title>
+<link rel="stylesheet" href="_tokens.css">
+<link rel="stylesheet" href="anim.css">
+<style>
+body{padding:16px;}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px;font-size:14px;}
+.bar button{font:inherit;padding:4px 10px;border-radius:8px;border:1px solid var(--line-strong);background:var(--card);color:var(--ink);cursor:pointer;}
+#rep{font-family:var(--f-mono);font-size:12px;white-space:pre-wrap;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:8px 10px;margin-bottom:14px;}
+#grid{display:grid;grid-template-columns:repeat(auto-fill,430px);gap:18px;align-items:start;}
+body.narrow #grid{grid-template-columns:343px;}
+.cell .id{font-family:var(--f-mono);font-size:11px;color:var(--ink-faint);margin:0 0 4px 4px;}
+</style>
+</head>
+<body>
+<div class="bar">
+  <b id="ttl">动画测试台</b>
+  <button onclick="document.documentElement.dataset.theme=document.documentElement.dataset.theme==='dark'?'light':'dark'">切换深色/浅色</button>
+  <button onclick="document.body.classList.toggle('narrow')">手机宽度 343px</button>
+  <span>用法：harness.html?f=p2_ch6_7（不带 .js）；可用逗号连多个文件；&amp;only=p2:6.3 只看一个</span>
+</div>
+<div id="rep">selftest 运行中…</div>
+<div id="grid"></div>
+<script src="core.js"></script>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  var files = (q.get('f') || '_example').split(',');
+  document.getElementById('ttl').textContent = '动画测试台 · ' + files.join(', ');
+  files.forEach(function (f) { document.write('<script src="' + f + '.js?v=' + Date.now() + '"><\/script>'); });
+})();
+</script>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search), only = q.get('only');
+  var grid = document.getElementById('grid');
+  window.ANIM.ORDER.forEach(function (id) {
+    if (only && id !== only) return;
+    var c = document.createElement('div'); c.className = 'cell';
+    c.innerHTML = '<div class="id">' + id + '</div><figure class="anim" data-anim="' + id + '"></figure>';
+    grid.appendChild(c);
+  });
+  window.addEventListener('load', function () {
+    setTimeout(function () {
+      var errs = [];
+      var oe = console.error; console.error = function () { errs.push([].slice.call(arguments).join(' ')); oe.apply(console, arguments); };
+      var r = window.ANIM.selftest(12);
+      window.__report = r;
+      var bad = r.filter(function (x) { return !x.ok || x.nan || x.nodes < 3; });
+      document.getElementById('rep').textContent = 'selftest: ' + r.length + ' 个动画，' + (bad.length ? bad.length + ' 个有问题' : '全部通过') + '\n' +
+        r.map(function (x) { return (x.ok && !x.nan && x.nodes >= 3 ? 'ok  ' : 'BAD ') + x.id + '  mode=' + x.mode + '  nodes=' + x.nodes + (x.nan ? '  NaN/undefined in SVG' : '') + (x.err ? '\n    ' + x.err.split('\n').slice(0, 3).join('\n    ') : ''); }).join('\n') +
+        (errs.length ? '\nconsole.error:\n' + errs.join('\n') : '');
+      window.__errors = errs;
+    }, 300);
+  });
+})();
+</script>
+</body>
+</html>
