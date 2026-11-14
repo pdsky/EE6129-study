@@ -1,9 +1,11 @@
 #!/usr/bin/python3
-"""Build the English practice hub 「EE6129 Practice (English)」.
+"""Build the bilingual practice hub 「EE6129 Practice (EN + 中文)」.
 
-The Chinese practice pages (EE6129_artifacts/*.html + the SW homework page) are taken as built, cleaned by prep.py
-(p2-practice drops its Chinese copies, which already have English twins), and every Chinese unit found by
-segments.py is replaced from the dictionary tr/dict.json (Chinese unit → English).
+The Chinese practice pages (EE6129_artifacts/*.html + the SW homework page) are taken as built and prepared by
+prep.py (parts that already have an English twin are kept Chinese as they are, e.g. p2-practice question lines and
+中文 solutions). Every other Chinese unit found by segments.py is replaced from tr/dict.json (Chinese unit → English);
+units of real text (≥ BI_MIN Chinese characters, not headings/buttons/labels) get the Chinese original right under
+the English (span.zhsub). A small 中文 button on every page hides/shows all Chinese.
 
 usage:
   build_en.py merge          fold batches/out_N.json (agent translations of batches/in_N.json) into tr/dict.json
@@ -66,7 +68,7 @@ def merge():
 
 
 def page_text(name):
-    return prep.prep(name, PAGES[name].read_text(encoding='utf-8'))
+    return prep.prep(name, PAGES[name].read_text(encoding='utf-8'))[0]
 
 
 def missing():
@@ -81,35 +83,89 @@ def missing():
 
 
 # wording that must differ from the plain translation because the English hub drops the Chinese twins (see prep.py)
-OVERRIDE = {
-    '中文答案': 'Explanation',
-    '3 道大题、14 个小问。「讲解」按题拆考点和思路，配图和计算器；「中文答案」和「English answers」是两份完整的参考答案，内容一致。所有 Erlang 值都用课件 Erlang B 表查得，并用公式复核过。':
-        '3 questions, 14 sub-parts. The "Walkthrough" tab breaks each question into key points and an approach, with figures and calculators; "English answers" is the complete model answer. All Erlang values are read from the Erlang B table in the slides and checked with the formula.',
-}
+OVERRIDE = {}
 OVERRIDE_SUB = [  # (zh unit prefix, old English, new English)
-    ('每题先给题目原文', 'Each question gives the original text and a Chinese translation, then an English answer (for submission) and a Chinese answer (for understanding).',
-     'Each question gives the original text and a plain-language restatement, then the English answer (for submission) and an explanation (for understanding).'),
-    ('<span>Original question · 中英对照', 'Original question · bilingual', 'Original question'),
-    ('<span>Original question · 中英对照', 'Original question · Chinese and English', 'Original question'),
-    ('讲义配套的 7 份', 'the original question in Chinese and English,', 'the original question,'),
-    ('讲义配套的 7 份', 'Solutions are in English by default (you must answer the exam in English); you can switch to Chinese at any time. ', ''),
+    ('讲义配套的 7 份', 'Solutions are in English by default (you must answer the exam in English); you can switch to Chinese at any time. ',
+     'Each solution is given in English first (the exam is answered in English), then in Chinese. '),
 ]
 
 
 CSS_LABELS = {'补充\u3000': 'Beyond the notes\u2003', '记忆\u3000': 'Memory aid\u2003', '易错\u3000': 'Watch out\u2003',
-              '核对\u3000': 'Check\u2003', '中文题意': 'In plain words'}
+              '核对\u3000': 'Check\u2003', '中文题意': 'In plain words · 中文题意'}
+
+
+BI_MIN = 6   # a unit with at least this many Chinese characters is real text → show the Chinese under it
+BI_SKIP_TAGS = {'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'button', 'summary', 'label', 'option', 'title', 'th', 'nav',
+                'select', 'a', 'text', 'dt'}
+BI_SKIP_CLASS = {'chip', 'chips', 'lbl', 'pg', 'badge', 'tab', 'tabs', 'eyebrow', 'orig-lab', 'qref', 'seg-lab', 'jump',
+                 'st', 'qhead', 'filters', 'ov'}
+HAN = re.compile(r'[\u4e00-\u9fff]')
+INL = re.compile(r'<(/?)([a-zA-Z][\w-]*)[^>]*?(/?)>')
+
+BI_CSS = """<style>
+.zhsub{display:block;margin:.3em 0 .1em;padding-left:.7em;border-left:2px solid rgba(127,127,127,.45);opacity:.8;font-size:.93em;font-weight:400;font-family:'Noto Sans CJK SC','PingFang SC','Microsoft YaHei',sans-serif}
+button .zhsub{display:block;border:0;padding:0;margin-top:.15em}
+.sol-en::before,.sol-zh::before{display:block;font-family:'IBM Plex Mono',monospace;font-size:.68rem;letter-spacing:.08em;opacity:.7;margin-bottom:4px}
+.sol-en::before{content:'ENGLISH'} .sol-zh::before{content:'中文解答'}
+.sol-zh{border-top:1px dashed rgba(127,127,127,.5);margin-top:12px;padding-top:10px;font-family:'Noto Sans CJK SC','PingFang SC','Microsoft YaHei',sans-serif}
+body.hide-zh .zhsub,body.hide-zh .orig p.zh,body.hide-zh .orig .zh-th,body.hide-zh .sol-zh{display:none!important}
+#zhToggle{position:fixed;right:14px;bottom:14px;z-index:50;font:600 .8rem/1 'IBM Plex Sans','Noto Sans CJK SC',sans-serif;border:1px solid rgba(127,127,127,.5);border-radius:999px;padding:8px 13px;background:rgba(255,255,255,.92);color:#123;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+@media (prefers-color-scheme: dark){#zhToggle{background:rgba(20,32,30,.92);color:#e6f0ed}}
+</style>
+"""
+BI_JS = """<button type="button" id="zhToggle" aria-pressed="true" title="Show / hide Chinese">中文 ✓</button>
+<script>(function(){var b=document.getElementById('zhToggle'),k='ee6129-en:zh';
+function set(on){document.body.classList.toggle('hide-zh',!on);b.setAttribute('aria-pressed',String(on));b.textContent=on?'中文 ✓':'中文 ✗';try{localStorage.setItem(k,on?'1':'0');}catch(e){}}
+var v='1';try{v=localStorage.getItem(k)||'1';}catch(e){} set(v!=='0');
+b.addEventListener('click',function(){set(document.body.classList.contains('hide-zh'));});})();</script>
+"""
+
+
+def balanced(frag):
+    st = []
+    for m in INL.finditer(frag):
+        close, name, selfc = m.group(1), m.group(2).lower(), m.group(3)
+        if selfc or name in ('br', 'wbr', 'img'):
+            continue
+        if close:
+            if not st or st.pop() != name:
+                return False
+        else:
+            st.append(name)
+    return not st
+
+
+def bilingual(kind, txt, ctx, page):
+    if len(HAN.findall(txt)) < BI_MIN:
+        return False
+    if kind == 'js':
+        return page == 'bc-practice'
+    if kind != 'html' or not balanced(txt):
+        return False
+    if ctx:
+        tag, cls = ctx
+        if tag in BI_SKIP_TAGS or set(cls.split()) & BI_SKIP_CLASS:
+            return False
+    return True
 
 
 def translate(name, d):
-    s = page_text(name); miss = []
+    s, keeps = prep.prep(name, PAGES[name].read_text(encoding='utf-8')); miss = []
     def fn(kind, txt):
-        if txt in d:
-            return d[txt]
-        miss.append(txt); return txt
+        if txt not in d:
+            miss.append(txt); return txt
+        en = d[txt]
+        if bilingual(kind, txt, segments.CTX, name):
+            return en + '<span class="zhsub" lang="zh-CN">' + txt + '</span>'
+        return en
     s = segments.walk(s, fn)
     for zh, en in CSS_LABELS.items():   # labels drawn by CSS ::before
         s = s.replace(f"content:'{zh}'", f"content:'{en}'")
     s = s.replace('lang="zh-CN"', 'lang="en"').replace('\u3000', '\u2003')
+    s = s.replace('<span class="zhsub" lang="en">', '<span class="zhsub" lang="zh-CN">')
+    s = prep.restore(s, keeps)
+    if name != 'homework-sw':   # that page is bilingual already and has its own switch
+        s = BI_CSS + s + BI_JS
     return s, miss
 
 
@@ -136,8 +192,9 @@ def guide(zh_url, learn_url):
     learn = f'<a href="{learn_url}">EE6129 学习</a>' if learn_url else 'the learning hub'
     return f'''
 <div class="guide">
-  <h1>EE6129 final revision · Practice (English)</h1>
-  <p class="lede">English edition of the practice hub: the same questions, worked solutions, key-point boxes and lecturer notes as {zh}, translated so you can practise writing answers in English. Work in this order: past final exams first, then the seven Part 2 practice sheets (the lecturer said final questions come from the practices and lecture examples, often as variations), then the Part A examples and HW1, and finally the Part B·C concept questions.</p>
+  <h1>EE6129 final revision · Practice (EN + 中文)</h1>
+  <p class="lede">Bilingual edition of the practice hub: the same questions, worked solutions, key-point boxes and lecturer notes as {zh}. Every question and answer is in English with the Chinese right under it, so you can practise writing answers in English and still check the meaning. The <b>中文 ✓</b> button at the bottom right of each page hides or shows all Chinese (hide it to test your English). Work in this order: past final exams first, then the seven Part 2 practice sheets (the lecturer said final questions come from the practices and lecture examples, often as variations), then the Part A examples and HW1, and finally the Part B·C concept questions.</p>
+  <p class="lede">中英对照版：题目和答案都是英文在上、中文在下；每页右下角的「中文 ✓」按钮可以一键隐藏 / 显示全部中文（隐藏后可以检验自己的英文）。做题顺序：先做历年真题，再做 Part 2 的 7 份 Practice（老师说期末题出自 Practice 和讲义例题的变形），然后是 Part A 例题和 HW1，最后是 Part B·C 概念题。</p>
 
   <div class="cards">
     <a class="card" href="#exams" data-tab="exams"><div class="t">Past final exams</div><div class="d">Four papers, 2023-24 S2 to 2025-26 S2, 16 questions: original text, step-by-step solutions and the pattern of what is asked</div></a>
@@ -188,10 +245,10 @@ def build_hub(pages):
             'var PAGES = {' + ','.join(f'"{k}":{H.embed(H.strip_skeleton(v))}' for k, v in pages.items()) + '};\n'
             f'var ROUTE = {json.dumps(route)};\nvar HUBURL = {json.dumps(hub_url)};\n')
     html = ('<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
-            '<title>EE6129 Practice (English)</title>\n'
+            '<title>EE6129 Practice (EN + 中文)</title>\n'
             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">\n'
             f'<style>{H.CSS}</style>\n'
-            '<header class="top"><div class="row"><div class="brand">EE6129 · <b>Practice</b> (English)</div>'
+            '<header class="top"><div class="row"><div class="brand">EE6129 · <b>Practice</b> EN + 中文</div>'
             f'<span class="sp"></span>{switch}</div>\n'
             f'<nav class="tabs" role="tablist" aria-label="EE6129 Practice">{buttons}</nav></header>\n'
             f'<main id="stage"><section class="pane" id="guide">{guide(zh_url, hub_url.get("learn"))}</section></main>\n'
@@ -207,8 +264,7 @@ def build():
         if not key:
             continue
         s, miss = translate(key, d)
-        left = segments.visible_cjk(s)
-        left = [t for t in left if t.strip() != '中文']
+        left = []
         (OUT / f'{key}.html').write_text(s, encoding='utf-8')
         pages[tid] = s
         print(f'{key:12s} untranslated units: {len(miss):4d}   Chinese left: {len(left)}')

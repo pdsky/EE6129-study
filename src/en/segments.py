@@ -68,16 +68,22 @@ def _js(code, fn):
     return ''.join(out)
 
 
+CTX = None   # (tag name, class) of the block element the current unit sits in; set before each fn() call
+
+
 def walk(s, fn):
-    out = []; run = []
+    global CTX
+    out = []; run = []; ctx = [None]
 
     def flush():
+        global CTX
         if not run:
             return
         txt = ''.join(run); run.clear()
         if has(txt):
             core = txt.strip()
             lead = txt[:len(txt) - len(txt.lstrip())]; trail = txt[len(txt.rstrip()):]
+            CTX = ctx[0]
             out.append(lead + fn('html', core) + trail)
         else:
             out.append(txt)
@@ -87,6 +93,7 @@ def walk(s, fn):
         if t.startswith('<script'):
             flush()
             k = t.find('>') + 1; e = t.rfind('</script>')
+            CTX = ('script', '')
             out.append(t[:k] + _js(t[k:e], fn) + t[e:]); continue
         if t.startswith('<!--') or t.startswith('<style'):
             flush(); out.append(t); continue
@@ -94,7 +101,16 @@ def walk(s, fn):
             name = _tagname(t)
             if name in INLINE:
                 run.append(t); continue
-            flush(); out.append(_attrs(t, fn)); continue
+            flush()
+            if t.startswith('</'):
+                ctx[0] = None
+            elif name in ('input', 'img', 'hr', 'br', 'source', 'meta', 'link'):
+                pass   # void element: the text after it still belongs to the enclosing block
+            else:
+                m2 = re.search(r'\sclass="([^"]*)"', t)
+                ctx[0] = (name, m2.group(1) if m2 else '')
+            CTX = None
+            out.append(_attrs(t, fn)); continue
         run.append(t)
     flush()
     return ''.join(out)

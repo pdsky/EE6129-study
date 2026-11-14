@@ -401,8 +401,8 @@ def build(hub):
     other_url = HUB_URL.get(other) or ''
     switch = (f'<a class="switch" href="{other_url}">{"去练习 →" if hub == "learn" else "← 去学习"}</a>'
               if other_url else '')
-    if hub == 'practice' and art_url('hub-practice-en'):   # English edition, built by src/en/build_en.py
-        switch += f'<a class="switch" href="{art_url("hub-practice-en")}">English</a>'
+    if hub == 'practice' and art_url('hub-practice-en'):   # bilingual edition, built by src/en/build_en.py
+        switch += f'<a class="switch" href="{art_url("hub-practice-en")}">中英对照版</a>'
 
     guide = GUIDE_LEARN if hub == 'learn' else GUIDE_PRACTICE
     data = ('var PAGES = {' + ','.join(f'"{k}":{embed(v)}' for k, v in pages.items()) + '};\n'
