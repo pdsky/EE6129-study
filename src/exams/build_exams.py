@@ -21,6 +21,9 @@ import data_2324, data_2425, data_2526s1, data_2526s2
 QS = data_2324.QS + data_2425.QS + data_2526s1.QS + data_2526s2.QS
 BYID = {q['id']: q for q in QS}
 from kp_exams import KP
+sys.path.insert(0, str(E.parent / 'explain'))
+import xpl
+XPL = xpl.load_available('exams')
 missing = [q['id'] for q in QS if q['id'] not in KP]
 if missing:
     raise SystemExit(f'kp_exams.py has no knowledge points for: {missing}')
@@ -88,6 +91,7 @@ CSS = '''
 @media (max-width:560px){.pq-kp dl{grid-template-columns:1fr;gap:0;}.pq-kp dt{margin-top:6px;}}
 .pq-table td{font-family:var(--f-body);font-size:13.5px;line-height:1.55;vertical-align:top;}
 '''
+CSS += xpl.CSS
 
 def chname(titles, page, ch):
     n = int(ch[2:])
@@ -127,12 +131,13 @@ def render(q, ctx, art, titles):
     note = f'<div class="pq-note">注：{q["note"]}</div>' if q.get('note') else ''
     kp = '<div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl>' + ''.join(
         f'<dt>{lab}</dt><dd>{html}</dd>' for lab, html in KP[q['id']]) + '</dl></div>'
+    xbox = xpl.box(XPL[q['id']]) if q['id'] in XPL else ''
     qid = ('pq-' + q['id']) if ctx == 'lecture' else q['id']
     return f'''<div class="pastq" id="{qid}">
   <div class="pq-head">{''.join(tags)}</div>
   <div class="pq-topic"><b>考点</b>：{q['topic']}</div>
   <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en">{q['en']}</div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody">{q['sol']}{note}</div></div>{kp}</details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody">{q['sol']}{note}</div></div>{kp}{xbox}</details>
   <div class="pq-links">{''.join(links)}</div>
 </div>
 '''

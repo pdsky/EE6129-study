@@ -1,7 +1,10 @@
 #!/usr/bin/python3
 """EE6129 Part B + C practice page (question bank + random quiz), data-driven.
 usage: build_bc.py  (writes repo bc-practice.html and artifact copy)"""
-import json, pathlib, re, runpy
+import json, pathlib, re, runpy, sys
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / 'explain'))
+import xpl
+XPL = xpl.load_available('bc')
 
 B = pathlib.Path(__file__).parent
 REPO = pathlib.Path(__file__).resolve().parents[2]
@@ -89,7 +92,7 @@ JS = r'''
     h+='<div class="expl" hidden></div>';
     el.innerHTML=h;
     var ex=el.querySelector('.expl');
-    function showExp(prefix){ ex.innerHTML=(prefix||'')+(q.type==='short'?q.model:q.exp)+learnLink(q); ex.hidden=false; }
+    function showExp(prefix){ ex.innerHTML=(prefix||'')+(q.type==='short'?q.model:q.exp)+learnLink(q); var t=document.querySelector('#xplt [data-q="'+q.id+'"]'); if(t) ex.appendChild(t.firstElementChild.cloneNode(true)); ex.hidden=false; }
     if(q.type==='mcq'){
       var bs=[].slice.call(el.querySelectorAll('.opt'));
       bs.forEach(function(b){ b.addEventListener('click',function(){
@@ -156,9 +159,12 @@ def page(standalone):
             .replace('__LEARN__', json.dumps(learn, ensure_ascii=False))
             .replace('__ANCHOR__', json.dumps(ANCHOR, ensure_ascii=False)))
     body = BODY.replace('__N__', str(len(Qs)))
+    # 知识讲解 + 详细解析 boxes: hidden templates, cloned into the explanation when it is shown
+    body += '<div id="xplt" hidden>\n' + ''.join(
+        f'<div data-q="{q["id"]}">\n{xpl.box(XPL[q["id"]])}</div>\n' for q in Qs if q['id'] in XPL) + '</div>\n'
     head = ('<title>EE6129 Part B·C 练习</title>\n'
             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">\n'
-            f'<style>{CSS}{EXTRA_CSS}</style>\n')
+            f'<style>{CSS}{EXTRA_CSS}{xpl.CSS}</style>\n')
     if not standalone:
         body = body.replace('  <a class="back" href="index.html">← 学习站目录</a>\n', '')
         return head + body + f'<script>{js}</script>\n'

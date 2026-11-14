@@ -2,6 +2,8 @@
 """Assemble EE6129 Part 2 practice page (Practice 1-7 + mock Quiz solutions, random drills).
 usage: build_practice.py [learn_artifact_url]"""
 import pathlib, sys
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent.parent / 'explain'))
+from xpl import CSS as XCSS
 
 B = pathlib.Path(__file__).parent
 REPO = pathlib.Path(__file__).resolve().parents[2]
@@ -387,7 +389,7 @@ JS = r'''
 def page(standalone):
     head = ('<title>EE6129 Part 2 练习</title>\n'
             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">\n'
-            f'<style>{CSS}</style>\n{MATHJAX}\n')
+            f'<style>{CSS}{XCSS}</style>\n{MATHJAX}\n')
     body = BODY + f'<script>{JS}</script>\n'
     if not standalone:
         body = body.replace('  <a class="back" href="index.html">← 学习站目录</a>\n', '')

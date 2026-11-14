@@ -573,7 +573,47 @@ table td:first-child{font-family:var(--f-body);}
   <div class="pq-topic"><b>考点</b>：接入 AP 的过程：扫描 → 认证 → 关联</div>
   <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>4. (a) An Access Point (AP) is a portal of a Wireless Local Area Network (WLAN), which can be used to connect to the Internet. When a user tries to connect to an AP, there will be a connection establishment procedure. Describe the connection establishment process and explain the function of the authentication process.</p>
 <p class="marks">(8 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>① 获取同步信息（扫描）</b>（讲义 Part B p.31–32）：节点要加入已有的 BSS，先要从 AP 获得同步信息。两种方式：<b>被动扫描</b>，等待 AP 周期性广播的信标帧（Beacon）；<b>主动扫描</b>，发送探测请求帧（Probe Request），等待 AP 回复探测响应帧（Probe Response）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>② 认证（Authentication）</b>：找到 AP 后，节点和 AP 交换信息，<b>双方证明自己知道约定的密码</b>。作用：确认对方是合法用户/合法 AP，防止未授权设备接入网络。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>③ 关联（Association）</b>：认证通过后，交换节点和 BSS 的能力信息，并把节点当前的位置告诉分布式系统（DSS，所有 AP 的集合），以便数据能正确地送到这个节点。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext">只有关联完成后，节点才能收发数据帧。</div></div><div class="wans">扫描（被动/主动）→ 认证（互证密码，防止非法接入）→ 关联（交换能力、登记位置）→ 开始传数据</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>节点接入 AP 的过程（Part B p.31–32）。</dd><dt>答题要点</dt><dd>① 扫描获取同步：被动（等 Beacon）或主动（发 Probe Request、收 Probe Response）；② 认证：双方证明知道约定的密码，防止非法接入；③ 关联：交换能力信息，并把节点位置告诉分布式系统 DS；之后才能收发数据。</dd><dt>记忆</dt><dd>"扫 → 认 → 联 → 传"。</dd><dt>易错</dt><dd>认证和关联的顺序别反；关联的作用是让 DS 知道把数据送到哪个 AP。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>① 获取同步信息（扫描）</b>（讲义 Part B p.31–32）：节点要加入已有的 BSS，先要从 AP 获得同步信息。两种方式：<b>被动扫描</b>，等待 AP 周期性广播的信标帧（Beacon）；<b>主动扫描</b>，发送探测请求帧（Probe Request），等待 AP 回复探测响应帧（Probe Response）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>② 认证（Authentication）</b>：找到 AP 后，节点和 AP 交换信息，<b>双方证明自己知道约定的密码</b>。作用：确认对方是合法用户/合法 AP，防止未授权设备接入网络。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>③ 关联（Association）</b>：认证通过后，交换节点和 BSS 的能力信息，并把节点当前的位置告诉分布式系统（DSS，所有 AP 的集合），以便数据能正确地送到这个节点。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext">只有关联完成后，节点才能收发数据帧。</div></div><div class="wans">扫描（被动/主动）→ 认证（互证密码，防止非法接入）→ 关联（交换能力、登记位置）→ 开始传数据</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>节点接入 AP 的过程（Part B p.31–32）。</dd><dt>答题要点</dt><dd>① 扫描获取同步：被动（等 Beacon）或主动（发 Probe Request、收 Probe Response）；② 认证：双方证明知道约定的密码，防止非法接入；③ 关联：交换能力信息，并把节点位置告诉分布式系统 DS；之后才能收发数据。</dd><dt>记忆</dt><dd>"扫 → 认 → 联 → 传"。</dd><dt>易错</dt><dd>认证和关联的顺序别反；关联的作用是让 DS 知道把数据送到哪个 AP。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：接入 AP 的扫描、认证与关联</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>先认识几个名词</h4>
+<ul>
+<li><b>AP</b>（Access Point，接入点）：WLAN 和有线网络之间的"门"，相当于无线局域网的基站。</li>
+<li><b>BSS</b>（Basic Service Set，基本服务集）：一个 AP 和它下面的站点组成的一个"小区"（Part B p.10）。</li>
+<li><b>DS</b>（Distribution System，分布式系统）：把多个 AP（多个 BSS）连起来的骨干网（p.10）。讲义 p.32 写作 DSS，指"所有 AP 的集合"。</li>
+</ul>
+<p>一个节点（手机、电脑）想通过 AP 上网，不能直接发数据，要先完成一个<b>建立连接</b>的过程（connection set up，Part B p.31–32），一共三步。</p>
+<h4><span class="st">详细解析</span>三步展开</h4>
+<ol>
+<li><b>扫描、获取同步信息（scanning）</b>：节点要加入一个已有的 BSS，首先要从 AP 那里得到同步信息（时间、参数）。两种方式：
+<ul><li><b>被动扫描</b>（passive scanning）：节点只是等待 AP 周期性广播的信标帧（Beacon Frame）。省电，但要等。</li>
+<li><b>主动扫描</b>（active scanning）：节点主动发探测请求帧（Probe Request Frame），等 AP 回探测响应帧（Probe Response）。快，但要多发帧。</li></ul></li>
+<li><b>认证（authentication）</b>：找到 AP 后，节点和 AP 交换信息，<b>双方都要证明自己知道约定的密码</b>（p.32）。
+<ul><li>作用：确认对方的身份是合法的，<b>防止未授权的设备接入网络</b>、使用网络资源或窃听；同时节点也确认自己连的是合法的 AP。</li>
+<li>老师课上特别提到这一步，提醒大家自己的 Wi-Fi 一定要设密码。</li></ul></li>
+<li><b>关联（association）</b>：认证通过后才开始关联。节点和 AP 交换关于节点和 BSS 能力（capabilities，如支持的速率）的信息，并<b>把节点当前的位置告诉 DS</b>，这样发给这个节点的数据才知道该送到哪个 AP（p.32）。</li>
+<li><b>开始通信</b>：只有关联完成以后，节点才能收发数据帧（p.32）。</li>
+</ol>
+<p><b>记忆</b>："扫 → 认 → 联 → 传"。题目问了两件事：过程（三步），和认证的作用，第二件要单独写清楚，不要只写一句"认证"。</p>
+<h4><span class="st">课外补充</span>（讲义没有，不写也不扣分）</h4>
+<p>802.11 标准里有开放系统认证和共享密钥认证；现在常用的 WPA2/WPA3 在关联之后还有一个"四次握手"来生成加密密钥。考试按讲义的三步写就够了。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>认证和关联的顺序写反：先认证，后关联。</li>
+<li>扫描只写一种方式：被动和主动都要写，并写出对应的帧名（Beacon、Probe Request/Response）。</li>
+<li>认证的作用只写"安全"两个字：要写"双方证明知道密码 → 确认合法身份 → 防止未授权接入"。</li>
+<li>漏了最后一句"关联完成后才能传数据"。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>The connection establishment between a node and an AP has three steps.</p>
+<p><b>1. Scanning (synchronization):</b> to join an existing BSS, the node first obtains synchronization information from the AP. In passive scanning, the node simply waits to receive a Beacon frame that the AP broadcasts periodically. In active scanning, the node transmits Probe Request frames and waits for a Probe Response from the AP.</p>
+<p><b>2. Authentication:</b> once the node has found an AP, the node and the AP exchange information in which each side proves the knowledge of a given (shared) password. The function of authentication is to verify that the node is a legitimate user (and that the AP is a legitimate AP), so that unauthorised devices are prevented from accessing the network and its resources.</p>
+<p><b>3. Association:</b> after the node is authenticated, it starts the association process, in which the node and the AP exchange information about the node and BSS capabilities, and the distribution system (the set of APs) is informed of the current position of the node, so that frames for the node can be delivered through the correct AP.</p>
+<p>Only after the association is completed can the node transmit and receive data frames.</p></div>
+<div class="ans">一句话：扫描（被动等 Beacon / 主动发 Probe）→ 认证（双方证明知道密码，防止非法接入）→ 关联（交换能力、向 DS 登记位置）→ 才能收发数据。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s1-q4a">→ 在「历年真题」页看整份 2025-26 S1 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->
@@ -701,7 +741,39 @@ table td:first-child{font-family:var(--f-body);}
   <div class="pq-topic"><b>考点</b>：传感器网络的通信架构：节点多跳 → sink → 任务管理节点</div>
   <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(c) A sensor network is composed of many sensor nodes which are densely distributed to sense the environment. Briefly describe the communication architecture in the sensor networks to support the network operations. Describe briefly the communication architecture and show how the sensor nodes can relay the information back to the manager of the sensor network.</p>
 <p class="marks">(5 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>架构</b>（讲义 Part B p.56–57）：传感器节点散布在传感区域里，每个节点都能采集数据并把数据路由回<b>汇聚节点（sink）</b>。数据以<b>多跳、无基础设施</b>的方式，一个节点接一个节点地转发到 sink；sink 再经<b>互联网或卫星</b>与<b>任务管理节点（task manager）</b>通信，管理者在那里获取数据、下发任务。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>设计影响因素</b>：可靠性、可扩展性、生产成本、工作环境、网络拓扑、硬件约束、传输介质和功耗。协议栈分为物理层、数据链路层、网络层、传输层、应用层，外加功耗管理、移动性管理、任务管理三个平面（p.59）。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>示意</b>：传感器 A → 传感器 B → 传感器 C → … → Sink → Internet/卫星 → 任务管理节点（用户）。</div></div><div class="wans">传感器节点多跳转发 → Sink → Internet/卫星 → Task manager</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>无线传感器网络的通信架构（Part B p.56–59）。</dd><dt>答题要点</dt><dd>传感器节点散布在区域内 → 多跳、无基础设施地转发 → 汇聚节点 sink → 互联网或卫星 → 任务管理节点（用户在这里取数据、下发任务）。</dd><dt>加分点</dt><dd>设计因素：可靠性、可扩展性、成本、工作环境、拓扑、硬件约束、传输介质、功耗；协议栈五层加功耗、移动性、任务三个管理平面。</dd><dt>作图提示</dt><dd>画一串节点箭头指向 sink，再从 sink 画到 Internet/卫星和 task manager，标上"multi-hop"。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>架构</b>（讲义 Part B p.56–57）：传感器节点散布在传感区域里，每个节点都能采集数据并把数据路由回<b>汇聚节点（sink）</b>。数据以<b>多跳、无基础设施</b>的方式，一个节点接一个节点地转发到 sink；sink 再经<b>互联网或卫星</b>与<b>任务管理节点（task manager）</b>通信，管理者在那里获取数据、下发任务。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>设计影响因素</b>：可靠性、可扩展性、生产成本、工作环境、网络拓扑、硬件约束、传输介质和功耗。协议栈分为物理层、数据链路层、网络层、传输层、应用层，外加功耗管理、移动性管理、任务管理三个平面（p.59）。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>示意</b>：传感器 A → 传感器 B → 传感器 C → … → Sink → Internet/卫星 → 任务管理节点（用户）。</div></div><div class="wans">传感器节点多跳转发 → Sink → Internet/卫星 → Task manager</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>无线传感器网络的通信架构（Part B p.56–59）。</dd><dt>答题要点</dt><dd>传感器节点散布在区域内 → 多跳、无基础设施地转发 → 汇聚节点 sink → 互联网或卫星 → 任务管理节点（用户在这里取数据、下发任务）。</dd><dt>加分点</dt><dd>设计因素：可靠性、可扩展性、成本、工作环境、拓扑、硬件约束、传输介质、功耗；协议栈五层加功耗、移动性、任务三个管理平面。</dd><dt>作图提示</dt><dd>画一串节点箭头指向 sink，再从 sink 画到 Internet/卫星和 task manager，标上"multi-hop"。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：传感器网络的通信架构</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>无线传感器网络是什么</h4>
+<p>无线传感器网络（WSN，Wireless Sensor Network）由大量小型传感器节点组成，密集地布在要监测的区域里，采集温度、振动等数据。它借用了无线自组网（ad hoc）的技术，但有自己的特点（Part B p.56）：节点数量比 ad hoc 网络多几个数量级；节点密集部署、容易失效，拓扑变化频繁；节点用广播方式通信，而 ad hoc 是点对点；节点的电量、计算能力和存储都很有限。这些特点决定了它的通信方式：<b>没有基础设施、多跳转发</b>。</p>
+<h4><span class="st">详细解析</span>通信架构的要点（Part B p.57–58）</h4>
+<ol>
+<li><b>传感区域（sensor field）</b>：传感器节点散布在传感区域里，每个节点既能采集数据，也能把数据路由回汇聚节点。</li>
+<li><b>汇聚节点（sink）</b>：所有数据最终送到 sink。数据以<b>多跳、无基础设施</b>（multi-hop, infrastructureless）的方式，一个节点接一个节点地转发到 sink。为什么多跳：每个节点电量有限、发射功率小，覆盖距离短，靠邻居接力既省电又能覆盖大片区域。</li>
+<li><b>任务管理节点（task manager node）</b>：sink 通过<b>互联网或卫星</b>与任务管理节点通信。网络的管理者（用户）在任务管理节点获取数据，也从那里向网络下发任务（查询、指令沿相反方向传回节点）。</li>
+<li><b>信息回传的路径</b>：传感器 A → 传感器 B → 传感器 C → … → sink → Internet/卫星 → task manager（用户）。</li>
+</ol>
+<p><b>作图提示</b>：画一个方框表示 sensor field，里面画很多小圆点，从某个节点 A 画几段箭头经过 B、C 到 sink（标"multi-hop"）；sink 在方框边上，再画箭头到云（Internet/satellite），最后到 task manager 和 user。题目说 "show how"，画图加文字最稳。</p>
+<h4><span class="st">详细解析</span>加分点（时间够再写）</h4>
+<ul>
+<li><b>设计影响因素</b>（p.57）：可靠性（容错）、可扩展性、生产成本、工作环境、网络拓扑、硬件约束、传输介质、功耗。</li>
+<li><b>协议栈</b>（p.59）：物理层、数据链路（MAC）层、网络层、传输层、应用层五层，加上功耗管理、移动性管理、任务管理三个平面。老师说协议栈记住五层就行，功耗是最关键的因素，因为节点大多靠电池。</li>
+</ul>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>写成每个节点直接发给基站（单跳）：讲义强调的是多跳、无基础设施。</li>
+<li>漏了 sink 到 task manager 这一段（经 Internet 或卫星）。</li>
+<li>只罗列协议栈各层，没讲"信息怎么一路传回管理者"，题目问的重点是后者。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>The sensor nodes are scattered in a sensor field. Each sensor node has the capability to collect data and to route data back to the sink. Since the nodes have limited power and short transmission range, data are routed back to the sink through a multi-hop, infrastructureless architecture: each node forwards its data to a neighbouring node, which relays it hop by hop towards the sink.</p>
+<p>The sink then communicates with the task manager node via the Internet or a satellite link. The manager (user) obtains the sensed information at the task manager node and can also send tasks/queries back to the sensor nodes in the reverse direction.</p>
+<p>[Sketch: sensor node A → B → C → … → Sink → Internet/Satellite → Task manager node → User.]</p>
+<p>The design of this architecture is influenced by reliability (fault tolerance), scalability, production cost, operating environment, network topology, hardware constraints, transmission media and power consumption. Each node uses a protocol stack of physical, data link, network, transport and application layers, together with power, mobility and task management planes.</p></div>
+<div class="ans">一句话：传感器节点采集数据，多跳、无基础设施地接力转发到 sink，sink 再经 Internet 或卫星送到任务管理节点，管理者在那里取数据、下发任务。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s2-q4c">→ 在「历年真题」页看整份 2025-26 S2 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->
@@ -980,6 +1052,27 @@ table td:first-child{font-family:var(--f-body);}
 .pq-kp dd{margin:0;font-size:14.5px;color:var(--ink);line-height:1.65;}
 @media (max-width:560px){.pq-kp dl{grid-template-columns:1fr;gap:0;}.pq-kp dt{margin-top:6px;}}
 .pq-table td{font-family:var(--f-body);font-size:13.5px;line-height:1.55;vertical-align:top;}
+
+.xpl{--xa:var(--extra,var(--accent));--xs:var(--extra-soft,var(--accent-soft));--xl:var(--line,var(--border));--xp:var(--surface-2,var(--paper,transparent));--xt:var(--ink,var(--text))}
+details.deep.xpl{margin:12px 0 4px;border:1px solid var(--xa);border-left-width:5px;border-radius:10px;background:var(--card,var(--surface,transparent))}
+details.deep.xpl > summary{cursor:pointer;list-style:none;padding:9px 14px;font-weight:700;font-size:.92rem;color:var(--xa);display:flex;gap:8px;align-items:baseline}
+details.deep.xpl > summary::-webkit-details-marker{display:none}
+details.deep.xpl > summary::before{content:'📘';font-size:.9rem}
+details.deep.xpl[open] > summary{border-bottom:1px solid var(--xl)}
+.xpl .deep-body{padding:4px 16px 14px;font-size:.93rem;line-height:1.75;color:var(--xt)}
+.xpl h4{font-size:.95rem;font-weight:700;margin:16px 0 4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px}
+.xpl h4 .st{font-size:.7rem;font-weight:700;background:var(--xs);color:var(--xa);border-radius:6px;padding:1px 8px;letter-spacing:.02em}
+.xpl p{margin:.4em 0;max-width:78ch}
+.xpl ul,.xpl ol{margin:.3em 0;padding-left:1.4em}
+.xpl li{margin:.25em 0}
+.xpl .tw{overflow-x:auto;margin:6px 0}
+.xpl table.mini{border-collapse:collapse;width:auto;min-width:240px;font-size:.86rem}
+.xpl table.mini th,.xpl table.mini td{padding:5px 10px;border-bottom:1px solid var(--xl);text-align:left;vertical-align:top}
+.xpl table.mini th{font-size:.74rem;font-weight:700;color:var(--xa)}
+.xpl .tmpl{border-left:3px solid var(--xa);background:var(--xp);border-radius:0 8px 8px 0;padding:6px 14px;margin:.4em 0;font-size:.9rem}
+.xpl .tmpl p{margin:.3em 0}
+.xpl .calc{overflow-x:auto}
+.xpl .ans{margin-top:12px}
 </style><div class="pastq-block"><h3><span class="zh-num">真题</span>本章的历年期末考题（4 题）</h3><p class="pq-intro">来自 2023-24 S2、2024-25 S2、2025-26 S1、2025-26 S2 期末卷。原题照试卷逐字转录，先自己做，再展开解答。</p><div class="pastq" id="pq-y2324s2-q4ab">
   <div class="pq-head"><span class="pq-paper">2023-24 S2</span><span class="pq-q">Q4(a)(b)</span><span>13 分</span></div>
   <div class="pq-topic"><b>考点</b>：简化 IoT 架构的两个并行栈 · 为什么要引入雾计算</div>
@@ -987,7 +1080,42 @@ table td:first-child{font-family:var(--f-body);}
 <p class="marks">(7 Marks)</p>
 <p>(b) Discuss the necessity to introduce Fog Computing into the simplified IoT architecture.</p>
 <p class="marks">(6 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(a) Core IoT Functional Stack（核心功能栈，三层）</b>（讲义 Part B p.86–91）：<br>① <b>"Things" 层</b>：传感器、执行器等智能物体，要适应部署环境的约束（供电、体积、移动性），同时提供所需的数据；<br>② <b>通信网络层</b>：分四个子层——接入网（最后一公里，802.11ah、802.15.4g、LoRa 等）、网关与回传（把一片区域内的设备汇聚到网关，再用长距离链路送回中心）、网络传输（IP、UDP/TCP）、IoT 网络管理（HTTP、WebSocket 等应用协议）；<br>③ <b>应用与分析层</b>：处理收集的数据，既做分析决策，也反过来控制物体。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(a) Data Management and Compute Stack（数据管理与计算栈）</b>：决定数据在哪里处理，三个层次对应核心栈：<b>边缘（edge/mist）</b>在传感器或设备本身做最基本的过滤和判断；<b>雾（fog）</b>在靠近终端的网关/路由器等网络设备上做实时处理；<b>云（cloud/数据中心）</b>做集中存储、历史数据和大规模分析。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(b) 为什么需要雾计算</b>（讲义 p.103–106）：如果所有数据都直接送云端处理——<br>• 最后一公里带宽很有限，海量数据挤不进去；<br>• 来回时延大，无法做实时响应；<br>• 网关的回传链路常依赖 3G/LTE 甚至卫星，不可靠；<br>• 回传和数据中心要承受的数据量太大，大数据越来越难做实时分析。<br>雾计算把数据处理分散到靠近网络边缘的地方：就近分析能<b>降低时延</b>，<b>卸载核心网</b>大量流量，把<b>敏感数据留在本地</b>；雾节点地理上靠近传感器，具备上下文感知，能形成分布式的边缘控制回路，并在上传前<b>压缩/精简数据</b>。</div></div><div class="wans">两栈：Things / 通信网络（4 子层）/ 应用与分析；Edge / Fog / Cloud。雾计算解决带宽、时延、回传可靠性和数据量问题</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>简化 IoT 架构的两个并行栈；为什么需要雾计算（Part B p.86–91、p.103–106）。</dd><dt>答题要点</dt><dd>核心功能栈三层：Things / 通信网络（四个子层）/ 应用与分析。数据管理与计算栈：边缘 / 雾 / 云。</dd><dt>雾计算的原因</dt><dd>四个问题：最后一公里带宽有限、到云端时延大、回传链路不可靠、数据量太大。四个好处：低时延、卸载核心网、敏感数据留在本地、上传前压缩数据。</dd><dt>记忆</dt><dd>边缘在设备上，雾在网关 / 路由器上，云在数据中心，离终端越来越远。</dd><dt>联系</dt><dd>通信网络层四子层是 2024-25 Q4(b)、2025-26 S2 Q4(d) 的原题；雾计算的特征是 2025-26 S1 Q4(c)。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(a) Core IoT Functional Stack（核心功能栈，三层）</b>（讲义 Part B p.86–91）：<br>① <b>"Things" 层</b>：传感器、执行器等智能物体，要适应部署环境的约束（供电、体积、移动性），同时提供所需的数据；<br>② <b>通信网络层</b>：分四个子层——接入网（最后一公里，802.11ah、802.15.4g、LoRa 等）、网关与回传（把一片区域内的设备汇聚到网关，再用长距离链路送回中心）、网络传输（IP、UDP/TCP）、IoT 网络管理（HTTP、WebSocket 等应用协议）；<br>③ <b>应用与分析层</b>：处理收集的数据，既做分析决策，也反过来控制物体。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(a) Data Management and Compute Stack（数据管理与计算栈）</b>：决定数据在哪里处理，三个层次对应核心栈：<b>边缘（edge/mist）</b>在传感器或设备本身做最基本的过滤和判断；<b>雾（fog）</b>在靠近终端的网关/路由器等网络设备上做实时处理；<b>云（cloud/数据中心）</b>做集中存储、历史数据和大规模分析。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(b) 为什么需要雾计算</b>（讲义 p.103–106）：如果所有数据都直接送云端处理——<br>• 最后一公里带宽很有限，海量数据挤不进去；<br>• 来回时延大，无法做实时响应；<br>• 网关的回传链路常依赖 3G/LTE 甚至卫星，不可靠；<br>• 回传和数据中心要承受的数据量太大，大数据越来越难做实时分析。<br>雾计算把数据处理分散到靠近网络边缘的地方：就近分析能<b>降低时延</b>，<b>卸载核心网</b>大量流量，把<b>敏感数据留在本地</b>；雾节点地理上靠近传感器，具备上下文感知，能形成分布式的边缘控制回路，并在上传前<b>压缩/精简数据</b>。</div></div><div class="wans">两栈：Things / 通信网络（4 子层）/ 应用与分析；Edge / Fog / Cloud。雾计算解决带宽、时延、回传可靠性和数据量问题</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>简化 IoT 架构的两个并行栈；为什么需要雾计算（Part B p.86–91、p.103–106）。</dd><dt>答题要点</dt><dd>核心功能栈三层：Things / 通信网络（四个子层）/ 应用与分析。数据管理与计算栈：边缘 / 雾 / 云。</dd><dt>雾计算的原因</dt><dd>四个问题：最后一公里带宽有限、到云端时延大、回传链路不可靠、数据量太大。四个好处：低时延、卸载核心网、敏感数据留在本地、上传前压缩数据。</dd><dt>记忆</dt><dd>边缘在设备上，雾在网关 / 路由器上，云在数据中心，离终端越来越远。</dd><dt>联系</dt><dd>通信网络层四子层是 2024-25 Q4(b)、2025-26 S2 Q4(d) 的原题；雾计算的特征是 2025-26 S1 Q4(c)。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：简化 IoT 架构两个栈与雾计算</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>简化 IoT 架构：一对三层的并行栈</h4>
+<p>IoT 系统里有成千上万个传感器，数据要从"物"一路送到应用。为了看清楚，讲义（Part B p.86–91）用 Cisco 的<b>简化 IoT 架构</b>：两个并行的三层栈。老师课上说学这一部分用这个简化框架，比另外两个标准好理解。</p>
+<div class="tw"><table class="mini"><thead><tr><th>Core IoT Functional Stack（核心功能栈）</th><th>IoT Data Management and Compute Stack（数据管理与计算栈）</th></tr></thead><tbody>
+<tr><td>Layer 3：应用与分析层（Applications and analytics）</td><td>云（cloud，数据中心）</td></tr>
+<tr><td>Layer 2：通信网络层（Communications network），四个子层</td><td>雾（fog，网关 / 路由器等网络设备）</td></tr>
+<tr><td>Layer 1："Things" 层（传感器、执行器）</td><td>边缘（edge / mist，设备本身）</td></tr>
+</tbody></table></div>
+<p>左边回答"数据怎么<b>传</b>"，右边回答"数据在哪里<b>算</b>"，两者一层对一层。</p>
+<h4><span class="st">详细解析</span>(a) 两个栈的组成（7 分，每个部件写"是什么 + 作用"）</h4>
+<ol><li><b>Things 层</b>：传感器、执行器等智能物体。设计时要适应部署环境的约束（电池或市电、静止或移动、上报频率、数据量、覆盖距离、密度），同时还能提供需要的数据（p.89–91）。</li>
+<li><b>通信网络层</b>：物体不能自给自足时，要和外部系统通信，分四个子层：接入网子层（最后一公里，802.11ah、802.15.4g、LoRa）、网关与回传子层（把一片区域的物体汇聚到网关，再用长距离介质送回中心站）、网络传输子层（IP、UDP/TCP）、IoT 网络管理子层（HTTP、WebSocket 等应用协议）。</li>
+<li><b>应用与分析层</b>：处理收集到的数据，做智能决策，并反过来控制"物"或其他系统改变行为或参数。</li>
+<li><b>数据管理与计算栈</b>：边缘（mist）在传感器 / 设备里做最基本的过滤和判断；雾在离终端最近的网络设备上做实时处理；云做集中存储、历史数据和大规模分析。三者互补，不是替代（p.110–111）。</li></ol>
+<h4><span class="st">详细解析</span>(b) 为什么要引入雾计算（6 分：先问题，再好处）</h4>
+<p>如果所有数据都送到云端集中处理（优点只是简单），讲义 p.103–105 列出的问题：</p>
+<ul><li>最后一公里的 IoT 网络带宽很有限，海量数据送不上去；</li>
+<li>时延大，失去实时响应能力；</li>
+<li>网关的回传常靠 3G/LTE 甚至卫星，不可靠；</li>
+<li>回传上的数据量太大，大数据越来越难做实时分析。</li></ul>
+<p>雾计算（p.106–109）把数据处理分散到尽量靠近 IP 网络边缘的地方，任何有计算、存储和联网能力的设备都可以做雾节点。好处：就近分析<b>降低时延</b>；为核心网<b>卸载</b>大量流量；<b>敏感数据留在本地网络</b>；雾节点地理上靠近传感器，有<b>上下文感知</b>，能形成分布式的边缘控制回路，实时监测和控制设备而不必等云端；上传前先做<b>数据精简</b>（预处理后上层只需批处理一部分数据）。老师课上概括为：分布式处理、不用等中心服务器所以快、上传前先精简、能实时处理、雾节点和终端之间用无线连接。</p>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>两个栈各三层，别把"通信网络层的四个子层"当成第四、五层。</li>
+<li>边缘在设备上，雾在网关 / 路由器上，云在数据中心，距离终端越来越远。</li>
+<li>(b) 只写好处不写问题会显得没回答"necessity"；先写问题再写雾怎么解决。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(a) The simplified IoT architecture consists of two parallel three-layer stacks.</p>
+<p><b>Core IoT Functional Stack.</b> (1) "Things" layer: sensors, actuators and other smart objects; they must fit the constraints of the deployment environment (power source, mobility, reporting frequency, data volume, range, density) while still providing the required information. (2) Communications network layer, divided into four sublayers: the access network sublayer (the last mile, typically wireless such as IEEE 802.11ah, 802.15.4g and LoRa); the gateways and backhaul sublayer (smart objects in an area are organised around a common gateway, which forwards the data over a longer-range medium to a headend station); the network transport sublayer (open, standard network and transport protocols such as IP, UDP and TCP); and the IoT network management sublayer (application protocols such as HTTP and WebSocket that let headend applications exchange data with the sensors). (3) Application and analytics layer: applications process the collected data, make intelligent decisions and, in turn, instruct the things or other systems to adapt their behaviour or parameters.</p>
+<p><b>Data Management and Compute Stack.</b> It defines where the data is processed: at the edge (mist) inside the sensors and devices themselves for basic filtering and simple decisions; in the fog, on network devices such as gateways and routers close to the endpoints, for real-time processing; and in the cloud (data centre) for centralised storage, historical data and large-scale analytics. These layers complement each other.</p>
+<p>(b) If all data were sent to the cloud for centralised processing: the available bandwidth in last-mile IoT networks is very limited; the latency is high, so real-time response is lost; the backhaul from the gateway is often unreliable (3G/LTE or satellite); and the volume of data is too large to transport and to analyse in real time. Fog computing solves these problems by distributing data management as close to the edge of the IP network as possible. Analysing data near where it is collected minimises latency, offloads large amounts of traffic from the core network and keeps sensitive data inside the local network. Because a fog node is geographically close to the sensors it has contextual awareness and can react to events quickly, providing a distributed edge control loop in real time without waiting for the cloud. It also reduces the data (pre-processing) before sending it upstream, so the cloud only needs to handle a subset of the data.</p></div>
+<div class="ans">一句话：核心功能栈 = Things / 通信网络（接入、网关回传、传输、管理四子层）/ 应用分析，计算栈 = 边缘 / 雾 / 云；雾计算是为了解决带宽、时延、回传不可靠和数据量过大四个问题。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2324s2-q4ab">→ 在「历年真题」页看整份 2023-24 S2 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2425s2-q4b">
@@ -995,7 +1123,36 @@ table td:first-child{font-family:var(--f-body);}
   <div class="pq-topic"><b>考点</b>：IoT 通信网络层的四个子层</div>
   <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) Internet of Things (IoT) networks are built around the concept of "things" or smart objects performing functions and delivering new connected services. For the core functional IoT stack, the communication network layer is structured with four sublayers. List down each of these sublayers and briefly describe the each of the features.</p>
 <p class="marks">(8 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>接入网子层（Access network）</b>：IoT 网络的"最后一公里"，通常是无线技术，如 802.11ah、802.15.4g、LoRa；按覆盖范围分 PAN、HAN、NAN、FAN、LAN、WAN 等（讲义 p.89、p.94–95）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>网关与回传子层（Gateways and backhaul）</b>：把一片区域内的多个智能物体汇聚到一个公共网关，网关再用更长距离的介质（如蜂窝、光纤）把数据转发到中心站；物体可以静止或在小范围移动，网关通常固定。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>网络传输子层（Network transport）</b>：用开放、标准化的网络层和传输层协议（IP、UDP/TCP）连接各种设备和介质；要求可扩展到成千上万个传感器并保证安全。IP 能适应低功耗、低带宽、高丢包的网络；TCP 由网络控制可靠传输，UDP 把控制交给应用。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>IoT 网络管理子层（IoT network management）</b>：应用层协议，负责智能物体与头端应用之间的数据交换，如基于 TCP 的 HTTP（传感器作为客户端），以及适合低内存、低带宽、高丢包环境的轻量双向协议 WebSocket。</div></div><div class="wans">Access network / Gateways &amp; backhaul / Network transport / IoT network management</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>IoT 通信网络层的四个子层（Part B p.89–95）。</dd><dt>答题要点</dt><dd>接入网（最后一公里无线：802.11ah、802.15.4g、LoRa；PAN/HAN/NAN/FAN/LAN/WAN）→ 网关与回传（区域汇聚后用长距离介质送回中心）→ 网络传输（IP、UDP/TCP，开放标准、可扩展、安全）→ IoT 网络管理（HTTP、WebSocket 等应用协议）。</dd><dt>记忆</dt><dd>自下而上："接入 → 汇聚回传 → 传输（IP）→ 管理（应用协议）"。</dd><dt>易错</dt><dd>网络传输子层是 IP/TCP/UDP，网络管理子层是 HTTP/WebSocket，别放反。</dd><dt>联系</dt><dd>2025-26 S2 Q4(d) 原题重考；2023-24 Q4(a) 要求把它放进整个栈里写。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>接入网子层（Access network）</b>：IoT 网络的"最后一公里"，通常是无线技术，如 802.11ah、802.15.4g、LoRa；按覆盖范围分 PAN、HAN、NAN、FAN、LAN、WAN 等（讲义 p.89、p.94–95）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>网关与回传子层（Gateways and backhaul）</b>：把一片区域内的多个智能物体汇聚到一个公共网关，网关再用更长距离的介质（如蜂窝、光纤）把数据转发到中心站；物体可以静止或在小范围移动，网关通常固定。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>网络传输子层（Network transport）</b>：用开放、标准化的网络层和传输层协议（IP、UDP/TCP）连接各种设备和介质；要求可扩展到成千上万个传感器并保证安全。IP 能适应低功耗、低带宽、高丢包的网络；TCP 由网络控制可靠传输，UDP 把控制交给应用。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>IoT 网络管理子层（IoT network management）</b>：应用层协议，负责智能物体与头端应用之间的数据交换，如基于 TCP 的 HTTP（传感器作为客户端），以及适合低内存、低带宽、高丢包环境的轻量双向协议 WebSocket。</div></div><div class="wans">Access network / Gateways &amp; backhaul / Network transport / IoT network management</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>IoT 通信网络层的四个子层（Part B p.89–95）。</dd><dt>答题要点</dt><dd>接入网（最后一公里无线：802.11ah、802.15.4g、LoRa；PAN/HAN/NAN/FAN/LAN/WAN）→ 网关与回传（区域汇聚后用长距离介质送回中心）→ 网络传输（IP、UDP/TCP，开放标准、可扩展、安全）→ IoT 网络管理（HTTP、WebSocket 等应用协议）。</dd><dt>记忆</dt><dd>自下而上："接入 → 汇聚回传 → 传输（IP）→ 管理（应用协议）"。</dd><dt>易错</dt><dd>网络传输子层是 IP/TCP/UDP，网络管理子层是 HTTP/WebSocket，别放反。</dd><dt>联系</dt><dd>2025-26 S2 Q4(d) 原题重考；2023-24 Q4(a) 要求把它放进整个栈里写。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：IoT 通信网络层的四个子层</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>通信网络层在整个 IoT 栈里的位置</h4>
+<p>核心 IoT 功能栈有三层：Things 层 → <b>通信网络层</b> → 应用与分析层（讲义 Part B p.88–90）。智能物体（smart objects）如果不能自给自足，就要把采集到的信息报告出去、和别的物体交换、或接受管理平台控制，这些都靠通信网络层。它由下往上分四个子层（p.89–99），可以理解为"数据从传感器走到应用要过的四道关"。</p>
+<div class="tw"><table class="mini"><thead><tr><th>子层</th><th>负责什么</th><th>典型技术</th></tr></thead><tbody>
+<tr><td>接入网（Access network）</td><td>最后一公里，把物体接进网络</td><td>802.11ah、802.15.4g、LoRa；PAN/HAN/NAN/FAN/LAN/WAN</td></tr>
+<tr><td>网关与回传（Gateways and backhaul）</td><td>把一片区域的物体汇聚到网关，再长距离送回中心</td><td>网关 + 蜂窝 / 光纤等长距离链路</td></tr>
+<tr><td>网络传输（Network transport）</td><td>用开放标准的网络层、传输层协议连接各种设备和介质</td><td>IP、UDP、TCP</td></tr>
+<tr><td>IoT 网络管理（IoT network management）</td><td>头端应用和传感器之间的数据交换</td><td>HTTP、WebSocket</td></tr>
+</tbody></table></div>
+<h4><span class="st">详细解析</span>每个子层的特点（为什么要这样设计）</h4>
+<ol><li><b>接入网子层</b>：IoT 网络的最后一公里，通常是无线技术。不同技术的覆盖范围、功耗、速率不同，所以按范围分成 PAN、HAN、NAN、FAN、LAN、WAN 等；技术和它支持的拓扑（星形、网状等）直接相关（p.94–97）。老师课上提到：mesh 拓扑有多条备选路由，更可靠。</li>
+<li><b>网关与回传子层</b>：一个公共通信系统把某一区域的多个物体组织到一个网关周围，网关负责"跨介质"通信，用更长距离的介质把数据转发到头端中心站。物体可以静止或在小范围内移动，网关一般固定（p.98）。</li>
+<li><b>网络传输子层</b>：要支持多行业、多介质，协议必须开放、标准化；还要可扩展到单个网络里成千上万甚至上百万个传感器，并保证安全。IP 满足这些要求，能嵌入各种物体、跑在低功耗、低带宽、高丢包的网络上；上面的 TCP 由网络控制可靠传输，UDP 则把控制交给应用（p.98–99）。</li>
+<li><b>IoT 网络管理子层</b>：应用层协议负责智能物体和其他系统之间的数据传输。例如基于 TCP 的 HTTP（传感器作为客户端连接 IoT 应用）；WebSocket 是轻量的 Web 派生协议，适合低内存、低功耗、低带宽、高丢包环境，提供简单的双向连接（p.99）。</li></ol>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>顺序自下而上：接入 → 网关回传 → 传输 → 管理，按这个顺序写，阅卷人好对。</li>
+<li>网络传输是 IP/TCP/UDP，网络管理是 HTTP/WebSocket，别放反。</li>
+<li>8 分 = 4 个子层 × 2 分：每个子层写"名字 + 作用 + 例子"三样。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>The communications network layer of the Core IoT Functional Stack connects the smart objects to external systems and is divided into four sublayers:</p>
+<p><b>1. Access network sublayer:</b> the last mile of the IoT network, typically wireless technologies such as IEEE 802.11ah, 802.15.4g and LoRa. Technologies are classified by range (PAN, HAN, NAN, FAN, LAN, WAN), and each technology supports particular topologies (e.g. star or mesh).</p>
+<p><b>2. Gateways and backhaul sublayer:</b> smart objects in a given area are organised around a common gateway, which performs the inter-medium communication and forwards the collected data over a longer-range backhaul medium (e.g. cellular or fibre) to a headend central station. The objects may be static or mobile within a limited area, while the gateway is usually static.</p>
+<p><b>3. Network transport sublayer:</b> open, standards-based network and transport protocols, mainly IP with UDP or TCP, connect the variety of devices and media. They must be scalable to thousands or millions of sensors and secure. IP can run over low-power, low-bandwidth and lossy networks; TCP lets the network control reliable delivery, while UDP leaves the control to the application.</p>
+<p><b>4. IoT network management sublayer:</b> application protocols that allow the headend applications to exchange data with the sensors, e.g. HTTP over TCP (the sensor acts as a client of the IoT application) and WebSocket, a lightweight web-derived protocol that provides a simple bidirectional connection in low-memory, low-power, low-bandwidth and high-loss environments.</p></div>
+<div class="ans">一句话：接入网（最后一公里无线：802.11ah、802.15.4g、LoRa）→ 网关与回传（区域汇聚、长距离送回中心）→ 网络传输（IP、UDP/TCP）→ 网络管理（HTTP、WebSocket）。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2425s2-q4b">→ 在「历年真题」页看整份 2024-25 S2 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2526s1-q4bc">
@@ -1005,7 +1162,56 @@ table td:first-child{font-family:var(--f-body);}
 <p class="marks">(10 Marks)</p>
 <p>(c) An outstanding technique that processes data generated by IoT sensors is fog computing. Discuss the key features of fog computing.</p>
 <p class="marks">(7 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(b) 五个难点</b>（讲义 Part B p.82–83）：<br>① <b>可扩展性（Scalability）</b>：设备数量可达数百万，系统如何支撑是关键；网络层可用 IPv6 分配海量地址。<br>② <b>安全（Security）</b>：联网"物"越多，攻击面越大；一个设备被攻破后可以成为攻击其他设备和系统的跳板。<br>③ <b>隐私（Privacy）</b>：传感器收集的大量数据与具体个人及其活动相关，可能包含敏感信息和凭证，如何保护、与谁共享是关键问题。<br>④ <b>大数据与分析（Big data and analytics）</b>：海量传感器产生的数据洪流，要及时处理来自不同来源、不同格式的大量数据才能得到有价值的信息。<br>⑤ <b>互操作性（Interoperability）</b>：各种协议和架构争夺市场和标准，有的私有、有的开放，导致不同设备/网络难以互通。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(c) 雾计算的关键特征</b>（讲义 p.109）：<br>• <b>上下文位置感知与低时延</b>：雾节点尽可能靠近 IoT 终端，就近做分布式计算；<br>• <b>地理分布</b>：雾节点服务的业务需要广泛分布式部署；<br>• <b>部署在大量 IoT 终端附近</b>；<br>• <b>雾节点与终端之间用无线通信</b>，便于连接大量终端、实现可扩展；<br>• <b>用于实时交互</b>：在雾节点预处理数据，上层应用只需批处理数据子集。<br>好处：降低时延、减轻核心网流量、敏感数据留在本地、提供分布式边缘控制回路、减少需要上传的数据量。</div></div><div class="wans">(b) 可扩展性、安全、隐私、大数据分析、互操作性　(c) 低时延/位置感知、地理分布、靠近终端、无线接入、实时交互</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>IoT 的五个难点；雾计算的关键特征（Part B p.82–83、p.109）。</dd><dt>五个难点</dt><dd>可扩展性（数百万设备，IPv6）、安全（攻击面大，可做跳板）、隐私（数据与个人相关）、大数据与分析（多源异构、要及时处理）、互操作性（协议标准林立）。</dd><dt>雾计算特征</dt><dd>位置感知、低时延；地理分布；部署在大量终端附近；与终端无线连接；面向实时交互（雾节点预处理，上层只处理数据子集）。</dd><dt>记忆</dt><dd>难点：规模、安全、隐私、数据、互通。</dd><dt>联系</dt><dd>2023-24 Q4(b) 问"为什么需要雾计算"，可以和这里的特征对照着背。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(b) 五个难点</b>（讲义 Part B p.82–83）：<br>① <b>可扩展性（Scalability）</b>：设备数量可达数百万，系统如何支撑是关键；网络层可用 IPv6 分配海量地址。<br>② <b>安全（Security）</b>：联网"物"越多，攻击面越大；一个设备被攻破后可以成为攻击其他设备和系统的跳板。<br>③ <b>隐私（Privacy）</b>：传感器收集的大量数据与具体个人及其活动相关，可能包含敏感信息和凭证，如何保护、与谁共享是关键问题。<br>④ <b>大数据与分析（Big data and analytics）</b>：海量传感器产生的数据洪流，要及时处理来自不同来源、不同格式的大量数据才能得到有价值的信息。<br>⑤ <b>互操作性（Interoperability）</b>：各种协议和架构争夺市场和标准，有的私有、有的开放，导致不同设备/网络难以互通。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(c) 雾计算的关键特征</b>（讲义 p.109）：<br>• <b>上下文位置感知与低时延</b>：雾节点尽可能靠近 IoT 终端，就近做分布式计算；<br>• <b>地理分布</b>：雾节点服务的业务需要广泛分布式部署；<br>• <b>部署在大量 IoT 终端附近</b>；<br>• <b>雾节点与终端之间用无线通信</b>，便于连接大量终端、实现可扩展；<br>• <b>用于实时交互</b>：在雾节点预处理数据，上层应用只需批处理数据子集。<br>好处：降低时延、减轻核心网流量、敏感数据留在本地、提供分布式边缘控制回路、减少需要上传的数据量。</div></div><div class="wans">(b) 可扩展性、安全、隐私、大数据分析、互操作性　(c) 低时延/位置感知、地理分布、靠近终端、无线接入、实时交互</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>IoT 的五个难点；雾计算的关键特征（Part B p.82–83、p.109）。</dd><dt>五个难点</dt><dd>可扩展性（数百万设备，IPv6）、安全（攻击面大，可做跳板）、隐私（数据与个人相关）、大数据与分析（多源异构、要及时处理）、互操作性（协议标准林立）。</dd><dt>雾计算特征</dt><dd>位置感知、低时延；地理分布；部署在大量终端附近；与终端无线连接；面向实时交互（雾节点预处理，上层只处理数据子集）。</dd><dt>记忆</dt><dd>难点：规模、安全、隐私、数据、互通。</dd><dt>联系</dt><dd>2023-24 Q4(b) 问"为什么需要雾计算"，可以和这里的特征对照着背。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：IoT 五个难点与雾计算特征</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>IoT 为什么难</h4>
+<p>物联网（IoT，Internet of Things）要把原来不联网的"物"（传感器、执行器、家电、车……）都连起来。和传统互联网相比，它的设备<b>数量极多</b>、<b>能力很弱</b>（电池、低算力）、<b>种类繁杂</b>、产生的数据<b>又多又敏感</b>。讲义 Part B p.82–83 把由此带来的障碍归纳为五个：可扩展性、安全、隐私、大数据与分析、互操作性。</p>
+<h4><span class="st">详细解析</span>(b) 五个难点逐个展开（10 分，每个 2 分：名称 + 一两句解释）</h4>
+<ol>
+<li><b>可扩展性（Scalability）</b>：IoT 规模可能达到数百万台设备，整个系统（寻址、接入、管理）如何支撑这么多设备是关键问题。网络层可以用 IPv6 给海量设备分配地址。</li>
+<li><b>安全（Security）</b>：联网的"物"越多，被攻击的面越大。一个设备被黑以后，它的连接能力本身就是威胁：被攻破的设备可以成为攻击其他设备和系统的跳板。很多设备算力弱，难以运行复杂的安全协议。</li>
+<li><b>隐私（Privacy）</b>：传感器越来越多，采集的数据大多和具体的人及其活动有关，可能包含敏感信息和凭证。数据如何保护、是否共享、和谁共享，是关键问题。</li>
+<li><b>大数据与分析（Big data and analytics）</b>：大量传感器会产生数据洪流。数据只有被高效处理才能提供关键信息；难点在于要及时处理来自不同来源、不同格式的海量数据。</li>
+<li><b>互操作性（Interoperability）</b>：各种协议和架构在争夺市场份额和标准地位，有的基于私有组件，有的是开放的。新的 IoT 标准能缓解，但实际网络里仍有多种协议和实现并存，不同厂家的设备难以互通。</li>
+</ol>
+<p><b>记忆</b>：规模、安全、隐私、数据、互通（Scalability, Security, Privacy, Big data, Interoperability）。</p>
+<h4><span class="st">知识讲解</span>为什么需要雾计算</h4>
+<p>如果所有数据都上传到云端处理，会遇到（p.105）：最后一公里带宽很有限；时延很大，做不到实时响应；网关的回传链路（3G/LTE 甚至卫星）不可靠；回传的数据量太大；数据越来越多，实时分析几乎不可能。解决办法是把数据管理分散到尽量靠近网络边缘的地方，这就是<b>雾计算（fog computing）</b>（p.106）。任何有计算、存储和网络连接能力的设备都可以做雾节点（fog node）。</p>
+<h4><span class="st">详细解析</span>(c) 雾计算的关键特征（7 分）</h4>
+<p>讲义 p.109 的五个特征（每个写一句解释）：</p>
+<ol>
+<li><b>上下文位置感知和低时延</b>（contextual location awareness and low latency）：雾节点尽可能靠近 IoT 终端，就近做分布式计算；因为地理上靠近，它了解自己管理的传感器的上下文，能更快地对网络里的事件做出反应（p.108）。</li>
+<li><b>地理分布</b>（geographic distribution）：雾节点服务的业务和应用需要大范围分布式部署。</li>
+<li><b>部署在 IoT 终端附近</b>（deployment near IoT endpoints）：雾节点通常部署在有大量 IoT 终端的地方。</li>
+<li><b>雾节点和终端之间用无线通信</b>：一个雾节点要连接大量终端，无线接入是实现大规模可扩展的最简单方式。</li>
+<li><b>用于实时交互</b>（real-time interactions）：在雾节点先做预处理，上层应用只需要对数据的一个子集做批处理。</li>
+</ol>
+<p>为了拿满 7 分，再写两三条好处（p.106、p.108）：降低时延；减轻核心网的流量（不用把 GB 级数据都传上去）；敏感数据留在本地网络；提供分布式的边缘控制回路，不用等云端服务器就能实时监控和控制；整体上减少数据量（data reduction）。老师课上总结的好处也是这几条：分布式处理不用等中心服务器所以快、上传前先精简数据、能实时处理、雾节点和终端无线连接。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>(b) 只列五个名词不解释：题目要求 "briefly describe each"，每个要有一两句。</li>
+<li>(b) 写成 IoT 的应用或优点，答非所问。</li>
+<li>(c) 把雾计算说成"取代云计算"：讲义 p.111 说边缘和雾只是第一道处理，不取代云。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p><b>(b)</b> Five potential difficulties in the development of IoT:</p>
+<p>1. <b>Scalability:</b> IoT may grow to include millions of devices. How the overall system (addressing, access and management) can support such a huge number of devices is a critical issue; IPv6 can provide enough addresses at the network layer.</p>
+<p>2. <b>Security:</b> as more "things" are connected with other things and people, the threat surface is greatly expanded. If a device is hacked, its connectivity becomes a major concern, because a compromised device can serve as a launching point to attack other devices and systems.</p>
+<p>3. <b>Privacy:</b> much of the data gathered by sensors is specific to individuals and their activities and may contain sensitive information and credentials. How the data are protected, and whether and with whom they are shared, is a critical issue.</p>
+<p>4. <b>Big data and analytics:</b> the large number of sensors produces a deluge of data. The data provide useful insights only if they are processed efficiently; the challenge is to evaluate massive amounts of data arriving from different sources in various forms in a timely manner.</p>
+<p>5. <b>Interoperability:</b> many protocols and architectures, some proprietary and some open, are competing for market share and standardisation. Devices and networks using different protocols and implementations cannot easily work together.</p>
+<p><b>(c)</b> Fog computing distributes data processing to fog nodes at the edge of the network, close to where IoT data are generated. Its key features are:</p>
+<p>1. <b>Contextual location awareness and low latency:</b> the fog node sits as close to the IoT endpoints as possible, so it knows the context of the sensors it manages and can react to events much faster than a remote cloud.</p>
+<p>2. <b>Geographic distribution:</b> the services and applications served by fog nodes require widely distributed deployments.</p>
+<p>3. <b>Deployment near IoT endpoints:</b> fog nodes are typically deployed where there is a large number of IoT endpoints.</p>
+<p>4. <b>Wireless communication between the fog node and the IoT endpoints:</b> since a fog node must handle many endpoints, wireless access is the easiest way to achieve large scalability.</p>
+<p>5. <b>Use for real-time interactions:</b> data are pre-processed at the fog nodes, so upper-layer applications only need to perform batch processing on a subset of the data.</p>
+<p>As a result, fog computing reduces latency, offloads traffic from the core network and the backhaul, keeps sensitive data inside the local network, reduces the amount of data to be sent, and provides a distributed edge control loop for real-time monitoring and control.</p></div>
+<div class="ans">一句话：IoT 五难是规模、安全、隐私、大数据、互通；雾计算把处理放到靠近终端的雾节点，特征是低时延/位置感知、地理分布、靠近终端、无线接入、实时交互。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s1-q4bc">→ 在「历年真题」页看整份 2025-26 S1 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2526s2-q4d">
@@ -1013,7 +1219,41 @@ table td:first-child{font-family:var(--f-body);}
   <div class="pq-topic"><b>考点</b>：IoT 通信网络层的四个子层（同 2024-25 Q4(b)）</div>
   <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(d) In the core Internet of Things (IoT) functional stack, the communication network layer is structured with four sublayers. Describe the features of each of the sublayers.</p>
 <p class="marks">(8 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext">和 2024-25 Q4(b) 是同一道题，答案见那里。四个子层：接入网（最后一公里无线接入：802.11ah、802.15.4g、LoRa）、网关与回传（汇聚后用长距离介质送往中心）、网络传输（IP + UDP/TCP，开放标准、可扩展、安全）、IoT 网络管理（HTTP、WebSocket 等应用协议，负责物体与头端应用的数据交换）。</div></div><div class="wans">Access network / Gateways &amp; backhaul / Network transport / IoT network management</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>IoT 通信网络层的四个子层（与 2024-25 Q4(b) 相同）。</dd><dt>答题要点</dt><dd>接入网 → 网关与回传 → 网络传输（IP、UDP/TCP）→ IoT 网络管理（HTTP、WebSocket）。每个子层写一句作用加一个例子。</dd><dt>记忆</dt><dd>"接入 → 汇聚回传 → 传输（IP）→ 管理（应用协议）"。</dd><dt>提示</dt><dd>同一道题四年里考了两次，属于必背内容。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext">和 2024-25 Q4(b) 是同一道题，答案见那里。四个子层：接入网（最后一公里无线接入：802.11ah、802.15.4g、LoRa）、网关与回传（汇聚后用长距离介质送往中心）、网络传输（IP + UDP/TCP，开放标准、可扩展、安全）、IoT 网络管理（HTTP、WebSocket 等应用协议，负责物体与头端应用的数据交换）。</div></div><div class="wans">Access network / Gateways &amp; backhaul / Network transport / IoT network management</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>IoT 通信网络层的四个子层（与 2024-25 Q4(b) 相同）。</dd><dt>答题要点</dt><dd>接入网 → 网关与回传 → 网络传输（IP、UDP/TCP）→ IoT 网络管理（HTTP、WebSocket）。每个子层写一句作用加一个例子。</dd><dt>记忆</dt><dd>"接入 → 汇聚回传 → 传输（IP）→ 管理（应用协议）"。</dd><dt>提示</dt><dd>同一道题四年里考了两次，属于必背内容。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：IoT 通信网络层四个子层</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>IoT 核心功能栈</h4>
+<p>讲义用 Cisco 的简化框架描述 IoT 的核心功能栈（Part B p.89–90），老师说这个框架最好理解。它有三层：</p>
+<ul>
+<li><b>第 1 层"物"层</b>（things：传感器和执行器）：物理设备要适应部署环境的限制，同时提供所需的信息。</li>
+<li><b>第 2 层通信网络层</b>（communications network layer）：智能物体不能自给自足时，要和外部系统通信，通常用无线技术。本题问的就是这一层，它分成<b>四个子层</b>。</li>
+<li><b>第 3 层应用与分析层</b>：处理采集到的数据，控制智能物体、做智能决策。</li>
+</ul>
+<p>四个子层可以按数据的走向记："<b>接入 → 汇聚回传 → 传输（IP）→ 管理（应用协议）</b>"：数据先从物体无线接入，在网关汇聚后回传，用 IP/TCP/UDP 在网络里传输，最后由应用协议和头端应用交换。</p>
+<h4><span class="st">详细解析</span>四个子层逐个展开（8 分，每个 2 分：名称 + 特点/例子）</h4>
+<ol>
+<li><b>接入网子层（access network sublayer）</b>（p.89、p.93–97）：IoT 网络的"最后一公里"，通常是无线技术，如 IEEE 802.11ah、802.15.4g、LoRa。选什么技术取决于通信距离（按范围分 PAN、HAN、NAN、FAN、LAN、MAN、WAN）、一个采集单元里的物体数量和吞吐量、成本和功耗；拓扑可以是点对点，也可以是点对多点（星形、簇状星形、mesh）。</li>
+<li><b>网关与回传子层（gateways and backhaul network sublayer）</b>（p.89、p.98）：把一片区域里的多个智能物体组织到一个公共网关上，网关负责不同介质之间的通信，用更长距离的介质（如蜂窝、光纤）把采集的信息转发到头端中心站。物体可以静止或在小范围内移动，网关通常是固定的。</li>
+<li><b>网络传输子层（network transport sublayer）</b>（p.90、p.98–99）：要实现成功的通信，必须有网络层和传输层协议，如 IP 和 UDP/TCP，以支持各种设备和介质。协议要开放、基于标准，能扩展到成千上万甚至数百万个传感器，并保证安全。IP 满足这些要求，也能用于低功耗、高丢包、低带宽的网络；在 IP 之上，用 TCP 由网络控制可靠交付，或用 UDP 把控制交给应用。</li>
+<li><b>IoT 网络管理子层（IoT network management sublayer）</b>（p.90、p.99）：额外的应用层协议，让头端应用能和传感器交换数据。例如基于 TCP 的 HTTP（传感器作为客户端连接 IoT 应用），以及 WebSocket：一种轻量、源自 Web 的协议，适应低内存、低功耗、低带宽、高丢包的环境，在智能物体和外部应用之间提供简单的双向连接。</li>
+</ol>
+<p>这道题和 2024-25 Q4(b) 一样，四年里考了两次，属于必背内容。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>把三层（物、通信网络、应用分析）当成四个子层来答：题目问的是通信网络层<b>里面</b>的四个子层。</li>
+<li>只写名称不写特点，或者每个子层不举例子（802.11ah/LoRa、IP/UDP/TCP、HTTP/WebSocket）。</li>
+<li>顺序乱：按"接入 → 网关回传 → 传输 → 管理"写最清楚。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>The communications network layer of the core IoT functional stack has four sublayers:</p>
+<p>1. <b>Access network sublayer:</b> the last mile of the IoT network, typically made up of wireless technologies such as IEEE 802.11ah, 802.15.4g and LoRa. The choice of technology depends on the communication range (PAN, HAN, NAN, FAN, LAN, MAN, WAN), the number of objects and throughput per collection cell, cost and power consumption. Topologies can be point-to-point or point-to-multipoint (star, clustered star, mesh).</p>
+<p>2. <b>Gateways and backhaul network sublayer:</b> multiple smart objects in a given area are organised around a common gateway, which is in charge of the inter-medium communication and forwards the collected information through a longer-range medium (backhaul) to a headend central station. The smart objects may be static or mobile within a limited area, while the gateway is usually static.</p>
+<p>3. <b>Network transport sublayer:</b> network and transport layer protocols such as IP and UDP/TCP are implemented to support the variety of devices and media. The protocol must be open and standards-based, scalable to thousands or millions of sensors, and secure. IP meets these requirements, even over low-power, lossy, low-bandwidth networks; TCP or UDP is chosen depending on whether the network or the application controls the delivery.</p>
+<p>4. <b>IoT network management sublayer:</b> additional application protocols allow the headend applications to exchange data with the sensors, for example HTTP over TCP (the sensor acting as a client) and WebSocket, a lightweight web-derived protocol that provides a simple bidirectional connection in low-memory, low-power, low-bandwidth and high-loss environments.</p></div>
+<div class="ans">一句话：通信网络层四子层是接入网（最后一公里无线：802.11ah、802.15.4g、LoRa）、网关与回传（汇聚后长距离送到中心）、网络传输（IP + UDP/TCP，开放、可扩展、安全）、IoT 网络管理（HTTP、WebSocket 等应用协议）。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s2-q4d">→ 在「历年真题」页看整份 2025-26 S2 试卷</a><a href="#pq-y2425s2-q4b">→ 同一道题：2024-25 S2 Q4(b)</a></div>
 </div>
 </div><!-- PASTQ:end -->

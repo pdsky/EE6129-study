@@ -329,7 +329,33 @@ table td:first-child{font-family:var(--f-body);}
   <div class="pq-topic"><b>考点</b>：FDMA / TDMA / CDMA 及系统举例</div>
   <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) Multiple access schemes are important features in mobile cellular systems as they allow many users to share the limited spectrum simultaneously. There are three basic multiple access schemes used in the 1G-3G mobile cellular systems. Briefly describe each of the multiple access schemes and give an example of an existing mobile cellular system for each scheme.</p>
 <p class="marks">(5 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>FDMA</b>：把频谱切成许多窄带信道，每个用户在通话期间独占一个频率信道。例：1G 的 <b>AMPS</b>（30 kHz 信道）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>TDMA</b>：几个用户共用一个载波，按时隙轮流发送，每人只在自己的时隙里发。例：2G 的 <b>GSM</b>（200 kHz 载波、每帧 8 个时隙）、IS-136。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>CDMA</b>：所有用户同时占用同一段宽带频谱，每人用不同的扩频码区分，接收端靠码的正交性/低相关性把自己的信号解出来。例：2G 的 <b>IS-95</b>，3G 的 <b>WCDMA</b>、cdma2000。</div></div><div class="wans">FDMA–AMPS；TDMA–GSM；CDMA–IS-95/WCDMA</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>三种多址方式及代表系统（Part A 第 1 章）。</dd><dt>答题要点</dt><dd>FDMA：按频率分，每人独占窄带信道，例 AMPS；TDMA：共用载波、按时隙轮流，例 GSM（200 kHz、8 时隙）、IS-136；CDMA：同时同频、靠扩频码区分，例 IS-95、WCDMA、cdma2000。</dd><dt>记忆</dt><dd>"频、时、码"三个维度，各举一个系统。</dd><dt>易错</dt><dd>GSM 严格说是 FDMA/TDMA 混合（多个 200 kHz 载波，每个再分 8 个时隙），写 TDMA 时最好补一句。</dd><dt>延伸（课外）</dt><dd>4G/5G 用的是 OFDMA，即第 7 章 OFDM 的多址版本：在时间和子载波两个维度上给用户分配资源。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>FDMA</b>：把频谱切成许多窄带信道，每个用户在通话期间独占一个频率信道。例：1G 的 <b>AMPS</b>（30 kHz 信道）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>TDMA</b>：几个用户共用一个载波，按时隙轮流发送，每人只在自己的时隙里发。例：2G 的 <b>GSM</b>（200 kHz 载波、每帧 8 个时隙）、IS-136。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>CDMA</b>：所有用户同时占用同一段宽带频谱，每人用不同的扩频码区分，接收端靠码的正交性/低相关性把自己的信号解出来。例：2G 的 <b>IS-95</b>，3G 的 <b>WCDMA</b>、cdma2000。</div></div><div class="wans">FDMA–AMPS；TDMA–GSM；CDMA–IS-95/WCDMA</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>三种多址方式及代表系统（Part A 第 1 章）。</dd><dt>答题要点</dt><dd>FDMA：按频率分，每人独占窄带信道，例 AMPS；TDMA：共用载波、按时隙轮流，例 GSM（200 kHz、8 时隙）、IS-136；CDMA：同时同频、靠扩频码区分，例 IS-95、WCDMA、cdma2000。</dd><dt>记忆</dt><dd>"频、时、码"三个维度，各举一个系统。</dd><dt>易错</dt><dd>GSM 严格说是 FDMA/TDMA 混合（多个 200 kHz 载波，每个再分 8 个时隙），写 TDMA 时最好补一句。</dd><dt>延伸（课外）</dt><dd>4G/5G 用的是 OFDMA，即第 7 章 OFDM 的多址版本：在时间和子载波两个维度上给用户分配资源。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：FDMA / TDMA / CDMA 与代表系统</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>多址（multiple access）是什么</h4>
+<p>频谱有限，用户很多。多址技术就是规定"许多用户怎样同时共用一段频谱而不互相干扰"。办法是把某种资源切开分给用户：切<b>频率</b>、切<b>时间</b>，或者大家同时同频、靠<b>码</b>来区分（讲义 Part A p.7 的定义，p.15–26 介绍 1G–3G 系统）。</p>
+<div class="tw"><table class="mini"><thead><tr><th>方式</th><th>切什么</th><th>每个用户得到</th><th>代表系统</th></tr></thead><tbody>
+<tr><td>FDMA</td><td>频率</td><td>通话期间独占一个窄带频率信道</td><td>1G：AMPS（30 kHz 信道）</td></tr>
+<tr><td>TDMA</td><td>时间</td><td>共用一个载波，只在自己的时隙发送</td><td>2G：GSM（200 kHz 载波、每帧 8 时隙）、IS-54/IS-136</td></tr>
+<tr><td>CDMA</td><td>码</td><td>同时占用整段宽带频谱，有自己的扩频码</td><td>2G：IS-95；3G：WCDMA、cdma2000</td></tr>
+</tbody></table></div>
+<h4><span class="st">详细解析</span>答题要点（每种方式写"怎么分 + 举例"）</h4>
+<ol><li><b>FDMA</b>（频分多址）：把频带分成等宽的信道，每个通话占一个频率。为什么重要：最早、最简单，模拟系统只能这样做；缺点是需要保护频带、每个信道要一套收发设备。</li>
+<li><b>TDMA</b>（时分多址）：一个载波按时间切成周期性的时隙，几个用户轮流发送。为什么重要：数字化以后才能做，一个载波可以给多个用户，提高效率；需要严格同步。GSM 实际是 FDMA/TDMA 混合（先分多个 200 kHz 载波，每个再分 8 个时隙），写上这一句更完整。</li>
+<li><b>CDMA</b>（码分多址）：给每个用户分配一个（近似）正交的码，所有用户同时、同频发送，接收端用对应的码解扩，别人的信号表现为低电平噪声。为什么重要：频率复用系数可以为 1，抗多径能力强（讲义 p.28 说 CDMA 需要的基站更少、抗多径更好）。</li></ol>
+<p><span class="st">课外补充</span>4G/5G 用的是 OFDMA（第 7 章 OFDM 的多址版本），本题只问 1G–3G，可以不写。</p>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>每种方式都要<b>举一个真实系统</b>，只描述不举例会丢分。</li>
+<li>别把 GSM 写成 CDMA，也别把 IS-95 写成 TDMA。</li>
+<li>5 分题写清"怎么分 + 例子"即可，不用写两页。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p><b>FDMA (Frequency Division Multiple Access):</b> the available spectrum is divided into frequency channels of equal bandwidth, and each user is assigned its own channel for the whole duration of the call, so different users transmit on different frequencies. Example: the 1G analogue system AMPS (30 kHz channels).</p>
+<p><b>TDMA (Time Division Multiple Access):</b> one carrier frequency is divided cyclically into time slots of equal duration, and several users share the carrier by transmitting only in their own time slot. Example: the 2G system GSM (200 kHz carriers with 8 time slots per frame, i.e. combined FDMA/TDMA); IS-54/IS-136 in North America.</p>
+<p><b>CDMA (Code Division Multiple Access):</b> all users transmit at the same time over the same wideband spectrum; each user is assigned a different (nearly orthogonal) spreading code, and the receiver separates its own signal by correlating with that code, while other users appear as low-level noise. Examples: the 2G system IS-95 and the 3G systems WCDMA and cdma2000.</p></div>
+<div class="ans">一句话：FDMA 分频率（AMPS），TDMA 分时隙（GSM、IS-136），CDMA 同时同频靠码区分（IS-95、WCDMA）。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2324s2-q3b">→ 在「历年真题」页看整份 2023-24 S2 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->
@@ -398,7 +424,37 @@ table td:first-child{font-family:var(--f-body);}
   <div class="pq-topic"><b>考点</b>：蜂窝系统六大组成之数据库：HLR 与 VLR</div>
   <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>4. (a) For every cellular network, a database unit is one of the six basic components. What are the basic functions of the database unit? Describe the differences between the home location register (HLR) and the visitor location register (VLR) in the database units.</p>
 <p class="marks">(8 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>数据库的基本功能</b>（讲义 Part A p.11 的 Component 3）：保存用户签约信息（号码、业务权限、计费信息）和<b>位置信息</b>，供 MTSO 在呼叫建立、寻呼被叫、鉴权、漫游和切换时查询；没有它，网络不知道"这个用户是谁、现在在哪"。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>HLR（归属位置寄存器）</b>：每个用户在其归属网络里有一条<b>永久记录</b>，存签约资料、鉴权参数和"当前在哪个 VLR/MSC 区域"的指针。一个运营商通常只有一个（逻辑上的）HLR。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>VLR（拜访位置寄存器）</b>：和每个 MSC/MTSO 区域关联，保存当前<b>在本区域内</b>的用户（包括外地来的漫游用户）的<b>临时副本</b>，用户进入时从 HLR 下载，离开后删除。本地呼叫和寻呼查 VLR 就够，不用每次都去问 HLR，减少信令。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>区别一句话</b>：HLR 是"户口所在地"，永久、集中、存全部签约信息；VLR 是"暂住登记"，临时、分布在各个服务区、只存当前在场的用户。用户移动到新区域时，新 VLR 向 HLR 登记，HLR 更新位置并通知旧 VLR 删除记录。</div></div><div class="wans">数据库存用户与位置信息；HLR 永久归属记录，VLR 临时拜访记录</div><div class="pq-note">注：讲义只在 p.11 的框图里列出 "Databases"，HLR/VLR 的细节属于课外补充（GSM 的标准结构），和 HW1 Q1(a) 的答法一致。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>蜂窝系统的数据库：HLR 与 VLR（Part A p.11）。</dd><dt>答题要点</dt><dd>功能：保存签约信息和位置信息，供呼叫建立、寻呼、鉴权、漫游、切换查询。HLR：永久、集中，存签约资料和"当前在哪个 VLR"；VLR：每个 MSC 区域一个，临时存本区用户的副本，进来时从 HLR 下载、离开后删除。</dd><dt>记忆</dt><dd>HLR = 户口所在地，VLR = 暂住登记。</dd><dt>易错</dt><dd>VLR 不只存漫游用户，本地用户在本区也登记在 VLR；HLR 存的是"在哪个 VLR/MSC 区域"，不是精确位置。</dd><dt>加分点</dt><dd>写出用户移动时的流程：新 VLR 向 HLR 登记 → HLR 更新位置 → 通知旧 VLR 删除记录。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>数据库的基本功能</b>（讲义 Part A p.11 的 Component 3）：保存用户签约信息（号码、业务权限、计费信息）和<b>位置信息</b>，供 MTSO 在呼叫建立、寻呼被叫、鉴权、漫游和切换时查询；没有它，网络不知道"这个用户是谁、现在在哪"。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>HLR（归属位置寄存器）</b>：每个用户在其归属网络里有一条<b>永久记录</b>，存签约资料、鉴权参数和"当前在哪个 VLR/MSC 区域"的指针。一个运营商通常只有一个（逻辑上的）HLR。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>VLR（拜访位置寄存器）</b>：和每个 MSC/MTSO 区域关联，保存当前<b>在本区域内</b>的用户（包括外地来的漫游用户）的<b>临时副本</b>，用户进入时从 HLR 下载，离开后删除。本地呼叫和寻呼查 VLR 就够，不用每次都去问 HLR，减少信令。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>区别一句话</b>：HLR 是"户口所在地"，永久、集中、存全部签约信息；VLR 是"暂住登记"，临时、分布在各个服务区、只存当前在场的用户。用户移动到新区域时，新 VLR 向 HLR 登记，HLR 更新位置并通知旧 VLR 删除记录。</div></div><div class="wans">数据库存用户与位置信息；HLR 永久归属记录，VLR 临时拜访记录</div><div class="pq-note">注：讲义只在 p.11 的框图里列出 "Databases"，HLR/VLR 的细节属于课外补充（GSM 的标准结构），和 HW1 Q1(a) 的答法一致。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>蜂窝系统的数据库：HLR 与 VLR（Part A p.11）。</dd><dt>答题要点</dt><dd>功能：保存签约信息和位置信息，供呼叫建立、寻呼、鉴权、漫游、切换查询。HLR：永久、集中，存签约资料和"当前在哪个 VLR"；VLR：每个 MSC 区域一个，临时存本区用户的副本，进来时从 HLR 下载、离开后删除。</dd><dt>记忆</dt><dd>HLR = 户口所在地，VLR = 暂住登记。</dd><dt>易错</dt><dd>VLR 不只存漫游用户，本地用户在本区也登记在 VLR；HLR 存的是"在哪个 VLR/MSC 区域"，不是精确位置。</dd><dt>加分点</dt><dd>写出用户移动时的流程：新 VLR 向 HLR 登记 → HLR 更新位置 → 通知旧 VLR 删除记录。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：蜂窝数据库与 HLR / VLR</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>蜂窝系统的六个基本组成</h4>
+<p>讲义 Part A p.11 的框图：① 移动台（MS）、② 基站（BS）、③ <b>数据库（Databases）</b>、④ 安全机制、⑤ 空中接口标准、⑥ 移动交换中心（MTSO / MSC）连到 PSTN。老师课上说 MTSO 是整个蜂窝系统的"大脑"；而大脑做决定（这个用户能不能打、现在在哪、怎么接通）靠的就是数据库。</p>
+<p><span class="st">课外补充</span>讲义只在框图里写了 "Databases"，HLR / VLR 的细节来自 GSM 标准结构（也是 HW1 Q1(a) 的答法），下面的内容属于课外补充，但是本题的得分点。</p>
+<div class="tw"><table class="mini"><thead><tr><th></th><th>HLR（归属位置寄存器）</th><th>VLR（拜访位置寄存器）</th></tr></thead><tbody>
+<tr><td>位置</td><td>用户的归属网络，一个运营商通常一个（逻辑上）</td><td>每个 MSC 服务区一个，分布式</td></tr>
+<tr><td>记录性质</td><td>永久的主记录</td><td>临时副本</td></tr>
+<tr><td>存什么</td><td>签约资料、业务权限、鉴权参数、"当前在哪个 VLR/MSC 区域"</td><td>当前在本区的所有用户（本地和漫游）的资料和较精确的位置区</td></tr>
+<tr><td>何时更新</td><td>用户换到另一个 MSC 区域时</td><td>用户进入本区时从 HLR 下载，离开后删除</td></tr>
+<tr><td>比喻</td><td>户口所在地</td><td>暂住登记</td></tr>
+</tbody></table></div>
+<h4><span class="st">详细解析</span>答题要点展开</h4>
+<ol><li><b>数据库的基本功能</b>：保存用户信息（号码、签约业务、计费）和位置信息，供 MSC 在呼叫建立、寻呼被叫、鉴权、漫游和切换时查询。为什么重要：没有它，网络不知道"这个用户是谁、有没有权限、现在在哪"，就无法接通。</li>
+<li><b>HLR</b>：每个用户在归属网络里的永久主记录，集中存储；记录用户当前所在的 VLR/MSC，来电时网络先问 HLR "他在哪个区"。</li>
+<li><b>VLR</b>：和 MSC 关联的临时数据库，只存当前在本区的用户。好处：本区的呼叫、寻呼直接查 VLR，不必每次都去问可能很远的 HLR，减少信令和时延。</li>
+<li><b>加分点（流程）</b>：用户移动到新区域 → 新 VLR 向 HLR 登记 → HLR 更新位置并通知旧 VLR 删除记录。</li></ol>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>VLR 不只存漫游用户，本地用户在本区也登记在 VLR。</li>
+<li>HLR 存的是"在哪个 VLR/MSC 区域"，不是精确到小区的位置。</li>
+<li>8 分题：功能 + 区别都要写，最好用对比的句式（永久 vs 临时、集中 vs 分布、全部签约信息 vs 当前在场用户）。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p><b>Basic functions of the database unit:</b> the databases store subscriber information (identity, subscribed services, authentication and billing data) and location information of the mobile users. The MSC/MTSO queries them during call set-up, paging of the called user, authentication, roaming and handoff. Without the databases, the network would not know who the user is, what services the user may use and where the user is located.</p>
+<p><b>Home Location Register (HLR):</b> a permanent, centralised database in the subscriber's home network. It holds the master record of every subscriber registered with the operator, including the subscription profile, authentication parameters and the identity of the VLR/MSC area where the subscriber is currently located. An operator normally has one (logical) HLR.</p>
+<p><b>Visitor Location Register (VLR):</b> a temporary, distributed database associated with each MSC service area. It stores a copy of the relevant data of all subscribers currently in that area, both local users and visiting (roaming) users, together with their current location area. When a user enters the area the record is downloaded from the HLR, and it is deleted when the user leaves. Local calls and paging are handled by the VLR without querying the HLR each time, which reduces signalling.</p>
+<p><b>Differences:</b> the HLR is permanent, centralised and holds complete subscription data for its own subscribers; the VLR is temporary, located in each service area and holds only the users currently present. When a user moves to a new area, the new VLR registers the user with the HLR, the HLR updates the location and instructs the old VLR to delete its record.</p></div>
+<div class="ans">一句话：数据库存用户签约信息和位置，供 MSC 接续、寻呼、鉴权和漫游查询；HLR 是永久集中的"户口"，VLR 是各服务区临时的"暂住登记"。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2425s2-q4a">→ 在「历年真题」页看整份 2024-25 S2 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->
@@ -477,7 +533,45 @@ table td:first-child{font-family:var(--f-body);}
 <p>(iii) The cell capacity; and</p>
 <p>(iv) The system spectral efficiency in the units of channels/ MHz / km<sup>2</sup>.</p>
 <p class="marks">(12 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 小区面积 = (3√3/2) × 2² = 10.39 km²：<div class="calc">小区数 = 1500 / 10.39 = 144.3 → 约 145 个（向上取整才能覆盖全区）</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 扣掉保护带后可用 25 000 − 40 = 24 960 kHz：<div class="calc">信道数 = 24 960 / 30 = 832 条（全双工信道）</div>这就是不复用时整个系统能用的信道数。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii) 小区容量</b>：832 条里 18 条是控制信道，话务信道 814 条，分给簇内 9 个小区：<div class="calc">814 / 9 = 90.4 → 每小区 90 条话务信道</div>（若把控制信道也算进来是 832/9 ≈ 92 条。）</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iv) 频谱效率</b>（讲义 Part A p.40）η = (B<sub>w</sub>/B<sub>c</sub>)/(B<sub>w</sub>·A<sub>c</sub>·N) = 1/(B<sub>c</sub>·A<sub>c</sub>·N)：<div class="calc">η = 1/(0.03 MHz × 10.39 km² × 9) ≈ 0.356 channels/MHz/km²</div>也可以从定义直接算：系统总信道数 = (832/9) × 144.3 ≈ 13 340，除以 25 MHz × 1500 km²，同样约 0.356。</div></div><div class="wans">(i) ≈ 145 个小区　(ii) 832 条　(iii) 90 条话务信道/小区　(iv) ≈ 0.36 channels/MHz/km²</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>小区数、扣保护带后的信道数、每小区容量、频谱效率（Part A p.40）。</dd><dt>用到的知识</dt><dd>六边形面积 (3√3/2)R²；信道数 = (总带宽 − 保护带)/信道带宽；η = 1/(B<sub>c</sub>·A<sub>c</sub>·N)。</dd><dt>解题套路</dt><dd>面积 → 小区数；扣保护带 → 信道数；扣控制信道 → ÷N；代频谱效率公式。</dd><dt>易错</dt><dd>小区数向上取整；每小区话务信道要扣掉控制信道；单位 channels/MHz/km²，B<sub>c</sub> 用 MHz（0.03）。</dd><dt>自检</dt><dd>用"总信道 ÷ (带宽 × 面积)"直接算，结果同样约 0.356。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 小区面积 = (3√3/2) × 2² = 10.39 km²：<div class="calc">小区数 = 1500 / 10.39 = 144.3 → 约 145 个（向上取整才能覆盖全区）</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 扣掉保护带后可用 25 000 − 40 = 24 960 kHz：<div class="calc">信道数 = 24 960 / 30 = 832 条（全双工信道）</div>这就是不复用时整个系统能用的信道数。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii) 小区容量</b>：832 条里 18 条是控制信道，话务信道 814 条，分给簇内 9 个小区：<div class="calc">814 / 9 = 90.4 → 每小区 90 条话务信道</div>（若把控制信道也算进来是 832/9 ≈ 92 条。）</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iv) 频谱效率</b>（讲义 Part A p.40）η = (B<sub>w</sub>/B<sub>c</sub>)/(B<sub>w</sub>·A<sub>c</sub>·N) = 1/(B<sub>c</sub>·A<sub>c</sub>·N)：<div class="calc">η = 1/(0.03 MHz × 10.39 km² × 9) ≈ 0.356 channels/MHz/km²</div>也可以从定义直接算：系统总信道数 = (832/9) × 144.3 ≈ 13 340，除以 25 MHz × 1500 km²，同样约 0.356。</div></div><div class="wans">(i) ≈ 145 个小区　(ii) 832 条　(iii) 90 条话务信道/小区　(iv) ≈ 0.36 channels/MHz/km²</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>小区数、扣保护带后的信道数、每小区容量、频谱效率（Part A p.40）。</dd><dt>用到的知识</dt><dd>六边形面积 (3√3/2)R²；信道数 = (总带宽 − 保护带)/信道带宽；η = 1/(B<sub>c</sub>·A<sub>c</sub>·N)。</dd><dt>解题套路</dt><dd>面积 → 小区数；扣保护带 → 信道数；扣控制信道 → ÷N；代频谱效率公式。</dd><dt>易错</dt><dd>小区数向上取整；每小区话务信道要扣掉控制信道；单位 channels/MHz/km²，B<sub>c</sub> 用 MHz（0.03）。</dd><dt>自检</dt><dd>用"总信道 ÷ (带宽 × 面积)"直接算，结果同样约 0.356。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：小区数、信道数与频谱效率</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>蜂窝规划里的几个基本量</h4>
+<ul>
+<li><b>六边形小区面积</b>：半径 R（中心到顶点，也等于边长）的正六边形面积 = (3√3/2)R² ≈ 2.598R²。</li>
+<li><b>信道数</b>：可用频谱扣掉保护带（guard band，防止相邻系统干扰、不能用来传信号），再除以每条信道的带宽。题目直接给了"全双工信道带宽 30 kHz"，一条全双工信道就占 30 kHz，不用再除以 2。</li>
+<li><b>控制信道</b>（control channel）用来建立呼叫、传信令，不承载话音；小区容量通常指<b>话务信道</b>（traffic channel）数。</li>
+<li><b>簇（cluster）</b>：N 个相邻小区分完全部信道，簇与簇之间重复使用（频率复用，Part A p.78–81）。均匀固定分配时，每小区分到 1/N。</li>
+<li><b>频谱效率</b>（spectral efficiency，Part A p.38–40）：每 MHz 频谱、每 km² 面积上能提供几条信道。公式 η = (B<sub>w</sub>/B<sub>c</sub>)/(B<sub>w</sub>·A<sub>c</sub>·N) = 1/(B<sub>c</sub>·A<sub>c</sub>·N)，B<sub>c</sub> 是信道间隔（MHz），A<sub>c</sub> 是小区面积（km²），N 是簇大小。老师说这个公式"要试着记住"，本题 (iv) 就考了。</li>
+</ul>
+<h4><span class="st">详细解析</span>(i) 小区数</h4>
+<div class="calc">A<sub>cell</sub> = 2.598 × 2² = 10.39 km²<br>小区数 = 1500 / 10.39 = 144.3 → 145 个</div>
+<p>为什么向上取整：144 个小区盖不满 1500 km²，必须再加一个。</p>
+<h4><span class="st">详细解析</span>(ii) 不复用时的信道数</h4>
+<div class="calc">可用带宽 = 25 000 kHz − 40 kHz = 24 960 kHz<br>信道数 = 24 960 / 30 = 832 条</div>
+<p>"without frequency reuse"就是整个系统一共有多少条不同的信道。</p>
+<h4><span class="st">详细解析</span>(iii) 小区容量</h4>
+<div class="calc">话务信道 = 832 − 18 = 814 条<br>每小区 = 814 / 9 = 90.4 → 90 条话务信道</div>
+<p>向下取整：半条信道不能用。如果把控制信道也算进去，是 832/9 ≈ 92 条；写清楚自己的口径即可。</p>
+<h4><span class="st">详细解析</span>(iv) 频谱效率</h4>
+<div class="calc">B<sub>c</sub> = 30 kHz = 0.03 MHz<br>η = 1/(0.03 × 10.39 × 9) = 1/2.806 ≈ 0.356 channels/MHz/km²</div>
+<p><b>用定义自检</b>：系统总信道数 = 每小区 832/9 = 92.44 条 × 144.3 个小区 ≈ 13 344 条，除以 (25 MHz × 1500 km²) = 37 500，得 0.356，一致。讲义公式里 B<sub>w</sub> 上下约掉，所以用 25 MHz 还是扣掉保护带后的带宽，结果都是 0.356。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>忘了扣 40 kHz 保护带（得 833 条）。</li>
+<li>把 30 kHz 当成单向信道，又除以 2。</li>
+<li>小区容量不扣控制信道，或者不取整。</li>
+<li>η 的单位：B<sub>c</sub> 要用 MHz（0.03），面积用 km²；答案要写单位 channels/MHz/km²（老师说答案要写单位）。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) Area of one hexagonal cell = (3√3/2)R² = 2.598 × 2² = 10.39 km². Number of cells = 1500/10.39 = 144.3, so about 145 cells are needed to cover the area.</p>
+<p>(ii) Usable spectrum = 25 MHz − 40 kHz = 24 960 kHz. Number of full-duplex channels without frequency reuse = 24 960/30 = 832 channels.</p>
+<p>(iii) Traffic channels = 832 − 18 control channels = 814. Cell capacity = 814/9 = 90.4, i.e. 90 traffic channels per cell.</p>
+<p>(iv) Spectral efficiency η = (B<sub>w</sub>/B<sub>c</sub>)/(B<sub>w</sub>A<sub>c</sub>N) = 1/(B<sub>c</sub>A<sub>c</sub>N) = 1/(0.03 MHz × 10.39 km² × 9) ≈ 0.356 channels/MHz/km².</p></div>
+<div class="ans">一句话：面积 10.39 km² → 145 个小区；(25 000 − 40)/30 = 832 条；扣 18 条控制信道再 ÷9 得 90 条/小区；η = 1/(B<sub>c</sub>A<sub>c</sub>N) ≈ 0.356 channels/MHz/km²。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s1-q3a">→ 在「历年真题」页看整份 2025-26 S1 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->
@@ -605,7 +699,43 @@ table td:first-child{font-family:var(--f-body);}
 <p>(ii) Number of times to replicate this cluster to cover the entire system.</p>
 <p>(iii) System capacity for this network.</p>
 <p class="marks">(6 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 每小区 1071/7 = <b>153</b> 条；每簇面积 7 × 6 = <b>42 km²</b>。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 复制次数 = 2100/42 = <b>50</b> 次（共 350 个小区）。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 系统容量 = 每簇信道 × 复制次数 = 1071 × 50 = <b>53 550</b> 条信道（也等于 153 × 350）。同一组 1071 条信道被重复用了 50 次，这就是频率复用带来的容量。</div></div><div class="wans">153 条/小区，42 km²/簇；复制 50 次；系统容量 53 550 条信道</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>每小区信道、簇面积、簇复制次数、系统容量（Part A 频率复用）。</dd><dt>用到的知识</dt><dd>每小区信道 = 总信道 / N；簇面积 = N × 小区面积；复制次数 = 服务区面积 / 簇面积；系统容量 = 每簇信道 × 复制次数。</dd><dt>易错</dt><dd>系统容量是所有小区信道之和（53 550），不是一个簇的 1071。</dd><dt>结论</dt><dd>频率复用是蜂窝容量的来源：同一组信道用了 50 次。簇越小，复制次数越多，容量越大，但同频干扰越强。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 每小区 1071/7 = <b>153</b> 条；每簇面积 7 × 6 = <b>42 km²</b>。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 复制次数 = 2100/42 = <b>50</b> 次（共 350 个小区）。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 系统容量 = 每簇信道 × 复制次数 = 1071 × 50 = <b>53 550</b> 条信道（也等于 153 × 350）。同一组 1071 条信道被重复用了 50 次，这就是频率复用带来的容量。</div></div><div class="wans">153 条/小区，42 km²/簇；复制 50 次；系统容量 53 550 条信道</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>每小区信道、簇面积、簇复制次数、系统容量（Part A 频率复用）。</dd><dt>用到的知识</dt><dd>每小区信道 = 总信道 / N；簇面积 = N × 小区面积；复制次数 = 服务区面积 / 簇面积；系统容量 = 每簇信道 × 复制次数。</dd><dt>易错</dt><dd>系统容量是所有小区信道之和（53 550），不是一个簇的 1071。</dd><dt>结论</dt><dd>频率复用是蜂窝容量的来源：同一组信道用了 50 次。簇越小，复制次数越多，容量越大，但同频干扰越强。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：簇复制次数与系统容量</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>频率复用和系统容量</h4>
+<p>运营商只有一组有限的信道（本题 1071 条）。蜂窝系统的办法是（Part A p.78–81）：</p>
+<ul>
+<li>把 N 个相邻小区组成一个<b>簇</b>（cluster），簇内 N 个小区分完全部 S 条信道，相邻小区频率不同，避免干扰；均匀固定分配时每小区 S/N 条。</li>
+<li>整个服务区由 C 个簇拼成，每个簇都重复使用同一组 S 条信道（频率复用，frequency reuse），相同频率之间隔开复用距离 D = R√(3N)。</li>
+<li>系统容量（全系统能同时提供的信道总数）T = C × N × S/N = C × S（p.81）。</li>
+</ul>
+<p>所以容量的来源就是"复制了几次簇"：簇越小（N 越小），簇面积越小，复制次数越多，容量越大，但同频小区靠得更近，干扰更强（p.78：N 的选择是容量和服务质量之间的折中）。</p>
+<h4><span class="st">详细解析</span>逐步计算</h4>
+<ol>
+<li><b>每小区信道</b>：
+<div class="calc">S/N = 1071 / 7 = 153 条/小区</div></li>
+<li><b>每簇面积</b>：一个簇有 7 个小区，每个 6 km²：
+<div class="calc">7 × 6 = 42 km²</div></li>
+<li><b>复制次数</b>：
+<div class="calc">C = 2100 / 42 = 50 次（共 50 × 7 = 350 个小区）</div></li>
+<li><b>系统容量</b>：
+<div class="calc">T = C × S = 50 × 1071 = 53 550 条信道（= 153 × 350）</div></li>
+</ol>
+<p><b>检查</b>：两种算法（每簇信道 × 簇数，每小区信道 × 小区数）结果相同。1071 条信道被重复用了 50 次，容量放大了 50 倍。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>系统容量答成 1071：那只是一个簇的信道数。</li>
+<li>复制次数用小区面积去除：2100/6 = 350 是小区数，不是簇数。</li>
+<li>答案不写单位（条信道、km²、次）。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) Number of channels per cell = 1071/7 = 153 channels. Coverage area of each cluster = 7 × 6 km² = 42 km².</p>
+<p>(ii) Number of times the cluster is replicated = 2100/42 = 50 (i.e. 350 cells in total).</p>
+<p>(iii) System capacity = (channels per cluster) × (number of clusters) = 1071 × 50 = 53 550 channels (= 153 × 350). The same set of 1071 channels is reused 50 times through frequency reuse.</p></div>
+<div class="ans">一句话：每小区 1071/7 = 153 条，簇面积 42 km²，复制 2100/42 = 50 次，系统容量 1071 × 50 = 53 550 条信道。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s2-q3a">→ 在「历年真题」页看整份 2025-26 S2 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->
@@ -769,7 +899,53 @@ table td:first-child{font-family:var(--f-body);}
 <span class="eq">SIR = 1 / [2(Q − 1)<sup>−n</sup> + 2Q<sup>−n</sup> + 2(Q + 1)<sup>−n</sup>]</span></p>
 <p>(iv) Using the new value of n from part (ii), determine the SIR when using co-channel interference SIR with 120° sectoring. State and comment on your results when compared to part (iii).</p>
 <p class="marks">(12 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>推导</b>：只算第一层 6 个同频干扰，手机在小区边缘离本基站 R，6 个干扰基站都近似在距离 D：<div class="calc">S/I = R<sup>−n</sup> / (6D<sup>−n</sup>) = Q<sup>n</sup>/6，　Q = D/R = √(3N)</div>n = 4：S/I = (3N)²/6 = 1.5N²，取 dB：<div class="calc">SIR<sub>dB</sub> = 10 log₁₀ 1.5 + 20 log₁₀ N = 1.76 + 20 log₁₀ N</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(i)</b> N = 7：1.76 + 20 log 7 = 1.76 + 16.90 = <b>18.66 dB</b>，刚好高于语音约需的 18 dB，所以 7 小区复用最常用。但这个简化模型把 6 个干扰都放在 D，偏乐观。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(ii)</b> 要 Q<sup>n</sup>/6 ≥ 100（20 dB），Q = √21 = 4.583：<div class="calc">n = log₁₀ 600 / log₁₀ 4.583 = 2.778/0.661 ≈ 4.20</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iii)</b> n = 4.2 代入最坏情况：(Q−1)<sup>4.2</sup> = 212.6，Q<sup>4.2</sup> = 597.9，(Q+1)<sup>4.2</sup> = 1370<div class="calc">SIR = 1/(2/212.6 + 2/597.9 + 2/1370) = 1/0.0142 = 70.4 → 18.5 dB</div>没达到 20 dB：手机在边上时有两个干扰只隔 D − R。</div></div><div class="wstep"><div class="wn">5</div><div class="wtext"><b>(iv)</b> 120° 扇区只剩 2 个干扰：<div class="calc">SIR = 1/(Q<sup>−n</sup> + (Q + 0.7)<sup>−n</sup>) = 1/(1/597.9 + 1/1086) = 385.7 → 25.9 dB</div>比 (iii) 高约 7.4 dB，满足 20 dB 还有约 6 dB 余量。代价是每扇区信道变少、集群效率下降、切换增多。</div></div><div class="wans">(i) 18.66 dB　(ii) n ≈ 4.2　(iii) 18.5 dB　(iv) 25.9 dB</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>SIR 公式推导、反求路径损耗指数、最坏情况 SIR、120° 扇区（Part A 同频干扰）。</dd><dt>用到的知识</dt><dd>Q = D/R = √(3N)；简化模型 S/I = Q<sup>n</sup>/6（6 个干扰都在距离 D）；最坏情况：两个在 D − R、两个在 D、两个在 D + R；120° 扇区剩 2 个干扰，距离 D 和 D + 0.7R。</dd><dt>解题套路</dt><dd>推导：代入 n = 4、Q² = 3N，取 dB；(ii) Q<sup>n</sup>/6 ≥ 100，两边取对数解 n；(iii)(iv) 把距离（以 R 为单位：Q − 1、Q、Q + 1）代入求和。</dd><dt>易错</dt><dd>20 dB 是线性 100；最坏情况的距离以 R 为单位；扇区情况只剩 2 个干扰项，别还写 6 个。</dd><dt>结论</dt><dd>简化模型偏乐观，最坏情况会低于 20 dB；扇区化把干扰从 6 个减到 2 个，SIR 高约 7 dB，代价是集群效率下降、切换增多。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>推导</b>：只算第一层 6 个同频干扰，手机在小区边缘离本基站 R，6 个干扰基站都近似在距离 D：<div class="calc">S/I = R<sup>−n</sup> / (6D<sup>−n</sup>) = Q<sup>n</sup>/6，　Q = D/R = √(3N)</div>n = 4：S/I = (3N)²/6 = 1.5N²，取 dB：<div class="calc">SIR<sub>dB</sub> = 10 log₁₀ 1.5 + 20 log₁₀ N = 1.76 + 20 log₁₀ N</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(i)</b> N = 7：1.76 + 20 log 7 = 1.76 + 16.90 = <b>18.66 dB</b>，刚好高于语音约需的 18 dB，所以 7 小区复用最常用。但这个简化模型把 6 个干扰都放在 D，偏乐观。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(ii)</b> 要 Q<sup>n</sup>/6 ≥ 100（20 dB），Q = √21 = 4.583：<div class="calc">n = log₁₀ 600 / log₁₀ 4.583 = 2.778/0.661 ≈ 4.20</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iii)</b> n = 4.2 代入最坏情况：(Q−1)<sup>4.2</sup> = 212.6，Q<sup>4.2</sup> = 597.9，(Q+1)<sup>4.2</sup> = 1370<div class="calc">SIR = 1/(2/212.6 + 2/597.9 + 2/1370) = 1/0.0142 = 70.4 → 18.5 dB</div>没达到 20 dB：手机在边上时有两个干扰只隔 D − R。</div></div><div class="wstep"><div class="wn">5</div><div class="wtext"><b>(iv)</b> 120° 扇区只剩 2 个干扰：<div class="calc">SIR = 1/(Q<sup>−n</sup> + (Q + 0.7)<sup>−n</sup>) = 1/(1/597.9 + 1/1086) = 385.7 → 25.9 dB</div>比 (iii) 高约 7.4 dB，满足 20 dB 还有约 6 dB 余量。代价是每扇区信道变少、集群效率下降、切换增多。</div></div><div class="wans">(i) 18.66 dB　(ii) n ≈ 4.2　(iii) 18.5 dB　(iv) 25.9 dB</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>SIR 公式推导、反求路径损耗指数、最坏情况 SIR、120° 扇区（Part A 同频干扰）。</dd><dt>用到的知识</dt><dd>Q = D/R = √(3N)；简化模型 S/I = Q<sup>n</sup>/6（6 个干扰都在距离 D）；最坏情况：两个在 D − R、两个在 D、两个在 D + R；120° 扇区剩 2 个干扰，距离 D 和 D + 0.7R。</dd><dt>解题套路</dt><dd>推导：代入 n = 4、Q² = 3N，取 dB；(ii) Q<sup>n</sup>/6 ≥ 100，两边取对数解 n；(iii)(iv) 把距离（以 R 为单位：Q − 1、Q、Q + 1）代入求和。</dd><dt>易错</dt><dd>20 dB 是线性 100；最坏情况的距离以 R 为单位；扇区情况只剩 2 个干扰项，别还写 6 个。</dd><dt>结论</dt><dd>简化模型偏乐观，最坏情况会低于 20 dB；扇区化把干扰从 6 个减到 2 个，SIR 高约 7 dB，代价是集群效率下降、切换增多。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：SIR 公式推导、反求 n、最坏情况与扇区</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>同频干扰和 Q = D/R</h4>
+<p>蜂窝系统里，簇大小为 N 的每个簇用完全部信道，相隔一定距离 D 的小区重复使用同一组频率（同频小区）。D 越大干扰越小。六边形几何给出 <b>Q = D/R = √(3N)</b>（讲义 Part A p.78），Q 叫同频复用比（co-channel reuse ratio）。</p>
+<p>讲义 p.88 的简化分析假设：只算第一层 6 个同频干扰；手机在小区边缘，到本基站距离 R；6 个干扰基站到手机都近似为 D；接收功率与距离的 −n 次方成正比（n 是路径损耗指数）。</p>
+<div class="calc">S/I = R<sup>−n</sup> / (6D<sup>−n</sup>) = (D/R)<sup>n</sup>/6 = Q<sup>n</sup>/6</div>
+<div class="tw"><table class="mini"><thead><tr><th>情况</th><th>公式</th><th>N = 7、n = 4（讲义）</th></tr></thead><tbody>
+<tr><td>简化（6 个都在 D）</td><td>Q<sup>n</sup>/6</td><td>18.66 dB（p.89）</td></tr>
+<tr><td>最坏全向（2 个 D−R、2 个 D、2 个 D+R）</td><td>1/[2(Q−1)<sup>−n</sup> + 2Q<sup>−n</sup> + 2(Q+1)<sup>−n</sup>]</td><td>17.27 dB（p.91）</td></tr>
+<tr><td>120° 扇区（只剩 2 个）</td><td>1/[Q<sup>−n</sup> + (Q+0.7)<sup>−n</sup>]</td><td>p.145</td></tr>
+</tbody></table></div>
+<h4><span class="st">详细解析</span>推导 SIR<sub>dB</sub> = 1.76 + 20 log₁₀N</h4>
+<ol><li>从 S/I = Q<sup>n</sup>/6 出发，代入 Q = √(3N)、n = 4：Q⁴ = (3N)²。</li>
+<li><div class="calc">S/I = (3N)²/6 = 9N²/6 = 1.5N²</div></li>
+<li>取 10 log₁₀：<div class="calc">SIR<sub>dB</sub> = 10 log₁₀1.5 + 10 log₁₀N² = 1.76 + 20 log₁₀N</div></li></ol>
+<h4><span class="st">详细解析</span>(i) N = 7</h4>
+<div class="calc">SIR<sub>dB</sub> = 1.76 + 20 log₁₀7 = 1.76 + 16.90 = 18.66 dB</div>
+<p>评论：比语音质量需要的约 18 dB 稍高（讲义 p.89 说 N = 7 是最优簇大小），所以 7 小区复用最常用。但这个模型把 6 个干扰都放在 D，忽略了手机靠近某些干扰小区的情况，偏乐观；n = 4 也是假设。</p>
+<h4><span class="st">详细解析</span>(ii) 反求 n</h4>
+<p>题目写的 "SNR" 这里指 SIR。20 dB → 线性 100：</p>
+<div class="calc">Q<sup>n</sup>/6 ≥ 100 → Q<sup>n</sup> ≥ 600，Q = √21 = 4.583</div>
+<div class="calc">n = log₁₀600 / log₁₀4.583 = 2.778/0.661 ≈ 4.20</div>
+<p>为什么用对数：未知数在指数上，两边取 log 把它拿下来。</p>
+<h4><span class="st">详细解析</span>(iii) 最坏情况（n = 4.2）</h4>
+<div class="calc">(Q − 1)<sup>4.2</sup> = 3.583<sup>4.2</sup> = 212.6；Q<sup>4.2</sup> = 597.9；(Q + 1)<sup>4.2</sup> = 5.583<sup>4.2</sup> = 1370</div>
+<div class="calc">SIR = 1/(2/212.6 + 2/597.9 + 2/1370) = 1/0.0142 ≈ 70.4 → 18.5 dB</div>
+<p>计算器：a<sup>4.2</sup> 用 x<sup>y</sup> 键，或 10^(4.2 × log₁₀a)。结果低于 20 dB：手机在小区边上时有两个干扰基站只隔 D − R，最近的两项贡献了一大半干扰。</p>
+<h4><span class="st">详细解析</span>(iv) 120° 扇区（n = 4.2）</h4>
+<div class="calc">(Q + 0.7)<sup>4.2</sup> = 5.283<sup>4.2</sup> = 1086</div>
+<div class="calc">SIR = 1/(1/597.9 + 1/1086) ≈ 385.7 → 25.9 dB</div>
+<p>评论：比 (iii) 高约 7.4 dB，满足 20 dB 还剩约 6 dB 余量。原因是定向天线只"看见"2 个同频干扰。代价：每扇区信道只有 1/3，集群效率下降，切换增多；多出的 SIR 余量可以用来缩小簇、提高容量。</p>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>20 dB 是线性 100，不是 20。</li>
+<li>最坏情况的距离以 R 为单位：Q − 1、Q、Q + 1，各 2 个。</li>
+<li>扇区情况只剩 2 项，别还写 6 项。</li>
+<li>推导里 10 log₁₀N² = 20 log₁₀N，这一步要写出来。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>Derivation: assume only the six first-tier co-channel interferers, the mobile at the cell edge (distance R from its own base station) and all interferers at distance D. With received power proportional to d<sup>−n</sup>, S/I = R<sup>−n</sup>/(6D<sup>−n</sup>) = Q<sup>n</sup>/6, where Q = D/R = √(3N<sub>c</sub>). With n = 4, S/I = (3N<sub>c</sub>)²/6 = 1.5N<sub>c</sub>², so SIR<sub>dB</sub> = 10 log₁₀1.5 + 20 log₁₀N<sub>c</sub> = 1.76 + 20 log₁₀N<sub>c</sub>.</p>
+<p>(i) For N<sub>c</sub> = 7: SIR<sub>dB</sub> = 1.76 + 20 log₁₀7 = 18.66 dB. This just exceeds the 18 dB needed for good voice quality, which is why N<sub>c</sub> = 7 is widely used; however, the simplified model is optimistic because it places all six interferers at distance D.</p>
+<p>(ii) For SIR ≥ 20 dB = 100: Q<sup>n</sup>/6 ≥ 100 with Q = √21 = 4.583, so n = log₁₀600 / log₁₀4.583 ≈ 4.2.</p>
+<p>(iii) With n = 4.2: SIR = 1/[2(3.583)<sup>−4.2</sup> + 2(4.583)<sup>−4.2</sup> + 2(5.583)<sup>−4.2</sup>] = 1/0.0142 ≈ 70.4, i.e. 18.5 dB, which is below the 20 dB requirement.</p>
+<p>(iv) With 120° sectoring only two interferers remain: SIR = 1/[Q<sup>−n</sup> + (Q + 0.7)<sup>−n</sup>] = 1/[(4.583)<sup>−4.2</sup> + (5.283)<sup>−4.2</sup>] ≈ 386, i.e. 25.9 dB. This is about 7.4 dB better than the worst-case omnidirectional result and meets the 20 dB requirement with margin, because the directional antennas reduce the number of interferers from six to two. The cost is fewer channels per sector, lower trunking efficiency and more handoffs.</p></div>
+<div class="ans">一句话：S/I = Q<sup>n</sup>/6、Q² = 3N、n = 4 → 1.5N² → 1.76 + 20 log N；N = 7 得 18.66 dB；要 20 dB 需 n ≈ 4.2；最坏全向 18.5 dB，120° 扇区 25.9 dB。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2324s2-q4c">→ 在「历年真题」页看整份 2023-24 S2 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2526s1-q3c">
@@ -777,7 +953,49 @@ table td:first-child{font-family:var(--f-body);}
   <div class="pq-topic"><b>考点</b>：固定信道分配 FCA 与动态信道分配 DCA</div>
   <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(c) Briefly describe the concept of fixed and dynamic channel assignment for a cellular system.</p>
 <p class="marks">(4 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>固定信道分配（FCA）</b>（讲义 Part A p.92–94）：每个小区预先分配一组固定的信道，小区内的呼叫只能用本小区空闲的信道，用完就阻塞，哪怕邻区有空闲信道。可均匀分配（UFCA），也可按业务量不均匀分配。简单，但对业务量的变化适应性差。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>动态信道分配（DCA）</b>（p.95–96）：信道不永久分给小区；新呼叫到来时，任何基站都可以按某种算法使用任一信道，只要不违反同频干扰约束（同一信道不能在复用距离 D 以内重复使用）。算法依据未来阻塞预测、复用距离和其他代价函数。信道借用是一种 DCA。业务量大的小区可以用更多信道，灵活、阻塞率低，但需要集中控制和更多计算。</div></div><div class="wans">FCA：固定分组、简单但不灵活；DCA：按需分配、受复用距离约束、灵活但复杂</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>固定信道分配 FCA 与动态信道分配 DCA（Part A p.92–96）。</dd><dt>答题要点</dt><dd>FCA：每个小区预先分到固定的一组信道，用完就阻塞，即使邻区空闲；简单，适应业务变化差。DCA：信道不固定，呼叫到来时按算法从公共池中选，只要不违反复用距离；灵活、阻塞低，但需要集中控制和更多计算。</dd><dt>对比记忆</dt><dd>固定 vs 按需；简单 vs 复杂；不灵活 vs 灵活。</dd><dt>易错</dt><dd>DCA 也必须满足同频复用距离约束；信道借用是 DCA 的一种形式。</dd><dt>延伸（课外）</dt><dd>经典结论：轻、中负载时 DCA 阻塞率更低；负载很重时 FCA 不比 DCA 差。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>固定信道分配（FCA）</b>（讲义 Part A p.92–94）：每个小区预先分配一组固定的信道，小区内的呼叫只能用本小区空闲的信道，用完就阻塞，哪怕邻区有空闲信道。可均匀分配（UFCA），也可按业务量不均匀分配。简单，但对业务量的变化适应性差。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>动态信道分配（DCA）</b>（p.95–96）：信道不永久分给小区；新呼叫到来时，任何基站都可以按某种算法使用任一信道，只要不违反同频干扰约束（同一信道不能在复用距离 D 以内重复使用）。算法依据未来阻塞预测、复用距离和其他代价函数。信道借用是一种 DCA。业务量大的小区可以用更多信道，灵活、阻塞率低，但需要集中控制和更多计算。</div></div><div class="wans">FCA：固定分组、简单但不灵活；DCA：按需分配、受复用距离约束、灵活但复杂</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>固定信道分配 FCA 与动态信道分配 DCA（Part A p.92–96）。</dd><dt>答题要点</dt><dd>FCA：每个小区预先分到固定的一组信道，用完就阻塞，即使邻区空闲；简单，适应业务变化差。DCA：信道不固定，呼叫到来时按算法从公共池中选，只要不违反复用距离；灵活、阻塞低，但需要集中控制和更多计算。</dd><dt>对比记忆</dt><dd>固定 vs 按需；简单 vs 复杂；不灵活 vs 灵活。</dd><dt>易错</dt><dd>DCA 也必须满足同频复用距离约束；信道借用是 DCA 的一种形式。</dd><dt>延伸（课外）</dt><dd>经典结论：轻、中负载时 DCA 阻塞率更低；负载很重时 FCA 不比 DCA 差。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：固定与动态信道分配</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>为什么要讲信道分配</h4>
+<p>频谱有限，用户很多。信道分配（channel assignment）决定"哪个小区可以用哪些信道"，分得好，同样的频谱能接更多的呼叫（Part A p.92）。两种基本方法：固定分配（FCA，Fixed Channel Assignment）和动态分配（DCA，Dynamic Channel Assignment）。</p>
+<h4><span class="st">知识讲解</span>FCA：预先固定分好</h4>
+<ul>
+<li>每个小区（基站）预先分到一组固定的信道（p.92）。</li>
+<li>小区里的呼叫只能用<b>本小区</b>空闲的信道；本小区的信道全忙，新呼叫就被阻塞，<b>即使邻区有空闲信道也不能用</b>（p.94 的例子）。</li>
+<li>均匀 FCA（UFCA）：簇内每个小区分到相同数量，例如 210 条信道、N = 7，每小区 30 条，其中 1 条作控制信道，剩 29 条（p.93）；非均匀 FCA：按各小区的业务量分不同数量。</li>
+<li>优点是简单、容易管理；缺点是适应不了业务量的变化（忙的小区不够用，闲的小区浪费）。</li>
+</ul>
+<h4><span class="st">知识讲解</span>DCA：按需分配</h4>
+<ul>
+<li>信道不永久分给小区，放在一个公共池里。新呼叫到来时，任何基站都可以按一定算法使用任何信道，只要<b>不违反干扰约束</b>（p.95）。</li>
+<li>基本干扰约束：一条信道在某小区使用时，复用距离 D 以内的其他小区不能同时用它（p.96）。</li>
+<li>算法的依据：对未来阻塞的预测、信道的复用距离、其他代价函数（p.96）。</li>
+<li>信道借用（channel borrowing）是 DCA 的一个例子：小区 A 向邻区 C 借一条信道，通话期间持续监测，通话结束后归还（p.95）。</li>
+<li>业务量大的小区可以用更多信道，所以灵活、阻塞率低；代价是需要集中控制、更多的计算和信令。</li>
+</ul>
+<p>老师课上说：固定分配简单但不灵活，动态分配和信道借用更灵活；借用时仍要满足复用距离，不能造成同频干扰。</p>
+<h4><span class="st">详细解析</span>答题要点（4 分）</h4>
+<div class="tw"><table class="mini"><thead><tr><th></th><th>FCA</th><th>DCA</th></tr></thead><tbody>
+<tr><td>信道归属</td><td>每小区预先分配一组固定信道</td><td>公共池，呼叫到来时才分配</td></tr>
+<tr><td>全忙时</td><td>阻塞，即使邻区空闲</td><td>可以用任何满足复用距离的空闲信道</td></tr>
+<tr><td>优点</td><td>简单</td><td>灵活，阻塞率低，适应业务变化</td></tr>
+<tr><td>缺点</td><td>不灵活，信道利用率低</td><td>需要集中控制，计算复杂</td></tr>
+</tbody></table></div>
+<p>4 分题一般是"每种 2 分"：概念 1 分 + 特点（优缺点）1 分。两个概念都要写，并写出对比。</p>
+<h4><span class="st">课外补充</span>（讲义没有，不写也不扣分）</h4>
+<p>经典研究结论：业务量轻到中等时 DCA 阻塞率比 FCA 低；业务量很重时，所有小区都忙，DCA 没有空闲信道可调，性能不比 FCA 好。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>说 DCA"随便用任何信道"，漏了"不能违反复用距离 D 的同频干扰约束"。</li>
+<li>FCA 只写"固定"，没写"全忙就阻塞，即使邻区有空闲信道"。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p><b>Fixed channel assignment (FCA):</b> each cell (base station) is allocated a predetermined set of channels. A call in a cell can only use the unused channels of that cell; if all of them are busy, the call is blocked even if there are free channels in neighbouring cells. The channels may be allocated equally to all cells in a cluster (uniform FCA) or according to the traffic load of each cell (non-uniform FCA). FCA is simple to implement but cannot adapt to changes in traffic.</p>
+<p><b>Dynamic channel assignment (DCA):</b> channels are not allocated to cells permanently but are kept in a common pool. When a new call arrives, any base station can use any channel, chosen by an algorithm based on, e.g., the predicted future blocking, the reuse distance and other cost functions, as long as the interference constraint is not violated (the same channel cannot be reused within the reuse distance D). Channel borrowing is one example. A cell with high traffic can therefore use more channels, which gives more flexibility and lower blocking, at the cost of centralised control and more computation.</p></div>
+<div class="ans">一句话：FCA 是每个小区预先分好一组固定信道，简单但不灵活；DCA 是呼叫到来时从公共池按需分配，只要满足复用距离，灵活但复杂。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s1-q3c">→ 在「历年真题」页看整份 2025-26 S1 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->
@@ -867,6 +1085,27 @@ table td:first-child{font-family:var(--f-body);}
 .pq-kp dd{margin:0;font-size:14.5px;color:var(--ink);line-height:1.65;}
 @media (max-width:560px){.pq-kp dl{grid-template-columns:1fr;gap:0;}.pq-kp dt{margin-top:6px;}}
 .pq-table td{font-family:var(--f-body);font-size:13.5px;line-height:1.55;vertical-align:top;}
+
+.xpl{--xa:var(--extra,var(--accent));--xs:var(--extra-soft,var(--accent-soft));--xl:var(--line,var(--border));--xp:var(--surface-2,var(--paper,transparent));--xt:var(--ink,var(--text))}
+details.deep.xpl{margin:12px 0 4px;border:1px solid var(--xa);border-left-width:5px;border-radius:10px;background:var(--card,var(--surface,transparent))}
+details.deep.xpl > summary{cursor:pointer;list-style:none;padding:9px 14px;font-weight:700;font-size:.92rem;color:var(--xa);display:flex;gap:8px;align-items:baseline}
+details.deep.xpl > summary::-webkit-details-marker{display:none}
+details.deep.xpl > summary::before{content:'📘';font-size:.9rem}
+details.deep.xpl[open] > summary{border-bottom:1px solid var(--xl)}
+.xpl .deep-body{padding:4px 16px 14px;font-size:.93rem;line-height:1.75;color:var(--xt)}
+.xpl h4{font-size:.95rem;font-weight:700;margin:16px 0 4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px}
+.xpl h4 .st{font-size:.7rem;font-weight:700;background:var(--xs);color:var(--xa);border-radius:6px;padding:1px 8px;letter-spacing:.02em}
+.xpl p{margin:.4em 0;max-width:78ch}
+.xpl ul,.xpl ol{margin:.3em 0;padding-left:1.4em}
+.xpl li{margin:.25em 0}
+.xpl .tw{overflow-x:auto;margin:6px 0}
+.xpl table.mini{border-collapse:collapse;width:auto;min-width:240px;font-size:.86rem}
+.xpl table.mini th,.xpl table.mini td{padding:5px 10px;border-bottom:1px solid var(--xl);text-align:left;vertical-align:top}
+.xpl table.mini th{font-size:.74rem;font-weight:700;color:var(--xa)}
+.xpl .tmpl{border-left:3px solid var(--xa);background:var(--xp);border-radius:0 8px 8px 0;padding:6px 14px;margin:.4em 0;font-size:.9rem}
+.xpl .tmpl p{margin:.3em 0}
+.xpl .calc{overflow-x:auto}
+.xpl .ans{margin-top:12px}
 </style><div class="pastq-block"><h3><span class="zh-num">真题</span>本章的历年期末考题（4 题）</h3><p class="pq-intro">来自 2023-24 S2、2024-25 S2、2025-26 S1、2025-26 S2 期末卷。原题照试卷逐字转录，先自己做，再展开解答。</p><div class="pastq" id="pq-y2324s2-q3a">
   <div class="pq-head"><span class="pq-paper">2023-24 S2</span><span class="pq-q">Q3(a)</span><span>20 分</span></div>
   <div class="pq-topic"><b>考点</b>：Erlang B 反推小区半径 · 集群增益 · 120° 扇区化的代价</div>
@@ -877,7 +1116,50 @@ table td:first-child{font-family:var(--f-body);}
 <p>(iv) Determine the trunking gain T<sub>g</sub> of the system.</p>
 <p>(v) Suppose the operator A decides to improve the hexagonal cellular design further where one uses the 120-degree sector being deployed in each cell for the BS. For this new design, calculate the new value of R and T<sub>g</sub>. State your observation and comment on the changes to the results from the operator's perspective.</p>
 <p class="marks">(20 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>假设</b>：均匀固定分配（UFCA），每小区信道数相同；blocked calls cleared → 用 Erlang B；399 条全是话务信道（题目已说 traffic channels）；用户在服务区内均匀分布。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(i)</b> 每簇 399 条信道（一个簇用完全部信道），每小区 399/7 = <b>57</b> 条。查 Erlang B 表 M = 57、B = 1%：<div class="calc">A ≈ 44.2 Erlang / 小区</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(ii)</b> 每用户话务量 A<sub>u</sub> = 0.9 × 90/3600 = 0.0225 E。每小区用户产生的话务量 = m × 0.0225；令它等于小区能支持的 44.2 E：<div class="calc">m = 44.2 / 0.0225 ≈ 1965 用户/小区</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iii)</b> 用户密度 720 /km²，所以每小区面积 = 1965/720 = 2.73 km²：<div class="calc">(3√3/2)R² = 2.73 → R² = 2.73/2.598 = 1.051 → R ≈ 1.03 km</div></div></div><div class="wstep"><div class="wn">5</div><div class="wtext"><b>(iv)</b> 讲义 p.122：集群增益 = 一组信道在给定 GoS 下能服务的用户数 ÷ 信道数：<div class="calc">T<sub>g</sub> = 1965 / 57 ≈ 34.5 用户/信道</div></div></div><div class="wstep"><div class="wn">6</div><div class="wtext"><b>(v) 120° 扇区。</b>每小区 57 条信道分给 3 个扇区，每扇区 19 条，各自成为独立的信道池。查 Erlang B（M = 19，1%）：A ≈ 11.2 E/扇区，每小区 3 × 11.2 = 33.7 E。<div class="calc">m = 33.7/0.0225 ≈ 1497；面积 = 1497/720 = 2.08 km²；R = √(2.08/2.598) ≈ 0.89 km</div><div class="calc">T<sub>g</sub> = 1497/57 ≈ 26.3</div><b>评论</b>：信道总数不变，但被切成 3 个小池，集群效率下降（57 条一起用能承载 44.2 E，切开只有 33.7 E，少了约 24%），所以每个小区只能覆盖更小的面积，需要更多基站，集群增益从 34.5 降到 26.3。对运营商的好处在于 SIR：只剩 2 个同频干扰源（N = 7、n = 4 时约 24.5 dB，见讲义 p.145）。如果改用更小的簇，扇区化才真正换来容量；在 N 不变的前提下单纯加扇区，只换来干扰改善，付出的是覆盖和集群效率。</div></div><div class="wans">57 条/小区，A ≈ 44.2 E；m ≈ 1965；R ≈ 1.03 km；T<sub>g</sub> ≈ 34.5；扇区化后 R ≈ 0.89 km，T<sub>g</sub> ≈ 26.3</div><div class="pq-note">注：Erlang B 的 A 值用公式精确算出（44.22、11.23），和考卷附表读数相同到小数点后一位。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>Erlang B 查表、每小区用户数、由用户密度反推小区半径、集群增益、扇区化的代价（Part A 话务，讲义 p.122、p.145）。</dd><dt>用到的知识</dt><dd>每小区信道 = 总信道 / N；A<sub>u</sub> = λH；用户数 = A/A<sub>u</sub>；六边形面积 (3√3/2)R²；集群增益 = 用户数 / 信道数。</dd><dt>解题套路</dt><dd>信道 → 查 Erlang B 得 A → 用户数 → 面积 → R。扇区化：每扇区信道 = 每小区 / 3，按扇区查表再乘 3，后面同样算。</dd><dt>易错</dt><dd>A<sub>u</sub> = 0.9 次/小时 × 90 s ÷ 3600 = 0.0225 E，时间单位要统一；扇区化后不能再按 57 条整体查表；面积用六边形公式，不是 πR²。</dd><dt>结论</dt><dd>信道池切小，集群效率下降（44.2 E → 33.7 E，少 24%）。扇区化的好处是 SIR；N 不变、只加扇区，不增加容量。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>假设</b>：均匀固定分配（UFCA），每小区信道数相同；blocked calls cleared → 用 Erlang B；399 条全是话务信道（题目已说 traffic channels）；用户在服务区内均匀分布。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(i)</b> 每簇 399 条信道（一个簇用完全部信道），每小区 399/7 = <b>57</b> 条。查 Erlang B 表 M = 57、B = 1%：<div class="calc">A ≈ 44.2 Erlang / 小区</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(ii)</b> 每用户话务量 A<sub>u</sub> = 0.9 × 90/3600 = 0.0225 E。每小区用户产生的话务量 = m × 0.0225；令它等于小区能支持的 44.2 E：<div class="calc">m = 44.2 / 0.0225 ≈ 1965 用户/小区</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iii)</b> 用户密度 720 /km²，所以每小区面积 = 1965/720 = 2.73 km²：<div class="calc">(3√3/2)R² = 2.73 → R² = 2.73/2.598 = 1.051 → R ≈ 1.03 km</div></div></div><div class="wstep"><div class="wn">5</div><div class="wtext"><b>(iv)</b> 讲义 p.122：集群增益 = 一组信道在给定 GoS 下能服务的用户数 ÷ 信道数：<div class="calc">T<sub>g</sub> = 1965 / 57 ≈ 34.5 用户/信道</div></div></div><div class="wstep"><div class="wn">6</div><div class="wtext"><b>(v) 120° 扇区。</b>每小区 57 条信道分给 3 个扇区，每扇区 19 条，各自成为独立的信道池。查 Erlang B（M = 19，1%）：A ≈ 11.2 E/扇区，每小区 3 × 11.2 = 33.7 E。<div class="calc">m = 33.7/0.0225 ≈ 1497；面积 = 1497/720 = 2.08 km²；R = √(2.08/2.598) ≈ 0.89 km</div><div class="calc">T<sub>g</sub> = 1497/57 ≈ 26.3</div><b>评论</b>：信道总数不变，但被切成 3 个小池，集群效率下降（57 条一起用能承载 44.2 E，切开只有 33.7 E，少了约 24%），所以每个小区只能覆盖更小的面积，需要更多基站，集群增益从 34.5 降到 26.3。对运营商的好处在于 SIR：只剩 2 个同频干扰源（N = 7、n = 4 时约 24.5 dB，见讲义 p.145）。如果改用更小的簇，扇区化才真正换来容量；在 N 不变的前提下单纯加扇区，只换来干扰改善，付出的是覆盖和集群效率。</div></div><div class="wans">57 条/小区，A ≈ 44.2 E；m ≈ 1965；R ≈ 1.03 km；T<sub>g</sub> ≈ 34.5；扇区化后 R ≈ 0.89 km，T<sub>g</sub> ≈ 26.3</div><div class="pq-note">注：Erlang B 的 A 值用公式精确算出（44.22、11.23），和考卷附表读数相同到小数点后一位。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>Erlang B 查表、每小区用户数、由用户密度反推小区半径、集群增益、扇区化的代价（Part A 话务，讲义 p.122、p.145）。</dd><dt>用到的知识</dt><dd>每小区信道 = 总信道 / N；A<sub>u</sub> = λH；用户数 = A/A<sub>u</sub>；六边形面积 (3√3/2)R²；集群增益 = 用户数 / 信道数。</dd><dt>解题套路</dt><dd>信道 → 查 Erlang B 得 A → 用户数 → 面积 → R。扇区化：每扇区信道 = 每小区 / 3，按扇区查表再乘 3，后面同样算。</dd><dt>易错</dt><dd>A<sub>u</sub> = 0.9 次/小时 × 90 s ÷ 3600 = 0.0225 E，时间单位要统一；扇区化后不能再按 57 条整体查表；面积用六边形公式，不是 πR²。</dd><dt>结论</dt><dd>信道池切小，集群效率下降（44.2 E → 33.7 E，少 24%）。扇区化的好处是 SIR；N 不变、只加扇区，不增加容量。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：Erlang B 反推小区半径、集群增益与扇区化</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>话务量、Erlang B 和集群增益</h4>
+<ul><li><b>话务量（traffic）</b>：A = λH，λ 是每小时呼叫次数，H 是平均通话时长（小时）。单位 Erlang（E），1 E = 一条信道一直被占满。每用户话务量 A<sub>u</sub> = 每小时呼叫数 × 通话时长 / 3600（讲义 Part A p.115–116）。</li>
+<li><b>Erlang B</b>：blocked calls cleared（被阻塞的呼叫直接丢弃、不排队）时，M 条信道、话务量 A 下的阻塞概率 P<sub>B</sub>（p.118–120）。考试<b>查表</b>：已知 M 和 P<sub>B</sub>（GoS），读出能承载的 A。老师课上说附录虽给公式但从没见过真用它算，都是查表，要会线性插值。</li>
+<li><b>集群（trunking）</b>：很多用户共用一组信道，因为不会所有人同时打电话。信道池越大，每条信道平均能多承担话务（集群效率高）。集群增益 T<sub>g</sub> = 一组信道在给定 GoS 下能服务的用户数 ÷ 信道数（p.122）。</li>
+<li><b>扇区化（sectoring）</b>：用 120° 定向天线把一个小区分成 3 个扇区，同频干扰源从 6 个减到 2 个，SIR 提高；但每个扇区只有 1/3 的信道，各成独立的池，集群效率下降（p.143–149）。老师课上强调这一点要会讲。讲义 p.148–149 的例题正好也是"57 条信道、1%、120° 扇区每扇区 19 条、少了 24%"，和本题同一组数。</li></ul>
+<h4><span class="st">详细解析</span>先写假设（题目要求 State and justify）</h4>
+<ul><li>均匀固定信道分配（UFCA）：每个小区信道数相同；</li>
+<li>399 条都是话务信道（题目已说 traffic channels），控制信道另算；</li>
+<li>blocked calls cleared → 用 Erlang B；呼叫按泊松到达，用户数很多；</li>
+<li>用户在服务区内均匀分布，按忙时（busy hour）话务设计；六边形小区。</li></ul>
+<h4><span class="st">详细解析</span>(i)–(iv) 一步一步</h4>
+<ol><li><b>每小区信道</b>：一个簇用完全部 399 条，<div class="calc">M = 399/7 = 57 条/小区</div></li>
+<li><b>查 Erlang B 表</b>（M = 57，P<sub>B</sub> = 1%）：<div class="calc">A ≈ 44.2 E/小区</div></li>
+<li><b>每用户话务量</b>（注意单位：秒 → 小时）：<div class="calc">A<sub>u</sub> = 0.9 × 90/3600 = 0.0225 E</div></li>
+<li><b>每小区用户数</b>：令用户产生的话务量 = 小区能承载的话务量，<div class="calc">m = 44.2/0.0225 ≈ 1965 用户/小区；每小区话务量 = 1965 × 0.0225 ≈ 44.2 E</div></li>
+<li><b>小区面积和半径</b>：<div class="calc">面积 = 1965/720 = 2.73 km²</div><div class="calc">R = √(2.73/2.598) = √1.051 ≈ 1.03 km</div>计算器：3√3/2 = 2.598。</li>
+<li><b>集群增益</b>：<div class="calc">T<sub>g</sub> = 1965/57 ≈ 34.5 用户/信道</div>（对照讲义 p.122 例子：50 条、2% 时为 24.2。信道多了，T<sub>g</sub> 也大。）</li></ol>
+<h4><span class="st">详细解析</span>(v) 120° 扇区化</h4>
+<ol><li>每扇区 57/3 = 19 条，查表（M = 19，1%）：A ≈ 11.2 E/扇区，每小区 3 × 11.23 = 33.7 E。</li>
+<li><div class="calc">m = 33.7/0.0225 ≈ 1497；面积 = 1497/720 = 2.08 km²；R = √(2.08/2.598) ≈ 0.89 km</div></li>
+<li><div class="calc">T<sub>g</sub> = 1497/57 ≈ 26.3</div></li>
+<li>对比：每小区承载话务从 44.2 E 降到 33.7 E（少约 24%）；集群效率 A/M 从 0.78 降到 0.59；小区面积变小，覆盖同一个岛需要约 2.73/2.08 ≈ 1.31 倍的基站。</li></ol>
+<p><b>运营商角度的评论</b>：在簇大小 N = 7 不变的前提下单纯加扇区，换来的是更好的 SIR（干扰源 6 → 2），付出的是集群效率、覆盖面积和更多的切换；只有利用 SIR 余量<b>缩小簇</b>（例如 N = 7 → 4），扇区化才能真正提高容量。</p>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>A<sub>u</sub> 的单位：90 s 要除以 3600 变成小时。</li>
+<li>扇区化后要按 19 条查表再乘 3，不能还按 57 条查。</li>
+<li>面积用六边形公式 (3√3/2)R²，不是 πR²。</li>
+<li>查表时确认是 Erlang B 表、1% 那一列。</li>
+<li>用户数取整时向下取（1965），多一个人就超过 1% 阻塞。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>Assumptions: uniform fixed channel assignment (equal channels per cell); all 399 channels are traffic channels; blocked calls are cleared, so the Erlang B model applies (Poisson arrivals, large user population); users are uniformly distributed and the design is for the busy hour.</p>
+<p>(i) Channels per cluster = 399, so channels per cell = 399/7 = 57. From the Erlang B table with M = 57 and GOS = 1%, the offered traffic supported is A ≈ 44.2 Erlangs per cell.</p>
+<p>(ii) Traffic per user A<sub>u</sub> = 0.9 × 90/3600 = 0.0225 E. Number of users per cell m = 44.2/0.0225 ≈ 1965, and the offered traffic generated by these users is 1965 × 0.0225 ≈ 44.2 E per cell.</p>
+<p>(iii) Cell area = 1965/720 = 2.73 km² = (3√3/2)R², so R = √(2.73/2.598) ≈ 1.03 km.</p>
+<p>(iv) Trunking gain T<sub>g</sub> = users served / number of channels = 1965/57 ≈ 34.5 users per channel.</p>
+<p>(v) With 120° sectoring each sector has 57/3 = 19 channels. From the Erlang B table, A ≈ 11.2 E per sector, i.e. 33.7 E per cell. Users per cell = 33.7/0.0225 ≈ 1497, cell area = 1497/720 = 2.08 km², R ≈ 0.89 km, and T<sub>g</sub> = 1497/57 ≈ 26.3.</p>
+<p>Observation: the traffic carried per cell falls by about 24% because the channels are split into three smaller trunk groups, so the trunking efficiency drops (0.78 to 0.59). The cell radius must be reduced from 1.03 km to 0.89 km, so about 31% more base stations are needed. From the operator's perspective, sectoring with the same cluster size only improves the SIR (interferers reduced from 6 to 2) at the cost of capacity, coverage and more handoffs; it increases capacity only if the improved SIR is used to reduce the cluster size.</p></div>
+<div class="ans">一句话：57 条/小区 → 查表 44.2 E → 1965 人 → 2.73 km² → R ≈ 1.03 km，T<sub>g</sub> ≈ 34.5；扇区化把信道池切成 3 份，降到 33.7 E、R ≈ 0.89 km、T<sub>g</sub> ≈ 26.3，换来的只是 SIR。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2324s2-q3a">→ 在「历年真题」页看整份 2023-24 S2 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2425s2-q4c">
@@ -888,7 +1170,43 @@ table td:first-child{font-family:var(--f-body);}
 <p>(ii) Calculate the number of users that can be accommodated for this cell at that given GOS.</p>
 <p>(iii) Compute the carried load and trunking efficiency if the cluster size is changed to N<sub>c</sub>=7. Comment on your results.</p>
 <p class="marks">(9 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 每小区 M = 504/9 = 56 条。Erlang B（M = 56，2%）：A ≈ <b>45.9 E</b>（和讲义 p.44 AMPS 例题同一个数）。严格的承载话务量 = A(1 − P<sub>B</sub>) = 45.9 × 0.98 = 45.0 E。中继效率 = 45.9/56 ≈ <b>0.82</b>（用 45.0 算是 0.80）。"carrier load" 是 carried load 的笔误。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> A<sub>u</sub> = 2 × 15/60 = 0.5 E/用户：<div class="calc">U = 45.9/0.5 = 91.8 → 91 个用户</div>向下取整，多一个人就超过 2% 阻塞率。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> N = 7：M = 504/7 = 72，A ≈ 61.0 E，承载 61.0 × 0.98 = 59.8 E，中继效率 61.0/72 ≈ <b>0.85</b>，用户 122 人。<br><b>评论</b>：簇变小，每小区信道多了 29%，话务量却多了 33%，因为信道池越大集群效率越高；代价是同频小区离得更近，SIR 从 20.8 dB 降到 18.7 dB（n = 4），余量变小。</div></div><div class="wans">N = 9：45.9 E，η ≈ 0.82，91 人；N = 7：61.0 E，η ≈ 0.85，122 人</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>Erlang B：承载话务量、中继效率、用户数、换簇大小（Part A 话务，讲义 p.44 AMPS 例题）。</dd><dt>用到的知识</dt><dd>承载话务 = A(1 − P<sub>B</sub>)；中继效率 = A/M；用户数 = A/A<sub>u</sub>，向下取整。</dd><dt>解题套路</dt><dd>M = 504/N → 查表 → 效率 → 用户数；换 N 再算一遍对比。</dd><dt>易错</dt><dd>用户数向下取整（91，不是 92）；A<sub>u</sub> = 2 次/小时 × 15/60 小时 = 0.5 E；"carrier load"是 carried load 的笔误。</dd><dt>结论</dt><dd>簇变小 → 每小区信道多 → 集群效率高（0.82 → 0.85）；代价是 SIR 下降（20.8 → 18.7 dB）。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 每小区 M = 504/9 = 56 条。Erlang B（M = 56，2%）：A ≈ <b>45.9 E</b>（和讲义 p.44 AMPS 例题同一个数）。严格的承载话务量 = A(1 − P<sub>B</sub>) = 45.9 × 0.98 = 45.0 E。中继效率 = 45.9/56 ≈ <b>0.82</b>（用 45.0 算是 0.80）。"carrier load" 是 carried load 的笔误。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> A<sub>u</sub> = 2 × 15/60 = 0.5 E/用户：<div class="calc">U = 45.9/0.5 = 91.8 → 91 个用户</div>向下取整，多一个人就超过 2% 阻塞率。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> N = 7：M = 504/7 = 72，A ≈ 61.0 E，承载 61.0 × 0.98 = 59.8 E，中继效率 61.0/72 ≈ <b>0.85</b>，用户 122 人。<br><b>评论</b>：簇变小，每小区信道多了 29%，话务量却多了 33%，因为信道池越大集群效率越高；代价是同频小区离得更近，SIR 从 20.8 dB 降到 18.7 dB（n = 4），余量变小。</div></div><div class="wans">N = 9：45.9 E，η ≈ 0.82，91 人；N = 7：61.0 E，η ≈ 0.85，122 人</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>Erlang B：承载话务量、中继效率、用户数、换簇大小（Part A 话务，讲义 p.44 AMPS 例题）。</dd><dt>用到的知识</dt><dd>承载话务 = A(1 − P<sub>B</sub>)；中继效率 = A/M；用户数 = A/A<sub>u</sub>，向下取整。</dd><dt>解题套路</dt><dd>M = 504/N → 查表 → 效率 → 用户数；换 N 再算一遍对比。</dd><dt>易错</dt><dd>用户数向下取整（91，不是 92）；A<sub>u</sub> = 2 次/小时 × 15/60 小时 = 0.5 E；"carrier load"是 carried load 的笔误。</dd><dt>结论</dt><dd>簇变小 → 每小区信道多 → 集群效率高（0.82 → 0.85）；代价是 SIR 下降（20.8 → 18.7 dB）。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：承载话务量、中继效率与换簇大小</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>提供话务、承载话务和中继效率</h4>
+<ul><li><b>提供话务量</b>（offered traffic）A：用户想打的话务总量。Erlang B 表给的是在 M 条信道、阻塞率 P<sub>B</sub> 下能接受的最大 A（讲义 Part A p.118–120）。</li>
+<li><b>承载话务量</b>（carried traffic）：真正接通的部分，被阻塞的那部分不算：C = A(1 − P<sub>B</sub>)（p.120）。题目里的 "carrier load" 是 carried load 的笔误。</li>
+<li><b>中继效率</b>（trunking efficiency）：每条信道平均承担的话务，取值 0–1（p.123–124）。讲义例子用 A/M（10 条、1% 时 4.46/10 = 44.6%）；严格按承载话务算是 A(1 − P<sub>B</sub>)/M。两种都写上最保险。</li>
+<li><b>用户数</b> = A/A<sub>u</sub>，A<sub>u</sub> = 每小时呼叫数 × 每次时长（小时）。</li>
+<li>讲义 p.44 的 AMPS 例题正好也是"56 条、2% → 45.9 E"，可以对照。</li></ul>
+<h4><span class="st">详细解析</span>(i) N = 9</h4>
+<ol><li><div class="calc">每小区信道 M = 504/9 = 56</div></li>
+<li>查 Erlang B（M = 56，P<sub>B</sub> = 2%）：<div class="calc">A ≈ 45.9 E</div></li>
+<li>承载话务：<div class="calc">C = 45.9 × (1 − 0.02) = 45.0 E</div></li>
+<li>中继效率：<div class="calc">η = 45.9/56 ≈ 0.82（按承载话务 45.0/56 ≈ 0.80）</div></li></ol>
+<h4><span class="st">详细解析</span>(ii) 用户数</h4>
+<div class="calc">A<sub>u</sub> = 2 × 15/60 = 0.5 E/用户</div>
+<div class="calc">U = 45.9/0.5 = 91.8 → 91 个用户</div>
+<p>为什么向下取整：92 个人会产生 46 E，超过 45.9 E，阻塞率就会超过 2%。</p>
+<p>为什么信道池越大效率越高（下一问要用）：呼叫是随机到达的，话务量围绕平均值上下波动。信道少时，为了让偶尔的高峰也只有 2% 被阻塞，平时必须空着很大一部分信道；信道多时，大量用户的波动互相抵消，相对平均值的起伏变小，可以让每条信道平均更忙。所以同样的 GoS 下，A/M 随 M 增大而增大（讲义 p.122–124："1 组 10 条比 2 组 5 条多承载 60% 的话务"）。</p>
+<h4><span class="st">详细解析</span>(iii) 换成 N = 7</h4>
+<ol><li><div class="calc">M = 504/7 = 72；查表 A ≈ 61.0 E</div></li>
+<li><div class="calc">承载 C = 61.0 × 0.98 = 59.8 E；η = 61.0/72 ≈ 0.85（按承载 0.83）</div></li>
+<li><div class="calc">用户 = 61.0/0.5 = 122 人</div></li></ol>
+<p><b>评论</b>：簇变小，每小区信道从 56 增到 72（多 29%），承载话务却从 45.9 增到 61.0 E（多 33%），中继效率从 0.82 升到 0.85——信道池越大，集群效率越高。代价是同频小区离得更近，按 n = 4 的简化模型 SIR 从 20.85 dB（N = 9）降到 18.66 dB（N = 7）（讲义 p.89），余量变小。</p>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>A<sub>u</sub> = 2 次/小时 × 15/60 小时 = 0.5 E，15 分钟要换成小时。</li>
+<li>查 2% 那一列，不是 1%。</li>
+<li>用户数向下取整（91，不是 92）。</li>
+<li>评论要两面写：容量和效率提高，SIR 下降。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) Channels per cell = 504/9 = 56. From the Erlang B table with M = 56 and GOS = 2%, the offered traffic is A ≈ 45.9 Erlangs per cell, so the carried load is A(1 − P<sub>B</sub>) = 45.9 × 0.98 ≈ 45.0 E. Trunking efficiency = 45.9/56 ≈ 0.82 (or 45.0/56 ≈ 0.80 using the carried load).</p>
+<p>(ii) Traffic per user A<sub>u</sub> = 2 × 15/60 = 0.5 E. Number of users = 45.9/0.5 = 91.8, so 91 users can be accommodated per cell (rounded down to keep the blocking at or below 2%).</p>
+<p>(iii) For N<sub>c</sub> = 7: channels per cell = 504/7 = 72, A ≈ 61.0 E, carried load = 61.0 × 0.98 ≈ 59.8 E, trunking efficiency = 61.0/72 ≈ 0.85 (0.83 using the carried load), and about 122 users per cell. Comment: a smaller cluster gives more channels per cell (+29%) and the traffic capacity increases even more (+33%) because a larger trunk group has a higher trunking efficiency. However, co-channel cells are closer, so the co-channel interference increases (SIR falls from about 20.9 dB to 18.7 dB for n = 4), reducing the margin above the required SIR.</p></div>
+<div class="ans">一句话：56 条/小区查表 45.9 E，承载 45.0 E，η ≈ 0.82，91 人；换 N = 7 后 72 条、61.0 E、η ≈ 0.85、122 人，容量和效率都升，但 SIR 降。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2425s2-q4c">→ 在「历年真题」页看整份 2024-25 S2 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2526s1-q3b">
@@ -899,7 +1217,45 @@ table td:first-child{font-family:var(--f-body);}
 <p>(ii) The number of users per km<sup>2</sup>; and</p>
 <p>(iii) The average call duration of a call.</p>
 <p class="marks">(9 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 每小区信道 = 1001/9 = 111.2 → 111 条。查 Erlang C 表（M = 111，延迟概率 5%）：<div class="calc">A ≈ 93.4 Erlang / 小区</div>（Erlang C 表在 100 条以上按 5 条一档，可在 110 与 115 之间线性插值，附录给了插值公式。）</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 每小区用户 = 93.4/0.03 ≈ 3114，每 km²：<div class="calc">3114 / 4 ≈ 779 用户/km²</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> A<sub>u</sub> = λ<sub>u</sub> × H → H = 0.03 / 1.5 = 0.02 小时 = <b>72 秒</b>。</div></div><div class="wans">(i) ≈ 93.4 E　(ii) ≈ 779 用户/km²　(iii) 72 s</div><div class="pq-note">注：3500 km² 这个条件在三小问里都用不到（可以用来算总小区数 875 个）。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>Erlang C 查表（延迟概率）、用户密度、平均通话时长（Part A 话务）。</dd><dt>用到的知识</dt><dd>Erlang C 用于"被阻塞的呼叫排队等待"（blocked calls delayed）；A<sub>u</sub> = λH。</dd><dt>解题套路</dt><dd>每小区信道 → 查 Erlang C 表（要插值）→ 用户数 → 每 km² → H = A<sub>u</sub>/λ。</dd><dt>易错</dt><dd>Erlang B（阻塞清除）和 C（排队）别混：题目给延迟概率就用 C；λ 是每小时，H 最后换成秒。</dd><dt>插值公式</dt><dd>A = A₁ + (M − M₁)(A₂ − A₁)/(M₂ − M₁)，附录会给。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 每小区信道 = 1001/9 = 111.2 → 111 条。查 Erlang C 表（M = 111，延迟概率 5%）：<div class="calc">A ≈ 93.4 Erlang / 小区</div>（Erlang C 表在 100 条以上按 5 条一档，可在 110 与 115 之间线性插值，附录给了插值公式。）</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 每小区用户 = 93.4/0.03 ≈ 3114，每 km²：<div class="calc">3114 / 4 ≈ 779 用户/km²</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> A<sub>u</sub> = λ<sub>u</sub> × H → H = 0.03 / 1.5 = 0.02 小时 = <b>72 秒</b>。</div></div><div class="wans">(i) ≈ 93.4 E　(ii) ≈ 779 用户/km²　(iii) 72 s</div><div class="pq-note">注：3500 km² 这个条件在三小问里都用不到（可以用来算总小区数 875 个）。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>Erlang C 查表（延迟概率）、用户密度、平均通话时长（Part A 话务）。</dd><dt>用到的知识</dt><dd>Erlang C 用于"被阻塞的呼叫排队等待"（blocked calls delayed）；A<sub>u</sub> = λH。</dd><dt>解题套路</dt><dd>每小区信道 → 查 Erlang C 表（要插值）→ 用户数 → 每 km² → H = A<sub>u</sub>/λ。</dd><dt>易错</dt><dd>Erlang B（阻塞清除）和 C（排队）别混：题目给延迟概率就用 C；λ 是每小时，H 最后换成秒。</dd><dt>插值公式</dt><dd>A = A₁ + (M − M₁)(A₂ − A₁)/(M₂ − M₁)，附录会给。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：Erlang C 查表与通话时长</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>话务量、Erlang B 和 Erlang C</h4>
+<p><b>话务量</b>（traffic intensity）A = λH，单位 Erlang：λ 是单位时间的呼叫次数，H 是平均通话时长（holding time）（Part A p.104、p.115）。一个用户每小时打 λ<sub>u</sub> 次、每次 H 小时，他的话务量 A<sub>u</sub> = λ<sub>u</sub>H。1 Erlang 相当于一条信道被一直占满。</p>
+<p>所有信道都忙时，新呼叫怎么办？两种模型：</p>
+<div class="tw"><table class="mini"><thead><tr><th></th><th>Erlang B</th><th>Erlang C</th></tr></thead><tbody>
+<tr><td>新呼叫遇到全忙</td><td>直接被拒绝（blocked calls cleared）</td><td>排队等待（blocked calls delayed）</td></tr>
+<tr><td>题目给的概率</td><td>阻塞概率 GoS</td><td>呼叫被延迟（要排队）的概率</td></tr>
+<tr><td>讲义</td><td>Part A p.118–119</td><td>Part A p.125–126（Queued Model）</td></tr>
+</tbody></table></div>
+<p>考试附录给 Erlang B 表和 C 表，老师说实际都是<b>查表</b>，并提醒先确认用对表。表里没有的信道数用<b>线性插值</b>（p.127）：A = A₁ + (M − M₁)(A₂ − A₁)/(M₂ − M₁)。</p>
+<h4><span class="st">详细解析</span>(i) 每小区话务量</h4>
+<ol>
+<li>每小区信道数 = 1001/9 = 111.2 → 111 条（向下取整，半条信道不能用）。</li>
+<li>题目说"Erlang C system"、概率 5%，所以查 Erlang C 表的 5% 列。</li>
+<li>表在 100 条以上每 5 条一档，在 110 和 115 之间插值。按公式算出的表值约为 A(110) ≈ 92.5、A(115) ≈ 97.1（以考场附录为准）：
+<div class="calc">A(111) ≈ 92.5 + (111 − 110)/(115 − 110) × (97.1 − 92.5) = 92.5 + 0.92 ≈ 93.4 Erlang/小区</div></li>
+</ol>
+<h4><span class="st">详细解析</span>(ii) 每 km² 用户数</h4>
+<div class="calc">每小区用户数 = A / A<sub>u</sub> = 93.44 / 0.03 ≈ 3114 用户<br>每 km² = 3114 / 4 ≈ 779 用户/km²</div>
+<h4><span class="st">详细解析</span>(iii) 平均通话时长</h4>
+<div class="calc">A<sub>u</sub> = λ<sub>u</sub> × H → H = 0.03 / 1.5 = 0.02 小时 = 0.02 × 3600 = 72 秒</div>
+<p><b>合理性检查</b>：72 秒一次通话、每小时 1.5 次，每小时打电话 108 秒，占 3%，正好是 0.03 Erlang。题目给的 3500 km² 三问都用不到，它可以用来算总小区数 3500/4 = 875 个，全系统约 3114 × 875 ≈ 272 万用户。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>用了 Erlang B 表：题目明确是 Erlang C（排队）。</li>
+<li>信道数 111.2 不取整就去查表，或者不会插值直接取 110 或 115 那一行。</li>
+<li>λ 是"每小时"，H 算出来是小时，要换成秒；答案要写单位。</li>
+<li>用户数 = 话务量 ÷ 每用户话务量，别乘反了。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) Channels per cell = 1001/9 = 111.2, i.e. 111 channels. From the Erlang C table with a delay probability of 5%, interpolating between M = 110 (A ≈ 92.5 E) and M = 115 (A ≈ 97.1 E): A ≈ 92.5 + (1/5)(97.1 − 92.5) ≈ 93.4 Erlangs per cell.</p>
+<p>(ii) Users per cell = 93.4/0.03 ≈ 3114 users. Cell area = 4 km², so the user density ≈ 3114/4 ≈ 779 users/km².</p>
+<p>(iii) A<sub>u</sub> = λH, so H = A<sub>u</sub>/λ = 0.03/1.5 = 0.02 h = 72 s.</p></div>
+<div class="ans">一句话：111 条信道查 Erlang C 表 5% 并插值得约 93.4 E/小区，÷0.03 ÷4 得约 779 用户/km²，H = 0.03/1.5 小时 = 72 秒。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s1-q3b">→ 在「历年真题」页看整份 2025-26 S1 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2526s2-q3bc">
@@ -928,7 +1284,62 @@ where P<sub>k</sub> represents the state probability of the system state being a
 <g font-size="12" text-anchor="middle" style="fill:var(--ink)"><text x="85" y="38">λ</text><text x="175" y="38">λ</text><text x="385" y="38">λ</text><text x="475" y="38">λ</text>
 <text x="85" y="124">μ</text><text x="175" y="124">2μ</text><text x="385" y="124">mμ</text><text x="475" y="124">mμ</text></g>
 <text x="280" y="145" font-size="11" text-anchor="middle" style="fill:var(--ink-soft)">到达率恒为 λ；服务率 = 忙着的信道数 × μ，最多 mμ</text>
-</svg><div class="cap">M/M/m 的生灭过程。状态 k = 系统里的呼叫数（含排队）。</div></div></div></div><div class="wstep"><div class="wn">5</div><div class="wtext"><b>(c)(ii) k ≤ m</b>：由 kμP<sub>k</sub> = λP<sub>k−1</sub> 得 P<sub>k</sub> = (ρ/k)P<sub>k−1</sub>，一路递推到 P₀：<div class="calc">P<sub>k</sub> = P₀ · ρ<sup>k</sup>/k!，　k ≤ m</div><b>k ≥ m</b>：mμP<sub>k</sub> = λP<sub>k−1</sub>（题中写成 λP<sub>k</sub> 是笔误，讲义 p.106 是 P<sub>k−1</sub>），即 P<sub>k</sub> = (ρ/m)P<sub>k−1</sub>，从 P<sub>m</sub> = P₀ρ<sup>m</sup>/m! 出发再乘 (k − m) 次 ρ/m：<div class="calc">P<sub>k</sub> = P₀ · ρ<sup>k</sup>/(m! · m<sup>k−m</sup>)，　k ≥ m</div>两式在 k = m 处一致。P₀ 由 ΣP<sub>k</sub> = 1 求出（要求 ρ/m &lt; 1），再由此得到 Erlang C 公式。</div></div><div class="wans">(b) ≈ 132.2 E/小区；≈ 735 用户/km²；90 s　(c) P<sub>k</sub> = P₀ρ<sup>k</sup>/k!（k ≤ m），P₀ρ<sup>k</sup>/(m!m<sup>k−m</sup>)（k ≥ m）</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>Erlang C 查表、用户密度、平均通话时长；M/M/m 状态转移图和 P<sub>k</sub> 的推导（Part A 排队论，p.106）。</dd><dt>用到的知识</dt><dd>生灭过程平衡：相邻两状态之间流入 = 流出，λP<sub>k−1</sub> = μ<sub>k</sub>P<sub>k</sub>；服务速率 μ<sub>k</sub> = kμ（k ≤ m），mμ（k ≥ m）。</dd><dt>解题套路</dt><dd>(b) 同 2025-26 S1 Q3(b)：查表插值 → 用户 → 每 km² → H；(c) 画状态图 → 列平衡式 → 分两段递推 → 用 ΣP<sub>k</sub> = 1 定 P₀。</dd><dt>易错</dt><dd>题目中 λP<sub>k</sub> 是笔误，应为 λP<sub>k−1</sub>；k ≥ m 后服务速率封顶 mμ；稳定条件 ρ/m &lt; 1。</dd><dt>联系</dt><dd>由 P<sub>k</sub> 求出"所有信道都忙"的概率 ΣP<sub>k</sub>（k ≥ m），就是 Erlang C 公式。</dd></dl></div></details>
+</svg><div class="cap">M/M/m 的生灭过程。状态 k = 系统里的呼叫数（含排队）。</div></div></div></div><div class="wstep"><div class="wn">5</div><div class="wtext"><b>(c)(ii) k ≤ m</b>：由 kμP<sub>k</sub> = λP<sub>k−1</sub> 得 P<sub>k</sub> = (ρ/k)P<sub>k−1</sub>，一路递推到 P₀：<div class="calc">P<sub>k</sub> = P₀ · ρ<sup>k</sup>/k!，　k ≤ m</div><b>k ≥ m</b>：mμP<sub>k</sub> = λP<sub>k−1</sub>（题中写成 λP<sub>k</sub> 是笔误，讲义 p.106 是 P<sub>k−1</sub>），即 P<sub>k</sub> = (ρ/m)P<sub>k−1</sub>，从 P<sub>m</sub> = P₀ρ<sup>m</sup>/m! 出发再乘 (k − m) 次 ρ/m：<div class="calc">P<sub>k</sub> = P₀ · ρ<sup>k</sup>/(m! · m<sup>k−m</sup>)，　k ≥ m</div>两式在 k = m 处一致。P₀ 由 ΣP<sub>k</sub> = 1 求出（要求 ρ/m &lt; 1），再由此得到 Erlang C 公式。</div></div><div class="wans">(b) ≈ 132.2 E/小区；≈ 735 用户/km²；90 s　(c) P<sub>k</sub> = P₀ρ<sup>k</sup>/k!（k ≤ m），P₀ρ<sup>k</sup>/(m!m<sup>k−m</sup>)（k ≥ m）</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>Erlang C 查表、用户密度、平均通话时长；M/M/m 状态转移图和 P<sub>k</sub> 的推导（Part A 排队论，p.106）。</dd><dt>用到的知识</dt><dd>生灭过程平衡：相邻两状态之间流入 = 流出，λP<sub>k−1</sub> = μ<sub>k</sub>P<sub>k</sub>；服务速率 μ<sub>k</sub> = kμ（k ≤ m），mμ（k ≥ m）。</dd><dt>解题套路</dt><dd>(b) 同 2025-26 S1 Q3(b)：查表插值 → 用户 → 每 km² → H；(c) 画状态图 → 列平衡式 → 分两段递推 → 用 ΣP<sub>k</sub> = 1 定 P₀。</dd><dt>易错</dt><dd>题目中 λP<sub>k</sub> 是笔误，应为 λP<sub>k−1</sub>；k ≥ m 后服务速率封顶 mμ；稳定条件 ρ/m &lt; 1。</dd><dt>联系</dt><dd>由 P<sub>k</sub> 求出"所有信道都忙"的概率 ΣP<sub>k</sub>（k ≥ m），就是 Erlang C 公式。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：Erlang C 与 M/M/m</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>(b) 话务量和 Erlang C</h4>
+<p>话务量 A = λH（Erlang），每用户话务量 A<sub>u</sub> = λ<sub>u</sub>H（Part A p.104、p.115）。题目说的是 <b>Erlang C 系统</b>：所有信道都忙时，新呼叫<b>排队等待</b>（blocked calls delayed，p.125），给的 5% 是"呼叫需要等待的概率"。查附录 Erlang C 表的 5% 列，表里没有的信道数用线性插值（p.127）。老师提醒先确认用对表（B 还是 C）。</p>
+<h4><span class="st">知识讲解</span>(c) M/M/m 排队模型和生灭过程</h4>
+<p>M/M/m：到达是泊松过程（M）、服务时间是指数分布（M）、有 m 个服务台（m 条信道）（Kendall 记号，p.102）。<b>状态 k</b> = 系统里正在通话和排队的呼叫总数。</p>
+<ul>
+<li>到达率 λ<sub>k</sub> = λ：不管系统里有多少人，新呼叫都以速率 λ 到来（k → k+1）。</li>
+<li>服务率 μ<sub>k</sub>：每条忙的信道以速率 μ 结束通话。k ≤ m 时 k 条信道都在服务，μ<sub>k</sub> = kμ；k ≥ m 时只有 m 条信道，其余在排队，μ<sub>k</sub> = mμ 封顶（p.106）。</li>
+<li><b>平衡方程</b>：稳态时，相邻两个状态之间"向右流的概率流 = 向左流的概率流"：λP<sub>k−1</sub> = μ<sub>k</sub>P<sub>k</sub>。</li>
+</ul>
+<p>老师说 M/M/m 的<b>状态转移图要会画</b>，会列平衡方程、递推求 P<sub>k</sub> 和 P₀，本题 (c) 就考了。</p>
+<h4><span class="st">详细解析</span>(b) 三小问</h4>
+<ol>
+<li><b>(i)</b> 每小区 1071/7 = 153 条信道，查 Erlang C 表 5% 列，在 150 和 155 之间插值。按公式算出的表值约为 A(150) ≈ 129.5、A(155) ≈ 134.1（以考场附录为准）：
+<div class="calc">A(153) ≈ 129.5 + (153 − 150)/(155 − 150) × (134.1 − 129.5) = 129.5 + 2.76 ≈ 132.2 Erlang/小区</div></li>
+<li><b>(ii)</b>
+<div class="calc">每小区用户 = 132.2 / 0.03 ≈ 4408；每 km² = 4408 / 6 ≈ 735 用户/km²</div></li>
+<li><b>(iii)</b>
+<div class="calc">H = A<sub>u</sub>/λ<sub>u</sub> = 0.03/1.2 小时 = 0.025 h = 0.025 × 3600 = 90 s</div></li>
+</ol>
+<h4><span class="st">详细解析</span>(c)(i) 画状态转移图</h4>
+<p>画法：一排圆圈标 0, 1, 2, …, m−1, m, m+1, …；每两个相邻圆圈之间画一对箭头。上面向右的箭头全标 λ；下面向左的箭头依次标 μ, 2μ, 3μ, …, mμ（从状态 k 回到 k−1 的速率是 μ<sub>k</sub>），从 m → m−1 起一直都是 mμ。最后在右边画省略号表示状态无限多（队列无限长）。</p>
+<h4><span class="st">详细解析</span>(c)(ii) 推导 P<sub>k</sub></h4>
+<ol>
+<li><b>k ≤ m</b>：kμP<sub>k</sub> = λP<sub>k−1</sub> → P<sub>k</sub> = (ρ/k)P<sub>k−1</sub>，ρ = λ/μ。一路往下递推：
+<div class="calc">P₁ = ρP₀，P₂ = (ρ/2)P₁ = (ρ²/2!)P₀，…，P<sub>k</sub> = P₀ρ<sup>k</sup>/k!，k ≤ m</div></li>
+<li><b>k ≥ m</b>：mμP<sub>k</sub> = λP<sub>k−1</sub> → P<sub>k</sub> = (ρ/m)P<sub>k−1</sub>。从 P<sub>m</sub> = P₀ρ<sup>m</sup>/m! 出发，再乘 (k − m) 次 ρ/m：
+<div class="calc">P<sub>k</sub> = P₀(ρ<sup>m</sup>/m!)(ρ/m)<sup>k−m</sup> = P₀ρ<sup>k</sup>/(m!·m<sup>k−m</sup>)，k ≥ m</div></li>
+<li><b>检查</b>：k = m 时两式都等于 P₀ρ<sup>m</sup>/m!，一致。</li>
+<li><b>P₀</b>（题目没要求，但老师说要会）：由 ΣP<sub>k</sub> = 1，k ≥ m 的部分是公比 ρ/m 的等比数列，要求 ρ/m &lt; 1（否则队列无限增长）：
+<div class="calc">P₀ = [Σ<sub>k=0</sub><sup>m−1</sup> ρ<sup>k</sup>/k! + (ρ<sup>m</sup>/m!)·1/(1 − ρ/m)]⁻¹</div>
+"所有信道都忙、必须排队"的概率 ΣP<sub>k</sub>（k ≥ m）就是 Erlang C 公式（p.110）。</li>
+</ol>
+<p><b>数字小例子</b>（自己验算用）：m = 3、ρ = 2。P₀ = 1/[1 + 2 + 2 + (8/6) × 3] = 1/9；排队概率 = (8/6)(1/9) × 3 = 4/9 ≈ 0.444，和 Erlang C 公式算出的 E<sub>2,3</sub>(2) 相同。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>(b) 用了 Erlang B 表；153 条不插值。</li>
+<li>(b)(iii) H 算出 0.025 后不换成秒（题目要秒）。</li>
+<li>(c) 向左箭头全写 μ，或 k ≥ m 后还写 kμ：服务率最多 mμ。</li>
+<li>题目平衡式写成"mμP<sub>k</sub> = λP<sub>k</sub>"，应是 λP<sub>k−1</sub>（讲义 p.106），按 P<sub>k−1</sub> 推导，可在答卷上注明。</li>
+<li>记号：题目的 ρ = λ/μ（就是话务量 A）；讲义 p.105 把 ρ = λ/(mμ) 叫利用率。按题目的定义写，稳定条件就是 ρ/m &lt; 1。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(b)(i) Channels per cell = 1071/7 = 153. From the Erlang C table with a delay probability of 5%, interpolating between M = 150 (A ≈ 129.5 E) and M = 155 (A ≈ 134.1 E): A ≈ 129.5 + (3/5)(4.6) ≈ 132.2 Erlangs per cell.</p>
+<p>(ii) Users per cell = 132.2/0.03 ≈ 4408. Users per km² = 4408/6 ≈ 735 users/km².</p>
+<p>(iii) H = A<sub>u</sub>/λ = 0.03/1.2 h = 0.025 h = 90 s.</p>
+<p>(c)(i) [Sketch: states 0, 1, 2, …, m − 1, m, m + 1, … in a row. Each forward transition k → k + 1 has rate λ. Each backward transition k → k − 1 has rate kμ for k ≤ m (μ, 2μ, …, mμ) and mμ for k &gt; m.]</p>
+<p>(ii) For k ≤ m: kμP<sub>k</sub> = λP<sub>k−1</sub>, so P<sub>k</sub> = (ρ/k)P<sub>k−1</sub>. Applying this recursively, P<sub>k</sub> = P₀ρ<sup>k</sup>/k!.</p>
+<p>For k ≥ m: mμP<sub>k</sub> = λP<sub>k−1</sub>, so P<sub>k</sub> = (ρ/m)P<sub>k−1</sub>. Starting from P<sub>m</sub> = P₀ρ<sup>m</sup>/m!, P<sub>k</sub> = P₀(ρ<sup>m</sup>/m!)(ρ/m)<sup>k−m</sup> = P₀ρ<sup>k</sup>/(m!·m<sup>k−m</sup>).</p>
+<p>Both expressions agree at k = m. P₀ is obtained from ΣP<sub>k</sub> = 1, which requires ρ/m &lt; 1.</p></div>
+<div class="ans">一句话：153 条查 Erlang C 表 5% 插值约 132.2 E，÷0.03 ÷6 ≈ 735 用户/km²，H = 0.025 h = 90 s；M/M/m 由 λP<sub>k−1</sub> = μ<sub>k</sub>P<sub>k</sub> 递推，k ≤ m 时 P₀ρ<sup>k</sup>/k!，k ≥ m 时 P₀ρ<sup>k</sup>/(m!m<sup>k−m</sup>)。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s2-q3bc">→ 在「历年真题」页看整份 2025-26 S2 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->
@@ -1149,7 +1560,53 @@ where P<sub>k</sub> represents the state probability of the system state being a
 <p>(b) Can the system support 1% call blocking probability? <span class="marks">(6 Marks)</span></p>
 <p>(c) Show that the cell splitting technique can be used to get 1% call blocking probability. Determine the new cell radius. <span class="marks">(4 Marks)</span></p>
 <p>(d) If a 3-sector directional antenna is used, how many cells are required in order to have a 1% call blocking probability? Assume that a single carrier can be shared between two sectors. <span class="marks">(9 Marks)</span></p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(a) 系统总信道数。</b>FDD：40 MHz 一半上行一半下行，每个方向 20 MHz，扣掉 2 MHz 控制信令，剩 18 MHz。"carrier frequency is 200 KHz" 应理解为每个载波<b>带宽</b> 200 kHz：<div class="calc">载波数 = 18 MHz / 200 kHz = 90；双工信道 = 90 × 8 时隙 = 720</div><b>选簇大小</b>：6 个等距干扰、手机在小区边缘，S/I = Q<sup>n</sup>/6 ≥ 10<sup>1.8</sup> = 63.1：<div class="calc">Q<sup>3.7</sup> ≥ 378.6 → Q ≥ 4.98 → N = Q²/3 ≥ 8.25</div>合法簇大小（i² + ij + j²）里 ≥ 8.25 的最小值是 <b>N = 9</b>（N = 7 只有 16.7 dB，不够；N = 9 为 18.7 dB）。<div class="calc">每小区信道 = 720/9 = 80 条双工信道</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(b)</b> 小区面积 = 2.598 × 1² = 2.598 km²，用户 = 2.598 × 2000 = 5196，话务量 = 5196 × 0.03 = <b>155.9 E</b>。Erlang B 表 M = 80、B = 1%：A ≈ <b>65.4 E</b>。155.9 远大于 65.4，<b>不能</b>满足 1% 阻塞率（阻塞率会远高于 1%）。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(c) 小区分裂</b>：分裂后每个小区信道数不变（仍 80 条，SIR 只取决于 Q = D/R，分裂后 D 和 R 同比例缩小），但每个小区覆盖的用户变少。要求每小区话务量 ≤ 65.4 E：<div class="calc">面积 ≤ 65.4/(2000 × 0.03) = 1.09 km² → R = √(1.09/2.598) ≈ 0.648 km</div>新半径约 <b>650 m</b>（基站数约增加到 2.4 倍），即可满足 1%。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(d) 三扇区</b>：每个扇区只剩 2 个同频干扰，SIR = 1/(Q<sup>−n</sup> + (Q + 0.7)<sup>−n</sup>)，可以用更小的簇：<div class="calc">N = 3：Q = 3 → 16.0 dB ✗；　N = 4：Q = 3.46 → 18.2 dB ✓</div>取 N = 4：每小区 720/4 = 180 条，每扇区 60 条（每小区 22.5 个载波，"一个载波可被两个扇区共用"正是让每扇区分到 7.5 个载波 = 60 条成立）。Erlang B（M = 60，1%）：A ≈ 46.9 E/扇区，每小区 140.8 E。<br>全城面积 = 60 × 2.598 = 155.9 km²，总话务量 = 155.9 × 2000 × 0.03 = 9353 E：<div class="calc">小区数 = 9353 / 140.8 ≈ 66.4 → 67 个小区</div>（对应半径约 0.95 km。）对比：不改簇、只加扇区（N = 9、每扇区约 26–27 条）需要约 180 个小区，反而更多。扇区化必须配合缩小簇才划算。</div></div><div class="wans">(a) N = 9，80 条/小区　(b) 需 155.9 E，只能承载 65.4 E，不能　(c) R ≈ 0.65 km　(d) N = 4，每扇区 60 条，约 67 个小区</div><div class="pq-note">注：(d) 的题意有不同理解，这里采用"扇区化 → 允许更小的簇 → 每小区信道更多"的思路，并说明了只加扇区不改簇的结果。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>FDD-TDMA 信道数、由 SIR 选簇、Erlang B、小区分裂、三扇区重新选簇（Part A 综合题，25 分）。</dd><dt>用到的知识</dt><dd>FDD 一半上行一半下行；信道数 = 载波数 × 时隙数；S/I = Q<sup>n</sup>/6，N = Q²/3，取合法值 i² + ij + j²；扇区 S/I = 1/(Q<sup>−n</sup> + (Q + 0.7)<sup>−n</sup>)。</dd><dt>解题套路</dt><dd>(a) 扣控制 → 载波数 → ×8 → 选 N → 每小区信道；(b) 话务需求和查表值比较；(c) 每小区话务 ≤ 表值 → 面积 → R；(d) 扇区后试更小的 N，查表 ×3，总话务 ÷ 每小区话务。</dd><dt>易错</dt><dd>合法簇大小：1、3、4、7、9、12、13…；小区分裂后每小区信道数不变（SIR 只看 Q）；小区数向上取整。</dd><dt>结论</dt><dd>扇区化必须配合缩小簇才划算：N = 4 加三扇区约 67 个小区，N = 9 只加扇区约 180 个。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(a) 系统总信道数。</b>FDD：40 MHz 一半上行一半下行，每个方向 20 MHz，扣掉 2 MHz 控制信令，剩 18 MHz。"carrier frequency is 200 KHz" 应理解为每个载波<b>带宽</b> 200 kHz：<div class="calc">载波数 = 18 MHz / 200 kHz = 90；双工信道 = 90 × 8 时隙 = 720</div><b>选簇大小</b>：6 个等距干扰、手机在小区边缘，S/I = Q<sup>n</sup>/6 ≥ 10<sup>1.8</sup> = 63.1：<div class="calc">Q<sup>3.7</sup> ≥ 378.6 → Q ≥ 4.98 → N = Q²/3 ≥ 8.25</div>合法簇大小（i² + ij + j²）里 ≥ 8.25 的最小值是 <b>N = 9</b>（N = 7 只有 16.7 dB，不够；N = 9 为 18.7 dB）。<div class="calc">每小区信道 = 720/9 = 80 条双工信道</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(b)</b> 小区面积 = 2.598 × 1² = 2.598 km²，用户 = 2.598 × 2000 = 5196，话务量 = 5196 × 0.03 = <b>155.9 E</b>。Erlang B 表 M = 80、B = 1%：A ≈ <b>65.4 E</b>。155.9 远大于 65.4，<b>不能</b>满足 1% 阻塞率（阻塞率会远高于 1%）。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(c) 小区分裂</b>：分裂后每个小区信道数不变（仍 80 条，SIR 只取决于 Q = D/R，分裂后 D 和 R 同比例缩小），但每个小区覆盖的用户变少。要求每小区话务量 ≤ 65.4 E：<div class="calc">面积 ≤ 65.4/(2000 × 0.03) = 1.09 km² → R = √(1.09/2.598) ≈ 0.648 km</div>新半径约 <b>650 m</b>（基站数约增加到 2.4 倍），即可满足 1%。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(d) 三扇区</b>：每个扇区只剩 2 个同频干扰，SIR = 1/(Q<sup>−n</sup> + (Q + 0.7)<sup>−n</sup>)，可以用更小的簇：<div class="calc">N = 3：Q = 3 → 16.0 dB ✗；　N = 4：Q = 3.46 → 18.2 dB ✓</div>取 N = 4：每小区 720/4 = 180 条，每扇区 60 条（每小区 22.5 个载波，"一个载波可被两个扇区共用"正是让每扇区分到 7.5 个载波 = 60 条成立）。Erlang B（M = 60，1%）：A ≈ 46.9 E/扇区，每小区 140.8 E。<br>全城面积 = 60 × 2.598 = 155.9 km²，总话务量 = 155.9 × 2000 × 0.03 = 9353 E：<div class="calc">小区数 = 9353 / 140.8 ≈ 66.4 → 67 个小区</div>（对应半径约 0.95 km。）对比：不改簇、只加扇区（N = 9、每扇区约 26–27 条）需要约 180 个小区，反而更多。扇区化必须配合缩小簇才划算。</div></div><div class="wans">(a) N = 9，80 条/小区　(b) 需 155.9 E，只能承载 65.4 E，不能　(c) R ≈ 0.65 km　(d) N = 4，每扇区 60 条，约 67 个小区</div><div class="pq-note">注：(d) 的题意有不同理解，这里采用"扇区化 → 允许更小的簇 → 每小区信道更多"的思路，并说明了只加扇区不改簇的结果。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>FDD-TDMA 信道数、由 SIR 选簇、Erlang B、小区分裂、三扇区重新选簇（Part A 综合题，25 分）。</dd><dt>用到的知识</dt><dd>FDD 一半上行一半下行；信道数 = 载波数 × 时隙数；S/I = Q<sup>n</sup>/6，N = Q²/3，取合法值 i² + ij + j²；扇区 S/I = 1/(Q<sup>−n</sup> + (Q + 0.7)<sup>−n</sup>)。</dd><dt>解题套路</dt><dd>(a) 扣控制 → 载波数 → ×8 → 选 N → 每小区信道；(b) 话务需求和查表值比较；(c) 每小区话务 ≤ 表值 → 面积 → R；(d) 扇区后试更小的 N，查表 ×3，总话务 ÷ 每小区话务。</dd><dt>易错</dt><dd>合法簇大小：1、3、4、7、9、12、13…；小区分裂后每小区信道数不变（SIR 只看 Q）；小区数向上取整。</dd><dt>结论</dt><dd>扇区化必须配合缩小簇才划算：N = 4 加三扇区约 67 个小区，N = 9 只加扇区约 180 个。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：FDD-TDMA 信道、选簇、Erlang B、分裂与扇区</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>本题用到的五块知识</h4>
+<div class="tw"><table class="mini"><thead><tr><th>步骤</th><th>知识</th><th>讲义 Part A</th></tr></thead><tbody>
+<tr><td>数信道</td><td>FDD：一半上行一半下行；信道数 = 载波数 × 每帧时隙数</td><td>p.37、p.82</td></tr>
+<tr><td>选簇</td><td>S/I = Q<sup>n</sup>/6，Q = √(3N)；合法 N = i² + ij + j² = 1、3、4、7、9、12…</td><td>p.75–78、p.88–89</td></tr>
+<tr><td>能否满足 GoS</td><td>Erlang B 查表：已知 M 和 1%，读出能承载的 A</td><td>p.118–120</td></tr>
+<tr><td>小区分裂</td><td>小区变小，每小区信道数不变（SIR 只看 Q = D/R），每小区用户变少</td><td>p.135–138</td></tr>
+<tr><td>扇区化</td><td>3 扇区只剩 2 个干扰：S/I = 1/[Q<sup>−n</sup> + (Q+0.7)<sup>−n</sup>]，可以用更小的簇</td><td>p.143–146</td></tr>
+</tbody></table></div>
+<p>老师课上强调：扇区化提高 SIR，但每个扇区信道变少、集群效率下降，这一点要会讲；Erlang B 一律查表。</p>
+<h4><span class="st">详细解析</span>(a) 每小区双工信道数</h4>
+<ol><li>FDD：40 MHz 一半上行、一半下行，每方向 20 MHz；扣掉控制信令 2 MHz，剩 18 MHz。</li>
+<li>"carrier frequency is 200 KHz" 理解为每个载波<b>带宽</b> 200 kHz（GSM 式）：<div class="calc">载波数 = 18 MHz / 200 kHz = 90；双工信道 = 90 × 8 = 720</div></li>
+<li>选簇：要 S/I ≥ 18 dB = 10<sup>1.8</sup> = 63.1：<div class="calc">Q<sup>3.7</sup>/6 ≥ 63.1 → Q<sup>3.7</sup> ≥ 378.6 → Q ≥ 378.6<sup>1/3.7</sup> = 4.98</div><div class="calc">N = Q²/3 ≥ 4.98²/3 = 8.25 → 取合法值 N = 9</div>检查：N = 7 只有 16.7 dB ✗，N = 9 为 18.7 dB ✓。</li>
+<li><div class="calc">每小区信道 = 720/9 = 80 条双工信道</div></li></ol>
+<h4><span class="st">详细解析</span>(b) 能否满足 1% 阻塞</h4>
+<div class="calc">小区面积 = 2.598 × 1² = 2.598 km²；用户 = 2.598 × 2000 = 5196；话务需求 = 5196 × 0.03 = 155.9 E</div>
+<div class="calc">Erlang B（M = 80，1%）：能承载 A ≈ 65.4 E</div>
+<p>155.9 E 远大于 65.4 E，<b>不能</b>满足。按 Erlang B 公式算，80 条信道承受 155.9 E 时阻塞率约 49%。</p>
+<h4><span class="st">详细解析</span>(c) 小区分裂</h4>
+<ol><li>为什么分裂有用：小区缩小后 D 和 R 同比例缩小，Q 不变，所以 N = 9、每小区 80 条都不变；但每个小区覆盖的用户变少。</li>
+<li>要求每小区话务 ≤ 65.4 E：<div class="calc">面积 ≤ 65.4/(2000 × 0.03) = 1.09 km²</div><div class="calc">R = √(1.09/2.598) ≈ 0.648 km ≈ 650 m</div></li>
+<li>代价：全城 155.9 km² 需要约 155.9/1.09 ≈ 144 个小区（原来 60 个，约 2.4 倍基站）。</li></ol>
+<h4><span class="st">详细解析</span>(d) 三扇区</h4>
+<ol><li>扇区化后只剩 2 个干扰，试更小的簇：<div class="calc">N = 3：Q = 3 → 16.0 dB ✗；　N = 4：Q = √12 = 3.46 → 18.2 dB ✓</div></li>
+<li>N = 4：每小区 720/4 = 180 条，每扇区 60 条。每小区 90/4 = 22.5 个载波，分给 3 个扇区每个 7.5 个——半个载波正是靠"一个载波可以被两个扇区共用"（按时隙分）实现，7.5 × 8 = 60 条。</li>
+<li>Erlang B（M = 60，1%）：A ≈ 46.9 E/扇区，每小区 3 × 46.95 = 140.8 E。</li>
+<li>全城面积 60 × 2.598 = 155.9 km²，总话务 155.9 × 2000 × 0.03 = 9353 E：<div class="calc">小区数 = 9353/140.8 = 66.4 → 67 个（半径约 0.95 km）</div></li></ol>
+<p>对比：不改簇（N = 9）只加扇区，每扇区约 26–27 条，需要约 178 个小区，比分裂还多。扇区化必须配合缩小簇才划算。</p>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>FDD 要先把带宽对半分，再扣控制信道。</li>
+<li>N 必须取合法值（i² + ij + j²），8.25 → 9，不是 8。</li>
+<li>18 dB 换线性 63.1；n = 3.7 不是 4。</li>
+<li>小区分裂不改每小区信道数；小区数向上取整。</li>
+<li>(d) 题意可以有不同理解，答卷上写清自己的假设（选 N = 4 的理由）。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>Assumptions: hexagonal cells, uniform traffic, Erlang B (blocked calls cleared), six equidistant first-tier interferers with the mobile at the cell edge, each carrier has a bandwidth of 200 kHz.</p>
+<p>(a) FDD: 40 MHz is split into 20 MHz per direction; removing 2 MHz for control leaves 18 MHz. Number of carriers = 18 MHz / 200 kHz = 90, so the system has 90 × 8 = 720 duplex channels. SIR requirement: Q<sup>n</sup>/6 ≥ 10<sup>1.8</sup> = 63.1, so Q<sup>3.7</sup> ≥ 378.6, Q ≥ 4.98 and N = Q²/3 ≥ 8.25. The smallest valid cluster size is N = 9 (SIR = 18.7 dB; N = 7 gives only 16.7 dB). Channels per cell = 720/9 = 80.</p>
+<p>(b) Cell area = (3√3/2)(1)² = 2.598 km²; subscribers per cell = 2.598 × 2000 = 5196; offered traffic = 5196 × 0.03 = 155.9 E. From the Erlang B table, 80 channels at 1% blocking support only about 65.4 E. Since 155.9 E is much larger than 65.4 E, the system cannot support 1% blocking.</p>
+<p>(c) With cell splitting the cluster size and the 80 channels per cell are unchanged (the SIR depends only on Q = D/R), but each smaller cell serves fewer users. Requiring the traffic per cell to be at most 65.4 E: area ≤ 65.4/(2000 × 0.03) = 1.09 km², so R = √(1.09/2.598) ≈ 0.65 km. Hence cell splitting achieves 1% blocking with a new cell radius of about 650 m.</p>
+<p>(d) With 3-sector antennas only two interferers remain: SIR = 1/[Q<sup>−n</sup> + (Q + 0.7)<sup>−n</sup>]. N = 3 gives 16.0 dB (not enough) and N = 4 gives 18.2 dB, so N = 4 is used. Channels per cell = 720/4 = 180, i.e. 60 per sector (22.5 carriers per cell; sharing a carrier between two sectors gives 7.5 carriers = 60 channels per sector). From the Erlang B table, A ≈ 46.9 E per sector, 140.8 E per cell. Total area = 60 × 2.598 = 155.9 km², total traffic = 155.9 × 2000 × 0.03 = 9353 E, so the number of cells required = 9353/140.8 = 66.4, i.e. 67 cells.</p></div>
+<div class="ans">一句话：720 条信道、SIR 选 N = 9 → 每小区 80 条只能承载 65.4 E，远低于 155.9 E；分裂到 R ≈ 0.65 km 即可；三扇区让 N 降到 4，每扇区 60 条，约 67 个小区。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2425s2-q3">→ 在「历年真题」页看整份 2024-25 S2 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->
@@ -1329,7 +1786,37 @@ where P<sub>k</sub> represents the state probability of the system state being a
   <div class="pq-topic"><b>考点</b>：硬切换与软切换及各自使用的系统</div>
   <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>4. (a) For terrestrial cellular systems there are two types of handovers. Describe the basic mechanisms of these two handovers and identify the types of cellular systems that deploy each of these two handovers respectively.</p>
 <p class="marks">(4 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>硬切换（break before make，先断后连）</b>（讲义 Part A p.154）：先释放与旧基站的信道，再建立与新基站的信道。实现简单，但有短暂中断，可能掉话。用于 <b>FDMA/TDMA 系统</b>，如 GSM、IS-136（以及 AMPS）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>软切换（make before break，先连后断）</b>（p.155）：先和新基站建立信道，新旧两条同时使用，确认后再断开旧的。边界处有分集增益，通话不中断。用于 <b>CDMA 系统</b>，如 IS-95、WCDMA、cdma2000。</div></div><div class="wans">硬切换：先断后连，GSM/IS-136；软切换：先连后断，IS-95/WCDMA/cdma2000</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>硬切换与软切换及使用的系统（Part A p.154–155）。</dd><dt>答题要点</dt><dd>硬切换：先断后连（break before make），简单但有短暂中断，用于 FDMA/TDMA，例 GSM、IS-136、AMPS。软切换：先连后断（make before break），边界上同时连两个基站，有分集增益、不掉话，用于 CDMA，例 IS-95、WCDMA、cdma2000。</dd><dt>记忆</dt><dd>"硬"是断了再接，"软"是接上再断。</dd><dt>为什么 CDMA 能软切换</dt><dd>相邻小区用同一个频率，手机不用换频就能同时和两个基站通信；FDMA/TDMA 相邻小区频率不同，只能先断开再换频。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>硬切换（break before make，先断后连）</b>（讲义 Part A p.154）：先释放与旧基站的信道，再建立与新基站的信道。实现简单，但有短暂中断，可能掉话。用于 <b>FDMA/TDMA 系统</b>，如 GSM、IS-136（以及 AMPS）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>软切换（make before break，先连后断）</b>（p.155）：先和新基站建立信道，新旧两条同时使用，确认后再断开旧的。边界处有分集增益，通话不中断。用于 <b>CDMA 系统</b>，如 IS-95、WCDMA、cdma2000。</div></div><div class="wans">硬切换：先断后连，GSM/IS-136；软切换：先连后断，IS-95/WCDMA/cdma2000</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>硬切换与软切换及使用的系统（Part A p.154–155）。</dd><dt>答题要点</dt><dd>硬切换：先断后连（break before make），简单但有短暂中断，用于 FDMA/TDMA，例 GSM、IS-136、AMPS。软切换：先连后断（make before break），边界上同时连两个基站，有分集增益、不掉话，用于 CDMA，例 IS-95、WCDMA、cdma2000。</dd><dt>记忆</dt><dd>"硬"是断了再接，"软"是接上再断。</dd><dt>为什么 CDMA 能软切换</dt><dd>相邻小区用同一个频率，手机不用换频就能同时和两个基站通信；FDMA/TDMA 相邻小区频率不同，只能先断开再换频。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：硬切换与软切换</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>什么是切换</h4>
+<p>手机通话时从一个小区移动到另一个小区，信号越来越弱，必须把通话从旧基站转交给新基站，这就是<b>切换</b>（handover / handoff）。基站收到的信号降到切换门限 P<sub>HO</sub>（略高于最低可用电平 P<sub>min</sub>）时就要开始切换（Part A p.153）；如果新小区没有空闲信道、交换中心处理太慢，或者目标链路失败，通话就会掉线。地面蜂窝系统有两种切换（p.154–155）。</p>
+<h4><span class="st">详细解析</span>两种切换展开</h4>
+<ol>
+<li><b>硬切换（hard handover）——"先断后连"（break before make）</b>（p.154）：
+<ul><li>机制：先释放和旧基站之间的信道，再和新基站建立新信道。任何时刻手机只连一个基站。</li>
+<li>特点：实现简单；但有短暂的通信中断，可能掉话。</li>
+<li>使用的系统：<b>基于 FDMA/TDMA 的系统</b>，如 GSM、IS-136。</li></ul></li>
+<li><b>软切换（soft handover）——"先连后断"（make before break）</b>（p.155）：
+<ul><li>机制：先和新基站建立信道，新旧两条信道同时用于通信，确认新链路可靠后才断开旧的。</li>
+<li>特点：在小区边界上同时收两个基站的信号，有分集增益，边界上的通信质量改善；切换过程中通信不中断。</li>
+<li>使用的系统：<b>基于 CDMA 的系统</b>，如 IS-95、WCDMA、cdma2000。</li></ul></li>
+</ol>
+<p><b>为什么是这样分</b>（讲义没写，是理解用的补充）：CDMA 相邻小区用同一个频率，靠不同的码区分，手机不用换频就能同时和两个基站通信，所以能做软切换；FDMA/TDMA 相邻小区频率不同，手机一般只有一套收发信机，只能先断开再换到新频率。</p>
+<p><b>记忆</b>："硬"是断了再接，"软"是接上再断。4 分题：每种机制 1 分 + 系统 1 分。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>"break before make"和"make before break"写反。</li>
+<li>只写机制不写系统，或者只写"CDMA"不举具体系统名；写出 GSM、IS-136、IS-95、WCDMA、cdma2000 更稳。</li>
+<li>把软切换的优点写成"更简单"：软切换更复杂，优点是不中断、有分集。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p><b>Hard handover ("break before make"):</b> the current channel with the old base station is released before the new channel with the new base station is set up, so the mobile is connected to only one base station at a time. It is simple to implement, but there is a short interruption of communication and the call may be dropped. Hard handover is used in FDMA/TDMA-based systems such as GSM and IS-136.</p>
+<p><b>Soft handover ("make before break"):</b> a new channel with the new base station is set up in parallel with the current channel with the old base station, and both channels are used simultaneously before the old one is released. The availability of diversity improves the link at the cell boundary, and there is no interruption of communication during the handover. Soft handover is used in CDMA-based systems such as IS-95, WCDMA and cdma2000.</p></div>
+<div class="ans">一句话：硬切换先断后连，简单但有中断，用于 FDMA/TDMA（GSM、IS-136）；软切换先连后断，新旧同时用、有分集不中断，用于 CDMA（IS-95、WCDMA、cdma2000）。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s2-q4a">→ 在「历年真题」页看整份 2025-26 S2 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->

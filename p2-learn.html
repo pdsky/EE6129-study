@@ -1360,6 +1360,27 @@ window.MathJax = {
 .pq-kp dd{margin:0;font-size:14.5px;color:var(--ink);line-height:1.65;}
 @media (max-width:560px){.pq-kp dl{grid-template-columns:1fr;gap:0;}.pq-kp dt{margin-top:6px;}}
 .pq-table td{font-family:var(--f-body);font-size:13.5px;line-height:1.55;vertical-align:top;}
+
+.xpl{--xa:var(--extra,var(--accent));--xs:var(--extra-soft,var(--accent-soft));--xl:var(--line,var(--border));--xp:var(--surface-2,var(--paper,transparent));--xt:var(--ink,var(--text))}
+details.deep.xpl{margin:12px 0 4px;border:1px solid var(--xa);border-left-width:5px;border-radius:10px;background:var(--card,var(--surface,transparent))}
+details.deep.xpl > summary{cursor:pointer;list-style:none;padding:9px 14px;font-weight:700;font-size:.92rem;color:var(--xa);display:flex;gap:8px;align-items:baseline}
+details.deep.xpl > summary::-webkit-details-marker{display:none}
+details.deep.xpl > summary::before{content:'📘';font-size:.9rem}
+details.deep.xpl[open] > summary{border-bottom:1px solid var(--xl)}
+.xpl .deep-body{padding:4px 16px 14px;font-size:.93rem;line-height:1.75;color:var(--xt)}
+.xpl h4{font-size:.95rem;font-weight:700;margin:16px 0 4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px}
+.xpl h4 .st{font-size:.7rem;font-weight:700;background:var(--xs);color:var(--xa);border-radius:6px;padding:1px 8px;letter-spacing:.02em}
+.xpl p{margin:.4em 0;max-width:78ch}
+.xpl ul,.xpl ol{margin:.3em 0;padding-left:1.4em}
+.xpl li{margin:.25em 0}
+.xpl .tw{overflow-x:auto;margin:6px 0}
+.xpl table.mini{border-collapse:collapse;width:auto;min-width:240px;font-size:.86rem}
+.xpl table.mini th,.xpl table.mini td{padding:5px 10px;border-bottom:1px solid var(--xl);text-align:left;vertical-align:top}
+.xpl table.mini th{font-size:.74rem;font-weight:700;color:var(--xa)}
+.xpl .tmpl{border-left:3px solid var(--xa);background:var(--xp);border-radius:0 8px 8px 0;padding:6px 14px;margin:.4em 0;font-size:.9rem}
+.xpl .tmpl p{margin:.3em 0}
+.xpl .calc{overflow-x:auto}
+.xpl .ans{margin-top:12px}
 </style><div class="pastq-block"><h3><span class="zh-num">真题</span>本章的历年期末考题（3 题）</h3><p class="pq-intro">来自 2023-24 S2、2024-25 S2、2025-26 S2 期末卷。原题照试卷逐字转录，先自己做，再展开解答。</p><div class="pastq" id="pq-y2324s2-q1a">
   <div class="pq-head"><span class="pq-paper">2023-24 S2</span><span class="pq-q">Q1(a)</span><span>12 分</span><span class="pq-quiz">Quiz 范围</span></div>
   <div class="pq-topic"><b>考点</b>：路径损耗 dB 形式 · 阴影衰落中断 · 平坦/慢衰落判别 · 衰落余量</div>
@@ -1386,7 +1407,57 @@ where γ̄<sub>R</sub> is the average signal to noise ratio for the fading chann
 <text x="330" y="238" font-size="12" style="fill:var(--ink)">10 log₁₀ d (dB)</text>
 <text x="44" y="232" font-size="11" style="fill:var(--ink-soft)">0（d = 1）</text>
 <text x="140" y="196" font-size="11" style="fill:var(--gold)">● 实测点：阴影衰落 ψ<tspan font-size="8" dy="3">dB</tspan><tspan dy="-3"> 让它们散在直线两侧</tspan></text>
-</svg><div class="cap">横轴用 10 log₁₀ d（单位 dB），纵轴是路径损耗（dB）。直线在 d = 1 处的截距是 −K<sub>dB</sub>，斜率是 γ。</div></div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii) 阴影衰落的中断概率。</b>P<sub>r,dB</sub> 服从均值 μ、标准差 σ（dB）的高斯分布，σ² 就是 ψ<sub>dB</sub> 的方差。中断 = 接收功率低于门限 P<sub>min</sub>：<div class="calc">P<sub>out</sub> = P(P<sub>r,dB</sub> &lt; P<sub>min</sub>) = Q((μ − P<sub>min</sub>)/σ) = Q(10/σ)</div>要求 Q(10/σ) &lt; 0.01。查 Q 表：Q(2.33) ≈ 0.01，Q 是减函数，所以要 10/σ &gt; 2.33：<div class="calc">σ &lt; 10/2.33 = 4.30 dB　→　σ² &lt; 18.5 dB²</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii) 衰落类型。</b>两个维度分别判断：<br>• <b>频率上</b>：σ<sub>τ</sub>/T<sub>s</sub> = 0.01 ms / 1 ms = 0.01 &lt; 0.1，满足讲义的经验法则，所以是<b>平坦衰落</b>（时延扩展远小于符号时长，几乎没有 ISI）。<br>• <b>时间上</b>：信道冲激响应不随时间变化，相当于没有多普勒扩展、相干时间无穷大，符号时长远小于相干时间，所以是<b>慢衰落</b>。<br>结论：<b>平坦慢衰落</b>（flat, slow fading）。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iv) 衰落余量。</b>要和 AWGN 信道达到同样容量，瑞利信道需要多出的平均 SNR（讲义 Ch2 p.51）：<div class="calc">FM = 10 log₁₀[1 / ln(1/(1 − ε))]</div>ε = 0.001：ln(1/0.999) = 0.0010005，<div class="calc">FM = 10 log₁₀(1/0.0010005) ≈ 30.0 dB</div>对照讲义例子：ε = 1% 时是 20 dB。中断概率要求严 10 倍，余量就多 10 dB。</div></div><div class="wans">(ii) σ² &lt; 18.5 dB²（σ &lt; 4.3 dB）　(iii) 平坦、慢衰落　(iv) 衰落余量 ≈ 30 dB</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>路径损耗的 dB 直线（斜率 γ、截距 −K<sub>dB</sub>）、阴影中断 Q(余量/σ)、平坦 / 慢衰落判别、衰落余量（第 2 章 p.8–15、p.33、p.39、p.51）。</dd><dt>用到的知识</dt><dd>P<sub>L,dB</sub> = −K<sub>dB</sub> + 10γ log₁₀d − ψ<sub>dB</sub>；P<sub>out</sub> = Q(余量/σ)；平坦：σ<sub>τ</sub>/T<sub>s</sub> &lt; 0.1；FM = 10 log₁₀[1/ln(1/(1 − ε))]。</dd><dt>解题套路</dt><dd>(i) 取对数，横轴用 10 log₁₀d 画直线，标出斜率和截距；(ii) Q(10/σ) &lt; 0.01 → 10/σ &gt; 2.33；(iii) 频率维看 σ<sub>τ</sub>/T<sub>s</sub>，时间维看信道是否随时间变；(iv) 直接代入 ε。</dd><dt>易错</dt><dd>截距是 −K<sub>dB</sub>（K<sub>dB</sub> 为负，所以截距是正的损耗）；(ii) 问的是方差，要写 σ² &lt; 18.5 dB²；"冲激响应不随时间变" = 没有多普勒 = 慢衰落。</dd><dt>速记</dt><dd>衰落余量只看 ε：10⁻³ → 30 dB，10⁻² → 20 dB，5×10⁻³ → 23 dB。ε 每小 10 倍，余量多 10 dB。</dd></dl></div></details>
+</svg><div class="cap">横轴用 10 log₁₀ d（单位 dB），纵轴是路径损耗（dB）。直线在 d = 1 处的截距是 −K<sub>dB</sub>，斜率是 γ。</div></div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii) 阴影衰落的中断概率。</b>P<sub>r,dB</sub> 服从均值 μ、标准差 σ（dB）的高斯分布，σ² 就是 ψ<sub>dB</sub> 的方差。中断 = 接收功率低于门限 P<sub>min</sub>：<div class="calc">P<sub>out</sub> = P(P<sub>r,dB</sub> &lt; P<sub>min</sub>) = Q((μ − P<sub>min</sub>)/σ) = Q(10/σ)</div>要求 Q(10/σ) &lt; 0.01。查 Q 表：Q(2.33) ≈ 0.01，Q 是减函数，所以要 10/σ &gt; 2.33：<div class="calc">σ &lt; 10/2.33 = 4.30 dB　→　σ² &lt; 18.5 dB²</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii) 衰落类型。</b>两个维度分别判断：<br>• <b>频率上</b>：σ<sub>τ</sub>/T<sub>s</sub> = 0.01 ms / 1 ms = 0.01 &lt; 0.1，满足讲义的经验法则，所以是<b>平坦衰落</b>（时延扩展远小于符号时长，几乎没有 ISI）。<br>• <b>时间上</b>：信道冲激响应不随时间变化，相当于没有多普勒扩展、相干时间无穷大，符号时长远小于相干时间，所以是<b>慢衰落</b>。<br>结论：<b>平坦慢衰落</b>（flat, slow fading）。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iv) 衰落余量。</b>要和 AWGN 信道达到同样容量，瑞利信道需要多出的平均 SNR（讲义 Ch2 p.51）：<div class="calc">FM = 10 log₁₀[1 / ln(1/(1 − ε))]</div>ε = 0.001：ln(1/0.999) = 0.0010005，<div class="calc">FM = 10 log₁₀(1/0.0010005) ≈ 30.0 dB</div>对照讲义例子：ε = 1% 时是 20 dB。中断概率要求严 10 倍，余量就多 10 dB。</div></div><div class="wans">(ii) σ² &lt; 18.5 dB²（σ &lt; 4.3 dB）　(iii) 平坦、慢衰落　(iv) 衰落余量 ≈ 30 dB</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>路径损耗的 dB 直线（斜率 γ、截距 −K<sub>dB</sub>）、阴影中断 Q(余量/σ)、平坦 / 慢衰落判别、衰落余量（第 2 章 p.8–15、p.33、p.39、p.51）。</dd><dt>用到的知识</dt><dd>P<sub>L,dB</sub> = −K<sub>dB</sub> + 10γ log₁₀d − ψ<sub>dB</sub>；P<sub>out</sub> = Q(余量/σ)；平坦：σ<sub>τ</sub>/T<sub>s</sub> &lt; 0.1；FM = 10 log₁₀[1/ln(1/(1 − ε))]。</dd><dt>解题套路</dt><dd>(i) 取对数，横轴用 10 log₁₀d 画直线，标出斜率和截距；(ii) Q(10/σ) &lt; 0.01 → 10/σ &gt; 2.33；(iii) 频率维看 σ<sub>τ</sub>/T<sub>s</sub>，时间维看信道是否随时间变；(iv) 直接代入 ε。</dd><dt>易错</dt><dd>截距是 −K<sub>dB</sub>（K<sub>dB</sub> 为负，所以截距是正的损耗）；(ii) 问的是方差，要写 σ² &lt; 18.5 dB²；"冲激响应不随时间变" = 没有多普勒 = 慢衰落。</dd><dt>速记</dt><dd>衰落余量只看 ε：10⁻³ → 30 dB，10⁻² → 20 dB，5×10⁻³ → 23 dB。ε 每小 10 倍，余量多 10 dB。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：路径损耗直线、阴影中断、衰落类型、衰落余量</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>① 为什么要把路径损耗模型化成 dB</h4>
+<p>路径损耗（path loss）描述信号功率随距离变弱。线性形式 P<sub>r</sub> = P<sub>t</sub>K d<sup>−γ</sup>ψ 是几个量相乘，不好画也不好算；两边取 10 log₁₀ 以后，乘法变加法，d 的幂次变成系数，整个模型就成了一条直线（讲义第 2 章 p.8–12）。</p>
+<ul><li><b>K</b>：和天线、频率有关的常数，K<sub>dB</sub> = 10 log₁₀K，一般是负数（例如 −30 dB）。</li>
+<li><b>γ</b>：路径损耗指数（path loss exponent），自由空间是 2，城区一般 3–5。含义：距离每变成 10 倍，损耗多 10γ dB。</li>
+<li><b>ψ</b>：阴影衰落（shadowing），由楼房、地形遮挡造成。取 dB 后 ψ<sub>dB</sub> 是零均值的高斯随机变量，方差 σ²（单位 dB²），所以叫对数正态（log-normal）阴影。</li></ul>
+<p>老师课上强调：简化路径损耗模型的线性形式和 dB 形式<b>都要背</b>，考试不给。</p>
+<h4><span class="st">知识讲解</span>② 本题另外三个概念</h4>
+<div class="tw"><table class="mini"><thead><tr><th>概念</th><th>判据 / 公式</th><th>讲义</th></tr></thead><tbody>
+<tr><td>阴影中断概率</td><td>P<sub>out</sub> = Q((μ − P<sub>min</sub>)/σ)</td><td>第 2 章 p.14–15</td></tr>
+<tr><td>平坦衰落（flat fading）</td><td>σ<sub>τ</sub>/T<sub>s</sub> &lt; 0.1</td><td>p.33</td></tr>
+<tr><td>慢衰落（slow fading）</td><td>T<sub>s</sub> 远小于相干时间 T<sub>C</sub></td><td>p.37</td></tr>
+<tr><td>衰落余量（fade margin）</td><td>FM = 10 log₁₀[1/ln(1/(1 − ε))]</td><td>p.51</td></tr>
+</tbody></table></div>
+<p>中断（outage）就是接收功率低于能正常工作的最低功率 P<sub>min</sub>。P<sub>r,dB</sub> 服从高斯分布，"低于门限的概率"就是高斯曲线左尾的面积，用 Q 函数写出来：门限离均值越远（以 σ 为单位计），中断越少。衰落余量是：在瑞利衰落信道里，平均 SNR 要比 AWGN 信道多给多少 dB，才能在中断概率 ε 下得到同样的容量。</p>
+<h4><span class="st">详细解析</span>(i) 化 dB 并画图</h4>
+<ol><li><b>做什么</b>：两边取 10 log₁₀。<b>为什么</b>：log 把乘积拆成和，把 d<sup>−γ</sup> 变成 −γ·10 log₁₀d。<b>得到</b>：P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − γ·10 log₁₀d + ψ<sub>dB</sub>。</li>
+<li>路径损耗 = 发射 − 接收：P<sub>L,dB</sub> = −K<sub>dB</sub> + γ·(10 log₁₀d) − ψ<sub>dB</sub>。</li>
+<li>画图：横轴 x = 10 log₁₀d（"距离的 dB"），纵轴 P<sub>L,dB</sub>。去掉随机项就是 y = −K<sub>dB</sub> + γx：<b>斜率 γ</b>，在 x = 0（d = 1）处<b>截距 −K<sub>dB</sub></b>；实测点因为 ψ<sub>dB</sub> 散在直线上下。例：γ = 3 时，d 从 10 m 到 100 m，横轴走 10 dB，损耗多 30 dB。</li></ol>
+<h4><span class="st">详细解析</span>(ii) 求 ψ<sub>dB</sub> 方差的上限</h4>
+<ol><li>写中断概率：均值比门限高 10 dB，所以 P<sub>out</sub> = Q(10/σ)。</li>
+<li>倒查 Q 表：找 Q(x) ≈ 0.01，表中 Q(2.33) = 0.0099，所以 x ≈ 2.33（精确值 2.326）。</li>
+<li>Q 是减函数：要 P<sub>out</sub> &lt; 0.01，就要 10/σ &gt; 2.33。</li></ol>
+<div class="calc">σ &lt; 10/2.326 = 4.30 dB</div>
+<div class="calc">σ² &lt; 4.30² = 18.5 dB²</div>
+<p>检查：若 σ = 5 dB，Q(10/5) = Q(2) = 0.0228，大于 1%，确实不满足。σ 越大，点散得越开，掉到门限下面的机会越多。</p>
+<h4><span class="st">详细解析</span>(iii) 两个维度判衰落类型</h4>
+<ol><li><b>频率维</b>（时延扩展和符号时长比）：σ<sub>τ</sub>/T<sub>s</sub> = 0.01 ms / 1 ms = 0.01 &lt; 0.1 → <b>平坦衰落</b>。直觉：多径回波最多只拖 1% 个符号，几乎没有符号间干扰（ISI）。</li>
+<li><b>时间维</b>（信道变化快慢和符号时长比）：冲激响应不随时间变，说明没有多普勒扩展，相干时间趋于无穷，T<sub>s</sub> 远小于 T<sub>C</sub> → <b>慢衰落</b>。</li>
+<li>结论：平坦、慢衰落（flat, slow fading）。老师改卷时说过：只答一个维度只给一半分。</li></ol>
+<h4><span class="st">详细解析</span>(iv) 衰落余量</h4>
+<div class="calc">ln(1/(1 − 0.001)) = ln(1.001001) = 0.0010005</div>
+<div class="calc">FM = 10 log₁₀(1/0.0010005) = 10 log₁₀(999.5) ≈ 30.0 dB</div>
+<p>计算器提示：ε 很小时 ln(1/(1 − ε)) ≈ ε，所以 FM ≈ 10 log₁₀(1/ε)：ε = 10⁻² → 20 dB（讲义例子），ε = 10⁻³ → 30 dB。物理意义：瑞利信道的平均 SNR 要比最低需要的 SNR 高 1000 倍，才能保证只有 0.1% 的时间掉到最低值以下。</p>
+<h4><span class="st">易错</span>注意这几点</h4>
+<ul><li>截距是 −K<sub>dB</sub>（纵轴是"损耗"），不是 K<sub>dB</sub>。</li>
+<li>(ii) 问的是方差：写 σ² &lt; 18.5 dB²，同时写出 σ &lt; 4.3 dB。</li>
+<li>Q(x) = 0.01 要倒查表：在表的正文里找最接近 0.01 的数，再读出 x。</li>
+<li>(iii) 频率、时间两个维度都要答，并写出理由。</li>
+<li>(iv) 里的 ln 是自然对数，不是 log₁₀。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) Taking 10 log₁₀ of both sides: P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 10γ log₁₀d + ψ<sub>dB</sub>. The path loss in dB is P<sub>L,dB</sub> = P<sub>t,dB</sub> − P<sub>r,dB</sub> = −K<sub>dB</sub> + γ(10 log₁₀d) − ψ<sub>dB</sub>. Plotting P<sub>L,dB</sub> against 10 log₁₀d gives a straight line with slope γ and intercept −K<sub>dB</sub> at d = 1 (0 dB). The shadowing term ψ<sub>dB</sub> is a zero-mean Gaussian random variable, so the measured points scatter about this line.</p>
+<p>(ii) P<sub>r,dB</sub> is Gaussian with standard deviation σ (in dB). P<sub>out</sub> = P(P<sub>r,dB</sub> &lt; P<sub>min</sub>) = Q((μ − P<sub>min</sub>)/σ) = Q(10/σ) &lt; 0.01. From the Q-function table, Q(2.33) ≈ 0.01, so 10/σ &gt; 2.33, σ &lt; 4.30 dB, and the maximum variance of ψ<sub>dB</sub> is σ² ≈ 18.5 dB².</p>
+<p>(iii) σ<sub>τ</sub>/T<sub>s</sub> = 0.01 ms / 1 ms = 0.01 &lt; 0.1, so the delay spread is negligible compared with the symbol duration and there is no significant ISI: the channel is flat fading. The impulse response is time invariant, so there is no Doppler spread and the coherence time is much longer than T<sub>s</sub>: the channel is slow fading. Hence it is a flat, slow fading channel.</p>
+<p>(iv) To achieve the same capacity as the AWGN channel, the required fade margin is FM = 10 log₁₀[1/ln(1/(1 − ε))]. With ε = 0.001, ln(1/0.999) = 1.0005 × 10⁻³, so FM = 10 log₁₀(999.5) ≈ 30 dB.</p></div>
+<div class="ans">一句话：取 dB 后是一条直线（斜率 γ、截距 −K<sub>dB</sub>）；中断 = Q(余量/σ)，σ² &lt; 18.5 dB²；衰落类型两个维度都要答（平坦 + 慢）；衰落余量只看 ε，0.1% → 30 dB。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2324s2-q1a">→ 在「历年真题」页看整份 2023-24 S2 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2425s2-q1a">
@@ -1412,7 +1483,40 @@ where γ̄<sub>R</sub> is the average signal to noise ratio for the fading chann
 <span class="eq">P<sub>i</sub> = P(1/γ<sub>0</sub> − 1/γ<sub>i</sub>) when γ<sub>i</sub> ≥ γ<sub>0</sub>;　P<sub>i</sub> = 0 when γ<sub>i</sub> &lt; γ<sub>0</sub></span>
 where P = 1W is the total power, γ<sub>i</sub> and P<sub>i</sub> are the signal-to-noise ratio and allocated signal power for the i<sup>th</sup> sub-band, and γ<sub>0</sub> is a suitable threshold value. Determine the allocated powers for the three sub-bands.</p>
 <p class="marks">(13 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i) 读图。</b>dB 形式：10 log₁₀(P<sub>r</sub>/P<sub>t</sub>) = K<sub>dB</sub> − 35 log₁₀ d。图中的线从 A 往右<b>下降</b>，说明纵轴画的是 10 log₁₀(P<sub>r</sub>/P<sub>t</sub>)（损耗越大越往下）。<br>• d = 1 m 时 log₁₀ d = 0，纵坐标就是 K<sub>dB</sub>：<b>A = −30 dB</b>（即 1 m 处损耗 30 dB）。<br>• 从 A 到横轴下降了 88 dB，斜率是 −35 dB/十倍距离：<div class="calc">35 × B = 88 → B = log₁₀ d = 2.51（d ≈ 327 m）</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii) 符号时长</b>：一次平均衰落正好盖住 3 个符号：T<sub>s</sub> = 6 µs / 3 = <b>2 µs</b>。<br><b>每秒误符号数</b>：每次衰落持续 3T<sub>s</sub>。如果和符号边界对齐，正好 3 个符号全在衰落里；如果不对齐，就是 2 个完整符号加头尾两个"碎片"，两个碎片加起来是一个符号长，必有一个超过一半（恰好各一半是边界情况）。所以每次衰落约 3 个错符号。LCR = 5 次/秒：<div class="calc">误符号数 = 5 × 3 = 15 个/秒</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii) 注水分配。</b>SNR 化线性：γ = 63.1、10、2.0。先假设三个子带都分到功率，ΣP<sub>i</sub> = 1：<div class="calc">3/γ₀ − (1/63.1 + 1/10 + 1/2.0) = 1 → 1/γ₀ = (1 + 0.0158 + 0.1 + 0.501)/3 = 0.539</div>γ₀ = 1.855（2.7 dB），三个 γ<sub>i</sub> 都 ≥ γ₀，假设成立。<div class="calc">P₁ = 0.539 − 0.016 = 0.523 W；P₂ = 0.539 − 0.100 = 0.439 W；P₃ = 0.539 − 0.501 = 0.038 W</div>三者之和为 1 W。SNR 越好的子带分到的功率越多；最差的 3 dB 子带只比门限高一点，分到的很少。</div></div><div class="wans">(i) A = −30 dB，B ≈ 2.51　(ii) T<sub>s</sub> = 2 µs，15 个误符号/秒　(iii) P ≈ 0.523 / 0.439 / 0.038 W</div><div class="pq-note">注：如果把纵轴理解为正的路径损耗 −K<sub>dB</sub> + 35 log d，则 A = 30 dB；但那条线应该上升。按图中下降的线，A = K<sub>dB</sub> = −30 dB。B 两种理解都一样。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>路径损耗图读数、由 AFD/LCR 求误符号数、注水分配（第 2 章 p.8–10、p.42–47、p.54–57）。</dd><dt>用到的知识</dt><dd>10 log(P<sub>r</sub>/P<sub>t</sub>) = K<sub>dB</sub> − 10γ log d；d = 1 m 处纵坐标就是 K<sub>dB</sub>；斜率 −10γ dB/十倍距离；每秒误符号 = LCR × 每次连错个数；注水公式。</dd><dt>解题套路</dt><dd>(i) 截距 → A；下降量 ÷ 斜率 → B；(ii) T<sub>s</sub> = AFD/3，误符号 = 5 × 3；(iii) 先假设全部分功率求 γ₀，再检查。</dd><dt>易错</dt><dd>斜率是 10γ = 35 dB/十倍距离；B 是 log₁₀d 的值（2.51），d ≈ 327 m；SNR 18、10、3 dB 先换成 63.1、10、2.0。</dd><dt>自检</dt><dd>三个功率之和 = 1 W；最差子带的功率最小但为正（2.0 &gt; γ₀ = 1.855）。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i) 读图。</b>dB 形式：10 log₁₀(P<sub>r</sub>/P<sub>t</sub>) = K<sub>dB</sub> − 35 log₁₀ d。图中的线从 A 往右<b>下降</b>，说明纵轴画的是 10 log₁₀(P<sub>r</sub>/P<sub>t</sub>)（损耗越大越往下）。<br>• d = 1 m 时 log₁₀ d = 0，纵坐标就是 K<sub>dB</sub>：<b>A = −30 dB</b>（即 1 m 处损耗 30 dB）。<br>• 从 A 到横轴下降了 88 dB，斜率是 −35 dB/十倍距离：<div class="calc">35 × B = 88 → B = log₁₀ d = 2.51（d ≈ 327 m）</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii) 符号时长</b>：一次平均衰落正好盖住 3 个符号：T<sub>s</sub> = 6 µs / 3 = <b>2 µs</b>。<br><b>每秒误符号数</b>：每次衰落持续 3T<sub>s</sub>。如果和符号边界对齐，正好 3 个符号全在衰落里；如果不对齐，就是 2 个完整符号加头尾两个"碎片"，两个碎片加起来是一个符号长，必有一个超过一半（恰好各一半是边界情况）。所以每次衰落约 3 个错符号。LCR = 5 次/秒：<div class="calc">误符号数 = 5 × 3 = 15 个/秒</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii) 注水分配。</b>SNR 化线性：γ = 63.1、10、2.0。先假设三个子带都分到功率，ΣP<sub>i</sub> = 1：<div class="calc">3/γ₀ − (1/63.1 + 1/10 + 1/2.0) = 1 → 1/γ₀ = (1 + 0.0158 + 0.1 + 0.501)/3 = 0.539</div>γ₀ = 1.855（2.7 dB），三个 γ<sub>i</sub> 都 ≥ γ₀，假设成立。<div class="calc">P₁ = 0.539 − 0.016 = 0.523 W；P₂ = 0.539 − 0.100 = 0.439 W；P₃ = 0.539 − 0.501 = 0.038 W</div>三者之和为 1 W。SNR 越好的子带分到的功率越多；最差的 3 dB 子带只比门限高一点，分到的很少。</div></div><div class="wans">(i) A = −30 dB，B ≈ 2.51　(ii) T<sub>s</sub> = 2 µs，15 个误符号/秒　(iii) P ≈ 0.523 / 0.439 / 0.038 W</div><div class="pq-note">注：如果把纵轴理解为正的路径损耗 −K<sub>dB</sub> + 35 log d，则 A = 30 dB；但那条线应该上升。按图中下降的线，A = K<sub>dB</sub> = −30 dB。B 两种理解都一样。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>路径损耗图读数、由 AFD/LCR 求误符号数、注水分配（第 2 章 p.8–10、p.42–47、p.54–57）。</dd><dt>用到的知识</dt><dd>10 log(P<sub>r</sub>/P<sub>t</sub>) = K<sub>dB</sub> − 10γ log d；d = 1 m 处纵坐标就是 K<sub>dB</sub>；斜率 −10γ dB/十倍距离；每秒误符号 = LCR × 每次连错个数；注水公式。</dd><dt>解题套路</dt><dd>(i) 截距 → A；下降量 ÷ 斜率 → B；(ii) T<sub>s</sub> = AFD/3，误符号 = 5 × 3；(iii) 先假设全部分功率求 γ₀，再检查。</dd><dt>易错</dt><dd>斜率是 10γ = 35 dB/十倍距离；B 是 log₁₀d 的值（2.51），d ≈ 327 m；SNR 18、10、3 dB 先换成 63.1、10、2.0。</dd><dt>自检</dt><dd>三个功率之和 = 1 W；最差子带的功率最小但为正（2.0 &gt; γ₀ = 1.855）。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：路径损耗图读数、LCR/AFD 与注水分配</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>三个工具</h4>
+<ul><li><b>路径损耗图</b>（讲义第 2 章 p.8–10）：dB 形式 10 log₁₀(P<sub>r</sub>/P<sub>t</sub>) = K<sub>dB</sub> − 10γ log₁₀d。以 log₁₀d 为横轴是一条直线：d = 1 处纵坐标是 K<sub>dB</sub>，斜率是 −10γ（每十倍距离多损耗 10γ dB）。本题 γ = 3.5，斜率 35 dB/十倍距离。</li>
+<li><b>电平通过率（LCR，level crossing rate）</b>：每秒信号包络<b>向下</b>穿过某个门限的平均次数，即每秒"深衰落"开始几次（p.40）。<b>平均衰落时长（AFD，average fade duration）</b>：每次掉到门限以下平均持续多久（p.42）。两者相乘 = 处于深衰落的时间比例。老师课上说 LCR、AFD 公式考试会给，但要会解释。</li>
+<li><b>注水（water-filling）</b>（p.52–57）：频率选择性信道分成几个子带，总功率 P 固定，按 P<sub>i</sub>/P = 1/γ₀ − 1/γ<sub>i</sub> 分配，γ<sub>i</sub> &lt; γ₀ 的子带不分。名字的来历：把 1/γ<sub>i</sub> 看成"池底高度"，倒进总量为 1 的水，水面高度是 1/γ₀，每个子带分到的功率就是水深。好子带池底低、水深，分得多。老师课上说这个式子是<b>框起来要背</b>的，今年 Quiz 第 3 题就考了注水。</li></ul>
+<h4><span class="st">详细解析</span>(i) 读 A 和 B</h4>
+<ol><li>图中直线向右下降，说明纵轴是 10 log₁₀(P<sub>r</sub>/P<sub>t</sub>)（距离越远越小）。</li>
+<li>A 在 log₁₀d = 0（d = 1 m）处，纵坐标 = K<sub>dB</sub>：<div class="calc">A = −30 dB</div></li>
+<li>从 A 降到横轴共 88 dB，每个十倍距离降 35 dB：<div class="calc">35 × B = 88 → B = 88/35 = 2.51（d = 10<sup>2.51</sup> ≈ 327 m）</div></li></ol>
+<h4><span class="st">详细解析</span>(ii) 符号时长和每秒误符号数</h4>
+<ol><li>一次平均衰落正好盖住 3 个符号：<div class="calc">T<sub>s</sub> = 6 µs / 3 = 2 µs</div></li>
+<li>每次衰落里有几个错符号：衰落长 3T<sub>s</sub>。如果和符号边界对齐，3 个符号全在里面；不对齐时是 2 个完整符号加头尾两段，两段合起来正好一个符号长，其中必有一段超过一半。所以每次约 3 个错符号。</li>
+<li>LCR = 5 次/秒：<div class="calc">误符号数 = 5 × 3 = 15 个/秒</div></li></ol>
+<p><b>检查</b>：符号率 1/2 µs = 5×10⁵ 个/秒，误符号比例 15/(5×10⁵) = 3×10⁻⁵，正好等于 LCR × AFD = 5 × 6×10⁻⁶ = 3×10⁻⁵（处于深衰落的时间比例）。两条思路一致。</p>
+<h4><span class="st">详细解析</span>(iii) 注水分配</h4>
+<ol><li><b>dB 换线性</b>：18 dB → 63.1；10 dB → 10；3 dB → 2.0。</li>
+<li><b>先假设三个子带都分到功率</b>，把三个式子相加，ΣP<sub>i</sub> = P：<div class="calc">3/γ₀ − (1/63.1 + 1/10 + 1/2.0) = 1</div><div class="calc">1/γ₀ = (1 + 0.0158 + 0.100 + 0.501)/3 = 1.617/3 = 0.539</div>γ₀ = 1/0.539 = 1.855（2.7 dB）。</li>
+<li><b>检查假设</b>：三个 γ<sub>i</sub>（63.1、10、2.0）都 ≥ 1.855，成立。如果某个 γ<sub>i</sub> &lt; γ₀，就把它去掉、用剩下的子带重算。</li>
+<li><b>分配</b>：<div class="calc">P₁ = 0.539 − 0.016 = 0.523 W；P₂ = 0.539 − 0.100 = 0.439 W；P₃ = 0.539 − 0.501 = 0.038 W</div>和为 1 W ✓。</li></ol>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>B 是 log₁₀d 的值（2.51），不是 d 本身。</li>
+<li>斜率是 10γ = 35 dB/十倍距离，不是 3.5。</li>
+<li>注水公式里 SNR 必须先换线性；求完 γ₀ 一定要回头检查每个 γ<sub>i</sub> ≥ γ₀。</li>
+<li>P = 1 W，所以 P<sub>i</sub> = 1/γ₀ − 1/γ<sub>i</sub> 直接就是瓦数；P 不是 1 时要乘 P。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) In dB form, 10 log₁₀(P<sub>r</sub>/P<sub>t</sub>) = K<sub>dB</sub> − 35 log₁₀d, a straight line against log₁₀d with slope −35 dB per decade. At d = 1 m, log₁₀d = 0, so A = K<sub>dB</sub> = −30 dB. The line falls by 88 dB from A to the horizontal axis, so 35B = 88 and B = log₁₀d = 2.51 (d ≈ 327 m).</p>
+<p>(ii) The average fade duration covers three symbols, so T<sub>s</sub> = 6 µs/3 = 2 µs. In each fade, three symbols (or, if not aligned, two full symbols plus a part of another lying more than half in the fade) are in error, so about 3 symbol errors occur per fade. With a level crossing rate of 5 fades per second, the average number of symbol errors is 5 × 3 = 15 per second.</p>
+<p>(iii) The SNRs in linear values are γ₁ = 63.1, γ₂ = 10 and γ₃ = 2.0. Assuming all three sub-bands are allocated power, ΣP<sub>i</sub> = P gives 3/γ₀ − (1/63.1 + 1/10 + 1/2.0) = 1, so 1/γ₀ = 0.539 and γ₀ = 1.855. All γ<sub>i</sub> ≥ γ₀, so the assumption holds. P₁ = 0.539 − 0.016 = 0.523 W, P₂ = 0.539 − 0.100 = 0.439 W, P₃ = 0.539 − 0.501 = 0.038 W (total 1 W).</p></div>
+<div class="ans">一句话：A = K<sub>dB</sub> = −30 dB，B = 88/35 = 2.51；T<sub>s</sub> = 2 µs，每秒 5 次衰落 × 3 个 = 15 个误符号；注水先求 1/γ₀ = 0.539，再分 0.523 / 0.439 / 0.038 W。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2425s2-q1a">→ 在「历年真题」页看整份 2024-25 S2 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2526s2-q1a">
@@ -1424,7 +1528,56 @@ where P = 1W is the total power, γ<sub>i</sub> and P<sub>i</sub> are the signal
 <span class="eq">C<sub>ε</sub> = B × log<sub>2</sub>[1 + γ̄<sub>R</sub> ln(1/(1 − ε))]</span>
 where B is the signal bandwidth and γ̄<sub>R</sub> = 25dB is the average signal to noise ratio (SNR). If ε = 0.005, determine the minimum SNR and the Fade Margin compared to transmission over an Additive White Gaussian (AWGN) channel.</p>
 <p class="marks">(12 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 讲义 Ch2 p.39 的图，两组比较：<br>• <b>信号带宽 B<sub>s</sub> vs 相干带宽 B<sub>c</sub></b>（多径时延扩展引起）：B<sub>s</sub> &lt; B<sub>c</sub> → <b>平坦衰落</b>，整个信号带宽内衰落相关、频谱失真小；B<sub>s</sub> &gt; B<sub>c</sub> → <b>频率选择性衰落</b>，不同频率衰落不同，时域上产生 ISI。<br>• <b>信号带宽 B<sub>s</sub> vs 多普勒扩展 B<sub>D</sub></b>（移动引起）：B<sub>s</sub> ≫ B<sub>D</sub>（等价于符号时长 ≪ 相干时间 T<sub>c</sub> ≈ 1/B<sub>D</sub>）→ <b>慢衰落</b>，一个符号内信道几乎不变；B<sub>s</sub> 与 B<sub>D</sub> 相当或更小 → <b>快衰落</b>，符号内幅度相位就在变。<br>两组判断组合成四类：平坦慢、平坦快、频选慢、频选快。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> LCR = 每秒穿越门限（进入深衰落）的次数：<div class="calc">LCR = 40 次 / 10 s = 4 次/秒</div>每次深衰落平均持续 20 ms，覆盖 20/5 = 4 个符号，即每次产生约 4 个<b>连续</b>错符号：<div class="calc">每秒误符号数 = 4 次/秒 × 4 个/次 = 16 个/秒</div>（错误成串出现，每秒 4 串、每串 4 个。）</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> γ̄<sub>R</sub> = 25 dB = 316.2。达到 C<sub>ε</sub> 所需的最小（即和 AWGN 等效的）SNR：<div class="calc">γ<sub>min</sub> = γ̄<sub>R</sub> ln(1/(1−ε)) = 316.2 × ln(1/0.995) = 316.2 × 0.005013 = 1.585 → 2.0 dB</div>衰落余量 = 平均 SNR − 等效 AWGN SNR：<div class="calc">FM = 25 − 2.0 = 23.0 dB（= 10 log₁₀[1/0.005013]）</div></div></div><div class="wans">(ii) LCR = 4 /s；每秒约 16 个错符号（每次衰落 4 个连续错误）　(iii) γ<sub>min</sub> ≈ 2.0 dB，FM ≈ 23 dB</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>四种衰落类型判别、LCR 与连续误符号、衰落余量（第 2 章 p.39、p.42–47、p.50–51）。</dd><dt>用到的知识</dt><dd>B<sub>s</sub> vs B<sub>c</sub>：平坦 / 频率选择性；符号时长 vs 相干时间 T<sub>c</sub> ≈ 1/B<sub>D</sub>：慢 / 快；γ<sub>min</sub> = γ̄ ln(1/(1 − ε))。</dd><dt>解题套路</dt><dd>(i) 两个维度分别判断，组合成四类；(ii) LCR = 次数 / 时间，每次连错 = AFD / T<sub>s</sub>；(iii) 换线性 → γ<sub>min</sub> → FM = γ̄ − γ<sub>min</sub>（dB）。</dd><dt>易错</dt><dd>平坦 / 频选和慢 / 快是两个独立的维度，不要混在一起比较；LCR 是"每秒"，40 次 / 10 s = 4 次/秒。</dd><dt>速记</dt><dd>ε = 0.005 → FM = 23 dB，与平均 SNR 无关。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 讲义 Ch2 p.39 的图，两组比较：<br>• <b>信号带宽 B<sub>s</sub> vs 相干带宽 B<sub>c</sub></b>（多径时延扩展引起）：B<sub>s</sub> &lt; B<sub>c</sub> → <b>平坦衰落</b>，整个信号带宽内衰落相关、频谱失真小；B<sub>s</sub> &gt; B<sub>c</sub> → <b>频率选择性衰落</b>，不同频率衰落不同，时域上产生 ISI。<br>• <b>信号带宽 B<sub>s</sub> vs 多普勒扩展 B<sub>D</sub></b>（移动引起）：B<sub>s</sub> ≫ B<sub>D</sub>（等价于符号时长 ≪ 相干时间 T<sub>c</sub> ≈ 1/B<sub>D</sub>）→ <b>慢衰落</b>，一个符号内信道几乎不变；B<sub>s</sub> 与 B<sub>D</sub> 相当或更小 → <b>快衰落</b>，符号内幅度相位就在变。<br>两组判断组合成四类：平坦慢、平坦快、频选慢、频选快。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> LCR = 每秒穿越门限（进入深衰落）的次数：<div class="calc">LCR = 40 次 / 10 s = 4 次/秒</div>每次深衰落平均持续 20 ms，覆盖 20/5 = 4 个符号，即每次产生约 4 个<b>连续</b>错符号：<div class="calc">每秒误符号数 = 4 次/秒 × 4 个/次 = 16 个/秒</div>（错误成串出现，每秒 4 串、每串 4 个。）</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> γ̄<sub>R</sub> = 25 dB = 316.2。达到 C<sub>ε</sub> 所需的最小（即和 AWGN 等效的）SNR：<div class="calc">γ<sub>min</sub> = γ̄<sub>R</sub> ln(1/(1−ε)) = 316.2 × ln(1/0.995) = 316.2 × 0.005013 = 1.585 → 2.0 dB</div>衰落余量 = 平均 SNR − 等效 AWGN SNR：<div class="calc">FM = 25 − 2.0 = 23.0 dB（= 10 log₁₀[1/0.005013]）</div></div></div><div class="wans">(ii) LCR = 4 /s；每秒约 16 个错符号（每次衰落 4 个连续错误）　(iii) γ<sub>min</sub> ≈ 2.0 dB，FM ≈ 23 dB</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>四种衰落类型判别、LCR 与连续误符号、衰落余量（第 2 章 p.39、p.42–47、p.50–51）。</dd><dt>用到的知识</dt><dd>B<sub>s</sub> vs B<sub>c</sub>：平坦 / 频率选择性；符号时长 vs 相干时间 T<sub>c</sub> ≈ 1/B<sub>D</sub>：慢 / 快；γ<sub>min</sub> = γ̄ ln(1/(1 − ε))。</dd><dt>解题套路</dt><dd>(i) 两个维度分别判断，组合成四类；(ii) LCR = 次数 / 时间，每次连错 = AFD / T<sub>s</sub>；(iii) 换线性 → γ<sub>min</sub> → FM = γ̄ − γ<sub>min</sub>（dB）。</dd><dt>易错</dt><dd>平坦 / 频选和慢 / 快是两个独立的维度，不要混在一起比较；LCR 是"每秒"，40 次 / 10 s = 4 次/秒。</dd><dt>速记</dt><dd>ε = 0.005 → FM = 23 dB，与平均 SNR 无关。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：衰落类型、LCR 与衰落余量</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>衰落类型的两个独立维度</h4>
+<p>无线信道对信号有两种"色散"，要分开判断（第 2 章 p.30–39）：</p>
+<ul>
+<li><b>时间色散</b>（多径时延扩展引起）→ 用<b>相干带宽 B<sub>c</sub></b> 描述（B<sub>c</sub> ≈ 1/σ<sub>τ</sub>，在这个带宽内各频率的衰落基本相同）。比较信号带宽 B<sub>s</sub>：B<sub>s</sub> &lt; B<sub>c</sub> → <b>平坦衰落</b>（flat）；B<sub>s</sub> &gt; B<sub>c</sub> → <b>频率选择性衰落</b>（frequency selective），时域上表现为 ISI。</li>
+<li><b>频率色散</b>（移动引起的多普勒扩展）→ 用<b>多普勒扩展 B<sub>D</sub></b> 描述，对应相干时间 T<sub>c</sub> ≈ 1/B<sub>D</sub>（信道在这段时间内基本不变）。比较 B<sub>s</sub>：B<sub>s</sub> ≫ B<sub>D</sub>（等价于符号时长 T<sub>s</sub> ≪ T<sub>c</sub>）→ <b>慢衰落</b>（slow），一个符号内幅度相位不变；B<sub>s</sub> 不比 B<sub>D</sub> 大多少（T<sub>s</sub> 接近或大于 T<sub>c</sub>）→ <b>快衰落</b>（fast）（p.37）。</li>
+</ul>
+<div class="tw"><table class="mini"><thead><tr><th></th><th>B<sub>s</sub> ≫ B<sub>D</sub>（慢）</th><th>B<sub>s</sub> 接近 B<sub>D</sub>（快）</th></tr></thead><tbody>
+<tr><td>B<sub>s</sub> &lt; B<sub>c</sub></td><td>平坦慢衰落</td><td>平坦快衰落</td></tr>
+<tr><td>B<sub>s</sub> &gt; B<sub>c</sub></td><td>频率选择性慢衰落</td><td>频率选择性快衰落</td></tr>
+</tbody></table></div>
+<p>老师课上强调：问衰落类型<b>必须两个维度都答</b>，只答一个维度只给一半分；简单记法是"带宽在相干带宽以内就平坦，符号在相干时间以内就慢"。</p>
+<h4><span class="st">知识讲解</span>LCR 和 AFD 的定义</h4>
+<p>电平通过率（LCR，Level Crossing Rate）：信号强度每秒<b>向下</b>穿过门限 Z<sub>min</sub> 的平均次数（p.40）。平均衰落时长（AFD，Average Fade Duration）：每次衰落中信号低于门限的平均时长（p.42）。老师说今年 Quiz 的常见错误是：题目没说瑞利衰落时，要<b>按定义</b>算，不能套含 f<sub>m</sub>、ρ 的瑞利公式。</p>
+<h4><span class="st">知识讲解</span>中断容量和衰落余量</h4>
+<p>慢衰落下，允许一个很小的中断概率 ε：ε = P(γ &lt; γ<sub>min</sub>)。瑞利衰落时 SNR 服从指数分布，CDF = 1 − e<sup>−γ/γ̄</sup>，反解得 γ<sub>min</sub> = γ̄ ln(1/(1 − ε))，代入香农公式就是题目给的 C<sub>ε</sub>（p.50–51）。γ<sub>min</sub> 就是"AWGN 信道要达到同样容量所需的 SNR"。衰落余量（fade margin）= 衰落信道需要的平均 SNR − AWGN 需要的 SNR（dB 相减）= 10 log₁₀[1/ln(1/(1 − ε))]，只和 ε 有关。老师说这个公式"有点难记，但要尽量记"。</p>
+<h4><span class="st">详细解析</span>(ii) LCR 和每秒连续误符号</h4>
+<ol>
+<li>LCR 按定义：
+<div class="calc">LCR = 40 次 / 10 s = 4 次/秒</div></li>
+<li>每次衰落平均 20 ms，符号 5 ms，每次衰落连续错几个符号：
+<div class="calc">AFD / T<sub>s</sub> = 20 ms / 5 ms = 4 个</div></li>
+<li>每秒误符号数：
+<div class="calc">4 次/秒 × 4 个/次 = 16 个/秒（每秒 4 串，每串 4 个连续错误）</div></li>
+</ol>
+<p><b>合理性检查</b>：每秒处于衰落的时间 = LCR × AFD = 4 × 0.02 = 0.08 s（8%）；每秒发 1/5 ms = 200 个符号，200 × 8% = 16 个，和上面一致。</p>
+<h4><span class="st">详细解析</span>(iii) 最小 SNR 和衰落余量</h4>
+<ol>
+<li>dB 换线性：25 dB → 10<sup>2.5</sup> = 316.2。</li>
+<li>ln(1/(1 − ε)) = ln(1/0.995) = 0.005013（ε 很小时 ≈ ε，可用来检查）。</li>
+<li><div class="calc">γ<sub>min</sub> = 316.2 × 0.005013 = 1.585 → 10 log₁₀1.585 = 2.0 dB</div></li>
+<li><div class="calc">FM = 25 − 2.0 = 23.0 dB（= 10 log₁₀[1/0.005013]）</div></li>
+</ol>
+<p>含义：瑞利衰落下平均 SNR 是 25 dB，但为了保证 99.5% 的时间不中断，能用的容量只相当于 SNR 为 2 dB 的 AWGN 信道，C<sub>ε</sub>/B = log₂(1 + 1.585) ≈ 1.37 bit/s/Hz；"浪费"的 23 dB 就是为衰落留的余量。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>(i) 拿 B<sub>c</sub> 和 B<sub>D</sub> 互相比较：两个维度都是和信号带宽 B<sub>s</sub> 比。</li>
+<li>(ii) LCR 写成 40（忘了除以 10 s），或者套瑞利 LCR 公式。</li>
+<li>(iii) 25 dB 不换线性直接乘；γ<sub>min</sub> 不换回 dB 就和 25 dB 相减。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) Two comparisons are needed. (1) Signal bandwidth B<sub>s</sub> versus coherence bandwidth B<sub>c</sub> (caused by multipath delay spread): if B<sub>s</sub> &lt; B<sub>c</sub>, all frequency components fade together and the signal experiences flat fading; if B<sub>s</sub> &gt; B<sub>c</sub>, different frequencies fade differently, i.e. frequency-selective fading, which causes ISI. (2) Signal bandwidth B<sub>s</sub> versus Doppler spread B<sub>D</sub> (caused by motion): if B<sub>s</sub> ≫ B<sub>D</sub> (symbol duration much shorter than the coherence time T<sub>c</sub> ≈ 1/B<sub>D</sub>), the channel is constant over a symbol and the fading is slow; otherwise the amplitude and phase change within a symbol and the fading is fast. Combining both gives flat slow, flat fast, frequency-selective slow or frequency-selective fast fading.</p>
+<p>(ii) LCR = number of downward crossings per second = 40/10 = 4 crossings/s. Each fade lasts 20 ms on average, i.e. 20/5 = 4 consecutive symbols in error per fade. Number of symbol errors per second = 4 × 4 = 16 (4 bursts of 4 consecutive errors).</p>
+<p>(iii) γ̄<sub>R</sub> = 25 dB = 316.2. Minimum SNR: γ<sub>min</sub> = γ̄<sub>R</sub> ln(1/(1 − ε)) = 316.2 × ln(1/0.995) = 316.2 × 0.005013 = 1.585 (2.0 dB). This is the SNR an AWGN channel needs to achieve the same capacity. Fade margin = 25 − 2.0 = 23.0 dB = 10 log₁₀[1/ln(1/(1 − ε))].</p></div>
+<div class="ans">一句话：B<sub>s</sub> 比 B<sub>c</sub> 判平坦/频选，B<sub>s</sub> 比 B<sub>D</sub> 判慢/快；LCR = 4/s，每次连错 4 个，每秒 16 个；γ<sub>min</sub> ≈ 2.0 dB，衰落余量 23 dB。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s2-q1a">→ 在「历年真题」页看整份 2025-26 S2 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->
@@ -1699,7 +1852,42 @@ where B is the signal bandwidth and γ̄<sub>R</sub> = 25dB is the average signa
 <line x1="110" y1="28" x2="290" y2="28" style="stroke:var(--gold)" stroke-width="1.4"/>
 <text x="176" y="22" font-size="12" style="fill:var(--gold)">距离 = 2</text>
 <text x="350" y="46" font-size="12" style="fill:var(--ink-soft)">实轴</text>
-</svg><div class="cap">两个信号点都在一条直线（实轴）上，所以星座是一维的。</div></div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> s 给定时 y = s + w 只是把零均值噪声平移了 s：<div class="calc">s = +1：E[y] = 1，Var[y] = 0.25；　s = −1：E[y] = −1，Var[y] = 0.25</div>（常数加随机变量，均值加上常数、方差不变，Ch1b 的性质。）条件概率密度：<div class="calc">p(y | s = ±1) = (1/√(0.5π)) e<sup>−(y ∓ 1)²/0.5</sup></div>两者等概，y 的（无条件）概率密度是两个高斯的平均：<div class="calc">p(y) = ½ · (1/√(0.5π)) [e<sup>−(y−1)²/0.5</sup> + e<sup>−(y+1)²/0.5</sup>]</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 发 +1、判成 −1 的条件是 y ≤ 0，即噪声 w ≤ −1。σ = 0.5：<div class="calc">P(y ≤ 0 | s = +1) = P(w ≤ −1) = Q(1/0.5) = Q(2) ≈ 0.0228</div>由对称性，发 −1 出错的概率也是 Q(2)，所以 <b>P<sub>b</sub> = Q(2) ≈ 0.023</b>。一般式：P<sub>b</sub> = Q(d/(2σ))，d = 2 是 (i) 求的距离。</div></div><div class="wans">(i) 1 维，距离 2　(ii) 均值 ±1，方差 0.25　(iii) P<sub>b</sub> = Q(2) ≈ 0.0228</div><div class="pq-note">注：这道题 (ii) 用到的高斯随机变量性质属于 Ch1b（概率复习），也是 Quiz 范围内的知识。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>星座的维数和距离、条件高斯分布、二进制误码率 Q(2)（第 3 章 p.8–21；第 1b 章）。</dd><dt>用到的知识</dt><dd>y | s ~ N(s, σ²)；P<sub>b</sub> = Q(d/(2σ))；高斯 PDF 的指数分母是 2σ²。</dd><dt>解题套路</dt><dd>(i) 画点、数维数、量距离；(ii) 写出均值、方差 → 代进 PDF；(iii) 门限 0，信号到门限距离 1，σ = 0.5。</dd><dt>易错</dt><dd>方差 0.25 → σ = 0.5；PDF 指数的分母 2σ² = 0.5；不带条件的 PDF 是两个高斯各乘 ½ 的混合。</dd><dt>举一反三</dt><dd>方差降到 0.09：Q(3.33) ≈ 4×10⁻⁴（讲解页 3.3 节）。也可以写成 Q(√(2γ<sub>b</sub>))，这里 γ<sub>b</sub> = 2。</dd></dl></div></details>
+</svg><div class="cap">两个信号点都在一条直线（实轴）上，所以星座是一维的。</div></div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> s 给定时 y = s + w 只是把零均值噪声平移了 s：<div class="calc">s = +1：E[y] = 1，Var[y] = 0.25；　s = −1：E[y] = −1，Var[y] = 0.25</div>（常数加随机变量，均值加上常数、方差不变，Ch1b 的性质。）条件概率密度：<div class="calc">p(y | s = ±1) = (1/√(0.5π)) e<sup>−(y ∓ 1)²/0.5</sup></div>两者等概，y 的（无条件）概率密度是两个高斯的平均：<div class="calc">p(y) = ½ · (1/√(0.5π)) [e<sup>−(y−1)²/0.5</sup> + e<sup>−(y+1)²/0.5</sup>]</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 发 +1、判成 −1 的条件是 y ≤ 0，即噪声 w ≤ −1。σ = 0.5：<div class="calc">P(y ≤ 0 | s = +1) = P(w ≤ −1) = Q(1/0.5) = Q(2) ≈ 0.0228</div>由对称性，发 −1 出错的概率也是 Q(2)，所以 <b>P<sub>b</sub> = Q(2) ≈ 0.023</b>。一般式：P<sub>b</sub> = Q(d/(2σ))，d = 2 是 (i) 求的距离。</div></div><div class="wans">(i) 1 维，距离 2　(ii) 均值 ±1，方差 0.25　(iii) P<sub>b</sub> = Q(2) ≈ 0.0228</div><div class="pq-note">注：这道题 (ii) 用到的高斯随机变量性质属于 Ch1b（概率复习），也是 Quiz 范围内的知识。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>星座的维数和距离、条件高斯分布、二进制误码率 Q(2)（第 3 章 p.8–21；第 1b 章）。</dd><dt>用到的知识</dt><dd>y | s ~ N(s, σ²)；P<sub>b</sub> = Q(d/(2σ))；高斯 PDF 的指数分母是 2σ²。</dd><dt>解题套路</dt><dd>(i) 画点、数维数、量距离；(ii) 写出均值、方差 → 代进 PDF；(iii) 门限 0，信号到门限距离 1，σ = 0.5。</dd><dt>易错</dt><dd>方差 0.25 → σ = 0.5；PDF 指数的分母 2σ² = 0.5；不带条件的 PDF 是两个高斯各乘 ½ 的混合。</dd><dt>举一反三</dt><dd>方差降到 0.09：Q(3.33) ≈ 4×10⁻⁴（讲解页 3.3 节）。也可以写成 Q(√(2γ<sub>b</sub>))，这里 γ<sub>b</sub> = 2。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：BPSK 星座、条件高斯与 Q(2)</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>星座图、维数和距离</h4>
+<p>星座图（signal constellation）就是把每一个可能发送的符号画成空间里的一个点。需要几个正交归一的基函数（orthonormal basis functions）才能表示全部符号，星座就是几维（讲义第 3 章 p.4–8）。本题 s 只取 +1 或 −1，两个点都在同一条实轴上，一个基函数就够，所以是 <b>1 维</b>，这就是 BPSK（也可以看成 2-PAM）。</p>
+<p>两点之间的欧氏距离 d 决定抗噪声的能力：d 越大，噪声越难把一个点"推"到另一个点那一边。老师课上强调：要会判断一个调制方式的星座是几维，"signal constellation"这个术语要记住；AWGN 噪声的方差在数值上等于 N₀/2。</p>
+<h4><span class="st">知识讲解</span>为什么 y 是高斯，均值和方差怎么来</h4>
+<p>给定 s 以后，s 是常数，y = s + w 只是把零均值的高斯噪声 w 整体平移了 s。第 1b 章的两条性质：E[c + X] = c + E[X]；Var[c + X] = Var[X]（常数没有波动，不贡献方差）。所以 y | s ~ N(s, σ²)。高斯分布完全由均值和方差两个数确定，算出这两个数再代进题目给的 PDF 公式就行。</p>
+<h4><span class="st">知识讲解</span>误码率和 Q 函数</h4>
+<p>Q(z) 是标准正态变量大于 z 的概率（右尾面积）。对均值 μ、标准差 σ 的高斯变量，P(X &gt; μ + a) = Q(a/σ)。老师要求掌握的技巧：把"出错"整理成"噪声 &lt; −距离"，再由对称性写成 Q(距离/σ)。二进制等概信号、门限放在中点时，P<sub>b</sub> = Q(d/(2σ))，d/2 就是每个点到门限的距离。</p>
+<h4><span class="st">详细解析</span>(i)(ii)(iii) 逐步</h4>
+<ol>
+<li><b>(i)</b> 画一条横轴，标出 −1、0、+1，在 ±1 处画两个实心点。维数 = 1；距离 d = |(+1) − (−1)| = 2。</li>
+<li><b>(ii)</b> 先把方差换成标准差：σ² = 0.25 → σ = 0.5。PDF 指数的分母是 2σ² = 0.5，前面的系数 1/√(2πσ²) = 1/√(0.5π) ≈ 0.798。
+<div class="calc">s = +1：E[y] = 1，Var[y] = 0.25，p(y | s = +1) = 0.798 e<sup>−(y−1)²/0.5</sup><br>s = −1：E[y] = −1，Var[y] = 0.25，p(y | s = −1) = 0.798 e<sup>−(y+1)²/0.5</sup></div>
+如果要不带条件的 y 的 PDF，用全概率：p(y) = ½p(y | +1) + ½p(y | −1)，是两个"钟形"的混合。</li>
+<li><b>(iii)</b> 发 +1 时出错 ⇔ y ≤ 0 ⇔ 1 + w ≤ 0 ⇔ w ≤ −1：
+<div class="calc">P(w ≤ −1) = P(w ≥ 1) = Q(1/σ) = Q(1/0.5) = Q(2) ≈ 0.0228</div>
+发 −1 时出错 ⇔ w &gt; 1，概率同样是 Q(2)。两个符号等概：P<sub>b</sub> = ½Q(2) + ½Q(2) = Q(2) ≈ 0.0228。</li>
+</ol>
+<p><b>查表</b>：Q 函数表查 z = 2.00，得 0.02275（老师说 Q 函数表一定会考到，正查、反查都要会）。<b>自检</b>：用 BPSK 公式 Q(√(2γ<sub>b</sub>))，E<sub>b</sub> = 1，N₀ = 2σ² = 0.5，γ<sub>b</sub> = E<sub>b</sub>/N₀ = 2，得 Q(√4) = Q(2)，两条路结果一致。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>把方差 0.25 当成 σ 代进 Q：Q(1/0.25) = Q(4) 是错的，要用 σ = 0.5。</li>
+<li>PDF 指数写成 −(y−1)²/0.25，忘了分母是 2σ²。</li>
+<li>(ii) 只写"是高斯"，不写均值、方差的数值，也不写出 PDF。</li>
+<li>维数答成 2：只要所有点都在一条直线上就是 1 维。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) The constellation has two points, s = +1 and s = −1, on the real axis (sketch). Only one basis function is needed, so the constellation is one-dimensional. The distance between the two signal points is d = |1 − (−1)| = 2.</p>
+<p>(ii) Given s, y = s + w is a constant plus a zero-mean Gaussian random variable, so y is Gaussian with E[y | s] = s and Var[y | s] = σ² = 0.25. For s = +1: mean = 1, variance = 0.25. For s = −1: mean = −1, variance = 0.25. Hence p(y | s = ±1) = (1/√(0.5π)) exp[−(y ∓ 1)²/0.5].</p>
+<p>(iii) σ = √0.25 = 0.5. P(error | s = +1) = P(y ≤ 0 | s = +1) = P(w ≤ −1) = Q(1/0.5) = Q(2). By symmetry, P(error | s = −1) = Q(2). As the two symbols are equally likely, P<sub>b</sub> = Q(2) ≈ 0.0228.</p></div>
+<div class="ans">一句话：y 是"以 ±1 为中心、方差 0.25 的高斯"，门限在 0，离门限的距离 1 = 2σ，所以误码率 Q(2) ≈ 0.023。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s1-q1a">→ 在「历年真题」页看整份 2025-26 S1 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->
@@ -1914,7 +2102,38 @@ where B is the signal bandwidth and γ̄<sub>R</sub> = 25dB is the average signa
 <p>(i) A Differential Phase Shift Keying (DPSK) system uses a 2-branch Selection Diversity (SD) scheme to mitigate fading. The signal to noise ratio (SNR) of the received signal for each branch is assumed to be a discrete random variable with the following distribution:
 <span class="eq">10 dB with a probability of 0.2;　12 dB with a probability of 0.8</span>
 Determine the average SNR in dB of the received signals and the average symbol error probability of the SD scheme. Note: Symbol error probability of DPSK is ½e<sup>−SNR</sup>.</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext">先把 dB 换成线性值（公式里的 SNR 一定要用线性值）：10 dB → 10，12 dB → 15.85。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>每支路接收信号的平均 SNR</b>：<div class="calc">γ̄ = 0.2 × 10 + 0.8 × 15.85 = 14.68 → 11.67 dB</div>注意要先在线性域平均再转 dB。直接平均 dB 值（0.2×10 + 0.8×12 = 11.6 dB）是错的做法。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>选择分集取两支路中 SNR 较大的一个。</b>两支路独立，只有两支都是 10 dB 时输出才是 10 dB：<div class="calc">P(输出 = 10 dB) = 0.2 × 0.2 = 0.04；P(输出 = 12 dB) = 1 − 0.04 = 0.96</div>SD 输出的平均 SNR = 0.04 × 10 + 0.96 × 15.85 = 15.61 → 11.94 dB。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>平均误符号率</b>：对每种输出情况算 ½e<sup>−SNR</sup> 再按概率加权：<div class="calc">P̄<sub>s</sub> = 0.04 × ½e<sup>−10</sup> + 0.96 × ½e<sup>−15.85</sup> = 9.08×10⁻⁷ + 6.2×10⁻⁸ ≈ 9.7×10⁻⁷</div>对比不用分集（单支路）：0.2 × ½e<sup>−10</sup> + 0.8 × ½e<sup>−15.85</sup> ≈ 4.6×10⁻⁶。分集让误码率降到约 1/5，主要是把"差的那种情况"出现的概率从 0.2 压到 0.04。</div></div><div class="wans">接收信号平均 SNR ≈ 11.7 dB（SD 输出平均 ≈ 11.9 dB）；SD 平均误符号率 ≈ 9.7×10⁻⁷</div><div class="pq-note">注：题目说的 "average SNR of the received signals" 指每支路的接收 SNR。为保险，SD 输出端的平均 SNR 也一并写出。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>离散 SNR 分布下两支路选择分集的平均 SNR 和平均误符号率（第 4 章 p.10–12、p.23）。</dd><dt>用到的知识</dt><dd>dB → 线性；独立概率相乘；SD 输出 = max(γ₁, γ₂)；DPSK P<sub>s</sub> = ½e<sup>−γ</sup>；全概率加权。</dd><dt>解题套路</dt><dd>① 换线性：10、15.85；② 列组合：只有 (10, 10) 时输出才是 10，概率 0.2² = 0.04；③ 对 SNR 和 ½e<sup>−γ</sup> 分别加权平均。</dd><dt>易错</dt><dd>先在线性域平均再换 dB（直接平均 dB 值得到 11.6 dB 是错的）；SD 取最大值，不是相加；平均误码率不能把平均 SNR 代进 ½e<sup>−γ</sup>。</dd><dt>举一反三</dt><dd>换成 MRC：输出 20（0.04）、25.85（0.32）、31.7（0.64），平均 29.36 = 2 × 14.68；平均误码率约 4.2×10⁻¹¹，比 SD 的 9.7×10⁻⁷ 低四个数量级。</dd><dt>结论</dt><dd>SD 让误码率从 4.6×10⁻⁶ 降到 9.7×10⁻⁷，靠的是把"两路都差"的概率从 0.2 压到 0.04。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext">先把 dB 换成线性值（公式里的 SNR 一定要用线性值）：10 dB → 10，12 dB → 15.85。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>每支路接收信号的平均 SNR</b>：<div class="calc">γ̄ = 0.2 × 10 + 0.8 × 15.85 = 14.68 → 11.67 dB</div>注意要先在线性域平均再转 dB。直接平均 dB 值（0.2×10 + 0.8×12 = 11.6 dB）是错的做法。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>选择分集取两支路中 SNR 较大的一个。</b>两支路独立，只有两支都是 10 dB 时输出才是 10 dB：<div class="calc">P(输出 = 10 dB) = 0.2 × 0.2 = 0.04；P(输出 = 12 dB) = 1 − 0.04 = 0.96</div>SD 输出的平均 SNR = 0.04 × 10 + 0.96 × 15.85 = 15.61 → 11.94 dB。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>平均误符号率</b>：对每种输出情况算 ½e<sup>−SNR</sup> 再按概率加权：<div class="calc">P̄<sub>s</sub> = 0.04 × ½e<sup>−10</sup> + 0.96 × ½e<sup>−15.85</sup> = 9.08×10⁻⁷ + 6.2×10⁻⁸ ≈ 9.7×10⁻⁷</div>对比不用分集（单支路）：0.2 × ½e<sup>−10</sup> + 0.8 × ½e<sup>−15.85</sup> ≈ 4.6×10⁻⁶。分集让误码率降到约 1/5，主要是把"差的那种情况"出现的概率从 0.2 压到 0.04。</div></div><div class="wans">接收信号平均 SNR ≈ 11.7 dB（SD 输出平均 ≈ 11.9 dB）；SD 平均误符号率 ≈ 9.7×10⁻⁷</div><div class="pq-note">注：题目说的 "average SNR of the received signals" 指每支路的接收 SNR。为保险，SD 输出端的平均 SNR 也一并写出。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>离散 SNR 分布下两支路选择分集的平均 SNR 和平均误符号率（第 4 章 p.10–12、p.23）。</dd><dt>用到的知识</dt><dd>dB → 线性；独立概率相乘；SD 输出 = max(γ₁, γ₂)；DPSK P<sub>s</sub> = ½e<sup>−γ</sup>；全概率加权。</dd><dt>解题套路</dt><dd>① 换线性：10、15.85；② 列组合：只有 (10, 10) 时输出才是 10，概率 0.2² = 0.04；③ 对 SNR 和 ½e<sup>−γ</sup> 分别加权平均。</dd><dt>易错</dt><dd>先在线性域平均再换 dB（直接平均 dB 值得到 11.6 dB 是错的）；SD 取最大值，不是相加；平均误码率不能把平均 SNR 代进 ½e<sup>−γ</sup>。</dd><dt>举一反三</dt><dd>换成 MRC：输出 20（0.04）、25.85（0.32）、31.7（0.64），平均 29.36 = 2 × 14.68；平均误码率约 4.2×10⁻¹¹，比 SD 的 9.7×10⁻⁷ 低四个数量级。</dd><dt>结论</dt><dd>SD 让误码率从 4.6×10⁻⁶ 降到 9.7×10⁻⁷，靠的是把"两路都差"的概率从 0.2 压到 0.04。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：选择分集的离散 SNR 平均与误码率</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>选择分集（Selection Diversity）在做什么</h4>
+<p>分集（diversity）的想法：把同一个信号经过几条<b>互相独立</b>的衰落路径（支路，branch）送到接收端，所有支路同时很差的概率远小于一条支路很差的概率。选择分集最简单：接收机看哪条支路的 SNR 最大，就只用那一条，输出 SNR = max(γ₁, γ₂, …)（讲义第 4 章 p.10–14）。</p>
+<p>本题的 SNR 不是连续分布，而是<b>离散随机变量</b>（只取 10 dB、12 dB 两个值）。离散分布求平均就是"每个取值 × 它的概率，再相加"：E[X] = Σ x·p(x)。老师课上说：<b>不会考积分，但离散分布的平均误码率会考</b>。DPSK 的 P<sub>s</sub> = ½e<sup>−γ</sup> 是"太复杂、题目会给"的那类公式，但式中的 γ 必须是<b>线性值</b>。</p>
+<div class="tw"><table class="mini"><thead><tr><th>支路 1</th><th>支路 2</th><th>概率</th><th>SD 输出</th></tr></thead><tbody>
+<tr><td>10 dB</td><td>10 dB</td><td>0.2 × 0.2 = 0.04</td><td>10 dB</td></tr>
+<tr><td>10 dB</td><td>12 dB</td><td>0.2 × 0.8 = 0.16</td><td>12 dB</td></tr>
+<tr><td>12 dB</td><td>10 dB</td><td>0.8 × 0.2 = 0.16</td><td>12 dB</td></tr>
+<tr><td>12 dB</td><td>12 dB</td><td>0.8 × 0.8 = 0.64</td><td>12 dB</td></tr>
+</tbody></table></div>
+<p>所以 SD 输出只有两种：10 dB（概率 0.04）和 12 dB（概率 0.16 + 0.16 + 0.64 = 0.96）。两条支路独立，所以概率可以相乘。</p>
+<h4><span class="st">详细解析</span>一步一步算</h4>
+<ol><li><b>dB 换线性</b>（为什么：公式里的 γ 和求平均都要用线性值）：10 dB → 10<sup>1.0</sup> = 10；12 dB → 10<sup>1.2</sup> = 15.85。计算器：10^(12÷10)。</li>
+<li><b>每条支路接收信号的平均 SNR</b>：<div class="calc">γ̄ = 0.2 × 10 + 0.8 × 15.85 = 2 + 12.68 = 14.68 → 10 log₁₀14.68 = 11.67 dB</div></li>
+<li><b>SD 输出的平均 SNR</b>（顺便写上，保险）：<div class="calc">0.04 × 10 + 0.96 × 15.85 = 15.61 → 11.94 dB</div></li>
+<li><b>每种输出情况的误符号率</b>：<div class="calc">½e<sup>−10</sup> = 2.27×10⁻⁵；　½e<sup>−15.85</sup> = 6.54×10⁻⁸</div></li>
+<li><b>按概率加权</b>（全概率公式）：<div class="calc">P̄<sub>s</sub> = 0.04 × 2.27×10⁻⁵ + 0.96 × 6.54×10⁻⁸ = 9.08×10⁻⁷ + 6.28×10⁻⁸ ≈ 9.71×10⁻⁷</div></li></ol>
+<p><b>合理性检查</b>：不用分集时 P̄<sub>s</sub> = 0.2 × 2.27×10⁻⁵ + 0.8 × 6.54×10⁻⁸ ≈ 4.59×10⁻⁶。分集后约小 4.7 倍。原因很清楚：误码几乎全部来自"10 dB"这种差情况（9.08×10⁻⁷ 占总数约 94%），SD 把它出现的概率从 0.2 压到 0.04，正好约 5 倍。</p>
+<h4><span class="st">易错</span>三个典型错误</h4>
+<ul><li>直接平均 dB 值：0.2 × 10 + 0.8 × 12 = 11.6 dB，是错的；先在线性域平均再换 dB 才对（11.67 dB）。</li>
+<li>把平均 SNR 代进 ½e<sup>−γ</sup>：½e<sup>−15.61</sup> ≈ 8.3×10⁻⁸，比正确答案小一个数量级。平均误码率 ≠ 平均 SNR 的误码率，必须对每种情况分别算再加权。</li>
+<li>选择分集取<b>最大</b>，不是把两路 SNR 相加（相加是 MRC）。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>Converting to linear values: 10 dB = 10 and 12 dB = 15.85. The average SNR of the received signal on each branch is γ̄ = 0.2 × 10 + 0.8 × 15.85 = 14.68, i.e. 11.67 dB.</p>
+<p>Selection diversity selects the branch with the larger SNR. Since the branches are independent, the output SNR is 10 dB only when both branches are at 10 dB, with probability 0.2 × 0.2 = 0.04; otherwise it is 12 dB, with probability 0.96. (Average SNR at the SD output = 0.04 × 10 + 0.96 × 15.85 = 15.61, i.e. 11.94 dB.)</p>
+<p>Average symbol error probability: P̄<sub>s</sub> = 0.04 × ½e<sup>−10</sup> + 0.96 × ½e<sup>−15.85</sup> = 9.08 × 10⁻⁷ + 6.28 × 10⁻⁸ ≈ 9.71 × 10⁻⁷. (Without diversity it would be about 4.59 × 10⁻⁶, so SD reduces the error probability by a factor of about 5.)</p></div>
+<div class="ans">一句话：先换线性值，列出两路组合的概率（差情况只剩 0.2² = 0.04），每种情况分别算 ½e<sup>−γ</sup> 再加权：平均 SNR 11.67 dB，SD 误符号率 ≈ 9.71×10⁻⁷。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2324s2-q1b1">→ 在「历年真题」页看整份 2023-24 S2 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2425s2-q1b1">
@@ -1924,7 +2143,34 @@ Determine the average SNR in dB of the received signals and the average symbol e
 <p>(i) The Selection Diversity scheme of a BPSK system uses M branches. The BPSK system's outage probability at a probability of error of P<sub>b</sub> = Q(√(2 × γ<sub>b</sub>)) = 1.35 × 10<sup>−3</sup> can be expressed as,
 <span class="eq">P<sub>out</sub> = (1 − e<sup>−γ<sub>b</sub>/30</sup>)<sup>M</sup></span>
 If P<sub>out</sub> equals 0.02 approximately, determine the number of branches used by the BPSK system.</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext">先从误码率门限求 γ<sub>b</sub>：查 Q 表，Q(3.0) = 1.35×10⁻³，所以 √(2γ<sub>b</sub>) = 3.0：<div class="calc">γ<sub>b</sub> = 9/2 = 4.5</div>这里 30 是每支路的平均 SNR，γ<sub>b</sub> 是能接受的最低 SNR。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><div class="calc">1 − e<sup>−4.5/30</sup> = 1 − e<sup>−0.15</sup> = 0.139</div><div class="calc">0.139<sup>M</sup> = 0.02 → M = ln 0.02 / ln 0.139 = (−3.91)/(−1.97) ≈ 1.98</div>验证：M = 2 时 P<sub>out</sub> = 0.139² = 0.0194 ≈ 0.02 ✓（M = 1 是 0.139，M = 3 是 0.0027）。</div></div><div class="wans">M = 2 个支路</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>选择分集中断概率反求支路数 M（第 4 章 p.11–13）。</dd><dt>用到的知识</dt><dd>Q(√(2γ<sub>b</sub>)) = P<sub>b</sub> → 最低 SNR γ<sub>b</sub>；P<sub>out</sub> = (1 − e<sup>−γ<sub>b</sub>/γ̄</sup>)<sup>M</sup>。</dd><dt>解题套路</dt><dd>查表得 γ<sub>b</sub> = 4.5 → 单路中断 0.139 → M = ln P<sub>out</sub> / ln 0.139 → 向上取整并代回验证。</dd><dt>易错</dt><dd>M 必须是整数：1.98 → 2，再验证 0.139² = 0.0194 ≤ 0.02；两个 ln 都是负数，比值为正。</dd><dt>举一反三</dt><dd>要 P<sub>out</sub> ≤ 10⁻³：M ≥ ln 10⁻³ / ln 0.139 = 3.5 → M = 4。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext">先从误码率门限求 γ<sub>b</sub>：查 Q 表，Q(3.0) = 1.35×10⁻³，所以 √(2γ<sub>b</sub>) = 3.0：<div class="calc">γ<sub>b</sub> = 9/2 = 4.5</div>这里 30 是每支路的平均 SNR，γ<sub>b</sub> 是能接受的最低 SNR。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><div class="calc">1 − e<sup>−4.5/30</sup> = 1 − e<sup>−0.15</sup> = 0.139</div><div class="calc">0.139<sup>M</sup> = 0.02 → M = ln 0.02 / ln 0.139 = (−3.91)/(−1.97) ≈ 1.98</div>验证：M = 2 时 P<sub>out</sub> = 0.139² = 0.0194 ≈ 0.02 ✓（M = 1 是 0.139，M = 3 是 0.0027）。</div></div><div class="wans">M = 2 个支路</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>选择分集中断概率反求支路数 M（第 4 章 p.11–13）。</dd><dt>用到的知识</dt><dd>Q(√(2γ<sub>b</sub>)) = P<sub>b</sub> → 最低 SNR γ<sub>b</sub>；P<sub>out</sub> = (1 − e<sup>−γ<sub>b</sub>/γ̄</sup>)<sup>M</sup>。</dd><dt>解题套路</dt><dd>查表得 γ<sub>b</sub> = 4.5 → 单路中断 0.139 → M = ln P<sub>out</sub> / ln 0.139 → 向上取整并代回验证。</dd><dt>易错</dt><dd>M 必须是整数：1.98 → 2，再验证 0.139² = 0.0194 ≤ 0.02；两个 ln 都是负数，比值为正。</dd><dt>举一反三</dt><dd>要 P<sub>out</sub> ≤ 10⁻³：M ≥ ln 10⁻³ / ln 0.139 = 3.5 → M = 4。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：选择分集中断概率反求支路数</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>选择分集的中断概率</h4>
+<p>中断（outage）：瞬时 SNR 低于能满足误码要求的最低值 γ<sub>b</sub>。瑞利衰落下单条支路的 SNR 服从指数分布，掉到 γ<sub>b</sub> 以下的概率是 1 − e<sup>−γ<sub>b</sub>/γ̄</sup>（γ̄ 是平均 SNR，老师说这个要背）。选择分集只有在 <b>M 条支路全部</b>低于门限时才中断，支路独立，概率相乘（讲义第 4 章 p.11–13）：</p>
+<div class="calc">P<sub>out</sub> = (1 − e<sup>−γ<sub>b</sub>/γ̄</sup>)<sup>M</sup></div>
+<p>本题公式里的 30 就是 γ̄（每支路平均 SNR，线性值，约 14.8 dB），γ<sub>b</sub> 要从误码率要求反推出来。BPSK 的 P<sub>b</sub> = Q(√(2γ<sub>b</sub>)) 老师说考试会给，但要会<b>倒查 Q 表</b>。</p>
+<p>为什么单支路中断是 1 − e<sup>−γ<sub>b</sub>/γ̄</sup>：瑞利衰落下 SNR 的概率密度是 p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup>，从 0 积到 γ<sub>b</sub> 就得到这个式子（考试不考积分，直接用结果）。它只取决于比值 γ<sub>b</sub>/γ̄：本题门限只有平均值的 15%（4.5/30），所以一条支路掉到门限下面的概率是 13.9%。整题的思路是一条链：<b>误码率要求 → 最低 SNR γ<sub>b</sub> → 单支路中断 → M 条支路全中断</b>，每一环都是一个公式，按顺序代就行。</p>
+<h4><span class="st">详细解析</span>四步</h4>
+<ol><li><b>由误码率求 γ<sub>b</sub></b>：在 Q 表里找 1.35×10⁻³，对应 x = 3.00，所以 √(2γ<sub>b</sub>) = 3.0：<div class="calc">γ<sub>b</sub> = 3.0²/2 = 4.5（6.53 dB）</div></li>
+<li><b>单支路中断概率</b>：<div class="calc">1 − e<sup>−4.5/30</sup> = 1 − e<sup>−0.15</sup> = 1 − 0.861 = 0.139</div></li>
+<li><b>解 M</b>（未知数在指数上 → 取对数）：<div class="calc">0.139<sup>M</sup> = 0.02 → M = ln 0.02 / ln 0.139 = (−3.91)/(−1.97) ≈ 1.98</div></li>
+<li><b>取整并代回验证</b>：M 必须是整数，取 M = 2：<div class="calc">P<sub>out</sub> = 0.139² = 0.0194 ≈ 0.02 ✓</div></li></ol>
+<div class="tw"><table class="mini"><thead><tr><th>M</th><th>1</th><th>2</th><th>3</th></tr></thead><tbody>
+<tr><td>P<sub>out</sub> = 0.139<sup>M</sup></td><td>0.139</td><td>0.0194</td><td>0.0027</td></tr>
+</tbody></table></div>
+<p>表里只有 M = 2 接近 0.02。每加一条支路，中断概率约乘 0.139，这就是分集"指数式"降低中断的意思。</p>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>γ<sub>b</sub> = 4.5 是线性值；30 也是线性值，不要再换 dB。</li>
+<li>两个 ln 都是负数，比值为正；用 log₁₀ 算也一样（log₁₀0.02 / log₁₀0.139）。</li>
+<li>M 一定要取整，并代回验证；本题 1.98 很接近 2，题目说 "approximately 0.02"。</li>
+<li>Q 表倒查：在表的正文里找 1.35×10⁻³，不是在表头找。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>From the Q-function table, Q(3.0) = 1.35 × 10⁻³, so √(2γ<sub>b</sub>) = 3.0 and the minimum SNR is γ<sub>b</sub> = 9/2 = 4.5. Each branch has average SNR 30, so the outage probability of one branch is 1 − e<sup>−4.5/30</sup> = 1 − e<sup>−0.15</sup> = 0.139. For selection diversity, an outage occurs only when all M independent branches are in outage: P<sub>out</sub> = 0.139<sup>M</sup> = 0.02, so M = ln 0.02 / ln 0.139 ≈ 1.98. Since M must be an integer, M = 2 branches (check: 0.139² = 0.0194 ≈ 0.02).</p></div>
+<div class="ans">一句话：倒查 Q 表得 γ<sub>b</sub> = 4.5 → 单支路中断 0.139 → 0.139<sup>M</sup> = 0.02 → M ≈ 1.98，取 M = 2 并验证 0.0194。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2425s2-q1b1">→ 在「历年真题」页看整份 2024-25 S2 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2526s1-q1b1">
@@ -1934,14 +2180,88 @@ If P<sub>out</sub> equals 0.02 approximately, determine the number of branches u
 <p>(i) Consider a system that uses a 2-branch receiver combining technique. The Signal to Noise Ratios (SNR) at the input of the receiver, γ<sub>1</sub> and γ<sub>2</sub>, have the following values and probability distributions.
 <span class="eq">γ<sub>i</sub> = 11 dB with a probability of 0.2;　12 dB with a probability of 0.5;　13 dB with a probability of 0.3;　i = 1,2</span>
 Determine the average receiver input SNR, the average receiver output SNR if the receiver uses the Maximal Ratio Combing (MRC) technique, and the diversity gain of this system at a probability of error of 2 × 10<sup>−4</sup>.</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext">dB 化线性：11 dB → 12.59，12 dB → 15.85，13 dB → 19.95。<div class="calc">γ̄ = 0.2 × 12.59 + 0.5 × 15.85 + 0.3 × 19.95 = 16.43 → 12.16 dB</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>MRC 输出 SNR = 各支路 SNR 之和</b>，所以平均值也相加：<div class="calc">γ̄<sub>Σ</sub> = 2 × 16.43 = 32.86 → 15.17 dB</div>阵列增益 g = γ̄<sub>Σ</sub>/γ̄ = 2（3 dB）。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>分集增益</b>（讲义 Ch4 p.27）：P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>，γ̄ 是<b>合并器输入</b>的平均 SNR：<div class="calc">d ≈ −log₁₀ P̄<sub>e</sub> / log₁₀ γ̄ = −log₁₀(2×10⁻⁴) / log₁₀(16.43) = 3.70/1.216 ≈ 3.0</div>Practice 4 Q2 的官方答案也是用输入 SNR 算 d（γ̄ = 10，P̄<sub>s</sub> = 7.6×10⁻⁹ → d = 8.1）。</div></div><div class="wans">输入 ≈ 16.4（12.2 dB）；MRC 输出 ≈ 32.9（15.2 dB）；d ≈ 3.0</div><div class="pq-note">注：d ≈ 3 比支路数 2 还大，因为讲义的 d 是用"高 SNR 近似"由单个误码率点反算的，不是严格的渐近斜率。考试按讲义公式算即可。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>离散 SNR 分布、MRC 平均输出 SNR、阵列增益、由误码率求分集增益（第 4 章 p.15–16、p.27）。</dd><dt>用到的知识</dt><dd>线性域加权平均；MRC 平均输出 = 各支路平均之和；d = −log₁₀P̄ / log₁₀γ̄，γ̄ 用输入。</dd><dt>解题套路</dt><dd>换线性 → 加权平均得 16.43 → ×2 得输出 → g = 2 → d = 3.70/1.216。</dd><dt>易错</dt><dd>平均要在线性域做；d 用输入的 16.43，用输出 32.86 会得到 2.4。</dd><dt>联系</dt><dd>Practice 4 第 2 题的官方答案也用输入 SNR 算 d（8.1）。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext">dB 化线性：11 dB → 12.59，12 dB → 15.85，13 dB → 19.95。<div class="calc">γ̄ = 0.2 × 12.59 + 0.5 × 15.85 + 0.3 × 19.95 = 16.43 → 12.16 dB</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>MRC 输出 SNR = 各支路 SNR 之和</b>，所以平均值也相加：<div class="calc">γ̄<sub>Σ</sub> = 2 × 16.43 = 32.86 → 15.17 dB</div>阵列增益 g = γ̄<sub>Σ</sub>/γ̄ = 2（3 dB）。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>分集增益</b>（讲义 Ch4 p.27）：P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>，γ̄ 是<b>合并器输入</b>的平均 SNR：<div class="calc">d ≈ −log₁₀ P̄<sub>e</sub> / log₁₀ γ̄ = −log₁₀(2×10⁻⁴) / log₁₀(16.43) = 3.70/1.216 ≈ 3.0</div>Practice 4 Q2 的官方答案也是用输入 SNR 算 d（γ̄ = 10，P̄<sub>s</sub> = 7.6×10⁻⁹ → d = 8.1）。</div></div><div class="wans">输入 ≈ 16.4（12.2 dB）；MRC 输出 ≈ 32.9（15.2 dB）；d ≈ 3.0</div><div class="pq-note">注：d ≈ 3 比支路数 2 还大，因为讲义的 d 是用"高 SNR 近似"由单个误码率点反算的，不是严格的渐近斜率。考试按讲义公式算即可。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>离散 SNR 分布、MRC 平均输出 SNR、阵列增益、由误码率求分集增益（第 4 章 p.15–16、p.27）。</dd><dt>用到的知识</dt><dd>线性域加权平均；MRC 平均输出 = 各支路平均之和；d = −log₁₀P̄ / log₁₀γ̄，γ̄ 用输入。</dd><dt>解题套路</dt><dd>换线性 → 加权平均得 16.43 → ×2 得输出 → g = 2 → d = 3.70/1.216。</dd><dt>易错</dt><dd>平均要在线性域做；d 用输入的 16.43，用输出 32.86 会得到 2.4。</dd><dt>联系</dt><dd>Practice 4 第 2 题的官方答案也用输入 SNR 算 d（8.1）。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：MRC 平均 SNR 与分集增益</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>分集合并、MRC、阵列增益和分集增益</h4>
+<p><b>分集（diversity）</b>：同一个信号经过几条独立衰落的支路（branch）到达接收端，几条同时深衰落的概率很小，把它们合并起来就能抗衰落（第 4 章 p.2–3）。</p>
+<p><b>最大比合并（MRC，Maximal Ratio Combining）</b>：每一路乘上自己信道增益的共轭再相加（p.15），相当于匹配滤波。结果是<b>合并后的瞬时 SNR 等于各支路 SNR 之和</b>：γ<sub>Σ</sub> = γ₁ + γ₂ + …（p.16）。因为求平均是线性运算，平均输出 SNR 也等于各支路平均 SNR 之和；两路同分布时就是 2γ̄。</p>
+<p><b>两个性能指标</b>（p.27，老师说这两个公式"简单、要记住"）：</p>
+<ul>
+<li>阵列增益（array gain）g ≈ γ̄<sub>Σ</sub>/γ̄：合并后的平均 SNR 比合并前提高了几倍。</li>
+<li>分集增益（diversity order）d：高 SNR 下 P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>，取对数得 d ≈ −log₁₀P̄<sub>e</sub> / log₁₀γ̄。这里的 γ̄ 是<b>合并器输入</b>的平均 SNR。d 表示 SNR 每增加 10 倍，误码率下降 10<sup>d</sup> 倍（曲线有多陡）。</li>
+</ul>
+<p>讲义 p.28 还说：M 支路接收时 d ≤ M，满分集时 d = M。</p>
+<h4><span class="st">详细解析</span>一步一步算</h4>
+<ol>
+<li><b>dB 换线性</b>（SNR 是功率比，平均必须在线性域做）：10<sup>x/10</sup>
+<div class="calc">11 dB → 10<sup>1.1</sup> = 12.59<br>12 dB → 10<sup>1.2</sup> = 15.85<br>13 dB → 10<sup>1.3</sup> = 19.95</div></li>
+<li><b>平均输入 SNR</b>：按概率加权（离散分布的期望 E[X] = Σx·p(x)）：
+<div class="calc">γ̄ = 0.2 × 12.59 + 0.5 × 15.85 + 0.3 × 19.95 = 2.518 + 7.924 + 5.986 = 16.43<br>10 log₁₀(16.43) = 12.16 dB</div></li>
+<li><b>MRC 平均输出 SNR</b>：每一次的输出都是 γ₁ + γ₂，取平均就是 γ̄ + γ̄：
+<div class="calc">γ̄<sub>Σ</sub> = 2 × 16.43 = 32.86 → 15.17 dB；g = 32.86/16.43 = 2（3 dB）</div></li>
+<li><b>分集增益</b>：P̄<sub>e</sub> = 2×10⁻⁴，γ̄ 用输入的 16.43。计算器提示：log₁₀(2×10⁻⁴) = 0.301 − 4 = −3.699。
+<div class="calc">d ≈ 3.699 / log₁₀(16.43) = 3.699 / 1.216 ≈ 3.04 ≈ 3.0</div></li>
+</ol>
+<p><b>合理性检查</b>：d ≈ 3 比支路数 2 还大，和 p.28 的 d ≤ M 不一致。原因是 d 的公式是"高 SNR 近似"，用一个误码率点反算出来的数不是严格的渐近斜率。考试按讲义 p.27 的公式算即可，有时间可以加一句说明（见下面的英文模板最后一句）。现有解答和 Practice 4 Q2 的官方答案都是这样处理的。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>直接平均 dB 值：0.2×11 + 0.5×12 + 0.3×13 = 12.1 dB，方法错（老师说没做 dB ↔ 线性换算会扣分）。</li>
+<li>d 用输出 SNR 32.86 代入，得到 3.699/1.517 ≈ 2.44，和讲义定义不符。</li>
+<li>MRC 平均输出写成 max 或平均值：MRC 是相加，选择分集（SD）才是取最大。</li>
+<li>结果不写 dB 值或不写单位。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>Converting to linear scale: 11 dB = 12.59, 12 dB = 15.85, 13 dB = 19.95.</p>
+<p>Average receiver input SNR: γ̄ = 0.2(12.59) + 0.5(15.85) + 0.3(19.95) = 16.43 (12.16 dB).</p>
+<p>For MRC, the output SNR is the sum of the branch SNRs, so the average output SNR is γ̄<sub>Σ</sub> = 2γ̄ = 32.86 (15.17 dB), i.e. an array gain of 2 (3 dB).</p>
+<p>Diversity gain: P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>, where γ̄ is the average combiner input SNR. d ≈ −log₁₀(2×10⁻⁴)/log₁₀(16.43) = 3.699/1.216 ≈ 3.0. (This is a high-SNR approximation obtained from a single error-rate point.)</p></div>
+<div class="ans">一句话：先换线性再平均得 16.43（12.2 dB），MRC 相加得 32.86（15.2 dB），d 用输入 SNR 算得约 3.0。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s1-q1b1">→ 在「历年真题」页看整份 2025-26 S1 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2526s2-q1b1">
   <div class="pq-head"><span class="pq-paper">2025-26 S2</span><span class="pq-q">Q1(b)(i)</span><span>(b) 共 13 分</span></div>
   <div class="pq-topic"><b>考点</b>：由输入/输出 SNR 求阵列增益 · 由分集增益求误码率</div>
   <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) (i) Consider a receiver diversity combining technique. If the average input Signal-to-Noise Ratio (SNR) is 12dB, the average combiner output SNR is 15dB, and the diversity gain is 3.7, determine the gain array and the probability of error.</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>阵列增益</b>（题中的 "gain array"）g = γ̄<sub>Σ</sub>/γ̄（讲义 Ch4 p.27）：<div class="calc">g = 15 − 12 = 3 dB → 10<sup>0.3</sup> ≈ 2</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>误码率</b>：P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>，γ̄ 用合并器<b>输入</b>平均 SNR，12 dB = 15.85：<div class="calc">P̄<sub>e</sub> ≈ 15.85<sup>−3.7</sup> = 10<sup>−1.2×3.7</sup> = 10<sup>−4.44</sup> ≈ 3.6×10⁻⁵</div></div></div><div class="wans">阵列增益 ≈ 2（3 dB）；P̄<sub>e</sub> ≈ 3.6×10⁻⁵</div><div class="pq-note">注：如果误用输出 SNR（15 dB）代入，会得到 2.8×10⁻⁶。讲义和 Practice 4 的官方答案都用输入 SNR。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>由输入 / 输出 SNR 求阵列增益；由分集增益求误码率（第 4 章 p.27）。</dd><dt>用到的知识</dt><dd>g = γ̄<sub>Σ</sub>/γ̄，dB 下就是相减；P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>，γ̄ 用输入。</dd><dt>解题套路</dt><dd>g：15 − 12 = 3 dB → 2；P̄<sub>e</sub> = 15.85<sup>−3.7</sup> = 10<sup>−1.2 × 3.7</sup>。</dd><dt>易错</dt><dd>12 dB 换成 15.85（log₁₀15.85 = 1.2）；dB 值不能直接相除。</dd><dt>举一反三</dt><dd>d = 2 时 P̄<sub>e</sub> = 15.85⁻² ≈ 4×10⁻³：d 越大，曲线越陡。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>阵列增益</b>（题中的 "gain array"）g = γ̄<sub>Σ</sub>/γ̄（讲义 Ch4 p.27）：<div class="calc">g = 15 − 12 = 3 dB → 10<sup>0.3</sup> ≈ 2</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>误码率</b>：P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>，γ̄ 用合并器<b>输入</b>平均 SNR，12 dB = 15.85：<div class="calc">P̄<sub>e</sub> ≈ 15.85<sup>−3.7</sup> = 10<sup>−1.2×3.7</sup> = 10<sup>−4.44</sup> ≈ 3.6×10⁻⁵</div></div></div><div class="wans">阵列增益 ≈ 2（3 dB）；P̄<sub>e</sub> ≈ 3.6×10⁻⁵</div><div class="pq-note">注：如果误用输出 SNR（15 dB）代入，会得到 2.8×10⁻⁶。讲义和 Practice 4 的官方答案都用输入 SNR。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>由输入 / 输出 SNR 求阵列增益；由分集增益求误码率（第 4 章 p.27）。</dd><dt>用到的知识</dt><dd>g = γ̄<sub>Σ</sub>/γ̄，dB 下就是相减；P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>，γ̄ 用输入。</dd><dt>解题套路</dt><dd>g：15 − 12 = 3 dB → 2；P̄<sub>e</sub> = 15.85<sup>−3.7</sup> = 10<sup>−1.2 × 3.7</sup>。</dd><dt>易错</dt><dd>12 dB 换成 15.85（log₁₀15.85 = 1.2）；dB 值不能直接相除。</dd><dt>举一反三</dt><dd>d = 2 时 P̄<sub>e</sub> = 15.85⁻² ≈ 4×10⁻³：d 越大，曲线越陡。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：阵列增益与由 d 求误码率</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>阵列增益 g 和分集增益 d</h4>
+<p>分集合并有两个性能指标（第 4 章 p.27，老师说这两个公式"简单、要记住"）：</p>
+<ul>
+<li><b>阵列增益</b>（array gain）g ≈ γ̄<sub>Σ</sub>/γ̄：合并器输出平均 SNR 除以输入平均 SNR，表示平均 SNR 提高了几倍。dB 下就是相减。题目写的 "gain array" 就是它。</li>
+<li><b>分集增益</b>（diversity gain / order）d：高 SNR 下平均误码率 P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>，γ̄ 是<b>合并器输入</b>的平均 SNR。d 越大，误码率曲线越陡：SNR 提高 10 倍，误码率下降 10<sup>d</sup> 倍。</li>
+</ul>
+<p>本题是把公式"反过来用"：已知 d，求 P̄<sub>e</sub>。</p>
+<h4><span class="st">详细解析</span>一步一步算</h4>
+<ol>
+<li><b>阵列增益</b>：dB 下直接相减，再换线性：
+<div class="calc">g = 15 dB − 12 dB = 3 dB → 10<sup>0.3</sup> = 1.995 ≈ 2</div>
+意思是合并后平均 SNR 翻了一倍。</li>
+<li><b>输入 SNR 换线性</b>：12 dB → 10<sup>1.2</sup> = 15.85（计算器提示：log₁₀15.85 = 1.2，后面正好用到）。</li>
+<li><b>误码率</b>：
+<div class="calc">P̄<sub>e</sub> ≈ γ̄<sup>−d</sup> = 15.85<sup>−3.7</sup> = 10<sup>−1.2 × 3.7</sup> = 10<sup>−4.44</sup> ≈ 3.6×10⁻⁵</div>
+计算器没有直接算的话：10<sup>−4.44</sup> = 10<sup>0.56</sup> × 10⁻⁵ = 3.63 × 10⁻⁵。</li>
+</ol>
+<p><b>对比</b>：如果误用输出 SNR（15 dB = 31.62），得 31.62<sup>−3.7</sup> ≈ 2.8×10⁻⁶，差了一个数量级，所以一定要记住 γ̄ 是输入 SNR（讲义和 Practice 4 的官方答案都用输入）。再如 d = 2 时 15.85⁻² ≈ 4×10⁻³，可见 d 越大误码率越低。</p>
+<h4><span class="st">补充思考</span>这组数字合理吗</h4>
+<p>p.28 说 M 支路接收时 d ≤ M，所以 d = 3.7 至少要 4 条支路。g ≈ 2 也说得通：例如 4 支路选择分集（SD）的平均输出 SNR 是 γ̄Σ1/i，g = 1 + 1/2 + 1/3 + 1/4 = 2.08（3.2 dB），和 3 dB 很接近。这只是帮助理解，考试不用写。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>把 dB 值直接相除：15/12 = 1.25 是错的，dB 要相减或先换线性再相除。</li>
+<li>P̄<sub>e</sub> 公式里代 dB 值：12<sup>−3.7</sup> 是错的，必须用线性值 15.85（老师说没做 dB ↔ 线性换算会扣分）。</li>
+<li>用输出 SNR 代入，得 2.8×10⁻⁶。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>Array gain: g = γ̄<sub>Σ</sub>/γ̄, where γ̄<sub>Σ</sub> is the average combiner output SNR and γ̄ the average combiner input SNR. In dB, g = 15 − 12 = 3 dB, i.e. g = 10<sup>0.3</sup> ≈ 2.</p>
+<p>Probability of error: at high SNR, P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>, with γ̄ the average input SNR. γ̄ = 12 dB = 10<sup>1.2</sup> = 15.85, so P̄<sub>e</sub> ≈ 15.85<sup>−3.7</sup> = 10<sup>−4.44</sup> ≈ 3.6 × 10⁻⁵.</p></div>
+<div class="ans">一句话：阵列增益 = 15 − 12 = 3 dB ≈ 2 倍；误码率 P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>，用输入 SNR 15.85，得 10<sup>−4.44</sup> ≈ 3.6×10⁻⁵。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s2-q1b1">→ 在「历年真题」页看整份 2025-26 S2 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->
@@ -2126,7 +2446,46 @@ Determine the average receiver input SNR, the average receiver output SNR if the
 where s<sub>1</sub> and s<sub>1</sub> are the two transmitted symbols, and s<sub>1</sub>* and s<sub>2</sub>* are the complex conjugates of s<sub>1</sub> and s<sub>1</sub> respectively. Show that this is or is not an orthogonal space time block code.</p>
 <p>(iv) Does the Alamouti code have diversity gain? Explain your answer.</p>
 <p class="marks">(13 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(ii) 空间复用</b>（讲义 Ch4 p.30）：把 N 个不同的数据符号同时从 N 根发射天线发出去，速率变成原来的 N 倍；代价是没有分集增益，衰落信道里误码性能可能较差。接收端要解出 N 路数据流，需要 <b>M ≥ N</b> 根接收天线。最大复用增益 r<sub>max</sub> = min(N, M)：<div class="calc">N = 3，M = 5 → r<sub>max</sub> = min(3, 5) = 3</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(iii) 正交性检验。</b>正交 STBC 的定义（讲义 Ch5 p.22、p.27）是 X X<sup>H</sup> = (|s₁|² + |s₂|²) I。题中的 X 有两行：r₁ = (s₁, −s₂*)，r₂ = (s₂, s₁*)。<div class="calc">r₁·r₁<sup>H</sup> = |s₁|² + |s₂|²；　r₂·r₂<sup>H</sup> = |s₂|² + |s₁|²</div><div class="calc">r₁·r₂<sup>H</sup> = s₁s₂* + (−s₂*)(s₁*)* = s₁s₂* − s₂*s₁ = 0</div>所以 X X<sup>H</sup> = (|s₁|² + |s₂|²) I，<b>是正交 STBC</b>。它其实就是讲义 Alamouti 矩阵的转置（讲义把行当时隙，这里把列当时隙），本质一样。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iv) Alamouti 有分集增益。</b>每个符号在两个时隙里分别从两根天线各发一次，经过两条独立衰落的路径到达接收端；接收端利用正交结构做线性合并，得到的检测量里有 (|h₁|² + |h₂|²)，两条路径同时深衰落的概率很小。2 发 1 收时分集阶数为 2，2 发 M 收时为 2M，即<b>满分集</b> N × M。代价：它不需要发射端知道信道，但相比接收端 MRC 少了阵列增益（讲义 Ch5 p.30 "MRC has array gain over OSTBC &amp; Alamouti code"）。</div></div><div class="wans">(ii) 需 M ≥ N；最大复用增益 = 3　(iii) X X<sup>H</sup> = (|s₁|²+|s₂|²)I，是正交 STBC　(iv) 有，满分集 2M</div><div class="pq-note">注：原题 (iii) 把 "s₁ and s₂" 印成了 "s₁ and s₁"，按 s₁、s₂ 理解即可。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>空间复用与复用增益；Alamouti 码的正交性验证和分集（第 4 章 p.30–33；第 5 章 p.21–30）。</dd><dt>用到的知识</dt><dd>r<sub>max</sub> = min(N, M)，空间复用要 M ≥ N；OSTBC 的定义 X X<sup>H</sup> = ‖s‖²I；共轭转置 = 转置 + 每个元素取共轭。</dd><dt>解题套路</dt><dd>(iii) 逐行做内积：每行和自己的内积 = |s₁|² + |s₂|²，两行之间的内积必须为 0；(iv) 按"两条独立路径 → 合并后增益 |h₁|² + |h₂|² → 同时深衰落的概率小"三步答。</dd><dt>易错</dt><dd>算交叉项时第二行要取共轭；题目的矩阵是讲义 Alamouti 矩阵的转置，结论不变；2 发 M 收的分集阶数是 2M，不是 2。</dd><dt>联系</dt><dd>2025-26 S2 Q1(b)(iii) 接着问检测量的均值和方差（无偏，σ²/‖h‖²）；讲解页 5.4 节有逐项算 X X<sup>H</sup> 的推导框。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(ii) 空间复用</b>（讲义 Ch4 p.30）：把 N 个不同的数据符号同时从 N 根发射天线发出去，速率变成原来的 N 倍；代价是没有分集增益，衰落信道里误码性能可能较差。接收端要解出 N 路数据流，需要 <b>M ≥ N</b> 根接收天线。最大复用增益 r<sub>max</sub> = min(N, M)：<div class="calc">N = 3，M = 5 → r<sub>max</sub> = min(3, 5) = 3</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(iii) 正交性检验。</b>正交 STBC 的定义（讲义 Ch5 p.22、p.27）是 X X<sup>H</sup> = (|s₁|² + |s₂|²) I。题中的 X 有两行：r₁ = (s₁, −s₂*)，r₂ = (s₂, s₁*)。<div class="calc">r₁·r₁<sup>H</sup> = |s₁|² + |s₂|²；　r₂·r₂<sup>H</sup> = |s₂|² + |s₁|²</div><div class="calc">r₁·r₂<sup>H</sup> = s₁s₂* + (−s₂*)(s₁*)* = s₁s₂* − s₂*s₁ = 0</div>所以 X X<sup>H</sup> = (|s₁|² + |s₂|²) I，<b>是正交 STBC</b>。它其实就是讲义 Alamouti 矩阵的转置（讲义把行当时隙，这里把列当时隙），本质一样。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iv) Alamouti 有分集增益。</b>每个符号在两个时隙里分别从两根天线各发一次，经过两条独立衰落的路径到达接收端；接收端利用正交结构做线性合并，得到的检测量里有 (|h₁|² + |h₂|²)，两条路径同时深衰落的概率很小。2 发 1 收时分集阶数为 2，2 发 M 收时为 2M，即<b>满分集</b> N × M。代价：它不需要发射端知道信道，但相比接收端 MRC 少了阵列增益（讲义 Ch5 p.30 "MRC has array gain over OSTBC &amp; Alamouti code"）。</div></div><div class="wans">(ii) 需 M ≥ N；最大复用增益 = 3　(iii) X X<sup>H</sup> = (|s₁|²+|s₂|²)I，是正交 STBC　(iv) 有，满分集 2M</div><div class="pq-note">注：原题 (iii) 把 "s₁ and s₂" 印成了 "s₁ and s₁"，按 s₁、s₂ 理解即可。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>空间复用与复用增益；Alamouti 码的正交性验证和分集（第 4 章 p.30–33；第 5 章 p.21–30）。</dd><dt>用到的知识</dt><dd>r<sub>max</sub> = min(N, M)，空间复用要 M ≥ N；OSTBC 的定义 X X<sup>H</sup> = ‖s‖²I；共轭转置 = 转置 + 每个元素取共轭。</dd><dt>解题套路</dt><dd>(iii) 逐行做内积：每行和自己的内积 = |s₁|² + |s₂|²，两行之间的内积必须为 0；(iv) 按"两条独立路径 → 合并后增益 |h₁|² + |h₂|² → 同时深衰落的概率小"三步答。</dd><dt>易错</dt><dd>算交叉项时第二行要取共轭；题目的矩阵是讲义 Alamouti 矩阵的转置，结论不变；2 发 M 收的分集阶数是 2M，不是 2。</dd><dt>联系</dt><dd>2025-26 S2 Q1(b)(iii) 接着问检测量的均值和方差（无偏，σ²/‖h‖²）；讲解页 5.4 节有逐项算 X X<sup>H</sup> 的推导框。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：空间复用、Alamouti 正交性与分集</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>多根天线的两种用法：分集 vs 复用</h4>
+<p>有 N 根发射天线、M 根接收天线（MIMO）时，可以有两种用法（讲义第 4 章 p.29–33）：</p>
+<ul><li><b>分集（diversity）</b>：把<b>同一个</b>信息经过多条独立路径送过去，换取可靠性（误码率随 SNR 下降得更快）。最大分集增益 d<sub>max</sub> = N × M。</li>
+<li><b>空间复用（spatial multiplexing）</b>：每根发射天线同时发<b>不同的</b>数据符号，速率变成 N 倍，但没有分集增益，衰落信道里误码性能可能较差。复用增益 r = lim R/log₂SNR，最大值 r<sub>max</sub> = min(N, M)。</li></ul>
+<p>为什么空间复用要 <b>M ≥ N</b>？接收端每根天线得到一个方程（N 个符号的线性组合加噪声），要解出 N 个未知符号，至少需要 N 个方程，所以接收天线数不能少于数据流数。这也解释了 r<sub>max</sub> = min(N, M)：天线少的那一端决定能同时开几条"并行管道"。</p>
+<h4><span class="st">知识讲解</span>正交空时分组码（OSTBC）和 Alamouti 码</h4>
+<p>空时分组码把 K 个符号排成矩阵 X：一个维度是天线，一个维度是时隙。讲义第 5 章 p.27 的定义：X 是正交的，当且仅当 <b>X X<sup>H</sup> = (|s₁|² + … + |s<sub>K</sub>|²) I</b>。X<sup>H</sup> 是共轭转置（先转置，再每个元素取共轭）。正交的好处：接收端只用简单的线性合并就能把 s₁、s₂ 完全分开，两者互不干扰，而且每个符号都拿到全部路径的能量。2 根天线的正交码就是 Alamouti 码（第 5 章 p.21–26）。</p>
+<h4><span class="st">详细解析</span>(ii) 空间复用</h4>
+<p>原理：N 个不同数据流同时从 N 根天线发出，速率提高 N 倍；接收端需要 M ≥ N 根天线才能解出 N 个流。</p>
+<div class="calc">N = 3，M = 5：r<sub>max</sub> = min(3, 5) = 3</div>
+<p>（同一系统的最大分集增益是 3 × 5 = 15，两者不能同时取到最大，这就是分集-复用折中。）</p>
+<h4><span class="st">详细解析</span>(iii) 逐项算 X X<sup>H</sup></h4>
+<ol><li>写出 X 和 X<sup>H</sup>：X = (s₁, −s₂* ; s₂, s₁*)，X<sup>H</sup> = (s₁*, s₂* ; −s₂, s₁)。</li>
+<li>(1,1) 元：s₁s₁* + (−s₂*)(−s₂) = |s₁|² + |s₂|²。</li>
+<li>(2,2) 元：s₂s₂* + s₁*s₁ = |s₂|² + |s₁|²。</li>
+<li>(1,2) 元：s₁s₂* + (−s₂*)(s₁) = s₁s₂* − s₁s₂* = 0；(2,1) 元是它的共轭，也是 0。</li></ol>
+<div class="calc">X X<sup>H</sup> = (|s₁|² + |s₂|²) I　→　是正交 STBC</div>
+<p>数字检验：取 s₁ = 1 + j，s₂ = 1 − j，|s₁|² + |s₂|² = 2 + 2 = 4，代入得 X X<sup>H</sup> = 4I，非对角元确实为 0。读矩阵：每一<b>行</b>是一根天线，每一<b>列</b>是一个时隙——时隙 1 两根天线发 s₁、s₂，时隙 2 发 −s₂*、s₁*。</p>
+<h4><span class="st">详细解析</span>(iv) Alamouti 有没有分集增益</h4>
+<p>有。以 2 发 1 收为例，信道增益 h₁、h₂ 独立：</p>
+<div class="calc">y₁ = h₁s₁ + h₂s₂ + w₁；　y₂ = −h₁s₂* + h₂s₁* + w₂</div>
+<div class="calc">h₁*y₁ + h₂y₂* = (|h₁|² + |h₂|²) s₁ + 噪声</div>
+<p>s₂ 被完全抵消（这就是正交性的作用），s₁ 的增益是 |h₁|² + |h₂|²：只有两条路径<b>同时</b>深衰落时检测才会出错，所以分集阶数是 2；有 M 根接收天线时是 2M，即满分集 N × M。它不需要发射端知道信道。</p>
+<p><span class="st">课外补充</span>（讲义只说 "MRC has array gain over OSTBC &amp; Alamouti code"，第 5 章 p.30）：总发射功率相同时，Alamouti 要把功率分给两根天线，所以和 1 发 2 收的 MRC 分集阶数相同，但 SNR 少约 3 dB。</p>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>算 (1,2) 元时第二行要<b>取共轭</b>：(−s₂*)·(s₁*)* = −s₂*s₁。</li>
+<li>题目矩阵是讲义写法的转置（讲义按行排时隙），结论一样，不用纠结。</li>
+<li>原题把 "s₁ and s₂" 印成 "s₁ and s₁"，按 s₁、s₂ 理解。</li>
+<li>2 发 M 收的分集阶数是 2M，不是 2。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(ii) In spatial multiplexing, N different data symbols are transmitted simultaneously from the N transmit antennas, so the data rate is N times higher, but there is no diversity gain. To separate and decode the N data streams, the receiver needs M ≥ N receive antennas. The maximum multiplexing gain is r<sub>max</sub> = min(N, M) = min(3, 5) = 3.</p>
+<p>(iii) X X<sup>H</sup> = (s₁, −s₂* ; s₂, s₁*)(s₁*, s₂* ; −s₂, s₁). The diagonal elements are |s₁|² + |s₂|². The off-diagonal element is s₁s₂* − s₂*s₁ = 0 (and its conjugate is 0). Hence X X<sup>H</sup> = (|s₁|² + |s₂|²)I, so X is an orthogonal space-time block code (it is the Alamouti code).</p>
+<p>(iv) Yes. Each symbol is transmitted from both antennas over two time slots and reaches the receiver through two independent fading paths. Because of the orthogonality, linear combining h₁*y₁ + h₂y₂* = (|h₁|² + |h₂|²)s₁ + noise removes s₂ completely. An error occurs only if both paths fade simultaneously, so the Alamouti code achieves full diversity of order 2 (2M with M receive antennas) without channel knowledge at the transmitter.</p></div>
+<div class="ans">一句话：空间复用要 M ≥ N，最大复用增益 min(3, 5) = 3；X X<sup>H</sup> 对角元 |s₁|² + |s₂|²、非对角元 0，所以正交；Alamouti 合并后增益 |h₁|² + |h₂|²，有满分集 2M。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2324s2-q1b2">→ 在「历年真题」页看整份 2023-24 S2 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2425s2-q1b2">
@@ -2137,7 +2496,40 @@ where s<sub>1</sub> and s<sub>1</sub> are the two transmitted symbols, and s<sub
 <span class="eq">C<sub>MIMO</sub> = B × log<sub>2</sub> det{I + (1/σ<sup>2</sup>) HPH<sup>H</sup>}</span>
 where B is the receiver bandwidth, I is the Identity matrix, σ<sup>2</sup> is the noise power, H and P are the channel matrix and transmit power matrix respectively, H<sup>H</sup> is the conjugate transpose of H, and det{X} is the determinant of the matrix X. Simplify the channel capacity expression if the MIMO system has an uninformed transmitter with a total transmit power of P. Hence determine the channel capacity per Hz of this system if N = M = 1, P = 1, σ<sup>2</sup> = 0.25, and the channel gain is 2.</p>
 <p class="marks">(12 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(ii) 最大分集增益</b> d<sub>max</sub> = N × M = 5 × 3 = <b>15</b>。<br><b>速率</b>：讲义 Ch4 p.32–33，P<sub>e</sub> ≈ SNR<sup>−d</sup>，R = r log₂ SNR。先由误码率和分集增益求 SNR：<div class="calc">10⁻³ = SNR⁻³ → SNR = 10</div><div class="calc">R = r log₂ SNR = 2 × log₂ 10 = 2 × 3.32 ≈ 6.64 bit/s/Hz</div>顺便检查：(r, d) = (2, 3) 正好在最优折中曲线上，d(2) = (5−2)(3−2) = 3。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(iii) 无信息发射机</b>：发射端不知道信道，就把总功率平均分给 N 根天线，P = (P/N) I（讲义 Ch5 p.37）：<div class="calc">C = B log₂ det{I + (P/(Nσ²)) HH<sup>H</sup>}</div>N = M = 1 时 H 就是标量 h，HH<sup>H</sup> = |h|² = 4：<div class="calc">C/B = log₂(1 + 1 × 4/0.25) = log₂ 17 ≈ 4.09 bit/s/Hz</div></div></div><div class="wans">(ii) d<sub>max</sub> = 15；R ≈ 6.64 bit/s/Hz　(iii) C/B = log₂17 ≈ 4.09 bit/s/Hz</div><div class="pq-note">注："channel gain is 2" 按幅度增益 h = 2 理解（|h|² = 4）。如果理解成功率增益 |h|² = 2，结果是 log₂ 9 ≈ 3.17。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>最大分集增益、分集-复用折中求速率、发射端不知道信道时的 MIMO 容量（第 4 章 p.28、p.32–33；第 5 章 p.37）。</dd><dt>用到的知识</dt><dd>d<sub>max</sub> = N × M；P<sub>e</sub> = SNR<sup>−d</sup>；R = r log₂SNR；C = B log₂det(I + (P/(Nσ²))HH<sup>H</sup>)。</dd><dt>解题套路</dt><dd>SNR = P<sub>e</sub><sup>−1/d</sup> = 10 → R = 2 log₂10；N = M = 1 时退化成 log₂(1 + P|h|²/σ²)。</dd><dt>易错</dt><dd>d<sub>max</sub> 是乘积 15，不是 min；|h|² = 4；P/(Nσ²) = 1/0.25 = 4，再乘 |h|² = 4 得 16。</dd><dt>自检</dt><dd>(r, d) = (2, 3) 正好在最优曲线 d(r) = (5 − r)(3 − r) 上。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(ii) 最大分集增益</b> d<sub>max</sub> = N × M = 5 × 3 = <b>15</b>。<br><b>速率</b>：讲义 Ch4 p.32–33，P<sub>e</sub> ≈ SNR<sup>−d</sup>，R = r log₂ SNR。先由误码率和分集增益求 SNR：<div class="calc">10⁻³ = SNR⁻³ → SNR = 10</div><div class="calc">R = r log₂ SNR = 2 × log₂ 10 = 2 × 3.32 ≈ 6.64 bit/s/Hz</div>顺便检查：(r, d) = (2, 3) 正好在最优折中曲线上，d(2) = (5−2)(3−2) = 3。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(iii) 无信息发射机</b>：发射端不知道信道，就把总功率平均分给 N 根天线，P = (P/N) I（讲义 Ch5 p.37）：<div class="calc">C = B log₂ det{I + (P/(Nσ²)) HH<sup>H</sup>}</div>N = M = 1 时 H 就是标量 h，HH<sup>H</sup> = |h|² = 4：<div class="calc">C/B = log₂(1 + 1 × 4/0.25) = log₂ 17 ≈ 4.09 bit/s/Hz</div></div></div><div class="wans">(ii) d<sub>max</sub> = 15；R ≈ 6.64 bit/s/Hz　(iii) C/B = log₂17 ≈ 4.09 bit/s/Hz</div><div class="pq-note">注："channel gain is 2" 按幅度增益 h = 2 理解（|h|² = 4）。如果理解成功率增益 |h|² = 2，结果是 log₂ 9 ≈ 3.17。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>最大分集增益、分集-复用折中求速率、发射端不知道信道时的 MIMO 容量（第 4 章 p.28、p.32–33；第 5 章 p.37）。</dd><dt>用到的知识</dt><dd>d<sub>max</sub> = N × M；P<sub>e</sub> = SNR<sup>−d</sup>；R = r log₂SNR；C = B log₂det(I + (P/(Nσ²))HH<sup>H</sup>)。</dd><dt>解题套路</dt><dd>SNR = P<sub>e</sub><sup>−1/d</sup> = 10 → R = 2 log₂10；N = M = 1 时退化成 log₂(1 + P|h|²/σ²)。</dd><dt>易错</dt><dd>d<sub>max</sub> 是乘积 15，不是 min；|h|² = 4；P/(Nσ²) = 1/0.25 = 4，再乘 |h|² = 4 得 16。</dd><dt>自检</dt><dd>(r, d) = (2, 3) 正好在最优曲线 d(r) = (5 − r)(3 − r) 上。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：分集-复用折中与无信息发射机 MIMO 容量</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>分集增益 d、复用增益 r 和它们的折中</h4>
+<p>讲义第 4 章 p.31–33 用两个"斜率"描述 MIMO：</p>
+<ul><li><b>分集增益 d</b>：高 SNR 时 P<sub>e</sub> ≈ SNR<sup>−d</sup>，即 SNR 每涨 10 倍，误码率降 10<sup>d</sup> 倍。最大 d<sub>max</sub> = N × M（N 发 M 收，所有路径都独立时）。</li>
+<li><b>复用增益 r</b>：高 SNR 时速率 R ≈ r log₂SNR，即 SNR 每翻倍，速率多 r bit/s/Hz。最大 r<sub>max</sub> = min(N, M)。</li>
+<li><b>折中（trade-off）</b>：两者不能同时取最大。最优折中曲线把点 (r, (N − r)(M − r))（r = 0, 1, …, min(N, M)）连成折线。老师课上点名：<b>d 和阵列增益的公式简单，要记住</b>。</li></ul>
+<h4><span class="st">知识讲解</span>无信息发射机（uninformed transmitter）的 MIMO 容量</h4>
+<p>"无信息"指发射端不知道信道 H。它没法把功率往好的方向集中，只能把总功率 P 平均分给 N 根天线：功率矩阵 P = (P/N)I（讲义第 5 章 p.37）。代入一般式，HPH<sup>H</sup> = (P/N)HH<sup>H</sup>：</p>
+<div class="calc">C = B log₂ det{I + (P/(Nσ²)) HH<sup>H</sup>}</div>
+<p>N = M = 1 时 H 就是一个数 h，det 就是这个数本身，退化成熟悉的香农公式 C = B log₂(1 + P|h|²/σ²)。</p>
+<h4><span class="st">详细解析</span>(ii) 最大分集增益和速率</h4>
+<ol><li><div class="calc">d<sub>max</sub> = N × M = 5 × 3 = 15</div></li>
+<li>由误码率和 d 求 SNR（为什么：速率公式需要 SNR）：<div class="calc">10⁻³ = SNR⁻³ → SNR = (10⁻³)<sup>−1/3</sup> = 10（10 dB）</div></li>
+<li>求速率：<div class="calc">R = r log₂SNR = 2 × log₂10 = 2 × 3.32 ≈ 6.64 bit/s/Hz</div>计算器：log₂10 = 1/0.301 = 3.32。</li>
+<li>自检：(r, d) = (2, 3) 在最优曲线上吗？d(2) = (5 − 2)(3 − 2) = 3 ✓；r = 2 也不超过 r<sub>max</sub> = 3。</li></ol>
+<p>物理含义：r = 2 相当于同时开 2 条并行数据流（速率随 log₂SNR 以 2 倍增长）；剩下的天线自由度换来 d = 3，误码率按 SNR⁻³ 下降。用满 15 的分集就只能 r = 0，用满 r = 3 的复用就 d = 0，这就是"折中"。解题顺序为什么是"先 d 求 SNR，再 r 求 R"：两个公式共用同一个 SNR，误码率要求把 SNR 定下来，速率随之确定。</p>
+<h4><span class="st">详细解析</span>(iii) 化简并代数</h4>
+<ol><li>化简：P = (P/N)I 代入，得 C = B log₂ det{I + (P/(Nσ²)) HH<sup>H</sup>}。</li>
+<li>N = M = 1，P = 1，σ² = 0.25，h = 2（幅度增益），|h|² = 4：<div class="calc">C/B = log₂(1 + 1 × 4/0.25) = log₂(1 + 16) = log₂17</div><div class="calc">log₂17 = log₁₀17/0.301 = 1.230/0.301 ≈ 4.09 bit/s/Hz</div></li></ol>
+<p>如果把 "channel gain is 2" 理解成功率增益 |h|² = 2，结果是 log₂9 ≈ 3.17。建议在答卷上写一句 "taking the channel gain as the amplitude gain h = 2, |h|² = 4"，把假设说清楚。</p>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>d<sub>max</sub> 是乘积 15，r<sub>max</sub> 才是 min(N, M) = 3，别弄反。</li>
+<li>P<sub>e</sub> = SNR<sup>−d</sup> 里的 SNR 是线性值；开 d 次方根。</li>
+<li>容量公式里要的是 |h|²，不是 h。</li>
+<li>"per Hz" 就是 C/B，单位 bit/s/Hz。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(ii) The maximum diversity gain is d<sub>max</sub> = N × M = 5 × 3 = 15. With diversity gain d = 3, P<sub>e</sub> ≈ SNR<sup>−d</sup> gives 10⁻³ = SNR⁻³, so SNR = 10. With multiplexing gain r = 2, the maximum rate is R = r log₂SNR = 2 log₂10 ≈ 6.64 bit/s/Hz. (Check: (r, d) = (2, 3) lies on the optimal trade-off curve, d(2) = (5 − 2)(3 − 2) = 3.)</p>
+<p>(iii) For an uninformed transmitter the channel is unknown at the transmitter, so equal power is allocated to every transmit antenna: P = (P/N)I. The capacity becomes C = B log₂ det{I + (P/(Nσ²)) HH<sup>H</sup>}. For N = M = 1, H = h and C/B = log₂(1 + P|h|²/σ²). Taking the channel gain as the amplitude gain h = 2 (|h|² = 4): C/B = log₂(1 + 1 × 4/0.25) = log₂17 ≈ 4.09 bit/s/Hz.</p></div>
+<div class="ans">一句话：d<sub>max</sub> = 5 × 3 = 15；SNR = (10⁻³)<sup>−1/3</sup> = 10，R = 2 log₂10 ≈ 6.64 bit/s/Hz；无信息发射机 P = (P/N)I，单天线时 C/B = log₂(1 + 16) ≈ 4.09 bit/s/Hz。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2425s2-q1b2">→ 在「历年真题」页看整份 2024-25 S2 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2526s1-q1b2">
@@ -2150,7 +2542,47 @@ where s is the transmitted symbol, h<sub>1</sub>, h<sub>2</sub> are the channel 
 <span class="eq">B log<sub>2</sub> det{I + (1/σ<sup>2</sup>)Λ}</span>
 where B is the bandwidth, det{•} is the Determinant of {•}, I is the Identity matrix, σ<sup>2</sup> is the noise variance, and Λ is a diagonal matrix whose diagonal elements are some eigenvalues. Simplify this expression further and use it to explain that the channel capacity of a MIMO system is equal to the sum of the channel capacities of a set of parallel channels.</p>
 <p class="marks">(13 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(ii) 为什么是 SIMO</b>：只有一个发送符号 s（一根发射天线），却有两个接收信号 y₁、y₂（两根接收天线），各经过不同的信道增益 h₁、h₂ 和独立噪声，所以是单输入多输出（1 × 2）。<br><b>怎么得到分集</b>：同一个 s 经过两条（若天线间距足够则）独立衰落的路径到达。h₁ 深衰落时 h₂ 大概率不衰落，两条同时深衰落的概率是各自概率的乘积，小得多。接收端把两路合并，例如 MRC：z = h₁*y₁ + h₂*y₂ = (|h₁|² + |h₂|²)s + 噪声，有效增益是两路之和，分集阶数为 2。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(iii)</b> Λ 是对角阵 diag(λ₁, …, λ<sub>K</sub>)，所以 I + Λ/σ² 也是对角阵，行列式就是对角元素的乘积：<div class="calc">det{I + Λ/σ²} = Π<sub>i</sub>(1 + λ<sub>i</sub>/σ²)</div>对数把乘积变成求和：<div class="calc">C = B log₂ Π(1 + λ<sub>i</sub>/σ²) = Σ<sub>i=1</sub><sup>K</sup> B log₂(1 + λ<sub>i</sub>/σ²)</div>每一项正是一个 SNR 为 λ<sub>i</sub>/σ² 的 SISO 信道的香农容量。所以 MIMO 信道（经 SVD 分解后）等价于 K = rank(H) ≤ min(N, M) 个互不干扰的并行子信道，总容量是它们之和；这也是 MIMO 容量随 min(N, M) 线性增长的原因。</div></div><div class="wans">(ii) 1 发 2 收；两条独立衰落路径合并 → 分集阶数 2　(iii) C = Σ B log₂(1 + λ<sub>i</sub>/σ²)</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>SIMO 怎么得到分集；MIMO 容量化成并行信道之和（第 5 章 p.12–15、p.33–35）。</dd><dt>答题要点 (ii)</dt><dd>一个发送符号、两个接收信号 → SIMO（1 × 2）；两根天线相距足够远 → 独立衰落；MRC 合并后增益 |h₁|² + |h₂|²，同时深衰落的概率很小 → 分集阶数 2。</dd><dt>推导要点 (iii)</dt><dd>对角矩阵的行列式 = 对角元素之积；log 把积变成和；每一项是一个 SNR 为 λ<sub>i</sub>/σ² 的 SISO 香农容量。</dd><dt>易错</dt><dd>要写出"独立"的前提（天线间距足够）；并行子信道个数 K = rank(H) ≤ min(N, M)。</dd><dt>联系</dt><dd>讲解页 5.2 节有 MRC 的柯西-施瓦茨推导，5.5 节有容量化简的推导框。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(ii) 为什么是 SIMO</b>：只有一个发送符号 s（一根发射天线），却有两个接收信号 y₁、y₂（两根接收天线），各经过不同的信道增益 h₁、h₂ 和独立噪声，所以是单输入多输出（1 × 2）。<br><b>怎么得到分集</b>：同一个 s 经过两条（若天线间距足够则）独立衰落的路径到达。h₁ 深衰落时 h₂ 大概率不衰落，两条同时深衰落的概率是各自概率的乘积，小得多。接收端把两路合并，例如 MRC：z = h₁*y₁ + h₂*y₂ = (|h₁|² + |h₂|²)s + 噪声，有效增益是两路之和，分集阶数为 2。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(iii)</b> Λ 是对角阵 diag(λ₁, …, λ<sub>K</sub>)，所以 I + Λ/σ² 也是对角阵，行列式就是对角元素的乘积：<div class="calc">det{I + Λ/σ²} = Π<sub>i</sub>(1 + λ<sub>i</sub>/σ²)</div>对数把乘积变成求和：<div class="calc">C = B log₂ Π(1 + λ<sub>i</sub>/σ²) = Σ<sub>i=1</sub><sup>K</sup> B log₂(1 + λ<sub>i</sub>/σ²)</div>每一项正是一个 SNR 为 λ<sub>i</sub>/σ² 的 SISO 信道的香农容量。所以 MIMO 信道（经 SVD 分解后）等价于 K = rank(H) ≤ min(N, M) 个互不干扰的并行子信道，总容量是它们之和；这也是 MIMO 容量随 min(N, M) 线性增长的原因。</div></div><div class="wans">(ii) 1 发 2 收；两条独立衰落路径合并 → 分集阶数 2　(iii) C = Σ B log₂(1 + λ<sub>i</sub>/σ²)</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>SIMO 怎么得到分集；MIMO 容量化成并行信道之和（第 5 章 p.12–15、p.33–35）。</dd><dt>答题要点 (ii)</dt><dd>一个发送符号、两个接收信号 → SIMO（1 × 2）；两根天线相距足够远 → 独立衰落；MRC 合并后增益 |h₁|² + |h₂|²，同时深衰落的概率很小 → 分集阶数 2。</dd><dt>推导要点 (iii)</dt><dd>对角矩阵的行列式 = 对角元素之积；log 把积变成和；每一项是一个 SNR 为 λ<sub>i</sub>/σ² 的 SISO 香农容量。</dd><dt>易错</dt><dd>要写出"独立"的前提（天线间距足够）；并行子信道个数 K = rank(H) ≤ min(N, M)。</dd><dt>联系</dt><dd>讲解页 5.2 节有 MRC 的柯西-施瓦茨推导，5.5 节有容量化简的推导框。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：SIMO 分集与 MIMO 并行信道</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>MIMO 的输入输出关系和 SIMO</h4>
+<p>平坦衰落下，N 根发射天线、M 根接收天线的 MIMO 信道写成 y<sub>m</sub> = Σ<sub>n</sub> h<sub>m,n</sub>x<sub>n</sub> + v<sub>m</sub>，矩阵形式 y = Hx + v（第 5 章 p.5–6）。"输入"指发送信号的个数，"输出"指接收信号的个数。<b>SIMO</b>（Single-Input Multiple-Output）就是 N = 1、M ≥ 2：一个发送符号，多个接收信号（p.11–12）。</p>
+<p><b>SIMO 怎么得到分集</b>（p.13–14）：接收端做线性合并 x̂ = w₁*y₁ + w₂*y₂，选 w = αh 使输出 SNR 最大，得到 SNR<sub>max</sub> = E{|x|²}(|h₁|² + |h₂|²)/σ²。它和 |h₁|² + |h₂|² 成正比：即使 h₁ 很小，只要 h₂ 大，仍能正确检测。若 h₁、h₂ 统计独立，两者同时很小的概率远小于其中一个很小的概率，这就是接收分集。这个接收机就是第 4 章的 MRC，老师建议两章一起学。</p>
+<h4><span class="st">知识讲解</span>MIMO 容量为什么是并行信道之和</h4>
+<p>容量公式 C = B log₂det(I + HPH<sup>H</sup>/σ²)（p.32–35）。对 HPH<sup>H</sup> 做特征分解 UΛU<sup>H</sup>，再用 det(I + AB) = det(I + BA) 和 U<sup>H</sup>U = I，就化成题目给的 B log₂det{I + Λ/σ²}（考试会给前面这部分，让你推剩下的）。Λ 是对角阵，对角元素是特征值 λ<sub>i</sub>，非零的个数 r = rank(H) ≤ min(N, M)。老师强调：容量是 r 条子信道之和，<b>r 是秩，不是 N × M</b>。</p>
+<h4><span class="st">详细解析</span>(ii) 要点展开</h4>
+<ol>
+<li><b>为什么是 SIMO</b>：方程里只有一个发送符号 s（单输入），却有两个接收信号 y₁、y₂（多输出），所以是 1 × 2 的 SIMO，即一根发射天线、两根接收天线。</li>
+<li><b>两条支路各自独立</b>：y₁、y₂ 带的是同一个 s，但经过不同的信道增益 h₁、h₂，噪声 v₁、v₂ 也互不相关。只要两根接收天线间距足够大，h₁ 和 h₂ 就是独立衰落的。</li>
+<li><b>合并</b>：用 MRC，z = h₁*y₁ + h₂*y₂ = (|h₁|² + |h₂|²)s + h₁*v₁ + h₂*v₂，输出 SNR 与 |h₁|² + |h₂|² 成正比。</li>
+<li><b>为什么能抗衰落</b>：设每一路深衰落的概率是 p，两路同时深衰落的概率是 p²。例如 p = 0.1 时只有 0.01，链路可靠性大大提高，分集阶数为 2。</li>
+</ol>
+<h4><span class="st">详细解析</span>(iii) 化简步骤</h4>
+<ol>
+<li>Λ = diag(λ₁, …, λ<sub>r</sub>)，所以 I + Λ/σ² 也是对角阵，对角元素是 1 + λ<sub>i</sub>/σ²。</li>
+<li>对角阵的行列式 = 对角元素之积：det{I + Λ/σ²} = Π(1 + λ<sub>i</sub>/σ²)。</li>
+<li>对数把乘积变成求和：log₂Π(…) = Σlog₂(…)。</li>
+<li>每一项 B log₂(1 + λ<sub>i</sub>/σ²) 正是一条 SNR 为 λ<sub>i</sub>/σ² 的单发单收信道的香农容量。</li>
+</ol>
+<div class="calc">C = B log₂ Π<sub>i=1</sub><sup>r</sup>(1 + λ<sub>i</sub>/σ²) = Σ<sub>i=1</sub><sup>r</sup> B log₂(1 + λ<sub>i</sub>/σ²)</div>
+<p><b>数字小例子</b>：两条特征子信道 λ₁/σ² = 3、λ₂/σ² = 1。det = (1 + 3)(1 + 1) = 8，log₂8 = 3 bit/s/Hz；分开算 log₂4 + log₂2 = 2 + 1 = 3 bit/s/Hz，两者相等。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>(ii) 只说"有两根天线"，没写"同一个符号、独立衰落、合并后同时深衰落概率小"这条逻辑链。</li>
+<li>忘了独立衰落的前提（天线间距足够大）。</li>
+<li>(iii) 子信道个数写成 N × M；应是 r = rank(H) ≤ min(N, M)。</li>
+<li>只写结论，不写"对角阵行列式 = 对角元素之积"这一步。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(ii) There is only one transmitted symbol s (single input) but two received signals y₁ and y₂ (multiple outputs), each through its own channel gain h₁, h₂ and independent noise v₁, v₂. Hence it is a 1 × 2 SIMO system with one transmit antenna and two receive antennas.</p>
+<p>The same symbol s reaches the receiver through two different paths. If the receive antennas are sufficiently separated, h₁ and h₂ fade independently, so the probability that both are in a deep fade at the same time is much smaller than that of a single path. The receiver combines the two signals, e.g. by MRC: z = h₁*y₁ + h₂*y₂ = (|h₁|² + |h₂|²)s + h₁*v₁ + h₂*v₂. The output SNR is proportional to |h₁|² + |h₂|², so s can still be detected reliably when one gain is small as long as the other is large. This gives a diversity order of 2.</p>
+<p>(iii) Since Λ = diag(λ₁, …, λ<sub>r</sub>) is diagonal, I + Λ/σ² is diagonal and its determinant is the product of its diagonal elements:</p>
+<p>C = B log₂ Π<sub>i=1</sub><sup>r</sup>(1 + λ<sub>i</sub>/σ²) = Σ<sub>i=1</sub><sup>r</sup> B log₂(1 + λ<sub>i</sub>/σ²).</p>
+<p>Each term is the Shannon capacity of a SISO channel with SNR λ<sub>i</sub>/σ². Therefore the MIMO channel is equivalent to r = rank(H) ≤ min(N, M) independent parallel sub-channels, and its capacity is the sum of their capacities.</p></div>
+<div class="ans">一句话：一发两收、独立衰落、合并后同时深衰落的概率很小，就是 SIMO 分集；对角阵行列式是乘积，取 log 变成求和，就是 MIMO = r 条并行信道。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s1-q1b2">→ 在「历年真题」页看整份 2025-26 S1 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2526s2-q1b2">
@@ -2163,7 +2595,50 @@ where s is the transmitted signal vector, h is the channel gain vector, G is a s
 <span class="eq">σ<sup>2</sup>‖h‖<sup>2</sup> (1 ; 1)</span>
 Derive the expected value and variance of the detected signal.</p>
 <p class="marks">(13 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(ii) 为什么每条信道只有一个增益</b>：平坦衰落意味着信号带宽小于相干带宽（时延扩展远小于符号时长），每对发收天线之间的多径在一个符号内叠加成<b>一个复数增益 h<sub>ij</sub></b>，没有可分辨的多个抽头，也就没有 ISI。<br><b>输入输出关系</b>：<div class="calc">y = Hx + v，y、v 为 6×1，x 为 4×1，H 为 6×4</div><div class="calc">H = [h<sub>ij</sub>]，i = 1…6（行，接收天线），j = 1…4（列，发射天线）</div>逐个写：y<sub>i</sub> = Σ<sub>j=1</sub><sup>4</sup> h<sub>ij</sub>x<sub>j</sub> + v<sub>i</sub>，每根接收天线收到 4 根发射天线信号的加权和。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(iii) 均值</b>：s 是确定的发送信号，噪声零均值：<div class="calc">E[ŝ] = s + (1/‖h‖²)·G·E[w] = s</div>检测是<b>无偏</b>的。<br><b>方差</b>：常数 s 不贡献方差；随机项乘了常数 1/‖h‖²，方差乘 1/‖h‖⁴：<div class="calc">Var[ŝ] = (1/‖h‖⁴)·σ²‖h‖²·(1, 1)<sup>T</sup> = (σ²/‖h‖²)·(1, 1)<sup>T</sup></div>两个符号的噪声方差都是 σ²/‖h‖² = σ²/(|h₁|² + |h₂|²)：两条路径的增益相加，噪声就被压低，这就是 Alamouti 的分集作用。</div></div><div class="wans">(ii) y = Hx + v，H 为 6×4 的 [h<sub>ij</sub>]　(iii) E[ŝ] = s；Var = σ²/‖h‖²（每个分量）</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>平坦衰落 MIMO 的 y = Hx + v；Alamouti 检测量的均值和方差（第 5 章 p.5–6、p.23–25）。</dd><dt>用到的知识</dt><dd>H 是 M×N（行 = 接收天线，列 = 发射天线）；E[常数 + 零均值噪声] = 常数；Var(cX) = c²Var(X)。</dd><dt>解题套路</dt><dd>(ii) 先说明平坦 → 每对天线一个复增益，再写矩阵和逐元素式；(iii) 均值看噪声零均值 → 无偏，方差看系数平方。</dd><dt>易错</dt><dd>4 发 6 收的 H 是 6×4，不是 4×6；方差要乘 1/‖h‖⁴（系数平方），乘上噪声方差 σ²‖h‖² 后得 σ²/‖h‖²。</dd><dt>联系</dt><dd>讲解页 5.4 节有 Alamouti ML 检测和噪声协方差的推导框。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(ii) 为什么每条信道只有一个增益</b>：平坦衰落意味着信号带宽小于相干带宽（时延扩展远小于符号时长），每对发收天线之间的多径在一个符号内叠加成<b>一个复数增益 h<sub>ij</sub></b>，没有可分辨的多个抽头，也就没有 ISI。<br><b>输入输出关系</b>：<div class="calc">y = Hx + v，y、v 为 6×1，x 为 4×1，H 为 6×4</div><div class="calc">H = [h<sub>ij</sub>]，i = 1…6（行，接收天线），j = 1…4（列，发射天线）</div>逐个写：y<sub>i</sub> = Σ<sub>j=1</sub><sup>4</sup> h<sub>ij</sub>x<sub>j</sub> + v<sub>i</sub>，每根接收天线收到 4 根发射天线信号的加权和。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(iii) 均值</b>：s 是确定的发送信号，噪声零均值：<div class="calc">E[ŝ] = s + (1/‖h‖²)·G·E[w] = s</div>检测是<b>无偏</b>的。<br><b>方差</b>：常数 s 不贡献方差；随机项乘了常数 1/‖h‖²，方差乘 1/‖h‖⁴：<div class="calc">Var[ŝ] = (1/‖h‖⁴)·σ²‖h‖²·(1, 1)<sup>T</sup> = (σ²/‖h‖²)·(1, 1)<sup>T</sup></div>两个符号的噪声方差都是 σ²/‖h‖² = σ²/(|h₁|² + |h₂|²)：两条路径的增益相加，噪声就被压低，这就是 Alamouti 的分集作用。</div></div><div class="wans">(ii) y = Hx + v，H 为 6×4 的 [h<sub>ij</sub>]　(iii) E[ŝ] = s；Var = σ²/‖h‖²（每个分量）</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>平坦衰落 MIMO 的 y = Hx + v；Alamouti 检测量的均值和方差（第 5 章 p.5–6、p.23–25）。</dd><dt>用到的知识</dt><dd>H 是 M×N（行 = 接收天线，列 = 发射天线）；E[常数 + 零均值噪声] = 常数；Var(cX) = c²Var(X)。</dd><dt>解题套路</dt><dd>(ii) 先说明平坦 → 每对天线一个复增益，再写矩阵和逐元素式；(iii) 均值看噪声零均值 → 无偏，方差看系数平方。</dd><dt>易错</dt><dd>4 发 6 收的 H 是 6×4，不是 4×6；方差要乘 1/‖h‖⁴（系数平方），乘上噪声方差 σ²‖h‖² 后得 σ²/‖h‖²。</dd><dt>联系</dt><dd>讲解页 5.4 节有 Alamouti ML 检测和噪声协方差的推导框。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：MIMO 模型与 Alamouti</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>平坦衰落下每条信道为什么只有一个增益</h4>
+<p>第 5 章 p.4 列出了几种信道：<b>平坦、时不变</b>衰落时 y(t) = h × x(t)，信道只是一个复数系数；<b>频率选择性</b>衰落时 y(t) = ∫h(t − τ)x(τ)dτ，是卷积。平坦衰落意味着信号带宽小于相干带宽（时延扩展远小于符号时长），各条多径到达的时间差可以忽略，它们在一个符号内叠加成<b>一个复数增益</b>（幅度 + 相位），没有可以分辨的多个抽头，也就没有 ISI。所以每一对"发射天线 j → 接收天线 i"之间只需要一个数 h<sub>ij</sub>。</p>
+<h4><span class="st">知识讲解</span>MIMO 的输入输出关系</h4>
+<p>讲义 p.5–6：每根接收天线收到的是所有发射天线信号的加权和，再加上自己的噪声：y<sub>i</sub> = Σ<sub>j</sub> h<sub>ij</sub>x<sub>j</sub> + v<sub>i</sub>。把它们排成列向量就是 y = Hx + v。H 的<b>行对应接收天线、列对应发射天线</b>。老师说这个关系要能直接写出来，单个元素的式子和矩阵形式都要会。</p>
+<h4><span class="st">知识讲解</span>Alamouti 检测量的分布</h4>
+<p>Alamouti 码（2 发 1 收，编码矩阵是蓝框、要背）经过重新排列后得到 ỹ = Fs + ṽ，F 满足 F<sup>H</sup>F = ‖h‖²I（p.23）。ML 检测的结果是 ŝ = (1/‖h‖²)F<sup>H</sup>ỹ = s + (1/‖h‖²)F<sup>H</sup>ṽ（p.25），题目里的 G 就是 F<sup>H</sup>。讲义的结论是 ŝ ~ N(s, (σ²/‖h‖²)·1)，本题就是要你推出这个结论。要用的两条性质（第 1b 章）：E[a + cX] = a + cE[X]；Var[a + cX] = c²Var[X]（常数 a 不贡献方差，系数要平方）。</p>
+<h4><span class="st">详细解析</span>(ii) 4 发 6 收</h4>
+<ol>
+<li>平坦衰落 → 每对天线一个复数增益 h<sub>ij</sub>，共 6 × 4 = 24 个。</li>
+<li>尺寸：x 是 4×1（4 根发射天线），y、v 是 6×1（6 根接收天线），所以 H 是 <b>6×4</b>。</li>
+<li>写出矩阵：
+<div class="calc">y = Hx + v<br>H = [h<sub>11</sub> h<sub>12</sub> h<sub>13</sub> h<sub>14</sub>; h<sub>21</sub> h<sub>22</sub> h<sub>23</sub> h<sub>24</sub>; … ; h<sub>61</sub> h<sub>62</sub> h<sub>63</sub> h<sub>64</sub>]（6 行 4 列）<br>y<sub>i</sub> = Σ<sub>j=1</sub><sup>4</sup> h<sub>ij</sub>x<sub>j</sub> + v<sub>i</sub>，i = 1, …, 6</div></li>
+</ol>
+<p>检查方法：矩阵乘法 (6×4)(4×1) = 6×1，和 y 的尺寸一致。</p>
+<h4><span class="st">详细解析</span>(iii) 均值和方差</h4>
+<ol>
+<li><b>均值</b>：s 是发送的确定信号；h、G 对检测来说是已知常数；w 零均值：
+<div class="calc">E[ŝ] = s + (1/‖h‖²)·G·E[w] = s + 0 = s</div>
+检测是<b>无偏</b>的（unbiased），平均来说正好等于发送的符号。</li>
+<li><b>方差</b>：s 是常数，不贡献方差；随机部分是 (1/‖h‖²)Gw，系数 1/‖h‖² 平方后是 1/‖h‖⁴：
+<div class="calc">Var[ŝ] = (1/‖h‖⁴)·Var[Gw] = (1/‖h‖⁴)·σ²‖h‖²·(1, 1)<sup>T</sup> = (σ²/‖h‖²)·(1, 1)<sup>T</sup></div></li>
+<li><b>含义</b>：两个符号的噪声方差都是 σ²/‖h‖² = σ²/(|h₁|² + |h₂|²)，所以 ŝ ~ N(s, σ²/‖h‖²)。两条路径的功率增益相加，噪声被压低：只要 h₁、h₂ 不同时很小，检测就可靠，这就是 Alamouti 的发射分集（分集阶数 2）。对应的每个符号的 SNR = E{|s<sub>n</sub>|²}‖h‖²/σ²（p.26）。</li>
+</ol>
+<p><b>数字小例子</b>：|h₁|² = 0.5、|h₂|² = 1.5 → ‖h‖² = 2，噪声方差变成 σ²/2，比只有一条增益为 1 的路径好一倍。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>H 写成 4×6：行数 = 接收天线数 = 6。</li>
+<li>(ii) 只写 y = Hx + v，没解释"为什么只有一个增益"（平坦 → 无可分辨多径 → 一个复系数）。</li>
+<li>(iii) 方差只乘 1/‖h‖²（没平方），得到 σ²，结论就错了。</li>
+<li>漏写"零均值 → 无偏"的理由，只写一个结果（老师说只写数不写理由只给一半分）。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(ii) In a flat fading channel the signal bandwidth is smaller than the coherence bandwidth (the delay spread is much smaller than the symbol duration), so the multipath components between each transmit–receive antenna pair cannot be resolved and add up to a single complex gain. There is no ISI, and each channel is described by one gain h<sub>ij</sub>.</p>
+<p>The input-output relationship is y = Hx + v, where x is the 4 × 1 transmitted vector, y and v are 6 × 1 received and noise vectors, and H is the 6 × 4 channel matrix H = [h<sub>ij</sub>], i = 1, …, 6 (receive antennas, rows), j = 1, …, 4 (transmit antennas, columns). Element by element: y<sub>i</sub> = Σ<sub>j=1</sub><sup>4</sup> h<sub>ij</sub>x<sub>j</sub> + v<sub>i</sub>.</p>
+<p>(iii) Since s is deterministic and w has zero mean, E[ŝ] = s + (1/‖h‖²)G E[w] = s, i.e. the detection is unbiased.</p>
+<p>The constant s does not contribute to the variance, and the scalar 1/‖h‖² is squared: Var[ŝ] = (1/‖h‖⁴)Var[Gw] = (1/‖h‖⁴)σ²‖h‖²(1, 1)<sup>T</sup> = (σ²/‖h‖²)(1, 1)<sup>T</sup>.</p>
+<p>Hence each detected symbol is Gaussian with mean s<sub>n</sub> and variance σ²/‖h‖² = σ²/(|h₁|² + |h₂|²): the gains of the two paths add up and reduce the effective noise, which gives diversity.</p></div>
+<div class="ans">一句话：平坦衰落每对天线一个复增益，y = Hx + v，H 是 6×4；Alamouti 检测量均值为 s（无偏），方差 σ²/‖h‖²（系数平方后乘噪声方差）。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s2-q1b2">→ 在「历年真题」页看整份 2025-26 S2 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->
@@ -2364,7 +2839,42 @@ where m[k] is the k<sup>th</sup> transmitted symbol which is assumed to be equal
 <p>(iii) The received signal is processed by a linear filter which has a Z-transform of C(Z) = 1 − 0.6Z<sup>−2</sup>. The output of the filter is used as the decision variable for detecting m[i]. Derive the decision rule.</p>
 <p>(iv) Using the decision rule, determine the average probability of bit error of this system.</p>
 <p class="marks">(13 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 把求和展开：r[i] = h[1]m[i] + h[2]m[i−1] + h[3]m[i−2] + w[i]。第 i 个采样里除了想要的 m[i]，还混进了前两个符号 m[i−1]、m[i−2]，这就是符号间干扰（ISI）。只要 h[2]、h[3] 不全为 0 就存在 ISI。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 按这个求和式，H(Z) = h[1] + h[2]Z⁻¹ + h[3]Z⁻²（h[n] 对应 Z<sup>−(n−1)</sup>）。对照 1 + 0.6Z⁻²：<div class="calc">h[1] = 1，h[3] = 0.6（h[2] = 0）</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii) 滤波后的信号。</b>总响应 C(Z)H(Z) = (1 − 0.6Z⁻²)(1 + 0.6Z⁻²) = 1 − 0.36Z⁻⁴。噪声也经过滤波：w′[i] = w[i] − 0.6w[i−2]。所以<div class="calc">y[i] = m[i] − 0.36 m[i−4] + w′[i]</div>ISI 没有完全消掉，但从 0.6 降到了 0.36，而且被推到 4 个符号之外。m[i] 等概取 ±1，判决规则取符号：<div class="calc">m̂[i] = +1，若 y[i] ≥ 0；m̂[i] = −1，若 y[i] &lt; 0</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iv) 误码率。</b>先算滤波后的噪声方差：<div class="calc">σ′² = 0.3 × (1² + 0.6²) = 0.3 × 1.36 = 0.408，σ′ = 0.639</div>设发 m[i] = +1，残余干扰 −0.36m[i−4] 等概为 −0.36 或 +0.36，有用信号到判决门限（0）的距离分别是 0.64 和 1.36：<div class="calc">P<sub>b</sub> = ½Q(0.64/0.639) + ½Q(1.36/0.639) = ½Q(1.00) + ½Q(2.13)</div><div class="calc">= ½(0.158) + ½(0.0166) ≈ 0.087</div>发 −1 时由对称性结果相同。</div></div><div class="wans">(ii) h[1] = 1，h[3] = 0.6　(iii) y[i] = m[i] − 0.36m[i−4] + w′[i]，按符号判决　(iv) P<sub>b</sub> ≈ 0.087</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>ISI 离散模型、由 H(Z) 读抽头、线性均衡后的残余 ISI 和误码率（第 6 章 p.12、p.22–28）。</dd><dt>用到的知识</dt><dd>Z<sup>−k</sup> = 晚 k 个符号；滤波器串联 = 多项式相乘；输出噪声方差 σ²Σc²；P<sub>e</sub> = ½[Q((1 − a)/σ′) + Q((1 + a)/σ′)]。</dd><dt>解题套路</dt><dd>① 展开求和，指出 ISI 项；② 对照 Z 的次数读出 h；③ 求 C(Z)H(Z) 得残余 ISI，噪声只乘 C(Z)；④ 先算 σ′，再分两种 ISI 情况平均。</dd><dt>易错</dt><dd>h[2] = 0（没有 Z⁻¹ 项）；σ′² = 0.3 × 1.36，不是 0.3；残余 ISI 0.36 落在 4 个符号以外，算误码率只看它的大小，不看位置。</dd><dt>举一反三</dt><dd>改用理想迫零 1/(1 + 0.6Z⁻²)：没有 ISI，噪声方差 0.3/(1 − 0.36) = 0.469，P<sub>e</sub> = Q(1/0.685) = Q(1.46) ≈ 0.072，比 0.087 好。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 把求和展开：r[i] = h[1]m[i] + h[2]m[i−1] + h[3]m[i−2] + w[i]。第 i 个采样里除了想要的 m[i]，还混进了前两个符号 m[i−1]、m[i−2]，这就是符号间干扰（ISI）。只要 h[2]、h[3] 不全为 0 就存在 ISI。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 按这个求和式，H(Z) = h[1] + h[2]Z⁻¹ + h[3]Z⁻²（h[n] 对应 Z<sup>−(n−1)</sup>）。对照 1 + 0.6Z⁻²：<div class="calc">h[1] = 1，h[3] = 0.6（h[2] = 0）</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii) 滤波后的信号。</b>总响应 C(Z)H(Z) = (1 − 0.6Z⁻²)(1 + 0.6Z⁻²) = 1 − 0.36Z⁻⁴。噪声也经过滤波：w′[i] = w[i] − 0.6w[i−2]。所以<div class="calc">y[i] = m[i] − 0.36 m[i−4] + w′[i]</div>ISI 没有完全消掉，但从 0.6 降到了 0.36，而且被推到 4 个符号之外。m[i] 等概取 ±1，判决规则取符号：<div class="calc">m̂[i] = +1，若 y[i] ≥ 0；m̂[i] = −1，若 y[i] &lt; 0</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iv) 误码率。</b>先算滤波后的噪声方差：<div class="calc">σ′² = 0.3 × (1² + 0.6²) = 0.3 × 1.36 = 0.408，σ′ = 0.639</div>设发 m[i] = +1，残余干扰 −0.36m[i−4] 等概为 −0.36 或 +0.36，有用信号到判决门限（0）的距离分别是 0.64 和 1.36：<div class="calc">P<sub>b</sub> = ½Q(0.64/0.639) + ½Q(1.36/0.639) = ½Q(1.00) + ½Q(2.13)</div><div class="calc">= ½(0.158) + ½(0.0166) ≈ 0.087</div>发 −1 时由对称性结果相同。</div></div><div class="wans">(ii) h[1] = 1，h[3] = 0.6　(iii) y[i] = m[i] − 0.36m[i−4] + w′[i]，按符号判决　(iv) P<sub>b</sub> ≈ 0.087</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>ISI 离散模型、由 H(Z) 读抽头、线性均衡后的残余 ISI 和误码率（第 6 章 p.12、p.22–28）。</dd><dt>用到的知识</dt><dd>Z<sup>−k</sup> = 晚 k 个符号；滤波器串联 = 多项式相乘；输出噪声方差 σ²Σc²；P<sub>e</sub> = ½[Q((1 − a)/σ′) + Q((1 + a)/σ′)]。</dd><dt>解题套路</dt><dd>① 展开求和，指出 ISI 项；② 对照 Z 的次数读出 h；③ 求 C(Z)H(Z) 得残余 ISI，噪声只乘 C(Z)；④ 先算 σ′，再分两种 ISI 情况平均。</dd><dt>易错</dt><dd>h[2] = 0（没有 Z⁻¹ 项）；σ′² = 0.3 × 1.36，不是 0.3；残余 ISI 0.36 落在 4 个符号以外，算误码率只看它的大小，不看位置。</dd><dt>举一反三</dt><dd>改用理想迫零 1/(1 + 0.6Z⁻²)：没有 ISI，噪声方差 0.3/(1 − 0.36) = 0.469，P<sub>e</sub> = Q(1/0.685) = Q(1.46) ≈ 0.072，比 0.087 好。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：ISI 离散模型、线性滤波与残余 ISI 误码率</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>ISI 的离散模型和 Z 变换</h4>
+<p>符号间干扰（ISI）：多径让每个符号"拖尾巴"，后面的采样里混进前面的符号（讲义第 6 章 p.4–5、p.12）。离散模型 r[i] = Σ h[n] m[i − n + 1] + w[i] 就是一个线性滤波器：h[1] 乘当前符号，h[2] 乘前一个，h[3] 乘前两个。</p>
+<ul><li><b>Z 变换</b>：Z⁻¹ 表示"晚一个符号"。H(Z) = h[1] + h[2]Z⁻¹ + h[3]Z⁻²，系数就是冲激响应的抽头值。</li>
+<li><b>两个滤波器串联</b>：Z 变换相乘，C(Z)H(Z) 就是"信道 + 均衡器"的总响应。</li>
+<li><b>白噪声经过滤波器</b>：各采样独立，所以输出噪声方差 = σ² × Σc<sub>k</sub>²（只经过 C(Z)，不经过 H(Z)）。</li>
+<li><b>判决规则</b>：m 等概取 ±1，干扰和噪声都关于 0 对称，所以 f(y | +1) 和 f(y | −1) 关于 y = 0 镜像；ML 规则"选似然大的那个"就变成以 0 为门限取符号。</li></ul>
+<h4><span class="st">详细解析</span>(i)(ii) 读出 ISI 和抽头</h4>
+<ol><li>展开求和：r[i] = h[1]m[i] + h[2]m[i−1] + h[3]m[i−2] + w[i]。除了要的 m[i]，还有前两个符号 → ISI 存在（只要 h[2]、h[3] 不全为 0）。</li>
+<li>H(Z) = 1 + 0.6Z⁻² 和 h[1] + h[2]Z⁻¹ + h[3]Z⁻² 逐项对比：<div class="calc">h[1] = 1，h[2] = 0，h[3] = 0.6</div>非零的只有 h[1] 和 h[3]。</li></ol>
+<h4><span class="st">详细解析</span>(iii) 推判决规则</h4>
+<ol><li>总响应（为什么：先看滤波后还剩多少 ISI）：<div class="calc">C(Z)H(Z) = (1 − 0.6Z⁻²)(1 + 0.6Z⁻²) = 1 − 0.36Z⁻⁴</div>平方差公式，Z⁻² 项抵消。</li>
+<li>噪声只经过 C(Z)：w′[i] = w[i] − 0.6w[i−2]。</li>
+<li>判决变量：<div class="calc">y[i] = m[i] − 0.36m[i−4] + w′[i]</div>ISI 从 0.6 降到 0.36，并被推到 4 个符号之外。</li>
+<li>判决：y[i] ≥ 0 判 m̂[i] = +1，y[i] &lt; 0 判 −1。</li></ol>
+<h4><span class="st">详细解析</span>(iv) 误码率</h4>
+<ol><li>噪声方差：<div class="calc">σ′² = 0.3 × (1² + 0.6²) = 0.3 × 1.36 = 0.408，σ′ = √0.408 = 0.639</div></li>
+<li>发 +1 时，m[i−4] 等概 ±1，残余干扰 −0.36m[i−4] 等概为 −0.36 或 +0.36，信号离门限 0 的距离是 1 − 0.36 = 0.64 或 1 + 0.36 = 1.36：<div class="calc">P<sub>b</sub> = ½Q(0.64/0.639) + ½Q(1.36/0.639) = ½Q(1.00) + ½Q(2.13)</div><div class="calc">= ½ × 0.1587 + ½ × 0.0166 ≈ 0.087</div></li>
+<li>发 −1 时对称，结果相同，所以平均 P<sub>b</sub> ≈ 0.087。</li></ol>
+<p><b>对比检查</b>：不加滤波器，直接用 r[i] = m[i] + 0.6m[i−2] + w[i] 判决，σ = √0.3 = 0.548，P<sub>b</sub> = ½Q(0.4/0.548) + ½Q(1.6/0.548) ≈ 0.117。滤波器把误码率从 0.117 降到 0.087，虽然噪声被放大了（0.3 → 0.408），但 ISI 降得更多。</p>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>h[2] = 0（H(Z) 没有 Z⁻¹ 项），别写成 h[2] = 0.6。</li>
+<li>噪声方差要乘 Σc² = 1.36；只有 σ′² 开方后才能放进 Q 函数。</li>
+<li>Q 的自变量是"距离/标准差"，不是"距离/方差"。</li>
+<li>残余 ISI 有两种取值，要各算一次再平均，不能只算一种。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) Expanding, r[i] = h[1]m[i] + h[2]m[i−1] + h[3]m[i−2] + w[i]. Besides the desired symbol m[i], the sample also contains the previous symbols m[i−1] and m[i−2]; this is inter-symbol interference (present whenever h[2] or h[3] is non-zero).</p>
+<p>(ii) H(Z) = h[1] + h[2]Z⁻¹ + h[3]Z⁻². Comparing with 1 + 0.6Z⁻²: h[1] = 1 and h[3] = 0.6 (h[2] = 0).</p>
+<p>(iii) The overall response is C(Z)H(Z) = (1 − 0.6Z⁻²)(1 + 0.6Z⁻²) = 1 − 0.36Z⁻⁴ and the filtered noise is w′[i] = w[i] − 0.6w[i−2]. So y[i] = m[i] − 0.36m[i−4] + w′[i]. Since m[i] = ±1 are equally likely and the interference and noise are symmetric about zero, the ML decision rule is: m̂[i] = 1 if y[i] ≥ 0, and m̂[i] = −1 if y[i] &lt; 0.</p>
+<p>(iv) Noise variance σ′² = 0.3(1 + 0.36) = 0.408, σ′ = 0.639. Given m[i] = 1, the residual ISI is ±0.36 with equal probability, so P<sub>b</sub> = ½Q(0.64/0.639) + ½Q(1.36/0.639) = ½Q(1.00) + ½Q(2.13) = ½(0.1587) + ½(0.0166) ≈ 0.087. By symmetry the same holds for m[i] = −1, so the average bit error probability is about 0.087.</p></div>
+<div class="ans">一句话：H(Z) 的系数就是抽头（h[1] = 1、h[3] = 0.6），C(Z)H(Z) = 1 − 0.36Z⁻⁴ 留下残余 ISI 0.36，噪声方差变 0.408，按 ±0.36 两种情况平均得 P<sub>b</sub> ≈ 0.087。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2324s2-q2a">→ 在「历年真题」页看整份 2023-24 S2 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2425s2-q2a">
@@ -2386,7 +2896,39 @@ where m[k] is the k<sup>th</sup> transmitted symbol which is assumed to be equal
 <p>(ii) If the equalizer implements the zero-forcing technique, determine the values of c<sub>1</sub>, c<sub>2</sub>, and c<sub>3</sub> in Figure 2, if h = 0.2.</p>
 <p>(iii) The equalizer is now implemented with another design such that the decision variable is y<sub>i</sub> = s<sub>i</sub> + 0.6s<sub>i−1</sub> + w′<sub>i</sub>, where s<sub>i</sub> is the transmitted symbol that is equally likely to be 1 or −1, and w′<sub>i</sub> is an additive white Gaussian noise with zero mean and a variance of 0.64. The decision rule is such that, s<sub>i</sub> will be detected as 1 if y<sub>i</sub> ≥ 0, or −1 if y<sub>i</sub> &lt; 0. Determine the probability of error for this equalizer.</p>
 <p class="marks">(13 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 纯 AWGN、没有多径衰落时，信道只有一条直达路径，H(Z) = 1，所以 <b>h = 0</b>（没有 ISI）。快衰落信道的相干时间和符号时长相当甚至更短，<b>h 会随时间快速变化</b>（幅度和相位都在变），均衡器系数必须不断重新估计和跟踪，否则很快失配。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii) 迫零均衡</b>：C(Z) = 1/H(Z) = 1/(1 + 0.2Z⁻¹)，长除法展开（讲义 Ch6 p.24 的做法）：<div class="calc">1/(1 + 0.2Z⁻¹) = 1 − 0.2Z⁻¹ + 0.04Z⁻² − 0.008Z⁻³ + …</div>只有 3 个抽头，取前三项：<div class="calc">c₀ = 1，c₁ = −0.2，c₂ = 0.04</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> σ = √0.64 = 0.8。发 s<sub>i</sub> = +1 时，前一个符号带来 ±0.6 的干扰，各占一半：<br>• s<sub>i−1</sub> = +1：y 的均值 1.6，出错要 y &lt; 0 → Q(1.6/0.8) = Q(2) = 0.0228<br>• s<sub>i−1</sub> = −1：均值 0.4 → Q(0.4/0.8) = Q(0.5) = 0.3085<div class="calc">P<sub>e</sub> = ½(0.3085 + 0.0228) ≈ 0.166</div>发 −1 时由对称性相同。残余 ISI 太大（0.6），误码率很高，说明这个设计不好。</div></div><div class="wans">(i) h = 0；快衰落时 h 快速时变　(ii) 1，−0.2，0.04　(iii) P<sub>e</sub> ≈ 0.166</div><div class="pq-note">注：原题 (ii) 写的是 "c₁, c₂, and c₃"，但 Figure 2 标的是 c₀、c₁、c₂，按图作答。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>横向滤波器、迫零抽头、残余 ISI 误码率（第 6 章 p.19–28）。</dd><dt>用到的知识</dt><dd>纯 AWGN 没有多径 → H = 1；1/(1 + hZ⁻¹) = 1 − hZ⁻¹ + h²Z⁻² − …；P<sub>e</sub> = ½[Q((1 − a)/σ) + Q((1 + a)/σ)]。</dd><dt>解题套路</dt><dd>长除或逐项比较得 1、−0.2、0.04；σ = √0.64 = 0.8，按前一个符号 ±1 分两种情况。</dd><dt>易错</dt><dd>方差 0.64 → σ = 0.8；符号正负交替；残余 ISI 0.6 很大，误码率 0.166，说明这个设计不好。</dd><dt>举一反三</dt><dd>残余 ISI 降到 0.2、σ 不变：½[Q(1) + Q(1.5)] ≈ 0.113，正是 2025-26 S2 Q2(a) 的数。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 纯 AWGN、没有多径衰落时，信道只有一条直达路径，H(Z) = 1，所以 <b>h = 0</b>（没有 ISI）。快衰落信道的相干时间和符号时长相当甚至更短，<b>h 会随时间快速变化</b>（幅度和相位都在变），均衡器系数必须不断重新估计和跟踪，否则很快失配。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii) 迫零均衡</b>：C(Z) = 1/H(Z) = 1/(1 + 0.2Z⁻¹)，长除法展开（讲义 Ch6 p.24 的做法）：<div class="calc">1/(1 + 0.2Z⁻¹) = 1 − 0.2Z⁻¹ + 0.04Z⁻² − 0.008Z⁻³ + …</div>只有 3 个抽头，取前三项：<div class="calc">c₀ = 1，c₁ = −0.2，c₂ = 0.04</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> σ = √0.64 = 0.8。发 s<sub>i</sub> = +1 时，前一个符号带来 ±0.6 的干扰，各占一半：<br>• s<sub>i−1</sub> = +1：y 的均值 1.6，出错要 y &lt; 0 → Q(1.6/0.8) = Q(2) = 0.0228<br>• s<sub>i−1</sub> = −1：均值 0.4 → Q(0.4/0.8) = Q(0.5) = 0.3085<div class="calc">P<sub>e</sub> = ½(0.3085 + 0.0228) ≈ 0.166</div>发 −1 时由对称性相同。残余 ISI 太大（0.6），误码率很高，说明这个设计不好。</div></div><div class="wans">(i) h = 0；快衰落时 h 快速时变　(ii) 1，−0.2，0.04　(iii) P<sub>e</sub> ≈ 0.166</div><div class="pq-note">注：原题 (ii) 写的是 "c₁, c₂, and c₃"，但 Figure 2 标的是 c₀、c₁、c₂，按图作答。</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>横向滤波器、迫零抽头、残余 ISI 误码率（第 6 章 p.19–28）。</dd><dt>用到的知识</dt><dd>纯 AWGN 没有多径 → H = 1；1/(1 + hZ⁻¹) = 1 − hZ⁻¹ + h²Z⁻² − …；P<sub>e</sub> = ½[Q((1 − a)/σ) + Q((1 + a)/σ)]。</dd><dt>解题套路</dt><dd>长除或逐项比较得 1、−0.2、0.04；σ = √0.64 = 0.8，按前一个符号 ±1 分两种情况。</dd><dt>易错</dt><dd>方差 0.64 → σ = 0.8；符号正负交替；残余 ISI 0.6 很大，误码率 0.166，说明这个设计不好。</dd><dt>举一反三</dt><dd>残余 ISI 降到 0.2、σ 不变：½[Q(1) + Q(1.5)] ≈ 0.113，正是 2025-26 S2 Q2(a) 的数。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：横向滤波器、迫零抽头与残余 ISI 误码率</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>横向滤波器和迫零均衡</h4>
+<ul><li><b>横向滤波器</b>（transversal filter，讲义第 6 章）：就是 FIR 滤波器。输入 r<sub>i</sub> 经过一串 Z⁻¹（每个延迟一个符号），每个抽头乘一个系数 c<sub>k</sub>，再相加：y<sub>i</sub> = c₀r<sub>i</sub> + c₁r<sub>i−1</sub> + c₂r<sub>i−2</sub>，即 C(Z) = c₀ + c₁Z⁻¹ + c₂Z⁻²。</li>
+<li><b>迫零均衡</b>（zero-forcing, ZF）：要求"信道 × 均衡器 = 1"，即 C(Z) = 1/H(Z)，把 ISI 强行压成零（不管噪声）。1/H(Z) 一般是无穷长，有限个抽头只能取长除法的前几项（第 6 章 p.24 的例子：1/(1 + 0.3Z⁻¹) 的前两个抽头是 1、−0.3）。</li>
+<li><b>h 的含义</b>：H(Z) = 1 + hZ⁻¹ 说明有一条直达路径，外加一条晚一个符号、增益为 h 的回波。h = 0 就没有 ISI。</li>
+<li><b>快衰落</b>（fast fading）：相干时间和符号时长相当甚至更短，信道在几个符号内就变（第 2 章 p.37）。</li></ul>
+<h4><span class="st">详细解析</span>(i) h 的取值</h4>
+<p>纯 AWGN、没有衰落：只有一条直达路径、没有多径回波，H(Z) = 1，所以 <b>h = 0</b>，无 ISI，不需要均衡。快衰落信道：h 的幅度和相位都会在很短时间内随机变化，所以 h 不是常数；均衡器系数必须不断重新估计、自适应跟踪，否则很快失配。</p>
+<h4><span class="st">详细解析</span>(ii) 迫零抽头（h = 0.2）</h4>
+<ol><li>C(Z) = 1/(1 + 0.2Z⁻¹)，长除法（或用 1/(1 + x) = 1 − x + x² − …，x = 0.2Z⁻¹）：<div class="calc">1/(1 + 0.2Z⁻¹) = 1 − 0.2Z⁻¹ + 0.04Z⁻² − 0.008Z⁻³ + …</div></li>
+<li>只有三个抽头，取前三项：<div class="calc">c₀ = 1，c₁ = −0.2，c₂ = 0.04</div></li>
+<li>检验：<div class="calc">C(Z)H(Z) = (1 − 0.2Z⁻¹ + 0.04Z⁻²)(1 + 0.2Z⁻¹) = 1 + 0.008Z⁻³</div>Z⁻¹、Z⁻² 项抵消，只剩 0.008 的微小残余 ISI，这就是截断带来的误差。</li></ol>
+<h4><span class="st">详细解析</span>(iii) 另一种设计的误码率</h4>
+<ol><li>噪声标准差：<div class="calc">σ = √0.64 = 0.8</div></li>
+<li>设发 s<sub>i</sub> = +1。前一个符号 s<sub>i−1</sub> 等概 ±1，带来 ±0.6 的干扰，分两种情况：<br>• s<sub>i−1</sub> = +1：y 的均值 1.6，错判需 y &lt; 0 → Q(1.6/0.8) = Q(2) = 0.0228<br>• s<sub>i−1</sub> = −1：y 的均值 0.4 → Q(0.4/0.8) = Q(0.5) = 0.3085</li>
+<li>平均：<div class="calc">P<sub>e</sub> = ½(0.3085 + 0.0228) ≈ 0.166</div></li>
+<li>发 −1 时对称，结果相同。</li></ol>
+<p><b>对比</b>：如果没有残余 ISI，P<sub>e</sub> = Q(1/0.8) = Q(1.25) ≈ 0.106。0.6 的残余 ISI 让误码率变成约 1.6 倍，主要来自"均值只剩 0.4"那一半情况，说明这个设计不好。</p>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>原题写 "c₁, c₂, c₃"，但图里标的是 c₀、c₁、c₂，按图作答并写明对应关系。</li>
+<li>抽头符号正负交替：+1、−0.2、+0.04。</li>
+<li>方差 0.64 要开方成 σ = 0.8 再放进 Q。</li>
+<li>Q(0.5) = 0.3085 要会查（表的第一行附近）。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) For an AWGN channel without fading there is only the direct path and no multipath echo, so H(Z) = 1 and h = 0 (no ISI). In a fast-fading channel the coherence time is comparable to or shorter than the symbol duration, so the value of h (amplitude and phase) changes rapidly with time; the equalizer coefficients must therefore be re-estimated and adaptively tracked continuously.</p>
+<p>(ii) For zero forcing, C(Z) = 1/H(Z) = 1/(1 + 0.2Z⁻¹) = 1 − 0.2Z⁻¹ + 0.04Z⁻² − 0.008Z⁻³ + … . With three taps, c₀ = 1, c₁ = −0.2 and c₂ = 0.04 (the coefficients labelled in Figure 2). Then C(Z)H(Z) = 1 + 0.008Z⁻³, so only a very small residual ISI remains.</p>
+<p>(iii) σ = √0.64 = 0.8. Given s<sub>i</sub> = 1: if s<sub>i−1</sub> = 1, the mean of y<sub>i</sub> is 1.6 and P(error) = Q(1.6/0.8) = Q(2) = 0.0228; if s<sub>i−1</sub> = −1, the mean is 0.4 and P(error) = Q(0.4/0.8) = Q(0.5) = 0.3085. Since s<sub>i−1</sub> = ±1 with equal probability, P<sub>e</sub> = ½(0.3085 + 0.0228) ≈ 0.166, and by symmetry the same result holds for s<sub>i</sub> = −1.</p></div>
+<div class="ans">一句话：无衰落时 h = 0，快衰落时 h 快速时变要跟踪；迫零取 1/(1 + 0.2Z⁻¹) 的前三项 1、−0.2、0.04；残余 ISI 0.6 时按 ±0.6 两种情况平均，P<sub>e</sub> ≈ 0.166。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2425s2-q2a">→ 在「历年真题」页看整份 2024-25 S2 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2526s1-q2a">
@@ -2399,7 +2941,48 @@ where m[n] is equally likely to be +1 or −1, {w(n)} is a Gaussian random varia
 <p>(ii) r[n] can be used as a decision variable to detect m[n]. Determine the average probability of error if the decision rule is m̂[n] = sgn[r[n]].</p>
 <p>(iii) The receiver uses an equalizer that has a Z-transform of C(Z) = 1 − c<sub>1</sub>Z<sup>−1</sup> + c<sub>2</sub>Z<sup>−2</sup>, where c<sub>1</sub> &gt; 0 and c<sub>2</sub> &gt; 0. Show that there is an increase in the noise variance at the equalizer output.</p>
 <p class="marks">(13 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> H(Z) = 1 + 0.3Z⁻¹ 有两项：h[1] = 1，h[2] = 0.3，所以 <b>L = 2</b>：r[n] = m[n] + 0.3m[n−1] + w(n)。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> σ = √0.36 = 0.6。发 m[n] = +1，干扰 0.3m[n−1] 等概为 ±0.3：<br>• m[n−1] = +1：均值 1.3 → 出错概率 Q(1.3/0.6) = Q(2.17) = 0.0151<br>• m[n−1] = −1：均值 0.7 → Q(0.7/0.6) = Q(1.17) = 0.1217<div class="calc">P<sub>e</sub> = ½(0.1217 + 0.0151) ≈ 0.068</div>对比没有 ISI 时 Q(1/0.6) = Q(1.67) ≈ 0.048，ISI 让误码率变差。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 噪声经过均衡器：w′(n) = w(n) − c₁w(n−1) + c₂w(n−2)。各个 w 独立、方差都是 σ²，独立变量之和的方差 = 方差之和（系数要平方）：<div class="calc">Var[w′] = σ²(1 + c₁² + c₂²) = 0.36(1 + c₁² + c₂²) &gt; 0.36</div>只要 c₁、c₂ 不全为 0，输出噪声方差就比输入大，这就是线性均衡器的"噪声增强"（讲义 Ch6 p.41）。</div></div><div class="wans">(i) L = 2　(ii) P<sub>e</sub> ≈ 0.068　(iii) σ′² = 0.36(1 + c₁² + c₂²) &gt; 0.36</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>ISI 信道长度、不均衡时的误码率、均衡器的噪声增强（第 6 章 p.22–28、p.41）。</dd><dt>用到的知识</dt><dd>H(Z) 的项数 = L；P<sub>e</sub> = ½[Q((1 − a)/σ) + Q((1 + a)/σ)]；独立变量和的方差 = 系数平方 × 方差之和。</dd><dt>解题套路</dt><dd>(i) 数项得 L = 2；(ii) σ = 0.6，ISI ±0.3 两种情况；(iii) 写出 w′ = w − c₁w(n−1) + c₂w(n−2)，方差 σ²(1 + c₁² + c₂²)。</dd><dt>易错</dt><dd>σ = √0.36 = 0.6；方差里系数要平方，正负号不影响结果。</dd><dt>对比</dt><dd>没有 ISI 时 Q(1/0.6) = Q(1.67) ≈ 0.048，有 ISI 后 0.068。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> H(Z) = 1 + 0.3Z⁻¹ 有两项：h[1] = 1，h[2] = 0.3，所以 <b>L = 2</b>：r[n] = m[n] + 0.3m[n−1] + w(n)。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> σ = √0.36 = 0.6。发 m[n] = +1，干扰 0.3m[n−1] 等概为 ±0.3：<br>• m[n−1] = +1：均值 1.3 → 出错概率 Q(1.3/0.6) = Q(2.17) = 0.0151<br>• m[n−1] = −1：均值 0.7 → Q(0.7/0.6) = Q(1.17) = 0.1217<div class="calc">P<sub>e</sub> = ½(0.1217 + 0.0151) ≈ 0.068</div>对比没有 ISI 时 Q(1/0.6) = Q(1.67) ≈ 0.048，ISI 让误码率变差。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 噪声经过均衡器：w′(n) = w(n) − c₁w(n−1) + c₂w(n−2)。各个 w 独立、方差都是 σ²，独立变量之和的方差 = 方差之和（系数要平方）：<div class="calc">Var[w′] = σ²(1 + c₁² + c₂²) = 0.36(1 + c₁² + c₂²) &gt; 0.36</div>只要 c₁、c₂ 不全为 0，输出噪声方差就比输入大，这就是线性均衡器的"噪声增强"（讲义 Ch6 p.41）。</div></div><div class="wans">(i) L = 2　(ii) P<sub>e</sub> ≈ 0.068　(iii) σ′² = 0.36(1 + c₁² + c₂²) &gt; 0.36</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>ISI 信道长度、不均衡时的误码率、均衡器的噪声增强（第 6 章 p.22–28、p.41）。</dd><dt>用到的知识</dt><dd>H(Z) 的项数 = L；P<sub>e</sub> = ½[Q((1 − a)/σ) + Q((1 + a)/σ)]；独立变量和的方差 = 系数平方 × 方差之和。</dd><dt>解题套路</dt><dd>(i) 数项得 L = 2；(ii) σ = 0.6，ISI ±0.3 两种情况；(iii) 写出 w′ = w − c₁w(n−1) + c₂w(n−2)，方差 σ²(1 + c₁² + c₂²)。</dd><dt>易错</dt><dd>σ = √0.36 = 0.6；方差里系数要平方，正负号不影响结果。</dd><dt>对比</dt><dd>没有 ISI 时 Q(1/0.6) = Q(1.67) ≈ 0.048，有 ISI 后 0.068。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：ISI 误码率与噪声增强</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>离散 ISI 信道模型</h4>
+<p>信道有多径时，一个符号的能量会"拖尾"到后面几个采样时刻，造成符号间干扰（ISI，Inter-Symbol Interference）。按符号间隔采样后，信道就是一组抽头系数 h[1], h[2], …, h[L]，接收信号是消息序列和抽头的卷积加噪声（第 6 章 p.22）：r[n] = Σh[i]m[n − i + 1] + w(n)。信道的 Z 变换 H(Z) = h[1] + h[2]Z⁻¹ + …，Z⁻¹ 表示延迟一个符号，所以 <b>H(Z) 有几项，L 就是几</b>。</p>
+<h4><span class="st">知识讲解</span>有残余 ISI 时怎么求误码率</h4>
+<p>讲义 p.27–28：判决变量 = 期望信号 + ISI 项 + 高斯噪声。ISI 项取决于前面发的符号，是离散随机变量。做法：<b>先固定 ISI 的取值</b>，求条件误码率 Q((q₀ + ISI)/σ)；<b>再对 ISI 所有可能取值求平均</b>。和第 3 章的思路一样，只多了一层平均。</p>
+<h4><span class="st">知识讲解</span>均衡器为什么放大噪声</h4>
+<p>均衡器 C(Z) 是一个 FIR 滤波器，它不仅作用在信号上，也作用在噪声上（p.21、p.25）：w′(n) = Σc<sub>j</sub>w(n − j)。各个 w 独立、方差都是 σ²，独立变量之和的方差 = 各项方差之和，系数要平方：σ′² = σ²Σc<sub>j</sub>²。主抽头为 1 时，只要还有别的非零抽头，Σc<sub>j</sub>² 就大于 1，这就是"噪声增强"（p.41）。老师说均衡这一章要会三件事：用 Z 变换写信道和均衡器、迫零系数（长除法）、算噪声功率。</p>
+<h4><span class="st">详细解析</span>(i) 信道长度</h4>
+<div class="calc">H(Z) = 1 + 0.3Z⁻¹ → h[1] = 1，h[2] = 0.3 → L = 2<br>r[n] = m[n] + 0.3m[n−1] + w(n)</div>
+<h4><span class="st">详细解析</span>(ii) 不均衡、直接判决</h4>
+<p>σ = √0.36 = 0.6。由对称性只看 m[n] = +1（发 −1 的结果相同）。干扰 0.3m[n−1] 等概为 +0.3 或 −0.3：</p>
+<div class="tw"><table class="mini"><thead><tr><th>m[n−1]</th><th>r[n] 的均值</th><th>出错条件</th><th>条件误码率</th></tr></thead><tbody>
+<tr><td>+1（概率 ½）</td><td>1 + 0.3 = 1.3</td><td>w &lt; −1.3</td><td>Q(1.3/0.6) = Q(2.17) = 0.0151</td></tr>
+<tr><td>−1（概率 ½）</td><td>1 − 0.3 = 0.7</td><td>w &lt; −0.7</td><td>Q(0.7/0.6) = Q(1.17) = 0.1217</td></tr>
+</tbody></table></div>
+<div class="calc">P<sub>e</sub> = ½(0.0151 + 0.1217) = 0.0684 ≈ 0.068</div>
+<p><b>对比</b>：没有 ISI 时 P<sub>e</sub> = Q(1/0.6) = Q(1.67) ≈ 0.0478。ISI 时好时坏，但"坏"的那一半（0.1217）拉高了平均，所以总体变差。</p>
+<h4><span class="st">详细解析</span>(iii) 均衡器输出噪声</h4>
+<ol>
+<li>噪声经过 C(Z)：w′(n) = w(n) − c₁w(n−1) + c₂w(n−2)。</li>
+<li>三项独立，方差相加，系数平方（负号平方后消失）：
+<div class="calc">Var[w′] = σ²(1 + c₁² + c₂²) = 0.36(1 + c₁² + c₂²)</div></li>
+<li>c₁ &gt; 0、c₂ &gt; 0，所以 c₁² + c₂² &gt; 0，Var[w′] &gt; 0.36，噪声方差增大。</li>
+</ol>
+<p><b>举个具体的例子</b>：这个信道的迫零均衡器 1/(1 + 0.3Z⁻¹) 用长除法取前三项，正好是 1 − 0.3Z⁻¹ + 0.09Z⁻²（c₁ = 0.3，c₂ = 0.09，和题目的形式一致）。此时输出噪声方差 = 0.36 × (1 + 0.09 + 0.0081) = 0.36 × 1.0981 ≈ 0.395，比 0.36 大约 10%；而级联后 H(Z)C(Z) = 1 + 0.027Z⁻³，ISI 只剩 0.027。ISI 少了，噪声多了，这就是均衡的代价。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>σ 写成 0.36：Q 里除的是标准差 0.6。</li>
+<li>只算一种 ISI 情况，忘了两种各乘 ½ 再相加。</li>
+<li>(iii) 系数不平方，写成 σ²(1 − c₁ + c₂)；或者忘了"各项独立"这个前提。</li>
+<li>L 答成 1（只数延迟）：L 是抽头个数。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) H(Z) = 1 + 0.3Z⁻¹ has two taps, h[1] = 1 and h[2] = 0.3, so L = 2 and r[n] = m[n] + 0.3m[n−1] + w(n).</p>
+<p>(ii) σ = √0.36 = 0.6. By symmetry, consider m[n] = +1. The ISI term 0.3m[n−1] is +0.3 or −0.3 with equal probability.<br>If m[n−1] = +1: P(e) = P(w &lt; −1.3) = Q(1.3/0.6) = Q(2.17) = 0.0151.<br>If m[n−1] = −1: P(e) = P(w &lt; −0.7) = Q(0.7/0.6) = Q(1.17) = 0.1217.<br>Average P<sub>e</sub> = ½(0.0151 + 0.1217) ≈ 0.068 (compared with Q(1.67) ≈ 0.048 without ISI).</p>
+<p>(iii) The noise also passes through the equalizer: w′(n) = w(n) − c₁w(n−1) + c₂w(n−2). Since the noise samples are independent with variance σ², Var[w′] = σ²(1 + c₁² + c₂²) = 0.36(1 + c₁² + c₂²). Because c₁ &gt; 0 and c₂ &gt; 0, Var[w′] &gt; 0.36, i.e. the equalizer increases the noise variance (noise enhancement).</p></div>
+<div class="ans">一句话：L 是抽头数 2；ISI ±0.3 分两种情况求 Q 再平均得 0.068；噪声过均衡器后方差乘 (1 + c₁² + c₂²)，一定变大。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s1-q2a">→ 在「历年真题」页看整份 2025-26 S1 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2526s2-q2a">
@@ -2412,7 +2995,46 @@ where m[n] is equally likely to be +1 or −1, {w(n)} is a Gaussian random varia
 <span class="eq">y[n] = m(n) + 0.2m(n − 1) + w′(n)</span>
 where w′(n) is the noise at the equalizer output. Using the decision rule of m̂(n) = sgn[y(n)], determine the average probability of error of this system.</p>
 <p class="marks">(12 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b><div class="calc">r[n] = Σ<sub>i=1</sub><sup>L</sup> h[i] m[n − i + 1] + w[n]</div><b>Nyquist 准则</b>（讲义 Ch6 p.12）：采样后 y(nT) = m[n]g<sub>e</sub>(0) + Σ<sub>i≠n</sub> m[i]g<sub>e</sub>(nT − iT) + w(nT)，中间那一项就是 ISI。若等效脉冲在采样时刻满足 g<sub>e</sub>(nT − iT) = 1（n = i）、0（n ≠ i），即每个脉冲在别的符号的采样点上都恰好为零，则传输<b>无 ISI</b>。对上式就是 h[1] = 1、其余 h[i] = 0。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 输出噪声 w′ = Σ c<sub>j</sub>w[n − j + 1]，各 w 独立同方差：<div class="calc">σ′² = σ² Σ c<sub>j</sub>² = 0.25 × 2.56 = 0.64</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> σ′ = 0.8。发 m(n) = +1，0.2m(n−1) 等概为 ±0.2：<br>• +0.2：均值 1.2 → Q(1.2/0.8) = Q(1.5) = 0.0668<br>• −0.2：均值 0.8 → Q(0.8/0.8) = Q(1) = 0.1587<div class="calc">P<sub>e</sub> = ½(0.1587 + 0.0668) ≈ 0.113</div></div></div><div class="wans">(ii) 0.64　(iii) P<sub>e</sub> ≈ 0.113</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>ISI 离散模型、Nyquist 无 ISI 准则、均衡器输出噪声、残余 ISI 误码率（第 6 章 p.12、p.22–28）。</dd><dt>用到的知识</dt><dd>r[n] = Σh[i]m[n − i + 1] + w[n]；Nyquist：等效脉冲在其他采样点为 0；σ′² = σ²Σc<sub>j</sub>²。</dd><dt>解题套路</dt><dd>(i) 写模型 + 解释准则（h[1] = 1、其余为 0）；(ii) 0.25 × 2.56 = 0.64；(iii) σ′ = 0.8，ISI ±0.2 两种情况。</dd><dt>易错</dt><dd>Q 里除的是 σ′ = 0.8，不是方差 0.64；两种情况各乘 ½。</dd><dt>联系</dt><dd>四年期末 Q2(a) 都是这个套路，讲解页 6.3 节有四年的数字对照表。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b><div class="calc">r[n] = Σ<sub>i=1</sub><sup>L</sup> h[i] m[n − i + 1] + w[n]</div><b>Nyquist 准则</b>（讲义 Ch6 p.12）：采样后 y(nT) = m[n]g<sub>e</sub>(0) + Σ<sub>i≠n</sub> m[i]g<sub>e</sub>(nT − iT) + w(nT)，中间那一项就是 ISI。若等效脉冲在采样时刻满足 g<sub>e</sub>(nT − iT) = 1（n = i）、0（n ≠ i），即每个脉冲在别的符号的采样点上都恰好为零，则传输<b>无 ISI</b>。对上式就是 h[1] = 1、其余 h[i] = 0。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 输出噪声 w′ = Σ c<sub>j</sub>w[n − j + 1]，各 w 独立同方差：<div class="calc">σ′² = σ² Σ c<sub>j</sub>² = 0.25 × 2.56 = 0.64</div></div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> σ′ = 0.8。发 m(n) = +1，0.2m(n−1) 等概为 ±0.2：<br>• +0.2：均值 1.2 → Q(1.2/0.8) = Q(1.5) = 0.0668<br>• −0.2：均值 0.8 → Q(0.8/0.8) = Q(1) = 0.1587<div class="calc">P<sub>e</sub> = ½(0.1587 + 0.0668) ≈ 0.113</div></div></div><div class="wans">(ii) 0.64　(iii) P<sub>e</sub> ≈ 0.113</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>ISI 离散模型、Nyquist 无 ISI 准则、均衡器输出噪声、残余 ISI 误码率（第 6 章 p.12、p.22–28）。</dd><dt>用到的知识</dt><dd>r[n] = Σh[i]m[n − i + 1] + w[n]；Nyquist：等效脉冲在其他采样点为 0；σ′² = σ²Σc<sub>j</sub>²。</dd><dt>解题套路</dt><dd>(i) 写模型 + 解释准则（h[1] = 1、其余为 0）；(ii) 0.25 × 2.56 = 0.64；(iii) σ′ = 0.8，ISI ±0.2 两种情况。</dd><dt>易错</dt><dd>Q 里除的是 σ′ = 0.8，不是方差 0.64；两种情况各乘 ½。</dd><dt>联系</dt><dd>四年期末 Q2(a) 都是这个套路，讲解页 6.3 节有四年的数字对照表。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：Nyquist 准则与残余 ISI</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>ISI 是怎么来的，Nyquist 准则说什么</h4>
+<p>发送端每隔 T 秒发一个脉冲，脉冲经过发送滤波器和信道后会展宽。接收端在 t = nT 采样时，采到的是（第 6 章 p.10–12）：</p>
+<div class="calc">y(nT) = m[n]g<sub>e</sub>(0) + Σ<sub>i≠n</sub> m[i]g<sub>e</sub>(nT − iT) + w(nT)</div>
+<p>第一项是想要的符号，第二项是其他符号的脉冲"拖尾"到这个采样时刻的部分，就是 ISI。<b>Nyquist 无 ISI 准则</b>：如果等效脉冲 g<sub>e</sub> 在本符号的采样时刻为 1、在其他所有符号的采样时刻都为 0，即 g<sub>e</sub>(nT − iT) = 1（n = i）、0（n ≠ i），那么第二项消失，传输没有 ISI。脉冲可以在采样点之间不为零，只要在别人的采样点上恰好过零就行。老师说这个准则"值得记住"：一句话（传输没有 ISI）加一个式子。</p>
+<p>离散模型（p.22）：按符号间隔采样后，信道就是抽头 h[1], …, h[L]，r[n] = Σh[i]m[n − i + 1] + w[n]。用这个模型说，Nyquist 准则就是 h[1] = 1、其余 h[i] = 0。</p>
+<h4><span class="st">知识讲解</span>线性均衡器的输出噪声和残余 ISI</h4>
+<p>均衡器是 M 个抽头的 FIR 滤波器，噪声也要经过它：w′(n) = Σc<sub>j</sub>w(n − j + 1)。各个噪声样本独立、方差都是 σ²，所以输出噪声功率 σ′² = σ²Σc<sub>j</sub>²（p.27 的"variance σ²‖c‖²"）。均衡后如果还留有一点 ISI，误码率按"先固定 ISI 求条件误码率、再对 ISI 取平均"来算（p.27–28）。</p>
+<h4><span class="st">详细解析</span>(i) 模型和准则</h4>
+<div class="calc">r[n] = Σ<sub>i=1</sub><sup>L</sup> h[i]m[n − i + 1] + w[n] = h[1]m[n] + h[2]m[n−1] + … + h[L]m[n−L+1] + w[n]</div>
+<p>第一项 h[1]m[n] 是想要的，其余 h[i]m[n − i + 1]（i ≥ 2）是前面符号造成的 ISI。再写 Nyquist 准则（上面那句话 + 式子）。</p>
+<h4><span class="st">详细解析</span>(ii) 输出噪声功率</h4>
+<div class="calc">σ′² = σ²Σc<sub>j</sub>² = 0.25 × 2.56 = 0.64</div>
+<p>比输入的 0.25 大了 2.56 倍：这就是均衡器的噪声增强。</p>
+<h4><span class="st">详细解析</span>(iii) 残余 ISI 下的误码率</h4>
+<p>σ′ = √0.64 = 0.8。由对称性只看 m(n) = +1，0.2m(n−1) 等概为 ±0.2：</p>
+<div class="tw"><table class="mini"><thead><tr><th>m(n−1)</th><th>y(n) 的均值</th><th>条件误码率</th></tr></thead><tbody>
+<tr><td>+1（概率 ½）</td><td>1.2</td><td>Q(1.2/0.8) = Q(1.5) = 0.0668</td></tr>
+<tr><td>−1（概率 ½）</td><td>0.8</td><td>Q(0.8/0.8) = Q(1) = 0.1587</td></tr>
+</tbody></table></div>
+<div class="calc">P<sub>e</sub> = ½(0.0668 + 0.1587) = 0.1127 ≈ 0.113</div>
+<p><b>对比</b>：即使均衡器把 ISI 全部去掉，噪声已被放大到 0.64，P<sub>e</sub> = Q(1/0.8) = Q(1.25) ≈ 0.106；如果原信道本来就没有 ISI、也不用均衡，P<sub>e</sub> = Q(1/0.5) = Q(2) ≈ 0.023。可见噪声增强的代价很大。</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>(ii) 答成 0.25 × 2.56 后又开根号，或者把 Σc<sub>j</sub>² 再平方。</li>
+<li>(iii) Q 里除以方差 0.64：要除以标准差 0.8。</li>
+<li>(iii) 只算一种情况，或者忘了各乘 ½。</li>
+<li>(i) 准则只写"没有 ISI"，没写采样时刻为 1、其他时刻为 0 的条件。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) r[n] = Σ<sub>i=1</sub><sup>L</sup> h[i] m[n − i + 1] + w[n]. The term h[1]m[n] is the desired symbol and the terms with i ≥ 2 are ISI from previous symbols.</p>
+<p>Nyquist ISI criterion: after sampling, y(nT) = m[n]g<sub>e</sub>(0) + Σ<sub>i≠n</sub> m[i]g<sub>e</sub>(nT − iT) + w(nT). If the equivalent pulse satisfies g<sub>e</sub>(nT − iT) = 1 for n = i and 0 for n ≠ i, i.e. each pulse is zero at the sampling instants of all other symbols, the ISI term vanishes and the transmission is ISI-free. For the discrete model this means h[1] = 1 and h[i] = 0 for i ≥ 2.</p>
+<p>(ii) The equalizer output noise is w′(n) = Σc<sub>j</sub>w(n − j + 1). Since the noise samples are independent with variance σ², the output noise power is σ′² = σ²Σc<sub>j</sub>² = 0.25 × 2.56 = 0.64.</p>
+<p>(iii) σ′ = 0.8. By symmetry, take m(n) = +1. If m(n − 1) = +1, P(e) = P(w′ &lt; −1.2) = Q(1.2/0.8) = Q(1.5) = 0.0668. If m(n − 1) = −1, P(e) = P(w′ &lt; −0.8) = Q(1) = 0.1587. Average P<sub>e</sub> = ½(0.0668 + 0.1587) ≈ 0.113.</p></div>
+<div class="ans">一句话：Nyquist 准则是脉冲在别人的采样点上为零；噪声功率 0.25 × 2.56 = 0.64；σ′ = 0.8，ISI ±0.2 两种情况平均得 P<sub>e</sub> ≈ 0.113。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s2-q2a">→ 在「历年真题」页看整份 2025-26 S2 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->
@@ -2621,7 +3243,46 @@ where w′(n) is the noise at the equalizer output. Using the decision rule of m
 <p>(iii) Using the simplified formula, T = 1/B, where T is the signal symbol duration and B is the signal bandwidth, determine the total OFDM block duration if a Guard interval of 1 microsecond is added.</p>
 <p>(iv) For the question in 2(b) part (iii) above, determine the power loss due to the addition of the guard interval.</p>
 <p class="marks">(12 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 每个子载波带宽 = 500/2 = 250 kHz，<div class="calc">N = 1 MHz / 250 kHz = 4</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 子信道增益（讲义 Ch7 p.15）H<sub>k</sub> = Σ<sub>i</sub> h<sub>i</sub> e<sup>−j2πik/N</sup>，h = {1, −0.6, 0.2}，N = 4，e<sup>−j2πk/4</sup> 依次是 −j、−1、j、1：<div class="calc">H₁ = 1 − 0.6(−j) + 0.2(−1) = 0.8 + 0.6j　(|H₁| = 1)</div><div class="calc">H₂ = 1 − 0.6(−1) + 0.2(1) = 1.8</div><div class="calc">H₃ = 1 − 0.6(j) + 0.2(−1) = 0.8 − 0.6j　(|H₃| = 1)</div><div class="calc">H₄ = H₀ = 1 − 0.6 + 0.2 = 0.6</div>每个子信道只剩一个复数增益，这正是 OFDM 把频率选择性信道变成 N 个平坦子信道的意思。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 原始符号时长 T<sub>s</sub> = 1/(1 MHz) = 1 µs；一个 OFDM 块 = N T<sub>s</sub> = 4 µs（也等于每个子载波的 1/250 kHz）。加 1 µs 保护间隔：<div class="calc">T<sub>block</sub> = 4 + 1 = 5 µs</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iv)</b> 讲义 Ch7 p.18：<div class="calc">功率损失 = 10 log₁₀[(NT<sub>s</sub> + T<sub>G</sub>)/(NT<sub>s</sub>)] = 10 log₁₀(5/4) ≈ 0.97 dB</div></div></div><div class="wans">N = 4；H = {0.8+0.6j, 1.8, 0.8−0.6j, 0.6}；块长 5 µs；功率损失 ≈ 0.97 dB</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>OFDM 子载波数、子信道增益 H<sub>k</sub>、块长和保护间隔的功率损失（第 7 章 p.5、p.15、p.17–18）。</dd><dt>用到的知识</dt><dd>子载波带宽 ≤ 相干带宽（本题取 B<sub>C</sub>/2）；H<sub>k</sub> = Σh<sub>i</sub>e<sup>−j2πik/N</sup>；T = NT<sub>s</sub>；损失 10 log₁₀((NT<sub>s</sub> + T<sub>G</sub>)/NT<sub>s</sub>)。</dd><dt>解题套路</dt><dd>N = 总带宽 / 子载波带宽；N = 4 时 e<sup>−j2πk/4</sup> 依次是 −j、−1、j、1，第三个抽头乘的是它的平方（−1、1、−1、1）；块长 = 4 µs + 1 µs。</dd><dt>自检</dt><dd>H₄ = 所有抽头之和 = 0.6；H₁ 和 H₃ 共轭；Σ|H<sub>k</sub>|² = 1 + 3.24 + 1 + 0.36 = 5.6 = 4 × (1 + 0.36 + 0.04)。</dd><dt>易错</dt><dd>第三个抽头在 k = 1 时乘 −1，不是 −j；功率损失的分子是总块长 5 µs，分母是有用部分 4 µs。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 每个子载波带宽 = 500/2 = 250 kHz，<div class="calc">N = 1 MHz / 250 kHz = 4</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 子信道增益（讲义 Ch7 p.15）H<sub>k</sub> = Σ<sub>i</sub> h<sub>i</sub> e<sup>−j2πik/N</sup>，h = {1, −0.6, 0.2}，N = 4，e<sup>−j2πk/4</sup> 依次是 −j、−1、j、1：<div class="calc">H₁ = 1 − 0.6(−j) + 0.2(−1) = 0.8 + 0.6j　(|H₁| = 1)</div><div class="calc">H₂ = 1 − 0.6(−1) + 0.2(1) = 1.8</div><div class="calc">H₃ = 1 − 0.6(j) + 0.2(−1) = 0.8 − 0.6j　(|H₃| = 1)</div><div class="calc">H₄ = H₀ = 1 − 0.6 + 0.2 = 0.6</div>每个子信道只剩一个复数增益，这正是 OFDM 把频率选择性信道变成 N 个平坦子信道的意思。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 原始符号时长 T<sub>s</sub> = 1/(1 MHz) = 1 µs；一个 OFDM 块 = N T<sub>s</sub> = 4 µs（也等于每个子载波的 1/250 kHz）。加 1 µs 保护间隔：<div class="calc">T<sub>block</sub> = 4 + 1 = 5 µs</div></div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>(iv)</b> 讲义 Ch7 p.18：<div class="calc">功率损失 = 10 log₁₀[(NT<sub>s</sub> + T<sub>G</sub>)/(NT<sub>s</sub>)] = 10 log₁₀(5/4) ≈ 0.97 dB</div></div></div><div class="wans">N = 4；H = {0.8+0.6j, 1.8, 0.8−0.6j, 0.6}；块长 5 µs；功率损失 ≈ 0.97 dB</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>OFDM 子载波数、子信道增益 H<sub>k</sub>、块长和保护间隔的功率损失（第 7 章 p.5、p.15、p.17–18）。</dd><dt>用到的知识</dt><dd>子载波带宽 ≤ 相干带宽（本题取 B<sub>C</sub>/2）；H<sub>k</sub> = Σh<sub>i</sub>e<sup>−j2πik/N</sup>；T = NT<sub>s</sub>；损失 10 log₁₀((NT<sub>s</sub> + T<sub>G</sub>)/NT<sub>s</sub>)。</dd><dt>解题套路</dt><dd>N = 总带宽 / 子载波带宽；N = 4 时 e<sup>−j2πk/4</sup> 依次是 −j、−1、j、1，第三个抽头乘的是它的平方（−1、1、−1、1）；块长 = 4 µs + 1 µs。</dd><dt>自检</dt><dd>H₄ = 所有抽头之和 = 0.6；H₁ 和 H₃ 共轭；Σ|H<sub>k</sub>|² = 1 + 3.24 + 1 + 0.36 = 5.6 = 4 × (1 + 0.36 + 0.04)。</dd><dt>易错</dt><dd>第三个抽头在 k = 1 时乘 −1，不是 −j；功率损失的分子是总块长 5 µs，分母是有用部分 4 µs。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：OFDM 子载波数、子信道增益与保护间隔</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>OFDM 为什么能对付频率选择性衰落</h4>
+<p>宽带信号的带宽大于相干带宽 B<sub>C</sub> 时，不同频率衰落不一样（频率选择性衰落），时域上表现为 ISI。OFDM（正交频分复用）的办法是把总带宽 B 切成 N 个窄的子载波（sub-carrier），每个子载波带宽 B/N 小于 B<sub>C</sub>，于是每个子载波只经历<b>平坦衰落</b>（讲义第 7 章 p.5–8）。</p>
+<ul><li><b>子信道增益</b>（第 7 章 p.15）：H<sub>k</sub> = Σ<sub>i</sub> h<sub>i</sub> e<sup>−j2πik/N</sup>，就是信道冲激响应的 N 点 DFT。每个子载波只被乘上一个复数 H<sub>k</sub>，接收端除以 H<sub>k</sub> 就完成均衡。</li>
+<li><b>符号时长</b>：原来的符号时长 T<sub>s</sub> = 1/B；一个 OFDM 块含 N 个符号，长 NT<sub>s</sub>，所以每个子载波上的符号变长 N 倍，ISI 的相对影响变小。</li>
+<li><b>保护间隔</b>（guard interval，第 7 章 p.17–18）：每个块前面加长度 T<sub>G</sub> 的一段，要求 T<sub>G</sub> 大于最大时延扩展，让上一个块的拖尾落在这段里，接收端直接丢掉。代价是这段时间也要发功率，功率损失 = 10 log₁₀[(NT<sub>s</sub> + T<sub>G</sub>)/(NT<sub>s</sub>)]。</li></ul>
+<h4><span class="st">详细解析</span>(i) 子载波数</h4>
+<div class="calc">每个子载波带宽 = B<sub>C</sub>/2 = 500/2 = 250 kHz</div>
+<div class="calc">N = 1 MHz / 250 kHz = 4</div>
+<p>取 B<sub>C</sub> 的一半是为了留余量，保证每个子载波确实是平坦衰落。</p>
+<h4><span class="st">详细解析</span>(ii) 四个子信道增益</h4>
+<p>N = 4 时 e<sup>−j2πk/4</sup> 很好算，第三个抽头乘的是它的平方：</p>
+<div class="tw"><table class="mini"><thead><tr><th>k</th><th>e<sup>−j2πk/4</sup></th><th>e<sup>−j2π·2k/4</sup></th><th>H<sub>k</sub> = 1 − 0.6(·) + 0.2(·)</th><th>|H<sub>k</sub>|</th></tr></thead><tbody>
+<tr><td>1</td><td>−j</td><td>−1</td><td>1 + 0.6j − 0.2 = 0.8 + 0.6j</td><td>1</td></tr>
+<tr><td>2</td><td>−1</td><td>1</td><td>1 + 0.6 + 0.2 = 1.8</td><td>1.8</td></tr>
+<tr><td>3</td><td>j</td><td>−1</td><td>1 − 0.6j − 0.2 = 0.8 − 0.6j</td><td>1</td></tr>
+<tr><td>4（= 0）</td><td>1</td><td>1</td><td>1 − 0.6 + 0.2 = 0.6</td><td>0.6</td></tr>
+</tbody></table></div>
+<p>自检：H₁ 和 H₃ 互为共轭（因为 h 是实数）；H₄ = H₀ = 抽头之和。|H| 从 0.6 到 1.8，说明这个信道确实是频率选择性的，但每个子载波内部只是一个常数增益。</p>
+<h4><span class="st">详细解析</span>(iii)(iv) 块长和功率损失</h4>
+<div class="calc">T<sub>s</sub> = 1/B = 1/(1 MHz) = 1 µs；　NT<sub>s</sub> = 4 µs（= 1/250 kHz）</div>
+<div class="calc">T<sub>block</sub> = NT<sub>s</sub> + T<sub>G</sub> = 4 + 1 = 5 µs</div>
+<div class="calc">功率损失 = 10 log₁₀(5/4) = 10 × 0.0969 ≈ 0.97 dB</div>
+<p>直觉：5 µs 里只有 4 µs 有用，20% 的时间和能量花在保护间隔上，速率也只剩原来的 4/5。</p>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>第三个抽头在 k = 1 时乘 (−j)² = −1，不是 −j。</li>
+<li>功率损失的分子是总块长 5 µs，分母是有用部分 4 µs，比值 &gt; 1，dB 为正。</li>
+<li>N 必须是整数；子载波带宽是相干带宽的一半，不是等于相干带宽。</li>
+<li>补充一点（不影响本题作答）：抽头间隔 1 µs、共 3 个抽头，信道拖尾约 2 µs；按讲义 p.5"保护间隔要长于最大时延扩展"，严格说 1 µs 的保护间隔偏短。考试按题目给的 1 µs 计算即可。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) Bandwidth of each sub-carrier = B<sub>C</sub>/2 = 250 kHz, so N = 1 MHz / 250 kHz = 4.</p>
+<p>(ii) The sub-channel gains are the N-point DFT of the channel impulse response, H<sub>k</sub> = Σ<sub>i</sub> h<sub>i</sub>e<sup>−j2πik/N</sup> with h = {1, −0.6, 0.2} and N = 4: H₁ = 1 − 0.6(−j) + 0.2(−1) = 0.8 + 0.6j; H₂ = 1 + 0.6 + 0.2 = 1.8; H₃ = 0.8 − 0.6j; H₄ (= H₀) = 1 − 0.6 + 0.2 = 0.6. Each sub-carrier therefore sees a flat channel with a single complex gain.</p>
+<p>(iii) Original symbol duration T<sub>s</sub> = 1/B = 1 µs. The OFDM block duration is NT<sub>s</sub> = 4 µs, and with the 1 µs guard interval the total block duration is 4 + 1 = 5 µs.</p>
+<p>(iv) Power loss = 10 log₁₀[(NT<sub>s</sub> + T<sub>G</sub>)/(NT<sub>s</sub>)] = 10 log₁₀(5/4) ≈ 0.97 dB.</p></div>
+<div class="ans">一句话：子载波带宽 250 kHz → N = 4；H<sub>k</sub> 是 h 的 4 点 DFT = {0.8+0.6j, 1.8, 0.8−0.6j, 0.6}；块长 4 + 1 = 5 µs；功率损失 10 log₁₀(5/4) ≈ 0.97 dB。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2324s2-q2b">→ 在「历年真题」页看整份 2023-24 S2 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2425s2-q2b">
@@ -2637,7 +3298,40 @@ where s<sub>k</sub>(t) is the signals in the k<sup>th</sup> OFDM sub-carrier and
 where P<sub>k</sub> is the power allocated to the k<sup>th</sup> OFDM sub-carrier and H<sub>k</sub> is the channel gain experienced by the k<sup>th</sup> OFDM sub-carrier signal. Powers are allocated to the sub-carriers to have the same channel capacity per Hz of C<sub>k</sub> = 0.9 bit per second per Hz. Determine the total power needed for this system if the channel gains have the following values.
 <span class="eq">|H<sub>1</sub>| = 1, |H<sub>2</sub>| = 0.2, |H<sub>3</sub>| = 1, |H<sub>4</sub>| = 1.4</span></p>
 <p class="marks">(12 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 4 电平 → 每符号 log₂4 = 2 bit。系统速率 = 5 M × 2 = <b>10 Mbit/s</b>。分到 4 个子载波，每个子载波符号率 1.25 Msymbol/s，<b>2.5 Mbit/s</b>。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 讲义 Ch7 p.17、p.21 的写法：表达式不变，只把每个块的时间范围往前延伸 T<sub>g</sub>：<div class="calc">x(t) = (1/√T) Σ<sub>k=0</sub><sup>N−1</sup> s<sub>k</sub>(t) e<sup>j2πkt/T</sup>，　nT − T<sub>g</sub> ≤ t &lt; (n+1)T</div>因为 e<sup>j2πkt/T</sup> 以 T 为周期，前面多出的 T<sub>g</sub> 段正好是块尾 T<sub>g</sub> 段的复制，这就是"循环"前缀；接收端丢掉这一段，只取 nT ≤ t &lt; (n+1)T。（若按块周期 T + T<sub>g</sub> 计时，也可写成区间 n(T+T<sub>g</sub>) ≤ t &lt; (n+1)(T+T<sub>g</sub>)、指数里用 t − n(T+T<sub>g</sub>) − T<sub>g</sub>。）</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 每个子载波都要 ¼ log₂(1 + P<sub>k</sub>|H<sub>k</sub>|²) = 0.9：<div class="calc">1 + P<sub>k</sub>|H<sub>k</sub>|² = 2<sup>3.6</sup> = 12.126 → P<sub>k</sub>|H<sub>k</sub>|² = 11.126（≈ 11.13）</div><div class="calc">P₁ = 11.126/1 = 11.13；P₂ = 11.126/0.04 = 278.1；P₃ = 11.13；P₄ = 11.126/1.96 = 5.68</div>（P₂ 用没四舍五入的 11.126 算；如果先写成 11.13 再除，得 278.25，只是舍入差别，两个都算对。）<div class="calc">P<sub>total</sub> ≈ 306.1（功率单位）</div>差的子载波（|H₂| = 0.2）一个人就吃掉 90% 的功率。这正好说明为什么要用注水法，而不是强求每个子载波容量相同。</div></div><div class="wans">(i) 10 Mbit/s；每子载波 2.5 Mbit/s　(iii) 总功率 ≈ 306</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>OFDM 速率划分、循环前缀的表达式、等容量功率分配（第 7 章 p.8、p.17、p.21、p.24）。</dd><dt>用到的知识</dt><dd>每符号 log₂M bit；CP 表达式不变、区间改为 nT − T<sub>g</sub> ≤ t &lt; (n+1)T；每个子载波 C<sub>k</sub> = (1/N)log₂(1 + P<sub>k</sub>|H<sub>k</sub>|²)。</dd><dt>解题套路</dt><dd>总速率 = 符号率 × bit/符号，再除以子载波数；P<sub>k</sub> = (2<sup>NC<sub>k</sub></sup> − 1)/|H<sub>k</sub>|²。</dd><dt>易错</dt><dd>先乘回 N = 4 再取 2 的幂（2<sup>3.6</sup>）；|H₂| = 0.2 要平方成 0.04；CP 只改时间区间，不改式子。</dd><dt>结论</dt><dd>最差的子载波一个就吃掉 90% 的功率，所以实际用注水（Practice 7 第 1(d) 题）。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 4 电平 → 每符号 log₂4 = 2 bit。系统速率 = 5 M × 2 = <b>10 Mbit/s</b>。分到 4 个子载波，每个子载波符号率 1.25 Msymbol/s，<b>2.5 Mbit/s</b>。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 讲义 Ch7 p.17、p.21 的写法：表达式不变，只把每个块的时间范围往前延伸 T<sub>g</sub>：<div class="calc">x(t) = (1/√T) Σ<sub>k=0</sub><sup>N−1</sup> s<sub>k</sub>(t) e<sup>j2πkt/T</sup>，　nT − T<sub>g</sub> ≤ t &lt; (n+1)T</div>因为 e<sup>j2πkt/T</sup> 以 T 为周期，前面多出的 T<sub>g</sub> 段正好是块尾 T<sub>g</sub> 段的复制，这就是"循环"前缀；接收端丢掉这一段，只取 nT ≤ t &lt; (n+1)T。（若按块周期 T + T<sub>g</sub> 计时，也可写成区间 n(T+T<sub>g</sub>) ≤ t &lt; (n+1)(T+T<sub>g</sub>)、指数里用 t − n(T+T<sub>g</sub>) − T<sub>g</sub>。）</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 每个子载波都要 ¼ log₂(1 + P<sub>k</sub>|H<sub>k</sub>|²) = 0.9：<div class="calc">1 + P<sub>k</sub>|H<sub>k</sub>|² = 2<sup>3.6</sup> = 12.126 → P<sub>k</sub>|H<sub>k</sub>|² = 11.126（≈ 11.13）</div><div class="calc">P₁ = 11.126/1 = 11.13；P₂ = 11.126/0.04 = 278.1；P₃ = 11.13；P₄ = 11.126/1.96 = 5.68</div>（P₂ 用没四舍五入的 11.126 算；如果先写成 11.13 再除，得 278.25，只是舍入差别，两个都算对。）<div class="calc">P<sub>total</sub> ≈ 306.1（功率单位）</div>差的子载波（|H₂| = 0.2）一个人就吃掉 90% 的功率。这正好说明为什么要用注水法，而不是强求每个子载波容量相同。</div></div><div class="wans">(i) 10 Mbit/s；每子载波 2.5 Mbit/s　(iii) 总功率 ≈ 306</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>OFDM 速率划分、循环前缀的表达式、等容量功率分配（第 7 章 p.8、p.17、p.21、p.24）。</dd><dt>用到的知识</dt><dd>每符号 log₂M bit；CP 表达式不变、区间改为 nT − T<sub>g</sub> ≤ t &lt; (n+1)T；每个子载波 C<sub>k</sub> = (1/N)log₂(1 + P<sub>k</sub>|H<sub>k</sub>|²)。</dd><dt>解题套路</dt><dd>总速率 = 符号率 × bit/符号，再除以子载波数；P<sub>k</sub> = (2<sup>NC<sub>k</sub></sup> − 1)/|H<sub>k</sub>|²。</dd><dt>易错</dt><dd>先乘回 N = 4 再取 2 的幂（2<sup>3.6</sup>）；|H₂| = 0.2 要平方成 0.04；CP 只改时间区间，不改式子。</dd><dt>结论</dt><dd>最差的子载波一个就吃掉 90% 的功率，所以实际用注水（Practice 7 第 1(d) 题）。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：OFDM 速率划分、循环前缀与等容量功率</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>OFDM 的速率怎么分，循环前缀怎么写</h4>
+<ul><li><b>每符号比特数</b>：M 电平调制每个符号带 log₂M bit。系统比特率 = 符号率 × log₂M。</li>
+<li><b>分到 N 个子载波</b>（讲义第 7 章 p.8）：原来一个高速串行流拆成 N 路并行的低速流，每个子载波的符号率是 R<sub>s</sub>/N，符号时长变成 N 倍。总速率不变，但每个符号变长了，ISI 的相对影响变小。</li>
+<li><b>循环前缀</b>（cyclic prefix, CP，p.17–21）：每个 OFDM 块前面加长度 T<sub>g</sub> 的保护间隔，里面放的是块<b>尾部</b>的复制。因为 e<sup>j2πkt/T</sup> 以 T 为周期，只要把原表达式的时间范围往前延伸 T<sub>g</sub>，前面多出来的那段自然就是尾巴的复制。接收端丢掉这一段。</li>
+<li><b>OFDM 子载波容量</b>（p.24）：N 个子载波是 N 条并行的高斯信道，每条占 1/N 的带宽，所以每赫兹容量 C<sub>k</sub> = (1/N) log₂(1 + P<sub>k</sub>|H<sub>k</sub>|²)（本题 N = 4，所以是 ¼）。</li></ul>
+<h4><span class="st">详细解析</span>(i) 速率</h4>
+<div class="calc">每符号 log₂4 = 2 bit；系统比特率 = 5×10⁶ × 2 = 10 Mbit/s</div>
+<div class="calc">每个子载波：符号率 5/4 = 1.25 Msymbol/s，比特率 10/4 = 2.5 Mbit/s</div>
+<p>对应的时长：原符号 T<sub>s</sub> = 1/(5×10⁶) = 0.2 µs，OFDM 符号 T = 4T<sub>s</sub> = 0.8 µs。</p>
+<h4><span class="st">详细解析</span>(ii) 加循环前缀</h4>
+<div class="calc">x(t) = (1/√T) Σ<sub>k=0</sub><sup>N−1</sup> s<sub>k</sub>(t) e<sup>j2π(k/T)t</sup>，　nT − T<sub>g</sub> ≤ t &lt; (n + 1)T</div>
+<p>为什么只改区间：表达式本身不变，只把每个块的开始时间提前 T<sub>g</sub>。由于周期性，x(t) 在 [nT − T<sub>g</sub>, nT) 这段等于 [(n+1)T − T<sub>g</sub>, (n+1)T) 那段，也就是尾巴的复制。接收端只取 nT ≤ t &lt; (n + 1)T。（也可以按块周期 T + T<sub>g</sub> 计时来写，意思相同。）</p>
+<h4><span class="st">详细解析</span>(iii) 等容量所需功率</h4>
+<ol><li>每个子载波都要 ¼ log₂(1 + P<sub>k</sub>|H<sub>k</sub>|²) = 0.9，先乘 4：<div class="calc">log₂(1 + P<sub>k</sub>|H<sub>k</sub>|²) = 3.6 → 1 + P<sub>k</sub>|H<sub>k</sub>|² = 2<sup>3.6</sup> = 12.126</div>计算器：2<sup>3.6</sup> = 10<sup>3.6 × 0.301</sup> = 10<sup>1.084</sup> ≈ 12.13。</li>
+<li><div class="calc">P<sub>k</sub>|H<sub>k</sub>|² = 11.126（≈ 11.13）</div></li>
+<li>|H<sub>k</sub>|² 分别是 1、0.04、1、1.96：<div class="calc">P₁ = 11.13；P₂ = 11.126/0.04 = 278.1；P₃ = 11.13；P₄ = 11.126/1.96 = 5.68</div></li>
+<li><div class="calc">P<sub>total</sub> = 11.13 + 278.1 + 11.13 + 5.68 ≈ 306.1（功率单位）</div></li></ol>
+<p><b>观察</b>：最差的子载波（|H₂| = 0.2）一个就用掉 278.1/306.1 ≈ 91% 的功率。"每个子载波容量一样"等于用功率去补偿信道（信道反转），在深衰落的子载波上非常浪费；注水法正好相反，把功率多给好的子载波。</p>
+<h4><span class="st">易错</span>注意</h4>
+<ul><li>先乘回 4 再取 2 的幂：2<sup>3.6</sup>，不是 2<sup>0.9</sup>。</li>
+<li>|H₂| = 0.2 要平方成 0.04，|H₄| = 1.4 平方成 1.96。</li>
+<li>P₂ 用 11.126 算得 278.1；先四舍五入成 11.13 再除得 278.25，只是舍入差别。</li>
+<li>CP 只改时间区间，不改表达式；区间写 nT − T<sub>g</sub>，不是 nT + T<sub>g</sub>。</li></ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) A 4-level system carries log₂4 = 2 bits per symbol, so the system bit rate is 5 × 10⁶ × 2 = 10 Mbit/s. With N = 4 sub-carriers, each sub-carrier carries 5/4 = 1.25 Msymbol/s, i.e. 10/4 = 2.5 Mbit/s.</p>
+<p>(ii) With a cyclic prefix of duration T<sub>g</sub>, each block is extended by T<sub>g</sub> at its start: x(t) = (1/√T) Σ<sub>k=0</sub><sup>N−1</sup> s<sub>k</sub>(t)e<sup>j2π(k/T)t</sup>, nT − T<sub>g</sub> ≤ t &lt; (n + 1)T. Because e<sup>j2πkt/T</sup> is periodic with period T, the extra segment is a copy of the last T<sub>g</sub> of the block (a cyclic prefix); the receiver discards it and processes only nT ≤ t &lt; (n + 1)T.</p>
+<p>(iii) For each sub-carrier, ¼ log₂(1 + P<sub>k</sub>|H<sub>k</sub>|²) = 0.9, so 1 + P<sub>k</sub>|H<sub>k</sub>|² = 2<sup>3.6</sup> = 12.126 and P<sub>k</sub>|H<sub>k</sub>|² = 11.126. Hence P₁ = 11.126/1 = 11.13, P₂ = 11.126/0.04 = 278.1, P₃ = 11.13 and P₄ = 11.126/1.96 = 5.68. The total power needed is about 306.1 (power units). The weak sub-carrier |H₂| = 0.2 alone needs about 91% of the total power, showing that equal-capacity allocation is inefficient compared with water-filling.</p></div>
+<div class="ans">一句话：10 Mbit/s 分 4 份每份 2.5 Mbit/s；CP 只把区间改成 nT − T<sub>g</sub> ≤ t &lt; (n+1)T；等容量要 P<sub>k</sub>|H<sub>k</sub>|² = 2<sup>3.6</sup> − 1 = 11.126，总功率 ≈ 306.1，差子载波吃掉 91%。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2425s2-q2b">→ 在「历年真题」页看整份 2024-25 S2 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2526s1-q2b">
@@ -2650,7 +3344,49 @@ where P<sub>k</sub> is the power allocated to the k<sup>th</sup> OFDM sub-carrie
 <span class="eq">r(t) = x(t) + w(t) = (1/√T<sub>OFDM</sub>) Σ<sub>k=0</sub><sup>N−1</sup> s<sub>k</sub>(t)e<sup>j2π(k/T<sub>OFDM</sub>)t</sup> + w(t)</span>
 where s<sub>k</sub>(t) is the transmitted signal with the k<sup>th</sup> carrier and w(t) is an Additive White Gaussian Noise. At the receiver, r(t) is passed through a set of correlators. Show that at the output of the n<sup>th</sup> correlator, the signal x(t) is simplified to s<sub>n</sub>(t).</p>
 <p class="marks">(12 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 每个子载波带宽 500/N 要小于相干带宽 30 kHz：<div class="calc">N &gt; 500/30 = 16.7 → N<sub>min</sub> = 17</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> N = 50：子载波带宽 10 kHz → 子载波符号时长 T = 1/10 kHz = 100 µs。为消除时延扩展的 ISI 要加保护间隔 T<sub>G</sub> ≥ 10 µs，块长 110 µs。每个 OFDM 块携带 50 × 2 = 100 bit（4-QAM 每符号 2 bit）：<div class="calc">R<sub>eff</sub> = 100 bit / 110 µs ≈ 909 kbit/s</div>不计保护间隔的原始速率是 100/100 µs = 1 Mbit/s；"effective" 指扣掉保护间隔后的速率。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 第 n 个相关器把 r(t) 乘以 (1/√T)e<sup>−j2πnt/T</sup> 再在一个符号期 T 内积分（T = T<sub>OFDM</sub>，s<sub>k</sub> 在符号期内为常数）：<div class="calc">(1/√T)∫₀<sup>T</sup> x(t)e<sup>−j2πnt/T</sup>dt = (1/T) Σ<sub>k</sub> s<sub>k</sub> ∫₀<sup>T</sup> e<sup>j2π(k−n)t/T</sup>dt</div>当 k = n，被积函数是 1，积分 = T；当 k ≠ n，积分的是整数个完整周期的复指数，结果为 0（子载波正交）：<div class="calc">∫₀<sup>T</sup> e<sup>j2π(k−n)t/T</sup>dt = T·δ[k − n] → 输出 = (1/T)·s<sub>n</sub>·T = s<sub>n</sub>(t)</div>噪声项另算，所以信号部分只剩 s<sub>n</sub>，其他子载波对它没有干扰。</div></div><div class="wans">(i) N ≥ 17　(ii) ≈ 909 kbit/s（不计保护间隔 1 Mbit/s）　(iii) 子载波正交 → 输出 s<sub>n</sub></div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>平坦衰落所需最少子载波、有效速率、相关器输出 = s<sub>n</sub> 的证明（第 7 章 p.5–13）。</dd><dt>用到的知识</dt><dd>N &gt; B/B<sub>C</sub>；T = 1/Δf；有效速率 = N log₂M / (T + T<sub>G</sub>)；子载波正交积分。</dd><dt>解题套路</dt><dd>(i) 500/30 = 16.7 → 17；(ii) Δf = 10 kHz → T = 100 µs，加 T<sub>G</sub> = 10 µs；(iii) 乘 e<sup>−j2πnt/T</sup> 积分，分 k = n、k ≠ n 两种情况。</dd><dt>易错</dt><dd>N 向上取整；"effective"要扣掉保护间隔；证明要把两种情况都写出来。</dd><dt>联系</dt><dd>讲解页 7.2 节"子载波为什么正交"推导框。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> 每个子载波带宽 500/N 要小于相干带宽 30 kHz：<div class="calc">N &gt; 500/30 = 16.7 → N<sub>min</sub> = 17</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> N = 50：子载波带宽 10 kHz → 子载波符号时长 T = 1/10 kHz = 100 µs。为消除时延扩展的 ISI 要加保护间隔 T<sub>G</sub> ≥ 10 µs，块长 110 µs。每个 OFDM 块携带 50 × 2 = 100 bit（4-QAM 每符号 2 bit）：<div class="calc">R<sub>eff</sub> = 100 bit / 110 µs ≈ 909 kbit/s</div>不计保护间隔的原始速率是 100/100 µs = 1 Mbit/s；"effective" 指扣掉保护间隔后的速率。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 第 n 个相关器把 r(t) 乘以 (1/√T)e<sup>−j2πnt/T</sup> 再在一个符号期 T 内积分（T = T<sub>OFDM</sub>，s<sub>k</sub> 在符号期内为常数）：<div class="calc">(1/√T)∫₀<sup>T</sup> x(t)e<sup>−j2πnt/T</sup>dt = (1/T) Σ<sub>k</sub> s<sub>k</sub> ∫₀<sup>T</sup> e<sup>j2π(k−n)t/T</sup>dt</div>当 k = n，被积函数是 1，积分 = T；当 k ≠ n，积分的是整数个完整周期的复指数，结果为 0（子载波正交）：<div class="calc">∫₀<sup>T</sup> e<sup>j2π(k−n)t/T</sup>dt = T·δ[k − n] → 输出 = (1/T)·s<sub>n</sub>·T = s<sub>n</sub>(t)</div>噪声项另算，所以信号部分只剩 s<sub>n</sub>，其他子载波对它没有干扰。</div></div><div class="wans">(i) N ≥ 17　(ii) ≈ 909 kbit/s（不计保护间隔 1 Mbit/s）　(iii) 子载波正交 → 输出 s<sub>n</sub></div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>平坦衰落所需最少子载波、有效速率、相关器输出 = s<sub>n</sub> 的证明（第 7 章 p.5–13）。</dd><dt>用到的知识</dt><dd>N &gt; B/B<sub>C</sub>；T = 1/Δf；有效速率 = N log₂M / (T + T<sub>G</sub>)；子载波正交积分。</dd><dt>解题套路</dt><dd>(i) 500/30 = 16.7 → 17；(ii) Δf = 10 kHz → T = 100 µs，加 T<sub>G</sub> = 10 µs；(iii) 乘 e<sup>−j2πnt/T</sup> 积分，分 k = n、k ≠ n 两种情况。</dd><dt>易错</dt><dd>N 向上取整；"effective"要扣掉保护间隔；证明要把两种情况都写出来。</dd><dt>联系</dt><dd>讲解页 7.2 节"子载波为什么正交"推导框。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：OFDM 子载波数、速率与正交性</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>OFDM 的设计思路</h4>
+<p>单载波高速传输时，信号带宽 B 大于相干带宽 B<sub>c</sub>，就是频率选择性衰落，会产生 ISI。OFDM（正交频分复用）的办法是：把可用带宽 B 切成 N 个窄的子载波，每个子载波带宽 Δf = B/N（第 7 章 p.5–8）。只要 <b>Δf &lt; B<sub>c</sub></b>，每个子载波看到的都是平坦衰落。</p>
+<p>代价是每个子载波上的符号变慢：子载波符号时长 T = 1/Δf = NT<sub>S</sub>（T<sub>S</sub> = 1/B 是不用 OFDM 时的符号时长）。符号变长后，时延扩展 T<sub>D</sub> 只占它的一小部分；再在每个 OFDM 块前面加保护间隔 T<sub>G</sub> ≥ T<sub>D</sub>（p.17–18），块与块之间的 ISI 就完全消掉。保护间隔不传新数据，所以有效速率要用块长 T + T<sub>G</sub> 来算。</p>
+<p><b>子载波为什么不互相干扰</b>：子载波频率间隔正好是 1/T，在一个符号期 T 内，任意两个不同子载波的乘积积分为 0（正交，p.7、p.13）。所以接收端用第 n 个相关器只能"看到"第 n 个子载波。老师说 OFDM 的数学相对简单。</p>
+<h4><span class="st">详细解析</span>(i) 最少子载波数</h4>
+<div class="calc">要求 500/N &lt; 30 kHz → N &gt; 500/30 = 16.7 → N<sub>min</sub> = 17</div>
+<p>检查：N = 17 时 Δf = 500/17 = 29.4 kHz &lt; 30 kHz，满足；N = 16 时 31.25 kHz &gt; 30 kHz，不满足。</p>
+<h4><span class="st">详细解析</span>(ii) N = 50 的有效速率</h4>
+<ol>
+<li>子载波带宽：Δf = 500/50 = 10 kHz（&lt; 30 kHz，平坦）。</li>
+<li>子载波符号时长（题目说 T = 1/B）：T = 1/10 kHz = 100 µs，远大于 T<sub>D</sub> = 10 µs。</li>
+<li>为消除时延扩展的 ISI，加保护间隔 T<sub>G</sub> = T<sub>D</sub> = 10 µs，块长 = 110 µs。</li>
+<li>每个块传 50 个 4-QAM 符号，每个符号 log₂4 = 2 bit，共 100 bit：
+<div class="calc">R<sub>eff</sub> = 100 bit / 110 µs ≈ 909 kbit/s</div></li>
+</ol>
+<p>对比：不计保护间隔是 100 bit / 100 µs = 1 Mbit/s；有效速率是它的 100/110 = 90.9%。（课外补充：同时还有 10 log₁₀(110/100) ≈ 0.41 dB 的功率损失，公式在 p.18，本题没问。）</p>
+<h4><span class="st">详细解析</span>(iii) 相关器输出 = s<sub>n</sub></h4>
+<ol>
+<li>第 n 个相关器：把 r(t) 乘以 (1/√T)e<sup>−j2πnt/T</sup>，在一个符号期 [0, T] 内积分（T = T<sub>OFDM</sub>）。</li>
+<li>代入 x(t)，常数 (1/√T)·(1/√T) = 1/T 提出来，求和与积分交换顺序，s<sub>k</sub> 在一个符号期内是常数，也提出来：
+<div class="calc">(1/T) Σ<sub>k=0</sub><sup>N−1</sup> s<sub>k</sub> ∫₀<sup>T</sup> e<sup>j2π(k−n)t/T</sup> dt</div></li>
+<li>k = n：被积函数 = e⁰ = 1，积分 = T。</li>
+<li>k ≠ n：在 [0, T] 内正好转了 (k − n) 整圈，积分 = T(e<sup>j2π(k−n)</sup> − 1)/(j2π(k − n)) = 0。</li>
+<li>所以求和里只剩 k = n 一项：(1/T)·s<sub>n</sub>·T = s<sub>n</sub>(t)。噪声项另算（相关后仍是零均值高斯）。</li>
+</ol>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>(i) N 不取整或向下取整成 16。</li>
+<li>(ii) 忘了保护间隔，答 1 Mbit/s；"effective"就是要扣掉保护间隔。</li>
+<li>(ii) 4-QAM 每个符号是 2 bit，不是 4 bit。</li>
+<li>(iii) 只写 k = n 的情况，没写 k ≠ n 积分为 0（正交性），证明不完整。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) For flat fading, each sub-carrier bandwidth must be smaller than the coherence bandwidth: 500/N &lt; 30 kHz, so N &gt; 16.7. The minimum number of carriers is N = 17.</p>
+<p>(ii) With N = 50, the sub-carrier bandwidth is Δf = 500/50 = 10 kHz, so the symbol duration on each sub-carrier is T = 1/Δf = 100 µs. A guard interval T<sub>G</sub> ≥ T<sub>D</sub> = 10 µs is added to remove ISI, so each OFDM block lasts 110 µs. Each block carries 50 × log₂4 = 100 bits. The effective bit rate is 100/(110 µs) ≈ 909 kbit/s (1 Mbit/s if the guard interval is ignored).</p>
+<p>(iii) The output of the n-th correlator is (1/√T)∫₀<sup>T</sup> x(t)e<sup>−j2πnt/T</sup>dt = (1/T)Σ<sub>k</sub> s<sub>k</sub>∫₀<sup>T</sup> e<sup>j2π(k−n)t/T</sup>dt. For k = n the integral equals T; for k ≠ n it is the integral of a complex exponential over an integer number of periods, which is zero (orthogonal sub-carriers). Hence the output is (1/T)·s<sub>n</sub>·T = s<sub>n</sub>(t): only the n-th symbol remains and the other sub-carriers cause no interference.</p></div>
+<div class="ans">一句话：子载波带宽小于相干带宽 → N ≥ 17；N = 50 时块长 100 + 10 µs，传 100 bit，有效速率约 909 kbit/s；子载波正交，相关器只留下 s<sub>n</sub>。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s1-q2b">→ 在「历年真题」页看整份 2025-26 S1 试卷</a></div>
 </div>
 <div class="pastq" id="pq-y2526s2-q2b">
@@ -2662,7 +3398,51 @@ where s<sub>k</sub>(t) is the transmitted signal with the k<sup>th</sup> carrier
 <p>(ii) Explain why the transformation of the signal, {s<sub>k</sub>(t)}, into the OFDM signal, x(t), can be viewed as an inverse Discrete Fourier transform process.</p>
 <p>(iii) If the OFDM system uses a cyclic prefix of 20 μs, determine the OFDM symbol duration and the power loss due to the addition of the cyclic prefix.</p>
 <p class="marks">(13 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> h = {1, 0.3}，N = 4，H<sub>k</sub> = 1 + 0.3e<sup>−j2πk/4</sup>：<div class="calc">H₁ = 1 − 0.3j；H₂ = 0.7；H₃ = 1 + 0.3j；H₄ (= H₀) = 1.3</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 在一个块内按 t = iT/N（i = 0…N−1）采样（讲义 Ch7 p.19）：<div class="calc">x<sub>i</sub> = (1/√T) Σ<sub>k=0</sub><sup>N−1</sup> s<sub>k</sub> e<sup>j2πki/N</sup></div>这正是 N 点 IDFT 的形式（只差一个常数比例）：频域的 N 个符号 {s<sub>k</sub>} 被变换成时域的 N 个采样。所以发射端可以用 IFFT 实现，接收端用 FFT 解调，不需要 N 个独立的振荡器。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 4 个基带符号并行，每个 OFDM 块长 NT<sub>s</sub> = 4 × 2 = 8 µs；加 20 µs 循环前缀：<div class="calc">T<sub>OFDM</sub> = 8 + 20 = 28 µs</div><div class="calc">功率损失 = 10 log₁₀(28/8) ≈ 5.44 dB</div>CP 比数据部分还长，损失很大。实际设计会增加 N，让 NT<sub>s</sub> 远大于 CP。</div></div><div class="wans">(i) {1−0.3j, 0.7, 1+0.3j, 1.3}　(iii) 28 µs，≈ 5.44 dB</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>4 个子载波的信道增益、OFDM 即 IDFT、循环前缀与功率损失（第 7 章 p.15、p.17–21）。</dd><dt>用到的知识</dt><dd>H<sub>k</sub> = Σh<sub>i</sub>e<sup>−j2πik/N</sup>；按 t = iT/N 采样 → IDFT；损失 10 log₁₀((NT<sub>s</sub> + T<sub>G</sub>)/NT<sub>s</sub>)。</dd><dt>解题套路</dt><dd>(i) N = 4 速算 −j、−1、j、1；(ii) 代入采样时刻，和 IDFT 定义对比；(iii) 块长 4 × 2 = 8 µs，加 20 µs。</dd><dt>易错</dt><dd>有用部分是 NT<sub>s</sub> = 8 µs，不是 2 µs；CP 比数据还长，所以损失高达 5.44 dB。</dd><dt>举一反三</dt><dd>N 增大到 64：有用部分 128 µs，损失只有 10 log(148/128) = 0.63 dB。N 越大，CP 开销越小。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>(i)</b> h = {1, 0.3}，N = 4，H<sub>k</sub> = 1 + 0.3e<sup>−j2πk/4</sup>：<div class="calc">H₁ = 1 − 0.3j；H₂ = 0.7；H₃ = 1 + 0.3j；H₄ (= H₀) = 1.3</div></div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>(ii)</b> 在一个块内按 t = iT/N（i = 0…N−1）采样（讲义 Ch7 p.19）：<div class="calc">x<sub>i</sub> = (1/√T) Σ<sub>k=0</sub><sup>N−1</sup> s<sub>k</sub> e<sup>j2πki/N</sup></div>这正是 N 点 IDFT 的形式（只差一个常数比例）：频域的 N 个符号 {s<sub>k</sub>} 被变换成时域的 N 个采样。所以发射端可以用 IFFT 实现，接收端用 FFT 解调，不需要 N 个独立的振荡器。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>(iii)</b> 4 个基带符号并行，每个 OFDM 块长 NT<sub>s</sub> = 4 × 2 = 8 µs；加 20 µs 循环前缀：<div class="calc">T<sub>OFDM</sub> = 8 + 20 = 28 µs</div><div class="calc">功率损失 = 10 log₁₀(28/8) ≈ 5.44 dB</div>CP 比数据部分还长，损失很大。实际设计会增加 N，让 NT<sub>s</sub> 远大于 CP。</div></div><div class="wans">(i) {1−0.3j, 0.7, 1+0.3j, 1.3}　(iii) 28 µs，≈ 5.44 dB</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>4 个子载波的信道增益、OFDM 即 IDFT、循环前缀与功率损失（第 7 章 p.15、p.17–21）。</dd><dt>用到的知识</dt><dd>H<sub>k</sub> = Σh<sub>i</sub>e<sup>−j2πik/N</sup>；按 t = iT/N 采样 → IDFT；损失 10 log₁₀((NT<sub>s</sub> + T<sub>G</sub>)/NT<sub>s</sub>)。</dd><dt>解题套路</dt><dd>(i) N = 4 速算 −j、−1、j、1；(ii) 代入采样时刻，和 IDFT 定义对比；(iii) 块长 4 × 2 = 8 µs，加 20 µs。</dd><dt>易错</dt><dd>有用部分是 NT<sub>s</sub> = 8 µs，不是 2 µs；CP 比数据还长，所以损失高达 5.44 dB。</dd><dt>举一反三</dt><dd>N 增大到 64：有用部分 128 µs，损失只有 10 log(148/128) = 0.63 dB。N 越大，CP 开销越小。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：子载波增益、IDFT 与循环前缀</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>子载波信道增益</h4>
+<p>OFDM 把频率选择性信道切成 N 个平坦的子信道，第 k 个子载波看到的是一个复数增益 H<sub>k</sub>（第 7 章 p.15）：</p>
+<div class="calc">H<sub>k</sub> = Σ<sub>i=0</sub><sup>L−1</sup> h<sub>i</sub> e<sup>−j2πik/N</sup>，k = 1, …, N（注意 H<sub>N</sub> = H<sub>0</sub>）</div>
+<p>它就是信道抽头的 N 点 DFT，也等于把 Z = e<sup>j2πk/N</sup> 代进 H(Z)。加了循环前缀后，每个子载波的接收信号就是 r<sub>k</sub> = H<sub>k</sub>s<sub>k</sub> + w<sub>k</sub>（p.17、p.22），接收端只要每个子载波除以一个 H<sub>k</sub> 就完成了均衡。</p>
+<h4><span class="st">知识讲解</span>为什么 OFDM 调制就是 IDFT</h4>
+<p>p.19：把一个 OFDM 块的 x(t) 在 N 个等间隔时刻采样，得到的 N 个样本正好是 {s<sub>k</sub>} 的 IDFT；p.20：接收端相关器的输出正好是 DFT。所以实际系统用 IFFT/FFT 芯片就能实现，不需要 N 个振荡器。</p>
+<h4><span class="st">知识讲解</span>循环前缀（CP）和功率损失</h4>
+<p>保护间隔 T<sub>G</sub> ≥ 最大时延扩展 T<sub>D</sub>，前一个块的拖尾落在保护间隔里，被接收端丢掉，所以块间没有 ISI（p.17–18）。保护间隔里放的是块末尾 G 个样本的复制，叫<b>循环前缀</b>（p.21–22），这样信道的线性卷积变成循环卷积，每个子载波才是简单的 H<sub>k</sub>s<sub>k</sub>。代价是 CP 也要花发射功率，却不带新信息，功率损失（p.18）= 10 log₁₀[(NT<sub>S</sub> + T<sub>G</sub>)/(NT<sub>S</sub>)]。</p>
+<h4><span class="st">详细解析</span>(i) 4 个子载波的增益</h4>
+<p>h<sub>0</sub> = 1，h<sub>1</sub> = 0.3，N = 4，H<sub>k</sub> = 1 + 0.3e<sup>−j2πk/4</sup>。先算 e<sup>−jπk/2</sup>：k = 1 → −j，k = 2 → −1，k = 3 → j，k = 4 → 1。</p>
+<div class="calc">H₁ = 1 + 0.3(−j) = 1 − 0.3j（|H₁| = 1.044）<br>H₂ = 1 + 0.3(−1) = 0.7<br>H₃ = 1 + 0.3(j) = 1 + 0.3j<br>H₄ = 1 + 0.3(1) = 1.3（= H₀）</div>
+<p><b>检查</b>：h 是实数，所以 H₃ = H₁ 的共轭，成立。增益从 0.7 到 1.3 不等，说明原信道是频率选择性的，但每个子载波内部只是一个常数。</p>
+<h4><span class="st">详细解析</span>(ii) 为什么是 IDFT</h4>
+<ol>
+<li>在一个块内按 t = iT/N（i = 0, …, N−1）采样，代入 x(t)：
+<div class="calc">x<sub>i</sub> = x(iT/N) = (1/√T) Σ<sub>k=0</sub><sup>N−1</sup> s<sub>k</sub> e<sup>j2πki/N</sup></div></li>
+<li>N 点 IDFT 的定义是 x<sub>i</sub> = (1/N)Σ<sub>k</sub> X<sub>k</sub> e<sup>j2πki/N</sup>。两式只差一个常数比例，形式完全相同。</li>
+<li>所以把频域的 N 个符号 {s<sub>k</sub>} 变成时域的 N 个样本，就是做一次 IDFT；发射端用 IFFT 实现，接收端用 FFT 解调。</li>
+</ol>
+<h4><span class="st">详细解析</span>(iii) 符号时长和功率损失</h4>
+<ol>
+<li>4 个基带符号并行，每个子载波上的符号时长（有用部分）T = NT<sub>S</sub> = 4 × 2 = 8 µs。</li>
+<li>加 CP：
+<div class="calc">T<sub>OFDM</sub> = 8 + 20 = 28 µs</div></li>
+<li>功率损失（计算器：28/8 = 3.5，log₁₀3.5 = 0.544）：
+<div class="calc">10 log₁₀(28/8) = 10 log₁₀3.5 ≈ 5.44 dB</div></li>
+</ol>
+<p>20/28 ≈ 71% 的发射能量花在 CP 上，非常浪费。实际设计会增大 N，让 NT<sub>S</sub> 远大于 CP。（补充思考：信道 1 + 0.3Z⁻¹ 只延迟一个基带符号，即 2 µs，CP 有 2 µs 就够；题目给 20 µs 是为了练公式，答题照题目算即可。）</p>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>(i) e<sup>−j2πk/4</sup> 的符号搞反，H₁ 和 H₃ 写反。</li>
+<li>(iii) 有用部分用 2 µs（一个基带符号）而不是 NT<sub>S</sub> = 8 µs，得出 10 log₁₀11 的错误答案。</li>
+<li>(iii) 功率损失写成 20/28 或 28/8 而不换成 dB。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(i) h<sub>0</sub> = 1, h<sub>1</sub> = 0.3, N = 4. The sub-channel gains are H<sub>k</sub> = Σ<sub>i</sub> h<sub>i</sub>e<sup>−j2πik/N</sup> = 1 + 0.3e<sup>−jπk/2</sup>: H₁ = 1 − 0.3j, H₂ = 0.7, H₃ = 1 + 0.3j, H₄ = H₀ = 1.3.</p>
+<p>(ii) Sampling the OFDM block at t = iT/N, i = 0, 1, …, N − 1, gives x<sub>i</sub> = (1/√T)Σ<sub>k=0</sub><sup>N−1</sup> s<sub>k</sub>e<sup>j2πki/N</sup>. Apart from a constant scaling factor, this is exactly the N-point inverse DFT of {s<sub>k</sub>}: the N frequency-domain symbols are transformed into N time-domain samples. Hence the OFDM modulator can be implemented with an IFFT, and the receiver demodulates with an FFT.</p>
+<p>(iii) The useful OFDM symbol duration is NT<sub>S</sub> = 4 × 2 µs = 8 µs. With a cyclic prefix of 20 µs, the OFDM symbol duration is 8 + 20 = 28 µs. Power loss due to the cyclic prefix = 10 log₁₀[(NT<sub>S</sub> + T<sub>G</sub>)/NT<sub>S</sub>] = 10 log₁₀(28/8) ≈ 5.44 dB.</p></div>
+<div class="ans">一句话：H<sub>k</sub> = 1 + 0.3e<sup>−jπk/2</sup> 得 {1−0.3j, 0.7, 1+0.3j, 1.3}；按 t = iT/N 采样就是 IDFT；块长 8 + 20 = 28 µs，功率损失 10 log₁₀3.5 ≈ 5.44 dB。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s2-q2b">→ 在「历年真题」页看整份 2025-26 S2 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->

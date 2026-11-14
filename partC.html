@@ -759,12 +759,60 @@ table td:first-child{font-family:var(--f-body);}
 .pq-kp dd{margin:0;font-size:14.5px;color:var(--ink);line-height:1.65;}
 @media (max-width:560px){.pq-kp dl{grid-template-columns:1fr;gap:0;}.pq-kp dt{margin-top:6px;}}
 .pq-table td{font-family:var(--f-body);font-size:13.5px;line-height:1.55;vertical-align:top;}
+
+.xpl{--xa:var(--extra,var(--accent));--xs:var(--extra-soft,var(--accent-soft));--xl:var(--line,var(--border));--xp:var(--surface-2,var(--paper,transparent));--xt:var(--ink,var(--text))}
+details.deep.xpl{margin:12px 0 4px;border:1px solid var(--xa);border-left-width:5px;border-radius:10px;background:var(--card,var(--surface,transparent))}
+details.deep.xpl > summary{cursor:pointer;list-style:none;padding:9px 14px;font-weight:700;font-size:.92rem;color:var(--xa);display:flex;gap:8px;align-items:baseline}
+details.deep.xpl > summary::-webkit-details-marker{display:none}
+details.deep.xpl > summary::before{content:'📘';font-size:.9rem}
+details.deep.xpl[open] > summary{border-bottom:1px solid var(--xl)}
+.xpl .deep-body{padding:4px 16px 14px;font-size:.93rem;line-height:1.75;color:var(--xt)}
+.xpl h4{font-size:.95rem;font-weight:700;margin:16px 0 4px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px}
+.xpl h4 .st{font-size:.7rem;font-weight:700;background:var(--xs);color:var(--xa);border-radius:6px;padding:1px 8px;letter-spacing:.02em}
+.xpl p{margin:.4em 0;max-width:78ch}
+.xpl ul,.xpl ol{margin:.3em 0;padding-left:1.4em}
+.xpl li{margin:.25em 0}
+.xpl .tw{overflow-x:auto;margin:6px 0}
+.xpl table.mini{border-collapse:collapse;width:auto;min-width:240px;font-size:.86rem}
+.xpl table.mini th,.xpl table.mini td{padding:5px 10px;border-bottom:1px solid var(--xl);text-align:left;vertical-align:top}
+.xpl table.mini th{font-size:.74rem;font-weight:700;color:var(--xa)}
+.xpl .tmpl{border-left:3px solid var(--xa);background:var(--xp);border-radius:0 8px 8px 0;padding:6px 14px;margin:.4em 0;font-size:.9rem}
+.xpl .tmpl p{margin:.3em 0}
+.xpl .calc{overflow-x:auto}
+.xpl .ans{margin-top:12px}
 </style><div class="pastq-block"><h3><span class="zh-num">真题</span>本章的历年期末考题（1 题）</h3><p class="pq-intro">来自 2025-26 S2 期末卷。原题照试卷逐字转录，先自己做，再展开解答。</p><div class="pastq" id="pq-y2526s2-q4b">
   <div class="pq-head"><span class="pq-paper">2025-26 S2</span><span class="pq-q">Q4(b)</span><span>8 分</span></div>
   <div class="pq-topic"><b>考点</b>：MEO/LEO 卫星系统的四种切换</div>
   <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>(b) In a satellite system with Medium Earth Orbit (MEO) or Low Earth Orbit (LEO) satellites, there could also be handovers in the system if the satellite acts as a base station. Briefly describe the 4 different types of handovers that can occur in this type of satellite system.</p>
 <p class="marks">(8 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>星内切换（Intra-satellite）</b>（讲义 Part C p.40）：用户在同一颗卫星的覆盖区内，从一个扇区（点波束）移到另一个扇区。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>星间切换（Inter-satellite）</b>：用户从一颗卫星的覆盖区移到另一颗卫星的覆盖区，或者卫星自己飞走了。LEO 卫星每次只可见 15–20 分钟，这种切换很频繁。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>网关切换（Gateway）</b>：卫星移动后离开了当前连接的地面网关，需要换一个网关。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>系统间切换（Inter-system）</b>：卫星系统和地面蜂窝系统之间，根据信号强度和 QoS 进行的<b>垂直切换</b>。</div></div><div class="wans">星内、星间、网关、系统间（垂直）切换</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>MEO/LEO 卫星系统的四种切换（Part C p.40）。</dd><dt>答题要点</dt><dd>星内切换（同一颗卫星的不同点波束 / 扇区之间）；星间切换（换卫星，LEO 每颗只可见 15–20 分钟，很频繁）；网关切换（卫星离开当前地面网关）；系统间切换（卫星与地面蜂窝之间的垂直切换）。</dd><dt>记忆</dt><dd>从小到大："波束 → 卫星 → 网关 → 系统"。</dd><dt>易错</dt><dd>星间切换不只是用户移动造成的，卫星自己飞走也会触发；系统间切换叫"垂直切换"。</dd></dl></div></details>
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>星内切换（Intra-satellite）</b>（讲义 Part C p.40）：用户在同一颗卫星的覆盖区内，从一个扇区（点波束）移到另一个扇区。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>星间切换（Inter-satellite）</b>：用户从一颗卫星的覆盖区移到另一颗卫星的覆盖区，或者卫星自己飞走了。LEO 卫星每次只可见 15–20 分钟，这种切换很频繁。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>网关切换（Gateway）</b>：卫星移动后离开了当前连接的地面网关，需要换一个网关。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext"><b>系统间切换（Inter-system）</b>：卫星系统和地面蜂窝系统之间，根据信号强度和 QoS 进行的<b>垂直切换</b>。</div></div><div class="wans">星内、星间、网关、系统间（垂直）切换</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>MEO/LEO 卫星系统的四种切换（Part C p.40）。</dd><dt>答题要点</dt><dd>星内切换（同一颗卫星的不同点波束 / 扇区之间）；星间切换（换卫星，LEO 每颗只可见 15–20 分钟，很频繁）；网关切换（卫星离开当前地面网关）；系统间切换（卫星与地面蜂窝之间的垂直切换）。</dd><dt>记忆</dt><dd>从小到大："波束 → 卫星 → 网关 → 系统"。</dd><dt>易错</dt><dd>星间切换不只是用户移动造成的，卫星自己飞走也会触发；系统间切换叫"垂直切换"。</dd></dl></div><details class="deep xpl">
+  <summary>知识讲解 + 详细解析：LEO/MEO 卫星的四种切换</summary>
+  <div class="deep-body">
+<h4><span class="st">知识讲解</span>为什么 LEO/MEO 卫星系统会有切换</h4>
+<p>GEO（地球静止轨道）卫星相对地面不动，地面用户一直看到同一颗卫星。MEO（中轨）和 LEO（低轨）卫星相对地面高速运动，一颗 LEO 卫星对某个地点只可见十几分钟。如果卫星本身充当基站（卫星上载有基站功能），那么除了用户移动，<b>卫星自己的运动</b>也会引起切换（Part C p.40）。讲义列出 4 种，按范围从小到大记：<b>波束 → 卫星 → 网关 → 系统</b>。老师说卫星这部分讲得少，但期末考过的就是这一题。</p>
+<h4><span class="st">详细解析</span>四种切换逐个展开（8 分，每种 2 分：名称 + 起因/机制）</h4>
+<ol>
+<li><b>星内切换（intra-satellite handover）</b>：一颗卫星用多个点波束把覆盖区分成多个扇区（类似蜂窝的小区）。用户在<b>同一颗卫星</b>的覆盖范围内从一个扇区移到另一个扇区时，换到另一个波束（换频率/信道），卫星不变。</li>
+<li><b>星间切换（inter-satellite handover）</b>：用户从一颗卫星的覆盖区移到另一颗卫星的覆盖区，<b>或者卫星自己飞走了</b>，通话要转给下一颗卫星。LEO 卫星运动快、每颗可见时间短，这种切换很频繁。</li>
+<li><b>网关切换（gateway handover）</b>：卫星通过地面网关（gateway）接入地面网络。卫星移动后离开了当前连接的网关，就要换到另一个网关（即使用户没有动）。</li>
+<li><b>系统间切换（inter-system handover）</b>：在<b>卫星系统和地面蜂窝系统之间</b>的切换。例如用户进入城市、地面蜂窝信号更好时，从卫星切到蜂窝；反之亦然。依据是信号强度和 QoS 性能，它是一种<b>垂直切换</b>（vertical handover，不同类型网络之间）。</li>
+</ol>
+<h4><span class="st">易错</span>常见失分点</h4>
+<ul>
+<li>只写四个名字：每个都要写起因（用户移动还是卫星移动）。</li>
+<li>星间切换只写"用户移动"，漏了"卫星飞走"这个卫星系统特有的原因。</li>
+<li>系统间切换要写出"垂直切换"和"依据信号强度和 QoS"。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>In MEO/LEO systems the satellites move relative to the earth, so if a satellite acts as a base station, handovers are caused not only by the movement of the users but also by the movement of the satellites. Four types of handover can occur:</p>
+<p>1. <b>Intra-satellite handover:</b> caused by the movement of a mobile user within the coverage of one satellite from one sector (spot beam) to another. The user is switched to another beam/channel of the same satellite.</p>
+<p>2. <b>Inter-satellite handover:</b> caused by the movement of a user from the coverage of one satellite to that of another, or by the satellite moving away. The connection is handed over to the next satellite. This is frequent in LEO systems because each satellite is visible for only a short time.</p>
+<p>3. <b>Gateway handover:</b> caused by the movement of the satellite away from the current ground gateway, so the satellite link has to be switched to another gateway, even if the user does not move.</p>
+<p>4. <b>Inter-system handover:</b> a handover between the satellite system and a terrestrial cellular system, based on signal strength and QoS performance. This is a vertical handover between two different types of network.</p></div>
+<div class="ans">一句话：星内（同一卫星换波束）、星间（换卫星，用户动或卫星飞走）、网关（卫星离开当前网关）、系统间（卫星与地面蜂窝之间的垂直切换）。</div>
+  </div>
+</details>
+</details>
   <div class="pq-links"><a href="exams.html#y2526s2-q4b">→ 在「历年真题」页看整份 2025-26 S2 试卷</a></div>
 </div>
 </div><!-- PASTQ:end -->

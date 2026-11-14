@@ -56,6 +56,64 @@
       <div class="ans">(a) B/B_C ≪ N ≪ B/B_d；(b) 1.4, 0.8−0.6j, 0.2, 0.8+0.6j；(c) 0.36, 9.09, 0.36, 0.19；(d) ≈ 1.8 bit/s/Hz</div>
       <div class="official"><b>官方答案：</b>完全一致 ✓（官方把 k = 1…4 记为 H₁…H₄，H₄ = H₀ = 1.4）</div>
       <div class="note">对比 (c) 和 (d)：为了"人人平等"，(c) 把 91% 的功率砸在最差的子信道上；注水 (d) 干脆放弃最差的那个，总容量高得多。</div>
+      <!-- XPL:p7q1 -->
+      <details class="deep xpl">
+        <summary>知识讲解 + 详细解析：OFDM 选 N、算 H_k、分功率</summary>
+        <div class="deep-body">
+<h4><span class="st">知识讲解</span>OFDM 把频率选择性信道切成 N 条平坦子信道</h4>
+<p>多径信道 y(t) = h₀x(t) + h₁x(t − τ) + w(t) 的频率响应随频率起伏（频率选择性衰落），单载波传输会有 ISI。OFDM 把总带宽 B 切成 N 个子载波，每个宽 Δf = B/N（第 7 章 p.8），一个 OFDM 符号长 T = N/B（p.7）。只要每个子载波足够窄，它在自己那一小段频率里看到的增益就近似是常数，即平坦衰落；接收端 DFT 以后得到 r<sub>k</sub> = H<sub>k</sub>s<sub>k</sub> + w<sub>k</sub>（p.6、p.17）。</p>
+<p><b>两个条件</b>（第 2 章 p.31–37）：</p>
+<ul>
+<li><b>平坦（flat）</b>：信号带宽 &lt; 相干带宽 B<sub>C</sub>。这里"信号"是一个子载波，所以 B/N ≪ B<sub>C</sub>。</li>
+<li><b>慢衰落（slow）</b>：符号时长 &lt; 相干时间 T<sub>C</sub> ≈ 1/B<sub>d</sub>（p.36：相干时间是多普勒扩展的对偶）。这里"符号"是一个 OFDM 符号，所以 N/B ≪ 1/B<sub>d</sub>。</li>
+</ul>
+<p><b>子信道增益</b>（第 7 章 p.15）：H<sub>k</sub> = Σ<sub>i</sub> h<sub>i</sub> e<sup>−j2πik/N</sup>，就是冲激响应 [h₀, h₁, …] 的 N 点 DFT。这里假设回波延迟 τ 正好是一个采样间隔（i = 0, 1）。讲义注明 H<sub>N</sub> = H₀，所以 k = 1…N 和 k = 0…N − 1 是同一组值。</p>
+<p><b>容量</b>（第 7 章 p.24）：N 条独立的并行高斯子信道，C = Σ<sub>k</sub> log₂(1 + |H<sub>k</sub>|²P<sub>k</sub>/N<sub>k</sub>)，本题噪声 N<sub>k</sub> = σ² = 1。功率怎么分，(c)(d) 给了两种原则。</p>
+<h4><span class="st">详细解析</span>(a) N 的选取原则</h4>
+<ol>
+<li>平坦：B/N ≪ B<sub>C</sub> → N ≫ B/B<sub>C</sub>（N 太小，子载波太宽，又变回频率选择性）。</li>
+<li>慢衰落：T = N/B ≪ 1/B<sub>d</sub> → N ≪ B/B<sub>d</sub>（N 太大，OFDM 符号太长，信道在一个符号内就变了，子载波失去正交，产生载波间干扰 ICI）。</li>
+<li>合起来：B/B<sub>C</sub> ≪ N ≪ B/B<sub>d</sub>。能找到这样的 N 的前提是 B<sub>d</sub> ≪ B<sub>C</sub>，实际系统一般满足。</li>
+</ol>
+<h4><span class="st">详细解析</span>(b) 算 H<sub>k</sub></h4>
+<p>N = 4：e<sup>−j2πk/4</sup> = e<sup>−jπk/2</sup>，k = 0, 1, 2, 3 依次是 1、−j、−1、j（在单位圆上每次顺时针转 90°）。</p>
+<div class="calc">H₀ = H₄ = 0.8 + 0.6 = 1.4，|H|² = 1.96</div>
+<div class="calc">H₁ = 0.8 + 0.6(−j) = 0.8 − 0.6j，|H|² = 0.64 + 0.36 = 1</div>
+<div class="calc">H₂ = 0.8 − 0.6 = 0.2，|H|² = 0.04</div>
+<div class="calc">H₃ = 0.8 + 0.6j，|H|² = 1</div>
+<p>自检：Σ|H<sub>k</sub>|² = 1.96 + 1 + 0.04 + 1 = 4 = N(h₀² + h₁²) = 4 × 1 ✓（帕塞瓦尔定理，课外补充）。子信道 2 的增益只有 0.2：两条路径反相抵消，这就是频率选择性衰落里的"深衰落"。按题目编号 k = 1, 2, 3, 4，功率增益为 1、0.04、1、1.96。</p>
+<h4><span class="st">详细解析</span>(c) 等容量分配</h4>
+<ol>
+<li>容量 log₂(1 + |H<sub>k</sub>|²P<sub>k</sub>) 都相等 ⇔ 每条的 SNR |H<sub>k</sub>|²P<sub>k</sub> 都等于同一个常数 c → P<sub>k</sub> = c/|H<sub>k</sub>|²。增益越差，分的功率越多（"劫富济贫"）。</li>
+<li>由总功率求 c：<div class="calc">c(1/1 + 1/0.04 + 1/1 + 1/1.96) = c(1 + 25 + 1 + 0.51) = 27.51c = 10 → c = 0.3635</div></li>
+<li>各子信道：<div class="calc">P₁ = 0.3635/1 = 0.36，P₂ = 0.3635/0.04 = 9.09，P₃ = 0.36，P₄ = 0.3635/1.96 = 0.19</div>加起来 0.36 + 9.09 + 0.36 + 0.19 = 10 ✓。</li>
+</ol>
+<h4><span class="st">详细解析</span>(d) 注水求最大和容量</h4>
+<ol>
+<li><b>池底</b> = 噪声/增益 = 1/|H<sub>k</sub>|²：1、25、1、0.51。功率 P<sub>k</sub> = μ − 1/|H<sub>k</sub>|²（μ 是水面），水面以下的子信道才分功率。</li>
+<li><b>先全放水</b>：4μ − 27.51 = 10 → μ = 37.51/4 = 9.38。但子信道 2 的池底 25 &gt; 9.38，它会分到负功率，不行，去掉。</li>
+<li><b>剩三条</b>：3μ − (1 + 1 + 0.51) = 10 → μ = 12.51/3 = 4.17。功率 4.17 − 1 = 3.17、3.17、4.17 − 0.51 = 3.66，都为正 ✓，加起来 10 ✓。</li>
+<li><b>容量</b>：分到功率后每条的 SNR = |H<sub>k</sub>|²P<sub>k</sub>，1 + SNR = |H<sub>k</sub>|²μ：<div class="calc">C = log₂(4.17) + log₂(4.17) + log₂(4.17 × 1.96) = 2.06 + 2.06 + 3.03 = 7.15 bit</div></li>
+<li><b>换成每赫兹</b>：这 7.15 bit 是 4 个子载波一起传的，每个子载波只占 B/4，所以每赫兹总带宽：7.15/4 = 1.79 ≈ 1.8 bit/s/Hz（官方答案 1.8）。</li>
+</ol>
+<p>和第 2 章的写法对上：每条的满功率 SNR γ<sub>k</sub> = |H<sub>k</sub>|² × 10 = 10、0.4、10、19.6，用 Σ(1/γ₀ − 1/γ<sub>k</sub>) = 1 解出 γ₀ = 2.40，γ₂ = 0.4 &lt; γ₀ 被去掉，C = Σ log₂(γ<sub>k</sub>/γ₀) = 7.15 bit，结果一样（μ = P/γ₀）。</p>
+<h4><span class="st">自检</span>三种分法比一比</h4>
+<div class="tw"><table class="mini"><thead><tr><th>分法</th><th>功率</th><th>总比特</th><th>bit/s/Hz</th></tr></thead><tbody><tr><td>(c) 等容量</td><td>0.36、9.09、0.36、0.19</td><td>4 × 0.447 = 1.79</td><td>0.447</td></tr><tr><td>平分（课外补充）</td><td>2.5、2.5、2.5、2.5</td><td>6.31</td><td>1.58</td></tr><tr><td>(d) 注水</td><td>3.17、0、3.17、3.66</td><td>7.15</td><td>1.79</td></tr></tbody></table></div>
+<p>(c) 把 91% 的功率砸在最差的子信道上，总容量最低；注水干脆放弃它，总容量最高。注意 (c) 的"总比特 1.79"和 (d) 的"bit/s/Hz 1.79"只是数字巧合，单位不同，别混。</p>
+<h4><span class="st">易错</span>常见丢分点</h4>
+<ul>
+<li>功率增益要用 |H<sub>k</sub>|²，不是 |H<sub>k</sub>|；复数的模平方 = 实部² + 虚部²。</li>
+<li>编号：题目 k = 1…4，H₄ = H₀ = 1.4；P₄ 对应 1.96。</li>
+<li>注水不检查池底，直接用 μ = 9.38 会给子信道 2 分到负功率。</li>
+<li>(d) 要的是 bit/s/Hz：最后除以 N = 4。讲义 p.24 把求和式叫"capacity per Hertz"，那是按每个子载波的带宽算的；官方答案 1.8 是除以 N 以后的值。</li>
+<li>(a) 只写一个条件不够，"平坦"和"慢衰落"两边都要写，并说明理由。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>(a) Each sub-carrier has bandwidth B/N and the OFDM symbol lasts about N/B. Flat fading requires B/N ≪ B<sub>C</sub>, i.e. N ≫ B/B<sub>C</sub>; slow fading requires N/B ≪ T<sub>C</sub> ≈ 1/B<sub>d</sub>, i.e. N ≪ B/B<sub>d</sub>. Hence choose \(B/B_C\ll N\ll B/B_d\).</p><p>(b) \(H_k=h_0+h_1e^{-j2\pi k/N}=0.8+0.6e^{-j\pi k/2}\): H₀ = H₄ = 1.4, H₁ = 0.8 − j0.6, H₂ = 0.2, H₃ = 0.8 + j0.6; \(|H_k|^2\) = 1, 0.04, 1, 1.96 for k = 1, 2, 3, 4.</p><p>(c) Equal capacity ⇔ \(|H_k|^2P_k=c\). \(\sum P_k=c\sum1/|H_k|^2=27.51c=10\Rightarrow c=0.3635\); P₁ = 0.36, P₂ = 9.09, P₃ = 0.36, P₄ = 0.19.</p><p>(d) Water-filling with floors \(1/|H_k|^2\) = 1, 25, 1, 0.51. Using all four gives μ = 9.38 \(\lt\) 25, so sub-channel 2 is dropped. With three: μ = (10 + 2.51)/3 = 4.17, P = 3.17, 3.17, 3.66. \(C=2\log_2(4.17)+\log_2(4.17\times1.96)=7.15\) bit over 4 sub-carriers, i.e. 7.15/4 ≈ 1.8 bit/s/Hz.</p></div>
+<div class="ans">一句话：(a) B/B<sub>C</sub> ≪ N ≪ B/B<sub>d</sub>（子载波要窄于相干带宽，OFDM 符号要短于相干时间）；(b) H<sub>k</sub> = DFT{0.8, 0.6} = 1.4、0.8 − 0.6j、0.2、0.8 + 0.6j；(c) P<sub>k</sub> ∝ 1/|H<sub>k</sub>|²：0.36、9.09、0.36、0.19；(d) 注水去掉增益 0.2 的子信道，7.15 bit / 4 ≈ 1.8 bit/s/Hz。</div>
+        </div>
+      </details>
+      <!-- /XPL:p7q1 -->
       <!-- PKP:p7q1 -->
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>OFDM 的四个核心计算：N 的选择、H<sub>k</sub>、等容量功率分配、注水容量（第 7 章 p.5、p.15、p.24；第 2 章注水）。</dd><dt>前置知识</dt><dd>相干带宽 / 相干时间；欧拉公式 e<sup>−jπk/2</sup> 依次为 1、−j、−1、j；注水公式；log₂。</dd><dt>解题套路</dt><dd>(a) 平坦 N ≫ B/B<sub>C</sub>，慢衰落 N ≪ B/B<sub>d</sub>；(b) H<sub>k</sub> = h₀ + h₁e<sup>−j2πk/N</sup>；(c) |H<sub>k</sub>|²P<sub>k</sub> = c，由 ΣP<sub>k</sub> = 10 求 c；(d) 池底 1/|H<sub>k</sub>|²，水面 μ，去掉池底高过水面的子信道。</dd><dt>关键数字</dt><dd>|H<sub>k</sub>|² = 1、0.04、1、1.96；c = 10/27.51 = 0.3635；注水水面 4.17，功率 3.17、0、3.17、3.66；7.15 bit / 4 = 1.79 bit/s/Hz。</dd><dt>自检</dt><dd>Σ|H<sub>k</sub>|² = N Σh<sub>i</sub>² = 4 × (0.64 + 0.36) = 4；(c)(d) 的功率加起来都是 10；被去掉的子信道 2 的池底 25 高于水面。</dd><dt>易错</dt><dd>编号 k = 1…4（H₄ = H₀）；用 |H<sub>k</sub>|² 不是 |H<sub>k</sub>|；噪声 σ² = 1；最后除以 N 换成 bit/s/Hz。</dd><dt>对比结论</dt><dd>等容量把 91% 的功率砸在最差的子信道上；注水干脆放弃它。要公平用 (c)，要总容量最大用 (d)。</dd></dl></div>
       <!-- /PKP:p7q1 -->
@@ -73,6 +131,64 @@
       <div class="ans">(a) B/B<sub>C</sub> ≪ N ≪ B/B<sub>d</sub>; (b) 1.4, 0.8−0.6j, 0.2, 0.8+0.6j; (c) 0.36, 9.09, 0.36, 0.19; (d) ≈ 1.8 bit/s/Hz</div>
       <div class="official"><b>Official answer:</b> identical ✓ (the official solution labels k = 1…4 as H₁…H₄, with H₄ = H₀ = 1.4)</div>
       <div class="note">Compare (c) and (d): to make every sub-channel "equal", (c) spends 91% of the power on the worst sub-channel; water-filling (d) simply abandons it and gets a much higher total capacity.</div>
+      <!-- XPL:p7q1 -->
+      <details class="deep xpl">
+        <summary>Concept + walkthrough: OFDM N, H_k, power allocation</summary>
+        <div class="deep-body">
+<h4><span class="st">Concept</span>OFDM cuts a frequency-selective channel into N flat sub-channels</h4>
+<p>The multipath channel y(t) = h₀x(t) + h₁x(t − τ) + w(t) has a frequency response that varies with frequency (frequency-selective fading), and single-carrier transmission suffers ISI. OFDM cuts the total bandwidth B into N sub-carriers, each Δf = B/N wide (Ch 7 p.8); one OFDM symbol lasts T = N/B (p.7). As long as each sub-carrier is narrow enough, the gain it sees over its small band is nearly constant, i.e. flat fading; after the DFT the receiver gets r<sub>k</sub> = H<sub>k</sub>s<sub>k</sub> + w<sub>k</sub> (p.6, p.17).</p>
+<p><b>Two conditions</b> (Ch 2 p.31–37):</p>
+<ul>
+<li><b>Flat</b>: signal bandwidth &lt; coherence bandwidth B<sub>C</sub>. Here the "signal" is one sub-carrier, so B/N ≪ B<sub>C</sub>.</li>
+<li><b>Slow</b>: symbol duration &lt; coherence time T<sub>C</sub> ≈ 1/B<sub>d</sub> (p.36: coherence time is the dual of the Doppler spread). Here the "symbol" is one OFDM symbol, so N/B ≪ 1/B<sub>d</sub>.</li>
+</ul>
+<p><b>Sub-channel gains</b> (Ch 7 p.15): H<sub>k</sub> = Σ<sub>i</sub> h<sub>i</sub> e<sup>−j2πik/N</sup>, the N-point DFT of the impulse response [h₀, h₁, …]. This assumes the echo delay τ is exactly one sampling interval (i = 0, 1). The slide notes H<sub>N</sub> = H₀, so k = 1…N and k = 0…N − 1 give the same set of values.</p>
+<p><b>Capacity</b> (Ch 7 p.24): N independent parallel Gaussian sub-channels, C = Σ<sub>k</sub> log₂(1 + |H<sub>k</sub>|²P<sub>k</sub>/N<sub>k</sub>); here the noise N<sub>k</sub> = σ² = 1. (c) and (d) give two rules for splitting the power.</p>
+<h4><span class="st">Step by step</span>(a) How to choose N</h4>
+<ol>
+<li>Flat: B/N ≪ B<sub>C</sub> → N ≫ B/B<sub>C</sub> (if N is too small the sub-carriers are too wide and become frequency-selective again).</li>
+<li>Slow: T = N/B ≪ 1/B<sub>d</sub> → N ≪ B/B<sub>d</sub> (if N is too large the OFDM symbol is too long, the channel changes within one symbol, the sub-carriers lose orthogonality and inter-carrier interference, ICI, appears).</li>
+<li>Together: B/B<sub>C</sub> ≪ N ≪ B/B<sub>d</sub>. Such an N exists only if B<sub>d</sub> ≪ B<sub>C</sub>, which practical systems normally satisfy.</li>
+</ol>
+<h4><span class="st">Step by step</span>(b) Compute H<sub>k</sub></h4>
+<p>N = 4: e<sup>−j2πk/4</sup> = e<sup>−jπk/2</sup> is 1, −j, −1, j for k = 0, 1, 2, 3 (a 90° clockwise step around the unit circle each time).</p>
+<div class="calc">H₀ = H₄ = 0.8 + 0.6 = 1.4, |H|² = 1.96</div>
+<div class="calc">H₁ = 0.8 + 0.6(−j) = 0.8 − 0.6j, |H|² = 0.64 + 0.36 = 1</div>
+<div class="calc">H₂ = 0.8 − 0.6 = 0.2, |H|² = 0.04</div>
+<div class="calc">H₃ = 0.8 + 0.6j, |H|² = 1</div>
+<p>Check: Σ|H<sub>k</sub>|² = 1.96 + 1 + 0.04 + 1 = 4 = N(h₀² + h₁²) = 4 × 1 ✓ (Parseval's theorem, not in the slides). Sub-channel 2 has gain only 0.2: the two paths cancel each other, a "deep fade" of frequency-selective fading. With the question's numbering k = 1, 2, 3, 4 the power gains are 1, 0.04, 1, 1.96.</p>
+<h4><span class="st">Step by step</span>(c) Equal-capacity allocation</h4>
+<ol>
+<li>All capacities log₂(1 + |H<sub>k</sub>|²P<sub>k</sub>) equal ⇔ every SNR |H<sub>k</sub>|²P<sub>k</sub> equals the same constant c → P<sub>k</sub> = c/|H<sub>k</sub>|². The weaker the gain, the more power ("rob the rich to pay the poor").</li>
+<li>Find c from the total power:<div class="calc">c(1/1 + 1/0.04 + 1/1 + 1/1.96) = c(1 + 25 + 1 + 0.51) = 27.51c = 10 → c = 0.3635</div></li>
+<li>Each sub-channel:<div class="calc">P₁ = 0.3635/1 = 0.36, P₂ = 0.3635/0.04 = 9.09, P₃ = 0.36, P₄ = 0.3635/1.96 = 0.19</div>Sum 0.36 + 9.09 + 0.36 + 0.19 = 10 ✓.</li>
+</ol>
+<h4><span class="st">Step by step</span>(d) Water-filling for the maximum sum capacity</h4>
+<ol>
+<li><b>Floors</b> = noise/gain = 1/|H<sub>k</sub>|²: 1, 25, 1, 0.51. Power P<sub>k</sub> = μ − 1/|H<sub>k</sub>|² (μ is the water level); only sub-channels below the water level get power.</li>
+<li><b>Fill all four first</b>: 4μ − 27.51 = 10 → μ = 37.51/4 = 9.38. But sub-channel 2 has floor 25 &gt; 9.38 and would get negative power, which is impossible, so drop it.</li>
+<li><b>Three left</b>: 3μ − (1 + 1 + 0.51) = 10 → μ = 12.51/3 = 4.17. Powers 4.17 − 1 = 3.17, 3.17, 4.17 − 0.51 = 3.66, all positive ✓, sum 10 ✓.</li>
+<li><b>Capacity</b>: after allocation each SNR is |H<sub>k</sub>|²P<sub>k</sub>, so 1 + SNR = |H<sub>k</sub>|²μ:<div class="calc">C = log₂(4.17) + log₂(4.17) + log₂(4.17 × 1.96) = 2.06 + 2.06 + 3.03 = 7.15 bit</div></li>
+<li><b>Per hertz</b>: these 7.15 bit are carried by 4 sub-carriers together, each occupying B/4, so per hertz of total bandwidth: 7.15/4 = 1.79 ≈ 1.8 bit/s/Hz (official answer 1.8).</li>
+</ol>
+<p>Matching the Ch 2 notation: each full-power SNR γ<sub>k</sub> = |H<sub>k</sub>|² × 10 = 10, 0.4, 10, 19.6; solving Σ(1/γ₀ − 1/γ<sub>k</sub>) = 1 gives γ₀ = 2.40, γ₂ = 0.4 &lt; γ₀ is dropped, and C = Σ log₂(γ<sub>k</sub>/γ₀) = 7.15 bit, the same result (μ = P/γ₀).</p>
+<h4><span class="st">Check</span>Three allocations side by side</h4>
+<div class="tw"><table class="mini"><thead><tr><th>Allocation</th><th>Powers</th><th>Total bits</th><th>bit/s/Hz</th></tr></thead><tbody><tr><td>(c) Equal capacity</td><td>0.36, 9.09, 0.36, 0.19</td><td>4 × 0.447 = 1.79</td><td>0.447</td></tr><tr><td>Equal power (not in the slides)</td><td>2.5, 2.5, 2.5, 2.5</td><td>6.31</td><td>1.58</td></tr><tr><td>(d) Water-filling</td><td>3.17, 0, 3.17, 3.66</td><td>7.15</td><td>1.79</td></tr></tbody></table></div>
+<p>(c) pours 91% of the power into the worst sub-channel and has the lowest total; water-filling gives that sub-channel up and has the highest. Note that the "1.79 total bits" of (c) and the "1.79 bit/s/Hz" of (d) are a numerical coincidence with different units; do not mix them up.</p>
+<h4><span class="st">Pitfalls</span>Where marks are lost</h4>
+<ul>
+<li>The power gain is |H<sub>k</sub>|², not |H<sub>k</sub>|; the squared modulus of a complex number = real² + imaginary².</li>
+<li>Numbering: the question uses k = 1…4, H₄ = H₀ = 1.4; P₄ goes with 1.96.</li>
+<li>Water-filling without checking the floors: using μ = 9.38 directly gives sub-channel 2 negative power.</li>
+<li>(d) asks for bit/s/Hz: divide by N = 4 at the end. Slide p.24 calls the sum "capacity per Hertz", counted per sub-carrier bandwidth; the official 1.8 is the value after dividing by N.</li>
+<li>In (a) one condition is not enough: write both "flat" and "slow" with the reason for each.</li>
+</ul>
+<h4><span class="st">Exam</span>How to write it</h4>
+<div class="tmpl" lang="en"><p>(a) Each sub-carrier has bandwidth B/N and the OFDM symbol lasts about N/B. Flat fading requires B/N ≪ B<sub>C</sub>, i.e. N ≫ B/B<sub>C</sub>; slow fading requires N/B ≪ T<sub>C</sub> ≈ 1/B<sub>d</sub>, i.e. N ≪ B/B<sub>d</sub>. Hence choose \(B/B_C\ll N\ll B/B_d\).</p><p>(b) \(H_k=h_0+h_1e^{-j2\pi k/N}=0.8+0.6e^{-j\pi k/2}\): H₀ = H₄ = 1.4, H₁ = 0.8 − j0.6, H₂ = 0.2, H₃ = 0.8 + j0.6; \(|H_k|^2\) = 1, 0.04, 1, 1.96 for k = 1, 2, 3, 4.</p><p>(c) Equal capacity ⇔ \(|H_k|^2P_k=c\). \(\sum P_k=c\sum1/|H_k|^2=27.51c=10\Rightarrow c=0.3635\); P₁ = 0.36, P₂ = 9.09, P₃ = 0.36, P₄ = 0.19.</p><p>(d) Water-filling with floors \(1/|H_k|^2\) = 1, 25, 1, 0.51. Using all four gives μ = 9.38 \(\lt\) 25, so sub-channel 2 is dropped. With three: μ = (10 + 2.51)/3 = 4.17, P = 3.17, 3.17, 3.66. \(C=2\log_2(4.17)+\log_2(4.17\times1.96)=7.15\) bit over 4 sub-carriers, i.e. 7.15/4 ≈ 1.8 bit/s/Hz.</p></div>
+<div class="ans">In one line: (a) B/B<sub>C</sub> ≪ N ≪ B/B<sub>d</sub> (sub-carriers narrower than the coherence bandwidth, OFDM symbol shorter than the coherence time); (b) H<sub>k</sub> = DFT{0.8, 0.6} = 1.4, 0.8 − 0.6j, 0.2, 0.8 + 0.6j; (c) P<sub>k</sub> ∝ 1/|H<sub>k</sub>|²: 0.36, 9.09, 0.36, 0.19; (d) water-filling drops the gain-0.2 sub-channel, 7.15 bit / 4 ≈ 1.8 bit/s/Hz.</div>
+        </div>
+      </details>
+      <!-- /XPL:p7q1 -->
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The four core OFDM calculations: choosing N, H<sub>k</sub>, equal-capacity power allocation, water-filling capacity (Ch 7 p.5, p.15, p.24; water-filling from Ch 2).</dd><dt>Background</dt><dd>Coherence bandwidth and coherence time; Euler: e<sup>−jπk/2</sup> is 1, −j, −1, j in turn; water-filling; log₂.</dd><dt>Method</dt><dd>(a) Flat N ≫ B/B<sub>C</sub>, slow N ≪ B/B<sub>d</sub>; (b) H<sub>k</sub> = h₀ + h₁e<sup>−j2πk/N</sup>; (c) |H<sub>k</sub>|²P<sub>k</sub> = c, find c from ΣP<sub>k</sub> = 10; (d) floors 1/|H<sub>k</sub>|², water level μ, drop sub-channels whose floor is above the water.</dd><dt>Key numbers</dt><dd>|H<sub>k</sub>|² = 1, 0.04, 1, 1.96; c = 10/27.51 = 0.3635; water level 4.17, powers 3.17, 0, 3.17, 3.66; 7.15 bit / 4 = 1.79 bit/s/Hz.</dd><dt>Check</dt><dd>Σ|H<sub>k</sub>|² = N Σh<sub>i</sub>² = 4 × (0.64 + 0.36) = 4; the powers in (c) and (d) both sum to 10; the dropped sub-channel 2 has floor 25, above the water level.</dd><dt>Common mistakes</dt><dd>Index k = 1…4 (H₄ = H₀); use |H<sub>k</sub>|², not |H<sub>k</sub>|; noise σ² = 1; divide by N at the end to get bit/s/Hz.</dd><dt>Conclusion</dt><dd>Equal capacity pours 91% of the power into the worst sub-channel; water-filling gives up on it. Use (c) for fairness, (d) for maximum total capacity.</dd></dl></div>
     </div>
     <!-- /EN:p7q1 -->
@@ -120,6 +236,43 @@
       <div class="ans">N = 60，OFDM 符号时长 0.12 ms</div>
       <div class="official"><b>官方答案：</b>60；0.12 ms ✓</div>
       <div class="note">如果不加 CP，600 kHz 本来就够发 500 k 符号/秒，N 取多少都行，题目就没有唯一解。正是 CP 的开销决定了 N：N 越大，CP 占的比例越小。CP 占 20/120 = 1/6 的时间，所以带宽必须比 500 k 多出 1/5，正好是 600 kHz。</div>
+      <!-- XPL:p7q2 -->
+      <details class="deep xpl">
+        <summary>知识讲解 + 详细解析：由速率和 CP 解出子载波数</summary>
+        <div class="deep-body">
+<h4><span class="st">知识讲解</span>OFDM 的时间账：有用部分 + 循环前缀</h4>
+<p>OFDM 把带宽 B 分成 N 个子载波，子载波间隔 Δf = B/N（第 7 章 p.8）。为了让子载波相互正交，有用符号时长必须是 T = 1/Δf = N/B（p.7）。在这段时间里，N 个子载波<b>各发一个</b>调制符号。</p>
+<p>每个 OFDM 块前面还要加一段保护间隔 T<sub>G</sub>（实现上就是循环前缀 CP），T<sub>G</sub> ≥ 最大时延扩展 T<sub>D</sub>，用来挡住上一个块的回波（p.5、p.17）。所以一个 OFDM 块总长 T + T<sub>G</sub>（p.18），但 CP 不带新数据。</p>
+<div class="calc">数据速率 = N × log₂M bit ÷ (N/B + T<sub>G</sub>)</div>
+<p>符号：M 是调制阶数，16-QAM 的 log₂16 = 4 bit/符号；B = 600 kHz；T<sub>G</sub> = 20 µs。CP 占用时间还带来功率损失 10 log₁₀((T + T<sub>G</sub>)/T) dB（p.18）。</p>
+<h4><span class="st">详细解析</span>四步解出 N 和符号时长</h4>
+<ol>
+<li><b>比特速率换成符号速率。</b>为什么：一个子载波一次发一个 QAM 符号，按符号数列方程更方便。2 Mbps ÷ 4 bit = 500 k 符号/秒。</li>
+<li><b>列方程。</b>每个 OFDM 块发 N 个符号，耗时 N/B + T<sub>G</sub>：<div class="calc">N / (N/600 kHz + 20 µs) = 500 k 符号/秒</div></li>
+<li><b>解方程。</b>两边乘以分母：N = 500k × N/600k + 500k × 20 × 10⁻⁶ = 0.8333N + 10 → 0.1667N = 10 → N = 60。</li>
+<li><b>算时长。</b>T = N/B = 60/600 kHz = 100 µs（Δf = 10 kHz）；OFDM 符号总长 T + T<sub>G</sub> = 100 + 20 = 120 µs = 0.12 ms。</li>
+</ol>
+<p><b>更快的想法：</b>不加 CP 时 600 kHz 能发 600 k 符号/秒，只需要 500 k，所以有用时间只能占 500/600 = 5/6，CP 占 1/6：T<sub>G</sub> = T/5 → T = 5 × 20 = 100 µs → N = B·T = 600 k × 100 µs = 60。</p>
+<h4><span class="st">自检</span>回代检查</h4>
+<ul>
+<li>速率：60 × 4 bit / 120 µs = 2 × 10⁶ bit/s = 2 Mbps ✓。</li>
+<li>每个子载波：每 120 µs 发一个符号，8.33 k 符号/秒，× 60 = 500 k 符号/秒 ✓。</li>
+<li>平坦吗：相干带宽约 B<sub>C</sub> ≈ 1/T<sub>D</sub> = 1/20 µs = 50 kHz（第 7 章 p.14 用 T<sub>D</sub> = 1/B<sub>c</sub>），子载波宽 10 kHz &lt; 50 kHz ✓。</li>
+<li>CP 功率损失：10 log₁₀(120/100) = 0.79 dB。</li>
+</ul>
+<h4><span class="st">易错</span>常见丢分点</h4>
+<ul>
+<li>忘了 CP：没有 CP 时 600 kHz 本来就够发 500 k 符号/秒，N 取多少都行，题目就没有唯一解。正是 CP 的开销决定了 N。</li>
+<li>直接拿 2 Mbps 列方程，忘了先除以 4 bit/符号。</li>
+<li>单位：N/600 kHz 的单位是秒，60/600 000 = 10⁻⁴ s = 100 µs；20 µs = 2 × 10⁻⁵ s。</li>
+<li>"OFDM symbol duration"官方答案 0.12 ms 是含 CP 的总长；如果题目问有用符号时长，答 100 µs。两个都写出来最稳。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>16-QAM carries log₂16 = 4 bits/symbol, so the required symbol rate is 2 Mbps / 4 = 500 k symbols/s.</p><p>With N sub-carriers, the useful OFDM symbol duration is T = N/B and each OFDM block lasts T + T<sub>G</sub> with T<sub>G</sub> = 20 µs, carrying N symbols: \(\dfrac{N}{N/(600\text{ kHz})+20\,\mu\text{s}}=500\text{ k}\Rightarrow N=0.8333N+10\Rightarrow N=60\).</p><p>Useful duration T = 60/600 kHz = 100 µs (Δf = 10 kHz); OFDM symbol duration including the CP = 100 + 20 = 120 µs = 0.12 ms. Check: 60 × 4 bits / 120 µs = 2 Mbps.</p></div>
+<div class="ans">一句话：2 Mbps ÷ 4 = 500 k 符号/秒；N/(N/600 kHz + 20 µs) = 500 k → N = 60；T = 100 µs，加 CP 后 OFDM 符号长 120 µs = 0.12 ms。</div>
+        </div>
+      </details>
+      <!-- /XPL:p7q2 -->
       <!-- PKP:p7q2 -->
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>OFDM 系统设计：子载波数、OFDM 符号时长、CP 开销（第 7 章 p.8、p.17–18）。</dd><dt>前置知识</dt><dd>有用符号时长 T = N/B = 1/Δf；一个 OFDM 块 = T + T<sub>G</sub>，期间每个子载波发一个符号。</dd><dt>解题套路</dt><dd>① 比特速率 ÷ log₂M = 需要的符号速率；② 列方程 N / (N/B + T<sub>G</sub>) = 符号速率；③ 解 N；④ T = N/B，总时长 T + T<sub>G</sub>。</dd><dt>关键数字</dt><dd>2 Mbps / 4 = 500 k 符号/秒；N = 0.8333N + 10 → N = 60；T = 100 µs，总长 120 µs。</dd><dt>检验</dt><dd>60 × 4 bit / 120 µs = 2 Mbps；CP 占 1/6 的时间，功率损失 10 log(120/100) = 0.79 dB。</dd><dt>举一反三</dt><dd>时延扩展变成 40 µs：N = 0.8333N + 20 → N = 120，T = 200 µs，总长 240 µs。时延扩展越大，需要的 N 越大，CP 的占比才不至于太高。</dd><dt>易错</dt><dd>没有 CP 时 N 取多少都行，题目就没有唯一解，所以一定要把 CP 算进时长；速率是比特速率，要先除以 4。</dd></dl></div>
       <!-- /PKP:p7q2 -->
@@ -135,6 +288,43 @@
       <div class="ans">N = 60, OFDM symbol duration 0.12 ms</div>
       <div class="official"><b>Official answer:</b> 60; 0.12 ms ✓</div>
       <div class="note">Without the CP, 600 kHz would carry 500 k symbols/s for any N and the problem would have no unique answer. The CP overhead is what fixes N: the larger N, the smaller the CP fraction. Here the CP takes 20/120 = 1/6 of the time, so the bandwidth must exceed 500 k by 1/5, exactly 600 kHz.</div>
+      <!-- XPL:p7q2 -->
+      <details class="deep xpl">
+        <summary>Concept + walkthrough: N from rate and CP</summary>
+        <div class="deep-body">
+<h4><span class="st">Concept</span>OFDM time budget: useful part + cyclic prefix</h4>
+<p>OFDM divides the bandwidth B into N sub-carriers with spacing Δf = B/N (Ch 7 p.8). For the sub-carriers to be orthogonal, the useful symbol duration must be T = 1/Δf = N/B (p.7). During this time each of the N sub-carriers sends <b>one</b> modulated symbol.</p>
+<p>Each OFDM block is also preceded by a guard interval T<sub>G</sub> (implemented as a cyclic prefix, CP), with T<sub>G</sub> ≥ the maximum delay spread T<sub>D</sub>, to block the echo of the previous block (p.5, p.17). So one OFDM block lasts T + T<sub>G</sub> in total (p.18), but the CP carries no new data.</p>
+<div class="calc">Data rate = N × log₂M bit ÷ (N/B + T<sub>G</sub>)</div>
+<p>Symbols: M is the modulation order, log₂16 = 4 bits/symbol for 16-QAM; B = 600 kHz; T<sub>G</sub> = 20 µs. The time spent on the CP also costs power: 10 log₁₀((T + T<sub>G</sub>)/T) dB (p.18).</p>
+<h4><span class="st">Step by step</span>Four steps to N and the symbol duration</h4>
+<ol>
+<li><b>Bit rate to symbol rate.</b> Why: each sub-carrier sends one QAM symbol at a time, so it is easier to count symbols. 2 Mbps ÷ 4 bits = 500 k symbols/s.</li>
+<li><b>Set up the equation.</b> Each OFDM block carries N symbols and takes N/B + T<sub>G</sub>:<div class="calc">N / (N/600 kHz + 20 µs) = 500 k symbols/s</div></li>
+<li><b>Solve.</b> Multiply both sides by the denominator: N = 500k × N/600k + 500k × 20 × 10⁻⁶ = 0.8333N + 10 → 0.1667N = 10 → N = 60.</li>
+<li><b>Durations.</b> T = N/B = 60/600 kHz = 100 µs (Δf = 10 kHz); total OFDM symbol T + T<sub>G</sub> = 100 + 20 = 120 µs = 0.12 ms.</li>
+</ol>
+<p><b>A quicker way:</b> without a CP, 600 kHz could carry 600 k symbols/s, but only 500 k are needed, so the useful time can take only 500/600 = 5/6 of each block and the CP takes 1/6: T<sub>G</sub> = T/5 → T = 5 × 20 = 100 µs → N = B·T = 600 k × 100 µs = 60.</p>
+<h4><span class="st">Check</span>Substitute back</h4>
+<ul>
+<li>Rate: 60 × 4 bits / 120 µs = 2 × 10⁶ bit/s = 2 Mbps ✓.</li>
+<li>Per sub-carrier: one symbol every 120 µs, 8.33 k symbols/s, × 60 = 500 k symbols/s ✓.</li>
+<li>Flat? The coherence bandwidth is about B<sub>C</sub> ≈ 1/T<sub>D</sub> = 1/20 µs = 50 kHz (Ch 7 p.14 uses T<sub>D</sub> = 1/B<sub>c</sub>); the sub-carrier width 10 kHz &lt; 50 kHz ✓.</li>
+<li>CP power loss: 10 log₁₀(120/100) = 0.79 dB.</li>
+</ul>
+<h4><span class="st">Pitfalls</span>Where marks are lost</h4>
+<ul>
+<li>Forgetting the CP: without it, 600 kHz is already enough for 500 k symbols/s, any N works and there is no unique answer. It is the CP overhead that fixes N.</li>
+<li>Using 2 Mbps directly in the equation without first dividing by 4 bits/symbol.</li>
+<li>Units: N/600 kHz is in seconds, 60/600 000 = 10⁻⁴ s = 100 µs; 20 µs = 2 × 10⁻⁵ s.</li>
+<li>The official "OFDM symbol duration" of 0.12 ms is the total including the CP; if a question asks for the useful symbol duration, answer 100 µs. Writing both is safest.</li>
+</ul>
+<h4><span class="st">Exam</span>How to write it</h4>
+<div class="tmpl" lang="en"><p>16-QAM carries log₂16 = 4 bits/symbol, so the required symbol rate is 2 Mbps / 4 = 500 k symbols/s.</p><p>With N sub-carriers, the useful OFDM symbol duration is T = N/B and each OFDM block lasts T + T<sub>G</sub> with T<sub>G</sub> = 20 µs, carrying N symbols: \(\dfrac{N}{N/(600\text{ kHz})+20\,\mu\text{s}}=500\text{ k}\Rightarrow N=0.8333N+10\Rightarrow N=60\).</p><p>Useful duration T = 60/600 kHz = 100 µs (Δf = 10 kHz); OFDM symbol duration including the CP = 100 + 20 = 120 µs = 0.12 ms. Check: 60 × 4 bits / 120 µs = 2 Mbps.</p></div>
+<div class="ans">In one line: 2 Mbps ÷ 4 = 500 k symbols/s; N/(N/600 kHz + 20 µs) = 500 k → N = 60; T = 100 µs, and with the CP the OFDM symbol lasts 120 µs = 0.12 ms.</div>
+        </div>
+      </details>
+      <!-- /XPL:p7q2 -->
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>OFDM system design: number of sub-carriers, OFDM symbol duration, CP overhead (Ch 7 p.8, p.17–18).</dd><dt>Background</dt><dd>Useful symbol duration T = N/B = 1/Δf; one OFDM block lasts T + T<sub>G</sub>, during which each sub-carrier sends one symbol.</dd><dt>Method</dt><dd>① Bit rate ÷ log₂M = required symbol rate; ② write N / (N/B + T<sub>G</sub>) = symbol rate; ③ solve for N; ④ T = N/B, total T + T<sub>G</sub>.</dd><dt>Key numbers</dt><dd>2 Mbps / 4 = 500 k symbols/s; N = 0.8333N + 10 → N = 60; T = 100 µs, total 120 µs.</dd><dt>Check</dt><dd>60 × 4 bit / 120 µs = 2 Mbps; the CP takes 1/6 of the time, power loss 10 log(120/100) = 0.79 dB.</dd><dt>Variations</dt><dd>With a 40 µs delay spread: N = 0.8333N + 20 → N = 120, T = 200 µs, total 240 µs. A larger delay spread needs a larger N to keep the CP fraction small.</dd><dt>Common mistakes</dt><dd>Without a CP any N would do and there would be no unique answer, so the CP must be included in the duration; the given rate is a bit rate, divide by 4 first.</dd></dl></div>
     </div>
     <!-- /EN:p7q2 -->
@@ -180,6 +370,37 @@
       </ol>
       <div class="ans">最短 CP = 1 个采样（符号）长度 = L − 1</div>
       <div class="official"><b>官方答案：</b>1 symbol length ✓</div>
+      <!-- XPL:p7q3 -->
+      <details class="deep xpl">
+        <summary>知识讲解 + 详细解析：最短循环前缀 = L − 1</summary>
+        <div class="deep-body">
+<h4><span class="st">知识讲解</span>信道"记忆"和循环前缀</h4>
+<p><b>从 H(z) 读冲激响应</b>：z⁻¹ 表示晚一个采样，H(z) = 1 + 0.9z⁻¹ → h = [1, 0.9]，一条直射 + 一条晚 1 个采样、强度 0.9 的回波。抽头数 L = 2，信道的"记忆"（最大时延）是 L − 1 = 1 个采样：每个输出样本 r<sub>i</sub> = x<sub>i</sub> + 0.9x<sub>i−1</sub>，会用到前一个输入样本。</p>
+<p><b>问题在块边界</b>：OFDM 一块一块地发（每块是 N 个子载波符号做 IDFT 得到的 N 个采样，第 7 章 p.19）。一个块的第一个采样 r₀ = x₀ + 0.9 × (上一块的最后一个采样)，混进了上一块的数据，这就是块间的 ISI。</p>
+<p><b>循环前缀 CP</b>（p.21–22）：把每块最后 G 个采样复制一份放到块前面，接收端把这 G 个采样丢掉，只留后 N 个。G ≥ L − 1 时，上一块的回波只会落在被丢掉的 CP 里。</p>
+<p><b>为什么要"复制块尾"而不是放空白</b>：放 CP 后，块的第一个采样前面"看到"的是本块的最后一个采样，线性卷积在接收窗口里就变成循环卷积。循环卷积做 DFT 正好变成乘法：R<sub>k</sub> = H<sub>k</sub>S<sub>k</sub> + W<sub>k</sub>（p.17、p.22），每个子载波只乘一个复数，子载波之间保持正交。如果只放空白（补零），能挡住 ISI，但接收窗口里不再是循环结构，子载波失去正交，产生载波间干扰（ICI）。</p>
+<h4><span class="st">详细解析</span>用 N = 4 的小例子看清楚</h4>
+<ol>
+<li><b>发送</b>：一块的采样是 x₀ x₁ x₂ x₃，加 1 个采样的 CP 后发 [x₃ | x₀ x₁ x₂ x₃]。</li>
+<li><b>接收</b>（r<sub>i</sub> = x<sub>i</sub> + 0.9x<sub>i−1</sub>）：<div class="calc">CP 位置：x₃ + 0.9 × (上一块最后一个采样) ← 有 ISI，但会被丢掉</div><div class="calc">r₀ = x₀ + 0.9x₃（前一个采样正好是 CP 里的 x₃）</div><div class="calc">r₁ = x₁ + 0.9x₀，r₂ = x₂ + 0.9x₁，r₃ = x₃ + 0.9x₂</div></li>
+<li><b>看结构</b>：留下的 r₀…r₃ 里每个 x 都只和它"循环意义下的前一个"相加（x₀ 的前一个是 x₃），这就是 h 和 x 的 4 点循环卷积，完全没有上一块的数据。</li>
+<li><b>DFT 后</b>：R<sub>k</sub> = H<sub>k</sub>S<sub>k</sub>，H<sub>k</sub> = 1 + 0.9e<sup>−j2πk/4</sup> = 1.9、1 − 0.9j、0.1、1 + 0.9j。接收端每个子载波除以 H<sub>k</sub> 就完成均衡（p.25–26）。</li>
+<li><b>结论</b>：最短 CP = L − 1 = 1 个采样（1 个符号长度）。再短（0 个）就挡不住 ISI；更长也可以，但浪费时间，效率 N/(N + G)。</li>
+</ol>
+<p>附带一点：H₂ = 0.1，第 2 个子载波几乎被两条路径抵消。OFDM 不能消除衰落，只是把频率选择性衰落变成每个子载波上的平坦衰落，这时就需要编码或 P7 Q1 那样的功率分配。</p>
+<h4><span class="st">易错</span>常见丢分点</h4>
+<ul>
+<li>答成 L = 2 个采样。CP 要盖住的是"回波晚到的那部分"，是 L − 1，不是 L。</li>
+<li>以为系数 0.9 越大 CP 要越长。CP 长度只看延迟几个采样，和回波强弱无关。</li>
+<li>只说"挡住 ISI"，不说为什么要用块尾的复制品（保持循环卷积 / 子载波正交，避免 ICI）。题目要求 Explain，这一点是得分点。</li>
+<li>换成时间单位：CP ≥ 1 个采样间隔 T<sub>s</sub>，即 T<sub>G</sub> ≥ 最大时延扩展 T<sub>D</sub>。</li>
+</ul>
+<h4><span class="st">考试</span>英文写法</h4>
+<div class="tmpl" lang="en"><p>From \(H(z)=1+0.9z^{-1}\), the channel impulse response is h = [1, 0.9]: L = 2 taps, so the channel memory (maximum delay spread) is L − 1 = 1 sample.</p><p>The last sample of each OFDM block therefore leaks into the first sample of the next block (ISI). A cyclic prefix of G ≥ L − 1 samples, i.e. a copy of the last sample of the block placed in front of it, absorbs this leakage, and the receiver discards the CP.</p><p>Because the prefix is cyclic, the linear convolution with h becomes a circular convolution over the N retained samples, so after the DFT \(r_k=H_ks_k+w_k\): no ISI and no ICI, and each sub-carrier is equalised by one complex gain.</p><p>Minimum cyclic prefix = 1 symbol (sample) length.</p></div>
+<div class="ans">一句话：h = [1, 0.9]，回波晚 1 个采样 → 最短 CP = L − 1 = 1 个符号长度；用块尾复制品做前缀，既把 ISI 留在被丢掉的 CP 里，又让线性卷积变成循环卷积，DFT 后 r<sub>k</sub> = H<sub>k</sub>s<sub>k</sub> + w<sub>k</sub>。</div>
+        </div>
+      </details>
+      <!-- /XPL:p7q3 -->
       <!-- PKP:p7q3 -->
       <div class="pkp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>循环前缀的最短长度（第 7 章 p.17–22）。</dd><dt>前置知识</dt><dd>Z 变换：Z⁻¹ 表示晚一个采样；L 个抽头的信道，最长回波晚 L − 1 个采样。</dd><dt>解题套路</dt><dd>由 H(Z) 读出冲激响应 h = [1, 0.9] → L = 2 → CP ≥ L − 1 = 1 个采样。</dd><dt>为什么够</dt><dd>CP ≥ L − 1 时，接收端保留的 N 个采样只含本块的数据，线性卷积变成循环卷积，DFT 后 r<sub>k</sub> = H<sub>k</sub>s<sub>k</sub> + w<sub>k</sub>（讲解页 7.4 节推导框）。</dd><dt>为什么复制块尾</dt><dd>只放一段空白也能挡住上一块的回声，但接收窗口里看到的不再是完整的周期信号，子载波失去正交，会有 ICI；复制块尾才能保持循环结构。</dd><dt>易错</dt><dd>是 L − 1 = 1 个，不是 L = 2 个；系数 0.9 的大小不影响 CP 长度，只看延迟几个采样。</dd><dt>举一反三</dt><dd>H(Z) = 1 + 0.5Z⁻³ → 延迟 3 个采样 → CP ≥ 3；换成时间就是 T<sub>G</sub> ≥ 最大时延扩展 T<sub>D</sub>。CP 每多 1 个采样，效率降为 N/(N + G)。</dd></dl></div>
       <!-- /PKP:p7q3 -->
@@ -193,6 +414,37 @@
       </ol>
       <div class="ans">Minimum CP = 1 sample (symbol) = L − 1</div>
       <div class="official"><b>Official answer:</b> 1 symbol length ✓</div>
+      <!-- XPL:p7q3 -->
+      <details class="deep xpl">
+        <summary>Concept + walkthrough: minimum CP = L − 1</summary>
+        <div class="deep-body">
+<h4><span class="st">Concept</span>Channel "memory" and the cyclic prefix</h4>
+<p><b>Read the impulse response from H(z)</b>: z⁻¹ means one sample later, so H(z) = 1 + 0.9z⁻¹ → h = [1, 0.9]: a direct path plus an echo 1 sample later with strength 0.9. The number of taps is L = 2 and the channel "memory" (maximum delay) is L − 1 = 1 sample: each output sample r<sub>i</sub> = x<sub>i</sub> + 0.9x<sub>i−1</sub> uses the previous input sample.</p>
+<p><b>The problem is at block boundaries</b>: OFDM is sent block by block (each block is the N samples obtained by an IDFT of N sub-carrier symbols, Ch 7 p.19). The first sample of a block is r₀ = x₀ + 0.9 × (last sample of the previous block), which mixes in data from the previous block: inter-block ISI.</p>
+<p><b>Cyclic prefix (CP)</b> (p.21–22): copy the last G samples of each block to its front; the receiver discards these G samples and keeps only the last N. With G ≥ L − 1, the echo of the previous block lands only inside the discarded CP.</p>
+<p><b>Why "copy the tail" instead of leaving a gap</b>: with the CP, the sample "seen" before the first sample of the block is the last sample of the same block, so inside the receive window the linear convolution becomes a circular convolution. The DFT turns circular convolution exactly into multiplication: R<sub>k</sub> = H<sub>k</sub>S<sub>k</sub> + W<sub>k</sub> (p.17, p.22); each sub-carrier is multiplied by one complex number and the sub-carriers stay orthogonal. An empty gap (zero padding) also blocks the ISI, but the window no longer has a circular structure, so the sub-carriers lose orthogonality and inter-carrier interference (ICI) appears.</p>
+<h4><span class="st">Step by step</span>A small N = 4 example makes it clear</h4>
+<ol>
+<li><b>Transmit</b>: a block has samples x₀ x₁ x₂ x₃; with a 1-sample CP we send [x₃ | x₀ x₁ x₂ x₃].</li>
+<li><b>Receive</b> (r<sub>i</sub> = x<sub>i</sub> + 0.9x<sub>i−1</sub>):<div class="calc">CP slot: x₃ + 0.9 × (last sample of the previous block) ← contains ISI, but is discarded</div><div class="calc">r₀ = x₀ + 0.9x₃ (the previous sample is exactly the x₃ in the CP)</div><div class="calc">r₁ = x₁ + 0.9x₀, r₂ = x₂ + 0.9x₁, r₃ = x₃ + 0.9x₂</div></li>
+<li><b>Look at the structure</b>: in the kept r₀…r₃ each x is added only to its "cyclic predecessor" (the predecessor of x₀ is x₃). This is the 4-point circular convolution of h and x, with no data from the previous block at all.</li>
+<li><b>After the DFT</b>: R<sub>k</sub> = H<sub>k</sub>S<sub>k</sub> with H<sub>k</sub> = 1 + 0.9e<sup>−j2πk/4</sup> = 1.9, 1 − 0.9j, 0.1, 1 + 0.9j. The receiver equalises by dividing each sub-carrier by H<sub>k</sub> (p.25–26).</li>
+<li><b>Conclusion</b>: minimum CP = L − 1 = 1 sample (1 symbol length). Shorter (0) cannot block the ISI; longer also works but wastes time, efficiency N/(N + G).</li>
+</ol>
+<p>A side note: H₂ = 0.1, so sub-carrier 2 is almost cancelled by the two paths. OFDM does not remove fading; it turns frequency-selective fading into flat fading on each sub-carrier, which then needs coding or power allocation as in P7 Q1.</p>
+<h4><span class="st">Pitfalls</span>Where marks are lost</h4>
+<ul>
+<li>Answering L = 2 samples. The CP must cover the part of the echo that arrives late, which is L − 1, not L.</li>
+<li>Thinking a larger coefficient 0.9 needs a longer CP. The CP length depends only on how many samples the echo is delayed, not on its strength.</li>
+<li>Saying only "it blocks ISI" without saying why the copy of the tail is used (keeps the circular convolution / sub-carrier orthogonality, avoids ICI). The question says "Explain"; this point earns marks.</li>
+<li>In time units: CP ≥ 1 sampling interval T<sub>s</sub>, i.e. T<sub>G</sub> ≥ the maximum delay spread T<sub>D</sub>.</li>
+</ul>
+<h4><span class="st">Exam</span>How to write it</h4>
+<div class="tmpl" lang="en"><p>From \(H(z)=1+0.9z^{-1}\), the channel impulse response is h = [1, 0.9]: L = 2 taps, so the channel memory (maximum delay spread) is L − 1 = 1 sample.</p><p>The last sample of each OFDM block therefore leaks into the first sample of the next block (ISI). A cyclic prefix of G ≥ L − 1 samples, i.e. a copy of the last sample of the block placed in front of it, absorbs this leakage, and the receiver discards the CP.</p><p>Because the prefix is cyclic, the linear convolution with h becomes a circular convolution over the N retained samples, so after the DFT \(r_k=H_ks_k+w_k\): no ISI and no ICI, and each sub-carrier is equalised by one complex gain.</p><p>Minimum cyclic prefix = 1 symbol (sample) length.</p></div>
+<div class="ans">In one line: h = [1, 0.9], the echo is 1 sample late → minimum CP = L − 1 = 1 symbol length; a prefix copied from the block tail keeps the ISI inside the discarded CP and turns the linear convolution into a circular one, so after the DFT r<sub>k</sub> = H<sub>k</sub>s<sub>k</sub> + w<sub>k</sub>.</div>
+        </div>
+      </details>
+      <!-- /XPL:p7q3 -->
       <div class="pkp"><div class="lbl">◆ Key points</div><dl><dt>What it tests</dt><dd>The minimum cyclic-prefix length (Ch 7 p.17–22).</dd><dt>Background</dt><dd>Z-transform: Z⁻¹ means one sample later; a channel with L taps has its longest echo L − 1 samples late.</dd><dt>Method</dt><dd>Read the impulse response h = [1, 0.9] from H(Z) → L = 2 → CP ≥ L − 1 = 1 sample.</dd><dt>Why it is enough</dt><dd>With CP ≥ L − 1 the N samples kept by the receiver contain only data from the current block, the linear convolution becomes circular, and after the DFT r<sub>k</sub> = H<sub>k</sub>s<sub>k</sub> + w<sub>k</sub> (derivation box in Section 7.4 of the learning page).</dd><dt>Why copy the tail</dt><dd>An empty guard interval would also block the previous block's echo, but the receive window would no longer see a complete periodic signal, the sub-carriers would lose orthogonality and ICI would appear. Only copying the tail keeps the circular structure.</dd><dt>Common mistakes</dt><dd>It is L − 1 = 1 sample, not L = 2; the size of the coefficient 0.9 does not matter, only how many samples the echo is delayed.</dd><dt>Variations</dt><dd>H(Z) = 1 + 0.5Z⁻³ → delay 3 samples → CP ≥ 3; in time, T<sub>G</sub> ≥ the maximum delay spread T<sub>D</sub>. Each extra CP sample lowers the efficiency to N/(N + G).</dd></dl></div>
     </div>
     <!-- /EN:p7q3 -->

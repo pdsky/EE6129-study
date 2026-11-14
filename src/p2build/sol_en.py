@@ -298,7 +298,7 @@ EN['p5q1'] = dict(
   ('Method', '''① Assume every sub-channel gets power and find γ₀ from Σ(1/γ₀ − 1/γ<sub>i</sub>) = 1; ② check that the weakest γ<sub>i</sub> ≥ γ₀, otherwise drop it and repeat; ③ P<sub>i</sub>/P = 1/γ₀ − 1/γ<sub>i</sub>; ④ C = B Σ log₂(γ<sub>i</sub>/γ₀).'''),
   ('Key numbers', '''γ₀ = 3/1.0625 = 2.82; powers 0.342, 0.329, 0.329 (sum 1); C = 10 MHz × (4.82 + 7.65) = 124.7 Mbps.'''),
   ('Comparison 1', '''Equal power (uninformed transmitter): the SNRs become 80/3, 40/3, 40/3 and C = 10 MHz × [log₂(1 + 80/3) + 2 log₂(1 + 40/3)] ≈ 124.7 Mbps, almost the same as water-filling (about 0.006 Mbps less). At high SNR channel knowledge at the transmitter matters little (p.41–42). Do not drop the "1 +": log₂(80/3) would give a wrong 122.1 Mbps.'''),
-  ('Comparison 2', '''At low SNR the difference is large: dividing all three SNRs by 100 (0.8, 0.4, 0.4), water-filling uses only the first sub-channel and gives 0.85 bit/s/Hz, while equal power gives 0.70 bit/s/Hz, 21% less.'''),
+  ('Comparison 2', '''At low SNR the difference is large: dividing all three SNRs by 100 (0.8, 0.4, 0.4), water-filling uses only the first sub-channel and gives 0.85 bit/s/Hz, while equal power gives 0.70 bit/s/Hz: water-filling is about 21% higher (equal power about 17% lower).'''),
   ('Common mistakes', '''The γ<sub>i</sub> in water-filling is the SNR if <b>all</b> the power went to that sub-channel; with equal power each gets only P/3; multiply by B at the end.''')])
 
 EN['p5q2'] = dict(
@@ -852,10 +852,10 @@ EN['p8q10'] = dict(
  idea=r'''Use the free-space formula \(P_r=P_tG_tG_r\big(\frac{\lambda}{4\pi d}\big)^2\) in dB; distance and frequency both appear squared, so each doubling costs 6 dB; in (c) compute with the simplified model and compare: the difference is tens of dB.''',
  steps=[
   r'''(a) \(\lambda=c/f=3\times10^8/9\times10^8=0.333\) m, \(P_t\) = 1 W = 30 dBm.''' + C('P<sub>r</sub> = 30 + 20 log₁₀(0.333 / (4π × 1000)) = 30 + 20 log₁₀(2.65×10⁻⁵) = 30 − 91.5 = −61.5 dBm') + r'''Path loss = 30 − (−61.5) = 91.5 dB (check with Part A's 32.44 + 20 log₁₀900 + 20 log₁₀1 = 91.5 dB).''',
-  r'''(b) \(P_r\propto d^{-2}\): doubling the distance costs 20 log₁₀2 = 6.0 dB (−67.6 dBm). \(P_r\propto\lambda^2\propto f^{-2}\): doubling the frequency costs another 6.0 dB (−73.6 dBm).''',
+  r'''(b) \(P_r\propto d^{-2}\): doubling the distance costs 20 log₁₀2 = 6.0 dB (−67.5 dBm). \(P_r\propto\lambda^2\propto f^{-2}\): doubling the frequency costs another 6.0 dB (−73.6 dBm).''',
   r'''(c) Simplified model:''' + C('P<sub>r</sub> = 30 + (−31.5) − 10 × 3.5 × log₁₀1000 = 30 − 31.5 − 105 = −106.5 dBm'),
   r'''That is about 45 dB (over 30 000 times) below the free-space −61.5 dBm. In a city, buildings block and reflect the signal and the power falls much faster with distance (γ = 3.5 instead of 2); the free-space model would grossly overestimate the received power and get the coverage and outage completely wrong. When a question says "simplified path loss model", use it.'''],
- ans='(a) P<sub>r</sub> ≈ −61.5 dBm, path loss ≈ 91.5 dB; (b) 6 dB each (−67.6 dBm, then −73.6 dBm); (c) −106.5 dBm, about 45 dB below free space, so free space would grossly overestimate',
+ ans='(a) P<sub>r</sub> ≈ −61.5 dBm, path loss ≈ 91.5 dB; (b) 6 dB each (−67.5 dBm, then −73.6 dBm); (c) −106.5 dBm, about 45 dB below free space, so free space would grossly overestimate',
  official='none (self-written practice question); all numbers checked by src/p2build/verify_mock.py',
  note='''A coincidence: at 900 MHz the free-space gain at 1 m, 20 log₁₀(λ/4π) = −31.5 dB, equals the K<sub>dB</sub> used in (c). So both models agree at 1 m and differ only in the exponent: per decade of distance, free space loses 20 dB while γ = 3.5 loses 35 dB. The lecturer warned that in a past quiz some students used the free-space model on a simplified-model question.''',
  kp=[
