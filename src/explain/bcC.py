@@ -8,7 +8,7 @@ XPL = {
 <p>卫星按高度分三类（讲义 Part C p.10）：<b>GEO</b>（地球静止轨道，Geostationary Earth Orbit）35,863 km；<b>MEO</b>（中轨，Medium Earth Orbit）8,000–18,000 km；<b>LEO</b>（低轨，Low Earth Orbit）500–1,500 km。越高，看到的地面越大、绕一圈越慢，但信号越弱、时延越大。GPS 用的是 24 颗 MEO（p.9）。老师课上强调：GEO 离地约 36,000 km，所以地面站必须用高增益天线。</p>
 <h4><span class="st">逐项分析</span>四个选项</h4>
 <ul><li><b>A 对</b>：三个数字和 p.10 完全一致。</li>
-<li><b>B 错</b>：GEO 只有一个高度 35,863 km，20,000 km 属于 MEO 范围；100 km 太低，大气阻力会让卫星很快掉下来。</li>
+<li><b>B 错</b>：GEO 只有一个高度 35,863 km；20,000 km 比讲义给的 MEO 范围（8,000–18,000 km）还高一点（课外补充：GPS 卫星约 20,200 km，通常也归为 MEO）；100 km 太低，大气阻力会让卫星很快掉下来。</li>
 <li><b>C 错</b>：GEO 对，但 MEO、LEO 的范围都写低了；讲义 LEO 下限是 500 km。</li>
 <li><b>D 错</b>：42,000 km 是 GEO 到<b>地心</b>的轨道半径（6,370 + 35,863 = 42,233 km），不是离地高度。</li></ul>
 <h4><span class="st">记忆</span>口诀</h4>

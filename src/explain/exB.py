@@ -309,7 +309,7 @@ XPL = {
 <ul>
 <li><b>AP</b>（Access Point，接入点）：WLAN 和有线网络之间的"门"，相当于无线局域网的基站。</li>
 <li><b>BSS</b>（Basic Service Set，基本服务集）：一个 AP 和它下面的站点组成的一个"小区"（Part B p.10）。</li>
-<li><b>DS</b>（Distribution System，分布式系统）：把多个 AP（多个 BSS）连起来的骨干网（p.10）。讲义 p.32 写作 DSS，指"所有 AP 的集合"。</li>
+<li><b>DS</b>（Distribution System，分布系统）：把多个 AP（多个 BSS）连起来的骨干网（p.10）。讲义 p.32 写作 DSS，指"所有 AP 的集合"。</li>
 </ul>
 <p>一个节点（手机、电脑）想通过 AP 上网，不能直接发数据，要先完成一个<b>建立连接</b>的过程（connection set up，Part B p.31–32），一共三步。</p>
 <h4><span class="st">详细解析</span>三步展开</h4>

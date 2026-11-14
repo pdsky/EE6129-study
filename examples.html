@@ -843,7 +843,7 @@ details.deep.xpl[open] > summary{border-bottom:1px solid var(--xl)}
       <div class="ans">Singa <b>19,760（1.65%）</b>　·　Mobi <b>20,000（1.67%）</b>　·　Hubba <b>21,600（1.80%）</b>　·　合计 <b>5.11%</b></div>
       <div class="mem">总信道数 Singa 7600 最多，Mobi 和 Hubba 都是 6000，但 <b>Hubba 用户最多</b>，因为它的信道集中在少数小区里。这和上一题「一大锅比两小锅强」是同一个道理。</div>
       <div class="trap">渗透率的分母是 120 万总人口。A<sub>u</sub> 的单位要从分钟换算成小时（÷ 60）。</div>
-      <div class="note">讲义表值取了整数。公式精确值：Mobi M = 60 时 A = 49.6，Hubba M = 100 时 A = 88.0，渗透率约 1.65% 和 1.76%，排名和结论不变。考试按表值写即可。</div>
+      <div class="note">讲义表值取了整数。公式精确值：Mobi M = 60 时 A = 49.6，Hubba M = 100 时 A = 88.0，渗透率约 1.65% 和 1.76%；Singa M = 20 时 A = 13.18，约 20,036 人（1.67%）。Hubba 仍然最多，结论不变，只是 Singa 和 Mobi 的先后对调（两家只差约 1%）。考试按表值写即可。</div>
       <!-- XPL:p130 -->
       <details class="deep xpl">
         <summary>知识讲解 + 详细解析：三家运营商的用户数与渗透率</summary>
@@ -873,7 +873,7 @@ details.deep.xpl[open] > summary{border-bottom:1px solid var(--xl)}
 <tr><td>Hubba</td><td>60 × 100 = 6000</td><td>90/100 = 0.90</td><td>3.6</td></tr>
 </tbody></table></div>
 <p>Singa 信道最多，却因为每小区只有 20 条、干线效率只有 65%，用户反而最少。和 p.123"一大锅比两小锅强"是同一个道理。</p>
-<p><b>精确值说明</b>：用 Erlang B 公式算，M = 20 为 13.18，M = 60 为 49.64，M = 100 为 87.97（讲义取 90）。按精确值 Hubba 是 87.97 × 4 × 60 = 21,113 人（1.76%），Mobi 19,858 人（1.65%），排名和结论不变。考试按表值写。</p>
+<p><b>精确值说明</b>：用 Erlang B 公式算，M = 20 为 13.18，M = 60 为 49.64，M = 100 为 87.97（讲义取 90）。按精确值 Hubba 是 87.97 × 4 × 60 = 21,113 人（1.76%），Mobi 19,858 人（1.65%），Singa 约 13.18 × 4 × 380 ≈ 20,036 人（1.67%）。Hubba 仍然最多，结论不变；只是 Singa 和 Mobi 的先后对调了（两家只差约 1%）。考试按表值写。</p>
 <h4><span class="st">易错</span></h4>
 <ul>
 <li>5 分钟要除以 60 换成小时，写成 3 × 5 = 15 Er 就错了 60 倍。</li>

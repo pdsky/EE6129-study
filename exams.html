@@ -667,7 +667,7 @@ where m[k] is the k<sup>th</sup> transmitted symbol which is assumed to be equal
 <ol><li>每扇区 57/3 = 19 条，查表（M = 19，1%）：A ≈ 11.2 E/扇区，每小区 3 × 11.23 = 33.7 E。</li>
 <li><div class="calc">m = 33.7/0.0225 ≈ 1497；面积 = 1497/720 = 2.08 km²；R = √(2.08/2.598) ≈ 0.89 km</div></li>
 <li><div class="calc">T<sub>g</sub> = 1497/57 ≈ 26.3</div></li>
-<li>对比：每小区承载话务从 44.2 E 降到 33.7 E（少约 24%）；集群效率 A/M 从 0.78 降到 0.59；小区面积变小，覆盖同一个岛需要约 2.73/2.08 ≈ 1.31 倍的基站。</li></ol>
+<li>对比：每小区能提供的话务量（表值 A）从 44.2 E 降到 33.7 E（少约 24%）；集群效率 A/M 从 0.78 降到 0.59；小区面积变小，覆盖同一个岛需要约 2.73/2.08 ≈ 1.31 倍的基站。</li></ol>
 <p><b>运营商角度的评论</b>：在簇大小 N = 7 不变的前提下单纯加扇区，换来的是更好的 SIR（干扰源 6 → 2），付出的是集群效率、覆盖面积和更多的切换；只有利用 SIR 余量<b>缩小簇</b>（例如 N = 7 → 4），扇区化才能真正提高容量。</p>
 <h4><span class="st">易错</span>注意</h4>
 <ul><li>A<sub>u</sub> 的单位：90 s 要除以 3600 变成小时。</li>
@@ -1114,7 +1114,7 @@ where P<sub>k</sub> is the power allocated to the k<sup>th</sup> OFDM sub-carrie
 <h4><span class="st">详细解析</span>(d) 三扇区</h4>
 <ol><li>扇区化后只剩 2 个干扰，试更小的簇：<div class="calc">N = 3：Q = 3 → 16.0 dB ✗；　N = 4：Q = √12 = 3.46 → 18.2 dB ✓</div></li>
 <li>N = 4：每小区 720/4 = 180 条，每扇区 60 条。每小区 90/4 = 22.5 个载波，分给 3 个扇区每个 7.5 个——半个载波正是靠"一个载波可以被两个扇区共用"（按时隙分）实现，7.5 × 8 = 60 条。</li>
-<li>Erlang B（M = 60，1%）：A ≈ 46.9 E/扇区，每小区 3 × 46.95 = 140.8 E。</li>
+<li>Erlang B（M = 60，1%）：A ≈ 46.95 E/扇区，每小区 3 × 46.95 = 140.8 E。</li>
 <li>全城面积 60 × 2.598 = 155.9 km²，总话务 155.9 × 2000 × 0.03 = 9353 E：<div class="calc">小区数 = 9353/140.8 = 66.4 → 67 个（半径约 0.95 km）</div></li></ol>
 <p>对比：不改簇（N = 9）只加扇区，每扇区约 26–27 条，需要约 178 个小区，比分裂还多。扇区化必须配合缩小簇才划算。</p>
 <h4><span class="st">易错</span>注意</h4>
@@ -1241,7 +1241,7 @@ where P<sub>k</sub> is the power allocated to the k<sup>th</sup> OFDM sub-carrie
 <ol><li><div class="calc">M = 504/7 = 72；查表 A ≈ 61.0 E</div></li>
 <li><div class="calc">承载 C = 61.0 × 0.98 = 59.8 E；η = 61.0/72 ≈ 0.85（按承载 0.83）</div></li>
 <li><div class="calc">用户 = 61.0/0.5 = 122 人</div></li></ol>
-<p><b>评论</b>：簇变小，每小区信道从 56 增到 72（多 29%），承载话务却从 45.9 增到 61.0 E（多 33%），中继效率从 0.82 升到 0.85——信道池越大，集群效率越高。代价是同频小区离得更近，按 n = 4 的简化模型 SIR 从 20.85 dB（N = 9）降到 18.66 dB（N = 7）（讲义 p.89），余量变小。</p>
+<p><b>评论</b>：簇变小，每小区信道从 56 增到 72（多 29%），能提供的话务量（表值 A）却从 45.9 增到 61.0 E（多 33%），中继效率从 0.82 升到 0.85——信道池越大，集群效率越高。代价是同频小区离得更近，按 n = 4 的简化模型 SIR 从 20.85 dB（N = 9）降到 18.66 dB（N = 7）（讲义 p.89），余量变小。</p>
 <h4><span class="st">易错</span>注意</h4>
 <ul><li>A<sub>u</sub> = 2 次/小时 × 15/60 小时 = 0.5 E，15 分钟要换成小时。</li>
 <li>查 2% 那一列，不是 1%。</li>
@@ -1684,14 +1684,14 @@ where s<sub>k</sub>(t) is the transmitted signal with the k<sup>th</sup> carrier
   <div class="pq-topic"><b>考点</b>：接入 AP 的过程：扫描 → 认证 → 关联</div>
   <details class="pq-orig" open><summary>英文原题（逐字转录）</summary><div class="pq-en" lang="en"><p>4. (a) An Access Point (AP) is a portal of a Wireless Local Area Network (WLAN), which can be used to connect to the Internet. When a user tries to connect to an AP, there will be a connection establishment procedure. Describe the connection establishment process and explain the function of the authentication process.</p>
 <p class="marks">(8 Marks)</p></div></details>
-  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>① 获取同步信息（扫描）</b>（讲义 Part B p.31–32）：节点要加入已有的 BSS，先要从 AP 获得同步信息。两种方式：<b>被动扫描</b>，等待 AP 周期性广播的信标帧（Beacon）；<b>主动扫描</b>，发送探测请求帧（Probe Request），等待 AP 回复探测响应帧（Probe Response）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>② 认证（Authentication）</b>：找到 AP 后，节点和 AP 交换信息，<b>双方证明自己知道约定的密码</b>。作用：确认对方是合法用户/合法 AP，防止未授权设备接入网络。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>③ 关联（Association）</b>：认证通过后，交换节点和 BSS 的能力信息，并把节点当前的位置告诉分布式系统（DSS，所有 AP 的集合），以便数据能正确地送到这个节点。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext">只有关联完成后，节点才能收发数据帧。</div></div><div class="wans">扫描（被动/主动）→ 认证（互证密码，防止非法接入）→ 关联（交换能力、登记位置）→ 开始传数据</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>节点接入 AP 的过程（Part B p.31–32）。</dd><dt>答题要点</dt><dd>① 扫描获取同步：被动（等 Beacon）或主动（发 Probe Request、收 Probe Response）；② 认证：双方证明知道约定的密码，防止非法接入；③ 关联：交换能力信息，并把节点位置告诉分布式系统 DS；之后才能收发数据。</dd><dt>记忆</dt><dd>"扫 → 认 → 联 → 传"。</dd><dt>易错</dt><dd>认证和关联的顺序别反；关联的作用是让 DS 知道把数据送到哪个 AP。</dd></dl></div><details class="deep xpl">
+  <details class="pq-sol"><summary>看解答和知识点（建议先自己做一遍）</summary><div class="worked"><div class="wbody"><div class="wstep"><div class="wn">1</div><div class="wtext"><b>① 获取同步信息（扫描）</b>（讲义 Part B p.31–32）：节点要加入已有的 BSS，先要从 AP 获得同步信息。两种方式：<b>被动扫描</b>，等待 AP 周期性广播的信标帧（Beacon）；<b>主动扫描</b>，发送探测请求帧（Probe Request），等待 AP 回复探测响应帧（Probe Response）。</div></div><div class="wstep"><div class="wn">2</div><div class="wtext"><b>② 认证（Authentication）</b>：找到 AP 后，节点和 AP 交换信息，<b>双方证明自己知道约定的密码</b>。作用：确认对方是合法用户/合法 AP，防止未授权设备接入网络。</div></div><div class="wstep"><div class="wn">3</div><div class="wtext"><b>③ 关联（Association）</b>：认证通过后，交换节点和 BSS 的能力信息，并把节点当前的位置告诉分布系统（DSS，所有 AP 的集合），以便数据能正确地送到这个节点。</div></div><div class="wstep"><div class="wn">4</div><div class="wtext">只有关联完成后，节点才能收发数据帧。</div></div><div class="wans">扫描（被动/主动）→ 认证（互证密码，防止非法接入）→ 关联（交换能力、登记位置）→ 开始传数据</div></div></div><div class="pq-kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>节点接入 AP 的过程（Part B p.31–32）。</dd><dt>答题要点</dt><dd>① 扫描获取同步：被动（等 Beacon）或主动（发 Probe Request、收 Probe Response）；② 认证：双方证明知道约定的密码，防止非法接入；③ 关联：交换能力信息，并把节点位置告诉分布系统 DS；之后才能收发数据。</dd><dt>记忆</dt><dd>"扫 → 认 → 联 → 传"。</dd><dt>易错</dt><dd>认证和关联的顺序别反；关联的作用是让 DS 知道把数据送到哪个 AP。</dd></dl></div><details class="deep xpl">
   <summary>知识讲解 + 详细解析：接入 AP 的扫描、认证与关联</summary>
   <div class="deep-body">
 <h4><span class="st">知识讲解</span>先认识几个名词</h4>
 <ul>
 <li><b>AP</b>（Access Point，接入点）：WLAN 和有线网络之间的"门"，相当于无线局域网的基站。</li>
 <li><b>BSS</b>（Basic Service Set，基本服务集）：一个 AP 和它下面的站点组成的一个"小区"（Part B p.10）。</li>
-<li><b>DS</b>（Distribution System，分布式系统）：把多个 AP（多个 BSS）连起来的骨干网（p.10）。讲义 p.32 写作 DSS，指"所有 AP 的集合"。</li>
+<li><b>DS</b>（Distribution System，分布系统）：把多个 AP（多个 BSS）连起来的骨干网（p.10）。讲义 p.32 写作 DSS，指"所有 AP 的集合"。</li>
 </ul>
 <p>一个节点（手机、电脑）想通过 AP 上网，不能直接发数据，要先完成一个<b>建立连接</b>的过程（connection set up，Part B p.31–32），一共三步。</p>
 <h4><span class="st">详细解析</span>三步展开</h4>

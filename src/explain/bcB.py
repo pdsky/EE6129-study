@@ -379,7 +379,7 @@ XPL = {
 <p>E-UTRAN 由许多 eNodeB 组成，普通用户业务<b>没有集中控制器</b>。各 eNodeB 之间用 <b>X2</b> 接口横向相连；eNodeB 向上用 <b>S1</b> 接口连核心网 EPC，S1 又分两条：</p>
 <ul><li><b>S1-MME</b>：接移动性管理实体 MME，走信令（控制面）。</li>
 <li><b>S1-U</b>：接服务网关 S-GW，走用户数据（U = user plane）。</li></ul>
-<p>eNodeB 和 UE 之间跑的是空中接口信令（AS）协议。</p>
+<p>eNodeB 和 UE 之间跑的是空中接口信令（AS）协议（讲义 p.63 原话 "air signaling (AS) protocols"；课外补充：3GPP 标准里 AS 指接入层 Access Stratum）。</p>
 <h4><span class="st">逐项分析</span></h4>
 <ul><li><b>A. S1；X2</b>：错，正好颠倒。</li>
 <li><b>B. X2；S1</b>：对，p.63 原文。</li>
