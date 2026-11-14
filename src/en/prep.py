@@ -74,7 +74,34 @@ def bc_practice(s, keep):
     return s.replace(old, "fbtn(TYPE[t]+' only','t:'+t)")
 
 
-PREP = {'p2-practice': p2_practice, 'hw1': hw1, 'homework-sw': homework_sw, 'bc-practice': bc_practice}
+def fix_js(pairs):
+    """Animation strings built from pieces whose shared word (第 …) needs a different English word per figure."""
+    def f(s, keep):
+        for old, new in pairs:
+            assert old in s, old
+            s = s.replace(old, new)
+        return s
+    return f
+
+
+def quiz_summary(s, keep):
+    # symbol tables have a 中文 column next to the English one: keep it Chinese
+    n = 0
+    def table(m):
+        nonlocal n
+        def row(r):
+            nonlocal n
+            n += 1
+            return r.group(1) + keep(r.group(2)) + r.group(3)
+        return re.sub(r'(<tr><td>(?:(?!</td>).)*</td><td>)((?:(?!</td>).)*)(</td>)', row, m.group(0), flags=re.S)
+    s = re.sub(r'<table class="sym">.*?</table>', table, s, flags=re.S)
+    assert n > 50, n
+    return s
+
+
+PREP = {'quiz-summary': quiz_summary, 'p2-practice': p2_practice, 'hw1': hw1, 'homework-sw': homework_sw, 'bc-practice': bc_practice,
+        'partB': fix_js([("'第 ' + (i + 1) + ' 次 CW = '", "'Attempt ' + (i + 1) + ': CW = '")]),
+        'partC': fix_js([("'第 ' + (Math.floor(th / 24) + 1) + ' 天 '", "'Day ' + (Math.floor(th / 24) + 1) + ' · '")])}
 
 
 def prep(page, s):

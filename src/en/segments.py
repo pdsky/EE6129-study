@@ -50,6 +50,11 @@ def _js(code, fn):
                 j += 2 if code[j] == '\\' else 1
             raw = code[i + 1:j]
             if has(raw) and c != '`':
+                global CTX
+                k2 = j + 1
+                while k2 < n and code[k2] in ' \t\r\n':
+                    k2 += 1
+                CTX = ('script', code[max(0, i - 3000):i], code[k2] if k2 < n else '')
                 if c == '"':
                     try:
                         txt = json.loads('"' + raw + '"')
@@ -93,7 +98,6 @@ def walk(s, fn):
         if t.startswith('<script'):
             flush()
             k = t.find('>') + 1; e = t.rfind('</script>')
-            CTX = ('script', '')
             out.append(t[:k] + _js(t[k:e], fn) + t[e:]); continue
         if t.startswith('<!--') or t.startswith('<style'):
             flush(); out.append(t); continue

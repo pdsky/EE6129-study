@@ -30,7 +30,13 @@ PAGES = {
     'hw1': ART / 'hw1.html',
     'bc-practice': ART / 'bc-practice.html',
     'homework-sw': pathlib.Path('/run/media/paddy/新加卷/NTUlearn/EE6129_HW_SW/homework_sw.html'),
+    'p2-learn': ART / 'p2-learn.html',
+    'quiz-summary': ART / 'quiz-summary.html',
+    'partA': ART / 'partA.html',
+    'partB': ART / 'partB.html',
+    'partC': ART / 'partC.html',
 }
+LEARN = {'p2-learn', 'quiz-summary', 'partA', 'partB', 'partC'}
 
 
 def load_dict():
@@ -54,7 +60,7 @@ def save_dict(d):
 
 def merge():
     d = load_dict(); n = 0
-    for fin in sorted((E / 'batches').glob('in_*.json')):
+    for fin in sorted((E / 'batches').glob('in_*.json')) + sorted((E / 'batches' / 'learn').glob('in_*.json')):
         fout = fin.with_name(fin.name.replace('in_', 'out_'))
         if not fout.exists():
             print('no output yet:', fout.name); continue
@@ -73,8 +79,9 @@ def page_text(name):
 
 def missing():
     d = load_dict(); items = []; seen = set()
-    for name in PAGES:
-        for k, kind in segments.units(page_text(name)).items():
+    srcs = [(n, page_text(n)) for n in PAGES] + [('learn-guide', H.GUIDE_LEARN)]
+    for name, text in srcs:
+        for k, kind in segments.units(text).items():
             if k not in d and k not in seen:
                 seen.add(k); items.append({'id': len(items), 'page': name, 'kind': kind, 'zh': k})
     (E / 'batches').mkdir(exist_ok=True)
@@ -135,11 +142,32 @@ def balanced(frag):
     return not st
 
 
+STEPS_OPEN = re.compile(r'\bsteps\s*:\s*\[')
+
+
+def js_shown_as_html(ctx):
+    """Animation figure strings that core.js puts in with innerHTML: a whole caption (cap: '…') or a whole step text."""
+    if not ctx or ctx[0] != 'script':
+        return False
+    before, nxt = ctx[1].rstrip(), ctx[2]
+    if nxt not in (',', ']', '}', ')', ''):
+        return False                      # part of a concatenation
+    if re.search(r'\bcap\s*:\s*$', before):
+        return True
+    m = None
+    for m in STEPS_OPEN.finditer(before):
+        pass
+    if m and before[-1:] in ('[', ','):
+        tail = before[m.end():]
+        return tail.count('[') >= tail.count(']')
+    return False
+
+
 def bilingual(kind, txt, ctx, page):
     if len(HAN.findall(txt)) < BI_MIN:
         return False
     if kind == 'js':
-        return page == 'bc-practice'
+        return page == 'bc-practice' or (page in LEARN and js_shown_as_html(ctx))
     if kind != 'html' or not balanced(txt):
         return False
     if ctx:
@@ -149,8 +177,8 @@ def bilingual(kind, txt, ctx, page):
     return True
 
 
-def translate(name, d):
-    s, keeps = prep.prep(name, PAGES[name].read_text(encoding='utf-8')); miss = []
+def translate(name, d, text=None):
+    s, keeps = prep.prep(name, PAGES[name].read_text(encoding='utf-8') if text is None else text); miss = []
     def fn(kind, txt):
         if txt not in d:
             miss.append(txt); return txt
@@ -164,32 +192,50 @@ def translate(name, d):
     s = s.replace('lang="zh-CN"', 'lang="en"').replace('\u3000', '\u2003')
     s = s.replace('<span class="zhsub" lang="en">', '<span class="zhsub" lang="zh-CN">')
     s = prep.restore(s, keeps)
-    if name != 'homework-sw':   # that page is bilingual already and has its own switch
+    if name not in ('homework-sw', 'learn-guide'):   # bilingual already / part of the hub page
         s = BI_CSS + s + BI_JS
     return s, miss
 
 
-# ---------------- hub ----------------
+# ---------------- hubs ----------------
 import build_hub as H  # noqa: E402
 
-TABS = [
-    ('guide', 'How to practise', 'Guide', None),
-    ('exams', 'Past final exams', 'Exams', 'exams'),
-    ('p2prac', 'Part 2 · Practice 1–7 + mock questions', 'Part 2', 'p2-practice'),
-    ('Aex', 'Part A · Lecture examples', 'Part A', 'examples'),
-    ('hw1', 'Part 1 · HW1', 'HW1', 'hw1'),
-    ('bc', 'Part B · C quizzes', 'B·C', 'bc-practice'),
-    ('hwsw', 'Part 2 · Homework (SW)', 'HW (SW)', 'homework-sw'),
-]
+HUBS = {
+    'practice': {
+        'id': 'hub-practice-en', 'out': 'hub-practice-en.html', 'title': 'EE6129 Practice (EN + 中文)', 'brand': 'Practice',
+        'tabs': [
+            ('guide', 'How to practise', 'Guide', None),
+            ('exams', 'Past final exams', 'Exams', 'exams'),
+            ('p2prac', 'Part 2 · Practice 1–7 + mock questions', 'Part 2', 'p2-practice'),
+            ('Aex', 'Part A · Lecture examples', 'Part A', 'examples'),
+            ('hw1', 'Part 1 · HW1', 'HW1', 'hw1'),
+            ('bc', 'Part B · C quizzes', 'B·C', 'bc-practice'),
+            ('hwsw', 'Part 2 · Homework (SW)', 'HW (SW)', 'homework-sw'),
+        ]},
+    'learn': {
+        'id': 'hub-learn-en', 'out': 'hub-learn-en.html', 'title': 'EE6129 Learn (EN + 中文)', 'brand': 'Learn',
+        'tabs': [
+            ('guide', 'Exam guide', 'Guide', None),
+            ('p2', 'Part 2 · Channel to OFDM', 'Part 2', 'p2-learn'),
+            ('ch12', 'Ch. 1b–2 problem types', '1b–2 types', 'quiz-summary'),
+            ('A', 'Part A · Cellular networks', 'Part A', 'partA'),
+            ('B', 'Part B · Wireless systems', 'Part B', 'partB'),
+            ('C', 'Part C · Satellite communications', 'Part C', 'partC'),
+        ]},
+}
+
+
+def en_url(hub):
+    return H.art_url(HUBS[hub]['id'])
 
 
 def tl(tab, text):
     return f'<a href="#{tab}" data-tab="{tab}">{text}</a>'
 
 
-def guide(zh_url, learn_url):
+def guide_practice(zh_url, learn_url):
     zh = f'<a href="{zh_url}">Chinese version</a>' if zh_url else 'the Chinese practice hub'
-    learn = f'<a href="{learn_url}">EE6129 学习</a>' if learn_url else 'the learning hub'
+    learn = f'<a href="{learn_url}">learning hub (EN + 中文)</a>' if learn_url else 'the learning hub'
     return f'''
 <div class="guide">
   <h1>EE6129 final revision · Practice (EN + 中文)</h1>
@@ -215,65 +261,86 @@ def guide(zh_url, learn_url):
       <tr><td class="q">Q4 <span class="tag pa">Part A</span></td><td>Q4 of all four {tl('exams', 'past papers')}</td><td>The short-answer questions in {tl('bc', 'Part B·C quizzes')}</td></tr>
     </tbody>
   </table></div>
-  <div class="note">Cover the solution and work the question yourself first. Each question has a "Key points" box and, where the lecturer commented on it, a "Lecturer's emphasis in class" box; read them after checking your answer. Links to the learning pages open {learn}, which is in Chinese.</div>
+  <div class="note">Cover the solution and work the question yourself first. Each question has a "Key points" box and, where the lecturer commented on it, a "Lecturer's emphasis in class" box; read them after checking your answer. Links to the notes open the {learn}.</div>
 </div>
 '''
 
 
-def build_hub(pages):
-    hub_url = dict(H.HUB_URL)
+def guide_learn(d, miss):
+    """The Chinese learn-hub guide (exam facts + exam map), translated with Chinese under each text unit."""
+    s, m = translate('learn-guide', d, H.GUIDE_LEARN)
+    miss.extend(m)
+    zh_url = H.HUB_URL.get('learn', '')
+    note = ('<p class="lede">Bilingual edition of the learning hub: every paragraph is in English with the Chinese right '
+            'under it; the <b>中文 ✓</b> button at the bottom right of each page hides or shows all Chinese. '
+            + (f'<a href="{zh_url}">Chinese version</a>.' if zh_url else '') + '</p>'
+            '<p class="lede">中英对照版：每段英文下面是对应的中文；每页右下角的「中文 ✓」按钮可以一键隐藏 / 显示全部中文。</p>')
+    i = s.find('</h1>')
+    return s[:i + 5] + note + s[i + 5:] if i > 0 else note + s
+
+
+def build_hub(hub, pages, guide_html):
+    cfg = HUBS[hub]; other = 'learn' if hub == 'practice' else 'practice'
+    hub_url = {'learn': en_url('learn') or H.HUB_URL['learn'], 'practice': en_url('practice') or H.HUB_URL['practice']}
     route = {}
-    for tid, _l, _s, key in TABS:
-        if key:
-            v = H.IDS.get(key, {})
-            for k in ('new', 'old'):
-                if v.get(k):
-                    route[v[k]] = ['practice', tid]
-            route[pathlib.Path(v.get('file', key + '.html')).name] = ['practice', tid]
-    for k, v in H.ROUTE.items():          # learn pages → the (Chinese) learn hub
-        if v[0] == 'learn':
-            route[k] = v
-    js = (H.JS.replace('lang="zh-CN"', 'lang="en"').replace('正在载入…', 'Loading…'))
+    for h, c in HUBS.items():
+        for tid, _l, _s, key in c['tabs']:
+            if key:
+                v = H.IDS.get(key, {})
+                for k in ('new', 'old'):
+                    if v.get(k):
+                        route[v[k]] = [h, tid]
+                route[pathlib.Path(v.get('file', key + '.html')).name] = [h, tid]
+    js = H.JS.replace('lang="zh-CN"', 'lang="en"').replace('正在载入…', 'Loading…')
     buttons = ''.join(
         f'<button type="button" role="tab" data-tab="{tid}" data-label="{label}" aria-selected="false">'
         f'<span class="long">{label}</span><span class="short">{short}</span></button>'
-        for tid, label, short, _k in TABS)
-    zh_url = hub_url.get('practice', '')
-    switch = ((f'<a class="switch" href="{hub_url["learn"]}">Learning pages (Chinese)</a>' if hub_url.get('learn') else '') +
+        for tid, label, short, _k in cfg['tabs'])
+    zh_url = H.HUB_URL.get(hub, '')
+    switch = ((f'<a class="switch" href="{hub_url[other]}">{"Practice →" if hub == "learn" else "← Learn"}</a>') +
               (f'<a class="switch" href="{zh_url}">中文版</a>' if zh_url else ''))
-    data = ('document.body.dataset.hub = "practice";\n'
+    data = (f'document.body.dataset.hub = "{hub}";\n'
             'var PAGES = {' + ','.join(f'"{k}":{H.embed(H.strip_skeleton(v))}' for k, v in pages.items()) + '};\n'
             f'var ROUTE = {json.dumps(route)};\nvar HUBURL = {json.dumps(hub_url)};\n')
     html = ('<meta charset="utf-8">\n<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">\n'
-            '<title>EE6129 Practice (EN + 中文)</title>\n'
+            f'<title>{cfg["title"]}</title>\n'
             '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">\n'
-            f'<style>{H.CSS}</style>\n'
-            '<header class="top"><div class="row"><div class="brand">EE6129 · <b>Practice</b> EN + 中文</div>'
+            f'<style>{H.CSS}\n.guide .zhsub{{display:block;margin:.25em 0 .1em;padding-left:.7em;border-left:2px solid rgba(127,127,127,.45);opacity:.8;font-size:.93em;font-weight:400}}</style>\n'
+            f'<header class="top"><div class="row"><div class="brand">EE6129 · <b>{cfg["brand"]}</b> EN + 中文</div>'
             f'<span class="sp"></span>{switch}</div>\n'
-            f'<nav class="tabs" role="tablist" aria-label="EE6129 Practice">{buttons}</nav></header>\n'
-            f'<main id="stage"><section class="pane" id="guide">{guide(zh_url, hub_url.get("learn"))}</section></main>\n'
+            f'<nav class="tabs" role="tablist" aria-label="{cfg["title"]}">{buttons}</nav></header>\n'
+            f'<main id="stage"><section class="pane" id="guide">{guide_html}</section></main>\n'
             f'<script>\n{data}</script>\n<script>{js}</script>\n')
-    out = ART / 'hub-practice-en.html'
+    out = ART / cfg['out']
     out.write_text(html, encoding='utf-8')
     print(out.name, f'{out.stat().st_size / 1e6:.2f} MB')
 
 
-def build():
-    d = load_dict(); OUT.mkdir(exist_ok=True); pages = {}; bad = 0
-    for tid, _l, _s, key in TABS:
-        if not key:
-            continue
-        s, miss = translate(key, d)
-        left = []
-        (OUT / f'{key}.html').write_text(s, encoding='utf-8')
-        pages[tid] = s
-        print(f'{key:12s} untranslated units: {len(miss):4d}   Chinese left: {len(left)}')
-        bad += len(miss)
+def build(which=('practice', 'learn')):
+    d = load_dict(); OUT.mkdir(exist_ok=True); bad = 0
+    for hub in which:
+        pages = {}
+        for tid, _l, _s, key in HUBS[hub]['tabs']:
+            if not key:
+                continue
+            s, miss = translate(key, d)
+            (OUT / f'{key}.html').write_text(s, encoding='utf-8')
+            pages[tid] = s
+            print(f'{key:12s} untranslated units: {len(miss):4d}')
+            bad += len(miss)
+        if hub == 'practice':
+            g = guide_practice(H.HUB_URL.get('practice', ''), en_url('learn') or H.HUB_URL.get('learn'))
+        else:
+            gm = []; g = guide_learn(d, gm); bad += len(gm)
+            print(f'{"learn-guide":12s} untranslated units: {len(gm):4d}')
+        build_hub(hub, pages, g)
     if bad:
         print('WARNING: run `build_en.py missing` and translate the rest')
-    build_hub(pages)
 
 
 if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else 'build'
-    {'merge': merge, 'missing': missing, 'build': build}[cmd]()
+    if cmd == 'build' and len(sys.argv) > 2:
+        build(tuple(sys.argv[2:]))
+    else:
+        {'merge': merge, 'missing': missing, 'build': build}[cmd]()

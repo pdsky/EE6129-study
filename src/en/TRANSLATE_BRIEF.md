@@ -53,3 +53,17 @@ If a unit is ambiguous, look at the page it came from for context:
 (homework-sw is /run/media/paddy/新加卷/NTUlearn/EE6129_HW_SW/homework_sw.html).
 
 Final report (short): number of ids written, the JSON check result, and any possible errors you noticed in the source.
+
+## Addendum for the learning pages (batches/learn/in_N.json → batches/learn/out_N.json)
+Pages: learn-guide (exam guide of the learning hub), p2-learn (Part 2 Ch. 1–7 notes), quiz-summary (Ch. 1b–2 problem
+types), partA / partB / partC (Part 1 notes). Context files: /run/media/paddy/新加卷/NTUlearn/EE6129_artifacts/<page>.html
+(learn-guide: src/hub/build_hub.py GUIDE_LEARN).
+- kind "js" units here are mostly from the animated figures (src/anim/*.js): figure titles, captions (cap), step
+  texts, slider labels, button labels and **SVG labels drawn inside the figure**. Short SVG labels must stay short
+  (similar width to the Chinese; abbreviate: "Tx", "Rx", "BS", "MS", "SNR", "freq.", "dist."). Keep `_{…}` / `^{…}`
+  sub/superscript markup, `\n`, and any leading/trailing spaces or punctuation that joins pieces of a concatenated string.
+- Animation UI: ▶ 动画示意 = ▶ Animation · ▶ 播放 = ▶ Play · ⏸ 暂停 = ⏸ Pause · ▶ 自动播放 = ▶ Auto-play ·
+  下一步 = Next · 上一步 = Back · 重来/重置 = Reset · 期末考点 = Final-exam topic · 考过 N 年 = tested in N years.
+- More fixed terms: 课外补充 = Beyond the notes · 例题 = worked example · 推导 = derivation · 本节小结 = Section summary ·
+  必背 = must memorise · 易错 = common mistake · 重点 = key point · 讲义第 N 页 / p.N = notes p.N · 课件 = slides ·
+  题型 = problem type · 步骤 = step · 做法 = method · 模拟题 = mock question · 真题 = past exam.
