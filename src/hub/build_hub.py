@@ -317,7 +317,7 @@ JS = r'''
       if (r) {
         e.preventDefault();
         if (r[0] === HUB) show(r[1], r[2]);
-        else if (HUBURL[r[0]]) openOut(HUBURL[r[0]] + '#' + r[1]);
+        else if (HUBURL[r[0]]) openOut(HUBURL[r[0]] + '#' + (r[0] === 'practice' ? (r[2] || r[1]) : r[1] + (r[2] ? '~' + r[2] : '')));
         return;
       }
       if (/^(https?:|mailto:)/.test(href)) { e.preventDefault(); openOut(href); }
@@ -360,8 +360,9 @@ JS = r'''
     var a = e.target.closest('a[data-tab]'); if (!a) return;
     e.preventDefault(); show(a.dataset.tab, a.dataset.anchor || null);
   });
-  window.addEventListener('hashchange', function(){ show(location.hash.slice(1) || 'guide'); });
-  show(location.hash.slice(1) || 'guide');
+  function fromHash(){ var h = location.hash.slice(1).split('~'); show(h[0] || 'guide', h[1] ? decodeURIComponent(h[1]) : null); }
+  window.addEventListener('hashchange', fromHash);
+  fromHash();
 })();
 '''
 
@@ -426,4 +427,6 @@ def build(hub):
 
 if __name__ == '__main__':
     build('learn')
-    build('practice')
+    import merge_practice as MP   # 「EE6129 练习」: one page, no tabs
+    MP.build(MP.load_pages('zh'), 'zh', ART / 'hub-practice.html',
+             {'learn': HUB_URL['learn'], 'to_learn': HUB_URL['learn'], 'other': art_url('hub-practice-en')})

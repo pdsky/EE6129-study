@@ -319,13 +319,13 @@ def build_hub(hub, pages, guide_html):
 def build(which=('practice', 'learn')):
     d = load_dict(); OUT.mkdir(exist_ok=True); bad = 0
     for hub in which:
-        pages = {}
+        pages = {}; named = {}
         for tid, _l, _s, key in HUBS[hub]['tabs']:
             if not key:
                 continue
             s, miss = translate(key, d)
             (OUT / f'{key}.html').write_text(s, encoding='utf-8')
-            pages[tid] = s
+            pages[tid] = s; named[key] = s
             print(f'{key:12s} untranslated units: {len(miss):4d}')
             bad += len(miss)
         if hub == 'practice':
@@ -333,7 +333,12 @@ def build(which=('practice', 'learn')):
         else:
             gm = []; g = guide_learn(d, gm); bad += len(gm)
             print(f'{"learn-guide":12s} untranslated units: {len(gm):4d}')
-        build_hub(hub, pages, g)
+        if hub == 'practice':       # one page, no tabs (src/hub/merge_practice.py)
+            import merge_practice as MP
+            learn = en_url('learn') or H.HUB_URL.get('learn', '')
+            MP.build(named, 'en', ART / HUBS[hub]['out'], {'learn': learn, 'to_learn': learn, 'other': H.HUB_URL.get('practice', '')})
+        else:
+            build_hub(hub, pages, g)
     if bad:
         print('WARNING: run `build_en.py missing` and translate the rest')
 
