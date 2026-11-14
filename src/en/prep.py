@@ -42,6 +42,14 @@ def p2_practice(s, keep):
         k = s.find('<div class="sol sol-en"', i)
         e = block_end(s, k, 'div')
         s = s[:e] + '\n    ' + keep(zh) + s[e:]; n3 += 1
+    # Chinese lines inside the English 知识讲解 boxes (add_xpl.py): already bilingual
+    n6 = 0
+    while True:
+        i = s.find('<span class="zhsub xz" lang="zh-CN">')
+        if i < 0:
+            break
+        j = block_end(s, i, 'span'); s = s[:i] + keep(s[i:j]) + s[j:]; n6 += 1
+    assert n6 > 100, n6
     s = s.replace('<div class="wrap lang-en" id="root">', '<div class="wrap" id="root">')
     s, n4 = re.subn(r'(<label class="toggle"><input type="checkbox" id="zhMode" checked> )题目中文对照(</label>)',
                     lambda m: m.group(1) + 'Show ' + keep('中文') + m.group(2), s)

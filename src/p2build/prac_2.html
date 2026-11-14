@@ -105,38 +105,38 @@
       <div class="note">By-product, the level crossing rate: \(\sqrt{2\pi}\times50\times0.1\times e^{-0.01}=12.4\) crossings/s. AFD × LCR = 0.00995 ≈ 1%, the fraction of time the signal is more than 20 dB below its rms value.</div>
       <!-- XPL:p2q1 -->
       <details class="deep xpl">
-        <summary>Concept + walkthrough: LCR, AFD and the meaning of ρ</summary>
+        <summary><span>Concept + walkthrough: LCR, AFD and the meaning of ρ<span class="zhsub xz" lang="zh-CN">知识讲解 + 详细解析：LCR、AFD 与 ρ 的含义</span></span></summary>
         <div class="deep-body">
 <h4><span class="st">Concept</span>Level crossing rate (LCR) and average fade duration (AFD)</h4>
-<p>In Rayleigh fading the received amplitude z(t) fluctuates quickly and now and then drops below the minimum usable level Z<sub>min</sub> (a "fade"). Two quantities describe these fades (lecture Ch 2 p.40–43):</p>
+<p>In Rayleigh fading the received amplitude z(t) fluctuates quickly and now and then drops below the minimum usable level Z<sub>min</sub> (a "fade"). Two quantities describe these fades (lecture Ch 2 p.40–43):<span class="zhsub xz" lang="zh-CN">瑞利衰落下，接收信号幅度 z(t) 随时间快速起伏，时不时掉到最低可用电平 Z<sub>min</sub> 以下（一个"坑"）。描述这些坑有两个量（讲义第 2 章 p.40–43）：</span></p>
 <ul>
-<li><b>LCR</b> (level crossing rate) L<sub>Z</sub>: the number of times per second the signal crosses Z<sub>min</sub> <b>downwards</b>, i.e. how many fades per second.</li>
-<li><b>AFD</b> (average fade duration): how long each fade lasts on average. Definition (p.42): over T seconds, the total time below, Σt<sub>i</sub>, divided by the number of fades L<sub>Z</sub>T.</li>
+<li><b>LCR</b> (level crossing rate) L<sub>Z</sub>: the number of times per second the signal crosses Z<sub>min</sub> <b>downwards</b>, i.e. how many fades per second.<span class="zhsub xz" lang="zh-CN"><b>LCR</b>（level crossing rate，电平通过率）L<sub>Z</sub>：每秒钟信号<b>往下</b>穿过 Z<sub>min</sub> 的次数，也就是每秒掉进几个坑。</span></li>
+<li><b>AFD</b> (average fade duration): how long each fade lasts on average. Definition (p.42): over T seconds, the total time below, Σt<sub>i</sub>, divided by the number of fades L<sub>Z</sub>T.<span class="zhsub xz" lang="zh-CN"><b>AFD</b>（average fade duration，平均衰落时长）：每个坑平均待多久。定义（p.42）：在 T 秒里，总的低于时间 Σt<sub>i</sub> 除以坑的个数 L<sub>Z</sub>T。</span></li>
 </ul>
-<p>p.43 rewrites the definition as AFD = P(z &lt; Z<sub>min</sub>) / L<sub>Z</sub>: the <b>fraction of time</b> below the threshold divided by the <b>number of fades per second</b>. For Rayleigh, P(z &lt; Z<sub>min</sub>) = 1 − e<sup>−ρ²</sup> and L<sub>Z</sub> = √(2π) f<sub>m</sub> ρ e<sup>−ρ²</sup>; dividing gives the formula in the question.</p>
+<p>p.43 rewrites the definition as AFD = P(z &lt; Z<sub>min</sub>) / L<sub>Z</sub>: the <b>fraction of time</b> below the threshold divided by the <b>number of fades per second</b>. For Rayleigh, P(z &lt; Z<sub>min</sub>) = 1 − e<sup>−ρ²</sup> and L<sub>Z</sub> = √(2π) f<sub>m</sub> ρ e<sup>−ρ²</sup>; dividing gives the formula in the question.<span class="zhsub xz" lang="zh-CN">p.43 把定义改写成 AFD = P(z &lt; Z<sub>min</sub>) / L<sub>Z</sub>：低于门限的<b>时间比例</b>除以<b>每秒的坑数</b>。瑞利分布下 P(z &lt; Z<sub>min</sub>) = 1 − e<sup>−ρ²</sup>，L<sub>Z</sub> = √(2π) f<sub>m</sub> ρ e<sup>−ρ²</sup>，两者相除就是题目给的式子。</span></p>
 <div class="tw"><table class="mini"><thead><tr><th>Symbol</th><th>Meaning</th><th>Here</th></tr></thead><tbody>
-<tr><td>ρ = Z<sub>min</sub>/Z<sub>rms</sub></td><td>threshold over rms value (an <b>amplitude</b> ratio)</td><td>0.1, i.e. 20 dB down</td></tr>
-<tr><td>f<sub>m</sub> (= f<sub>D</sub>)</td><td>maximum Doppler shift, how fast the channel changes, f<sub>D</sub> = v/λ</td><td>50 Hz</td></tr>
+<tr><td>ρ = Z<sub>min</sub>/Z<sub>rms</sub></td><td>threshold over rms value (an <b>amplitude</b> ratio)<span class="zhsub xz" lang="zh-CN">门限与 rms 值之比（<b>幅度</b>比）</span></td><td>0.1, i.e. 20 dB down</td></tr>
+<tr><td>f<sub>m</sub> (= f<sub>D</sub>)</td><td>maximum Doppler shift, how fast the channel changes, f<sub>D</sub> = v/λ<span class="zhsub xz" lang="zh-CN">最大多普勒频移，信道变化有多快，f<sub>D</sub> = v/λ</span></td><td>50 Hz</td></tr>
 </tbody></table></div>
-<p>The lecturer stressed in class: the LCR and AFD formulas are given in the exam, but you must be able to explain ρ = Z<sub>min</sub>/Z<sub>rms</sub> and f<sub>m</sub> in one sentence; and the two formulas <b>apply only to Rayleigh fading</b>. If the question does not say Rayleigh, use the definitions (many students lost marks on this in Q2 of this year's Quiz).</p>
+<p>The lecturer stressed in class: the LCR and AFD formulas are given in the exam, but you must be able to explain ρ = Z<sub>min</sub>/Z<sub>rms</sub> and f<sub>m</sub> in one sentence; and the two formulas <b>apply only to Rayleigh fading</b>. If the question does not say Rayleigh, use the definitions (many students lost marks on this in Q2 of this year's Quiz).<span class="zhsub xz" lang="zh-CN">老师课上强调：LCR、AFD 公式考试会给，但要会用一句话解释 ρ = Z<sub>min</sub>/Z<sub>rms</sub> 和 f<sub>m</sub>；而且这两个公式<b>只适用于瑞利衰落</b>，题目没说瑞利时要按定义算（今年 Quiz 第 2 题很多人在这里丢分）。</span></p>
 <h4><span class="st">Step by step</span>Substituting into the formula</h4>
 <ol>
-<li><b>Find ρ</b>: the minimum signal strength is 0.1 of the rms value. Signal strength means amplitude, so ρ = 0.1; in dB that is 20 log₁₀0.1 = −20 dB, a deep fade.</li>
-<li><b>Numerator</b>: square first, ρ² = 0.01, then e<sup>0.01</sup> − 1 = 0.01005. Calculator hint: for small x, e<sup>x</sup> − 1 ≈ x, so it is about 0.01.</li>
-<li><b>Denominator</b>: √(2π) = 2.5066, × 50 × 0.1 = 12.53.</li>
-<li><b>Divide</b>, then convert seconds to milliseconds.</li>
+<li><b>Find ρ</b>: the minimum signal strength is 0.1 of the rms value. Signal strength means amplitude, so ρ = 0.1; in dB that is 20 log₁₀0.1 = −20 dB, a deep fade.<span class="zhsub xz" lang="zh-CN"><b>定 ρ</b>：最低信号强度是 rms 值的 0.1 倍。signal strength 指幅度，所以 ρ = 0.1；换成 dB 是 20 log₁₀0.1 = −20 dB，是很深的坑。</span></li>
+<li><b>Numerator</b>: square first, ρ² = 0.01, then e<sup>0.01</sup> − 1 = 0.01005. Calculator hint: for small x, e<sup>x</sup> − 1 ≈ x, so it is about 0.01.<span class="zhsub xz" lang="zh-CN"><b>分子</b>：先平方 ρ² = 0.01，再 e<sup>0.01</sup> − 1 = 0.01005。计算器提示：x 很小时 e<sup>x</sup> − 1 ≈ x，所以约等于 0.01。</span></li>
+<li><b>Denominator</b>: √(2π) = 2.5066, × 50 × 0.1 = 12.53.<span class="zhsub xz" lang="zh-CN"><b>分母</b>：√(2π) = 2.5066，× 50 × 0.1 = 12.53。</span></li>
+<li><b>Divide</b>, then convert seconds to milliseconds.<span class="zhsub xz" lang="zh-CN"><b>相除</b>，再把秒换成毫秒。</span></li>
 </ol>
 <div class="calc">ρ² = 0.01, e<sup>0.01</sup> − 1 = 0.01005<br>√(2π) × 50 × 0.1 = 2.5066 × 5 = 12.53<br>AFD = 0.01005 / 12.53 = 8.0 × 10⁻⁴ s ≈ 0.8 ms</div>
 <h4><span class="st">Check</span>Verify with the LCR</h4>
 <div class="calc">LCR = 12.53 × e<sup>−0.01</sup> = 12.41 crossings/s<br>AFD × LCR = 8.02 × 10⁻⁴ × 12.41 = 0.00995 = 1 − e<sup>−0.01</sup></div>
-<p>Meaning: about 12 fades per second, each about 0.8 ms, so the signal is below the threshold about 1% of the time, exactly the Rayleigh P(z &lt; Z<sub>min</sub>). Another check: for small ρ, AFD ≈ ρ/(√(2π) f<sub>D</sub>) = 0.1/125.3 = 7.98 × 10⁻⁴ s, almost the same.</p>
-<p>Engineering meaning: symbols lost per fade = AFD × R<sub>s</sub> (covered in class). Example: at 10 ksps, 0.8 ms wipes out about 8 consecutive symbols, so the interleaver depth must be larger than that.</p>
+<p>Meaning: about 12 fades per second, each about 0.8 ms, so the signal is below the threshold about 1% of the time, exactly the Rayleigh P(z &lt; Z<sub>min</sub>). Another check: for small ρ, AFD ≈ ρ/(√(2π) f<sub>D</sub>) = 0.1/125.3 = 7.98 × 10⁻⁴ s, almost the same.<span class="zhsub xz" lang="zh-CN">意思是：每秒掉坑约 12 次，每次约 0.8 ms，合起来约 1% 的时间低于门限，正好等于瑞利分布 P(z &lt; Z<sub>min</sub>)。另一个检查：ρ 很小时 AFD ≈ ρ/(√(2π) f<sub>D</sub>) = 0.1/125.3 = 7.98 × 10⁻⁴ s，几乎一样。</span></p>
+<p>Engineering meaning: symbols lost per fade = AFD × R<sub>s</sub> (covered in class). Example: at 10 ksps, 0.8 ms wipes out about 8 consecutive symbols, so the interleaver depth must be larger than that.<span class="zhsub xz" lang="zh-CN">工程意义：一次衰落吞掉的符号数 = AFD × R<sub>s</sub>（老师课上讲过）。举例：若符号速率 10 ksps，0.8 ms 就连错约 8 个符号，交织深度要比这个大。</span></p>
 <h4><span class="st">Pitfalls</span>Where marks are usually lost</h4>
 <ul>
-<li>ρ is an amplitude ratio: 0.1 of the rms value → ρ = 0.1. If a question says "0.1 of the power", ρ = √0.1 = 0.316 and the AFD becomes 2.65 ms, more than 3 times larger.</li>
-<li>The exponent is ρ², not ρ: e<sup>0.1</sup> − 1 = 0.105 would make the answer 10 times too large.</li>
-<li>If the question says "20 dB below rms", ρ = 10<sup>−20/20</sup> = 0.1 (amplitudes use 20 log).</li>
-<li>Without Rayleigh fading this formula does not apply; use the definition: total time below ÷ number of fades.</li>
+<li>ρ is an amplitude ratio: 0.1 of the rms value → ρ = 0.1. If a question says "0.1 of the power", ρ = √0.1 = 0.316 and the AFD becomes 2.65 ms, more than 3 times larger.<span class="zhsub xz" lang="zh-CN">ρ 是幅度比：rms 值的 0.1 倍 → ρ = 0.1。若题目说"功率是 0.1 倍"，ρ = √0.1 = 0.316，AFD 变成 2.65 ms，差 3 倍多。</span></li>
+<li>The exponent is ρ², not ρ: e<sup>0.1</sup> − 1 = 0.105 would make the answer 10 times too large.<span class="zhsub xz" lang="zh-CN">指数是 ρ² 不是 ρ：e<sup>0.1</sup> − 1 = 0.105 会让答案大 10 倍。</span></li>
+<li>If the question says "20 dB below rms", ρ = 10<sup>−20/20</sup> = 0.1 (amplitudes use 20 log).<span class="zhsub xz" lang="zh-CN">题目给 "20 dB below rms" 时，ρ = 10<sup>−20/20</sup> = 0.1（幅度用 20 log）。</span></li>
+<li>Without Rayleigh fading this formula does not apply; use the definition: total time below ÷ number of fades.<span class="zhsub xz" lang="zh-CN">没说瑞利衰落就不能套这个公式，要按定义：总低于时间 ÷ 次数。</span></li>
 </ul>
 <h4><span class="st">Exam</span>How to write it in English</h4>
 <div class="tmpl" lang="en">
@@ -144,7 +144,7 @@
 <p>Here ρ = 0.1 and f<sub>D</sub> = 50 Hz: AFD = (e<sup>0.01</sup> − 1)/(2.5066 × 50 × 0.1) = 0.01005/12.53 = 8.0 × 10⁻⁴ s ≈ 0.8 ms.</p>
 <p>So each time the signal falls below 0.1 of its rms value, it stays below for about 0.8 ms on average.</p>
 </div>
-<div class="ans">In one line: AFD = fraction of time below the threshold ÷ fades per second; ρ = Z<sub>min</sub>/Z<sub>rms</sub> = 0.1 (an amplitude ratio), and the Rayleigh formula gives 0.8 ms.</div>
+<div class="ans">In one line: AFD = fraction of time below the threshold ÷ fades per second; ρ = Z<sub>min</sub>/Z<sub>rms</sub> = 0.1 (an amplitude ratio), and the Rayleigh formula gives 0.8 ms.<span class="zhsub xz" lang="zh-CN">一句话：AFD = 低于门限的时间比例 ÷ 每秒掉坑次数；ρ = Z<sub>min</sub>/Z<sub>rms</sub> = 0.1（幅度比），代入瑞利公式得 0.8 ms。</span></div>
         </div>
       </details>
       <!-- /XPL:p2q1 -->

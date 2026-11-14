@@ -15,6 +15,45 @@ import xpl
 X = xpl.load_available('p2')
 
 
+ZS = '<span class="zhsub xz" lang="zh-CN">'
+PATS = (('p', r'<p\b[^>]*>(.*?)</p>'), ('li', r'<li\b[^>]*>(.*?)</li>'),
+        ('td', r'<t([dh])\b[^>]*>(.*?)</t\1>'), ('ans', r'<div class="ans">(.*?)</div>'))
+
+
+def _cells(body):
+    """[(kind, inner_start, inner_end)] outside the English exam templates, in document order per kind."""
+    tm = [(m.start(), m.end()) for m in re.finditer(r'<div class="tmpl".*?</div>', body, re.S)]
+    out = {}
+    for k, pat in PATS:
+        lst = []
+        for m in re.finditer(pat, body, re.S):
+            if any(a <= m.start() < b for a, b in tm):
+                continue
+            g = m.lastindex
+            lst.append((m.start(g), m.end(g)))
+        out[k] = lst
+    return out
+
+
+def bilingual(en, zh):
+    """English body with the matching Chinese under every paragraph / list item / table cell / summary line."""
+    ce, cz = _cells(en), _cells(zh)
+    ins = []
+    for k in ce:
+        assert len(ce[k]) == len(cz[k]), (k, len(ce[k]), len(cz[k]))
+        for (a, b), (c, d) in zip(ce[k], cz[k]):
+            z = re.sub(r'<div class="calc">.*?</div>', '', zh[c:d], flags=re.S).strip()
+            if len(re.findall(r'[一-鿿]', z)) < (4 if k == 'td' else 2):
+                continue
+            inner = en[a:b]
+            j = inner.find('<div')
+            pos = a + j if j >= 0 else b
+            ins.append((pos, ZS + z + '</span>'))
+    for pos, frag in sorted(ins, reverse=True):
+        en = en[:pos] + frag + en[pos:]
+    return en
+
+
 def wrap(qid, html, ind):
     return f'{ind}<!-- XPL:{qid} -->\n{html}{ind}<!-- /XPL:{qid} -->\n'
 
@@ -35,7 +74,9 @@ def apply():
             a = s.index(f'    <!-- EN:{qid} -->')
             k = s.index('      <div class="pkp"><div class="lbl">◆ Key points', a)
             assert k < s.index(f'<!-- /EN:{qid} -->', a)
-            s = s[:k] + wrap(qid, xpl.box(e, 'en', '      '), '      ') + s[k:]
+            be = dict(e, en=bilingual(e['en'], e['zh']),
+                      title_en=f'<span>{e["title_en"]}{ZS}{e["title"]}</span></span>')
+            s = s[:k] + wrap(qid, xpl.box(be, 'en', '      '), '      ') + s[k:]
             n += 1
             seen.add(qid)
         f.write_text(s, encoding='utf-8')

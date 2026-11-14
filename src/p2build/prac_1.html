@@ -146,50 +146,50 @@
       <div class="note">Part (b) of the official answer comes from the MSE the lecturer used in class, 9.656: he took 10/√9.656 ≈ 3.23 and read Q(3.23) = 6.19 × 10⁻⁴ from the table (week 10 recording; precisely 10/3.107 = 3.22 and Q ≈ 6.5 × 10⁻⁴). But 9.656 does not match the official K and γ either: substituting K = −31.4, γ = 3.86 back into the 6 points gives an MSE of 13.1, and standard least squares gives 11.87. In class the lecturer said the numbers depend on rounding and anything "around −31.4 and 3.86" is fine. <b>In the exam, state the method clearly (least squares, σ² = MSE, P<sub>out</sub> = Q(10/σ)) and use the numbers you obtain.</b></div>
       <!-- XPL:p1q1 -->
       <details class="deep xpl">
-        <summary>Concept + walkthrough: least-squares fit of K, γ, then shadowing outage</summary>
+        <summary><span>Concept + walkthrough: least-squares fit of K, γ, then shadowing outage<span class="zhsub xz" lang="zh-CN">知识讲解 + 详细解析：最小二乘拟合 K、γ，再求阴影中断</span></span></summary>
         <div class="deep-body">
 <h4><span class="st">Concept</span>Path loss + shadowing = a straight line + random scatter</h4>
-<p>Simplified path loss model (lecture Ch 2 p.8): \(P_r=P_tK(d_0/d)^{\gamma}\), d₀ = 1 m. K is the power gain at 1 m (a constant set by the environment and antennas), and γ is the path loss exponent. The lecturer stressed in class that this is a fixed name, and that both the linear and the dB forms must be memorised; they are not given in the exam.</p>
-<p>Take 10 log₁₀ of both sides to get dB: \(M=(P_r/P_t)_{dB}=K_{dB}-\gamma\cdot10\log_{10}(d/d_0)\). With \(x=10\log_{10}d\) this is a straight line \(M=K_{dB}-\gamma x\): the intercept is K<sub>dB</sub> and the slope is −γ.</p>
-<p>The measured points never lie exactly on the line; the deviation is the shadowing \(\psi_{dB}\sim\mathcal N(0,\sigma_\psi^2)\) (p.11–12). The method on p.13: find the line that minimises the mean squared error (MSE) between measurement and model, and MSE = E[X<sub>i</sub>²] = σ<sub>ψ</sub>². So one data set gives two things: the line (mean trend) and the scatter of the points (shadowing variance).</p>
-<p>Outage probability (p.14–15): \(P_{out}=P(\psi_{dB}\lt-x)=Q(x/\sigma_\psi)\), where x = mean received power without shadowing − minimum required power, i.e. the margin.</p>
+<p>Simplified path loss model (lecture Ch 2 p.8): \(P_r=P_tK(d_0/d)^{\gamma}\), d₀ = 1 m. K is the power gain at 1 m (a constant set by the environment and antennas), and γ is the path loss exponent. The lecturer stressed in class that this is a fixed name, and that both the linear and the dB forms must be memorised; they are not given in the exam.<span class="zhsub xz" lang="zh-CN">简化路径损耗模型（simplified path loss model，讲义第 2 章 p.8）：\(P_r=P_tK(d_0/d)^{\gamma}\)，d₀ = 1 m。K 是 1 m 处的功率增益（由环境、天线决定的常数），γ 是路径损耗指数（path loss exponent）。老师课上强调：这是专有名词，线性和 dB 两种形式都要背，考试不给。</span></p>
+<p>Take 10 log₁₀ of both sides to get dB: \(M=(P_r/P_t)_{dB}=K_{dB}-\gamma\cdot10\log_{10}(d/d_0)\). With \(x=10\log_{10}d\) this is a straight line \(M=K_{dB}-\gamma x\): the intercept is K<sub>dB</sub> and the slope is −γ.<span class="zhsub xz" lang="zh-CN">两边取 10 log₁₀ 变成 dB：\(M=(P_r/P_t)_{dB}=K_{dB}-\gamma\cdot10\log_{10}(d/d_0)\)。令 \(x=10\log_{10}d\)，它就是一条直线 \(M=K_{dB}-\gamma x\)：截距是 K<sub>dB</sub>，斜率是 −γ。</span></p>
+<p>The measured points never lie exactly on the line; the deviation is the shadowing \(\psi_{dB}\sim\mathcal N(0,\sigma_\psi^2)\) (p.11–12). The method on p.13: find the line that minimises the mean squared error (MSE) between measurement and model, and MSE = E[X<sub>i</sub>²] = σ<sub>ψ</sub>². So one data set gives two things: the line (mean trend) and the scatter of the points (shadowing variance).<span class="zhsub xz" lang="zh-CN">实测点不会正好落在直线上，偏离的部分就是阴影（shadowing）\(\psi_{dB}\sim\mathcal N(0,\sigma_\psi^2)\)（p.11–12）。讲义 p.13 的做法：找让"实测 − 模型"的均方误差（MSE）最小的直线，并且 MSE = E[X<sub>i</sub>²] = σ<sub>ψ</sub>²。所以一组数据同时给出两样东西：直线（平均趋势）和点的散布（阴影方差）。</span></p>
+<p>Outage probability (p.14–15): \(P_{out}=P(\psi_{dB}\lt-x)=Q(x/\sigma_\psi)\), where x = mean received power without shadowing − minimum required power, i.e. the margin.<span class="zhsub xz" lang="zh-CN">中断概率（outage probability，p.14–15）：\(P_{out}=P(\psi_{dB}\lt-x)=Q(x/\sigma_\psi)\)，x = 不含阴影时的平均接收功率 − 最低要求功率，也就是余量（margin）。</span></p>
 <div class="tw"><table class="mini"><thead><tr><th>Symbol</th><th>Meaning</th><th>Here</th></tr></thead><tbody>
-<tr><td>x<sub>i</sub></td><td>10 log₁₀d<sub>i</sub>, horizontal axis of the line</td><td>6.99 … 30.00</td></tr>
-<tr><td>M<sub>i</sub></td><td>measured (P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub>, vertical axis</td><td>−60 … −150</td></tr>
-<tr><td>K<sub>dB</sub>, γ</td><td>intercept; minus the slope</td><td>unknown</td></tr>
-<tr><td>σ<sub>ψ</sub>²</td><td>shadowing variance = MSE of the fit</td><td>unknown</td></tr>
-<tr><td>margin x</td><td>how many dB the mean power is above the threshold</td><td>10 dB</td></tr>
+<tr><td>x<sub>i</sub></td><td>10 log₁₀d<sub>i</sub>, horizontal axis of the line<span class="zhsub xz" lang="zh-CN">10 log₁₀d<sub>i</sub>，直线的横坐标</span></td><td>6.99 … 30.00</td></tr>
+<tr><td>M<sub>i</sub></td><td>measured (P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub>, vertical axis<span class="zhsub xz" lang="zh-CN">实测 (P<sub>r</sub>/P<sub>t</sub>)<sub>dB</sub>，纵坐标</span></td><td>−60 … −150</td></tr>
+<tr><td>K<sub>dB</sub>, γ</td><td>intercept; minus the slope<span class="zhsub xz" lang="zh-CN">截距；斜率的相反数</span></td><td>unknown</td></tr>
+<tr><td>σ<sub>ψ</sub>²</td><td>shadowing variance = MSE of the fit<span class="zhsub xz" lang="zh-CN">阴影方差 = 拟合的 MSE</span></td><td>unknown</td></tr>
+<tr><td>margin x</td><td>how many dB the mean power is above the threshold<span class="zhsub xz" lang="zh-CN">平均功率比门限高多少 dB</span></td><td>10 dB</td></tr>
 </tbody></table></div>
 <h4><span class="st">Step by step</span>(a) K and γ from the two normal equations</h4>
 <ol>
-<li><b>What</b>: write the sum of squared errors \(F(K,\gamma)=\sum_i(M_i-K+\gamma x_i)^2\). <b>Why</b>: least squares means minimising F; this is how the lecturer wrote it in class.</li>
-<li><b>Set the derivative with respect to K to 0</b>: \(\sum_i(M_i-K+\gamma x_i)=0\) → \(K=\bar M+\gamma\bar x\). So the best line always passes through the mean point (x̄, M̄).</li>
-<li><b>Set the derivative with respect to γ to 0</b>: \(\sum_i x_i(M_i-K+\gamma x_i)=0\); substitute the previous result and simplify to \(\gamma=-S_{xM}/S_{xx}\).</li>
-<li><b>How to compute</b>: on the calculator first get four sums, then the two S values (fewer slips than computing x − x̄ point by point):</li>
+<li><b>What</b>: write the sum of squared errors \(F(K,\gamma)=\sum_i(M_i-K+\gamma x_i)^2\). <b>Why</b>: least squares means minimising F; this is how the lecturer wrote it in class.<span class="zhsub xz" lang="zh-CN"><b>做什么</b>：写出误差平方和 \(F(K,\gamma)=\sum_i(M_i-K+\gamma x_i)^2\)。<b>为什么</b>：最小二乘就是让 F 最小，老师课上就是这样写的。</span></li>
+<li><b>Set the derivative with respect to K to 0</b>: \(\sum_i(M_i-K+\gamma x_i)=0\) → \(K=\bar M+\gamma\bar x\). So the best line always passes through the mean point (x̄, M̄).<span class="zhsub xz" lang="zh-CN"><b>对 K 求偏导令其为 0</b>：\(\sum_i(M_i-K+\gamma x_i)=0\) → \(K=\bar M+\gamma\bar x\)。意思是最佳直线一定经过平均点 (x̄, M̄)。</span></li>
+<li><b>Set the derivative with respect to γ to 0</b>: \(\sum_i x_i(M_i-K+\gamma x_i)=0\); substitute the previous result and simplify to \(\gamma=-S_{xM}/S_{xx}\).<span class="zhsub xz" lang="zh-CN"><b>对 γ 求偏导令其为 0</b>：\(\sum_i x_i(M_i-K+\gamma x_i)=0\)，把上一式代入整理，得 \(\gamma=-S_{xM}/S_{xx}\)。</span></li>
+<li><b>How to compute</b>: on the calculator first get four sums, then the two S values (fewer slips than computing x − x̄ point by point):<span class="zhsub xz" lang="zh-CN"><b>怎么算</b>：计算器上先求四个和，再算两个 S（这样比逐点算 x − x̄ 少出错）：</span></li>
 </ol>
 <div class="calc">x<sub>i</sub> = 10 log₁₀d<sub>i</sub>: 6.99, 13.98, 18.13, 20.41, 26.02, 30.00<br>Σx = 115.53, Σx² = 2566.75, ΣM = −640, ΣxM = −13671.57<br>S<sub>xx</sub> = Σx² − (Σx)²/6 = 2566.75 − 2224.64 = 342.11<br>S<sub>xM</sub> = ΣxM − ΣxΣM/6 = −13671.57 + 12323.49 = −1348.08<br>γ = 1348.08 / 342.11 = 3.94<br>K<sub>dB</sub> = M̄ + γx̄ = −106.67 + 3.94 × 19.26 = −30.8 dB</div>
 <h4><span class="st">Step by step</span>(b) Residuals → σ → Q function</h4>
 <ol>
-<li><b>Residuals</b> e<sub>i</sub> = measured − predicted (listed point by point in the solution table): −1.67, +5.88, −2.77, −3.77, +3.32, −0.99. They add up to 0, a property of least squares and a handy check.</li>
-<li><b>Shadowing variance</b>: σ<sub>ψ</sub>² = Σe²/6. Why divide by 6 and not 5: the slides define MSE = E[X<sub>i</sub>²], a plain average, so in the exam divide by n as the slides do.</li>
-<li><b>Margin</b>: "10 dB above the minimum power due to path loss alone" → x = 10 dB. Outage = shadowing pulls the power down by more than 10 dB: \(P_{out}=P(\psi_{dB}\lt-10)=Q(10/\sigma_\psi)\).</li>
+<li><b>Residuals</b> e<sub>i</sub> = measured − predicted (listed point by point in the solution table): −1.67, +5.88, −2.77, −3.77, +3.32, −0.99. They add up to 0, a property of least squares and a handy check.<span class="zhsub xz" lang="zh-CN"><b>残差</b> e<sub>i</sub> = 实测 − 预测（解答里的表已逐点列出）：−1.67、+5.88、−2.77、−3.77、+3.32、−0.99。它们加起来是 0，这是最小二乘的性质，正好用来检查。</span></li>
+<li><b>Shadowing variance</b>: σ<sub>ψ</sub>² = Σe²/6. Why divide by 6 and not 5: the slides define MSE = E[X<sub>i</sub>²], a plain average, so in the exam divide by n as the slides do.<span class="zhsub xz" lang="zh-CN"><b>阴影方差</b>：σ<sub>ψ</sub>² = Σe²/6。为什么除以 6 而不是 5：讲义定义 MSE = E[X<sub>i</sub>²]，就是简单平均，考试照讲义除以 n。</span></li>
+<li><b>Margin</b>: "10 dB above the minimum power due to path loss alone" → x = 10 dB. Outage = shadowing pulls the power down by more than 10 dB: \(P_{out}=P(\psi_{dB}\lt-10)=Q(10/\sigma_\psi)\).<span class="zhsub xz" lang="zh-CN"><b>余量</b>："只算路径损耗时比最低功率高 10 dB" → x = 10 dB。中断 = 阴影把功率往下拉超过 10 dB：\(P_{out}=P(\psi_{dB}\lt-10)=Q(10/\sigma_\psi)\)。</span></li>
 </ol>
 <div class="calc">σ<sub>ψ</sub>² = 71.23 / 6 = 11.87 dB²<br>σ<sub>ψ</sub> = √11.87 = 3.45 dB<br>10 / 3.45 = 2.90<br>P<sub>out</sub> = Q(2.90) ≈ 1.85 × 10⁻³ (about 0.19%; the table entry at exactly 2.90 gives 1.87 × 10⁻³, the difference is only rounding)</div>
 <h4><span class="st">Check</span>Three quick checks</h4>
 <ul>
-<li>The line passes through the mean point (19.26, −106.67); the residuals sum to 0.</li>
-<li>γ = 3.94 lies in the urban macro-cell range 3.7–6.5 of the table on p.9, which is reasonable.</li>
-<li>A 10 dB margin ≈ 2.9σ gives an outage of about two in a thousand. For comparison, a margin of 2.33σ gives 1%, so the order of magnitude fits.</li>
+<li>The line passes through the mean point (19.26, −106.67); the residuals sum to 0.<span class="zhsub xz" lang="zh-CN">直线经过平均点 (19.26, −106.67)；残差之和 = 0。</span></li>
+<li>γ = 3.94 lies in the urban macro-cell range 3.7–6.5 of the table on p.9, which is reasonable.<span class="zhsub xz" lang="zh-CN">γ = 3.94 落在讲义 p.9 表里城市宏蜂窝的 3.7–6.5 范围内，合理。</span></li>
+<li>A 10 dB margin ≈ 2.9σ gives an outage of about two in a thousand. For comparison, a margin of 2.33σ gives 1%, so the order of magnitude fits.<span class="zhsub xz" lang="zh-CN">余量 10 dB ≈ 2.9σ，中断约千分之二。对比：余量 2.33σ 才对应 1%，量级对得上。</span></li>
 </ul>
 <h4><span class="st">Official answer</span>Why it does not match standard least squares</h4>
-<p>The official answer is K = −31.4 dB, γ = 3.86, P<sub>out</sub> = 6.19 × 10⁻⁴. Substituting the official K and γ back into the 6 points gives MSE = 13.1, larger than the least-squares 11.87, so it is not the least-squares solution for these data. Part (b) uses the lecturer's in-class MSE of 9.656: 10/√9.656 = 3.22, and the table at 3.23 gives 6.19 × 10⁻⁴. The lecturer said anything "around −31.4 and 3.86" is fine. In the exam, write every step of the method above and use your own numbers.</p>
+<p>The official answer is K = −31.4 dB, γ = 3.86, P<sub>out</sub> = 6.19 × 10⁻⁴. Substituting the official K and γ back into the 6 points gives MSE = 13.1, larger than the least-squares 11.87, so it is not the least-squares solution for these data. Part (b) uses the lecturer's in-class MSE of 9.656: 10/√9.656 = 3.22, and the table at 3.23 gives 6.19 × 10⁻⁴. The lecturer said anything "around −31.4 and 3.86" is fine. In the exam, write every step of the method above and use your own numbers.<span class="zhsub xz" lang="zh-CN">官方答案是 K = −31.4 dB、γ = 3.86、P<sub>out</sub> = 6.19 × 10⁻⁴。把官方的 K、γ 代回 6 个点，MSE = 13.1，比最小二乘的 11.87 还大，所以它不是这组数据的最小二乘解。(b) 用的是老师课上的 MSE = 9.656：10/√9.656 = 3.22，查表取 3.23 得 6.19 × 10⁻⁴。老师说结果"在 −31.4、3.86 附近就可以"。考试照上面的方法写清每一步、用自己算出的数即可。</span></p>
 <h4><span class="st">Pitfalls</span>Where marks are usually lost</h4>
 <ul>
-<li>Using log₁₀d instead of 10 log₁₀d on the horizontal axis: γ becomes 39.4, which is clearly unreasonable.</li>
-<li>The slope is −γ: the slope is −3.94, so γ = +3.94; do not write it as negative.</li>
-<li>Substitute d in metres (d₀ = 1 m). The lecturer said that in this year's Quiz some students wrote 2 km as log 2.</li>
-<li>The MSE is a variance: take the square root before putting it into Q; Q(10/11.87) is wrong.</li>
-<li>Use the 10 dB margin directly in dB, do not convert to linear: this outage formula was derived in dB (the lecturer pointed this out in class).</li>
+<li>Using log₁₀d instead of 10 log₁₀d on the horizontal axis: γ becomes 39.4, which is clearly unreasonable.<span class="zhsub xz" lang="zh-CN">横坐标用 log₁₀d 而不是 10 log₁₀d：γ 会变成 39.4，明显不合理。</span></li>
+<li>The slope is −γ: the slope is −3.94, so γ = +3.94; do not write it as negative.<span class="zhsub xz" lang="zh-CN">斜率是 −γ：算出斜率 −3.94，所以 γ = +3.94，别写成负的。</span></li>
+<li>Substitute d in metres (d₀ = 1 m). The lecturer said that in this year's Quiz some students wrote 2 km as log 2.<span class="zhsub xz" lang="zh-CN">d 用米代入（d₀ = 1 m）。老师说今年 Quiz 有人把 2 km 写成 log 2。</span></li>
+<li>The MSE is a variance: take the square root before putting it into Q; Q(10/11.87) is wrong.<span class="zhsub xz" lang="zh-CN">MSE 是方差，进 Q 之前要开根号；写成 Q(10/11.87) 是错的。</span></li>
+<li>Use the 10 dB margin directly in dB, do not convert to linear: this outage formula was derived in dB (the lecturer pointed this out in class).<span class="zhsub xz" lang="zh-CN">余量 10 dB 直接用 dB，不要换成线性：这个中断公式本来就是 dB 形式推出来的（老师课上特别提醒）。</span></li>
 </ul>
 <h4><span class="st">Exam</span>How to write it in English</h4>
 <div class="tmpl" lang="en">
@@ -197,7 +197,7 @@
 <p>With Σx = 115.53, Σx² = 2566.75, ΣM = −640 and ΣxM = −13671.57: S<sub>xx</sub> = 342.11, S<sub>xM</sub> = −1348.08, so γ = 3.94 and K<sub>dB</sub> = −106.67 + 3.94 × 19.26 = −30.8 dB.</p>
 <p>(b) The shadowing variance equals the MSE of the fit: σ<sub>ψ</sub>² = (1/6)Σe<sub>i</sub>² = 71.23/6 = 11.87 dB², σ<sub>ψ</sub> = 3.45 dB. Outage occurs when shadowing lowers the power by more than the 10 dB margin: P<sub>out</sub> = P(ψ<sub>dB</sub> &lt; −10) = Q(10/σ<sub>ψ</sub>) = Q(2.90) ≈ 1.85 × 10⁻³.</p>
 </div>
-<div class="ans">In one line: in dB the path loss is a straight line; least squares gives K and γ, the remaining mean squared error is the shadowing variance σ², and the outage probability is Q(margin / σ).</div>
+<div class="ans">In one line: in dB the path loss is a straight line; least squares gives K and γ, the remaining mean squared error is the shadowing variance σ², and the outage probability is Q(margin / σ).<span class="zhsub xz" lang="zh-CN">一句话：dB 下路径损耗是一条直线，最小二乘给出 K、γ，剩下的均方误差就是阴影方差 σ²；中断概率 = Q(余量 / σ)。</span></div>
         </div>
       </details>
       <!-- /XPL:p1q1 -->
@@ -321,45 +321,45 @@
       <div class="official"><b>Official answer:</b> (a) 26%; (b) μ<sub>ψ</sub> &gt; 19.32 dB ✓</div>
       <!-- XPL:p1q2 -->
       <details class="deep xpl">
-        <summary>Concept + walkthrough: log-normal shadowing outage, forwards and backwards</summary>
+        <summary><span>Concept + walkthrough: log-normal shadowing outage, forwards and backwards<span class="zhsub xz" lang="zh-CN">知识讲解 + 详细解析：对数正态阴影的中断正算与反算</span></span></summary>
         <div class="deep-body">
 <h4><span class="st">Concept</span>Why shadowing is Gaussian in dB</h4>
-<p>Shadowing means the signal is attenuated once by each of many obstacles on the way (buildings, trees, walls): the total attenuation ψ = A₁A₂…A<sub>M</sub> is a <b>product</b> of many factors (lecture Ch 2 p.11). Taking the log turns the product into a <b>sum</b>: log ψ = Σ log A<sub>i</sub>. A sum of many random terms tends to a Gaussian (central limit theorem), so ψ<sub>dB</sub> is Gaussian, and ψ itself (the linear value) is called log-normal.</p>
-<p>Conclusion: as long as you work in dB (dBm), the received power is an ordinary Gaussian, \(P_r\sim\mathcal N(\mu_\psi,\sigma_\psi^2)\). μ<sub>ψ</sub> is the mean received power without shadowing (shadowing has zero mean, as the lecturer stressed), and σ<sub>ψ</sub> is the standard deviation of the shadowing, whose unit is really dB.</p>
+<p>Shadowing means the signal is attenuated once by each of many obstacles on the way (buildings, trees, walls): the total attenuation ψ = A₁A₂…A<sub>M</sub> is a <b>product</b> of many factors (lecture Ch 2 p.11). Taking the log turns the product into a <b>sum</b>: log ψ = Σ log A<sub>i</sub>. A sum of many random terms tends to a Gaussian (central limit theorem), so ψ<sub>dB</sub> is Gaussian, and ψ itself (the linear value) is called log-normal.<span class="zhsub xz" lang="zh-CN">阴影（shadowing）是信号沿途被很多障碍物（楼、树、墙）各衰减一次：总衰减 ψ = A₁A₂…A<sub>M</sub>，是很多因子的<b>乘积</b>（讲义第 2 章 p.11）。取对数后乘积变成<b>和</b>：log ψ = Σ log A<sub>i</sub>。很多随机量相加，按中心极限定理趋向高斯，所以 ψ<sub>dB</sub> 服从高斯，ψ 本身（线性值）就叫对数正态（log-normal）。</span></p>
+<p>Conclusion: as long as you work in dB (dBm), the received power is an ordinary Gaussian, \(P_r\sim\mathcal N(\mu_\psi,\sigma_\psi^2)\). μ<sub>ψ</sub> is the mean received power without shadowing (shadowing has zero mean, as the lecturer stressed), and σ<sub>ψ</sub> is the standard deviation of the shadowing, whose unit is really dB.<span class="zhsub xz" lang="zh-CN">结论：只要在 dB（dBm）上算，接收功率就是普通的高斯 \(P_r\sim\mathcal N(\mu_\psi,\sigma_\psi^2)\)。μ<sub>ψ</sub> 是不含阴影时的平均接收功率（阴影零均值，老师课上强调），σ<sub>ψ</sub> 是阴影的标准差，单位其实是 dB。</span></p>
 <h4><span class="st">Concept</span>The Q function and the lecturer's "rearrange" trick</h4>
-<p>The Q function (Ch 1b): \(Q(x)=P(N\gt x)\) with N ~ N(0, 1), i.e. the area of the right tail of the standard Gaussian. Q is decreasing: Q(0) = 0.5 and it gets smaller as x grows; by symmetry Q(−x) = 1 − Q(x).</p>
-<p>The trick the lecturer wants you to master (p.14–15): rewrite "P<sub>r</sub> &lt; P<sub>min</sub>" as "random variable &lt; −x", keeping the random variable on the left and moving everything else to the right, then use symmetry to write it as Q(x/σ).</p>
+<p>The Q function (Ch 1b): \(Q(x)=P(N\gt x)\) with N ~ N(0, 1), i.e. the area of the right tail of the standard Gaussian. Q is decreasing: Q(0) = 0.5 and it gets smaller as x grows; by symmetry Q(−x) = 1 − Q(x).<span class="zhsub xz" lang="zh-CN">Q 函数（第 1b 章）：\(Q(x)=P(N\gt x)\)，N ~ N(0, 1)，就是标准高斯右尾的面积。Q 是减函数：Q(0) = 0.5，x 越大越小；对称性 Q(−x) = 1 − Q(x)。</span></p>
+<p>The trick the lecturer wants you to master (p.14–15): rewrite "P<sub>r</sub> &lt; P<sub>min</sub>" as "random variable &lt; −x", keeping the random variable on the left and moving everything else to the right, then use symmetry to write it as Q(x/σ).<span class="zhsub xz" lang="zh-CN">老师要求掌握的技巧（p.14–15）：把"P<sub>r</sub> &lt; P<sub>min</sub>"整理成"随机量 &lt; −x"，随机量留在左边，其余移到右边，再用对称性写成 Q(x/σ)。</span></p>
 <div class="tw"><table class="mini"><thead><tr><th>x</th><th>Q(x)</th><th>Use</th></tr></thead><tbody>
-<tr><td>0</td><td>0.5</td><td>zero margin: outage half the time</td></tr>
+<tr><td>0</td><td>0.5</td><td>zero margin: outage half the time<span class="zhsub xz" lang="zh-CN">余量 0：一半时间中断</span></td></tr>
 <tr><td>1</td><td>0.1587</td><td>margin of 1σ</td></tr>
 <tr><td>1.645</td><td>0.05</td><td>5% outage</td></tr>
-<tr><td>2.326</td><td>0.01</td><td>1% outage (part (b))</td></tr>
-<tr><td>3.09</td><td>10⁻³</td><td>outage of one in a thousand</td></tr>
+<tr><td>2.326</td><td>0.01</td><td>1% outage (part (b))<span class="zhsub xz" lang="zh-CN">中断 1%（本题 (b)）</span></td></tr>
+<tr><td>3.09</td><td>10⁻³</td><td>outage of one in a thousand<span class="zhsub xz" lang="zh-CN">中断千分之一</span></td></tr>
 </tbody></table></div>
 <h4><span class="st">Step by step</span>(a) Forwards: given μ and σ, find the outage</h4>
 <ol>
-<li><b>List the data</b>: μ<sub>ψ</sub> = 15 dBm, σ<sub>ψ</sub> = 8 dB, threshold P<sub>min</sub> = 10 dBm.</li>
-<li><b>Rearrange</b>: P<sub>r</sub> = 15 + ψ, so \(P(P_r\lt10)=P(\psi\lt-5)\). The threshold is 5 dB below the mean.</li>
-<li><b>Standardise</b>: divide by σ = 8, \(P(\psi/8\lt-0.625)=P(N\gt0.625)=Q(0.625)\).</li>
-<li><b>Table</b>: the table has two decimals, Q(0.62) = 0.2676 and Q(0.63) = 0.2643; halfway gives Q(0.625) ≈ 0.266.</li>
+<li><b>List the data</b>: μ<sub>ψ</sub> = 15 dBm, σ<sub>ψ</sub> = 8 dB, threshold P<sub>min</sub> = 10 dBm.<span class="zhsub xz" lang="zh-CN"><b>写已知</b>：μ<sub>ψ</sub> = 15 dBm，σ<sub>ψ</sub> = 8 dB，门限 P<sub>min</sub> = 10 dBm。</span></li>
+<li><b>Rearrange</b>: P<sub>r</sub> = 15 + ψ, so \(P(P_r\lt10)=P(\psi\lt-5)\). The threshold is 5 dB below the mean.<span class="zhsub xz" lang="zh-CN"><b>移项</b>：P<sub>r</sub> = 15 + ψ，所以 \(P(P_r\lt10)=P(\psi\lt-5)\)。门限比均值低 5 dB。</span></li>
+<li><b>Standardise</b>: divide by σ = 8, \(P(\psi/8\lt-0.625)=P(N\gt0.625)=Q(0.625)\).<span class="zhsub xz" lang="zh-CN"><b>标准化</b>：除以 σ = 8，\(P(\psi/8\lt-0.625)=P(N\gt0.625)=Q(0.625)\)。</span></li>
+<li><b>Table</b>: the table has two decimals, Q(0.62) = 0.2676 and Q(0.63) = 0.2643; halfway gives Q(0.625) ≈ 0.266.<span class="zhsub xz" lang="zh-CN"><b>查表</b>：表里只有两位小数，Q(0.62) = 0.2676，Q(0.63) = 0.2643，取中间得 Q(0.625) ≈ 0.266。</span></li>
 </ol>
 <div class="calc">(15 − 10) / 8 = 0.625<br>P<sub>out</sub> = Q(0.625) ≈ 0.266 ≈ 26.6%</div>
-<p>Sanity check: the margin is less than one σ, so the outage is about a quarter; with zero margin it would be Q(0) = 50%.</p>
+<p>Sanity check: the margin is less than one σ, so the outage is about a quarter; with zero margin it would be Q(0) = 50%.<span class="zhsub xz" lang="zh-CN">合理性：余量还不到一个 σ，所以中断约四分之一；余量为 0 时是 Q(0) = 50%。</span></p>
 <h4><span class="st">Step by step</span>(b) Backwards: given the outage target, find μ</h4>
 <ol>
-<li><b>Write the inequality</b>: treat μ as unknown, \(Q\big((\mu_\psi-10)/4\big)\lt0.01\).</li>
-<li><b>Invert with the Q table</b>: Q(2.32) = 0.0102 and Q(2.33) = 0.0099, so Q(2.326) = 0.01.</li>
-<li><b>Flip the inequality</b>: Q is decreasing, so "Q value &lt; 0.01" means "argument &gt; 2.326": \((\mu_\psi-10)/4\gt2.326\).</li>
-<li><b>Solve for μ</b>: the required margin is 2.326 × 4 = 9.31 dB.</li>
+<li><b>Write the inequality</b>: treat μ as unknown, \(Q\big((\mu_\psi-10)/4\big)\lt0.01\).<span class="zhsub xz" lang="zh-CN"><b>列不等式</b>：把 μ 当未知数，\(Q\big((\mu_\psi-10)/4\big)\lt0.01\)。</span></li>
+<li><b>Invert with the Q table</b>: Q(2.32) = 0.0102 and Q(2.33) = 0.0099, so Q(2.326) = 0.01.<span class="zhsub xz" lang="zh-CN"><b>反查 Q 表</b>：Q(2.32) = 0.0102，Q(2.33) = 0.0099，所以 Q(2.326) = 0.01。</span></li>
+<li><b>Flip the inequality</b>: Q is decreasing, so "Q value &lt; 0.01" means "argument &gt; 2.326": \((\mu_\psi-10)/4\gt2.326\).<span class="zhsub xz" lang="zh-CN"><b>翻转不等号</b>：Q 是减函数，"Q 值 &lt; 0.01"等价于"参数 &gt; 2.326"：\((\mu_\psi-10)/4\gt2.326\)。</span></li>
+<li><b>Solve for μ</b>: the required margin is 2.326 × 4 = 9.31 dB.<span class="zhsub xz" lang="zh-CN"><b>解出 μ</b>：需要的余量 = 2.326 × 4 = 9.31 dB。</span></li>
 </ol>
 <div class="calc">μ<sub>ψ</sub> &gt; 10 + 4 × 2.326 = 19.3 dBm<br>Check: with μ = 19.3 dBm, (19.3 − 10)/4 = 2.326 and Q = 0.01 ✓</div>
-<p>Variation: with σ = 8 dB, μ must exceed 10 + 8 × 2.326 = 28.6 dBm, 9.3 dB more than with σ = 4 dB. The stronger the shadowing, the larger the margin needed for the same outage target.</p>
+<p>Variation: with σ = 8 dB, μ must exceed 10 + 8 × 2.326 = 28.6 dBm, 9.3 dB more than with σ = 4 dB. The stronger the shadowing, the larger the margin needed for the same outage target.<span class="zhsub xz" lang="zh-CN">举一反三：σ = 8 dB 时 μ 要 &gt; 10 + 8 × 2.326 = 28.6 dBm，比 σ = 4 dB 多 9.3 dB。阴影越大，同样的中断要求要留的余量越多。</span></p>
 <h4><span class="st">Pitfalls</span>Where marks are usually lost</h4>
 <ul>
-<li>The question writes σ in dBm, but its unit is really dB: the difference of two dBm values is in dB.</li>
-<li>Do not convert dBm to mW before computing: log-normal is Gaussian only in dB.</li>
-<li>Direction of the inequality in (b): Q is decreasing, so "probability &lt; 1%" becomes "argument &gt; 2.326".</li>
-<li>The threshold is below the mean, so the argument of Q is positive and the result must be below 0.5; getting 0.734 (= 1 − 0.266) means a sign is wrong.</li>
+<li>The question writes σ in dBm, but its unit is really dB: the difference of two dBm values is in dB.<span class="zhsub xz" lang="zh-CN">题目把 σ 写成 dBm，实际单位是 dB：两个 dBm 相减得到的是 dB。</span></li>
+<li>Do not convert dBm to mW before computing: log-normal is Gaussian only in dB.<span class="zhsub xz" lang="zh-CN">不要把 dBm 换成 mW 再算：对数正态只在 dB 上才是高斯。</span></li>
+<li>Direction of the inequality in (b): Q is decreasing, so "probability &lt; 1%" becomes "argument &gt; 2.326".<span class="zhsub xz" lang="zh-CN">(b) 的不等号方向：Q 是减函数，"概率 &lt; 1%"要翻成"参数 &gt; 2.326"。</span></li>
+<li>The threshold is below the mean, so the argument of Q is positive and the result must be below 0.5; getting 0.734 (= 1 − 0.266) means a sign is wrong.<span class="zhsub xz" lang="zh-CN">门限在均值以下，Q 的参数是正的，结果一定小于 0.5；算出 0.734（= 1 − 0.266）说明符号弄反了。</span></li>
 </ul>
 <h4><span class="st">Exam</span>How to write it in English</h4>
 <div class="tmpl" lang="en">
@@ -367,7 +367,7 @@
 <p>(a) P<sub>out</sub> = Q((15 − 10)/8) = Q(0.625) ≈ 0.266, i.e. about 26.6%.</p>
 <p>(b) Require Q((μ<sub>ψ</sub> − 10)/4) &lt; 0.01. Q is decreasing and Q(2.326) = 0.01, so (μ<sub>ψ</sub> − 10)/4 &gt; 2.326, i.e. μ<sub>ψ</sub> &gt; 10 + 4 × 2.326 = 19.3 dBm.</p>
 </div>
-<div class="ans">In one line: shadowing is Gaussian in dB and the outage probability is Q(margin / σ); (a) a forward table lookup gives 26.6%, (b) Q⁻¹(0.01) = 2.326 gives a 9.3 dB margin, so μ &gt; 19.3 dBm.</div>
+<div class="ans">In one line: shadowing is Gaussian in dB and the outage probability is Q(margin / σ); (a) a forward table lookup gives 26.6%, (b) Q⁻¹(0.01) = 2.326 gives a 9.3 dB margin, so μ &gt; 19.3 dBm.<span class="zhsub xz" lang="zh-CN">一句话：阴影在 dB 上是高斯，中断概率 = Q(余量 / σ)；(a) 正着查表得 26.6%，(b) 用 Q⁻¹(0.01) = 2.326 反推余量 9.3 dB，μ &gt; 19.3 dBm。</span></div>
         </div>
       </details>
       <!-- /XPL:p1q2 -->
@@ -489,52 +489,54 @@
       <div class="official"><b>Official answer:</b> 5 µs, 2.89 µs; 34.6 ksps ✓</div>
       <!-- XPL:p1q3 -->
       <details class="deep xpl">
-        <summary>Concept + walkthrough: delay spread and the flat-fading rate limit</summary>
+        <summary><span>Concept + walkthrough: delay spread and the flat-fading rate limit<span class="zhsub xz" lang="zh-CN">知识讲解 + 详细解析：时延扩展与平坦衰落的速率上限</span></span></summary>
         <div class="deep-body">
 <h4><span class="st">Concept</span>Power delay profile, mean delay, rms delay spread</h4>
-<p>In a multipath channel one transmitted pulse arrives over different paths; the first arrival is τ = 0 and the others arrive τ later. The power delay profile P<sub>r</sub>(τ) says how much power arrives with delay τ (lecture Ch 2 p.30).</p>
-<p>Treat P<sub>r</sub>(τ) as a weight (divided by the total power it is a probability distribution) and compute two numbers just as for a random variable (formulas on p.30; they are given in the exam and the lecturer said they need not be memorised):</p>
+<p>In a multipath channel one transmitted pulse arrives over different paths; the first arrival is τ = 0 and the others arrive τ later. The power delay profile P<sub>r</sub>(τ) says how much power arrives with delay τ (lecture Ch 2 p.30).<span class="zhsub xz" lang="zh-CN">多径信道里，同一个发射脉冲经不同路径到达，最早那条记为 τ = 0，其余晚到 τ。功率时延谱（power delay profile）P<sub>r</sub>(τ) 就是"晚到 τ 的那部分有多少功率"（讲义第 2 章 p.30）。</span></p>
+<p>Treat P<sub>r</sub>(τ) as a weight (divided by the total power it is a probability distribution) and compute two numbers just as for a random variable (formulas on p.30; they are given in the exam and the lecturer said they need not be memorised):<span class="zhsub xz" lang="zh-CN">把 P<sub>r</sub>(τ) 当成权重（除以总功率后就是一个概率分布），就能像求随机变量那样求两个数（p.30 的公式，考试会给，老师说不用背）：</span></p>
 <ul>
-<li>Mean delay (mean delay spread) \(\mu_{T_m}=\int\tau P_r(\tau)d\tau\,/\int P_r(\tau)d\tau\): how late the echoes arrive "on average".</li>
-<li>rms delay spread \(\sigma_{T_m}=\sqrt{\int(\tau-\mu_{T_m})^2P_r(\tau)d\tau\,/\int P_r(\tau)d\tau}\): how widely the echoes are spread in time, i.e. the standard deviation.</li>
+<li>Mean delay (mean delay spread) \(\mu_{T_m}=\int\tau P_r(\tau)d\tau\,/\int P_r(\tau)d\tau\): how late the echoes arrive "on average".<span class="zhsub xz" lang="zh-CN">平均时延（mean delay spread）\(\mu_{T_m}=\int\tau P_r(\tau)d\tau\,/\int P_r(\tau)d\tau\)：回声"平均"晚到多久。</span></li>
+<li>rms delay spread \(\sigma_{T_m}=\sqrt{\int(\tau-\mu_{T_m})^2P_r(\tau)d\tau\,/\int P_r(\tau)d\tau}\): how widely the echoes are spread in time, i.e. the standard deviation.<span class="zhsub xz" lang="zh-CN">rms 时延扩展 \(\sigma_{T_m}=\sqrt{\int(\tau-\mu_{T_m})^2P_r(\tau)d\tau\,/\int P_r(\tau)d\tau}\)：回声在时间上"散得多开"，就是标准差。</span></li>
 </ul>
-<p>Why σ<sub>Tm</sub> matters: if the echoes last longer than a symbol they leak into the next symbol and cause inter-symbol interference (ISI); this is frequency-selective fading (p.32). If the echoes are short compared with the symbol, the fading is the same across the whole signal bandwidth: flat fading (p.33). The rule of thumb on the slides (<b>blue box, memorise it</b>):</p>
+<p>Why σ<sub>Tm</sub> matters: if the echoes last longer than a symbol they leak into the next symbol and cause inter-symbol interference (ISI); this is frequency-selective fading (p.32). If the echoes are short compared with the symbol, the fading is the same across the whole signal bandwidth: flat fading (p.33). The rule of thumb on the slides (<b>blue box, memorise it</b>):<span class="zhsub xz" lang="zh-CN">为什么关心 σ<sub>Tm</sub>：回声拖得比符号还长，就会漏进下一个符号，造成码间干扰（ISI），这叫频率选择性衰落（p.32）；回声相对符号很短，整个信号带宽内衰落一样，叫平坦衰落（flat fading，p.33）。讲义的经验判据（<b>蓝框，要背</b>）：</span></p>
 <div class="tw"><table class="mini"><thead><tr><th>Condition</th><th>Conclusion</th></tr></thead><tbody>
-<tr><td>σ<sub>Tm</sub>/T<sub>s</sub> &lt; 0.1</td><td>flat fading</td></tr>
-<tr><td>σ<sub>Tm</sub>/T<sub>s</sub> ≫ 1</td><td>frequency-selective fading</td></tr>
-<tr><td>in between (e.g. 0.15)</td><td>the lecturer: no conclusion can be drawn</td></tr>
+<tr><td>σ<sub>Tm</sub>/T<sub>s</sub> &lt; 0.1</td><td>flat fading<span class="zhsub xz" lang="zh-CN">平坦衰落</span></td></tr>
+<tr><td>σ<sub>Tm</sub>/T<sub>s</sub> ≫ 1</td><td>frequency-selective fading<span class="zhsub xz" lang="zh-CN">频率选择性衰落</span></td></tr>
+<tr><td>in between (e.g. 0.15)<span class="zhsub xz" lang="zh-CN">介于两者之间（如 0.15）</span></td><td>the lecturer: no conclusion can be drawn<span class="zhsub xz" lang="zh-CN">老师说：不能下结论</span></td></tr>
 </tbody></table></div>
 <h4><span class="st">Step by step</span>(a) μ and σ of a uniform delay profile</h4>
 <ol>
-<li><b>Denominator (total power)</b>: \(\int_0^{10}1\,d\tau=10\). <b>Why divide</b>: P<sub>r</sub>(τ) = 1 is not normalised; without dividing it is not a weighted average.</li>
-<li><b>Mean delay</b>: \(\int_0^{10}\tau\,d\tau=\tau^2/2\,\big|_0^{10}=50\), μ = 50/10 = 5 µs. Intuition: the uniform distribution is symmetric, so the mean is in the middle.</li>
+<li><b>Denominator (total power)</b>: \(\int_0^{10}1\,d\tau=10\). <b>Why divide</b>: P<sub>r</sub>(τ) = 1 is not normalised; without dividing it is not a weighted average.<span class="zhsub xz" lang="zh-CN"><b>分母（总功率）</b>：\(\int_0^{10}1\,d\tau=10\)。<b>为什么要除</b>：P<sub>r</sub>(τ) = 1 没有归一化，不除就不是加权平均。</span></li>
+<li><b>Mean delay</b>: \(\int_0^{10}\tau\,d\tau=\tau^2/2\,\big|_0^{10}=50\), μ = 50/10 = 5 µs. Intuition: the uniform distribution is symmetric, so the mean is in the middle.<span class="zhsub xz" lang="zh-CN"><b>平均时延</b>：\(\int_0^{10}\tau\,d\tau=\tau^2/2\,\big|_0^{10}=50\)，μ = 50/10 = 5 µs。直觉：均匀分布左右对称，均值在正中间。</span></li>
 <li><b>rms delay spread</b>, two ways with the same result:
  <br>by the slide definition: \(\int_0^{10}(\tau-5)^2d\tau=\big[(\tau-5)^3/3\big]_0^{10}=125/3+125/3=83.33\), divided by 10 gives 8.33 µs²;
- <br>or with E[τ²] − μ²: \(\int_0^{10}\tau^2d\tau/10=(1000/3)/10=33.33\), and 33.33 − 25 = 8.33 µs².</li>
-<li><b>Square root</b>: σ = √8.33 = 2.89 µs. Shortcut: the standard deviation of a uniform distribution on [0, a] is a/√12 = 10/3.46.</li>
+ <br>or with E[τ²] − μ²: \(\int_0^{10}\tau^2d\tau/10=(1000/3)/10=33.33\), and 33.33 − 25 = 8.33 µs².<span class="zhsub xz" lang="zh-CN"><b>rms 时延扩展</b>，两种算法结果一样：
+ <br>按讲义定义：\(\int_0^{10}(\tau-5)^2d\tau=\big[(\tau-5)^3/3\big]_0^{10}=125/3+125/3=83.33\)，除以 10 得 8.33 µs²；
+ <br>或用 E[τ²] − μ²：\(\int_0^{10}\tau^2d\tau/10=(1000/3)/10=33.33\)，33.33 − 25 = 8.33 µs²。</span></li>
+<li><b>Square root</b>: σ = √8.33 = 2.89 µs. Shortcut: the standard deviation of a uniform distribution on [0, a] is a/√12 = 10/3.46.<span class="zhsub xz" lang="zh-CN"><b>开根号</b>：σ = √8.33 = 2.89 µs。捷径：[0, a] 上均匀分布的标准差 = a/√12 = 10/3.46。</span></li>
 </ol>
 <div class="calc">μ<sub>Tm</sub> = 50 / 10 = 5 µs<br>σ<sub>Tm</sub>² = 83.33 / 10 = 8.33 µs²<br>σ<sub>Tm</sub> = 2.89 µs</div>
 <h4><span class="st">Step by step</span>(b) Highest symbol rate for flat fading</h4>
 <ol>
-<li><b>Apply the rule</b>: σ<sub>Tm</sub>/T<sub>s</sub> &lt; 0.1 → T<sub>s</sub> &gt; 10σ<sub>Tm</sub>. The echoes may occupy at most a tenth of a symbol.</li>
+<li><b>Apply the rule</b>: σ<sub>Tm</sub>/T<sub>s</sub> &lt; 0.1 → T<sub>s</sub> &gt; 10σ<sub>Tm</sub>. The echoes may occupy at most a tenth of a symbol.<span class="zhsub xz" lang="zh-CN"><b>套判据</b>：σ<sub>Tm</sub>/T<sub>s</sub> &lt; 0.1 → T<sub>s</sub> &gt; 10σ<sub>Tm</sub>。意思是回声最多只占一个符号的十分之一。</span></li>
 <li><b>Compute T<sub>s</sub></b>: T<sub>s</sub> &gt; 10 × 2.887 = 28.87 µs.</li>
-<li><b>Convert to a rate</b>: R<sub>s</sub> = 1/T<sub>s</sub>; a longer symbol means a lower rate, so the inequality flips. 1/µs = 10⁶/s.</li>
+<li><b>Convert to a rate</b>: R<sub>s</sub> = 1/T<sub>s</sub>; a longer symbol means a lower rate, so the inequality flips. 1/µs = 10⁶/s.<span class="zhsub xz" lang="zh-CN"><b>换成速率</b>：R<sub>s</sub> = 1/T<sub>s</sub>，符号越长速率越低，所以不等号翻过来。1/µs = 10⁶/s。</span></li>
 </ol>
 <div class="calc">T<sub>s</sub> &gt; 28.87 µs<br>R<sub>s</sub> &lt; 1 / (28.87 × 10⁻⁶ s) = 34641 sym/s ≈ 34.6 ksps</div>
-<p>Sanity check: a 1 MHz signal (T<sub>s</sub> = 1 µs) has σ/T<sub>s</sub> = 2.89 ≫ 0.1, so it is frequency-selective and needs equalisation (Ch 6) or OFDM (Ch 7); flat fading is only possible at rates of tens of ksps, which fits.</p>
+<p>Sanity check: a 1 MHz signal (T<sub>s</sub> = 1 µs) has σ/T<sub>s</sub> = 2.89 ≫ 0.1, so it is frequency-selective and needs equalisation (Ch 6) or OFDM (Ch 7); flat fading is only possible at rates of tens of ksps, which fits.<span class="zhsub xz" lang="zh-CN">合理性：1 MHz 的信号（T<sub>s</sub> = 1 µs）σ/T<sub>s</sub> = 2.89 ≫ 0.1，是频率选择性，需要均衡（第 6 章）或 OFDM（第 7 章）；所以平坦衰落只能用几十 ksps 量级，对得上。</span></p>
 <h4><span class="st">Pitfalls</span>Where marks are usually lost</h4>
 <ul>
-<li>Assuming P<sub>r</sub>(τ) = 1 is already normalised and using 1 as the denominator: μ would become 50 µs.</li>
-<li>The rms delay spread is a standard deviation: take the square root of 8.33.</li>
-<li>Direction of the inequality: flat fading needs long symbols and a low rate, so the answer is an upper limit R<sub>s</sub> &lt; 34.6 ksps, not an equality.</li>
-<li>The "mean delay spread" in the question is the mean delay μ<sub>Tm</sub>, not σ.</li>
+<li>Assuming P<sub>r</sub>(τ) = 1 is already normalised and using 1 as the denominator: μ would become 50 µs.<span class="zhsub xz" lang="zh-CN">以为 P<sub>r</sub>(τ) = 1 已经归一化，分母写 1：μ 会变成 50 µs。</span></li>
+<li>The rms delay spread is a standard deviation: take the square root of 8.33.<span class="zhsub xz" lang="zh-CN">rms 时延扩展是标准差：8.33 要开根号。</span></li>
+<li>Direction of the inequality: flat fading needs long symbols and a low rate, so the answer is an upper limit R<sub>s</sub> &lt; 34.6 ksps, not an equality.<span class="zhsub xz" lang="zh-CN">不等号方向：平坦衰落要求符号长、速率低，答案是上限 R<sub>s</sub> &lt; 34.6 ksps，不是"等于"。</span></li>
+<li>The "mean delay spread" in the question is the mean delay μ<sub>Tm</sub>, not σ.<span class="zhsub xz" lang="zh-CN">题目说的 mean delay spread 就是平均时延 μ<sub>Tm</sub>，不是 σ。</span></li>
 </ul>
 <h4><span class="st">Exam</span>How to write it in English</h4>
 <div class="tmpl" lang="en">
 <p>(a) Use P<sub>r</sub>(τ) as the weight: \(\mu_{T_m}=\dfrac{\int_0^{10}\tau P_r(\tau)d\tau}{\int_0^{10}P_r(\tau)d\tau}=\dfrac{50}{10}=5\) µs, and \(\sigma_{T_m}^2=\dfrac{\int_0^{10}(\tau-\mu_{T_m})^2P_r(\tau)d\tau}{\int_0^{10}P_r(\tau)d\tau}=\dfrac{83.33}{10}=8.33\) µs², so σ<sub>Tm</sub> = 2.89 µs.</p>
 <p>(b) Flat fading requires σ<sub>Tm</sub>/T<sub>s</sub> &lt; 0.1, i.e. T<sub>s</sub> &gt; 10σ<sub>Tm</sub> = 28.87 µs, so R<sub>s</sub> = 1/T<sub>s</sub> &lt; 34.6 ksps.</p>
 </div>
-<div class="ans">In one line: treat the power delay profile as a probability distribution, mean 5 µs and standard deviation 2.89 µs; flat fading needs T<sub>s</sub> &gt; 10σ = 28.87 µs, so R<sub>s</sub> &lt; 34.6 ksps.</div>
+<div class="ans">In one line: treat the power delay profile as a probability distribution, mean 5 µs and standard deviation 2.89 µs; flat fading needs T<sub>s</sub> &gt; 10σ = 28.87 µs, so R<sub>s</sub> &lt; 34.6 ksps.<span class="zhsub xz" lang="zh-CN">一句话：把功率时延谱当成概率分布，均值 5 µs、标准差 2.89 µs；平坦衰落要求 T<sub>s</sub> &gt; 10σ = 28.87 µs，所以 R<sub>s</sub> &lt; 34.6 ksps。</span></div>
         </div>
       </details>
       <!-- /XPL:p1q3 -->

@@ -103,38 +103,38 @@
       <div class="official"><b>Official answer:</b> see the lecture notes (Ch 4 p.3–4)</div>
       <!-- XPL:p4q1 -->
       <details class="deep xpl">
-        <summary>Concept + walkthrough: why macro-diversity reduces outage</summary>
+        <summary><span>Concept + walkthrough: why macro-diversity reduces outage<span class="zhsub xz" lang="zh-CN">知识讲解 + 详细解析：宏分集为什么降低中断</span></span></summary>
         <div class="deep-body">
 <h4><span class="st">Concept</span>Two kinds of fading, two kinds of diversity</h4>
-<p>Wireless channel variations happen on two scales (lecture Ch 2):</p>
+<p>Wireless channel variations happen on two scales (lecture Ch 2):<span class="zhsub xz" lang="zh-CN">无线信道的起伏分两个尺度（讲义第 2 章）：</span></p>
 <ul>
-<li><b>Large-scale fading = shadowing</b>: buildings or hills block the path, and the signal stays low over tens to hundreds of metres; it changes slowly. It is the main cause of outage (received power below the threshold).</li>
-<li><b>Small-scale fading = multipath</b>: signals on several paths add up and cancel by turns, changing within a few wavelengths, e.g. Rayleigh fading.</li>
+<li><b>Large-scale fading = shadowing</b>: buildings or hills block the path, and the signal stays low over tens to hundreds of metres; it changes slowly. It is the main cause of outage (received power below the threshold).<span class="zhsub xz" lang="zh-CN"><b>大尺度衰落 = 阴影（shadowing）</b>：楼房、山体挡住传播路径，信号在几十米到几百米的范围内一直偏低，变化慢。它是中断（outage，接收功率低于门限）的主要原因。</span></li>
+<li><b>Small-scale fading = multipath</b>: signals on several paths add up and cancel by turns, changing within a few wavelengths, e.g. Rayleigh fading.<span class="zhsub xz" lang="zh-CN"><b>小尺度衰落 = 多径（multipath）</b>：多条路径的信号时而相加时而抵消，几个波长内就变化，比如瑞利衰落。</span></li>
 </ul>
-<p>The basic idea of diversity (Ch 4 p.2–3): send the same information over several <b>independent</b> channels; when one is in a deep fade the others are probably fine. How far apart the channels must be depends on which fading you fight:</p>
+<p>The basic idea of diversity (Ch 4 p.2–3): send the same information over several <b>independent</b> channels; when one is in a deep fade the others are probably fine. How far apart the channels must be depends on which fading you fight:<span class="zhsub xz" lang="zh-CN">分集（diversity）的基本想法（第 4 章 p.2–3）：把同样的信息经过几条<b>独立</b>的信道送到，一条深衰落时其他的大概率还好。对付哪种衰落，信道之间就要隔多远：</span></p>
 <div class="tw"><table class="mini"><thead><tr><th></th><th>Macroscopic diversity (p.4)</th><th>Microscopic diversity (p.5)</th></tr></thead><tbody>
-<tr><td>Fights</td><td>shadowing (large-scale)</td><td>multipath (small-scale)</td></tr>
-<tr><td>How</td><td>several base stations linked to one mobile, the strongest is used</td><td>several antennas at one place, different frequencies, times, polarisations</td></tr>
-<tr><td>Separation</td><td>base stations far apart (different transmitter locations)</td><td>a few wavelengths is enough</td></tr>
+<tr><td>Fights</td><td>shadowing (large-scale)<span class="zhsub xz" lang="zh-CN">阴影（大尺度）</span></td><td>multipath (small-scale)<span class="zhsub xz" lang="zh-CN">多径（小尺度）</span></td></tr>
+<tr><td>How</td><td>several base stations linked to one mobile, the strongest is used<span class="zhsub xz" lang="zh-CN">多个基站同时连一部手机，用信号最强的那个</span></td><td>several antennas at one place, different frequencies, times, polarisations<span class="zhsub xz" lang="zh-CN">同一处多根天线、不同频率、不同时间、极化</span></td></tr>
+<tr><td>Separation</td><td>base stations far apart (different transmitter locations)<span class="zhsub xz" lang="zh-CN">基站相距很远（不同发射位置）</span></td><td>a few wavelengths is enough<span class="zhsub xz" lang="zh-CN">几个波长就够</span></td></tr>
 </tbody></table></div>
-<p>Why extra antennas on the same base station do not fix shadowing: when the mobile is behind one building, the paths to all those antennas pass through that building and get worse together. Slide p.4 says, in effect, that the strong variations caused by shadowing happen only over large distances, so the base stations must be at different locations.</p>
+<p>Why extra antennas on the same base station do not fix shadowing: when the mobile is behind one building, the paths to all those antennas pass through that building and get worse together. Slide p.4 says, in effect, that the strong variations caused by shadowing happen only over large distances, so the base stations must be at different locations.<span class="zhsub xz" lang="zh-CN">为什么同一个基站多装几根天线解决不了阴影：手机被同一栋楼挡住时，几根天线的路径都穿过这栋楼，一起变差。讲义 p.4 原话的意思是：阴影造成的明显起伏只在大的距离上才发生，所以必须是不同位置的基站。</span></p>
 <h4><span class="st">Answer points</span>Why each point is needed</h4>
 <ol>
-<li><b>First say what macro-diversity is</b>: the mobile's signal is received and processed by several base stations at different locations, and the strongest is used (or they are combined). The lecturer said the first step of an explanation question is to describe the thing.</li>
-<li><b>Outage comes from shadowing</b>: shows you know which fading is being fought. Shadowing is slow and deep, so fighting it with more power (a larger margin) is expensive.</li>
-<li><b>Different locations → nearly independent shadowing</b>: this is the core of the mechanism. Different paths are blocked by different obstacles, so one link being blocked does not affect another.</li>
-<li><b>Outage only if all links fail at once → multiply</b>: with independence \(P_{out}=\prod_iP_{out,i}\). This is the quantitative answer to "why it reduces outage".</li>
-<li><b>Condition</b>: the gain shrinks if the links are correlated (p.21). This sentence shows you understand the assumption, but the lecturer said two points (what + why) are enough, and anything extra that is wrong loses marks.</li>
+<li><b>First say what macro-diversity is</b>: the mobile's signal is received and processed by several base stations at different locations, and the strongest is used (or they are combined). The lecturer said the first step of an explanation question is to describe the thing.<span class="zhsub xz" lang="zh-CN"><b>先说宏分集是什么</b>：手机的信号同时被几个不同位置的基站接收和处理，选最强的（或合并）。老师说解释题第一步就是描述这个东西是什么。</span></li>
+<li><b>Outage comes from shadowing</b>: shows you know which fading is being fought. Shadowing is slow and deep, so fighting it with more power (a larger margin) is expensive.<span class="zhsub xz" lang="zh-CN"><b>中断来自阴影</b>：说明你知道要对付的是哪种衰落。阴影慢而深，靠加功率（加余量）对付很不划算。</span></li>
+<li><b>Different locations → nearly independent shadowing</b>: this is the core of the mechanism. Different paths are blocked by different obstacles, so one link being blocked does not affect another.<span class="zhsub xz" lang="zh-CN"><b>不同位置 → 阴影近似独立</b>：这是机制的核心。路径不同，挡住它们的障碍物不同，一条被挡不影响另一条。</span></li>
+<li><b>Outage only if all links fail at once → multiply</b>: with independence \(P_{out}=\prod_iP_{out,i}\). This is the quantitative answer to "why it reduces outage".<span class="zhsub xz" lang="zh-CN"><b>全部同时中断才算中断 → 概率相乘</b>：独立时 \(P_{out}=\prod_iP_{out,i}\)。这是"为什么能降低"的定量答案。</span></li>
+<li><b>Condition</b>: the gain shrinks if the links are correlated (p.21). This sentence shows you understand the assumption, but the lecturer said two points (what + why) are enough, and anything extra that is wrong loses marks.<span class="zhsub xz" lang="zh-CN"><b>条件</b>：链路相关时效果变差（p.21）。写上这一句说明你理解前提，但老师说两点（是什么 + 为什么）就够，多写的部分写错会扣分。</span></li>
 </ol>
 <div class="calc">Single-link outage 10%: two independent base stations 0.1² = 1%, three 0.1³ = 0.1%<br>With the formula of Practice 2 Q2 and margin Δ = σ: one base station Q(1) = 0.1587, two independent [Q(1)]² = 0.0252</div>
 <h4><span class="st">Concept</span>Why correlation weakens diversity (p.21)</h4>
-<p>The slide says: P(both in deep fade) = P(r₁ in deep fade | r₂ in deep fade) × P(r₂ in deep fade) ≥ P(r₁ in deep fade) × P(r₂ in deep fade), with equality when the links are uncorrelated. In words: with correlation, when one link gets worse the other tends to get worse too, so "both in outage" is more likely than the product. For example, when the mobile goes into a basement, the signals from all base stations drop together. Practice 2 Q2(c) makes this quantitative: with correlation coefficient 0.5 the 2.5% above becomes 6.3%.</p>
+<p>The slide says: P(both in deep fade) = P(r₁ in deep fade | r₂ in deep fade) × P(r₂ in deep fade) ≥ P(r₁ in deep fade) × P(r₂ in deep fade), with equality when the links are uncorrelated. In words: with correlation, when one link gets worse the other tends to get worse too, so "both in outage" is more likely than the product. For example, when the mobile goes into a basement, the signals from all base stations drop together. Practice 2 Q2(c) makes this quantitative: with correlation coefficient 0.5 the 2.5% above becomes 6.3%.<span class="zhsub xz" lang="zh-CN">讲义写：P(两条同时深衰落) = P(r₁ 深衰落 | r₂ 深衰落) × P(r₂ 深衰落) ≥ P(r₁ 深衰落) × P(r₂ 深衰落)，链路不相关时取等号。意思是：相关时一条变差，另一条也倾向于变差，"同时中断"比相乘的结果大。例如手机进了地下室，所有基站的信号一起变弱。Practice 2 第 2(c) 题把这件事定量化了：相关系数 0.5 时，上面的 2.5% 变成 6.3%。</span></p>
 <h4><span class="st">Pitfalls</span>Where marks are usually lost</h4>
 <ul>
-<li>Saying it fights multipath / Rayleigh fading: that is microscopic diversity.</li>
-<li>Only saying "more base stations, so more reliable" without <b>independent</b> and <b>all at the same time</b>: the mechanism is missing and full marks are not given.</li>
-<li>Thinking several antennas on one base station would do: shadowing is the same for all of them.</li>
-<li>Writing one long paragraph: the lecturer recommends a few bullet points; imperfect English is fine.</li>
+<li>Saying it fights multipath / Rayleigh fading: that is microscopic diversity.<span class="zhsub xz" lang="zh-CN">说成"对付多径 / 瑞利衰落"：那是微分集。</span></li>
+<li>Only saying "more base stations, so more reliable" without <b>independent</b> and <b>all at the same time</b>: the mechanism is missing and full marks are not given.<span class="zhsub xz" lang="zh-CN">只说"有多个基站所以更可靠"，没说<b>独立</b>和<b>全部同时</b>：机制没讲清，拿不到满分。</span></li>
+<li>Thinking several antennas on one base station would do: shadowing is the same for all of them.<span class="zhsub xz" lang="zh-CN">以为同一基站多天线也行：阴影对它们是一样的。</span></li>
+<li>Writing one long paragraph: the lecturer recommends a few bullet points; imperfect English is fine.<span class="zhsub xz" lang="zh-CN">写成大段文字：老师建议写成几个要点，英文不好也没关系。</span></li>
 </ul>
 <h4><span class="st">Exam</span>How to write it in English</h4>
 <div class="tmpl" lang="en">
@@ -144,7 +144,7 @@
 <p>Outage occurs only if all links are below the threshold at the same time: P<sub>out</sub> = P<sub>out,1</sub> × P<sub>out,2</sub> × …, which is much smaller than for one link (e.g. 10% → 1% with two base stations).</p>
 <p>The gain is smaller if the shadowing on the links is correlated (e.g. the mobile is inside a building).</p>
 </div>
-<div class="ans">In one line: outage is mainly caused by shadowing; base stations far apart are unlikely to be blocked by the same obstacle, so their shadowing is nearly independent and the probability that all are in outage at once is the product of the individual probabilities, which is much smaller.</div>
+<div class="ans">In one line: outage is mainly caused by shadowing; base stations far apart are unlikely to be blocked by the same obstacle, so their shadowing is nearly independent and the probability that all are in outage at once is the product of the individual probabilities, which is much smaller.<span class="zhsub xz" lang="zh-CN">一句话：中断主要来自阴影，相距很远的基站被同一障碍物挡住的可能性小，阴影近似独立，全部同时中断的概率是各自概率之积，所以大大降低。</span></div>
         </div>
       </details>
       <!-- /XPL:p4q1 -->
@@ -287,29 +287,29 @@
       <div class="note">(b) and (c) have the same mean SNR, yet (c) has a 2.7 times higher error rate and d drops from 8.1 to 7.7: the shared shadowing β makes both branches fade together, which weakens diversity (lecture p.21).</div>
       <!-- XPL:p4q2 -->
       <details class="deep xpl">
-        <summary>Concept + walkthrough: average error rate with discrete SNR, MRC, g and d</summary>
+        <summary><span>Concept + walkthrough: average error rate with discrete SNR, MRC, g and d<span class="zhsub xz" lang="zh-CN">知识讲解 + 详细解析：离散 SNR 的平均误码率、MRC、g 与 d</span></span></summary>
         <div class="deep-body">
 <h4><span class="st">Concept</span>In fading, the error rate must be averaged</h4>
-<p>In an AWGN channel the SNR is a constant; in a fading channel the SNR γ is a random variable (the lecturer stressed this repeatedly), so the error rate P<sub>s</sub>(γ) is random too and must be averaged: \(\bar P_s=E[P_s(\gamma)]=\sum_kP_s(\gamma_k)\,p_k\) (the integral on lecture Ch 4 p.23 becomes a sum for a discrete distribution). The lecturer said <b>integrals will not be examined</b>, but average error rates for discrete distributions can be.</p>
-<p>Key point: <b>E[f(γ)] ≠ f(E[γ])</b>. Substituting the mean SNR 10 directly gives ½e⁻¹⁰ = 2.27 × 10⁻⁵, while the true average is 6.15 × 10⁻⁵, almost 3 times larger: the errors come mainly from the moments of low SNR, and the mean SNR "smooths them away".</p>
+<p>In an AWGN channel the SNR is a constant; in a fading channel the SNR γ is a random variable (the lecturer stressed this repeatedly), so the error rate P<sub>s</sub>(γ) is random too and must be averaged: \(\bar P_s=E[P_s(\gamma)]=\sum_kP_s(\gamma_k)\,p_k\) (the integral on lecture Ch 4 p.23 becomes a sum for a discrete distribution). The lecturer said <b>integrals will not be examined</b>, but average error rates for discrete distributions can be.<span class="zhsub xz" lang="zh-CN">AWGN 信道里 SNR 是常数；衰落信道里 SNR γ 是随机变量（老师课上反复强调），所以误码率 P<sub>s</sub>(γ) 也是随机的，要求平均：\(\bar P_s=E[P_s(\gamma)]=\sum_kP_s(\gamma_k)\,p_k\)（讲义第 4 章 p.23 的积分式，离散分布就换成求和）。老师说<b>不会考积分</b>，但离散分布的平均误码率会考。</span></p>
+<p>Key point: <b>E[f(γ)] ≠ f(E[γ])</b>. Substituting the mean SNR 10 directly gives ½e⁻¹⁰ = 2.27 × 10⁻⁵, while the true average is 6.15 × 10⁻⁵, almost 3 times larger: the errors come mainly from the moments of low SNR, and the mean SNR "smooths them away".<span class="zhsub xz" lang="zh-CN">关键：<b>E[f(γ)] ≠ f(E[γ])</b>。本题如果把平均 SNR 10 直接代进去，½e⁻¹⁰ = 2.27 × 10⁻⁵，而真正的平均是 6.15 × 10⁻⁵，差近 3 倍：误码主要来自 SNR 差的那些时刻，平均 SNR 把它们"抹平"了。</span></p>
 <h4><span class="st">Concept</span>MRC, array gain g, diversity gain d</h4>
 <ul>
-<li><b>MRC</b> (maximal ratio combining, p.15–16): each branch is multiplied by the conjugate of its channel gain and the branches are added; the output SNR is the sum of the branch SNRs: γ<sub>Σ</sub> = γ₁ + γ₂.</li>
-<li><b>Array gain</b> (p.27) \(g=\bar\gamma_\Sigma/\bar\gamma\): how many times larger the average SNR is after combining.</li>
-<li><b>Diversity gain</b> (p.27) \(d\approx-\log_{10}\bar P_e/\log_{10}\bar\gamma\): from \(\bar P_e\approx\bar\gamma^{-d}\) at high SNR, the "slope" at which the error rate falls with SNR. γ̄ is the average SNR at the combiner <b>input</b>.</li>
+<li><b>MRC</b> (maximal ratio combining, p.15–16): each branch is multiplied by the conjugate of its channel gain and the branches are added; the output SNR is the sum of the branch SNRs: γ<sub>Σ</sub> = γ₁ + γ₂.<span class="zhsub xz" lang="zh-CN"><b>MRC</b>（最大比合并，p.15–16）：每条支路乘以信道增益的共轭再相加，输出 SNR = 各支路 SNR 之和：γ<sub>Σ</sub> = γ₁ + γ₂。</span></li>
+<li><b>Array gain</b> (p.27) \(g=\bar\gamma_\Sigma/\bar\gamma\): how many times larger the average SNR is after combining.<span class="zhsub xz" lang="zh-CN"><b>阵列增益</b>（p.27）\(g=\bar\gamma_\Sigma/\bar\gamma\)：合并后平均 SNR 是输入的几倍。</span></li>
+<li><b>Diversity gain</b> (p.27) \(d\approx-\log_{10}\bar P_e/\log_{10}\bar\gamma\): from \(\bar P_e\approx\bar\gamma^{-d}\) at high SNR, the "slope" at which the error rate falls with SNR. γ̄ is the average SNR at the combiner <b>input</b>.<span class="zhsub xz" lang="zh-CN"><b>分集增益</b>（p.27）\(d\approx-\log_{10}\bar P_e/\log_{10}\bar\gamma\)：来自高 SNR 下 \(\bar P_e\approx\bar\gamma^{-d}\)，误码率随 SNR 下降的"斜率"。γ̄ 是合并器<b>输入</b>的平均 SNR。</span></li>
 </ul>
-<p>The lecturer called the g and d formulas "simple, remember them" (blue box, not given in the exam). p.21: with correlated branches, simultaneous deep fades are more likely and diversity is weaker.</p>
+<p>The lecturer called the g and d formulas "simple, remember them" (blue box, not given in the exam). p.21: with correlated branches, simultaneous deep fades are more likely and diversity is weaker.<span class="zhsub xz" lang="zh-CN">老师说 g 和 d 的公式"简单、要记住"（蓝框，考试不给）。p.21：支路相关时，同时深衰落的概率更大，分集变差。</span></p>
 <h4><span class="st">Step by step</span>(a) Single branch</h4>
 <ol>
-<li><b>γ equals α</b>: γ = αP<sub>T</sub>/σ<sub>n</sub>² and P<sub>T</sub> = σ<sub>n</sub>² = 1 W, so γ = 8 (1/3) or 11 (2/3). The lecturer's reminder: first ask whether the numbers are linear or dB. Here they are linear, so no conversion is needed.</li>
-<li><b>Average SNR</b>: Σ value × probability.</li>
-<li><b>Average error rate</b>: Σ P<sub>s</sub>(value) × probability; do not substitute the average SNR.</li>
+<li><b>γ equals α</b>: γ = αP<sub>T</sub>/σ<sub>n</sub>² and P<sub>T</sub> = σ<sub>n</sub>² = 1 W, so γ = 8 (1/3) or 11 (2/3). The lecturer's reminder: first ask whether the numbers are linear or dB. Here they are linear, so no conversion is needed.<span class="zhsub xz" lang="zh-CN"><b>γ 就是 α</b>：γ = αP<sub>T</sub>/σ<sub>n</sub>² 且 P<sub>T</sub> = σ<sub>n</sub>² = 1 W，所以 γ = 8（1/3）或 11（2/3）。老师提醒先问一句：这些数是线性值还是 dB？这里是线性值，不用换算。</span></li>
+<li><b>Average SNR</b>: Σ value × probability.<span class="zhsub xz" lang="zh-CN"><b>平均 SNR</b>：Σ 取值 × 概率。</span></li>
+<li><b>Average error rate</b>: Σ P<sub>s</sub>(value) × probability; do not substitute the average SNR.<span class="zhsub xz" lang="zh-CN"><b>平均误码率</b>：Σ P<sub>s</sub>(取值) × 概率，不能代平均 SNR。</span></li>
 </ol>
 <div class="calc">γ̄ = 8 × ⅓ + 11 × ⅔ = 10<br>P̄<sub>s</sub> = ⅓ × ½e⁻⁸ + ⅔ × ½e⁻¹¹ = 5.59 × 10⁻⁵ + 0.56 × 10⁻⁵ = 6.15 × 10⁻⁵</div>
 <h4><span class="st">Step by step</span>(b) MRC with two independent branches</h4>
 <ol>
-<li><b>Tabulate the combinations</b>: independent branches, so probabilities multiply; 19 has two orderings, (8, 11) and (11, 8).</li>
-<li><b>Add the output SNRs</b>, then weight by the probabilities.</li>
+<li><b>Tabulate the combinations</b>: independent branches, so probabilities multiply; 19 has two orderings, (8, 11) and (11, 8).<span class="zhsub xz" lang="zh-CN"><b>列组合表</b>：两路独立，概率相乘；19 有 (8, 11)、(11, 8) 两种排列。</span></li>
+<li><b>Add the output SNRs</b>, then weight by the probabilities.<span class="zhsub xz" lang="zh-CN"><b>输出 SNR</b> 相加，再按概率加权。</span></li>
 </ol>
 <div class="tw"><table class="mini"><thead><tr><th>(γ₁, γ₂)</th><th>γ<sub>Σ</sub></th><th>Probability</th><th>½e<sup>−γΣ</sup> × probability</th></tr></thead><tbody>
 <tr><td>(8, 8)</td><td>16</td><td>1/9</td><td>6.25 × 10⁻⁹</td></tr>
@@ -317,25 +317,25 @@
 <tr><td>(11, 11)</td><td>22</td><td>4/9</td><td>0.06 × 10⁻⁹</td></tr>
 </tbody></table></div>
 <div class="calc">γ̄<sub>Σ</sub> = (16 × 1 + 19 × 4 + 22 × 4)/9 = 180/9 = 20<br>P̄<sub>s</sub> = 6.25 + 1.25 + 0.06 = 7.56 × 10⁻⁹<br>g = 20/10 = 2 (= 3.01 dB)<br>d = −log₁₀(7.56 × 10⁻⁹) / log₁₀10 = 8.12 / 1 = 8.1</div>
-<p>Note: the "both branches bad" case (8, 8), with probability only 1/9, contributes more than 80% of the errors. Shortcut: with independent branches \(E[e^{-(\gamma_1+\gamma_2)}]=(E[e^{-\gamma}])^2\), and (a) already gives E[e<sup>−γ</sup>] = 2 × 6.15 × 10⁻⁵ = 1.23 × 10⁻⁴, so P̄<sub>s</sub> = ½ × (1.23 × 10⁻⁴)² = 7.56 × 10⁻⁹.</p>
+<p>Note: the "both branches bad" case (8, 8), with probability only 1/9, contributes more than 80% of the errors. Shortcut: with independent branches \(E[e^{-(\gamma_1+\gamma_2)}]=(E[e^{-\gamma}])^2\), and (a) already gives E[e<sup>−γ</sup>] = 2 × 6.15 × 10⁻⁵ = 1.23 × 10⁻⁴, so P̄<sub>s</sub> = ½ × (1.23 × 10⁻⁴)² = 7.56 × 10⁻⁹.<span class="zhsub xz" lang="zh-CN">注意：概率只有 1/9 的"两路都差"(8, 8) 贡献了八成以上的误码。捷径：两路独立，\(E[e^{-(\gamma_1+\gamma_2)}]=(E[e^{-\gamma}])^2\)，而 (a) 已得 E[e<sup>−γ</sup>] = 2 × 6.15 × 10⁻⁵ = 1.23 × 10⁻⁴，所以 P̄<sub>s</sub> = ½ × (1.23 × 10⁻⁴)² = 7.56 × 10⁻⁹。</span></p>
 <h4><span class="st">Step by step</span>(c) Shared shadowing β: fix β first (the lecturer's method)</h4>
 <ol>
-<li><b>Average SNR unchanged</b>: E[r] = 0.6 × ⅓ + 1.2 × ⅔ = 1, E[β] = 7 × ⅓ + 10 × ⅔ = 9, E[γ<sub>i</sub>] = 10, γ̄<sub>Σ</sub> = 20, g = 2.</li>
-<li><b>Output SNR</b>: γ<sub>Σ</sub> = r₁ + r₂ + 2β; β appears twice, so the exponent contains 2β.</li>
-<li><b>Treat β as a constant first</b> (the same trick as Practice 2 Q2): given β, r₁ and r₂ are independent, \(P_s\mid\beta=\tfrac12(E[e^{-r}])^2e^{-2\beta}\).</li>
-<li><b>Then average over β</b>.</li>
+<li><b>Average SNR unchanged</b>: E[r] = 0.6 × ⅓ + 1.2 × ⅔ = 1, E[β] = 7 × ⅓ + 10 × ⅔ = 9, E[γ<sub>i</sub>] = 10, γ̄<sub>Σ</sub> = 20, g = 2.<span class="zhsub xz" lang="zh-CN"><b>平均 SNR 不变</b>：E[r] = 0.6 × ⅓ + 1.2 × ⅔ = 1，E[β] = 7 × ⅓ + 10 × ⅔ = 9，E[γ<sub>i</sub>] = 10，γ̄<sub>Σ</sub> = 20，g = 2。</span></li>
+<li><b>Output SNR</b>: γ<sub>Σ</sub> = r₁ + r₂ + 2β; β appears twice, so the exponent contains 2β.<span class="zhsub xz" lang="zh-CN"><b>输出 SNR</b>：γ<sub>Σ</sub> = r₁ + r₂ + 2β，β 出现两次，所以指数里是 2β。</span></li>
+<li><b>Treat β as a constant first</b> (the same trick as Practice 2 Q2): given β, r₁ and r₂ are independent, \(P_s\mid\beta=\tfrac12(E[e^{-r}])^2e^{-2\beta}\).<span class="zhsub xz" lang="zh-CN"><b>先把 β 当常数</b>（和 Practice 2 第 2 题同一招）：给定 β，r₁、r₂ 独立，\(P_s\mid\beta=\tfrac12(E[e^{-r}])^2e^{-2\beta}\)。</span></li>
+<li><b>Then average over β</b>.<span class="zhsub xz" lang="zh-CN"><b>再对 β 加权平均</b>。</span></li>
 </ol>
 <div class="calc">E[e<sup>−r</sup>] = ⅓e<sup>−0.6</sup> + ⅔e<sup>−1.2</sup> = 0.1829 + 0.2008 = 0.3837<br>β = 7: ½ × 0.3837² × e⁻¹⁴ = 6.12 × 10⁻⁸<br>β = 10: ½ × 0.3837² × e⁻²⁰ = 1.52 × 10⁻¹⁰<br>P̄<sub>s</sub> = ⅓ × 6.12 × 10⁻⁸ + ⅔ × 1.52 × 10⁻¹⁰ = 2.05 × 10⁻⁸<br>(equivalently: E[e<sup>−2β</sup>] = ⅓e⁻¹⁴ + ⅔e⁻²⁰ = 2.786 × 10⁻⁷, ½ × 0.3837² × 2.786 × 10⁻⁷ = 2.05 × 10⁻⁸)<br>d = −log₁₀(2.05 × 10⁻⁸) = 8 − 0.31 = 7.7</div>
-<p>Conclusion: (b) and (c) both have average SNR 20 and g = 2, but the error rate in (c) is 2.7 times that of (b) and d drops from 8.1 to 7.7. Almost all errors occur when the shared shadowing is β = 7 and both branches are bad together; this is what p.21 means by "correlation weakens diversity".</p>
+<p>Conclusion: (b) and (c) both have average SNR 20 and g = 2, but the error rate in (c) is 2.7 times that of (b) and d drops from 8.1 to 7.7. Almost all errors occur when the shared shadowing is β = 7 and both branches are bad together; this is what p.21 means by "correlation weakens diversity".<span class="zhsub xz" lang="zh-CN">结论：(b)(c) 平均 SNR 都是 20、g 都是 2，但 (c) 误码率是 (b) 的 2.7 倍，d 从 8.1 降到 7.7。误码几乎全部发生在共享阴影 β = 7 的时候，两路一起变差，这就是 p.21 说的"相关削弱分集"。</span></p>
 <h4><span class="st">Beyond the slides</span>Why d = 8.1 is larger than the number of branches</h4>
-<p>Slide p.28 says d ≤ M. Here d = 8.1 &gt; 2 because the d of p.27 is a high-SNR "slope" definition meant for channels such as Rayleigh that have very deep fades (P̄<sub>e</sub> ∝ γ̄<sup>−d</sup>). In this discrete distribution γ never drops below 8, so there are no deep fades and the error rate falls exponentially with SNR; evaluating the formula at the single point γ̄ = 10 just gives a number, not a true diversity order (even the single branch of (a) gives 4.2). In the exam, apply the formula as the official answer does and use it to compare (b) and (c).</p>
+<p>Slide p.28 says d ≤ M. Here d = 8.1 &gt; 2 because the d of p.27 is a high-SNR "slope" definition meant for channels such as Rayleigh that have very deep fades (P̄<sub>e</sub> ∝ γ̄<sup>−d</sup>). In this discrete distribution γ never drops below 8, so there are no deep fades and the error rate falls exponentially with SNR; evaluating the formula at the single point γ̄ = 10 just gives a number, not a true diversity order (even the single branch of (a) gives 4.2). In the exam, apply the formula as the official answer does and use it to compare (b) and (c).<span class="zhsub xz" lang="zh-CN">讲义 p.28 说 d ≤ M。这里 d = 8.1 &gt; 2，原因是 p.27 的 d 是高 SNR 下的"斜率"定义，针对的是瑞利这类会出现很深衰落的信道（P̄<sub>e</sub> ∝ γ̄<sup>−d</sup>）。本题的离散分布 γ 最低也有 8，没有深衰落，误码率随 SNR 指数下降，在 γ̄ = 10 这一点代公式得到的只是一个数，不是真正的分集阶数（连单支路 (a) 代进去都得 4.2）。考试照公式算即可（官方答案也是这样），用它来比较 (b)(c)。</span></p>
 <h4><span class="st">Pitfalls</span>Where marks are usually lost</h4>
 <ul>
-<li>Substituting the average SNR into the error formula: E[½e<sup>−γ</sup>] ≠ ½e<sup>−E[γ]</sup>.</li>
-<li>Counting only one ordering for 19: the probability is 4/9, not 2/9.</li>
-<li>Using the output 20 in the denominator of d: use the input 10, log₁₀10 = 1.</li>
-<li>Writing β instead of 2β in the exponent in (c).</li>
-<li>Keep significant figures for tiny numbers such as e⁻¹⁶; do not round them to 0.</li>
+<li>Substituting the average SNR into the error formula: E[½e<sup>−γ</sup>] ≠ ½e<sup>−E[γ]</sup>.<span class="zhsub xz" lang="zh-CN">把平均 SNR 代进误码率公式：E[½e<sup>−γ</sup>] ≠ ½e<sup>−E[γ]</sup>。</span></li>
+<li>Counting only one ordering for 19: the probability is 4/9, not 2/9.<span class="zhsub xz" lang="zh-CN">19 只算一种排列：概率是 4/9 不是 2/9。</span></li>
+<li>Using the output 20 in the denominator of d: use the input 10, log₁₀10 = 1.<span class="zhsub xz" lang="zh-CN">d 的分母用输出的 20：应该用输入的 10，log₁₀10 = 1。</span></li>
+<li>Writing β instead of 2β in the exponent in (c).<span class="zhsub xz" lang="zh-CN">(c) 指数里写 β 而不是 2β。</span></li>
+<li>Keep significant figures for tiny numbers such as e⁻¹⁶; do not round them to 0.<span class="zhsub xz" lang="zh-CN">e⁻¹⁶ 这类极小数要保留有效数字，别四舍五入成 0。</span></li>
 </ul>
 <h4><span class="st">Exam</span>How to write it in English</h4>
 <div class="tmpl" lang="en">
@@ -344,7 +344,7 @@
 <p>(c) γ<sub>Σ</sub> = r₁ + r₂ + 2β with r₁, r₂, β independent. E[γ<sub>i</sub>] = E[r] + E[β] = 1 + 9 = 10, so γ̄<sub>Σ</sub> = 20 and g = 2. \(\bar P_s=\tfrac12E[e^{-r_1}]E[e^{-r_2}]E[e^{-2\beta}]=\tfrac12(0.3837)^2(2.786\times10^{-7})=2.05\times10^{-8}\); d = −log₁₀(2.05 × 10⁻⁸) = 7.7.</p>
 <p>The shared shadowing β leaves the array gain unchanged but raises the error probability and lowers the diversity gain.</p>
 </div>
-<div class="ans">In one line: average the error rate over the SNR distribution; the MRC output SNR is the sum of the two branches, g = output ÷ input average SNR, d = −log P̄ / log γ̄; the shared shadowing β leaves g unchanged but raises the error rate and lowers d.</div>
+<div class="ans">In one line: average the error rate over the SNR distribution; the MRC output SNR is the sum of the two branches, g = output ÷ input average SNR, d = −log P̄ / log γ̄; the shared shadowing β leaves g unchanged but raises the error rate and lowers d.<span class="zhsub xz" lang="zh-CN">一句话：误码率要按 SNR 的分布加权平均；MRC 输出 SNR = 两路相加，g = 输出 ÷ 输入平均 SNR，d = −log P̄ / log γ̄；共享阴影 β 不改变 g，但让误码率变大、d 变小。</span></div>
         </div>
       </details>
       <!-- /XPL:p4q2 -->
@@ -472,46 +472,46 @@
       <div class="note">The mean grows like M while the standard deviation grows like √M, so the argument of Q increases by √M. That is the combining gain.</div>
       <!-- XPL:p4q3 -->
       <details class="deep xpl">
-        <summary>Concept + walkthrough: Gaussian fading factor and equal-weight combining</summary>
+        <summary><span>Concept + walkthrough: Gaussian fading factor and equal-weight combining<span class="zhsub xz" lang="zh-CN">知识讲解 + 详细解析：高斯衰落因子与等权合并</span></span></summary>
         <div class="deep-body">
 <h4><span class="st">Concept</span>If the decision variable is Gaussian, error rate = Q(mean / standard deviation)</h4>
-<p>The received signal \(y_k=\alpha_kb\sqrt E+w_k\) contains two kinds of "noise" (the lecturer's words): α<sub>k</sub> multiplies the signal, a <b>multiplicative</b> noise (fading); w<sub>k</sub> is added to it, an <b>additive</b> noise. What is special is that α<sub>k</sub> is modelled as Gaussian (not Rayleigh), so the whole decision variable is Gaussian and the error rate can be written directly as a Q function.</p>
-<p>Three probability tools are needed (Ch 1b):</p>
-<div class="tw"><table class="mini"><thead><tr><th>Tool</th><th>Formula</th><th>Used for</th></tr></thead><tbody>
-<tr><td>constant times a random variable</td><td>E[cX] = cE[X], Var(cX) = c²Var(X)</td><td>the variance of α√E is σ₁²E</td></tr>
-<tr><td>sum of independent variables</td><td>means add, variances add</td><td>α√E + w; the sum over M branches</td></tr>
-<tr><td>sum of independent Gaussians</td><td>still Gaussian</td><td>z is Gaussian, so Q can be used</td></tr>
+<p>The received signal \(y_k=\alpha_kb\sqrt E+w_k\) contains two kinds of "noise" (the lecturer's words): α<sub>k</sub> multiplies the signal, a <b>multiplicative</b> noise (fading); w<sub>k</sub> is added to it, an <b>additive</b> noise. What is special is that α<sub>k</sub> is modelled as Gaussian (not Rayleigh), so the whole decision variable is Gaussian and the error rate can be written directly as a Q function.<span class="zhsub xz" lang="zh-CN">本题的接收信号 \(y_k=\alpha_kb\sqrt E+w_k\) 里有两种"噪声"（老师课上的说法）：α<sub>k</sub> 乘在信号上，是<b>乘性</b>噪声（衰落）；w<sub>k</sub> 加在信号上，是<b>加性</b>噪声。特别之处是 α<sub>k</sub> 被建模成高斯（不是瑞利），这样整个判决量都是高斯，误码率可以直接写成 Q 函数。</span></p>
+<p>Three probability tools are needed (Ch 1b):<span class="zhsub xz" lang="zh-CN">要用到的三条概率工具（第 1b 章）：</span></p>
+<div class="tw"><table class="mini"><thead><tr><th>Tool</th><th>Formula</th><th>Used for<span class="zhsub xz" lang="zh-CN">本题用在哪</span></th></tr></thead><tbody>
+<tr><td>constant times a random variable<span class="zhsub xz" lang="zh-CN">常数乘随机变量</span></td><td>E[cX] = cE[X], Var(cX) = c²Var(X)</td><td>the variance of α√E is σ₁²E<span class="zhsub xz" lang="zh-CN">α√E 的方差是 σ₁²E</span></td></tr>
+<tr><td>sum of independent variables<span class="zhsub xz" lang="zh-CN">独立变量相加</span></td><td>means add, variances add<span class="zhsub xz" lang="zh-CN">均值相加，方差相加</span></td><td>α√E + w; the sum over M branches</td></tr>
+<tr><td>sum of independent Gaussians<span class="zhsub xz" lang="zh-CN">独立高斯之和</span></td><td>still Gaussian<span class="zhsub xz" lang="zh-CN">仍是高斯</span></td><td>z is Gaussian, so Q can be used<span class="zhsub xz" lang="zh-CN">z 是高斯，才能写 Q</span></td></tr>
 </tbody></table></div>
-<p>Plus the "rearrange" trick of Ch 2 p.14: if z = m + n with n ~ N(0, s²), then P(z ≤ 0) = P(n ≤ −m) = Q(m/s).</p>
-<p>Equal-weight combining: all y<sub>k</sub> are simply added. The lecturer specifically warned that this is <b>not</b> the equal gain combining (EGC) of slide p.19: EGC first rotates each branch by its phase, while here all branches are real and are just added.</p>
+<p>Plus the "rearrange" trick of Ch 2 p.14: if z = m + n with n ~ N(0, s²), then P(z ≤ 0) = P(n ≤ −m) = Q(m/s).<span class="zhsub xz" lang="zh-CN">再加第 2 章 p.14 的"移项"技巧：z = m + n，n ~ N(0, s²)，则 P(z ≤ 0) = P(n ≤ −m) = Q(m/s)。</span></p>
+<p>Equal-weight combining: all y<sub>k</sub> are simply added. The lecturer specifically warned that this is <b>not</b> the equal gain combining (EGC) of slide p.19: EGC first rotates each branch by its phase, while here all branches are real and are just added.<span class="zhsub xz" lang="zh-CN">等权合并（equal weight combining）：所有 y<sub>k</sub> 直接相加。老师特别提醒它<b>不是</b>讲义 p.19 的等增益合并（EGC）：EGC 要先按各路相位旋转，这里各路都是实数，直接加。</span></p>
 <h4><span class="st">Step by step</span>(a) M = 1: the lecturer's three steps</h4>
 <ol>
-<li><b>Only b = +1 is needed</b>: b = ±1 are equally likely and the two cases are symmetric, P<sub>b</sub> = ½P(error | +1) + ½P(error | −1) = P(error | +1).</li>
-<li><b>Find the total mean and total variance</b> (the lecturer said this is the key step): z = α√E + w. Mean E[α]√E + E[w] = α₀√E; variance Var(α)E + Var(w) = σ₁²E + σ₂² (α and w independent). So z = α₀√E + n with n ~ N(0, σ₁²E + σ₂²).</li>
-<li><b>Write it as Q</b>: for b = +1 an error is z ≤ 0 ⇔ n ≤ −α₀√E, and by symmetry P = Q(mean / standard deviation).</li>
+<li><b>Only b = +1 is needed</b>: b = ±1 are equally likely and the two cases are symmetric, P<sub>b</sub> = ½P(error | +1) + ½P(error | −1) = P(error | +1).<span class="zhsub xz" lang="zh-CN"><b>只算 b = +1</b>：b 等概取 ±1，两种情况对称，P<sub>b</sub> = ½P(错 | +1) + ½P(错 | −1) = P(错 | +1)。</span></li>
+<li><b>Find the total mean and total variance</b> (the lecturer said this is the key step): z = α√E + w. Mean E[α]√E + E[w] = α₀√E; variance Var(α)E + Var(w) = σ₁²E + σ₂² (α and w independent). So z = α₀√E + n with n ~ N(0, σ₁²E + σ₂²).<span class="zhsub xz" lang="zh-CN"><b>求总均值和总方差</b>（老师说这一步最关键）：z = α√E + w。均值 E[α]√E + E[w] = α₀√E；方差 Var(α)E + Var(w) = σ₁²E + σ₂²（α 与 w 独立）。所以 z = α₀√E + n，n ~ N(0, σ₁²E + σ₂²)。</span></li>
+<li><b>Write it as Q</b>: for b = +1 an error is z ≤ 0 ⇔ n ≤ −α₀√E, and by symmetry P = Q(mean / standard deviation).<span class="zhsub xz" lang="zh-CN"><b>写成 Q</b>：b = +1 时出错 = z ≤ 0 ⇔ n ≤ −α₀√E，由对称性 P = Q(均值 / 标准差)。</span></li>
 </ol>
 <div class="calc">mean α₀√E, variance σ₁²E + σ₂²<br>P<sub>b</sub> = Q( α₀√E / √(σ₁²E + σ₂²) )</div>
 <h4><span class="st">Step by step</span>(b) Equal-weight sum of M branches</h4>
 <ol>
-<li><b>Write the decision variable</b>: \(z=\sum_{k=1}^My_k=b\sqrt E\sum_k\alpha_k+\sum_kw_k\).</li>
-<li><b>Mean</b>: M copies of α₀√E add up to Mα₀√E.</li>
-<li><b>Variance</b>: 2M independent terms, variances add to M(σ₁²E + σ₂²). The question does not state explicitly that the α<sub>k</sub> are mutually independent; the standard solution assumes so (fading on different antennas is independent).</li>
-<li><b>Q function</b>: mean / standard deviation = Mα₀√E / √(M(σ₁²E + σ₂²)); cancel √M.</li>
+<li><b>Write the decision variable</b>: \(z=\sum_{k=1}^My_k=b\sqrt E\sum_k\alpha_k+\sum_kw_k\).<span class="zhsub xz" lang="zh-CN"><b>写出判决量</b>：\(z=\sum_{k=1}^My_k=b\sqrt E\sum_k\alpha_k+\sum_kw_k\)。</span></li>
+<li><b>Mean</b>: M copies of α₀√E add up to Mα₀√E.<span class="zhsub xz" lang="zh-CN"><b>均值</b>：M 个 α₀√E 相加 = Mα₀√E。</span></li>
+<li><b>Variance</b>: 2M independent terms, variances add to M(σ₁²E + σ₂²). The question does not state explicitly that the α<sub>k</sub> are mutually independent; the standard solution assumes so (fading on different antennas is independent).<span class="zhsub xz" lang="zh-CN"><b>方差</b>：2M 个独立项，方差相加 = M(σ₁²E + σ₂²)。题目没明说各 α<sub>k</sub> 相互独立，标准解默认独立（不同天线的衰落独立）。</span></li>
+<li><b>Q function</b>: mean / standard deviation = Mα₀√E / √(M(σ₁²E + σ₂²)); cancel √M.<span class="zhsub xz" lang="zh-CN"><b>Q 函数</b>：均值 / 标准差 = Mα₀√E / √(M(σ₁²E + σ₂²))，约掉 √M。</span></li>
 </ol>
 <div class="calc">P<sub>b</sub> = Q( √M · α₀√E / √(σ₁²E + σ₂²) )</div>
-<p><b>Why combining helps</b>: the mean grows like M but the standard deviation only like √M, so the argument of Q grows by √M. The signal adds "coherently" (every branch contributes α₀√E), while the noise adds "randomly" (positive and negative parts partly cancel).</p>
+<p><b>Why combining helps</b>: the mean grows like M but the standard deviation only like √M, so the argument of Q grows by √M. The signal adds "coherently" (every branch contributes α₀√E), while the noise adds "randomly" (positive and negative parts partly cancel).<span class="zhsub xz" lang="zh-CN"><b>为什么合并有好处</b>：均值按 M 增长，标准差只按 √M 增长，所以 Q 的参数放大 √M 倍。信号是"同向相加"（每路都是 α₀√E），噪声是"随机相加"（有正有负，部分抵消）。</span></p>
 <h4><span class="st">Beyond the slides</span>Numbers and two extremes</h4>
 <div class="calc">Example α₀ = 1, E = 1, σ₁² = σ₂² = 0.1, argument = √M × 1/√0.2:<br>M = 1: Q(2.24) = 0.0127<br>M = 2: Q(3.16) = 7.8 × 10⁻⁴ (Monte Carlo simulation gives 8.0 × 10⁻⁴, consistent)<br>M = 4: Q(4.47) = 3.9 × 10⁻⁶</div>
 <ul>
-<li><b>No noise (σ₂ = 0)</b>: the error rate Q(α₀/σ₁) is still not 0, because the fading factor itself can become negative and flip the sign; this is a fading-induced "floor". After combining it becomes Q(√M α₀/σ₁), a lower floor.</li>
-<li><b>All α<sub>k</sub> identical (fully correlated)</b>: the variance becomes M²σ₁²E + Mσ₂², and as M grows the argument at most approaches α₀/σ₁. In the example above, M = 4 gives only Q(2.83) = 2.3 × 10⁻³, far worse than 3.9 × 10⁻⁶ in the independent case: again, "correlation weakens diversity" (p.21).</li>
+<li><b>No noise (σ₂ = 0)</b>: the error rate Q(α₀/σ₁) is still not 0, because the fading factor itself can become negative and flip the sign; this is a fading-induced "floor". After combining it becomes Q(√M α₀/σ₁), a lower floor.<span class="zhsub xz" lang="zh-CN"><b>没有噪声（σ₂ = 0）</b>：误码率 Q(α₀/σ₁) 仍不为 0，因为衰落因子本身可能变成负数，把符号翻过来，这是衰落造成的"平台"；合并后变成 Q(√M α₀/σ₁)，平台降低。</span></li>
+<li><b>All α<sub>k</sub> identical (fully correlated)</b>: the variance becomes M²σ₁²E + Mσ₂², and as M grows the argument at most approaches α₀/σ₁. In the example above, M = 4 gives only Q(2.83) = 2.3 × 10⁻³, far worse than 3.9 × 10⁻⁶ in the independent case: again, "correlation weakens diversity" (p.21).<span class="zhsub xz" lang="zh-CN"><b>各路 α<sub>k</sub> 完全相同（完全相关）</b>：方差变成 M²σ₁²E + Mσ₂²，参数随 M 增大最多趋向 α₀/σ₁。上面的例子 M = 4 只有 Q(2.83) = 2.3 × 10⁻³，比独立时的 3.9 × 10⁻⁶ 差得多，又是"相关削弱分集"（p.21）。</span></li>
 </ul>
 <h4><span class="st">Pitfalls</span>Where marks are usually lost</h4>
 <ul>
-<li>Writing the variance as σ₁² + σ₂² without the factor E: α is multiplied by √E, so its variance is multiplied by (√E)² = E.</li>
-<li>Writing the standard deviation as σ₁√E + σ₂: variances add, standard deviations do not.</li>
-<li>Treating equal-weight combining as EGC or MRC: here the branches are simply added.</li>
-<li>Stopping at Q(Mα₀√E / √(M(…))) in (b) without simplifying to √M: not wrong, but only the simplified form shows the benefit of combining.</li>
+<li>Writing the variance as σ₁² + σ₂² without the factor E: α is multiplied by √E, so its variance is multiplied by (√E)² = E.<span class="zhsub xz" lang="zh-CN">方差写成 σ₁² + σ₂²，漏乘 E：α 乘的是 √E，方差要乘 (√E)² = E。</span></li>
+<li>Writing the standard deviation as σ₁√E + σ₂: variances add, standard deviations do not.<span class="zhsub xz" lang="zh-CN">标准差写成 σ₁√E + σ₂：方差能相加，标准差不能。</span></li>
+<li>Treating equal-weight combining as EGC or MRC: here the branches are simply added.<span class="zhsub xz" lang="zh-CN">把等权合并当成 EGC 或 MRC：这里就是直接相加。</span></li>
+<li>Stopping at Q(Mα₀√E / √(M(…))) in (b) without simplifying to √M: not wrong, but only the simplified form shows the benefit of combining.<span class="zhsub xz" lang="zh-CN">(b) 只写到 Q(Mα₀√E / √(M(…)))，没约成 √M：不算错，但约完才看得出合并的好处。</span></li>
 </ul>
 <h4><span class="st">Exam</span>How to write it in English</h4>
 <div class="tmpl" lang="en">
@@ -520,7 +520,7 @@
 <p>(b) Equal-weight combining: \(z=\sum_{k=1}^My_k=b\sqrt E\sum_k\alpha_k+\sum_kw_k\). With independent α<sub>k</sub> and w<sub>k</sub> and b = +1, z is Gaussian with mean Mα₀√E and variance M(σ₁²E + σ₂²).</p>
 <p>\(P_b=Q\Big(\dfrac{M\alpha_0\sqrt E}{\sqrt{M(\sigma_1^2E+\sigma_2^2)}}\Big)=Q\Big(\dfrac{\sqrt M\,\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\Big)\): combining M branches multiplies the argument of Q by √M.</p>
 </div>
-<div class="ans">In one line: take b = +1, find the total mean and total variance of the decision variable, and the error rate is Q(mean / standard deviation); summing M branches multiplies the mean by M and the standard deviation by √M, so the argument of Q grows by √M.</div>
+<div class="ans">In one line: take b = +1, find the total mean and total variance of the decision variable, and the error rate is Q(mean / standard deviation); summing M branches multiplies the mean by M and the standard deviation by √M, so the argument of Q grows by √M.<span class="zhsub xz" lang="zh-CN">一句话：设 b = +1，求判决量的总均值和总方差，误码率 = Q(均值 / 标准差)；M 路等权相加时均值 × M、标准差 × √M，Q 的参数放大 √M 倍。</span></div>
         </div>
       </details>
       <!-- /XPL:p4q3 -->
