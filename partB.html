@@ -557,7 +557,7 @@ table td:first-child{font-family:var(--f-body);}
       <!--ANIM:open B-3_5--><div class="asec" id="asec-B-3_5"><h3><span class="zh-num">3.5</span>802.11e：给业务分优先级（p.39–40）</h3><!--ANIM:fig B-3_5--><aside class="asec-fig"><figure class="anim" data-anim="B:3.5"></figure></aside><div class="asec-body"><!--/ANIM:fig B-3_5-->
       <p>原始 802.11 对所有数据一视同仁。802.11e 为 QoS 加了两种新模式，适用于所有物理层（802.11、a、b、g）：</p>
       <ul>
-        <li><b>EDCA</b>（增强分布式信道接入）：定义 <b>8 个业务类</b>，每类有自己的退避参数，并引入仲裁帧间间隔 <b>AIFS</b>。每个节点里每类业务有独立队列，先在节点内部竞争"虚拟信道"，胜出的帧再按 DCF 去竞争真实信道。语音类的 AIFS 短、CW 小，更容易抢到。</li>
+        <li><b>EDCA</b>（增强分布式信道接入）：定义 <b>8 个业务类</b>（讲义原话 "eight traffic classes"；802.11e 标准里这 8 个用户优先级会映射成 4 个接入类别 AC，每个 AC 一个队列），每类有自己的退避参数，并引入仲裁帧间间隔 <b>AIFS</b>。每个节点里每类业务有独立队列，先在节点内部竞争"虚拟信道"，胜出的帧再按 DCF 去竞争真实信道。语音类的 AIFS 短、CW 小，更容易抢到。</li>
         <li><b>HCCA</b>（混合协调信道接入）：类似 PCF，由<b>混合协调器 HC</b> 维护各节点状态，按各站每类业务的负载，智能地分配无竞争发送机会。</li>
       </ul>
       <div class="checkpoint">

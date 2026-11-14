@@ -506,7 +506,7 @@
   /* ================= 3.2 2G ================= */
   ANIM.reg('A:3.2', {
     title: '2G：数字化的三条路线',
-    cap: '2G 要更大容量、更低成本、跨国漫游。GSM 走 TDMA，IS-95 走 CDMA（扩频 + Walsh 码 + 1 ms 功率控制），N-AMPS 是把 AMPS 信道一分为三的过渡方案。',
+    cap: '2G 要更大容量、更低成本、跨国漫游。GSM 走 TDMA，IS-95 走 CDMA（扩频 + Walsh 码 + 讲义写每 1 ms 一次的功率控制，标准实为 1.25 ms），N-AMPS 是把 AMPS 信道一分为三的过渡方案。',
     h: 256,
     init: function (A) {
       timeline(A, 1);
