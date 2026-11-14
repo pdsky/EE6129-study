@@ -160,7 +160,7 @@
       <!-- /KP:ls6 -->
 
       <h3><span class="zh-num">2.2</span>阴影衰落与中断概率<span class="imp">★★★ 必考</span></h3>
-      <p>信号在路上要穿过 M 个障碍物，每个都把功率乘上一个衰减因子 \(A_i\)，总衰减 \(\psi=\prod A_i\)（p.11）。取对数以后乘法变成加法：\(\log\psi=\sum\log A_i\)。很多个随机量相加，按中心极限定理近似服从<b>高斯分布</b>，所以 <mark class="hl">ψ 的 dB 值是高斯的，ψ 本身叫对数正态（log-normal）分布</mark>。讲义给的典型值：均值 0，方差 4–12 dB²。</p>
+      <p>信号在路上要穿过 M 个障碍物，每个都把功率乘上一个衰减因子 \(A_i\)，总衰减 \(\psi=\prod A_i\)（p.11）。取对数以后乘法变成加法：\(\log\psi=\sum\log A_i\)。很多个随机量相加，按中心极限定理近似服从<b>高斯分布</b>，所以 <mark class="hl">ψ 的 dB 值是高斯的，ψ 本身叫对数正态（log-normal）分布</mark>。讲义给的典型值：均值 0，方差 4 &lt; σ² &lt; 12（单位 dB²，p.11）。注意讲义这里写的是<b>方差</b>，和本课例题一致（σ² 就是拟合的 MSE，如 11.87 dB²）；有些教材（如 Goldsmith）给的是<b>标准差</b> σ 约 4–13 dB，别混。</p>
       <div class="formula-card">
         <div class="flbl">路径损耗 + 阴影（p.12）</div>
         <div class="fexpr">\(\left.\dfrac{P_r}{P_t}\right|_{\mathrm{dB}}=K_{\mathrm{dB}}-10\gamma\log_{10}\dfrac{d}{d_0}+\psi_{\mathrm{dB}},\qquad \psi_{\mathrm{dB}}\sim\mathcal N(0,\sigma_{\psi}^2)\)</div>

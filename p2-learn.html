@@ -414,7 +414,7 @@ window.MathJax = {
         <tr><td>WiFi</td><td>802.11b 11 Mbps（DSSS）、802.11a/g 54 Mbps（OFDM）、802.11n 600 Mbps（MIMO-OFDM）</td><td>免授权 ISM 频段，随机接入（p.7–8）</td></tr>
         <tr><td>蓝牙</td><td>2.4 GHz，BR 1 Mbps / EDR 2 Mbps，跳频</td><td>短距离；LE 版本给物联网用（p.9）</td></tr>
         <tr><td>ZigBee（802.15.4）</td><td>250 kbps，低功耗，CSMA-CA</td><td>低速个域网（p.10）</td></tr>
-        <tr><td>卫星</td><td>GEO 约 39000 km vs LEO 约 2000 km</td><td>覆盖大，适合单向广播（p.11）</td></tr>
+        <tr><td>卫星</td><td>GEO 约 36000 km vs LEO 约 2000 km（此页讲义写 GEO 39000 km，实际高度约 35,800 km，Part C 讲义给 35,863 km）</td><td>覆盖大，适合单向广播（p.11）</td></tr>
         <tr><td>UWB</td><td>皮秒到纳秒级脉冲，GHz 带宽</td><td>不需要载波，测距能力强，多径可分辨（p.12）</td></tr>
       </tbody></table></div>
       <p>讲义 p.16 提出一个有意思的问题：<b>干扰是敌人还是朋友？</b></p>
@@ -770,7 +770,7 @@ window.MathJax = {
 
       <!--ANIM:open p2-2_2--><div class="asec" id="asec-p2-2_2"><h3><span class="zh-num">2.2</span>阴影衰落与中断概率<span class="imp">★★★ 必考</span></h3><!--EXHIT:p2-2_2--><div class="exhit y1"><span class="ex-k">🎯 期末考点</span><span class="ex-dots" aria-hidden="true"><i class="on" title="2023-24 S2"></i><i class="" title="2024-25 S2"></i><i class="" title="2025-26 S1"></i><i class="" title="2025-26 S2"></i></span><span class="ex-n">考过 1 次</span><a class="ex-q" href="#pq-y2324s2-q1a" title="路径损耗 dB 形式 · 阴影衰落中断 · 平坦/慢衰落判别 · 衰落余量">23-24 Q1(a)</a></div><!--/EXHIT:p2-2_2--><!--ANIM:fig p2-2_2--><aside class="asec-fig"><figure class="anim" data-anim="p2:2.2"></figure></aside><div class="asec-body"><!--/ANIM:fig p2-2_2-->
 <!-- TEACH:begin 8 --><div class="teach"><div class="lbl">▶ 老师课上强调 <span>· Part 2 第 9 周录音、Part 2 第 12 周录音</span></div><ul><li>加了阴影以后：<b>平均路径损耗 = 不含阴影的路径损耗</b>（阴影零均值）；<b>路径损耗的方差 = 阴影的方差</b>（常数的方差为 0）。</li><li>题目只给 MSE 时，它就是 σ²（均值为 0 时 MSE = 方差），开根号才是 σ。</li><li><b>老师要求掌握的技巧</b>：把"P<sub>r</sub> &lt; P<sub>min</sub>"整理成"随机变量 &lt; −x"（随机变量留在左边，其他都移到右边，整体前面是负号），再由对称性写成 Q(x/σ)。第 3、6、7 章算误码率都用这一招。</li><li>Q(x/σ) 这个式子对任何零均值高斯都成立；对阴影来说 x = 无阴影时的平均接收功率 − 最低功率。</li><li><b>今年 Quiz 第 1 题 (b)"有阴影时的平均路径损耗"</b>（第 12 周）：不少人写成"平均路径损耗 = 路径损耗 + ψ<sub>dB</sub>"，老师说这是<b>概念错误</b>。路径损耗加 ψ 是<b>总</b>路径损耗；取平均时阴影的均值为 0，所以平均路径损耗就等于不含阴影的路径损耗，两问答案一样。</li><li>同一题里只写一个数、不说明理由的只给一半分（4 分给 2 分）；写明"阴影零均值，所以两者相同"才给满分。老师说他不会替你假设你懂。</li></ul></div><!-- TEACH:end 8 -->
-      <p>信号在路上要穿过 M 个障碍物，每个都把功率乘上一个衰减因子 \(A_i\)，总衰减 \(\psi=\prod A_i\)（p.11）。取对数以后乘法变成加法：\(\log\psi=\sum\log A_i\)。很多个随机量相加，按中心极限定理近似服从<b>高斯分布</b>，所以 <mark class="hl">ψ 的 dB 值是高斯的，ψ 本身叫对数正态（log-normal）分布</mark>。讲义给的典型值：均值 0，方差 4–12 dB²。</p>
+      <p>信号在路上要穿过 M 个障碍物，每个都把功率乘上一个衰减因子 \(A_i\)，总衰减 \(\psi=\prod A_i\)（p.11）。取对数以后乘法变成加法：\(\log\psi=\sum\log A_i\)。很多个随机量相加，按中心极限定理近似服从<b>高斯分布</b>，所以 <mark class="hl">ψ 的 dB 值是高斯的，ψ 本身叫对数正态（log-normal）分布</mark>。讲义给的典型值：均值 0，方差 4 &lt; σ² &lt; 12（单位 dB²，p.11）。注意讲义这里写的是<b>方差</b>，和本课例题一致（σ² 就是拟合的 MSE，如 11.87 dB²）；有些教材（如 Goldsmith）给的是<b>标准差</b> σ 约 4–13 dB，别混。</p>
       <div class="formula-card">
         <div class="flbl">路径损耗 + 阴影（p.12）</div>
         <div class="fexpr">\(\left.\dfrac{P_r}{P_t}\right|_{\mathrm{dB}}=K_{\mathrm{dB}}-10\gamma\log_{10}\dfrac{d}{d_0}+\psi_{\mathrm{dB}},\qquad \psi_{\mathrm{dB}}\sim\mathcal N(0,\sigma_{\psi}^2)\)</div>
@@ -2090,7 +2090,7 @@ Determine the average receiver input SNR, the average receiver output SNR if the
         </div>
       </div>
       <!-- KP:wf80 -->
-      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>MIMO 发射端知道信道时的容量：特征子信道 + 注水（p.19、p.40；第 2 章 p.54）。</dd><dt>用到的知识</dt><dd>Σ(1/γ₀ − 1/γ<sub>i</sub>) = 1 定 γ₀；C = B Σ log₂(γ<sub>i</sub>/γ₀)。</dd><dt>关键一步</dt><dd>三个 SNR 都 ≥ γ₀ = 2.82，一次成立；功率 0.342、0.329、0.329，加起来为 1。</dd><dt>对比</dt><dd>功率平分（不知道信道）时每路 SNR 是 80/3、40/3、40/3，C = 122.1 Mbps，只比注水的 124.7 Mbps 少 2%：高 SNR 时知不知道信道差别很小（p.41–42）。</dd><dt>易错</dt><dd>B = 10 MHz 乘在最后；log₂ 不是 ln。</dd></dl></div>
+      <div class="kp"><div class="lbl">◆ 本题知识点</div><dl><dt>考什么</dt><dd>MIMO 发射端知道信道时的容量：特征子信道 + 注水（p.19、p.40；第 2 章 p.54）。</dd><dt>用到的知识</dt><dd>Σ(1/γ₀ − 1/γ<sub>i</sub>) = 1 定 γ₀；C = B Σ log₂(γ<sub>i</sub>/γ₀)。</dd><dt>关键一步</dt><dd>三个 SNR 都 ≥ γ₀ = 2.82，一次成立；功率 0.342、0.329、0.329，加起来为 1。</dd><dt>对比</dt><dd>功率平分（不知道信道）时每路 SNR 是 80/3、40/3、40/3，C = 10 MHz × [log₂(1 + 80/3) + 2 log₂(1 + 40/3)] ≈ 124.7 Mbps，和注水的 124.7 Mbps 几乎一样（只差约 0.006 Mbps）：高 SNR 时知不知道信道差别很小（p.41–42）。注意别漏了「1 +」：写成 log₂(80/3) 会错算成 122.1 Mbps。</dd><dt>易错</dt><dd>B = 10 MHz 乘在最后；log₂ 不是 ln。</dd></dl></div>
       <!-- /KP:wf80 -->
       <div class="extra">
         <div class="lbl">课外补充 · 一个 2 × 2 的小算例</div>

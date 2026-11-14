@@ -297,7 +297,7 @@ EN['p5q1'] = dict(
   ('Background', '''The SVD splits a MIMO channel into non-interfering parallel sub-channels; the water-filling formulas.'''),
   ('Method', '''① Assume every sub-channel gets power and find γ₀ from Σ(1/γ₀ − 1/γ<sub>i</sub>) = 1; ② check that the weakest γ<sub>i</sub> ≥ γ₀, otherwise drop it and repeat; ③ P<sub>i</sub>/P = 1/γ₀ − 1/γ<sub>i</sub>; ④ C = B Σ log₂(γ<sub>i</sub>/γ₀).'''),
   ('Key numbers', '''γ₀ = 3/1.0625 = 2.82; powers 0.342, 0.329, 0.329 (sum 1); C = 10 MHz × (4.82 + 7.65) = 124.7 Mbps.'''),
-  ('Comparison 1', '''Equal power (uninformed transmitter): the SNRs become 80/3, 40/3, 40/3 and C = 122.1 Mbps, only 2% less. At high SNR channel knowledge at the transmitter matters little (p.41–42).'''),
+  ('Comparison 1', '''Equal power (uninformed transmitter): the SNRs become 80/3, 40/3, 40/3 and C = 10 MHz × [log₂(1 + 80/3) + 2 log₂(1 + 40/3)] ≈ 124.7 Mbps, almost the same as water-filling (about 0.006 Mbps less). At high SNR channel knowledge at the transmitter matters little (p.41–42). Do not drop the "1 +": log₂(80/3) would give a wrong 122.1 Mbps.'''),
   ('Comparison 2', '''At low SNR the difference is large: dividing all three SNRs by 100 (0.8, 0.4, 0.4), water-filling uses only the first sub-channel and gives 0.85 bit/s/Hz, while equal power gives 0.70 bit/s/Hz, 21% less.'''),
   ('Common mistakes', '''The γ<sub>i</sub> in water-filling is the SNR if <b>all</b> the power went to that sub-channel; with equal power each gets only P/3; multiply by B at the end.''')])
 
