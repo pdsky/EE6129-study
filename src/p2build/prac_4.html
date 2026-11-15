@@ -33,10 +33,18 @@
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>中断主要由<b>阴影衰落</b>（大尺度）造成：手机和某个基站之间被楼房、地形挡住，信号长时间偏低。</li>
-        <li>几个基站在<b>不同位置</b>，手机到它们的传播路径不同，被同一障碍物同时挡住的可能性小，各条链路的阴影近似独立。</li>
-        <li>宏分集选最强的基站（或合并多个基站的信号）。只有<b>所有</b>链路同时低于门限才会中断，独立时 \(P_{out}=\prod_iP_{out,i}\)，比单条链路小得多。</li>
-        <li>例：单链路中断 10%，两个独立基站同时中断只有 1%（Practice 2 第 2 题的 [Q(Δ/σ)]²）。链路相关时效果打折扣。</li>
+        <li><b>是什么</b>：宏分集（macro-diversity）把<b>多个不同位置</b>的基站同时连到一部手机：系统一直监测各基站的信号电平，用信号最强的那个（或把几个基站的信号合并）（讲义第 4 章 p.4）。为什么先写这一句：解释题先说清楚技术本身，后面的"为什么"才有对象。</li>
+        <li><b>中断主要来自阴影</b>：中断（outage）指 SNR 低于门限，\(P_{out}=P(\gamma\lt\gamma_{min})\)（p.3）。让信号<b>长时间</b>低于门限的主要是阴影衰落（shadowing，大尺度）：楼房、山体挡住手机到基站的路径。为什么是阴影：它在几十到几百米的范围内都偏低、变化慢，手机走一段路也躲不开；多径（小尺度）衰落几个波长就变，持续很短。</li>
+        <li><b>不同位置 → 阴影近似独立</b>：各基站在不同方向，手机到它们的路径穿过不同的障碍物，一条被挡不影响另一条，所以各链路的阴影近似独立。为什么一定要不同基站：p.4 说阴影的明显起伏只在大距离上才出现；同一基站上的几根天线只隔几个波长，会被同一栋楼一起挡住（那是微分集，对付多径，p.5）。</li>
+        <li><b>全部同时中断才算中断 → 概率相乘</b>：用最强的基站时，只要有一条链路够强就不断线，所以只有<b>所有</b>链路同时低于门限才中断。独立事件的联合概率等于各自概率之积（p.3）：
+\[\begin{aligned}P_{out,div}&=P(\gamma_1\lt\gamma_{min},\dots,\gamma_M\lt\gamma_{min})\\&=\prod_{i=1}^{M}P_{out,i}=P_{out}^M\end{aligned}\]
+最后一步假设各链路中断概率相同。每个 P<sub>out,i</sub> &lt; 1，相乘后比任何一条单链路都小。</li>
+        <li><b>数字例</b>：
+<div class="calc">单链路 P<sub>out</sub> = 10%：两个独立基站 0.1² = 1%，三个 0.1³ = 0.1%<br>Practice 2 第 2 题，余量 Δ = σ：一个基站 Q(1) = 0.1587<br>两个独立基站 [Q(1)]² = 0.1587² = 0.0252</div>
+不加发射功率，中断概率就从 10% 降到 1%（或从 15.9% 降到 2.5%），这就是"为什么能降低"的定量答案。</li>
+        <li><b>条件：链路相关时效果打折扣</b>：讲义 p.21：
+\[\begin{aligned}&P(r_1,r_2\text{ 同时深衰落})\\&=P(r_1\text{ 深衰落}\mid r_2\text{ 深衰落})\,P(r_2\text{ 深衰落})\\&\ge P(r_1\text{ 深衰落})\,P(r_2\text{ 深衰落})\end{aligned}\]
+不相关时取等号。原因：相关时一条变差，另一条也倾向于变差，例如手机进了地下室，所有基站一起变弱。Practice 2 第 2(c) 题：两路阴影相关系数 0.5（Δ = σ）时，2.5% 变成 6.3%。</li>
       </ol>
       <div class="ans">多个基站的阴影衰落近似独立，所有链路同时深衰落的概率 = 各自概率之积，远小于单一链路</div>
       <div class="official"><b>官方答案：</b>参见讲义（第 4 章 p.3–4）</div>
@@ -94,10 +102,18 @@
     <!-- EN:p4q1 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>Outage is mainly caused by <b>shadowing</b> (large-scale fading): buildings or terrain block the path between the mobile and a base station, keeping the signal low for a long time.</li>
-        <li>The base stations are at <b>different locations</b>, so the propagation paths differ and are unlikely to be blocked by the same obstacle; the shadowing on the different links is approximately independent.</li>
-        <li>Macro-diversity selects the strongest base station (or combines several). Outage occurs only when <b>all</b> links are below the threshold; for independent links \(P_{out}=\prod_iP_{out,i}\), much smaller than for a single link.</li>
-        <li>Example: a single link is in outage 10% of the time; two independent base stations are in outage together only 1% of the time ([Q(Δ/σ)]² in Practice 2 Q2). Correlated links reduce the benefit.</li>
+        <li><b>What it is</b>: macro-diversity connects <b>several base stations at different locations</b> to one mobile at the same time: the system keeps monitoring the signal level from each base station and uses the strongest one (or combines the signals of several) (lecture Ch 4 p.4). Why start with this: an explanation question first states what the technique is, so that the "why" has something to refer to.</li>
+        <li><b>Outage is mainly caused by shadowing</b>: outage means the SNR is below the threshold, \(P_{out}=P(\gamma\lt\gamma_{min})\) (p.3). What keeps the signal below the threshold <b>for a long time</b> is mainly shadowing (large-scale fading): buildings or terrain block the path between the mobile and the base station. Why shadowing: the signal stays low over tens to hundreds of metres and changes slowly, so the mobile cannot escape it by moving a little; multipath (small-scale) fading changes within a few wavelengths and lasts only briefly.</li>
+        <li><b>Different locations → nearly independent shadowing</b>: the base stations lie in different directions, so the paths from the mobile to them pass different obstacles; one path being blocked says little about the others, so the shadowing on the links is approximately independent. Why it must be different base stations: p.4 says significant shadowing variations occur only over large distances; several antennas on the same base station are only a few wavelengths apart and are blocked by the same building together (that is micro-diversity, which combats multipath, p.5).</li>
+        <li><b>Outage only if all links fail together → probabilities multiply</b>: using the strongest base station, the call survives as long as one link is strong enough, so outage occurs only when <b>all</b> links are below the threshold at the same time. For independent events the joint probability is the product of the individual probabilities (p.3):
+\[\begin{aligned}P_{out,div}&=P(\gamma_1\lt\gamma_{min},\dots,\gamma_M\lt\gamma_{min})\\&=\prod_{i=1}^{M}P_{out,i}=P_{out}^M\end{aligned}\]
+The last step assumes every link has the same outage probability. Each P<sub>out,i</sub> &lt; 1, so the product is smaller than the outage probability of any single link.</li>
+        <li><b>Numerical example</b>:
+<div class="calc">one link P<sub>out</sub> = 10%: two independent base stations 0.1² = 1%, three 0.1³ = 0.1%<br>Practice 2 Q2 with margin Δ = σ: one base station Q(1) = 0.1587<br>two independent base stations [Q(1)]² = 0.1587² = 0.0252</div>
+Without any extra transmit power the outage drops from 10% to 1% (or from 15.9% to 2.5%); this is the quantitative answer to "why it reduces outage".</li>
+        <li><b>Condition: correlated links reduce the benefit</b>: lecture p.21:
+\[\begin{aligned}&P(\text{deep fade in }r_1\text{ and }r_2)\\&=P(\text{deep fade in }r_1\mid\text{deep fade in }r_2)\\&\quad\times P(\text{deep fade in }r_2)\\&\ge P(\text{deep fade in }r_1)\,P(\text{deep fade in }r_2)\end{aligned}\]
+with equality when the links are uncorrelated. Reason: if the links are correlated, when one goes into a deep fade the other tends to as well, e.g. the mobile goes into a basement and all base stations become weak together. Practice 2 Q2(c): with a shadowing correlation of 0.5 (Δ = σ), 2.5% becomes 6.3%.</li>
       </ol>
       <div class="ans">Shadowing on links to different base stations is roughly independent; the probability that all links are in a deep fade together is the product of the individual probabilities, far smaller than for one link</div>
       <div class="official"><b>Official answer:</b> see the lecture notes (Ch 4 p.3–4)</div>
@@ -197,11 +213,32 @@
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>(a) \(P_T=\sigma_n^2=1\)，所以 γ = α。\(\bar\gamma=8\cdot\tfrac13+11\cdot\tfrac23=10\)。<div class="calc">P̄s = ⅓·½e⁻⁸ + ⅔·½e⁻¹¹ = 5.59×10⁻⁵ + 0.56×10⁻⁵ = 6.15×10⁻⁵</div></li>
-        <li>(b) MRC 输出 SNR = 两路之和。两路独立，组合：8+8 = 16（1/9），8+11 = 19（2 × 1/3 × 2/3 = 4/9），11+11 = 22（4/9）。<div class="calc">γ̄_Σ = (16 + 76 + 88)/9 = 20</div><div class="calc">P̄s = ½[e⁻¹⁶·1/9 + e⁻¹⁹·4/9 + e⁻²²·4/9] = 7.56×10⁻⁹</div></li>
-        <li>\(g=\bar\gamma_\Sigma/\bar\gamma=20/10=2\)；\(d=-\log_{10}\bar P_s/\log_{10}\bar\gamma=8.12/1=8.1\)（γ̄ 用单路输入的 10）。</li>
-        <li>(c) \(E[\gamma_i]=E[r_i]+E[\beta]=(0.2+0.8)+(7/3+20/3)=1+9=10\)，\(\bar\gamma_\Sigma=20\)，g = 2。</li>
-        <li>\(\gamma_\Sigma=r_1+r_2+2\beta\)，三者独立，指数可以拆开：\(E[e^{-\gamma_\Sigma}]=E[e^{-r_1}]\,E[e^{-r_2}]\,E[e^{-2\beta}]\)。<div class="calc">E[e^{−r}] = ⅓e^{−0.6} + ⅔e^{−1.2} = 0.1829 + 0.2008 = 0.3837</div><div class="calc">E[e^{−2β}] = ⅓e^{−14} + ⅔e^{−20} = 2.786×10⁻⁷</div><div class="calc">P̄s = ½ × 0.3837² × 2.786×10⁻⁷ = 2.05×10⁻⁸，d = 8 − log₁₀2.05 = 7.7</div></li>
+        <li><b>(a) γ 的取值和平均 SNR</b>：\(\gamma=\alpha P_T/\sigma_n^2\)，\(P_T=\sigma_n^2=1\) W，所以 γ = α：8（概率 ⅓）或 11（概率 ⅔）。这些是线性值，不是 dB，不用换算；概率和 ⅓ + ⅔ = 1 ✓。离散期望 = Σ 取值 × 概率（第 1b 章 p.10）：
+\[\bar\gamma=8\times\tfrac13+11\times\tfrac23=\tfrac{8+22}{3}=10\]</li>
+        <li><b>(a) 平均误码率</b>：衰落时 γ 是随机变量，误码率要对 γ 的分布求平均（讲义第 4 章 p.23，积分换成求和）：\(\bar P_s=E\big[\tfrac12e^{-\gamma}\big]=\sum_k\tfrac12e^{-\gamma_k}p_k\)。
+<div class="calc">e⁻⁸ = 3.355 × 10⁻⁴，e⁻¹¹ = 1.670 × 10⁻⁵<br>P̄<sub>s</sub> = ⅓ × ½ × 3.355 × 10⁻⁴ + ⅔ × ½ × 1.670 × 10⁻⁵<br>= 5.59 × 10⁻⁵ + 0.56 × 10⁻⁵ = 6.15 × 10⁻⁵</div>
+不能把 γ̄ 代进公式：½e⁻¹⁰ = 2.27 × 10⁻⁵，小了 2.7 倍（E[f(γ)] ≠ f(E[γ])，误码主要来自 γ = 8 的时刻）。</li>
+        <li><b>(b) MRC 输出 SNR，列组合表</b>：最大比合并（MRC）的输出 SNR = 各支路 SNR 之和，γ<sub>Σ</sub> = γ₁ + γ₂（讲义 p.16：\(\gamma_{MRC}=\sum_iA_i^2E_b/N_0\)）。两路独立，联合概率相乘；19 有 (8, 11)、(11, 8) 两种排列：
+<div class="tw"><table class="mini"><thead><tr><th>(γ₁, γ₂)</th><th>γ<sub>Σ</sub></th><th>概率</th></tr></thead><tbody>
+<tr><td>(8, 8)</td><td>16</td><td>⅓ × ⅓ = 1/9</td></tr>
+<tr><td>(8, 11)、(11, 8)</td><td>19</td><td>2 × ⅓ × ⅔ = 4/9</td></tr>
+<tr><td>(11, 11)</td><td>22</td><td>⅔ × ⅔ = 4/9</td></tr>
+</tbody></table></div>
+概率和 (1 + 4 + 4)/9 = 1 ✓。</li>
+        <li><b>(b) 平均输出 SNR 和平均误码率</b>：两个都按上表加权：
+<div class="calc">γ̄<sub>Σ</sub> = (16 × 1 + 19 × 4 + 22 × 4)/9 = 180/9 = 20<br>e⁻¹⁶ = 1.125 × 10⁻⁷，e⁻¹⁹ = 5.603 × 10⁻⁹，e⁻²² = 2.790 × 10⁻¹⁰<br>½ × 1/9 × e⁻¹⁶ = 6.25 × 10⁻⁹<br>½ × 4/9 × e⁻¹⁹ = 1.25 × 10⁻⁹<br>½ × 4/9 × e⁻²² = 0.06 × 10⁻⁹<br>P̄<sub>s</sub> = (6.25 + 1.25 + 0.06) × 10⁻⁹ = 7.56 × 10⁻⁹</div>
+自检：γ̄<sub>Σ</sub> = 2γ̄ = 20 ✓（期望直接相加）；捷径 ½(E[e<sup>−γ</sup>])² = ½(2 × 6.15 × 10⁻⁵)² = ½(1.23 × 10⁻⁴)² = 7.56 × 10⁻⁹ ✓。</li>
+        <li><b>(b) 阵列增益 g 和分集增益 d</b>：定义（讲义 p.27，要背）\(g=\bar\gamma_\Sigma/\bar\gamma\)，\(d=-\log_{10}\bar P_s/\log_{10}\bar\gamma\)；γ̄ 是合并器<b>输入</b>（单支路）的平均 SNR 10，不是输出的 20：
+<div class="calc">g = 20/10 = 2（10 log₁₀2 = 3.01 dB）<br>log₁₀(7.56 × 10⁻⁹) = log₁₀7.56 − 9 = 0.879 − 9 = −8.121<br>d = 8.121/log₁₀10 = 8.121/1 = 8.1</div>
+d 的公式来自高 SNR 下 \(\bar P_s\approx\bar\gamma^{-d}\)，两边取 log₁₀ 即得。</li>
+        <li><b>(c) 平均 SNR 和 g</b>：期望是线性的，β 共享与否不影响均值：
+<div class="calc">E[r] = 0.6 × ⅓ + 1.2 × ⅔ = 0.2 + 0.8 = 1<br>E[β] = 7 × ⅓ + 10 × ⅔ = 2.333 + 6.667 = 9<br>E[γ<sub>i</sub>] = E[r<sub>i</sub>] + E[β] = 1 + 9 = 10</div>
+γ̄<sub>Σ</sub> = E[γ₁] + E[γ₂] = 20，g = 20/10 = 2，和 (b) 一样。</li>
+        <li><b>(c) 把指数拆成独立因子</b>：\(\gamma_\Sigma=r_1+r_2+2\beta\)（β 两路共有，出现两次）。\(e^{-\gamma_\Sigma}=e^{-r_1}e^{-r_2}e^{-2\beta}\)，r₁、r₂、β 相互独立，期望可以拆成乘积（第 1b 章 p.10：E[g(X)h(Y)] = E[g(X)]E[h(Y)]）：
+<div class="calc">E[e<sup>−r</sup>] = ⅓e<sup>−0.6</sup> + ⅔e<sup>−1.2</sup> = ⅓ × 0.5488 + ⅔ × 0.3012<br>= 0.1829 + 0.2008 = 0.3837<br>E[e<sup>−2β</sup>] = ⅓e⁻¹⁴ + ⅔e⁻²⁰<br>= ⅓ × 8.315 × 10⁻⁷ + ⅔ × 2.061 × 10⁻⁹<br>= 2.772 × 10⁻⁷ + 0.014 × 10⁻⁷ = 2.786 × 10⁻⁷<br>P̄<sub>s</sub> = ½ × 0.3837² × 2.786 × 10⁻⁷<br>= ½ × 0.1472 × 2.786 × 10⁻⁷ = 2.05 × 10⁻⁸</div></li>
+        <li><b>(c) 分集增益，与 (b) 比较</b>：
+<div class="calc">log₁₀(2.05 × 10⁻⁸) = log₁₀2.05 − 8 = 0.312 − 8 = −7.688<br>d = 7.688/1 = 7.7</div>
+自检（先固定 β，老师的方法）：β = 7 时 ½ × 0.1472 × e⁻¹⁴ = 6.12 × 10⁻⁸，β = 10 时 ½ × 0.1472 × e⁻²⁰ = 1.52 × 10⁻¹⁰，加权 ⅓ × 6.12 × 10⁻⁸ + ⅔ × 1.52 × 10⁻¹⁰ = 2.05 × 10⁻⁸ ✓。平均 SNR 和 g 都与 (b) 相同，但 P̄<sub>s</sub> 是 (b) 的 2.05/0.756 = 2.7 倍，d 从 8.1 降到 7.7：99.5% 的误码来自 β = 7 的时候，两路一起变差（共享阴影削弱分集，讲义 p.21）。</li>
       </ol>
       <div class="ans">(a) γ̄ = 10，P̄s = 6.15×10⁻⁵；(b) γ̄Σ = 20，P̄s = 7.6×10⁻⁹，g = 2，d = 8.1；(c) γ̄Σ = 20，P̄s = 2.05×10⁻⁸，g = 2，d = 7.7</div>
       <div class="official"><b>官方答案：</b>完全一致 ✓</div>
@@ -276,11 +313,32 @@
     <!-- EN:p4q2 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>(a) \(P_T=\sigma_n^2=1\), so γ = α. \(\bar\gamma=8\cdot\tfrac13+11\cdot\tfrac23=10\).<div class="calc">P̄<sub>s</sub> = ⅓·½e⁻⁸ + ⅔·½e⁻¹¹ = 5.59×10⁻⁵ + 0.56×10⁻⁵ = 6.15×10⁻⁵</div></li>
-        <li>(b) The MRC output SNR is the sum of the two branches. With independent branches the combinations are 8+8 = 16 (1/9), 8+11 = 19 (2 × 1/3 × 2/3 = 4/9), 11+11 = 22 (4/9).<div class="calc">γ̄<sub>Σ</sub> = (16 + 76 + 88)/9 = 20</div><div class="calc">P̄<sub>s</sub> = ½[e⁻¹⁶·1/9 + e⁻¹⁹·4/9 + e⁻²²·4/9] = 7.56×10⁻⁹</div></li>
-        <li>\(g=\bar\gamma_\Sigma/\bar\gamma=20/10=2\); \(d=-\log_{10}\bar P_s/\log_{10}\bar\gamma=8.12/1=8.1\) (γ̄ is the per-branch input SNR, 10).</li>
-        <li>(c) \(E[\gamma_i]=E[r_i]+E[\beta]=(0.2+0.8)+(7/3+20/3)=1+9=10\), \(\bar\gamma_\Sigma=20\), g = 2.</li>
-        <li>\(\gamma_\Sigma=r_1+r_2+2\beta\); the three are independent, so the exponential factorises: \(E[e^{-\gamma_\Sigma}]=E[e^{-r_1}]\,E[e^{-r_2}]\,E[e^{-2\beta}]\).<div class="calc">E[e<sup>−r</sup>] = ⅓e<sup>−0.6</sup> + ⅔e<sup>−1.2</sup> = 0.1829 + 0.2008 = 0.3837</div><div class="calc">E[e<sup>−2β</sup>] = ⅓e<sup>−14</sup> + ⅔e<sup>−20</sup> = 2.786×10⁻⁷</div><div class="calc">P̄<sub>s</sub> = ½ × 0.3837² × 2.786×10⁻⁷ = 2.05×10⁻⁸, d = 8 − log₁₀2.05 = 7.7</div></li>
+        <li><b>(a) Values of γ and the mean SNR</b>: \(\gamma=\alpha P_T/\sigma_n^2\) with \(P_T=\sigma_n^2=1\) W, so γ = α: 8 (probability ⅓) or 11 (probability ⅔). These are linear values, not dB, so no conversion is needed; the probabilities sum to ⅓ + ⅔ = 1 ✓. Discrete expectation = Σ value × probability (Ch 1b p.10):
+\[\bar\gamma=8\times\tfrac13+11\times\tfrac23=\tfrac{8+22}{3}=10\]</li>
+        <li><b>(a) Mean error probability</b>: under fading γ is a random variable, so the error probability must be averaged over the distribution of γ (lecture Ch 4 p.23, with the integral replaced by a sum): \(\bar P_s=E\big[\tfrac12e^{-\gamma}\big]=\sum_k\tfrac12e^{-\gamma_k}p_k\).
+<div class="calc">e⁻⁸ = 3.355 × 10⁻⁴, e⁻¹¹ = 1.670 × 10⁻⁵<br>P̄<sub>s</sub> = ⅓ × ½ × 3.355 × 10⁻⁴ + ⅔ × ½ × 1.670 × 10⁻⁵<br>= 5.59 × 10⁻⁵ + 0.56 × 10⁻⁵ = 6.15 × 10⁻⁵</div>
+Do not substitute γ̄ into the formula: ½e⁻¹⁰ = 2.27 × 10⁻⁵ is 2.7 times too small (E[f(γ)] ≠ f(E[γ]); most errors happen when γ = 8).</li>
+        <li><b>(b) MRC output SNR: tabulate the combinations</b>: the maximal ratio combining (MRC) output SNR is the sum of the branch SNRs, γ<sub>Σ</sub> = γ₁ + γ₂ (lecture p.16: \(\gamma_{MRC}=\sum_iA_i^2E_b/N_0\)). The branches are independent, so the joint probabilities multiply; 19 arises in two orders, (8, 11) and (11, 8):
+<div class="tw"><table class="mini"><thead><tr><th>(γ₁, γ₂)</th><th>γ<sub>Σ</sub></th><th>probability</th></tr></thead><tbody>
+<tr><td>(8, 8)</td><td>16</td><td>⅓ × ⅓ = 1/9</td></tr>
+<tr><td>(8, 11), (11, 8)</td><td>19</td><td>2 × ⅓ × ⅔ = 4/9</td></tr>
+<tr><td>(11, 11)</td><td>22</td><td>⅔ × ⅔ = 4/9</td></tr>
+</tbody></table></div>
+The probabilities sum to (1 + 4 + 4)/9 = 1 ✓.</li>
+        <li><b>(b) Mean output SNR and mean error probability</b>: weight both by the table:
+<div class="calc">γ̄<sub>Σ</sub> = (16 × 1 + 19 × 4 + 22 × 4)/9 = 180/9 = 20<br>e⁻¹⁶ = 1.125 × 10⁻⁷, e⁻¹⁹ = 5.603 × 10⁻⁹, e⁻²² = 2.790 × 10⁻¹⁰<br>½ × 1/9 × e⁻¹⁶ = 6.25 × 10⁻⁹<br>½ × 4/9 × e⁻¹⁹ = 1.25 × 10⁻⁹<br>½ × 4/9 × e⁻²² = 0.06 × 10⁻⁹<br>P̄<sub>s</sub> = (6.25 + 1.25 + 0.06) × 10⁻⁹ = 7.56 × 10⁻⁹</div>
+Checks: γ̄<sub>Σ</sub> = 2γ̄ = 20 ✓ (expectations add); shortcut ½(E[e<sup>−γ</sup>])² = ½(2 × 6.15 × 10⁻⁵)² = ½(1.23 × 10⁻⁴)² = 7.56 × 10⁻⁹ ✓.</li>
+        <li><b>(b) Array gain g and diversity gain d</b>: definitions (lecture p.27, to be memorised) \(g=\bar\gamma_\Sigma/\bar\gamma\), \(d=-\log_{10}\bar P_s/\log_{10}\bar\gamma\); γ̄ is the mean SNR at the combiner <b>input</b> (one branch), 10, not the output 20:
+<div class="calc">g = 20/10 = 2 (10 log₁₀2 = 3.01 dB)<br>log₁₀(7.56 × 10⁻⁹) = log₁₀7.56 − 9 = 0.879 − 9 = −8.121<br>d = 8.121/log₁₀10 = 8.121/1 = 8.1</div>
+The formula for d comes from \(\bar P_s\approx\bar\gamma^{-d}\) at high SNR, taking log₁₀ of both sides.</li>
+        <li><b>(c) Mean SNR and g</b>: expectation is linear, so sharing β does not change the means:
+<div class="calc">E[r] = 0.6 × ⅓ + 1.2 × ⅔ = 0.2 + 0.8 = 1<br>E[β] = 7 × ⅓ + 10 × ⅔ = 2.333 + 6.667 = 9<br>E[γ<sub>i</sub>] = E[r<sub>i</sub>] + E[β] = 1 + 9 = 10</div>
+γ̄<sub>Σ</sub> = E[γ₁] + E[γ₂] = 20 and g = 20/10 = 2, the same as in (b).</li>
+        <li><b>(c) Split the exponential into independent factors</b>: \(\gamma_\Sigma=r_1+r_2+2\beta\) (β is common to both branches, so it appears twice). \(e^{-\gamma_\Sigma}=e^{-r_1}e^{-r_2}e^{-2\beta}\), and r₁, r₂, β are independent, so the expectation splits into a product (Ch 1b p.10: E[g(X)h(Y)] = E[g(X)]E[h(Y)]):
+<div class="calc">E[e<sup>−r</sup>] = ⅓e<sup>−0.6</sup> + ⅔e<sup>−1.2</sup> = ⅓ × 0.5488 + ⅔ × 0.3012<br>= 0.1829 + 0.2008 = 0.3837<br>E[e<sup>−2β</sup>] = ⅓e⁻¹⁴ + ⅔e⁻²⁰<br>= ⅓ × 8.315 × 10⁻⁷ + ⅔ × 2.061 × 10⁻⁹<br>= 2.772 × 10⁻⁷ + 0.014 × 10⁻⁷ = 2.786 × 10⁻⁷<br>P̄<sub>s</sub> = ½ × 0.3837² × 2.786 × 10⁻⁷<br>= ½ × 0.1472 × 2.786 × 10⁻⁷ = 2.05 × 10⁻⁸</div></li>
+        <li><b>(c) Diversity gain and comparison with (b)</b>:
+<div class="calc">log₁₀(2.05 × 10⁻⁸) = log₁₀2.05 − 8 = 0.312 − 8 = −7.688<br>d = 7.688/1 = 7.7</div>
+Check (fix β first, the lecturer's method): for β = 7, ½ × 0.1472 × e⁻¹⁴ = 6.12 × 10⁻⁸; for β = 10, ½ × 0.1472 × e⁻²⁰ = 1.52 × 10⁻¹⁰; weighted, ⅓ × 6.12 × 10⁻⁸ + ⅔ × 1.52 × 10⁻¹⁰ = 2.05 × 10⁻⁸ ✓. The mean SNR and g are the same as in (b), but P̄<sub>s</sub> is 2.05/0.756 = 2.7 times larger and d drops from 8.1 to 7.7: 99.5% of the errors occur when β = 7 and both branches are poor together (shared shadowing weakens diversity, lecture p.21).</li>
       </ol>
       <div class="ans">(a) γ̄ = 10, P̄<sub>s</sub> = 6.15×10⁻⁵; (b) γ̄<sub>Σ</sub> = 20, P̄<sub>s</sub> = 7.6×10⁻⁹, g = 2, d = 8.1; (c) γ̄<sub>Σ</sub> = 20, P̄<sub>s</sub> = 2.05×10⁻⁸, g = 2, d = 7.7</div>
       <div class="official"><b>Official answer:</b> identical ✓</div>
@@ -393,10 +451,24 @@
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>(a) 设 b = +1（对称，另一种情况一样）。\(z=y=\alpha\sqrt E+w\)：两个独立高斯之和还是高斯。<div class="calc">均值 α₀√E，方差 σ₁²E + σ₂²</div></li>
-        <li>出错 = z ≤ 0：\(P_b=P(z\le0)=Q\!\left(\dfrac{\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\)。</li>
-        <li>(b) 等权相加：\(z=\sum_ky_k=b\sqrt E\sum_k\alpha_k+\sum_kw_k\)。各 \(\alpha_k\)、\(w_k\) 独立：<div class="calc">均值 Mα₀√E，方差 M(σ₁²E + σ₂²)</div></li>
-        <li>\(P_b=Q\!\left(\dfrac{M\alpha_0\sqrt E}{\sqrt{M(\sigma_1^2E+\sigma_2^2)}}\right)=Q\!\left(\dfrac{\sqrt M\,\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\)。</li>
+        <li><b>(a) 只算 b = +1</b>：b 等概取 ±1，\(P_b=\tfrac12P(\text{错}\mid b=+1)+\tfrac12P(\text{错}\mid b=-1)\)。b = −1 时 z 的分布正好是 b = +1 时关于 0 的镜像（α 是关于 α₀ 对称的高斯，w 换成 −w 分布不变），两项相等，所以 \(P_b=P(z\le0\mid b=+1)\)。</li>
+        <li><b>(a) 求判决量的均值和方差</b>：M = 1、b = +1 时 \(z=y=\alpha\sqrt E+w\)。用第 1b 章 p.10–11 的规则 E[aX] = aE[X]、V(aX) = a²V(X)；α 与 w 独立，均值、方差都相加：
+\[\begin{aligned}E[z]&=\sqrt E\,E[\alpha]+E[w]=\alpha_0\sqrt E\\ \mathrm{Var}(z)&=(\sqrt E)^2\sigma_1^2+\sigma_2^2=\sigma_1^2E+\sigma_2^2\end{aligned}\]
+独立高斯之和仍是高斯，所以 \(z\sim\mathcal N(\alpha_0\sqrt E,\ \sigma_1^2E+\sigma_2^2)\)。</li>
+        <li><b>(a) 标准化，写成 Q</b>：令 \(u=\dfrac{z-\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\sim\mathcal N(0,1)\)。z ≤ 0 ⇔ \(u\le-\dfrac{\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\)；由对称性 P(u ≤ −a) = Q(a)（第 2 章 p.15 同样的换元）：
+\[P_b=Q\!\left(\frac{\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\]
+也就是 Q(均值 / 标准差)。</li>
+        <li><b>(b) 写出合并后的判决量</b>：等权合并（equal weight combining）就是各路权重都取 1，直接相加（不是讲义 p.19 的 EGC，那里要先按相位旋转；这里各路都是实数）：
+\[z=\sum_{k=1}^My_k=b\sqrt E\sum_{k=1}^M\alpha_k+\sum_{k=1}^Mw_k\]
+标准解默认不同天线的 α<sub>k</sub> 相互独立，w<sub>k</sub> 也相互独立。</li>
+        <li><b>(b) 均值和方差</b>：b = +1，2M 个独立高斯相加：
+\[\begin{aligned}E[z]&=\textstyle\sum_k\alpha_0\sqrt E=M\alpha_0\sqrt E\\ \mathrm{Var}(z)&=M\sigma_1^2E+M\sigma_2^2\\&=M(\sigma_1^2E+\sigma_2^2)\end{aligned}\]
+标准差 \(=\sqrt M\,\sqrt{\sigma_1^2E+\sigma_2^2}\)：均值 × M，标准差只 × √M。</li>
+        <li><b>(b) 写成 Q 并化简</b>：同 (a)，P<sub>b</sub> = Q(均值 / 标准差)，再用 M/√M = √M：
+\[\begin{aligned}P_b&=Q\!\left(\frac{M\alpha_0\sqrt E}{\sqrt{M(\sigma_1^2E+\sigma_2^2)}}\right)\\&=Q\!\left(\frac{\sqrt M\,\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\end{aligned}\]</li>
+        <li><b>自检</b>：① M = 1 时回到 (a) ✓。② 数值例 α₀ = 1，E = 1，σ₁² = σ₂² = 0.1：参数 = √M × 1/√0.2 = 2.236√M：
+<div class="calc">M = 1：Q(2.236) = 0.0127<br>M = 2：Q(3.162) = 7.8 × 10⁻⁴<br>M = 4：Q(4.472) = 3.9 × 10⁻⁶</div>
+M 越大误码率下降越快，合并有效 ✓。</li>
       </ol>
       <div class="ans">(a) Q(α₀√E / √(σ₁²E + σ₂²))；(b) Q(√M·α₀√E / √(σ₁²E + σ₂²))</div>
       <div class="official"><b>官方答案：</b>同上 ✓</div>
@@ -462,10 +534,24 @@
     <!-- EN:p4q3 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>(a) Take b = +1 (the other case is symmetric). \(z=y=\alpha\sqrt E+w\): the sum of two independent Gaussians is Gaussian.<div class="calc">mean α₀√E, variance σ₁²E + σ₂²</div></li>
-        <li>Error = z ≤ 0: \(P_b=P(z\le0)=Q\!\left(\dfrac{\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\).</li>
-        <li>(b) Equal-weight sum: \(z=\sum_ky_k=b\sqrt E\sum_k\alpha_k+\sum_kw_k\). All \(\alpha_k\) and \(w_k\) are independent:<div class="calc">mean Mα₀√E, variance M(σ₁²E + σ₂²)</div></li>
-        <li>\(P_b=Q\!\left(\dfrac{M\alpha_0\sqrt E}{\sqrt{M(\sigma_1^2E+\sigma_2^2)}}\right)=Q\!\left(\dfrac{\sqrt M\,\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\).</li>
+        <li><b>(a) Consider only b = +1</b>: b = ±1 are equally likely, \(P_b=\tfrac12P(\text{error}\mid b=+1)+\tfrac12P(\text{error}\mid b=-1)\). For b = −1 the distribution of z is the mirror image about 0 of the one for b = +1 (α is Gaussian, symmetric about α₀, and −w has the same distribution as w), so the two terms are equal and \(P_b=P(z\le0\mid b=+1)\).</li>
+        <li><b>(a) Mean and variance of the decision variable</b>: with M = 1 and b = +1, \(z=y=\alpha\sqrt E+w\). Use the rules of Ch 1b p.10–11, E[aX] = aE[X] and V(aX) = a²V(X); α and w are independent, so both means and variances add:
+\[\begin{aligned}E[z]&=\sqrt E\,E[\alpha]+E[w]=\alpha_0\sqrt E\\ \mathrm{Var}(z)&=(\sqrt E)^2\sigma_1^2+\sigma_2^2=\sigma_1^2E+\sigma_2^2\end{aligned}\]
+A sum of independent Gaussians is Gaussian, so \(z\sim\mathcal N(\alpha_0\sqrt E,\ \sigma_1^2E+\sigma_2^2)\).</li>
+        <li><b>(a) Standardise and write it as Q</b>: let \(u=\dfrac{z-\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\sim\mathcal N(0,1)\). Then z ≤ 0 ⇔ \(u\le-\dfrac{\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\), and by symmetry P(u ≤ −a) = Q(a) (the same substitution as Ch 2 p.15):
+\[P_b=Q\!\left(\frac{\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\]
+i.e. Q(mean / standard deviation).</li>
+        <li><b>(b) Write the combined decision variable</b>: equal-weight combining gives every branch weight 1 and simply adds them (this is not the EGC of lecture p.19, which first rotates each branch by its phase; here all branches are real):
+\[z=\sum_{k=1}^My_k=b\sqrt E\sum_{k=1}^M\alpha_k+\sum_{k=1}^Mw_k\]
+The standard solution assumes the α<sub>k</sub> of different antennas are independent, and the w<sub>k</sub> are independent too.</li>
+        <li><b>(b) Mean and variance</b>: b = +1, a sum of 2M independent Gaussians:
+\[\begin{aligned}E[z]&=\textstyle\sum_k\alpha_0\sqrt E=M\alpha_0\sqrt E\\ \mathrm{Var}(z)&=M\sigma_1^2E+M\sigma_2^2\\&=M(\sigma_1^2E+\sigma_2^2)\end{aligned}\]
+Standard deviation \(=\sqrt M\,\sqrt{\sigma_1^2E+\sigma_2^2}\): the mean grows by M, the standard deviation only by √M.</li>
+        <li><b>(b) Write it as Q and simplify</b>: as in (a), P<sub>b</sub> = Q(mean / standard deviation); then use M/√M = √M:
+\[\begin{aligned}P_b&=Q\!\left(\frac{M\alpha_0\sqrt E}{\sqrt{M(\sigma_1^2E+\sigma_2^2)}}\right)\\&=Q\!\left(\frac{\sqrt M\,\alpha_0\sqrt E}{\sqrt{\sigma_1^2E+\sigma_2^2}}\right)\end{aligned}\]</li>
+        <li><b>Self-check</b>: ① M = 1 gives back (a) ✓. ② Numerical example α₀ = 1, E = 1, σ₁² = σ₂² = 0.1: argument = √M × 1/√0.2 = 2.236√M:
+<div class="calc">M = 1: Q(2.236) = 0.0127<br>M = 2: Q(3.162) = 7.8 × 10⁻⁴<br>M = 4: Q(4.472) = 3.9 × 10⁻⁶</div>
+The error probability falls faster as M grows, so combining helps ✓.</li>
       </ol>
       <div class="ans">(a) Q(α₀√E / √(σ₁²E + σ₂²)); (b) Q(√M·α₀√E / √(σ₁²E + σ₂²))</div>
       <div class="official"><b>Official answer:</b> same as above ✓</div>

@@ -46,12 +46,32 @@
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>(a) 平坦：子信道宽 B/N 要远小于相干带宽 → \(N\gg B/B_C\)。慢衰落：OFDM 符号时长约 N/B，要远小于相干时间 1/B_d → \(N\ll B/B_d\)。所以 \(B/B_C\ll N\ll B/B_d\)。</li>
-        <li>(b) \(H_k=h_0+h_1e^{-j2\pi k/N}=0.8+0.6e^{-j\pi k/2}\)：<div class="calc">H₀ = H₄ = 1.4，H₁ = 0.8 − 0.6j，H₂ = 0.2，H₃ = 0.8 + 0.6j</div>功率增益 |H_k|²（k = 1, 2, 3, 4）：1、0.04、1、1.96。</li>
-        <li>(c) 容量 \(\log_2(1+|H_k|^2P_k)\) 相等 ⇔ \(|H_k|^2P_k=c\) 相同：\(P_k=c/|H_k|^2\)。<div class="calc">c(1/1 + 1/0.04 + 1/1 + 1/1.96) = c × 27.51 = 10 → c = 0.3635</div><div class="calc">P₁ = 0.36，P₂ = 9.09，P₃ = 0.36，P₄ = 0.19</div></li>
-        <li>(d) 注水：池底 \(1/|H_k|^2\) = 1、25、1、0.51。四个都放水：水面 (10 + 27.51)/4 = 9.38 &lt; 25，第 2 个子信道去掉。</li>
-        <li>剩三个：水面 μ = (10 + 1 + 1 + 0.51)/3 = 4.17，功率 3.17、3.17、3.66（都为正）。<div class="calc">C = log₂(4.17 × 1) + log₂(4.17 × 1) + log₂(4.17 × 1.96) = 2.06 + 2.06 + 3.03 = 7.15 bit</div></li>
-        <li>这是 4 个子载波一起传的，每个子载波只占 B/4 带宽，所以每赫兹：7.15/4 = 1.79 bit/s/Hz。</li>
+        <li><b>(a) 平坦条件</b>：每个子载波的带宽 \(\Delta f=B/N\) 要远小于相干带宽（coherence bandwidth）\(B_C\)，这样一个子带内信道频率响应几乎不变，每个子载波只看到一个复增益 \(H_k\)：
+\[\frac BN\ll B_C\;\Rightarrow\;N\gg\frac{B}{B_C}\]
+讲义第 7 章 p.5、p.14 的 \(T=NT_S\gg T_D\approx1/B_C\) 是同一个条件。</li>
+        <li><b>(a) 慢衰落条件</b>：OFDM 符号时长 \(T=N/B\)（\(=NT_S\)，\(T_S=1/B\)）要远小于相干时间（coherence time）\(T_C\approx1/B_d\)，这样一个 OFDM 符号内信道不变，子载波保持正交、没有 ICI：
+\[\frac NB\ll\frac1{B_d}\;\Rightarrow\;N\ll\frac{B}{B_d}\]
+合起来 \(\dfrac{B}{B_C}\ll N\ll\dfrac{B}{B_d}\)，需要 \(B_d\ll B_C\) 才有解。例：B = 1 MHz、\(B_C\) = 50 kHz、\(B_d\) = 100 Hz → 20 ≪ N ≪ 10⁴，可取 N = 256（FFT 用 2 的幂）。</li>
+        <li><b>(b) 写出 H<sub>k</sub></b>：两径信道的冲激响应 \(h=[h_0,h_1]=[0.8,0.6]\)（τ 等于 1 个采样间隔）。子信道增益是它的 DFT（讲义 p.15）：
+\[H_k=\sum_{i=0}^{L-1}h_ie^{-j2\pi ik/N}=0.8+0.6\,e^{-j\pi k/2}\]
+k = 1, 2, 3, 4 时 \(e^{-j\pi k/2}=-j,\ -1,\ j,\ 1\)：
+\[\begin{aligned}H_1&=0.8-0.6j\\ H_2&=0.8-0.6=0.2\\ H_3&=0.8+0.6j\\ H_4&=H_0=0.8+0.6=1.4\end{aligned}\]</li>
+        <li><b>(b) 功率增益与自检</b>：后面分功率要用 \(|H_k|^2\)：
+\[\begin{aligned}|H_1|^2&=|H_3|^2=0.8^2+0.6^2=1\\ |H_2|^2&=0.2^2=0.04,\quad|H_4|^2=1.4^2=1.96\end{aligned}\]
+自检（Parseval）：四个 \(|H_k|^2\) 之和 1 + 0.04 + 1 + 1.96 = 4，等于 \(N(h_0^2+h_1^2)=4\times1=4\) ✓。</li>
+        <li><b>(c) 等容量分配</b>：噪声 \(\sigma^2=1\)，第 k 个子信道容量 \(\log_2(1+|H_k|^2P_k)\)。容量相等 ⇔ 接收 SNR \(|H_k|^2P_k=c\) 相等，所以 \(P_k=c/|H_k|^2\)。代入总功率：
+\[\begin{aligned}10&=c\Big(\tfrac11+\tfrac1{0.04}+\tfrac11+\tfrac1{1.96}\Big)\\&=c(1+25+1+0.510)=27.51\,c\\ c&=10/27.51=0.3635\end{aligned}\]
+\[\begin{aligned}P_1&=P_3=0.3635/1=0.36\\ P_2&=0.3635/0.04=9.09\\ P_4&=0.3635/1.96=0.19\end{aligned}\]
+验算：0.36 + 9.09 + 0.36 + 0.19 = 10.0 ✓。每个子信道容量都是 \(\log_2 1.3635=0.447\) bit，最差的子信道 2 拿走了 91% 的功率。</li>
+        <li><b>(d) 注水：先试四个都放水</b>：注水解 \(P_k=(\mu-1/|H_k|^2)^+\)，池底（floor）\(1/|H_k|^2\) = 1、25、1、0.51。四个都放水：
+\[\begin{aligned}\mu&=\frac{10+(1+25+1+0.51)}{4}\\&=\frac{37.51}{4}=9.38\end{aligned}\]
+但 \(9.38\lt25\)，子信道 2 的功率会是负的（\(9.38-25\lt0\)），去掉它重算。</li>
+        <li><b>(d) 剩三个子信道</b>：
+\[\begin{aligned}\mu&=\frac{10+1+1+0.51}{3}=\frac{12.51}{3}=4.17\\ P_1&=P_3=4.17-1=3.17\\ P_4&=4.17-0.51=3.66\end{aligned}\]
+都为正 ✓；3.17 + 3.17 + 3.66 = 10.0 ✓；子信道 2 的池底 25 &gt; 4.17，留在水面以上 ✓。</li>
+        <li><b>(d) 和容量</b>：每个子信道 \(\log_2(1+|H_k|^2P_k)=\log_2(\mu|H_k|^2)\)，用 \(\log_2x=\log_{10}x/0.301\)：
+\[\begin{aligned}C_1=C_3&=\log_2 4.17=\tfrac{0.620}{0.301}=2.06\\ C_4&=\log_2(4.17\times1.96)\\&=\log_2 8.17=\tfrac{0.912}{0.301}=3.03\\ \textstyle\sum_k C_k&=2.06+2.06+3.03=7.15\text{ bit}\end{aligned}\]
+每个子载波只占 B/4 带宽，\(C=\sum_k\frac B4\log_2(\cdot)\)，所以每赫兹 \(C/B=7.15/4=1.79\approx1.8\) bit/s/Hz（与官方一致）。对比 (c)：每赫兹只有 0.447 bit/s/Hz，注水高约 4 倍。</li>
       </ol>
       <div class="ans">(a) B/B_C ≪ N ≪ B/B_d；(b) 1.4, 0.8−0.6j, 0.2, 0.8+0.6j；(c) 0.36, 9.09, 0.36, 0.19；(d) ≈ 1.8 bit/s/Hz</div>
       <div class="official"><b>官方答案：</b>完全一致 ✓（官方把 k = 1…4 记为 H₁…H₄，H₄ = H₀ = 1.4）</div>
@@ -121,12 +141,32 @@
     <!-- EN:p7q1 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>(a) Flat: the sub-channel width B/N must be much smaller than the coherence bandwidth → \(N\gg B/B_C\). Slow: the OFDM symbol duration ≈ N/B must be much shorter than the coherence time 1/B<sub>d</sub> → \(N\ll B/B_d\). Hence \(B/B_C\ll N\ll B/B_d\).</li>
-        <li>(b) \(H_k=h_0+h_1e^{-j2\pi k/N}=0.8+0.6e^{-j\pi k/2}\):<div class="calc">H₀ = H₄ = 1.4, H₁ = 0.8 − 0.6j, H₂ = 0.2, H₃ = 0.8 + 0.6j</div>Power gains |H<sub>k</sub>|² (k = 1, 2, 3, 4): 1, 0.04, 1, 1.96.</li>
-        <li>(c) Equal capacity \(\log_2(1+|H_k|^2P_k)\) ⇔ the same \(|H_k|^2P_k=c\): \(P_k=c/|H_k|^2\).<div class="calc">c(1/1 + 1/0.04 + 1/1 + 1/1.96) = c × 27.51 = 10 → c = 0.3635</div><div class="calc">P₁ = 0.36, P₂ = 9.09, P₃ = 0.36, P₄ = 0.19</div></li>
-        <li>(d) Water-filling: floor levels \(1/|H_k|^2\) = 1, 25, 1, 0.51. Filling all four gives a water level (10 + 27.51)/4 = 9.38 &lt; 25, so sub-channel 2 is dropped.</li>
-        <li>With three left: level μ = (10 + 1 + 1 + 0.51)/3 = 4.17, powers 3.17, 3.17, 3.66 (all positive).<div class="calc">C = log₂(4.17 × 1) + log₂(4.17 × 1) + log₂(4.17 × 1.96) = 2.06 + 2.06 + 3.03 = 7.15 bit</div></li>
-        <li>These 7.15 bit are carried by 4 sub-carriers, each occupying B/4, so per hertz: 7.15/4 = 1.79 bit/s/Hz.</li>
+        <li><b>(a) Flat condition</b>: the bandwidth of each sub-carrier, \(\Delta f=B/N\), must be much smaller than the coherence bandwidth \(B_C\), so the frequency response is almost constant inside one sub-band and each sub-carrier sees a single complex gain \(H_k\):
+\[\frac BN\ll B_C\;\Rightarrow\;N\gg\frac{B}{B_C}\]
+The condition \(T=NT_S\gg T_D\approx1/B_C\) on Ch 7 p.5 and p.14 is the same thing.</li>
+        <li><b>(a) Slow condition</b>: the OFDM symbol duration \(T=N/B\) (\(=NT_S\), \(T_S=1/B\)) must be much shorter than the coherence time \(T_C\approx1/B_d\), so the channel does not change during one OFDM symbol and the sub-carriers stay orthogonal (no ICI):
+\[\frac NB\ll\frac1{B_d}\;\Rightarrow\;N\ll\frac{B}{B_d}\]
+Together: \(\dfrac{B}{B_C}\ll N\ll\dfrac{B}{B_d}\), which has a solution only if \(B_d\ll B_C\). Example: B = 1 MHz, \(B_C\) = 50 kHz, \(B_d\) = 100 Hz → 20 ≪ N ≪ 10⁴, e.g. N = 256 (a power of 2 for the FFT).</li>
+        <li><b>(b) Write H<sub>k</sub></b>: the impulse response of the two-path channel is \(h=[h_0,h_1]=[0.8,0.6]\) (τ is one sampling interval). The sub-channel gains are its DFT (Ch 7 p.15):
+\[H_k=\sum_{i=0}^{L-1}h_ie^{-j2\pi ik/N}=0.8+0.6\,e^{-j\pi k/2}\]
+For k = 1, 2, 3, 4, \(e^{-j\pi k/2}=-j,\ -1,\ j,\ 1\):
+\[\begin{aligned}H_1&=0.8-0.6j\\ H_2&=0.8-0.6=0.2\\ H_3&=0.8+0.6j\\ H_4&=H_0=0.8+0.6=1.4\end{aligned}\]</li>
+        <li><b>(b) Power gains and check</b>: the power allocation needs \(|H_k|^2\):
+\[\begin{aligned}|H_1|^2&=|H_3|^2=0.8^2+0.6^2=1\\ |H_2|^2&=0.2^2=0.04,\quad|H_4|^2=1.4^2=1.96\end{aligned}\]
+Check (Parseval): the four \(|H_k|^2\) add up to 1 + 0.04 + 1 + 1.96 = 4, equal to \(N(h_0^2+h_1^2)=4\times1=4\) ✓.</li>
+        <li><b>(c) Equal-capacity allocation</b>: noise \(\sigma^2=1\), capacity of sub-channel k is \(\log_2(1+|H_k|^2P_k)\). Equal capacities ⇔ equal received SNR \(|H_k|^2P_k=c\), so \(P_k=c/|H_k|^2\). Insert into the total power:
+\[\begin{aligned}10&=c\Big(\tfrac11+\tfrac1{0.04}+\tfrac11+\tfrac1{1.96}\Big)\\&=c(1+25+1+0.510)=27.51\,c\\ c&=10/27.51=0.3635\end{aligned}\]
+\[\begin{aligned}P_1&=P_3=0.3635/1=0.36\\ P_2&=0.3635/0.04=9.09\\ P_4&=0.3635/1.96=0.19\end{aligned}\]
+Check: 0.36 + 9.09 + 0.36 + 0.19 = 10.0 ✓. Every sub-channel has capacity \(\log_2 1.3635=0.447\) bit, and the worst sub-channel 2 takes 91% of the power.</li>
+        <li><b>(d) Water-filling: first try all four</b>: the water-filling solution is \(P_k=(\mu-1/|H_k|^2)^+\), with floors \(1/|H_k|^2\) = 1, 25, 1, 0.51. Filling all four:
+\[\begin{aligned}\mu&=\frac{10+(1+25+1+0.51)}{4}\\&=\frac{37.51}{4}=9.38\end{aligned}\]
+But \(9.38\lt25\): sub-channel 2 would get negative power (\(9.38-25\lt0\)), so drop it and recompute.</li>
+        <li><b>(d) Three sub-channels left</b>:
+\[\begin{aligned}\mu&=\frac{10+1+1+0.51}{3}=\frac{12.51}{3}=4.17\\ P_1&=P_3=4.17-1=3.17\\ P_4&=4.17-0.51=3.66\end{aligned}\]
+All positive ✓; 3.17 + 3.17 + 3.66 = 10.0 ✓; the floor of sub-channel 2 (25) is above the water level 4.17, so it stays out ✓.</li>
+        <li><b>(d) Sum capacity</b>: each sub-channel gives \(\log_2(1+|H_k|^2P_k)=\log_2(\mu|H_k|^2)\); with \(\log_2x=\log_{10}x/0.301\):
+\[\begin{aligned}C_1=C_3&=\log_2 4.17=\tfrac{0.620}{0.301}=2.06\\ C_4&=\log_2(4.17\times1.96)\\&=\log_2 8.17=\tfrac{0.912}{0.301}=3.03\\ \textstyle\sum_k C_k&=2.06+2.06+3.03=7.15\text{ bit}\end{aligned}\]
+Each sub-carrier occupies only B/4, \(C=\sum_k\frac B4\log_2(\cdot)\), so per hertz \(C/B=7.15/4=1.79\approx1.8\) bit/s/Hz (matches the official answer). Compare (c): only 0.447 bit/s/Hz, so water-filling is about 4 times higher.</li>
       </ol>
       <div class="ans">(a) B/B<sub>C</sub> ≪ N ≪ B/B<sub>d</sub>; (b) 1.4, 0.8−0.6j, 0.2, 0.8+0.6j; (c) 0.36, 9.09, 0.36, 0.19; (d) ≈ 1.8 bit/s/Hz</div>
       <div class="official"><b>Official answer:</b> identical ✓ (the official solution labels k = 1…4 as H₁…H₄, with H₄ = H₀ = 1.4)</div>
@@ -228,10 +268,16 @@
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>16-QAM 每符号 4 bit：需要的总符号速率 2 Mbps / 4 = 500 k 符号/秒。</li>
-        <li>N 个子载波：有用符号时长 T = N/B = N/600k，加 CP 后一个 OFDM 符号长 T + 20 µs，期间 N 个子载波各发一个符号。</li>
-        <li>\(\dfrac{N}{N/600\text{k}+20\,\mu s}=500\text{k}\) → \(N=0.8333N+10\) → N = 60。</li>
-        <li>T = 60/600 kHz = 100 µs；OFDM 符号总长 100 + 20 = 120 µs = 0.12 ms。</li>
+        <li><b>比特率 → 符号率</b>：16-QAM 每个符号 \(\log_2 16=4\) bit：
+\[R_s=\frac{2\times10^6\text{ bit/s}}{4\text{ bit/符号}}=5\times10^5\text{ 符号/s}\]</li>
+        <li><b>OFDM 时间结构</b>：N 个子载波，子载波间隔 \(\Delta f=B/N\)，有用符号时长 \(T=1/\Delta f=N/B\)（讲义第 7 章 p.8）。加循环前缀（cyclic prefix）\(T_G=T_D=20\) µs 后，一个 OFDM 块长 \(T+T_G\)（p.18），期间 N 个子载波各发 1 个符号：
+\[\text{符号率}=\frac{N}{T+T_G}=\frac{N}{N/B+T_G}\]</li>
+        <li><b>解出 N</b>：令它等于 \(R_s\)：
+\[\begin{aligned}N&=R_s\Big(\frac NB+T_G\Big)\\&=\tfrac{500\text{k}}{600\text{k}}N+500\text{k}\times20\ \mu\text{s}\\&=0.8333N+10\\ N&=\frac{10}{1-0.8333}=\frac{10}{0.1667}=60\end{aligned}\]</li>
+        <li><b>符号时长</b>：
+\[\begin{aligned}T&=\frac NB=\frac{60}{600\text{ kHz}}=100\ \mu\text{s}\\ T+T_G&=100+20=120\ \mu\text{s}=0.12\text{ ms}\end{aligned}\]
+子载波间隔 Δf = 600 kHz / 60 = 10 kHz = 1/T ✓。</li>
+        <li><b>自检</b>：每个 OFDM 块 60 × 4 = 240 bit，240 bit / 120 µs = 2 × 10⁶ bit/s = 2 Mbps ✓。CP 占 20/120 = 1/6 的时间，功率损失 \(10\log_{10}(120/100)=0.79\) dB（讲义 p.18）。</li>
       </ol>
       <div class="ans">N = 60，OFDM 符号时长 0.12 ms</div>
       <div class="official"><b>官方答案：</b>60；0.12 ms ✓</div>
@@ -280,10 +326,16 @@
     <!-- EN:p7q2 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>16-QAM carries 4 bits per symbol: the required total symbol rate is 2 Mbps / 4 = 500 k symbols/s.</li>
-        <li>With N sub-carriers: useful symbol duration T = N/B = N/600k; with the CP one OFDM symbol lasts T + 20 µs, during which each of the N sub-carriers sends one symbol.</li>
-        <li>\(\dfrac{N}{N/600\text{k}+20\,\mu s}=500\text{k}\) → \(N=0.8333N+10\) → N = 60.</li>
-        <li>T = 60/600 kHz = 100 µs; total OFDM symbol 100 + 20 = 120 µs = 0.12 ms.</li>
+        <li><b>Bit rate → symbol rate</b>: 16-QAM carries \(\log_2 16=4\) bits per symbol:
+\[R_s=\frac{2\times10^6\text{ bit/s}}{4\text{ bit/symbol}}=5\times10^5\text{ symbols/s}\]</li>
+        <li><b>OFDM timing</b>: with N sub-carriers the spacing is \(\Delta f=B/N\) and the useful symbol duration is \(T=1/\Delta f=N/B\) (Ch 7 p.8). With the cyclic prefix \(T_G=T_D=20\) µs one OFDM block lasts \(T+T_G\) (p.18), during which each of the N sub-carriers sends one symbol:
+\[\text{symbol rate}=\frac{N}{T+T_G}=\frac{N}{N/B+T_G}\]</li>
+        <li><b>Solve for N</b>: set it equal to \(R_s\):
+\[\begin{aligned}N&=R_s\Big(\frac NB+T_G\Big)\\&=\tfrac{500\text{k}}{600\text{k}}N+500\text{k}\times20\ \mu\text{s}\\&=0.8333N+10\\ N&=\frac{10}{1-0.8333}=\frac{10}{0.1667}=60\end{aligned}\]</li>
+        <li><b>Symbol durations</b>:
+\[\begin{aligned}T&=\frac NB=\frac{60}{600\text{ kHz}}=100\ \mu\text{s}\\ T+T_G&=100+20=120\ \mu\text{s}=0.12\text{ ms}\end{aligned}\]
+Sub-carrier spacing Δf = 600 kHz / 60 = 10 kHz = 1/T ✓.</li>
+        <li><b>Check</b>: each OFDM block carries 60 × 4 = 240 bits, and 240 bits / 120 µs = 2 × 10⁶ bit/s = 2 Mbps ✓. The CP takes 20/120 = 1/6 of the time; the power loss is \(10\log_{10}(120/100)=0.79\) dB (Ch 7 p.18).</li>
       </ol>
       <div class="ans">N = 60, OFDM symbol duration 0.12 ms</div>
       <div class="official"><b>Official answer:</b> 60; 0.12 ms ✓</div>
@@ -364,9 +416,13 @@
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>冲激响应 h = [1, 0.9]：一条直射，加一条晚一个采样到达的回波，信道长度 L = 2，最大时延扩展 = 1 个采样。</li>
-        <li>上一个 OFDM 块的最后一个采样，会通过 0.9z⁻¹ 漏进下一个块的第一个采样。CP 至少要盖住这 1 个采样，才能把 ISI 挡在 CP 里（接收端丢掉 CP）。</li>
-        <li>CP 用块尾的复制品，线性卷积在接收窗口里等价于循环卷积，DFT 后正好得到 \(H_ks_k\)，子载波保持正交。</li>
+        <li><b>读出冲激响应</b>：\(H(Z)=\sum_ih_iZ^{-i}\)，\(Z^{-1}\) 表示晚 1 个采样。所以 \(h_0=1\)（直射径），\(h_1=0.9\)（晚 1 个采样的回波），信道长度 L = 2，最长回波晚 L − 1 = 1 个采样。</li>
+        <li><b>ISI 从哪来</b>：接收样本 \(r_i=x_i+0.9x_{i-1}+w_i\)。块内第一个样本 i = 0 要用到 \(x_{-1}\)；没有 CP 时它是<b>上一个块</b>的最后一个样本，形成块间干扰（ISI）。i ≥ 1 只用到本块数据，所以每块只有 1 个样本被污染。</li>
+        <li><b>加 1 个样本的 CP</b>：把本块最后一个样本复制到块前：\(x_{-1}=x_{N-1}\)。接收端丢掉 CP 位置的样本 \(r_{-1}\)（它含上一块的回波），保留的第一个样本
+\[r_0=x_0+0.9\,x_{N-1}+w_0\]
+只含本块数据，ISI 被挡在 CP 里。</li>
+        <li><b>为什么要复制块尾</b>：保留的 N 个样本满足 \(r_i=\sum_lh_lx_{(i-l)\bmod N}+w_i\)，即循环卷积（circular convolution）。DFT 后正好 \(R_k=H_kS_k+W_k\)（讲义 p.22），\(H_k=1+0.9e^{-j2\pi k/N}\)：子载波保持正交、没有 ICI，一次复数除法 \(\hat s_k=R_k/H_k\) 就完成均衡。如果 CP 位置只放 0，ISI 也能挡住，但循环结构被破坏，会出现 ICI。</li>
+        <li><b>结论与自检</b>：最短 CP = L − 1 = 1 个采样（1 个符号时长 \(T_S\)）。G = 0 不行（有 ISI 和 ICI）；G = 2 也行，但多浪费一个样本，效率 N/(N + G) 更低。自检 N = 4：保留的样本是 \(r_0=x_0+0.9x_3\)、\(r_1=x_1+0.9x_0\)、\(r_2=x_2+0.9x_1\)、\(r_3=x_3+0.9x_2\)，正好是 [1, 0.9] 与 x 的 4 点循环卷积 ✓。系数 0.9 的大小不影响 CP 长度，只看回波晚几个采样。</li>
       </ol>
       <div class="ans">最短 CP = 1 个采样（符号）长度 = L − 1</div>
       <div class="official"><b>官方答案：</b>1 symbol length ✓</div>
@@ -408,9 +464,13 @@
     <!-- EN:p7q3 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>Impulse response h = [1, 0.9]: a direct path plus an echo one sample later; channel length L = 2, maximum delay spread = 1 sample.</li>
-        <li>The last sample of the previous OFDM block leaks into the first sample of the next block through 0.9z⁻¹. The CP must cover at least this 1 sample so the ISI stays inside the CP, which the receiver discards.</li>
-        <li>Because the CP is a copy of the block tail, the linear convolution looks like a circular convolution inside the receive window; after the DFT this gives exactly \(H_ks_k\), and the sub-carriers stay orthogonal.</li>
+        <li><b>Read the impulse response</b>: \(H(Z)=\sum_ih_iZ^{-i}\), and \(Z^{-1}\) means one sample later. So \(h_0=1\) (direct path) and \(h_1=0.9\) (an echo one sample late): channel length L = 2, longest echo L − 1 = 1 sample late.</li>
+        <li><b>Where the ISI comes from</b>: a received sample is \(r_i=x_i+0.9x_{i-1}+w_i\). The first sample of a block, i = 0, uses \(x_{-1}\); without a CP that is the last sample of the <b>previous</b> block, which causes inter-block interference (ISI). For i ≥ 1 only the current block is used, so just 1 sample per block is corrupted.</li>
+        <li><b>Add a 1-sample CP</b>: copy the last sample of the block to its front: \(x_{-1}=x_{N-1}\). The receiver discards the CP sample \(r_{-1}\) (it contains the echo of the previous block); the first sample kept is
+\[r_0=x_0+0.9\,x_{N-1}+w_0\]
+which contains only current-block data: the ISI is caught inside the CP.</li>
+        <li><b>Why copy the tail</b>: the N kept samples satisfy \(r_i=\sum_lh_lx_{(i-l)\bmod N}+w_i\), a circular convolution. After the DFT this gives exactly \(R_k=H_kS_k+W_k\) (Ch 7 p.22) with \(H_k=1+0.9e^{-j2\pi k/N}\): the sub-carriers stay orthogonal, there is no ICI, and one complex division \(\hat s_k=R_k/H_k\) equalises each sub-carrier. A guard interval filled with zeros would also block the ISI, but it breaks the circular structure and ICI appears.</li>
+        <li><b>Conclusion and check</b>: minimum CP = L − 1 = 1 sample (one symbol duration \(T_S\)). G = 0 fails (ISI and ICI); G = 2 also works but wastes a sample and lowers the efficiency N/(N + G). Check with N = 4: the kept samples are \(r_0=x_0+0.9x_3\), \(r_1=x_1+0.9x_0\), \(r_2=x_2+0.9x_1\), \(r_3=x_3+0.9x_2\), exactly the 4-point circular convolution of [1, 0.9] with x ✓. The size of the coefficient 0.9 does not affect the CP length; only how many samples the echo is delayed matters.</li>
       </ol>
       <div class="ans">Minimum CP = 1 sample (symbol) = L − 1</div>
       <div class="official"><b>Official answer:</b> 1 symbol length ✓</div>

@@ -7,9 +7,9 @@
       <p class="zh" lang="zh-CN">图 1 是二进制 PAM 通信系统的离散时间模型：\(a(n)\sqrt{E_b}\to H(z)\to(+w(n))\to U(z)\to z(n)\to\) 检测器 \(\to\hat a(n)\)。</p>
       <p>In the Figure, w(n) is a white Gaussian noise with the autocorrelation function, \(R_w(k)=\dfrac{N_0}{2}\delta(k)\).</p>
       <p class="zh" lang="zh-CN">图中 w(n) 是高斯白噪声，自相关函数为 \(R_w(k)=\dfrac{N_0}{2}\delta(k)\)。</p>
-      <p>The channel, H(Z), introduces Inter-Symbol Interference (ISI) and is modelled as, \(H(Z)=1+\alpha Z^{-1},\ 0<\alpha<\tfrac12\).</p>
+      <p>The channel, H(Z), introduces Inter-Symbol Interference (ISI) and is modelled as, \(H(Z)=1+\alpha Z^{-1},\ 0\lt\alpha\lt\tfrac12\).</p>
       <p class="zh" lang="zh-CN">信道 H(Z) 会引入符号间干扰（ISI），模型为 \(H(Z)=1+\alpha Z^{-1},\ 0\lt\alpha\lt\tfrac12\)。</p>
-      <p>The transmitted data is modelled as a sequence of independent and identically distributed symbols, \(\{a_n\}\), where \(a_n\) is equally likely to be ±1. The detector detects the transmitted data according to the following rule, \(\hat a(n)=1\) if \(z(n)\ge0\), −1 if \(z(n)<0\).</p>
+      <p>The transmitted data is modelled as a sequence of independent and identically distributed symbols, \(\{a_n\}\), where \(a_n\) is equally likely to be ±1. The detector detects the transmitted data according to the following rule, \(\hat a(n)=1\) if \(z(n)\ge0\), −1 if \(z(n)\lt 0\).</p>
       <p class="zh" lang="zh-CN">发送数据建模为独立同分布的符号序列 \(\{a_n\}\)，\(a_n\) 等概取 ±1。检测器按如下规则判决：\(z(n)\ge0\) 时 \(\hat a(n)=1\)，\(z(n)\lt0\) 时 \(\hat a(n)=-1\)。</p>
       <p>Consider an equalizer design, where \(U(z)=1-\alpha z^{-1}\).</p>
       <p class="zh" lang="zh-CN">考虑一种均衡器设计：\(U(z)=1-\alpha z^{-1}\)。</p>
@@ -48,12 +48,23 @@
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>记 \(A=\sqrt{2E_b/N_0}\)。没有 ISI 时 \(P_e=Q(A)\)：信号幅度 \(\sqrt{E_b}\)，噪声标准差 \(\sqrt{N_0/2}\)。</li>
-        <li>(a) 不均衡：\(z(n)=\sqrt{E_b}(a_n+\alpha a_{n-1})+w(n)\)。前一个符号同号时幅度 \((1+\alpha)\sqrt{E_b}\)，异号时 \((1-\alpha)\sqrt{E_b}\)，各一半：<div class="calc">Pe = ½Q((1 − α)A) + ½Q((1 + α)A)</div></li>
-        <li>加均衡：总响应 \(H(z)U(z)=(1+\alpha z^{-1})(1-\alpha z^{-1})=1-\alpha^2z^{-2}\)，ISI 从 α 降到 α²，但噪声也经过 U(z)：方差变成 \(\tfrac{N_0}{2}(1+\alpha^2)\)（系数平方和）。</li>
-        <li>\(z(n)=\sqrt{E_b}(a_n-\alpha^2a_{n-2})+w'(n)\)，幅度 \((1\pm\alpha^2)\sqrt{E_b}\)，标准差放大 \(\sqrt{1+\alpha^2}\)：<div class="calc">Pe = ½Q( (1 − α²)/√(1 + α²) · A ) + ½Q( (1 + α²)/√(1 + α²) · A )</div></li>
-        <li>(b) 高 SNR 时误码率由 Q 参数<b>最小</b>的那一项决定。比较：不均衡 \(1-\alpha\)；均衡 \((1-\alpha^2)/\sqrt{1+\alpha^2}\)。</li>
-        <li>\(\dfrac{1-\alpha^2}{\sqrt{1+\alpha^2}}>1-\alpha\ \Leftrightarrow\ \dfrac{1+\alpha}{\sqrt{1+\alpha^2}}>1\ \Leftrightarrow\ (1+\alpha)^2>1+\alpha^2\ \Leftrightarrow\ 2\alpha>0\)，对 α &gt; 0 总成立。</li>
+        <li><b>基准：没有 ISI 时</b>：判决门限是 0，信号离门限 \(\sqrt{E_b}\)；噪声方差 \(R_w(0)=N_0/2\)，标准差 \(\sigma=\sqrt{N_0/2}\)：
+\[P_e=Q\!\Big(\frac{\sqrt{E_b}}{\sqrt{N_0/2}}\Big)=Q\!\Big(\sqrt{\tfrac{2E_b}{N_0}}\Big)\equiv Q(A)\]
+后面每一项都是 Q(距离 / 标准差)，写成 Q(系数 × A)。</li>
+        <li><b>(a) 不均衡：分情况再平均</b>：\(H(z)=1+\alpha z^{-1}\) 表示"当前符号 + α 倍的上一个符号"：\(z(n)=\sqrt{E_b}(a_n+\alpha a_{n-1})+w(n)\)。设 \(a_n=+1\)（−1 对称，结果相同）：<div class="tw"><table class="mini"><thead><tr><th>\(a_{n-1}\)</th><th>均值</th><th>出错概率</th></tr></thead><tbody><tr><td>+1（同号）</td><td>\((1+\alpha)\sqrt{E_b}\)</td><td>\(Q\big((1+\alpha)A\big)\)</td></tr><tr><td>−1（异号）</td><td>\((1-\alpha)\sqrt{E_b}\)</td><td>\(Q\big((1-\alpha)A\big)\)</td></tr></tbody></table></div>两种情况各占 ½，求平均（讲义第 6 章 p.28）：<div class="calc">Pe = ½Q((1 − α)A) + ½Q((1 + α)A)</div></li>
+        <li><b>(a) 加均衡：信号经过 H·U</b>：信号先过信道再过均衡器，总响应
+\[\begin{aligned}H(z)U(z)&=(1+\alpha z^{-1})(1-\alpha z^{-1})\\&=1-\alpha z^{-1}+\alpha z^{-1}-\alpha^2z^{-2}\\&=1-\alpha^2z^{-2}\end{aligned}\]
+信号部分变成 \(\sqrt{E_b}(a_n-\alpha^2a_{n-2})\)：ISI 从 α 降到 α²（α = 0.4 时从 0.4 降到 0.16），但没有完全消掉，而是挪到了 n − 2。</li>
+        <li><b>(a) 加均衡：噪声只经过 U</b>：噪声在信道之后才加入，所以只经过 U(z)：\(w'(n)=w(n)-\alpha w(n-1)\)。两个样本独立，方差按系数平方和相加（讲义 p.27 的 \(\sigma^2\|\mathbf c\|^2\)）：
+\[\sigma'^2=\frac{N_0}{2}(1^2+\alpha^2)\;\Rightarrow\;\sigma'=\sqrt{\tfrac{N_0}{2}}\sqrt{1+\alpha^2}\]</li>
+        <li><b>(a) 加均衡：分情况再平均</b>：\(z(n)=\sqrt{E_b}(a_n-\alpha^2a_{n-2})+w'(n)\)，设 \(a_n=+1\)，距离除以 \(\sigma'\)：<div class="tw"><table class="mini"><thead><tr><th>\(a_{n-2}\)</th><th>均值</th><th>出错概率</th></tr></thead><tbody><tr><td>+1（同号）</td><td>\((1-\alpha^2)\sqrt{E_b}\)</td><td>\(Q\Big(\frac{1-\alpha^2}{\sqrt{1+\alpha^2}}A\Big)\)</td></tr><tr><td>−1（异号）</td><td>\((1+\alpha^2)\sqrt{E_b}\)</td><td>\(Q\Big(\frac{1+\alpha^2}{\sqrt{1+\alpha^2}}A\Big)\)</td></tr></tbody></table></div><div class="calc">Pe = ½Q( (1 − α²)/√(1 + α²) · A ) + ½Q( (1 + α²)/√(1 + α²) · A )</div>自检：α → 0 时两个表达式都变回 Q(A) ✓。</li>
+        <li><b>(b) 高 SNR 看最坏项</b>：\(Q(x)\le\tfrac12e^{-x^2/2}\)，随 x 下降极快，所以高 SNR 时 \(P_e\) 由 Q 参数<b>最小</b>的那一项决定。两种方案的最小系数：不均衡 \(1-\alpha\)；均衡 \((1-\alpha^2)/\sqrt{1+\alpha^2}\)。</li>
+        <li><b>(b) 证明均衡更好</b>：两边同除以 \(1-\alpha\gt0\)：
+\[\begin{aligned}\frac{1-\alpha^2}{\sqrt{1+\alpha^2}}\gt1-\alpha&\Leftrightarrow\frac{1+\alpha}{\sqrt{1+\alpha^2}}\gt1\\&\Leftrightarrow(1+\alpha)^2\gt1+\alpha^2\\&\Leftrightarrow2\alpha\gt0\end{aligned}\]
+对 α &gt; 0 总成立，所以高 SNR 时<b>加均衡器更好</b>：ISI 变小的好处大于噪声放大 \(\sqrt{1+\alpha^2}\) 倍的损失。</li>
+        <li><b>数值自检</b>：α = 0.4：最坏系数不均衡 0.6，均衡 \(0.84/1.077=0.78\)。取 \(E_b/N_0=10\) dB（线性 10，\(A=\sqrt{20}=4.47\)）：
+\[\begin{aligned}\text{不均衡}&:\ \tfrac12Q(2.68)+\tfrac12Q(6.26)\\&\ =1.8\times10^{-3}\\ \text{均衡}&:\ \tfrac12Q(3.49)+\tfrac12Q(4.82)\\&\ =1.2\times10^{-4}\end{aligned}\]
+均衡后误码率低约 15 倍 ✓。</li>
       </ol>
       <div class="ans">(b) 加均衡器更好：最坏情况的"有效距离"更大。例 α = 0.4：不均衡 0.6，均衡 0.78</div>
       <div class="official"><b>官方答案：</b>表达式同上；(b) Better to operate with the proposed equalizer ✓</div>
@@ -109,12 +120,23 @@
     <!-- EN:p6q1 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>Let \(A=\sqrt{2E_b/N_0}\). Without ISI \(P_e=Q(A)\): signal amplitude \(\sqrt{E_b}\), noise standard deviation \(\sqrt{N_0/2}\).</li>
-        <li>(a) No equaliser: \(z(n)=\sqrt{E_b}(a_n+\alpha a_{n-1})+w(n)\). If the previous symbol has the same sign the amplitude is \((1+\alpha)\sqrt{E_b}\), otherwise \((1-\alpha)\sqrt{E_b}\), each half the time:<div class="calc">P<sub>e</sub> = ½Q((1 − α)A) + ½Q((1 + α)A)</div></li>
-        <li>With the equaliser: overall response \(H(z)U(z)=(1+\alpha z^{-1})(1-\alpha z^{-1})=1-\alpha^2z^{-2}\), so the ISI drops from α to α²; but the noise also passes through U(z) and its variance becomes \(\tfrac{N_0}{2}(1+\alpha^2)\) (sum of squared coefficients).</li>
-        <li>\(z(n)=\sqrt{E_b}(a_n-\alpha^2a_{n-2})+w^{\prime}(n)\): amplitudes \((1\pm\alpha^2)\sqrt{E_b}\), standard deviation scaled by \(\sqrt{1+\alpha^2}\):<div class="calc">P<sub>e</sub> = ½Q( (1 − α²)/√(1 + α²) · A ) + ½Q( (1 + α²)/√(1 + α²) · A )</div></li>
-        <li>(b) At high SNR the error rate is dominated by the term with the <b>smallest</b> Q argument. Compare: without equaliser \(1-\alpha\); with equaliser \((1-\alpha^2)/\sqrt{1+\alpha^2}\).</li>
-        <li>\(\dfrac{1-\alpha^2}{\sqrt{1+\alpha^2}}>1-\alpha\ \Leftrightarrow\ \dfrac{1+\alpha}{\sqrt{1+\alpha^2}}>1\ \Leftrightarrow\ (1+\alpha)^2>1+\alpha^2\ \Leftrightarrow\ 2\alpha>0\), which always holds for α &gt; 0.</li>
+        <li><b>Baseline: no ISI</b>: the threshold is 0 and the signal is \(\sqrt{E_b}\) away from it; the noise variance is \(R_w(0)=N_0/2\), standard deviation \(\sigma=\sqrt{N_0/2}\):
+\[P_e=Q\!\Big(\frac{\sqrt{E_b}}{\sqrt{N_0/2}}\Big)=Q\!\Big(\sqrt{\tfrac{2E_b}{N_0}}\Big)\equiv Q(A)\]
+Every term below is Q(distance / standard deviation), written as Q(coefficient × A).</li>
+        <li><b>(a) No equaliser: split into cases and average</b>: \(H(z)=1+\alpha z^{-1}\) means "current symbol + α times the previous symbol": \(z(n)=\sqrt{E_b}(a_n+\alpha a_{n-1})+w(n)\). Take \(a_n=+1\) (−1 is symmetric and gives the same result):<div class="tw"><table class="mini"><thead><tr><th>\(a_{n-1}\)</th><th>mean</th><th>error probability</th></tr></thead><tbody><tr><td>+1 (same sign)</td><td>\((1+\alpha)\sqrt{E_b}\)</td><td>\(Q\big((1+\alpha)A\big)\)</td></tr><tr><td>−1 (opposite sign)</td><td>\((1-\alpha)\sqrt{E_b}\)</td><td>\(Q\big((1-\alpha)A\big)\)</td></tr></tbody></table></div>Each case has probability ½; average them (Ch 6 p.28):<div class="calc">P<sub>e</sub> = ½Q((1 − α)A) + ½Q((1 + α)A)</div></li>
+        <li><b>(a) With the equaliser: the signal sees H·U</b>: the signal passes through the channel and then the equaliser, so the overall response is
+\[\begin{aligned}H(z)U(z)&=(1+\alpha z^{-1})(1-\alpha z^{-1})\\&=1-\alpha z^{-1}+\alpha z^{-1}-\alpha^2z^{-2}\\&=1-\alpha^2z^{-2}\end{aligned}\]
+The signal part becomes \(\sqrt{E_b}(a_n-\alpha^2a_{n-2})\): the ISI drops from α to α² (for α = 0.4, from 0.4 to 0.16), but it is not removed; it moves to n − 2.</li>
+        <li><b>(a) With the equaliser: the noise sees only U</b>: the noise is added after the channel, so it passes only through U(z): \(w^{\prime}(n)=w(n)-\alpha w(n-1)\). The two samples are independent, so the variance is the input variance times the sum of squared coefficients (\(\sigma^2\|\mathbf c\|^2\), Ch 6 p.27):
+\[\sigma'^2=\frac{N_0}{2}(1^2+\alpha^2)\;\Rightarrow\;\sigma'=\sqrt{\tfrac{N_0}{2}}\sqrt{1+\alpha^2}\]</li>
+        <li><b>(a) With the equaliser: split into cases and average</b>: \(z(n)=\sqrt{E_b}(a_n-\alpha^2a_{n-2})+w^{\prime}(n)\); take \(a_n=+1\) and divide the distance by \(\sigma'\):<div class="tw"><table class="mini"><thead><tr><th>\(a_{n-2}\)</th><th>mean</th><th>error probability</th></tr></thead><tbody><tr><td>+1 (same sign)</td><td>\((1-\alpha^2)\sqrt{E_b}\)</td><td>\(Q\Big(\frac{1-\alpha^2}{\sqrt{1+\alpha^2}}A\Big)\)</td></tr><tr><td>−1 (opposite sign)</td><td>\((1+\alpha^2)\sqrt{E_b}\)</td><td>\(Q\Big(\frac{1+\alpha^2}{\sqrt{1+\alpha^2}}A\Big)\)</td></tr></tbody></table></div><div class="calc">P<sub>e</sub> = ½Q( (1 − α²)/√(1 + α²) · A ) + ½Q( (1 + α²)/√(1 + α²) · A )</div>Check: as α → 0 both expressions return to Q(A) ✓.</li>
+        <li><b>(b) At high SNR look at the worst term</b>: \(Q(x)\le\tfrac12e^{-x^2/2}\) falls extremely fast with x, so at high SNR \(P_e\) is dominated by the term with the <b>smallest</b> Q argument. The smallest coefficients are: without equaliser \(1-\alpha\); with equaliser \((1-\alpha^2)/\sqrt{1+\alpha^2}\).</li>
+        <li><b>(b) Show that the equaliser is better</b>: divide both sides by \(1-\alpha\gt0\):
+\[\begin{aligned}\frac{1-\alpha^2}{\sqrt{1+\alpha^2}}\gt1-\alpha&\Leftrightarrow\frac{1+\alpha}{\sqrt{1+\alpha^2}}\gt1\\&\Leftrightarrow(1+\alpha)^2\gt1+\alpha^2\\&\Leftrightarrow2\alpha\gt0\end{aligned}\]
+This always holds for α &gt; 0, so at high SNR it is <b>better to use the equaliser</b>: the gain from the smaller ISI outweighs the loss from the noise growing by \(\sqrt{1+\alpha^2}\).</li>
+        <li><b>Numerical check</b>: α = 0.4: worst coefficient 0.6 without, \(0.84/1.077=0.78\) with the equaliser. At \(E_b/N_0=10\) dB (linear 10, \(A=\sqrt{20}=4.47\)):
+\[\begin{aligned}\text{without}&:\ \tfrac12Q(2.68)+\tfrac12Q(6.26)\\&\ =1.8\times10^{-3}\\ \text{with}&:\ \tfrac12Q(3.49)+\tfrac12Q(4.82)\\&\ =1.2\times10^{-4}\end{aligned}\]
+The equaliser lowers the error rate about 15 times ✓.</li>
       </ol>
       <div class="ans">(b) Better with the equaliser: the worst-case effective distance is larger. E.g. α = 0.4: 0.6 without, 0.78 with</div>
       <div class="official"><b>Official answer:</b> expressions as above; (b) Better to operate with the proposed equalizer ✓</div>
@@ -207,10 +229,19 @@
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>(a) 设 \(b_n=+1\)：\(b_{n-1}=+1\) 时幅度 1 + a，\(b_{n-1}=-1\) 时幅度 1 − a，噪声标准差 √0.1：<div class="calc">Pe = ½Q((1 + a)/√0.1) + ½Q((1 − a)/√0.1)</div></li>
-        <li>(b) 理想迫零：\(C(z)=\dfrac{1}{1+az^{-1}}=\sum_{k\ge0}(-a)^kz^{-k}\)（|a| &lt; 1 收敛），输出 \(b_n\) + 滤波后的噪声。</li>
-        <li>噪声方差 = 0.1 × 系数平方和 = \(0.1\sum_k a^{2k}=\dfrac{0.1}{1-a^2}\)。</li>
-        <li>\(P_e=Q\!\left(\dfrac{1}{\sqrt{0.1/(1-a^2)}}\right)=Q\!\left(\sqrt{\dfrac{1-a^2}{0.1}}\right)\)。</li>
+        <li><b>(a) 分情况</b>：噪声方差 0.1，标准差 \(\sigma=\sqrt{0.1}=0.316\)；判决门限 0。设 \(b_n=+1\)，出错就是 \(y_n\lt0\)：<div class="tw"><table class="mini"><thead><tr><th>\(b_{n-1}\)</th><th>\(y_n\) 的均值</th><th>出错概率</th></tr></thead><tbody><tr><td>+1</td><td>1 + a</td><td>\(Q\big(\frac{1+a}{\sqrt{0.1}}\big)\)</td></tr><tr><td>−1</td><td>1 − a</td><td>\(Q\big(\frac{1-a}{\sqrt{0.1}}\big)\)</td></tr></tbody></table></div>0 &lt; a &lt; 1 保证 1 − a &gt; 0，均值仍在门限的正确一侧。</li>
+        <li><b>(a) 平均</b>：两种情况各 ½；\(b_n=-1\) 时对称，结果相同（讲义第 6 章 p.28）：<div class="calc">Pe = ½Q((1 + a)/√0.1) + ½Q((1 − a)/√0.1)</div></li>
+        <li><b>(b) 理想迫零均衡器</b>：迫零（zero-forcing, ZF）取 \(C(z)=1/H(z)\)，使 \(C(z)H(z)=1\)（讲义 p.23）。用等比级数展开（|a| &lt; 1，收敛且稳定）：
+\[\begin{aligned}C(z)&=\frac{1}{1+az^{-1}}=\sum_{k\ge0}(-a)^kz^{-k}\\&=1-az^{-1}+a^2z^{-2}-\cdots\end{aligned}\]
+输出 \(=b_n+\tilde w_n\)，\(\tilde w_n=\sum_k(-a)^kw_{n-k}\)：ISI 完全消掉，不用再分情况。</li>
+        <li><b>(b) 噪声放大</b>：白噪声过滤波器，方差 = 输入方差 × 系数平方和：
+\[\begin{aligned}\sigma_{\tilde w}^2&=0.1\sum_{k\ge0}a^{2k}=0.1(1+a^2+a^4+\cdots)\\&=\frac{0.1}{1-a^2}\end{aligned}\]
+a 越接近 1，\(1/(1-a^2)\) 越大：这就是迫零的噪声放大（noise enhancement）。</li>
+        <li><b>(b) 误码率</b>：信号幅度 1，标准差 \(\sqrt{0.1/(1-a^2)}\)：
+\[\begin{aligned}P_e&=Q\!\left(\frac{1}{\sqrt{0.1/(1-a^2)}}\right)\\&=Q\!\left(\sqrt{\frac{1-a^2}{0.1}}\right)\end{aligned}\]</li>
+        <li><b>数值自检</b>：取 a = 0.5：
+\[\begin{aligned}\text{(a)}&:\ \tfrac12Q(4.74)+\tfrac12Q(1.58)\\&\ \approx\tfrac12(0.057)=0.028\\ \text{(b)}&:\ \sigma_{\tilde w}^2=\tfrac{0.1}{0.75}=0.133\\&\ Q(\sqrt{7.5})=Q(2.74)=0.0031\end{aligned}\]
+ZF 约好 9 倍；a → 0 时两式都变成 \(Q(1/\sqrt{0.1})=Q(3.16)\) ✓。</li>
       </ol>
       <div class="ans">(a) ½Q((1+a)/√0.1) + ½Q((1−a)/√0.1)；(b) Q(√((1−a²)/0.1))</div>
       <div class="official"><b>官方答案：</b>同上 ✓</div>
@@ -267,10 +298,19 @@
     <!-- EN:p6q2 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>(a) Take \(b_n=+1\): if \(b_{n-1}=+1\) the amplitude is 1 + a, if \(b_{n-1}=-1\) it is 1 − a; the noise standard deviation is √0.1:<div class="calc">P<sub>e</sub> = ½Q((1 + a)/√0.1) + ½Q((1 − a)/√0.1)</div></li>
-        <li>(b) Ideal zero forcing: \(C(z)=\dfrac{1}{1+az^{-1}}=\sum_{k\ge0}(-a)^kz^{-k}\) (converges for |a| &lt; 1); the output is \(b_n\) plus filtered noise.</li>
-        <li>Noise variance = 0.1 × sum of squared coefficients = \(0.1\sum_k a^{2k}=\dfrac{0.1}{1-a^2}\).</li>
-        <li>\(P_e=Q\!\left(\dfrac{1}{\sqrt{0.1/(1-a^2)}}\right)=Q\!\left(\sqrt{\dfrac{1-a^2}{0.1}}\right)\).</li>
+        <li><b>(a) Split into cases</b>: noise variance 0.1, standard deviation \(\sigma=\sqrt{0.1}=0.316\); threshold 0. Take \(b_n=+1\); an error means \(y_n\lt0\):<div class="tw"><table class="mini"><thead><tr><th>\(b_{n-1}\)</th><th>mean of \(y_n\)</th><th>error probability</th></tr></thead><tbody><tr><td>+1</td><td>1 + a</td><td>\(Q\big(\frac{1+a}{\sqrt{0.1}}\big)\)</td></tr><tr><td>−1</td><td>1 − a</td><td>\(Q\big(\frac{1-a}{\sqrt{0.1}}\big)\)</td></tr></tbody></table></div>0 &lt; a &lt; 1 keeps 1 − a &gt; 0, so the mean stays on the correct side of the threshold.</li>
+        <li><b>(a) Average</b>: each case has probability ½; \(b_n=-1\) is symmetric and gives the same result (Ch 6 p.28):<div class="calc">P<sub>e</sub> = ½Q((1 + a)/√0.1) + ½Q((1 − a)/√0.1)</div></li>
+        <li><b>(b) Ideal zero-forcing equaliser</b>: zero forcing (ZF) uses \(C(z)=1/H(z)\), so that \(C(z)H(z)=1\) (Ch 6 p.23). Expand as a geometric series (|a| &lt; 1, so it converges and is stable):
+\[\begin{aligned}C(z)&=\frac{1}{1+az^{-1}}=\sum_{k\ge0}(-a)^kz^{-k}\\&=1-az^{-1}+a^2z^{-2}-\cdots\end{aligned}\]
+Output \(=b_n+\tilde w_n\) with \(\tilde w_n=\sum_k(-a)^kw_{n-k}\): the ISI is gone completely, so there is no case split.</li>
+        <li><b>(b) Noise enhancement</b>: white noise through a filter has variance = input variance × sum of squared coefficients:
+\[\begin{aligned}\sigma_{\tilde w}^2&=0.1\sum_{k\ge0}a^{2k}=0.1(1+a^2+a^4+\cdots)\\&=\frac{0.1}{1-a^2}\end{aligned}\]
+The closer a is to 1, the larger \(1/(1-a^2)\): this is the noise enhancement of zero forcing.</li>
+        <li><b>(b) Error probability</b>: signal amplitude 1, standard deviation \(\sqrt{0.1/(1-a^2)}\):
+\[\begin{aligned}P_e&=Q\!\left(\frac{1}{\sqrt{0.1/(1-a^2)}}\right)\\&=Q\!\left(\sqrt{\frac{1-a^2}{0.1}}\right)\end{aligned}\]</li>
+        <li><b>Numerical check</b>: take a = 0.5:
+\[\begin{aligned}\text{(a)}&:\ \tfrac12Q(4.74)+\tfrac12Q(1.58)\\&\ \approx\tfrac12(0.057)=0.028\\ \text{(b)}&:\ \sigma_{\tilde w}^2=\tfrac{0.1}{0.75}=0.133\\&\ Q(\sqrt{7.5})=Q(2.74)=0.0031\end{aligned}\]
+ZF is about 9 times better; as a → 0 both formulas become \(Q(1/\sqrt{0.1})=Q(3.16)\) ✓.</li>
       </ol>
       <div class="ans">(a) ½Q((1+a)/√0.1) + ½Q((1−a)/√0.1); (b) Q(√((1−a²)/0.1))</div>
       <div class="official"><b>Official answer:</b> same as above ✓</div>
@@ -365,12 +405,22 @@
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>(a) 展开：\(u_n=A_n+\tfrac12A_{n-1}+z_n+q\big(A_{n+1}+\tfrac12A_n+z_{n+1}\big)\)，所以 \(u_n-A_n=\tfrac q2A_n+\tfrac12A_{n-1}+qA_{n+1}+z_n+qz_{n+1}\)。</li>
-        <li>各项独立、均值 0，均方值相加：\(E[(u_n-A_n)^2]=\tfrac{q^2}4+\tfrac14+q^2+1+q^2=1.25+2.25q^2\)，q = 0 最小。</li>
-        <li>q = 0 时 \(u_n=y_n\)，幅度 1.5 或 0.5：<div class="calc">Pe = ½Q(1.5) + ½Q(0.5) = ½(0.0668) + ½(0.3085) = 0.188</div></li>
-        <li>(b) 上一次判对：ISI 完全减掉，\(u_n=A_n+z_n\)，出错概率 \(Q(1)=0.159\)。</li>
-        <li>上一次判错（\(\hat A_{n-1}=-A_{n-1}\)）：\(u_n=A_n+A_{n-1}+z_n\)，幅度 2 或 0 各一半，出错概率 \(\tfrac12Q(2)+\tfrac12\cdot\tfrac12=0.261\)。</li>
-        <li>设长期误码率 p：\(p=(1-p)\times0.159+p\times0.261\) → \(p=\dfrac{0.159}{1-0.261+0.159}=0.177\)。</li>
+        <li><b>(a) 展开误差</b>：代入 \(x_0=1\)、\(x_1=\tfrac12\)：\(y_n=A_n+\tfrac12A_{n-1}+z_n\)，\(y_{n+1}=A_{n+1}+\tfrac12A_n+z_{n+1}\)：
+\[\begin{aligned}u_n-A_n&=y_n+qy_{n+1}-A_n\\&=\tfrac q2A_n+\tfrac12A_{n-1}+qA_{n+1}\\&\quad+z_n+qz_{n+1}\end{aligned}\]
+注意 \(y_{n+1}\) 里也有 \(\tfrac12A_n\)，所以 \(u_n\) 中 \(A_n\) 的系数是 \(1+\tfrac q2\)，误差里剩 \(\tfrac q2A_n\)。</li>
+        <li><b>(a) 均方误差（MSE）</b>：五项互相独立、均值为 0，交叉项的期望为 0，所以均方值直接相加；\(E[A^2]=1\)，\(E[z^2]=\sigma^2=1\)：
+\[\begin{aligned}E[(u_n-A_n)^2]&=\tfrac{q^2}4+\tfrac14+q^2+1+q^2\\&=1.25+2.25q^2\end{aligned}\]</li>
+        <li><b>(a) 最优 q</b>：\(\frac{d}{dq}(1.25+2.25q^2)=4.5q\)，令它为 0 得 q = 0，最小 MSE = 1.25。原因：用 \(y_{n+1}\) 只多拿到 \(\tfrac q2A_n\) 的有用信号，却引入 \(qA_{n+1}\) 的干扰和 \(qz_{n+1}\) 的噪声，得不偿失。</li>
+        <li><b>(a) 误码率</b>：q = 0 时 \(u_n=y_n\)，σ = 1。设 \(A_n=+1\)：\(A_{n-1}=+1\) 时均值 1.5，\(A_{n-1}=-1\) 时均值 0.5，各 ½。查 Q 表（Q-table）：Q(1.5) = 0.0668，Q(0.5) = 0.3085：
+\[P_e=\tfrac12(0.0668)+\tfrac12(0.3085)=0.188\approx0.19\]</li>
+        <li><b>(b) 上一次判对</b>：
+\[\begin{aligned}u_n&=y_n-\tfrac12\hat A_{n-1}\\&=A_n+\tfrac12(A_{n-1}-\hat A_{n-1})+z_n\end{aligned}\]
+判对时括号为 0，\(u_n=A_n+z_n\)，ISI 完全消掉：出错概率 \(Q(1/1)=Q(1)=0.159\)。</li>
+        <li><b>(b) 上一次判错</b>：\(\hat A_{n-1}=-A_{n-1}\)，括号 \(=2A_{n-1}\)，\(u_n=A_n+A_{n-1}+z_n\)：ISI 不是减掉，而是加倍。设 \(A_n=+1\)：\(A_{n-1}=+1\) 时均值 2 → Q(2) = 0.0228；\(A_{n-1}=-1\) 时均值 0，正好在门限上 → Q(0) = ½：
+\[\begin{aligned}P(\text{错}\mid\text{上次错})&=\tfrac12(0.0228)+\tfrac12(0.5)\\&=0.261\end{aligned}\]</li>
+        <li><b>(b) 稳态误码率</b>：n 很大时每次出错的概率趋于同一个 p，用全概率公式：
+\[\begin{aligned}p&=(1-p)\times0.159+p\times0.261\\ p&=\frac{0.159}{1-0.261+0.159}\\&=\frac{0.159}{0.898}=0.177\approx0.18\end{aligned}\]
+自检：从 n = 1 开始（\(A_0=0\)，第一次没有 ISI），\(p_1=0.159\)，\(p_n=0.159+0.102\,p_{n-1}\)：\(p_2=0.175\)，\(p_3=0.177\)，很快收敛到 0.177 ✓。而且 0.159（无错误传播）&lt; 0.177（DFE）&lt; 0.188（线性均衡），顺序合理。</li>
       </ol>
       <div class="ans">(a) q = 0，Pe ≈ 0.19；(b) Pe ≈ 0.18</div>
       <div class="official"><b>官方答案：</b>(a) q = 0，Pe ≈ 0.19；(b) Pe ≈ 0.18 ✓</div>
@@ -422,12 +472,22 @@
     <!-- EN:p6q3 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>(a) Expand: \(u_n=A_n+\tfrac12A_{n-1}+z_n+q\big(A_{n+1}+\tfrac12A_n+z_{n+1}\big)\), so \(u_n-A_n=\tfrac q2A_n+\tfrac12A_{n-1}+qA_{n+1}+z_n+qz_{n+1}\).</li>
-        <li>All terms are independent with zero mean, so their mean squares add: \(E[(u_n-A_n)^2]=\tfrac{q^2}4+\tfrac14+q^2+1+q^2=1.25+2.25q^2\), minimised at q = 0.</li>
-        <li>With q = 0, \(u_n=y_n\) and the amplitude is 1.5 or 0.5:<div class="calc">P<sub>e</sub> = ½Q(1.5) + ½Q(0.5) = ½(0.0668) + ½(0.3085) = 0.188</div></li>
-        <li>(b) Previous decision correct: the ISI is cancelled exactly, \(u_n=A_n+z_n\), error probability \(Q(1)=0.159\).</li>
-        <li>Previous decision wrong (\(\hat A_{n-1}=-A_{n-1}\)): \(u_n=A_n+A_{n-1}+z_n\), amplitude 2 or 0 with equal probability, error probability \(\tfrac12Q(2)+\tfrac12\cdot\tfrac12=0.261\).</li>
-        <li>Let p be the long-run error rate: \(p=(1-p)\times0.159+p\times0.261\) → \(p=\dfrac{0.159}{1-0.261+0.159}=0.177\).</li>
+        <li><b>(a) Expand the error</b>: with \(x_0=1\), \(x_1=\tfrac12\): \(y_n=A_n+\tfrac12A_{n-1}+z_n\) and \(y_{n+1}=A_{n+1}+\tfrac12A_n+z_{n+1}\):
+\[\begin{aligned}u_n-A_n&=y_n+qy_{n+1}-A_n\\&=\tfrac q2A_n+\tfrac12A_{n-1}+qA_{n+1}\\&\quad+z_n+qz_{n+1}\end{aligned}\]
+Note that \(y_{n+1}\) also contains \(\tfrac12A_n\), so the coefficient of \(A_n\) in \(u_n\) is \(1+\tfrac q2\) and \(\tfrac q2A_n\) is left in the error.</li>
+        <li><b>(a) Mean squared error (MSE)</b>: the five terms are independent with zero mean, so the cross terms average to 0 and the mean squares simply add; \(E[A^2]=1\), \(E[z^2]=\sigma^2=1\):
+\[\begin{aligned}E[(u_n-A_n)^2]&=\tfrac{q^2}4+\tfrac14+q^2+1+q^2\\&=1.25+2.25q^2\end{aligned}\]</li>
+        <li><b>(a) Optimal q</b>: \(\frac{d}{dq}(1.25+2.25q^2)=4.5q\); setting it to 0 gives q = 0, minimum MSE = 1.25. Reason: using \(y_{n+1}\) adds only \(\tfrac q2A_n\) of useful signal but brings in \(qA_{n+1}\) interference and \(qz_{n+1}\) noise, a net loss.</li>
+        <li><b>(a) Error probability</b>: with q = 0, \(u_n=y_n\) and σ = 1. Take \(A_n=+1\): the mean is 1.5 if \(A_{n-1}=+1\) and 0.5 if \(A_{n-1}=-1\), ½ each. From the Q-table: Q(1.5) = 0.0668, Q(0.5) = 0.3085:
+\[P_e=\tfrac12(0.0668)+\tfrac12(0.3085)=0.188\approx0.19\]</li>
+        <li><b>(b) Previous decision correct</b>:
+\[\begin{aligned}u_n&=y_n-\tfrac12\hat A_{n-1}\\&=A_n+\tfrac12(A_{n-1}-\hat A_{n-1})+z_n\end{aligned}\]
+If the decision was correct the bracket is 0 and \(u_n=A_n+z_n\): the ISI is cancelled exactly, error probability \(Q(1/1)=Q(1)=0.159\).</li>
+        <li><b>(b) Previous decision wrong</b>: \(\hat A_{n-1}=-A_{n-1}\), the bracket is \(2A_{n-1}\) and \(u_n=A_n+A_{n-1}+z_n\): instead of being removed, the ISI is doubled. Take \(A_n=+1\): if \(A_{n-1}=+1\) the mean is 2 → Q(2) = 0.0228; if \(A_{n-1}=-1\) the mean is 0, right on the threshold → Q(0) = ½:
+\[\begin{aligned}&P(\text{error}\mid\text{previous error})\\&=\tfrac12(0.0228)+\tfrac12(0.5)=0.261\end{aligned}\]</li>
+        <li><b>(b) Steady-state error rate</b>: for large n the error probability tends to one value p; by total probability:
+\[\begin{aligned}p&=(1-p)\times0.159+p\times0.261\\ p&=\frac{0.159}{1-0.261+0.159}\\&=\frac{0.159}{0.898}=0.177\approx0.18\end{aligned}\]
+Check: starting at n = 1 (\(A_0=0\), so the first decision has no ISI), \(p_1=0.159\) and \(p_n=0.159+0.102\,p_{n-1}\): \(p_2=0.175\), \(p_3=0.177\), quickly converging to 0.177 ✓. Also 0.159 (no error propagation) &lt; 0.177 (DFE) &lt; 0.188 (linear equaliser), a sensible order.</li>
       </ol>
       <div class="ans">(a) q = 0, P<sub>e</sub> ≈ 0.19; (b) P<sub>e</sub> ≈ 0.18</div>
       <div class="official"><b>Official answer:</b> (a) q = 0, P<sub>e</sub> ≈ 0.19; (b) P<sub>e</sub> ≈ 0.18 ✓</div>

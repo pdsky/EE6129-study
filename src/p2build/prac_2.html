@@ -37,9 +37,19 @@
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>ρ = 0.1，\(e^{\rho^2}-1=e^{0.01}-1=0.01005\)。</li>
-        <li>分母：\(\sqrt{2\pi}\times50\times0.1=2.5066\times5=12.53\)。</li>
-        <li>\(AFD=0.01005/12.53=8.0\times10^{-4}\) s。</li>
+        <li><b>定参数</b>：最大多普勒频移 f<sub>D</sub> = 50 Hz；ρ = Z<sub>min</sub>/Z<sub>rms</sub>（讲义第 2 章 p.41）。signal strength 指<b>幅度</b>，"rms 值的 0.1 倍"即 ρ = 0.1。换成 dB：20 log₁₀0.1 = −20 dB，对应功率比 ρ² = 0.01。</li>
+        <li><b>分子</b>：先平方，再取指数：
+\[\begin{aligned}\rho^2&=0.1^2=0.01\\ e^{\rho^2}-1&=1.01005-1=0.01005\end{aligned}\]
+来历（讲义 p.43）：AFD = P(z &lt; Z<sub>min</sub>) / L<sub>Z</sub>，瑞利下 P(z &lt; Z<sub>min</sub>) = 1 − e<sup>−ρ²</sup>，L<sub>Z</sub> = √(2π) f<sub>D</sub> ρ e<sup>−ρ²</sup>，上下同除 e<sup>−ρ²</sup> 就得到分子 e<sup>ρ²</sup> − 1。x 很小时 e<sup>x</sup> − 1 ≈ x，所以约 0.01。</li>
+        <li><b>分母</b>：
+\[\begin{aligned}\sqrt{2\pi}\,f_D\,\rho&=\sqrt{6.2832}\times50\times0.1\\&=2.5066\times5=12.53\ \text{s}^{-1}\end{aligned}\]
+f<sub>D</sub> 的单位是 Hz = 1/s，所以分母单位是 1/s，相除后结果是秒。</li>
+        <li><b>相除</b>：
+\[\begin{aligned}AFD&=\frac{e^{\rho^2}-1}{\sqrt{2\pi}\,f_D\,\rho}=\frac{0.01005}{12.53\ \text{s}^{-1}}\\&=8.02\times10^{-4}\ \text{s}\approx0.8\ \text{ms}\end{aligned}\]
+意思是：信号每次掉到 rms 值的 0.1 倍以下，平均要过 0.8 ms 才回到门限以上。</li>
+        <li><b>自检</b>：用 LCR（讲义 p.41）反过来验证：
+<div class="calc">LCR = √(2π) f<sub>D</sub> ρ e<sup>−ρ²</sup> = 12.53 × 0.99005 = 12.41 次/秒<br>AFD × LCR = 8.02 × 10⁻⁴ × 12.41 = 0.00995<br>1 − e<sup>−0.01</sup> = 0.00995 ✓</div>
+每秒约 12 次衰落、每次约 0.8 ms，合起来约 1% 的时间低于门限，正好是瑞利分布的 P(z &lt; Z<sub>min</sub>)。小 ρ 近似 AFD ≈ ρ/(√(2π) f<sub>D</sub>) = 0.1/125.3 = 7.98 × 10⁻⁴ s，也对得上 ✓。</li>
       </ol>
       <div class="ans">AFD ≈ 0.8 ms</div>
       <div class="official"><b>官方答案：</b>0.8 ms ✓</div>
@@ -96,9 +106,19 @@
     <!-- EN:p2q1 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>ρ = 0.1, \(e^{\rho^2}-1=e^{0.01}-1=0.01005\).</li>
-        <li>Denominator: \(\sqrt{2\pi}\times50\times0.1=2.5066\times5=12.53\).</li>
-        <li>\(AFD=0.01005/12.53=8.0\times10^{-4}\) s.</li>
+        <li><b>Parameters</b>: maximum Doppler shift f<sub>D</sub> = 50 Hz; ρ = Z<sub>min</sub>/Z<sub>rms</sub> (Ch 2 p.41). "Signal strength" is an <b>amplitude</b>, so "0.1 of the rms value" means ρ = 0.1. In dB: 20 log₁₀0.1 = −20 dB, i.e. a power ratio ρ² = 0.01.</li>
+        <li><b>Numerator</b>: square first, then take the exponential:
+\[\begin{aligned}\rho^2&=0.1^2=0.01\\ e^{\rho^2}-1&=1.01005-1=0.01005\end{aligned}\]
+Where it comes from (Ch 2 p.43): AFD = P(z &lt; Z<sub>min</sub>) / L<sub>Z</sub>; for Rayleigh fading P(z &lt; Z<sub>min</sub>) = 1 − e<sup>−ρ²</sup> and L<sub>Z</sub> = √(2π) f<sub>D</sub> ρ e<sup>−ρ²</sup>; dividing top and bottom by e<sup>−ρ²</sup> gives the numerator e<sup>ρ²</sup> − 1. For small x, e<sup>x</sup> − 1 ≈ x, so it is about 0.01.</li>
+        <li><b>Denominator</b>:
+\[\begin{aligned}\sqrt{2\pi}\,f_D\,\rho&=\sqrt{6.2832}\times50\times0.1\\&=2.5066\times5=12.53\ \text{s}^{-1}\end{aligned}\]
+f<sub>D</sub> is in Hz = 1/s, so the denominator is in 1/s and the result of the division is in seconds.</li>
+        <li><b>Divide</b>:
+\[\begin{aligned}AFD&=\frac{e^{\rho^2}-1}{\sqrt{2\pi}\,f_D\,\rho}=\frac{0.01005}{12.53\ \text{s}^{-1}}\\&=8.02\times10^{-4}\ \text{s}\approx0.8\ \text{ms}\end{aligned}\]
+Meaning: each time the signal drops below 0.1 of its rms value, it takes on average 0.8 ms to come back above the threshold.</li>
+        <li><b>Check</b>: verify with the LCR (Ch 2 p.41):
+<div class="calc">LCR = √(2π) f<sub>D</sub> ρ e<sup>−ρ²</sup> = 12.53 × 0.99005 = 12.41 crossings/s<br>AFD × LCR = 8.02 × 10⁻⁴ × 12.41 = 0.00995<br>1 − e<sup>−0.01</sup> = 0.00995 ✓</div>
+About 12 fades per second, each about 0.8 ms long, add up to about 1% of the time below the threshold, which is exactly the Rayleigh P(z &lt; Z<sub>min</sub>). The small-ρ approximation AFD ≈ ρ/(√(2π) f<sub>D</sub>) = 0.1/125.3 = 7.98 × 10⁻⁴ s agrees too ✓.</li>
       </ol>
       <div class="ans">AFD ≈ 0.8 ms</div>
       <div class="official"><b>Official answer:</b> 0.8 ms ✓</div>
@@ -202,12 +222,30 @@
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>(a) W：只考虑路径损耗时的<b>平均接收功率</b>（两个基站到手机的平均值相同）；\(Z_1,Z_2\)：两条链路各自的<b>阴影衰落</b>分量（dB）。</li>
-        <li>(b) 中断 = 两条都低于 T = W − Δ，即 \(Z_1<-\Delta\) 且 \(Z_2<-\Delta\)。每个的概率 \(P(Z_i<-\Delta)=Q(\Delta/\sigma)\)（对称性）。独立 → 相乘：\(P_{out}=[Q(\Delta/\sigma)]^2\)。</li>
-        <li>(c) 两条链路共享 bY，所以相关。技巧：<b>先固定 Y</b>，此时 \(Z_1,Z_2\) 只剩独立的 \(aY_1,aY_2\)。</li>
-        <li>为了和答案的形式一致，令 \(Y=\sigma u\)，\(u\sim\mathcal N(0,1)\)。给定 u：\(Z_i\sim\mathcal N(b\sigma u,\ a^2\sigma^2)\)，<div class="calc">P(Z_i &lt; −Δ | u) = Q( (Δ + bσu) / (|a|σ) )</div></li>
-        <li>给定 u 时两者独立：\(P(\text{中断}\mid u)=Q\big(\tfrac{\Delta+b\sigma u}{|a|\sigma}\big)^2\)。</li>
-        <li>再按 u 的标准正态密度 \(\tfrac{1}{\sqrt{2\pi}}e^{-u^2/2}\) 求平均（全概率定理），即得结果。</li>
+        <li><b>(a) 解释各项</b>：W：只考虑路径损耗时的<b>平均接收功率</b>（dBm）；手机到两个基站的平均路径损耗相同，所以两条链路共用同一个 W。\(Z_1,Z_2\)：两条链路各自的<b>阴影衰落</b>（shadowing）分量（dB）。阴影在 dB 上是零均值高斯（讲义第 2 章 p.11–12），所以 \(Z_i\sim\mathcal N(0,\sigma^2)\)，\(E[P_{r,i}]=W\)。</li>
+        <li><b>(b) 把中断写成 Z 的条件</b>：门限 T = W − Δ，所以对每条链路
+\[\begin{aligned}P_{r,i}\lt T&\iff W+Z_i\lt W-\Delta\\&\iff Z_i\lt-\Delta\end{aligned}\]
+手机可以连任一个基站（宏分集，macroscopic diversity，讲义第 4 章 p.4），只有两条<b>都</b>低于 T 才中断：\(P_{out}=P(Z_1\lt-\Delta\ \text{且}\ Z_2\lt-\Delta)\)。</li>
+        <li><b>(b) 单条链路 → 独立相乘</b>：除以 σ 标准化，再用高斯对称性：
+\[\begin{aligned}P(Z_i\lt-\Delta)&=P\Big(\frac{Z_i}{\sigma}\lt-\frac{\Delta}{\sigma}\Big)\\&=P\Big(N\gt\frac{\Delta}{\sigma}\Big)=Q\Big(\frac{\Delta}{\sigma}\Big)\end{aligned}\]
+\(Z_1,Z_2\) 独立，"两个都发生"的概率 = 各自概率相乘：
+\[P_{out}=Q\Big(\frac{\Delta}{\sigma}\Big)\cdot Q\Big(\frac{\Delta}{\sigma}\Big)=\Big[Q\Big(\frac{\Delta}{\sigma}\Big)\Big]^2\]
+数字感受：Δ = σ 时单个基站 Q(1) = 0.159，两个基站 0.159² = 0.025（讲义第 4 章 p.3：M 条独立支路 \(P_{out}^M\)）。</li>
+        <li><b>(c) 为什么不能直接平方</b>：两条链路含有同一个 bY。Y、Y₁、Y₂ 独立且均值为 0，交叉项的期望都是 0：
+\[\begin{aligned}\operatorname{Cov}(Z_1,Z_2)&=E[(aY_1+bY)(aY_2+bY)]\\&=b^2E[Y^2]=b^2\sigma^2\neq0\end{aligned}\]
+所以 Z₁、Z₂ 相关，\(P(A\cap B)\neq P(A)P(B)\)。（要和 \(Z_i\sim\mathcal N(0,\sigma^2)\) 一致，隐含 \(a^2+b^2=1\)，相关系数 = b²。）技巧：<b>先固定共享的 Y</b>（条件化，conditioning）。</li>
+        <li><b>(c) 固定 Y</b>：为了和答案形式一致，令 \(Y=\sigma u\)，\(u\sim\mathcal N(0,1)\)。给定 u，\(b\sigma u\) 只是常数平移，随机的只剩 \(aY_i\sim\mathcal N(0,a^2\sigma^2)\)（标准差 \(|a|\sigma\)）：
+\[Z_i\mid u\ \sim\ \mathcal N\big(b\sigma u,\ a^2\sigma^2\big)\]
+给定 u 后 Z₁ 只和 Y₁ 有关、Z₂ 只和 Y₂ 有关，所以两者<b>条件独立</b>（conditionally independent）。</li>
+        <li><b>(c) 条件中断概率</b>：一条链路，标准化方法同 (b)：
+\[\begin{aligned}P(Z_i\lt-\Delta\mid u)&=P\big(aY_i\lt-(\Delta+b\sigma u)\big)\\&=Q\Big(\frac{\Delta+b\sigma u}{|a|\sigma}\Big)\end{aligned}\]
+条件独立 → 相乘：
+\[P(\text{中断}\mid u)=\Big[Q\Big(\frac{\Delta+b\sigma u}{|a|\sigma}\Big)\Big]^2\]
+u 越负（共同阴影越深），Q 的参数越小、Q 越大，越容易中断。</li>
+        <li><b>(c) 全概率定理求平均</b>：\(P(A)=\int P(A\mid u)\,f_U(u)\,du\)，u 的密度 \(f_U(u)=\frac{1}{\sqrt{2\pi}}e^{-u^2/2}\)：
+\[\begin{aligned}P_{out}&=\int_{-\infty}^{\infty}P(\text{中断}\mid u)\,f_U(u)\,du\\&=\int_{-\infty}^{\infty}\frac{1}{\sqrt{2\pi}}\Big[Q\Big(\frac{\Delta+b\sigma u}{|a|\sigma}\Big)\Big]^2\\&\qquad\times e^{-u^2/2}\,du\end{aligned}\]
+积分变量 u 改名为 y，就是题目的式子（题目写的 \(Q[\cdot]^2\) 指 \([Q(\cdot)]^2\)）。若直接对 Y = y 积分，\(f_Y\) 里多一个 1/σ，换元 y = σu、dy = σ du 后正好抵消，结果相同。</li>
+        <li><b>自检</b>：① b = 0（没有共同阴影，a = 1）：Q 里不含 u，可以提到积分外，\(\int\frac{1}{\sqrt{2\pi}}e^{-u^2/2}du=1\)，得 \([Q(\Delta/\sigma)]^2\)，回到 (b) ✓；② a → 0（完全共享，b = 1）：u &lt; −Δ/σ 时 Q → 1，否则 Q → 0，\(P_{out}=P(u\lt-\Delta/\sigma)=Q(\Delta/\sigma)\)，和只有一个基站一样，分集无效 ✓。</li>
       </ol>
       <div class="ans">(b) [Q(Δ/σ)]²；(c) ∫ (1/√(2π)) Q[(Δ + bσu)/(|a|σ)]² e^{−u²/2} du</div>
       <div class="official"><b>官方答案：</b>与上面一致 ✓（题目里写成 byσ，积分变量 y 指的是归一化后的 u）</div>
@@ -278,12 +316,30 @@
     <!-- EN:p2q2 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>(a) W: the <b>mean received power</b> due to path loss alone (the same for both base stations); \(Z_1,Z_2\): the <b>shadowing</b> components (dB) of the two links.</li>
-        <li>(b) Outage = both below T = W − Δ, i.e. \(Z_1\lt-\Delta\) and \(Z_2\lt-\Delta\). Each has probability \(P(Z_i\lt-\Delta)=Q(\Delta/\sigma)\) (by symmetry). Independent → multiply: \(P_{out}=[Q(\Delta/\sigma)]^2\).</li>
-        <li>(c) The two links share bY, which makes them correlated. Trick: <b>condition on Y first</b>; then \(Z_1,Z_2\) contain only the independent parts \(aY_1,aY_2\).</li>
-        <li>To match the form of the answer, let \(Y=\sigma u\), \(u\sim\mathcal N(0,1)\). Given u: \(Z_i\sim\mathcal N(b\sigma u,\ a^2\sigma^2)\),<div class="calc">P(Z<sub>i</sub> &lt; −Δ | u) = Q( (Δ + bσu) / (|a|σ) )</div></li>
-        <li>Given u the two links are independent: \(P(\text{outage}\mid u)=Q\big(\tfrac{\Delta+b\sigma u}{|a|\sigma}\big)^2\).</li>
-        <li>Average over the standard normal density of u, \(\tfrac{1}{\sqrt{2\pi}}e^{-u^2/2}\) (total probability theorem), which gives the result.</li>
+        <li><b>(a) Interpret the terms</b>: W: the <b>mean received power</b> (dBm) due to path loss alone; the mean path loss to the two base stations is the same, so both links share the same W. \(Z_1,Z_2\): the <b>shadowing</b> components (dB) of the two links. Shadowing in dB is zero-mean Gaussian (Ch 2 p.11–12), so \(Z_i\sim\mathcal N(0,\sigma^2)\) and \(E[P_{r,i}]=W\).</li>
+        <li><b>(b) Write outage as a condition on Z</b>: the threshold is T = W − Δ, so for each link
+\[\begin{aligned}P_{r,i}\lt T&\iff W+Z_i\lt W-\Delta\\&\iff Z_i\lt-\Delta\end{aligned}\]
+The phone can use either base station (macroscopic diversity, Ch 4 p.4), so outage happens only when <b>both</b> links are below T: \(P_{out}=P(Z_1\lt-\Delta\ \text{and}\ Z_2\lt-\Delta)\).</li>
+        <li><b>(b) One link → multiply (independent)</b>: divide by σ to standardise, then use the symmetry of the Gaussian:
+\[\begin{aligned}P(Z_i\lt-\Delta)&=P\Big(\frac{Z_i}{\sigma}\lt-\frac{\Delta}{\sigma}\Big)\\&=P\Big(N\gt\frac{\Delta}{\sigma}\Big)=Q\Big(\frac{\Delta}{\sigma}\Big)\end{aligned}\]
+\(Z_1,Z_2\) are independent, so the probability that both happen is the product:
+\[P_{out}=Q\Big(\frac{\Delta}{\sigma}\Big)\cdot Q\Big(\frac{\Delta}{\sigma}\Big)=\Big[Q\Big(\frac{\Delta}{\sigma}\Big)\Big]^2\]
+For a feel of the numbers: with Δ = σ, one base station gives Q(1) = 0.159 and two give 0.159² = 0.025 (Ch 4 p.3: M independent branches give \(P_{out}^M\)).</li>
+        <li><b>(c) Why we cannot just square</b>: both links contain the same bY. Y, Y₁, Y₂ are independent with zero mean, so every cross term has zero expectation:
+\[\begin{aligned}\operatorname{Cov}(Z_1,Z_2)&=E[(aY_1+bY)(aY_2+bY)]\\&=b^2E[Y^2]=b^2\sigma^2\neq0\end{aligned}\]
+So Z₁ and Z₂ are correlated and \(P(A\cap B)\neq P(A)P(B)\). (To be consistent with \(Z_i\sim\mathcal N(0,\sigma^2)\) we need \(a^2+b^2=1\); the correlation coefficient is then b².) Trick: <b>fix the shared Y first</b> (conditioning).</li>
+        <li><b>(c) Fix Y</b>: to match the form of the answer, let \(Y=\sigma u\) with \(u\sim\mathcal N(0,1)\). Given u, \(b\sigma u\) is just a constant shift and the only random part is \(aY_i\sim\mathcal N(0,a^2\sigma^2)\) (standard deviation \(|a|\sigma\)):
+\[Z_i\mid u\ \sim\ \mathcal N\big(b\sigma u,\ a^2\sigma^2\big)\]
+Given u, Z₁ depends only on Y₁ and Z₂ only on Y₂, so the two are <b>conditionally independent</b>.</li>
+        <li><b>(c) Conditional outage</b>: for one link, standardise as in (b):
+\[\begin{aligned}P(Z_i\lt-\Delta\mid u)&=P\big(aY_i\lt-(\Delta+b\sigma u)\big)\\&=Q\Big(\frac{\Delta+b\sigma u}{|a|\sigma}\Big)\end{aligned}\]
+Conditionally independent → multiply:
+\[P(\text{outage}\mid u)=\Big[Q\Big(\frac{\Delta+b\sigma u}{|a|\sigma}\Big)\Big]^2\]
+The more negative u (the deeper the common shadow), the smaller the argument of Q and the larger Q: outage becomes more likely.</li>
+        <li><b>(c) Average with the total probability theorem</b>: \(P(A)=\int P(A\mid u)\,f_U(u)\,du\), with the density of u \(f_U(u)=\frac{1}{\sqrt{2\pi}}e^{-u^2/2}\):
+\[\begin{aligned}P_{out}&=\int_{-\infty}^{\infty}P(\text{outage}\mid u)\,f_U(u)\,du\\&=\int_{-\infty}^{\infty}\frac{1}{\sqrt{2\pi}}\Big[Q\Big(\frac{\Delta+b\sigma u}{|a|\sigma}\Big)\Big]^2\\&\qquad\times e^{-u^2/2}\,du\end{aligned}\]
+Renaming the integration variable u to y gives the question's expression (its \(Q[\cdot]^2\) means \([Q(\cdot)]^2\)). If you integrate over Y = y directly, \(f_Y\) has an extra 1/σ, which cancels after substituting y = σu, dy = σ du; the result is the same.</li>
+        <li><b>Check</b>: ① b = 0 (no common shadowing, a = 1): Q no longer depends on u and comes out of the integral, \(\int\frac{1}{\sqrt{2\pi}}e^{-u^2/2}du=1\), giving \([Q(\Delta/\sigma)]^2\), part (b) ✓; ② a → 0 (fully shared, b = 1): Q → 1 for u &lt; −Δ/σ and Q → 0 otherwise, so \(P_{out}=P(u\lt-\Delta/\sigma)=Q(\Delta/\sigma)\), the same as one base station: no diversity ✓.</li>
       </ol>
       <div class="ans">(b) [Q(Δ/σ)]²; (c) ∫ (1/√(2π)) Q[(Δ + bσu)/(|a|σ)]² e<sup>−u²/2</sup> du</div>
       <div class="official"><b>Official answer:</b> same as above ✓ (the question writes byσ; its integration variable y is the normalised u)</div>
@@ -392,8 +448,22 @@
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>(a) 用户 2 当噪声：SINR = 10 / (10 + 0.1) = 0.990。<div class="calc">C₁ = 20×10⁶ × log₂(1 + 0.990) = 20×10⁶ × 0.993 = 19.86 Mbps</div></li>
-        <li>(b) 用户 1 被完全减掉，只剩噪声：SNR = 10 / 0.1 = 100。<div class="calc">C₂ = 20×10⁶ × log₂(101) = 20×10⁶ × 6.658 = 133.16 Mbps</div></li>
+        <li><b>公式与已知</b>：香农容量（Shannon capacity，讲义第 2 章 p.48）\(C=B\log_2(1+\gamma)\)，γ 用<b>线性</b>比值。有干扰并把它当噪声时，γ 换成 SINR（讲义第 1a 章 p.16）：
+\[\text{SINR}=\frac{P}{N+I}\]
+已知（功率统一用 mW）：P₁ = P₂ = 10 mW，N = 0.1 mW；B = 20 MHz = 20 × 10⁶ Hz。</li>
+        <li><b>(a) 用户 1 的 SINR</b>：先解用户 1 时用户 2 还在发，题目说它相当于 AWGN，所以并进噪声（干扰 I = P₂）：
+\[\text{SINR}_1=\frac{P_1}{P_2+N}=\frac{10}{10+0.1}=\frac{10}{10.1}=0.990\]
+这是线性值（约 −0.04 dB），不是 dB。</li>
+        <li><b>(a) 容量</b>：\(\log_2x=\log_{10}x/\log_{10}2\)，\(\log_{10}2=0.30103\)：
+\[\begin{aligned}\log_2 1.990&=\frac{\log_{10}1.990}{0.30103}=\frac{0.2989}{0.30103}\\&=0.993\\ C_1&=20\times10^6\times0.993\\&=19.86\times10^6\ \text{bit/s}=19.86\ \text{Mbps}\end{aligned}\]</li>
+        <li><b>(b) 用户 2 的 SNR</b>：MUD 已经把用户 1 解出来，并从接收信号里完全减掉，解用户 2 时只剩热噪声：
+\[\text{SNR}_2=\frac{P_2}{N}=\frac{10}{0.1}=100\quad(=20\ \text{dB})\]</li>
+        <li><b>(b) 容量</b>：
+\[\begin{aligned}\log_2 101&=\frac{\log_{10}101}{0.30103}=\frac{2.0043}{0.30103}\\&=6.658\\ C_2&=20\times10^6\times6.658\\&=133.16\ \text{Mbps}\end{aligned}\]
+除数取 0.301 会得到 6.659、133.18 Mbps；多保留几位（0.30103）或直接用计算器的 log₂，才和官方的 133.16 一致。</li>
+        <li><b>自检</b>：两个用户的容量之和
+\[\begin{aligned}C_1+C_2&=19.86+133.16=153.02\ \text{Mbps}\\&=20\log_2\Big(1+\frac{10+10}{0.1}\Big)\\&=20\times\log_2 201=20\times7.651\end{aligned}\]
+20 × 7.651 = 153.02 ✓：连续干扰消除（successive interference cancellation）的总容量等于两个功率合起来的单用户容量。(b) 远大于 (a)，因为用户 2 不再受 10 mW 干扰，只受 0.1 mW 噪声。</li>
       </ol>
       <div class="ans">(a) 19.86 Mbps；(b) 133.16 Mbps</div>
       <div class="official"><b>官方答案：</b>19.86 Mbps；133.16 Mbps ✓</div>
@@ -444,8 +514,22 @@
     <!-- EN:p2q3 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>(a) User 2 treated as noise: SINR = 10 / (10 + 0.1) = 0.990.<div class="calc">C₁ = 20×10⁶ × log₂(1 + 0.990) = 20×10⁶ × 0.993 = 19.86 Mbps</div></li>
-        <li>(b) User 1 completely removed, only noise remains: SNR = 10 / 0.1 = 100.<div class="calc">C₂ = 20×10⁶ × log₂(101) = 20×10⁶ × 6.658 = 133.16 Mbps</div></li>
+        <li><b>Formula and data</b>: Shannon capacity (Ch 2 p.48) \(C=B\log_2(1+\gamma)\) with γ as a <b>linear</b> ratio. With interference treated as noise, γ becomes the SINR (Ch 1a p.16):
+\[\text{SINR}=\frac{P}{N+I}\]
+Data (all powers in mW): P₁ = P₂ = 10 mW, N = 0.1 mW; B = 20 MHz = 20 × 10⁶ Hz.</li>
+        <li><b>(a) SINR of user 1</b>: when user 1 is decoded first, user 2 is still transmitting; the question says it behaves like AWGN, so it joins the noise (interference I = P₂):
+\[\text{SINR}_1=\frac{P_1}{P_2+N}=\frac{10}{10+0.1}=\frac{10}{10.1}=0.990\]
+This is a linear value (about −0.04 dB), not dB.</li>
+        <li><b>(a) Capacity</b>: \(\log_2x=\log_{10}x/\log_{10}2\) with \(\log_{10}2=0.30103\):
+\[\begin{aligned}\log_2 1.990&=\frac{\log_{10}1.990}{0.30103}=\frac{0.2989}{0.30103}\\&=0.993\\ C_1&=20\times10^6\times0.993\\&=19.86\times10^6\ \text{bit/s}=19.86\ \text{Mbps}\end{aligned}\]</li>
+        <li><b>(b) SNR of user 2</b>: MUD has decoded user 1 and removed it completely from the received signal, so only thermal noise is left when user 2 is decoded:
+\[\text{SNR}_2=\frac{P_2}{N}=\frac{10}{0.1}=100\quad(=20\ \text{dB})\]</li>
+        <li><b>(b) Capacity</b>:
+\[\begin{aligned}\log_2 101&=\frac{\log_{10}101}{0.30103}=\frac{2.0043}{0.30103}\\&=6.658\\ C_2&=20\times10^6\times6.658\\&=133.16\ \text{Mbps}\end{aligned}\]
+Dividing by 0.301 gives 6.659 and 133.18 Mbps; keep more digits (0.30103) or use the calculator's log₂ to match the official 133.16.</li>
+        <li><b>Check</b>: the sum of the two capacities
+\[\begin{aligned}C_1+C_2&=19.86+133.16=153.02\ \text{Mbps}\\&=20\log_2\Big(1+\frac{10+10}{0.1}\Big)\\&=20\times\log_2 201=20\times7.651\end{aligned}\]
+20 × 7.651 = 153.02 ✓: with successive interference cancellation, the sum capacity equals the single-user capacity with the two powers combined. (b) is much larger than (a) because user 2 no longer faces 10 mW of interference, only 0.1 mW of noise.</li>
       </ol>
       <div class="ans">(a) 19.86 Mbps; (b) 133.16 Mbps</div>
       <div class="official"><b>Official answer:</b> 19.86 Mbps; 133.16 Mbps ✓</div>

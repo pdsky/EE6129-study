@@ -43,10 +43,21 @@
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>(a) 分情况讨论再加权，就是全概率；(b) 已经看到结果（出错），反过来问原因（处于哪个状态），就是贝叶斯；(c) 离散分布求期望和方差，先把 dB 换成线性值。</p>
       <ol class="steps">
-        <li>(a) 全概率：\(P_e=P(G)\,P(e\mid G)+P(B)\,P(e\mid B)=0.7\times10^{-4}+0.3\times10^{-2}=7\times10^{-5}+3\times10^{-3}\)<div class="calc">P_e = 3.07 × 10⁻³</div></li>
-        <li>(b) 贝叶斯：\(P(B\mid e)=\dfrac{P(B)\,P(e\mid B)}{P_e}=\dfrac{3\times10^{-3}}{3.07\times10^{-3}}=0.977\)。分子就是 (a) 里"坏状态"那一项，分母就是 (a) 的答案。</li>
-        <li>(c) 先换成线性值：10 dB → 10，0 dB → 1。<div class="calc">E[γ] = 0.7 × 10 + 0.3 × 1 = 7.3　　E[γ²] = 0.7 × 100 + 0.3 × 1 = 70.3</div></li>
-        <li>\(\mathrm{Var}(\gamma)=E[\gamma^2]-(E[\gamma])^2=70.3-53.29=17.01\)（标准差 4.12）；平均 SNR \(=10\log_{10}7.3=8.63\) dB。</li>
+        <li><b>(a) 列状态表</b>：两种状态互斥，合起来是全部情况：P(G) + P(B) = 0.7 + 0.3 = 1 ✓，所以 {G, B} 是一个划分（partition）。题目给的误比特率是条件概率（conditional probability）\(P(e\mid G)=10^{-4}\)、\(P(e\mid B)=10^{-2}\)。先用乘法规则（multiplication rule，讲义第 1b 章 p.6）算两个联合概率：
+\[\begin{aligned}P(G\cap e)&=P(G)\,P(e\mid G)\\&=0.7\times10^{-4}=7\times10^{-5}\\P(B\cap e)&=P(B)\,P(e\mid B)\\&=0.3\times10^{-2}=3\times10^{-3}\end{aligned}\]</li>
+        <li><b>(a) 全概率求和</b>：出错时链路一定处于 G 或 B 之一，所以把两项加起来，这就是全概率定理（total probability theorem，p.8）：
+\[\begin{aligned}P_e&=P(G)P(e\mid G)+P(B)P(e\mid B)\\&=7\times10^{-5}+3\times10^{-3}\\&=0.00307=3.07\times10^{-3}\end{aligned}\]
+自检：平均值落在 \(10^{-4}\) 和 \(10^{-2}\) 之间 ✓；它更靠近坏状态那一项，因为 \(3\times10^{-3}\) 是 \(7\times10^{-5}\) 的 43 倍。</li>
+        <li><b>(b) 贝叶斯</b>：已知结果（出错），反过来问原因（坏状态），用贝叶斯公式（Bayes' rule，p.9）。分子是 (a) 里坏状态那一项，分母是 (a) 的总和：
+\[\begin{aligned}P(B\mid e)&=\frac{P(B)\,P(e\mid B)}{P_e}\\&=\frac{3\times10^{-3}}{3.07\times10^{-3}}=0.977\end{aligned}\]</li>
+        <li><b>(b) 自检</b>：另一个状态 \(P(G\mid e)=\dfrac{7\times10^{-5}}{3.07\times10^{-3}}=0.023\)，两个后验概率之和 0.977 + 0.023 = 1 ✓。坏状态的概率从事先的 0.3（先验，a priori）升到 0.977（后验，a posteriori），因为坏状态下出错的可能性是好状态的 100 倍。</li>
+        <li><b>(c) dB 换线性</b>：\(\gamma=10^{\gamma_{dB}/10}\)：10 dB → \(10^{1}=10\)，0 dB → \(10^{0}=1\)。所以 SNR 是一个离散随机变量：γ = 10 的概率 0.7，γ = 1 的概率 0.3。dB 是对数，不能直接平均，必须先换成线性值。</li>
+        <li><b>(c) 均值</b>：离散随机变量的期望 \(E[\gamma]=\sum\gamma\,P(\gamma)\)（讲义 p.10）：
+\[\begin{aligned}E[\gamma]&=0.7\times10+0.3\times1=7+0.3=7.3\\ \bar\gamma_{dB}&=10\log_{10}7.3=10\times0.8633\\&=8.63\text{ dB}\end{aligned}\]</li>
+        <li><b>(c) 方差</b>：用 \(\mathrm{Var}(\gamma)=E[\gamma^2]-(E[\gamma])^2\)（p.11），先求二阶矩：
+\[\begin{aligned}E[\gamma^2]&=0.7\times10^2+0.3\times1^2\\&=70+0.3=70.3\\ \mathrm{Var}(\gamma)&=70.3-7.3^2=70.3-53.29\\&=17.01\end{aligned}\]
+标准差 \(\sqrt{17.01}=4.12\)。自检（按定义 \(E[(\gamma-\mu)^2]\)）：
+\[\begin{aligned}&0.7\times(10-7.3)^2+0.3\times(1-7.3)^2\\&=5.103+11.907=17.01\ \checkmark\end{aligned}\]</li>
       </ol>
       <div class="ans">(a) 3.07 × 10⁻³；(b) 0.977；(c) E[γ] = 7.3（8.63 dB），Var(γ) = 17.0</div>
       <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
@@ -111,10 +122,21 @@
     <div class="sol sol-en" lang="en">
       <p class="idea"><b>Approach:</b> (a) Split into cases and weight them: total probability. (b) The result (an error) is known and we ask about the cause (the state): Bayes' rule. (c) Mean and variance of a discrete random variable, after converting dB to linear values.</p>
       <ol class="steps">
-        <li>(a) Total probability: \(P_e=P(G)\,P(e\mid G)+P(B)\,P(e\mid B)=0.7\times10^{-4}+0.3\times10^{-2}=7\times10^{-5}+3\times10^{-3}\)<div class="calc">P<sub>e</sub> = 3.07 × 10⁻³</div></li>
-        <li>(b) Bayes: \(P(B\mid e)=\dfrac{P(B)\,P(e\mid B)}{P_e}=\dfrac{3\times10^{-3}}{3.07\times10^{-3}}=0.977\). The numerator is the "bad" term of (a); the denominator is the answer of (a).</li>
-        <li>(c) Convert to linear first: 10 dB → 10, 0 dB → 1.<div class="calc">E[γ] = 0.7 × 10 + 0.3 × 1 = 7.3　　E[γ²] = 0.7 × 100 + 0.3 × 1 = 70.3</div></li>
-        <li>\(\mathrm{Var}(\gamma)=E[\gamma^2]-(E[\gamma])^2=70.3-53.29=17.01\) (standard deviation 4.12); mean SNR \(=10\log_{10}7.3=8.63\) dB.</li>
+        <li><b>(a) Table of states</b>: the two states are mutually exclusive and cover all cases: P(G) + P(B) = 0.7 + 0.3 = 1 ✓, so {G, B} is a partition. The given bit error probabilities are conditional probabilities \(P(e\mid G)=10^{-4}\) and \(P(e\mid B)=10^{-2}\). First use the multiplication rule (Ch 1b p.6) for the two joint probabilities:
+\[\begin{aligned}P(G\cap e)&=P(G)\,P(e\mid G)\\&=0.7\times10^{-4}=7\times10^{-5}\\P(B\cap e)&=P(B)\,P(e\mid B)\\&=0.3\times10^{-2}=3\times10^{-3}\end{aligned}\]</li>
+        <li><b>(a) Total probability</b>: when an error occurs the link is in exactly one of G or B, so add the two terms; this is the total probability theorem (p.8):
+\[\begin{aligned}P_e&=P(G)P(e\mid G)+P(B)P(e\mid B)\\&=7\times10^{-5}+3\times10^{-3}\\&=0.00307=3.07\times10^{-3}\end{aligned}\]
+Check: the average lies between \(10^{-4}\) and \(10^{-2}\) ✓; it is close to the bad-state term because \(3\times10^{-3}\) is 43 times \(7\times10^{-5}\).</li>
+        <li><b>(b) Bayes' rule</b>: the result (an error) is known and we ask about the cause (the bad state), so use Bayes' rule (p.9). The numerator is the bad-state term of (a); the denominator is the total from (a):
+\[\begin{aligned}P(B\mid e)&=\frac{P(B)\,P(e\mid B)}{P_e}\\&=\frac{3\times10^{-3}}{3.07\times10^{-3}}=0.977\end{aligned}\]</li>
+        <li><b>(b) Check</b>: for the other state \(P(G\mid e)=\dfrac{7\times10^{-5}}{3.07\times10^{-3}}=0.023\), and the two posterior probabilities add up to 0.977 + 0.023 = 1 ✓. The probability of the bad state rises from 0.3 before the observation (a priori) to 0.977 after it (a posteriori), because an error is 100 times more likely in the bad state.</li>
+        <li><b>(c) dB to linear</b>: \(\gamma=10^{\gamma_{dB}/10}\): 10 dB → \(10^{1}=10\), 0 dB → \(10^{0}=1\). So the SNR is a discrete random variable: γ = 10 with probability 0.7 and γ = 1 with probability 0.3. dB is logarithmic and cannot be averaged directly; convert to linear first.</li>
+        <li><b>(c) Mean</b>: expectation of a discrete random variable, \(E[\gamma]=\sum\gamma\,P(\gamma)\) (p.10):
+\[\begin{aligned}E[\gamma]&=0.7\times10+0.3\times1=7+0.3=7.3\\ \bar\gamma_{dB}&=10\log_{10}7.3=10\times0.8633\\&=8.63\text{ dB}\end{aligned}\]</li>
+        <li><b>(c) Variance</b>: use \(\mathrm{Var}(\gamma)=E[\gamma^2]-(E[\gamma])^2\) (p.11), so find the second moment first:
+\[\begin{aligned}E[\gamma^2]&=0.7\times10^2+0.3\times1^2\\&=70+0.3=70.3\\ \mathrm{Var}(\gamma)&=70.3-7.3^2=70.3-53.29\\&=17.01\end{aligned}\]
+Standard deviation \(\sqrt{17.01}=4.12\). Check with the definition \(E[(\gamma-\mu)^2]\):
+\[\begin{aligned}&0.7\times(10-7.3)^2+0.3\times(1-7.3)^2\\&=5.103+11.907=17.01\ \checkmark\end{aligned}\]</li>
       </ol>
       <div class="ans">(a) 3.07 × 10⁻³; (b) 0.977; (c) E[γ] = 7.3 (8.63 dB), Var(γ) = 17.0</div>
       <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
@@ -220,11 +242,26 @@
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>先把 mW 换成 dBm，用 dB 形式算平均接收功率；平均功率比门限高出的部分就是余量，中断概率 = Q(余量/σ)；(c) 反过来：由 1% 反查 Q 得到需要的余量，再解出距离。</p>
       <ol class="steps">
-        <li>先换单位：\(P_t=10\log_{10}100=20\) dBm（没换成 dBm 会扣分）。</li>
-        <li>(a) dB 形式：\(P_{r,dB}=P_{t,dB}+K_{dB}-10\gamma\log_{10}(d/d_0)\)。<div class="calc">P_r(300 m) = 20 − 31.5 − 36 × log₁₀300 = 20 − 31.5 − 36 × 2.477 = −100.68 dBm</div></li>
-        <li>(b) 余量 = −100.68 − (−110) = 9.32 dB。<div class="calc">P_out = Q(9.32 / 6) = Q(1.55) = 0.060</div></li>
-        <li>(c) 要求 \(Q(x)\le0.01\)，反查 Q 表得 x ≥ 2.326，余量至少 2.326 × 6 = 13.96 dB，所以平均功率至少 −110 + 13.96 = −96.04 dBm。</li>
-        <li>解距离：\(20-31.5-36\log_{10}d\ge-96.04\ \Rightarrow\ 36\log_{10}d\le84.54\ \Rightarrow\ \log_{10}d\le2.348\)<div class="calc">d_max = 10^2.348 ≈ 223 m</div></li>
+        <li><b>换单位</b>：dB 形式里功率要用 dBm：\(P_t=10\log_{10}\dfrac{100\text{ mW}}{1\text{ mW}}=10\times2=20\) dBm（没换成 dBm 会扣分）。</li>
+        <li><b>(a) 写成 dB 形式</b>：对 \(P_r=P_tK(d_0/d)^{\gamma}\) 两边取 \(10\log_{10}\)，乘法变加法、幂次变成系数（讲义第 2 章 p.8）：
+\[\begin{aligned}P_{r,dBm}&=P_{t,dBm}+K_{dB}-10\gamma\log_{10}\frac{d}{d_0}\\&=20-31.5-36\log_{10}d\end{aligned}\]
+其中 \(10\gamma=10\times3.6=36\)；d₀ = 1 m，所以 d 直接用米代入。</li>
+        <li><b>(a) 代入 d = 300 m</b>：\(\log_{10}300=2.477\)：
+\[\begin{aligned}P_r(300\text{ m})&=20-31.5-36\times2.477\\&=20-31.5-89.18\\&=-100.68\text{ dBm}\end{aligned}\]
+这是只有路径损耗时的平均值，阴影会让实际功率围绕它上下波动。</li>
+        <li><b>(b) 余量</b>：中断 = 接收功率低于 −110 dBm。平均功率比门限高出的部分叫余量（margin）：
+\[x=\bar P_r-P_{min}=-100.68-(-110)=9.32\text{ dB}\]
+阴影 \(\psi_{dB}\sim\mathcal N(0,\sigma^2)\)，所以 \(P_{out}=P(\psi_{dB}\lt-x)=Q(x/\sigma)\)（p.14–15）。</li>
+        <li><b>(b) 查 Q 表</b>：\(x/\sigma=9.32/6=1.553\)。Q 表：Q(1.55) = 0.0606，Q(1.56) = 0.0594，1.553 在两者之间，插值：
+\[\begin{aligned}P_{out}=Q(1.553)&\approx0.0606-0.3\times0.0012\\&\approx0.060\end{aligned}\]
+约 6.0%。自检：1 &lt; 1.553 &lt; 2，结果应在 Q(1) = 0.159 和 Q(2) = 0.023 之间 ✓。</li>
+        <li><b>(c) 反查 Q 表</b>：要求 \(Q(x/\sigma)\le0.01\)。Q 函数随自变量增大而减小，所以余量要足够大。Q 表：Q(2.32) = 0.0102，Q(2.33) = 0.0099，得 \(Q^{-1}(0.01)=2.326\)：
+\[\begin{aligned}x&\ge2.326\times6=13.96\text{ dB}\\ \bar P_r&\ge-110+13.96=-96.04\text{ dBm}\end{aligned}\]</li>
+        <li><b>(c) 解距离</b>：把 (a) 的式子代进不等式，移项：
+\[\begin{aligned}20-31.5-36\log_{10}d&\ge-96.04\\36\log_{10}d&\le20-31.5+96.04\\&=84.54\\ \log_{10}d&\le84.54/36=2.348\\ d&\le10^{2.348}\approx223\text{ m}\end{aligned}\]
+自检：代回 d = 223 m：
+\[\begin{aligned}P_r(223\text{ m})&=20-31.5-36\log_{10}223\\&=-11.5-84.54=-96.04\text{ dBm}\ \checkmark\end{aligned}\]
+而且 223 m &lt; 300 m，和 (b) 里 300 m 处中断 6% &gt; 1% 一致 ✓。</li>
       </ol>
       <div class="ans">(a) P_r,dB = P_t,dB + K_dB − 36 log₁₀d，300 m 处 ≈ −100.7 dBm；(b) P_out ≈ 6.0%；(c) d_max ≈ 223 m</div>
       <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
@@ -273,11 +310,26 @@
     <div class="sol sol-en" lang="en">
       <p class="idea"><b>Approach:</b> Convert mW to dBm and use the dB form for the average received power. The amount by which the average exceeds the threshold is the margin, and outage = Q(margin/σ). For (c), work backwards: 1% → inverse Q → required margin → distance.</p>
       <ol class="steps">
-        <li>Units first: \(P_t=10\log_{10}100=20\) dBm (leaving it in mW loses marks).</li>
-        <li>(a) dB form: \(P_{r,dB}=P_{t,dB}+K_{dB}-10\gamma\log_{10}(d/d_0)\).<div class="calc">P<sub>r</sub>(300 m) = 20 − 31.5 − 36 × log₁₀300 = 20 − 31.5 − 36 × 2.477 = −100.68 dBm</div></li>
-        <li>(b) Margin = −100.68 − (−110) = 9.32 dB.<div class="calc">P<sub>out</sub> = Q(9.32 / 6) = Q(1.55) = 0.060</div></li>
-        <li>(c) Need \(Q(x)\le0.01\); the Q table gives x ≥ 2.326, so the margin must be at least 2.326 × 6 = 13.96 dB and the average power at least −110 + 13.96 = −96.04 dBm.</li>
-        <li>Solve for the distance: \(20-31.5-36\log_{10}d\ge-96.04\ \Rightarrow\ 36\log_{10}d\le84.54\ \Rightarrow\ \log_{10}d\le2.348\)<div class="calc">d<sub>max</sub> = 10<sup>2.348</sup> ≈ 223 m</div></li>
+        <li><b>Units first</b>: in the dB form the powers must be in dBm: \(P_t=10\log_{10}\dfrac{100\text{ mW}}{1\text{ mW}}=10\times2=20\) dBm (leaving it in mW loses marks).</li>
+        <li><b>(a) dB form</b>: take \(10\log_{10}\) of both sides of \(P_r=P_tK(d_0/d)^{\gamma}\); products become sums and the power becomes a factor (Ch 2 p.8):
+\[\begin{aligned}P_{r,dBm}&=P_{t,dBm}+K_{dB}-10\gamma\log_{10}\frac{d}{d_0}\\&=20-31.5-36\log_{10}d\end{aligned}\]
+Here \(10\gamma=10\times3.6=36\); d₀ = 1 m, so d is entered directly in metres.</li>
+        <li><b>(a) Substitute d = 300 m</b>: \(\log_{10}300=2.477\):
+\[\begin{aligned}P_r(300\text{ m})&=20-31.5-36\times2.477\\&=20-31.5-89.18\\&=-100.68\text{ dBm}\end{aligned}\]
+This is the average due to path loss alone; shadowing makes the actual power fluctuate around it.</li>
+        <li><b>(b) Margin</b>: outage means the received power is below −110 dBm. The amount by which the average power exceeds the threshold is the margin:
+\[x=\bar P_r-P_{min}=-100.68-(-110)=9.32\text{ dB}\]
+The shadowing is \(\psi_{dB}\sim\mathcal N(0,\sigma^2)\), so \(P_{out}=P(\psi_{dB}\lt-x)=Q(x/\sigma)\) (p.14–15).</li>
+        <li><b>(b) Q table</b>: \(x/\sigma=9.32/6=1.553\). From the Q table, Q(1.55) = 0.0606 and Q(1.56) = 0.0594; 1.553 lies between them, so interpolate:
+\[\begin{aligned}P_{out}=Q(1.553)&\approx0.0606-0.3\times0.0012\\&\approx0.060\end{aligned}\]
+About 6.0%. Check: 1 &lt; 1.553 &lt; 2, so the result must lie between Q(1) = 0.159 and Q(2) = 0.023 ✓.</li>
+        <li><b>(c) Inverse Q lookup</b>: we need \(Q(x/\sigma)\le0.01\). Q decreases as its argument grows, so the margin must be large enough. From the Q table, Q(2.32) = 0.0102 and Q(2.33) = 0.0099, giving \(Q^{-1}(0.01)=2.326\):
+\[\begin{aligned}x&\ge2.326\times6=13.96\text{ dB}\\ \bar P_r&\ge-110+13.96=-96.04\text{ dBm}\end{aligned}\]</li>
+        <li><b>(c) Solve for the distance</b>: put the expression from (a) into the inequality and rearrange:
+\[\begin{aligned}20-31.5-36\log_{10}d&\ge-96.04\\36\log_{10}d&\le20-31.5+96.04\\&=84.54\\ \log_{10}d&\le84.54/36=2.348\\ d&\le10^{2.348}\approx223\text{ m}\end{aligned}\]
+Check: put d = 223 m back:
+\[\begin{aligned}P_r(223\text{ m})&=20-31.5-36\log_{10}223\\&=-11.5-84.54=-96.04\text{ dBm}\ \checkmark\end{aligned}\]
+and 223 m &lt; 300 m agrees with the 6% &gt; 1% outage found at 300 m in (b) ✓.</li>
       </ol>
       <div class="ans">(a) P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 36 log₁₀d, ≈ −100.7 dBm at 300 m; (b) P<sub>out</sub> ≈ 6.0%; (c) d<sub>max</sub> ≈ 223 m</div>
       <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
@@ -371,12 +423,28 @@
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>(a) 把各条径的功率（线性值）当权重，求时延的加权均值和标准差；(b) 两个维度分开判断：σ 对比 T<sub>s</sub> 定平坦 / 选择性，T<sub>C</sub> 对比 T<sub>s</sub> 定快 / 慢；(c) 先由"功率低 10 dB"求出幅度比 ρ，再代 AFD 公式。</p>
       <ol class="steps">
-        <li>(a) 先换线性：0、−3、−6 dB → 1、0.501、0.251，总和 1.752。<div class="calc">μ = (0 × 1 + 1 × 0.501 + 3 × 0.251) / 1.752 = 1.255 / 1.752 = 0.716 µs</div></li>
-        <li><div class="calc">E[τ²] = (0 + 1 × 0.501 + 9 × 0.251) / 1.752 = 2.762 / 1.752 = 1.576 µs²　　σ = √(1.576 − 0.716²) = √1.063 = 1.03 µs</div></li>
-        <li>(b) 平坦 / 选择性：\(T_s=1/50\text{k}=20\) µs，\(\sigma/T_s=1.03/20=0.052\lt0.1\) → <b>平坦衰落</b>。</li>
-        <li>快 / 慢：v = 72 km/h = 20 m/s，\(f_m=vf_c/c=20\times1.8\times10^9/3\times10^8=120\) Hz，\(T_C\approx1/f_m=8.33\) ms ≫ \(T_s\) = 20 µs → <b>慢衰落</b>。结论：平坦慢衰落。</li>
-        <li>(c) 功率低 10 dB，幅度比 \(\rho=\sqrt{0.1}=0.316\)（ρ 是幅度比，不是功率比）。<div class="calc">AFD = (e^0.1 − 1) / (√(2π) × 120 × 0.316) = 0.1052 / 95.1 = 1.11 ms</div></li>
-        <li>每次衰落影响的符号数 ≈ 1.11 ms / 20 µs ≈ 55 个。</li>
+        <li><b>(a) dB 换线性</b>：功率时延谱（power delay profile）的权重必须用线性功率（讲义第 2 章 p.30），\(P=10^{P_{dB}/10}\)：
+\[\begin{aligned}0\text{ dB}&\to1,\qquad-3\text{ dB}\to10^{-0.3}=0.501\\-6\text{ dB}&\to10^{-0.6}=0.251\\ \sum_kP(\tau_k)&=1+0.501+0.251=1.752\end{aligned}\]</li>
+        <li><b>(a) 平均时延</b>：以功率为权重的加权平均：
+\[\begin{aligned}\mu_{T_m}&=\frac{\sum_k\tau_kP(\tau_k)}{\sum_kP(\tau_k)}\\&=\frac{0\times1+1\times0.501+3\times0.251}{1.752}\\&=\frac{1.255}{1.752}=0.716\ \mu\text{s}\end{aligned}\]
+自检：μ 在 0 和 3 µs 之间，而且靠近 0，因为最强的径在 τ = 0 ✓。</li>
+        <li><b>(a) rms 时延扩展</b>：先求二阶矩，再用"方差 = 二阶矩 − 均值²"：
+\[\begin{aligned}\overline{\tau^2}&=\frac{0+1^2\times0.501+3^2\times0.251}{1.752}\\&=\frac{0.501+2.261}{1.752}=\frac{2.762}{1.752}=1.576\ \mu\text{s}^2\\ \sigma_{T_m}&=\sqrt{1.576-0.716^2}=\sqrt{1.576-0.513}\\&=\sqrt{1.063}=1.03\ \mu\text{s}\end{aligned}\]
+自检（按定义 \(\sigma^2=\sum_k(\tau_k-\mu)^2P(\tau_k)/\sum_kP(\tau_k)\)）：
+\[\begin{aligned}&0.716^2\times1+0.284^2\times0.501+2.284^2\times0.251\\&=0.513+0.040+1.310=1.863\\&1.863/1.752=1.063\ \checkmark\end{aligned}\]</li>
+        <li><b>(b) 平坦还是选择性</b>：符号时长 \(T_s=1/R_s=1/(50\times10^3)=20\ \mu\)s。经验法则（讲义 p.33）：\(\sigma_{T_m}/T_s\lt0.1\) 为平坦衰落：
+\[\frac{\sigma_{T_m}}{T_s}=\frac{1.03\ \mu\text{s}}{20\ \mu\text{s}}=0.052\lt0.1\]
+→ <b>平坦衰落</b>（flat fading）：时延扩展只占一个符号的约 5%，各条径几乎同时到达，没有明显的符号间干扰（ISI）。</li>
+        <li><b>(b) 多普勒和相干时间</b>：先换速度 v = 72/3.6 = 20 m/s。最大多普勒频移（p.34）和相干时间（p.36）：
+\[\begin{aligned}f_m&=\frac{vf_c}{c}=\frac{20\times1.8\times10^9}{3\times10^8}=120\text{ Hz}\\T_C&\approx\frac1{f_m}=\frac1{120}=8.33\text{ ms}\end{aligned}\]</li>
+        <li><b>(b) 快还是慢</b>：比较 T<sub>C</sub> 和 T<sub>s</sub>（p.37）：\(T_s/T_C=20\ \mu\text{s}/8.33\text{ ms}=2.4\times10^{-3}\ll1\)，一个符号内信道几乎不变 → <b>慢衰落</b>（slow fading）。从频域看也一样：\(B_D=f_m=120\) Hz ≪ \(B_s\approx50\) kHz。结论：<b>平坦慢衰落</b>。</li>
+        <li><b>(c) 求 ρ</b>：ρ 是幅度之比 \(\rho=Z_{min}/Z_{rms}\)（p.41），而"低 10 dB"说的是功率。功率比 \(=10^{-10/10}=0.1\)，幅度比要开根号：
+\[\rho^2=0.1,\qquad\rho=\sqrt{0.1}=0.316\]</li>
+        <li><b>(c) 平均衰落时长</b>：代题目给的 AFD 公式（p.43），\(\sqrt{2\pi}=2.507\)，\(e^{0.1}=1.1052\)：
+\[\begin{aligned}\bar\tau&=\frac{e^{\rho^2}-1}{\sqrt{2\pi}f_m\rho}=\frac{e^{0.1}-1}{2.507\times120\times0.316}\\&=\frac{0.1052}{95.1}=1.106\times10^{-3}\text{ s}\approx1.11\text{ ms}\end{aligned}\]</li>
+        <li><b>(c) 受影响的符号数</b>：一次衰落平均持续 \(\bar\tau\)，一个符号长 T<sub>s</sub>，相除就是每次衰落覆盖的符号数（p.46）：
+\[\frac{\bar\tau}{T_s}=\frac{1.106\text{ ms}}{20\ \mu\text{s}}=55.3\approx55\]
+自检：LCR \(L_Z=\sqrt{2\pi}f_m\rho e^{-\rho^2}=95.1\times0.905=86.1\) 次/秒，\(L_Z\bar\tau=86.1\times1.106\times10^{-3}=0.095\)，正好等于 \(1-e^{-0.1}=0.095\) ✓（低于门限的时间比例，p.43）。</li>
       </ol>
       <div class="ans">(a) μ ≈ 0.72 µs，σ ≈ 1.03 µs；(b) f_m = 120 Hz，T_C ≈ 8.3 ms，平坦慢衰落；(c) AFD ≈ 1.1 ms，每次约 55 个符号</div>
       <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
@@ -446,12 +514,28 @@
     <div class="sol sol-en" lang="en">
       <p class="idea"><b>Approach:</b> (a) Use the linear power of each path as a weight and find the weighted mean and standard deviation of the delay. (b) Judge two dimensions separately: σ against T<sub>s</sub> for flat / frequency-selective, T<sub>C</sub> against T<sub>s</sub> for fast / slow. (c) Get the amplitude ratio ρ from "10 dB below" first, then use the AFD formula.</p>
       <ol class="steps">
-        <li>(a) Linear powers: 0, −3, −6 dB → 1, 0.501, 0.251; sum 1.752.<div class="calc">μ = (0 × 1 + 1 × 0.501 + 3 × 0.251) / 1.752 = 1.255 / 1.752 = 0.716 µs</div></li>
-        <li><div class="calc">E[τ²] = (0 + 1 × 0.501 + 9 × 0.251) / 1.752 = 2.762 / 1.752 = 1.576 µs²　　σ = √(1.576 − 0.716²) = √1.063 = 1.03 µs</div></li>
-        <li>(b) Flat or selective: \(T_s=1/50\text{k}=20\) µs and \(\sigma/T_s=1.03/20=0.052\lt0.1\) → <b>flat fading</b>.</li>
-        <li>Fast or slow: v = 72 km/h = 20 m/s, \(f_m=vf_c/c=20\times1.8\times10^9/3\times10^8=120\) Hz, \(T_C\approx1/f_m=8.33\) ms ≫ \(T_s\) = 20 µs → <b>slow fading</b>. Conclusion: flat, slow fading.</li>
-        <li>(c) Power 10 dB down means an amplitude ratio \(\rho=\sqrt{0.1}=0.316\) (ρ is an amplitude ratio, not a power ratio).<div class="calc">AFD = (e<sup>0.1</sup> − 1) / (√(2π) × 120 × 0.316) = 0.1052 / 95.1 = 1.11 ms</div></li>
-        <li>Symbols affected per fade ≈ 1.11 ms / 20 µs ≈ 55.</li>
+        <li><b>(a) dB to linear</b>: the weights of the power delay profile must be linear powers (Ch 2 p.30), \(P=10^{P_{dB}/10}\):
+\[\begin{aligned}0\text{ dB}&\to1,\qquad-3\text{ dB}\to10^{-0.3}=0.501\\-6\text{ dB}&\to10^{-0.6}=0.251\\ \sum_kP(\tau_k)&=1+0.501+0.251=1.752\end{aligned}\]</li>
+        <li><b>(a) Mean delay</b>: the power-weighted average:
+\[\begin{aligned}\mu_{T_m}&=\frac{\sum_k\tau_kP(\tau_k)}{\sum_kP(\tau_k)}\\&=\frac{0\times1+1\times0.501+3\times0.251}{1.752}\\&=\frac{1.255}{1.752}=0.716\ \mu\text{s}\end{aligned}\]
+Check: μ lies between 0 and 3 µs and close to 0, because the strongest path is at τ = 0 ✓.</li>
+        <li><b>(a) rms delay spread</b>: find the second moment, then use "variance = second moment − mean²":
+\[\begin{aligned}\overline{\tau^2}&=\frac{0+1^2\times0.501+3^2\times0.251}{1.752}\\&=\frac{0.501+2.261}{1.752}=\frac{2.762}{1.752}=1.576\ \mu\text{s}^2\\ \sigma_{T_m}&=\sqrt{1.576-0.716^2}=\sqrt{1.576-0.513}\\&=\sqrt{1.063}=1.03\ \mu\text{s}\end{aligned}\]
+Check with the definition \(\sigma^2=\sum_k(\tau_k-\mu)^2P(\tau_k)/\sum_kP(\tau_k)\):
+\[\begin{aligned}&0.716^2\times1+0.284^2\times0.501+2.284^2\times0.251\\&=0.513+0.040+1.310=1.863\\&1.863/1.752=1.063\ \checkmark\end{aligned}\]</li>
+        <li><b>(b) Flat or selective</b>: symbol duration \(T_s=1/R_s=1/(50\times10^3)=20\ \mu\)s. Rule of thumb (p.33): \(\sigma_{T_m}/T_s\lt0.1\) means flat fading:
+\[\frac{\sigma_{T_m}}{T_s}=\frac{1.03\ \mu\text{s}}{20\ \mu\text{s}}=0.052\lt0.1\]
+→ <b>flat fading</b>: the delay spread is only about 5% of a symbol, the paths arrive almost together, and there is no significant inter-symbol interference (ISI).</li>
+        <li><b>(b) Doppler and coherence time</b>: convert the speed first, v = 72/3.6 = 20 m/s. Maximum Doppler shift (p.34) and coherence time (p.36):
+\[\begin{aligned}f_m&=\frac{vf_c}{c}=\frac{20\times1.8\times10^9}{3\times10^8}=120\text{ Hz}\\T_C&\approx\frac1{f_m}=\frac1{120}=8.33\text{ ms}\end{aligned}\]</li>
+        <li><b>(b) Fast or slow</b>: compare T<sub>C</sub> with T<sub>s</sub> (p.37): \(T_s/T_C=20\ \mu\text{s}/8.33\text{ ms}=2.4\times10^{-3}\ll1\), so the channel hardly changes during a symbol → <b>slow fading</b>. The frequency view agrees: \(B_D=f_m=120\) Hz ≪ \(B_s\approx50\) kHz. Conclusion: <b>flat, slow fading</b>.</li>
+        <li><b>(c) Find ρ</b>: ρ is an amplitude ratio, \(\rho=Z_{min}/Z_{rms}\) (p.41), but "10 dB below" refers to power. The power ratio is \(10^{-10/10}=0.1\), and the amplitude ratio is its square root:
+\[\rho^2=0.1,\qquad\rho=\sqrt{0.1}=0.316\]</li>
+        <li><b>(c) Average fade duration</b>: use the given AFD formula (p.43) with \(\sqrt{2\pi}=2.507\) and \(e^{0.1}=1.1052\):
+\[\begin{aligned}\bar\tau&=\frac{e^{\rho^2}-1}{\sqrt{2\pi}f_m\rho}=\frac{e^{0.1}-1}{2.507\times120\times0.316}\\&=\frac{0.1052}{95.1}=1.106\times10^{-3}\text{ s}\approx1.11\text{ ms}\end{aligned}\]</li>
+        <li><b>(c) Symbols affected</b>: one fade lasts \(\bar\tau\) on average and one symbol lasts T<sub>s</sub>; the ratio is the number of symbols covered by one fade (p.46):
+\[\frac{\bar\tau}{T_s}=\frac{1.106\text{ ms}}{20\ \mu\text{s}}=55.3\approx55\]
+Check: LCR \(L_Z=\sqrt{2\pi}f_m\rho e^{-\rho^2}=95.1\times0.905=86.1\) per second, and \(L_Z\bar\tau=86.1\times1.106\times10^{-3}=0.095\), exactly \(1-e^{-0.1}=0.095\) ✓ (the fraction of time below the threshold, p.43).</li>
       </ol>
       <div class="ans">(a) μ ≈ 0.72 µs, σ ≈ 1.03 µs; (b) f<sub>m</sub> = 120 Hz, T<sub>C</sub> ≈ 8.3 ms, flat slow fading; (c) AFD ≈ 1.1 ms, about 55 symbols per fade</div>
       <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
@@ -562,11 +646,22 @@
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>瑞利衰落下瞬时 SNR 服从指数分布，中断概率就是它的 CDF；(b) 反过来解平均 SNR；(c) 直接用指数分布的尾巴。</p>
       <ol class="steps">
-        <li>(a) 瑞利衰落时 SNR 服从指数分布：\(p(\gamma)=\dfrac{1}{\bar\gamma}e^{-\gamma/\bar\gamma},\ \gamma\ge0\)；中断 \(P_{out}=P(\gamma\lt\gamma_0)=1-e^{-\gamma_0/\bar\gamma}\)。</li>
-        <li>换线性：\(\bar\gamma\) = 20 dB = 100，\(\gamma_0\) = 7 dB = 5.01。<div class="calc">P_out = 1 − e^(−5.01/100) = 1 − e^(−0.0501) = 0.0489</div></li>
-        <li>(b) \(1-e^{-\gamma_0/\bar\gamma}=0.01\ \Rightarrow\ \gamma_0/\bar\gamma=\ln\frac{1}{0.99}=0.01005\ \Rightarrow\ \bar\gamma=5.01/0.01005=498.7\)，即 27.0 dB。</li>
-        <li>衰落余量 FM = 27.0 − 7 = 20.0 dB，和公式 \(10\log_{10}\frac{1}{\ln(1/(1-\varepsilon))}\approx10\log_{10}\frac1\varepsilon=20\) dB 一致。</li>
-        <li>(c) \(P(\gamma\gt\bar\gamma)=e^{-\bar\gamma/\bar\gamma}=e^{-1}=0.368\)。</li>
+        <li><b>(a) 写出 pdf</b>：瑞利衰落时包络 z 服从瑞利分布，功率 z² 服从指数分布，所以瞬时 SNR 也服从指数分布（讲义第 2 章 p.25–26）：
+\[p(\gamma)=\frac1{\bar\gamma}e^{-\gamma/\bar\gamma},\qquad\gamma\ge0\]
+其中 γ̄ 是平均 SNR（线性值）。</li>
+        <li><b>(a) 中断概率公式</b>：中断 = 瞬时 SNR 低于门限 γ₀，把 pdf 从 0 积到 γ₀（就是 CDF）：
+\[\begin{aligned}P_{out}&=\int_0^{\gamma_0}\frac1{\bar\gamma}e^{-\gamma/\bar\gamma}d\gamma\\&=\Big[-e^{-\gamma/\bar\gamma}\Big]_0^{\gamma_0}=1-e^{-\gamma_0/\bar\gamma}\end{aligned}\]</li>
+        <li><b>(a) 换线性并代入</b>：\(\bar\gamma=10^{20/10}=100\)，\(\gamma_0=10^{7/10}=10^{0.7}=5.01\)：
+\[\begin{aligned}\gamma_0/\bar\gamma&=5.01/100=0.0501\\P_{out}&=1-e^{-0.0501}=1-0.9511\\&=0.0489\approx4.9\%\end{aligned}\]
+自检：x 很小时 \(1-e^{-x}\approx x=0.050\) ✓。</li>
+        <li><b>(b) 反解平均 SNR</b>：令 \(P_{out}=\varepsilon=0.01\)，门限 γ₀ = 5.01 不变：
+\[\begin{aligned}e^{-\gamma_0/\bar\gamma}&=1-0.01=0.99\\ \frac{\gamma_0}{\bar\gamma}&=\ln\frac1{0.99}=0.01005\\ \bar\gamma&=\frac{5.01}{0.01005}=498.7\\ \bar\gamma_{dB}&=10\log_{10}498.7=26.98\approx27.0\text{ dB}\end{aligned}\]</li>
+        <li><b>(b) 衰落余量与自检</b>：衰落余量（fade margin）= 需要的平均 SNR − 门限，dB 直接相减：
+\[FM=26.98-7=19.98\approx20.0\text{ dB}\]
+和讲义 p.51 的公式一致：\(10\log_{10}\dfrac1{\ln(1/0.99)}=10\log_{10}99.5=19.98\) dB ≈ \(10\log_{10}(1/\varepsilon)=20\) dB ✓。回代：\(1-e^{-5.01/498.7}=1-e^{-0.01005}=0.0100\) ✓。</li>
+        <li><b>(c) 指数分布的尾巴</b>：从 γ̄ 积到 ∞：
+\[\begin{aligned}P(\gamma\gt\bar\gamma)&=\int_{\bar\gamma}^{\infty}\frac1{\bar\gamma}e^{-\gamma/\bar\gamma}d\gamma\\&=e^{-\bar\gamma/\bar\gamma}=e^{-1}=0.368\end{aligned}\]
+结果和 γ̄ 无关。指数分布向右拖尾，少数很大的值把均值拉高，所以只有 36.8% 的时间高于均值，63.2% 的时间低于均值。</li>
       </ol>
       <div class="ans">(a) p(γ) = (1/γ̄)e^(−γ/γ̄)，P_out ≈ 4.9%；(b) γ̄ ≈ 27 dB，衰落余量 ≈ 20 dB；(c) e⁻¹ ≈ 0.368</div>
       <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
@@ -610,11 +705,22 @@
     <div class="sol sol-en" lang="en">
       <p class="idea"><b>Approach:</b> In Rayleigh fading the instantaneous SNR is exponentially distributed and the outage probability is its CDF; (b) solves it backwards for the average SNR; (c) uses the exponential tail directly.</p>
       <ol class="steps">
-        <li>(a) In Rayleigh fading the SNR is exponential: \(p(\gamma)=\dfrac{1}{\bar\gamma}e^{-\gamma/\bar\gamma},\ \gamma\ge0\); outage \(P_{out}=P(\gamma\lt\gamma_0)=1-e^{-\gamma_0/\bar\gamma}\).</li>
-        <li>Linear values: \(\bar\gamma\) = 20 dB = 100, \(\gamma_0\) = 7 dB = 5.01.<div class="calc">P<sub>out</sub> = 1 − e<sup>−5.01/100</sup> = 1 − e<sup>−0.0501</sup> = 0.0489</div></li>
-        <li>(b) \(1-e^{-\gamma_0/\bar\gamma}=0.01\ \Rightarrow\ \gamma_0/\bar\gamma=\ln\frac{1}{0.99}=0.01005\ \Rightarrow\ \bar\gamma=5.01/0.01005=498.7\), i.e. 27.0 dB.</li>
-        <li>Fade margin FM = 27.0 − 7 = 20.0 dB, matching \(10\log_{10}\frac{1}{\ln(1/(1-\varepsilon))}\approx10\log_{10}\frac1\varepsilon=20\) dB.</li>
-        <li>(c) \(P(\gamma\gt\bar\gamma)=e^{-\bar\gamma/\bar\gamma}=e^{-1}=0.368\).</li>
+        <li><b>(a) State the pdf</b>: in Rayleigh fading the envelope z is Rayleigh distributed, so the power z² is exponential and so is the instantaneous SNR (Ch 2 p.25–26):
+\[p(\gamma)=\frac1{\bar\gamma}e^{-\gamma/\bar\gamma},\qquad\gamma\ge0\]
+where γ̄ is the average SNR (linear).</li>
+        <li><b>(a) Outage formula</b>: outage means the instantaneous SNR is below the threshold γ₀; integrate the pdf from 0 to γ₀ (this is the CDF):
+\[\begin{aligned}P_{out}&=\int_0^{\gamma_0}\frac1{\bar\gamma}e^{-\gamma/\bar\gamma}d\gamma\\&=\Big[-e^{-\gamma/\bar\gamma}\Big]_0^{\gamma_0}=1-e^{-\gamma_0/\bar\gamma}\end{aligned}\]</li>
+        <li><b>(a) Convert to linear and substitute</b>: \(\bar\gamma=10^{20/10}=100\), \(\gamma_0=10^{7/10}=10^{0.7}=5.01\):
+\[\begin{aligned}\gamma_0/\bar\gamma&=5.01/100=0.0501\\P_{out}&=1-e^{-0.0501}=1-0.9511\\&=0.0489\approx4.9\%\end{aligned}\]
+Check: for small x, \(1-e^{-x}\approx x=0.050\) ✓.</li>
+        <li><b>(b) Solve for the average SNR</b>: set \(P_{out}=\varepsilon=0.01\) with the same threshold γ₀ = 5.01:
+\[\begin{aligned}e^{-\gamma_0/\bar\gamma}&=1-0.01=0.99\\ \frac{\gamma_0}{\bar\gamma}&=\ln\frac1{0.99}=0.01005\\ \bar\gamma&=\frac{5.01}{0.01005}=498.7\\ \bar\gamma_{dB}&=10\log_{10}498.7=26.98\approx27.0\text{ dB}\end{aligned}\]</li>
+        <li><b>(b) Fade margin and check</b>: fade margin = required average SNR − threshold; in dB simply subtract:
+\[FM=26.98-7=19.98\approx20.0\text{ dB}\]
+This matches the formula on p.51: \(10\log_{10}\dfrac1{\ln(1/0.99)}=10\log_{10}99.5=19.98\) dB ≈ \(10\log_{10}(1/\varepsilon)=20\) dB ✓. Back-substitution: \(1-e^{-5.01/498.7}=1-e^{-0.01005}=0.0100\) ✓.</li>
+        <li><b>(c) Tail of the exponential</b>: integrate from γ̄ to ∞:
+\[\begin{aligned}P(\gamma\gt\bar\gamma)&=\int_{\bar\gamma}^{\infty}\frac1{\bar\gamma}e^{-\gamma/\bar\gamma}d\gamma\\&=e^{-\bar\gamma/\bar\gamma}=e^{-1}=0.368\end{aligned}\]
+The result does not depend on γ̄. The exponential distribution has a long right tail: a few large values pull the mean up, so the SNR is above its mean only 36.8% of the time and below it 63.2% of the time.</li>
       </ol>
       <div class="ans">(a) p(γ) = (1/γ̄)e<sup>−γ/γ̄</sup>, P<sub>out</sub> ≈ 4.9%; (b) γ̄ ≈ 27 dB, fade margin ≈ 20 dB; (c) e⁻¹ ≈ 0.368</div>
       <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
@@ -701,11 +807,36 @@
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>和 Practice 1 第 1 题同一套路：dB 形式是直线 \(M=K_{dB}-\gamma x\)，\(x=10\log_{10}d\)；最小二乘求斜率和截距，残差的均方值就是阴影方差，再算 Q(余量/σ)。</p>
       <ol class="steps">
-        <li>\(x_i=10\log_{10}d_i\) = 10、13.01、16.99、20，\(\bar x=15.00\)；\(\bar M=-87.5\)。</li>
-        <li>\(x_i-\bar x\) = −5、−1.99、1.99、5；\(M_i-\bar M\) = 19.5、1.5、−3.5、−17.5。<div class="calc">Σ(x − x̄)(M − M̄) = −194.95　　Σ(x − x̄)² = 57.92</div></li>
-        <li>(a) 斜率 = −194.95 / 57.92 = −3.37，所以 γ = 3.37；\(K_{dB}=\bar M+\gamma\bar x=-87.5+3.366\times15=-37.0\) dB。</li>
-        <li>(b) 预测值 \(\hat M_i=K_{dB}-\gamma x_i\) = −70.67、−80.80、−94.20、−104.33；残差 \(e_i=M_i-\hat M_i\) = +2.67、−5.20、+3.20、−0.67（加起来为 0）。<div class="calc">σ²_ψ = (2.67² + 5.20² + 3.20² + 0.67²) / 4 = 44.81 / 4 = 11.2 dB²　　σ_ψ = 3.35 dB</div></li>
-        <li>(c) \(P_{out}=Q(8/3.35)=Q(2.39)=8.4\times10^{-3}\)。</li>
+        <li><b>换横坐标</b>：dB 形式 \(M=(P_r/P_t)_{dB}=K_{dB}-10\gamma\log_{10}(d/d_0)\)（讲义第 2 章 p.12–13）。令 \(x=10\log_{10}d\)（d₀ = 1 m），模型就是直线 \(M=K_{dB}-\gamma x\)：截距 K<sub>dB</sub>，斜率 −γ。
+\[\begin{aligned}x_i&=10\log_{10}d_i=10,\ 13.01,\ 16.99,\ 20\\ \bar x&=(10+13.01+16.99+20)/4=15.00\\ \bar M&=(-68-86-91-105)/4=-87.5\end{aligned}\]</li>
+        <li><b>(a) 最小二乘公式</b>：要让误差平方和 \(F=\sum_i(M_i-K_{dB}+\gamma x_i)^2\) 最小（讲义 p.13：最小化 MSE），对 K<sub>dB</sub> 和 γ 分别求偏导并令其为 0，得到：
+\[\begin{aligned}K_{dB}&=\bar M+\gamma\bar x\\ \gamma&=-\frac{\sum(x_i-\bar x)(M_i-\bar M)}{\sum(x_i-\bar x)^2}\end{aligned}\]
+第一式说明拟合直线一定经过平均点 \((\bar x,\bar M)\)。</li>
+        <li><b>(a) 列表求和</b>：先减去平均值，再逐行相乘：
+<div class="tw"><table class="mini"><thead><tr><th>d (m)</th><th>\(x_i-\bar x\)</th><th>\(M_i-\bar M\)</th><th>乘积</th><th>\((x_i-\bar x)^2\)</th></tr></thead><tbody>
+<tr><td>10</td><td>−5</td><td>19.5</td><td>−97.500</td><td>25</td></tr>
+<tr><td>20</td><td>−1.990</td><td>1.5</td><td>−2.985</td><td>3.959</td></tr>
+<tr><td>50</td><td>1.990</td><td>−3.5</td><td>−6.964</td><td>3.959</td></tr>
+<tr><td>100</td><td>5</td><td>−17.5</td><td>−87.500</td><td>25</td></tr>
+<tr><td colspan="3">求和</td><td>−194.95</td><td>57.92</td></tr>
+</tbody></table></div>
+自检：\(\sum(x_i-\bar x)=0\)、\(\sum(M_i-\bar M)=19.5+1.5-3.5-17.5=0\) ✓。</li>
+        <li><b>(a) 求 γ 和 K<sub>dB</sub></b>：
+\[\begin{aligned}\gamma&=-\frac{-194.95}{57.92}=3.366\approx3.37\\K_{dB}&=-87.5+3.366\times15\\&=-87.5+50.49=-37.0\text{ dB}\end{aligned}\]
+γ = 3.37 落在讲义 p.9 表里的常见范围内（例如城区微蜂窝 2.7–3.5），合理 ✓。</li>
+        <li><b>(b) 预测值和残差</b>：\(\hat M_i=K_{dB}-\gamma x_i=-37.01-3.366x_i\)，残差 \(e_i=M_i-\hat M_i\)：
+<div class="tw"><table class="mini"><thead><tr><th>d (m)</th><th>\(\gamma x_i\)</th><th>\(\hat M_i\)</th><th>\(M_i\)</th><th>\(e_i\)</th></tr></thead><tbody>
+<tr><td>10</td><td>33.66</td><td>−70.67</td><td>−68</td><td>+2.670</td></tr>
+<tr><td>20</td><td>43.79</td><td>−80.80</td><td>−86</td><td>−5.197</td></tr>
+<tr><td>50</td><td>57.19</td><td>−94.20</td><td>−91</td><td>+3.197</td></tr>
+<tr><td>100</td><td>67.32</td><td>−104.33</td><td>−105</td><td>−0.670</td></tr>
+</tbody></table></div>
+自检：残差之和 2.670 − 5.197 + 3.197 − 0.670 = 0 ✓（直线过平均点，残差一定加起来为 0）。</li>
+        <li><b>(b) 阴影方差</b>：讲义 p.13：MSE \(=E[X_i^2]=\sigma_{\psi_{dB}}^2\)，即残差平方的平均（除以 n = 4）：
+\[\begin{aligned}\sigma_\psi^2&=\frac{2.670^2+5.197^2+3.197^2+0.670^2}{4}\\&=\frac{7.13+27.01+10.22+0.45}{4}\\&=\frac{44.81}{4}=11.2\text{ dB}^2\\ \sigma_\psi&=\sqrt{11.2}=3.35\text{ dB}\end{aligned}\]</li>
+        <li><b>(c) 中断概率</b>：余量 8 dB，Q 里放的是标准差 σ，不是方差（p.15）：
+\[P_{out}=Q\Big(\frac{8}{3.35}\Big)=Q(2.39)=8.4\times10^{-3}\]
+Q 表：Q(2.39) = 0.00842，即约 0.84%。自检：余量约 2.4σ，结果应在 Q(2) = 0.023 和 Q(2.5) = 0.0062 之间 ✓。</li>
       </ol>
       <div class="ans">(a) γ ≈ 3.37，K_dB ≈ −37.0 dB；(b) σ²_ψ ≈ 11.2 dB²（σ ≈ 3.35 dB）；(c) P_out ≈ 0.84%</div>
       <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
@@ -742,11 +873,36 @@
     <div class="sol sol-en" lang="en">
       <p class="idea"><b>Approach:</b> Same method as Practice 1 Q1: in dB the model is a straight line \(M=K_{dB}-\gamma x\) with \(x=10\log_{10}d\). Least squares gives the slope and intercept, the mean squared residual is the shadowing variance, then Q(margin/σ).</p>
       <ol class="steps">
-        <li>\(x_i=10\log_{10}d_i\) = 10, 13.01, 16.99, 20; \(\bar x=15.00\); \(\bar M=-87.5\).</li>
-        <li>\(x_i-\bar x\) = −5, −1.99, 1.99, 5; \(M_i-\bar M\) = 19.5, 1.5, −3.5, −17.5.<div class="calc">Σ(x − x̄)(M − M̄) = −194.95　　Σ(x − x̄)² = 57.92</div></li>
-        <li>(a) Slope = −194.95 / 57.92 = −3.37, so γ = 3.37; \(K_{dB}=\bar M+\gamma\bar x=-87.5+3.366\times15=-37.0\) dB.</li>
-        <li>(b) Predictions \(\hat M_i=K_{dB}-\gamma x_i\) = −70.67, −80.80, −94.20, −104.33; residuals \(e_i=M_i-\hat M_i\) = +2.67, −5.20, +3.20, −0.67 (they sum to 0).<div class="calc">σ²<sub>ψ</sub> = (2.67² + 5.20² + 3.20² + 0.67²) / 4 = 44.81 / 4 = 11.2 dB²　　σ<sub>ψ</sub> = 3.35 dB</div></li>
-        <li>(c) \(P_{out}=Q(8/3.35)=Q(2.39)=8.4\times10^{-3}\).</li>
+        <li><b>Change the x axis</b>: in dB the model is \(M=(P_r/P_t)_{dB}=K_{dB}-10\gamma\log_{10}(d/d_0)\) (Ch 2 p.12–13). With \(x=10\log_{10}d\) (d₀ = 1 m) it is a straight line \(M=K_{dB}-\gamma x\): intercept K<sub>dB</sub>, slope −γ.
+\[\begin{aligned}x_i&=10\log_{10}d_i=10,\ 13.01,\ 16.99,\ 20\\ \bar x&=(10+13.01+16.99+20)/4=15.00\\ \bar M&=(-68-86-91-105)/4=-87.5\end{aligned}\]</li>
+        <li><b>(a) Least-squares formulas</b>: minimise the sum of squared errors \(F=\sum_i(M_i-K_{dB}+\gamma x_i)^2\) (p.13: minimum MSE). Setting the partial derivatives with respect to K<sub>dB</sub> and γ to zero gives
+\[\begin{aligned}K_{dB}&=\bar M+\gamma\bar x\\ \gamma&=-\frac{\sum(x_i-\bar x)(M_i-\bar M)}{\sum(x_i-\bar x)^2}\end{aligned}\]
+The first equation says the fitted line always passes through the mean point \((\bar x,\bar M)\).</li>
+        <li><b>(a) Table of sums</b>: subtract the means, then multiply row by row:
+<div class="tw"><table class="mini"><thead><tr><th>d (m)</th><th>\(x_i-\bar x\)</th><th>\(M_i-\bar M\)</th><th>product</th><th>\((x_i-\bar x)^2\)</th></tr></thead><tbody>
+<tr><td>10</td><td>−5</td><td>19.5</td><td>−97.500</td><td>25</td></tr>
+<tr><td>20</td><td>−1.990</td><td>1.5</td><td>−2.985</td><td>3.959</td></tr>
+<tr><td>50</td><td>1.990</td><td>−3.5</td><td>−6.964</td><td>3.959</td></tr>
+<tr><td>100</td><td>5</td><td>−17.5</td><td>−87.500</td><td>25</td></tr>
+<tr><td colspan="3">sum</td><td>−194.95</td><td>57.92</td></tr>
+</tbody></table></div>
+Check: \(\sum(x_i-\bar x)=0\) and \(\sum(M_i-\bar M)=19.5+1.5-3.5-17.5=0\) ✓.</li>
+        <li><b>(a) γ and K<sub>dB</sub></b>:
+\[\begin{aligned}\gamma&=-\frac{-194.95}{57.92}=3.366\approx3.37\\K_{dB}&=-87.5+3.366\times15\\&=-87.5+50.49=-37.0\text{ dB}\end{aligned}\]
+γ = 3.37 lies in the typical ranges of the table on p.9 (e.g. urban micro-cells 2.7–3.5), so it is reasonable ✓.</li>
+        <li><b>(b) Predictions and residuals</b>: \(\hat M_i=K_{dB}-\gamma x_i=-37.01-3.366x_i\), residual \(e_i=M_i-\hat M_i\):
+<div class="tw"><table class="mini"><thead><tr><th>d (m)</th><th>\(\gamma x_i\)</th><th>\(\hat M_i\)</th><th>\(M_i\)</th><th>\(e_i\)</th></tr></thead><tbody>
+<tr><td>10</td><td>33.66</td><td>−70.67</td><td>−68</td><td>+2.670</td></tr>
+<tr><td>20</td><td>43.79</td><td>−80.80</td><td>−86</td><td>−5.197</td></tr>
+<tr><td>50</td><td>57.19</td><td>−94.20</td><td>−91</td><td>+3.197</td></tr>
+<tr><td>100</td><td>67.32</td><td>−104.33</td><td>−105</td><td>−0.670</td></tr>
+</tbody></table></div>
+Check: the residuals sum to 2.670 − 5.197 + 3.197 − 0.670 = 0 ✓ (the line passes through the mean point, so the residuals always add up to 0).</li>
+        <li><b>(b) Shadowing variance</b>: p.13: MSE \(=E[X_i^2]=\sigma_{\psi_{dB}}^2\), the mean of the squared residuals (divide by n = 4):
+\[\begin{aligned}\sigma_\psi^2&=\frac{2.670^2+5.197^2+3.197^2+0.670^2}{4}\\&=\frac{7.13+27.01+10.22+0.45}{4}\\&=\frac{44.81}{4}=11.2\text{ dB}^2\\ \sigma_\psi&=\sqrt{11.2}=3.35\text{ dB}\end{aligned}\]</li>
+        <li><b>(c) Outage probability</b>: the margin is 8 dB, and the Q function takes the standard deviation σ, not the variance (p.15):
+\[P_{out}=Q\Big(\frac{8}{3.35}\Big)=Q(2.39)=8.4\times10^{-3}\]
+Q table: Q(2.39) = 0.00842, i.e. about 0.84%. Check: the margin is about 2.4σ, so the result must lie between Q(2) = 0.023 and Q(2.5) = 0.0062 ✓.</li>
       </ol>
       <div class="ans">(a) γ ≈ 3.37, K<sub>dB</sub> ≈ −37.0 dB; (b) σ²<sub>ψ</sub> ≈ 11.2 dB² (σ ≈ 3.35 dB); (c) P<sub>out</sub> ≈ 0.84%</div>
       <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
@@ -825,12 +981,28 @@
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>噪声功率 = N₀ × B，在 dB 里就是相加；SNR 换成线性值代香农公式；(c) 注水先假设所有子信道都分功率，检查有没有子信道的 SNR 低于截止值 γ₀，有就去掉重算。</p>
       <ol class="steps">
-        <li>(a) 噪声功率：\(N=-174+10\log_{10}(5\times10^6)=-174+66.99=-107.01\) dBm。</li>
-        <li>SNR = −90 − (−107.01) = 17.01 dB = 50.2。<div class="calc">C = 5×10⁶ × log₂(1 + 50.2) = 5×10⁶ × 5.68 = 28.4 Mbps</div></li>
-        <li>(b) 带宽加倍，噪声功率也加倍（多 3 dB）：N = −104.0 dBm，SNR = 14.0 dB = 25.1。<div class="calc">C = 10×10⁶ × log₂(1 + 25.1) = 10×10⁶ × 4.71 = 47.1 Mbps</div></li>
-        <li>只增加到约 1.66 倍，没有翻倍：带宽加倍的同时 SNR 减半，log 里的部分变小了。</li>
-        <li>(c) 先假设两条都分功率：\(\dfrac{2}{\gamma_0}=1+\dfrac1{20}+\dfrac1{0.5}=3.05\ \Rightarrow\ \gamma_0=0.656\)。第 2 条的 SNR 0.5 &lt; 0.656，不该分功率，去掉重算。</li>
-        <li>只剩第 1 条：\(\dfrac1{\gamma_0}=1+\dfrac1{20}=1.05\)，\(\gamma_0=0.952\)；\(P_1/P=1/\gamma_0-1/20=1\)，全部功率给第 1 条。<div class="calc">C = 1 MHz × log₂(20 / 0.952) = 1 MHz × log₂21 = 4.39 Mbps</div></li>
+        <li><b>(a) 噪声功率</b>：噪声功率 \(N=N_0B\)，在 dB 里相乘变相加：
+\[\begin{aligned}10\log_{10}(5\times10^6)&=10\times(0.699+6)=66.99\text{ dB}\\N&=-174+66.99=-107.01\text{ dBm}\end{aligned}\]</li>
+        <li><b>(a) SNR</b>：dBm − dBm = dB，再换线性：
+\[\begin{aligned}\mathrm{SNR}&=-90-(-107.01)=17.01\text{ dB}\\ \gamma&=10^{17.01/10}=10^{1.701}=50.2\end{aligned}\]</li>
+        <li><b>(a) 香农容量</b>：\(C=B\log_2(1+\gamma)\)（讲义第 2 章 p.48），γ 必须用线性值；\(\log_2x=\log_{10}x/0.301\)：
+\[\begin{aligned}\log_2(1+50.2)&=\frac{\log_{10}51.2}{0.301}=\frac{1.710}{0.301}=5.68\\C&=5\times10^6\times5.68=28.4\text{ Mbps}\end{aligned}\]
+自检：高 SNR 时每 3 dB 约 1 bit/s/Hz，17/3 ≈ 5.7 ✓。</li>
+        <li><b>(b) 新的 SNR</b>：接收功率不变，噪声功率 ∝ B，带宽加倍噪声多 \(10\log_{10}2=3.01\) dB：
+\[\begin{aligned}N&=-174+10\log_{10}10^7\\&=-174+70=-104.0\text{ dBm}\\ \mathrm{SNR}&=-90+104.0=14.0\text{ dB}=25.1\end{aligned}\]
+正好是原来 50.2 的一半 ✓。</li>
+        <li><b>(b) 新容量和解释</b>：
+\[\begin{aligned}\log_2(1+25.1)&=\frac{\log_{10}26.1}{0.301}=\frac{1.417}{0.301}=4.71\\C&=10\times10^6\times4.71=47.1\text{ Mbps}\end{aligned}\]
+\(47.1/28.4=1.66\)，<b>没有翻倍</b>：log 外面的 B 加倍了，但 log 里面的 SNR 减半（噪声随带宽一起增大），每 Hz 的容量从 5.68 降到 4.71 bit/s/Hz。只有 SNR 保持不变（发射功率也跟着加倍）时容量才会翻倍。</li>
+        <li><b>(c) 先假设两条都分功率</b>：注水法（water-filling，讲义 p.54）：\(\dfrac{P_j}{P}=\dfrac1{\gamma_0}-\dfrac1{\gamma_j}\)（只给 \(\gamma_j\ge\gamma_0\) 的子信道），功率约束 \(\sum_j\big(\frac1{\gamma_0}-\frac1{\gamma_j}\big)=1\)：
+\[\begin{aligned}\frac2{\gamma_0}&=1+\frac1{20}+\frac1{0.5}=1+0.05+2=3.05\\ \frac1{\gamma_0}&=1.525,\qquad\gamma_0=0.656\end{aligned}\]
+检查：\(\gamma_2=0.5\lt\gamma_0=0.656\)，第 2 条会分到 \(P_2/P=1.525-2=-0.475\)，功率不能为负，所以第 2 条不分功率，去掉重算。</li>
+        <li><b>(c) 只剩第 1 条</b>：
+\[\begin{aligned}\frac1{\gamma_0}&=1+\frac1{20}=1.05,\qquad\gamma_0=0.952\\ \frac{P_1}{P}&=1.05-0.05=1\end{aligned}\]
+\(\gamma_1=20\ge0.952\) ✓，这个截止值成立：<b>P₁ = P，P₂ = 0</b>，全部功率给第 1 条。</li>
+        <li><b>(c) 总容量</b>：\(C=\sum_{\gamma_j\ge\gamma_0}B_j\log_2(\gamma_j/\gamma_0)\)（p.54）：
+\[\begin{aligned}C&=1\text{ MHz}\times\log_2\frac{20}{0.952}=1\text{ MHz}\times\log_221\\&=1\text{ MHz}\times\frac{1.322}{0.301}=4.39\text{ Mbps}\end{aligned}\]
+自检：全部功率给第 1 条，直接用香农公式 \(\log_2(1+20)=\log_221\)，结果一样 ✓。</li>
       </ol>
       <div class="ans">(a) SNR ≈ 17 dB（50.2），C ≈ 28.4 Mbps；(b) C ≈ 47.1 Mbps，约 1.66 倍，不翻倍；(c) 第 2 条不分功率，P₁ = P，C ≈ 4.39 Mbps</div>
       <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
@@ -868,12 +1040,28 @@
     <div class="sol sol-en" lang="en">
       <p class="idea"><b>Approach:</b> Noise power = N₀ × B, which in dB is a sum. Convert the SNR to linear before Shannon's formula. For (c), water-filling first assumes every subchannel gets power, then checks whether any SNR is below the cut-off γ₀; if so, drop it and recompute.</p>
       <ol class="steps">
-        <li>(a) Noise power: \(N=-174+10\log_{10}(5\times10^6)=-174+66.99=-107.01\) dBm.</li>
-        <li>SNR = −90 − (−107.01) = 17.01 dB = 50.2.<div class="calc">C = 5×10⁶ × log₂(1 + 50.2) = 5×10⁶ × 5.68 = 28.4 Mbps</div></li>
-        <li>(b) Doubling the bandwidth doubles the noise power (3 dB more): N = −104.0 dBm, SNR = 14.0 dB = 25.1.<div class="calc">C = 10×10⁶ × log₂(1 + 25.1) = 10×10⁶ × 4.71 = 47.1 Mbps</div></li>
-        <li>The capacity grows only by about 1.66 times, not 2: the bandwidth doubles but the SNR halves, so the log term gets smaller.</li>
-        <li>(c) Assume both subchannels get power: \(\dfrac{2}{\gamma_0}=1+\dfrac1{20}+\dfrac1{0.5}=3.05\ \Rightarrow\ \gamma_0=0.656\). Subchannel 2 has SNR 0.5 &lt; 0.656, so it should get no power; drop it and recompute.</li>
-        <li>Only subchannel 1 left: \(\dfrac1{\gamma_0}=1+\dfrac1{20}=1.05\), \(\gamma_0=0.952\); \(P_1/P=1/\gamma_0-1/20=1\), all the power goes to subchannel 1.<div class="calc">C = 1 MHz × log₂(20 / 0.952) = 1 MHz × log₂21 = 4.39 Mbps</div></li>
+        <li><b>(a) Noise power</b>: the noise power is \(N=N_0B\); in dB the product becomes a sum:
+\[\begin{aligned}10\log_{10}(5\times10^6)&=10\times(0.699+6)=66.99\text{ dB}\\N&=-174+66.99=-107.01\text{ dBm}\end{aligned}\]</li>
+        <li><b>(a) SNR</b>: dBm − dBm = dB, then convert to linear:
+\[\begin{aligned}\mathrm{SNR}&=-90-(-107.01)=17.01\text{ dB}\\ \gamma&=10^{17.01/10}=10^{1.701}=50.2\end{aligned}\]</li>
+        <li><b>(a) Shannon capacity</b>: \(C=B\log_2(1+\gamma)\) (Ch 2 p.48) with γ in linear form; \(\log_2x=\log_{10}x/0.301\):
+\[\begin{aligned}\log_2(1+50.2)&=\frac{\log_{10}51.2}{0.301}=\frac{1.710}{0.301}=5.68\\C&=5\times10^6\times5.68=28.4\text{ Mbps}\end{aligned}\]
+Check: at high SNR every 3 dB is worth about 1 bit/s/Hz, and 17/3 ≈ 5.7 ✓.</li>
+        <li><b>(b) New SNR</b>: the received power is unchanged and the noise power is proportional to B, so doubling the bandwidth adds \(10\log_{10}2=3.01\) dB of noise:
+\[\begin{aligned}N&=-174+10\log_{10}10^7\\&=-174+70=-104.0\text{ dBm}\\ \mathrm{SNR}&=-90+104.0=14.0\text{ dB}=25.1\end{aligned}\]
+Exactly half of the earlier 50.2 ✓.</li>
+        <li><b>(b) New capacity and explanation</b>:
+\[\begin{aligned}\log_2(1+25.1)&=\frac{\log_{10}26.1}{0.301}=\frac{1.417}{0.301}=4.71\\C&=10\times10^6\times4.71=47.1\text{ Mbps}\end{aligned}\]
+\(47.1/28.4=1.66\): the capacity <b>does not double</b>. The B outside the log doubles, but the SNR inside the log halves (the noise grows with the bandwidth), so the capacity per Hz drops from 5.68 to 4.71 bit/s/Hz. Capacity would double only if the SNR stayed the same (i.e. the transmit power were doubled as well).</li>
+        <li><b>(c) First assume both subchannels get power</b>: water-filling (p.54): \(\dfrac{P_j}{P}=\dfrac1{\gamma_0}-\dfrac1{\gamma_j}\) (only for subchannels with \(\gamma_j\ge\gamma_0\)), with the power constraint \(\sum_j\big(\frac1{\gamma_0}-\frac1{\gamma_j}\big)=1\):
+\[\begin{aligned}\frac2{\gamma_0}&=1+\frac1{20}+\frac1{0.5}=1+0.05+2=3.05\\ \frac1{\gamma_0}&=1.525,\qquad\gamma_0=0.656\end{aligned}\]
+Check: \(\gamma_2=0.5\lt\gamma_0=0.656\), so subchannel 2 would get \(P_2/P=1.525-2=-0.475\). Power cannot be negative, so subchannel 2 gets no power; drop it and recompute.</li>
+        <li><b>(c) Only subchannel 1 left</b>:
+\[\begin{aligned}\frac1{\gamma_0}&=1+\frac1{20}=1.05,\qquad\gamma_0=0.952\\ \frac{P_1}{P}&=1.05-0.05=1\end{aligned}\]
+\(\gamma_1=20\ge0.952\) ✓, so this cut-off is valid: <b>P₁ = P, P₂ = 0</b>, all the power goes to subchannel 1.</li>
+        <li><b>(c) Total capacity</b>: \(C=\sum_{\gamma_j\ge\gamma_0}B_j\log_2(\gamma_j/\gamma_0)\) (p.54):
+\[\begin{aligned}C&=1\text{ MHz}\times\log_2\frac{20}{0.952}=1\text{ MHz}\times\log_221\\&=1\text{ MHz}\times\frac{1.322}{0.301}=4.39\text{ Mbps}\end{aligned}\]
+Check: with all the power on subchannel 1, Shannon's formula directly gives \(\log_2(1+20)=\log_221\), the same ✓.</li>
       </ol>
       <div class="ans">(a) SNR ≈ 17 dB (50.2), C ≈ 28.4 Mbps; (b) C ≈ 47.1 Mbps, about 1.66 times, not double; (c) subchannel 2 gets no power, P₁ = P, C ≈ 4.39 Mbps</div>
       <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
@@ -952,10 +1140,23 @@
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>阴影 → 单个基站的中断是 Q(余量/σ)；两条链路独立，都低于门限才中断 → 相乘；(c) 反过来，用 (b) 的概率反查 Q 表，看单个基站要多大余量才能做到。</p>
       <ol class="steps">
-        <li>(a) 余量 = 平均功率 − 门限 = −95 − (−105) = 10 dB。<div class="calc">P_out,1 = Q(10 / 8) = Q(1.25) = 0.106</div></li>
-        <li>(b) 两条链路阴影独立，两个都低于门限的概率 = 各自概率相乘：<div class="calc">P_out,2 = [Q(1.25)]² = 0.1056² = 1.12 × 10⁻²</div></li>
-        <li>(c) 单个基站要达到 Q(x) = 0.0112：查 Q 表，Q(2.28) = 0.0113、Q(2.29) = 0.0110，取 x ≈ 2.29。所需余量 = 2.29 × 8 ≈ 18.3 dB。</li>
-        <li>实际余量只有 10 dB，宏分集相当于多给了 18.3 − 10 ≈ 8.3 dB 的余量，这就是宏分集增益。</li>
+        <li><b>(a) 余量</b>：余量 = 只有路径损耗时的平均功率 − 门限：
+\[x=-95-(-105)=10\text{ dB}\]
+阴影在 dB 上服从 \(\mathcal N(0,\sigma^2)\)，单个基站的中断概率是 \(Q(x/\sigma)\)（讲义第 2 章 p.15）。</li>
+        <li><b>(a) 查 Q 表</b>：
+\[P_{out,1}=Q\Big(\frac{10}{8}\Big)=Q(1.25)=0.1056\approx0.106\]
+约 10.6%，远高于常用的 1% 目标。</li>
+        <li><b>(b) 独立 → 相乘</b>：宏分集时，只有两条链路<b>都</b>低于门限才中断，是"与"事件。两条链路的阴影独立，用乘法规则 \(P(A\cap B)=P(A)P(B)\)（第 1b 章 p.6）：
+\[\begin{aligned}P_{out,2}&=Q(1.25)\times Q(1.25)=0.1056^2\\&=0.01116\approx1.12\times10^{-2}\end{aligned}\]
+约 1.1%，比单个基站小了将近 10 倍。</li>
+        <li><b>(c) 反查 Q 表</b>：单个基站要达到同样的中断，需要 \(Q(x'/\sigma)=0.01116\)。Q 表：Q(2.28) = 0.01130，Q(2.29) = 0.01101，线性插值：
+\[\begin{aligned}\frac{x'}{\sigma}&\approx2.28+0.01\times\frac{0.01130-0.01116}{0.01130-0.01101}\\&=2.28+0.01\times0.48=2.285\end{aligned}\]</li>
+        <li><b>(c) 所需余量</b>：
+\[x'=2.285\times8=18.28\approx18.3\text{ dB}\]
+自检：\(Q(18.3/8)=Q(2.29)=0.0110\approx0.011\) ✓，和 (b) 的 1.1% 一致。</li>
+        <li><b>(c) 宏分集增益</b>：实际每个基站只有 10 dB 余量，却达到了单基站 18.3 dB 余量的效果：
+\[G=18.3-10=8.3\text{ dB}\]
+换句话说，只用一个基站的话，要把发射功率提高 \(10^{8.28/10}\approx6.7\) 倍才能一样好。</li>
       </ol>
       <div class="ans">(a) ≈ 0.106（10.6%）；(b) ≈ 1.12 × 10⁻²（1.1%）；(c) 单基站要约 18.3 dB 余量，宏分集增益约 8.3 dB</div>
       <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
@@ -1013,10 +1214,23 @@
     <div class="sol sol-en" lang="en">
       <p class="idea"><b>Approach:</b> Shadowing → a single base station's outage is Q(margin/σ); the two links are independent and outage needs both below the threshold → multiply; (c) works backwards from the probability in (b) with the Q table.</p>
       <ol class="steps">
-        <li>(a) Margin = average power − threshold = −95 − (−105) = 10 dB.<div class="calc">P<sub>out,1</sub> = Q(10 / 8) = Q(1.25) = 0.106</div></li>
-        <li>(b) Independent shadowing, so the probability that both links are below the threshold is the product:<div class="calc">P<sub>out,2</sub> = [Q(1.25)]² = 0.1056² = 1.12 × 10⁻²</div></li>
-        <li>(c) A single base station needs Q(x) = 0.0112: the Q table gives Q(2.28) = 0.0113 and Q(2.29) = 0.0110, so x ≈ 2.29. Required margin = 2.29 × 8 ≈ 18.3 dB.</li>
-        <li>The actual margin is only 10 dB, so macro-diversity is worth about 18.3 − 10 ≈ 8.3 dB of extra margin: the macro-diversity gain.</li>
+        <li><b>(a) Margin</b>: margin = average power due to path loss alone − threshold:
+\[x=-95-(-105)=10\text{ dB}\]
+Shadowing in dB is \(\mathcal N(0,\sigma^2)\), so the outage probability of one base station is \(Q(x/\sigma)\) (Ch 2 p.15).</li>
+        <li><b>(a) Q table</b>:
+\[P_{out,1}=Q\Big(\frac{10}{8}\Big)=Q(1.25)=0.1056\approx0.106\]
+About 10.6%, far above the usual 1% target.</li>
+        <li><b>(b) Independent → multiply</b>: with macro-diversity, outage happens only when <b>both</b> links are below the threshold, an "AND" event. The shadowing of the two links is independent, so use the multiplication rule \(P(A\cap B)=P(A)P(B)\) (Ch 1b p.6):
+\[\begin{aligned}P_{out,2}&=Q(1.25)\times Q(1.25)=0.1056^2\\&=0.01116\approx1.12\times10^{-2}\end{aligned}\]
+About 1.1%, nearly 10 times smaller than with one base station.</li>
+        <li><b>(c) Inverse Q lookup</b>: for one base station to reach the same outage we need \(Q(x'/\sigma)=0.01116\). From the Q table, Q(2.28) = 0.01130 and Q(2.29) = 0.01101; interpolate linearly:
+\[\begin{aligned}\frac{x'}{\sigma}&\approx2.28+0.01\times\frac{0.01130-0.01116}{0.01130-0.01101}\\&=2.28+0.01\times0.48=2.285\end{aligned}\]</li>
+        <li><b>(c) Required margin</b>:
+\[x'=2.285\times8=18.28\approx18.3\text{ dB}\]
+Check: \(Q(18.3/8)=Q(2.29)=0.0110\approx0.011\) ✓, matching the 1.1% of (b).</li>
+        <li><b>(c) Macro-diversity gain</b>: each base station actually has only 10 dB of margin, yet the pair performs like a single base station with 18.3 dB:
+\[G=18.3-10=8.3\text{ dB}\]
+In other words, a single base station would need about \(10^{8.28/10}\approx6.7\) times the transmit power to do as well.</li>
       </ol>
       <div class="ans">(a) ≈ 0.106 (10.6%); (b) ≈ 1.12 × 10⁻² (1.1%); (c) a single base station would need about 18.3 dB of margin; macro-diversity gain ≈ 8.3 dB</div>
       <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
@@ -1116,11 +1330,26 @@
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>(a) 频率维度看信号带宽和相干带宽，时间维度看多普勒扩展和信号带宽，两个都要答；(b) LCR 就是"每秒掉进深衰落几次"，乘以每次持续多久，就是在深衰落里的时间比例；(c) 把题目给的两个公式相乘，f<sub>m</sub> 消掉，只剩 ρ。</p>
       <ol class="steps">
-        <li>(a) 频率维度：信号带宽 B<sub>s</sub> 小于相干带宽 B<sub>C</sub> → 平坦衰落（整个信号一起起伏）；B<sub>s</sub> 大于 B<sub>C</sub> → 频率选择性衰落（不同频率衰落不同，有 ISI）。时间维度：多普勒扩展 B<sub>D</sub>（≈ f<sub>m</sub>）远小于 B<sub>s</sub>（等价于相干时间 T<sub>C</sub> 远大于符号时长 T<sub>s</sub>）→ 慢衰落；B<sub>D</sub> 接近或大于 B<sub>s</sub> → 快衰落。</li>
-        <li>本题：B<sub>s</sub> ≈ 50 kHz &lt; B<sub>C</sub> = 200 kHz → 平坦；B<sub>D</sub> = 100 Hz ≪ 50 kHz（T<sub>C</sub> ≈ 1/f<sub>m</sub> = 10 ms ≫ T<sub>s</sub> = 20 µs）→ 慢。结论：<b>平坦慢衰落</b>。</li>
-        <li>(b) LCR = 300 次 / 10 s = 30 次/秒。<div class="calc">深衰落时间比例 = LCR × AFD = 30 × 0.5 ms = 0.015（1.5%）</div></li>
-        <li>T<sub>s</sub> = 1/50k = 20 µs，每次深衰落覆盖 0.5 ms / 20 µs = 25 个符号。<div class="calc">每秒错误符号数 = 30 × 25 = 750（也等于 1.5% × 50 000）</div></li>
-        <li>(c) 两式相乘：\(L_Z\bar\tau_Z=e^{-\rho^2}(e^{\rho^2}-1)=1-e^{-\rho^2}=0.015\)，所以 \(\rho^2=\ln\frac{1}{0.985}=0.0151\)。ρ² 是门限功率和 rms 功率之比：<div class="calc">10 log₁₀(0.0151) = −18.2 dB，门限比 rms 功率低约 18.2 dB（ρ = 0.123）</div></li>
+        <li><b>(a) 频率维度：平坦还是选择性</b>：比较信号带宽 B<sub>s</sub> 和相干带宽 B<sub>C</sub>（讲义第 2 章 p.31–33）。B<sub>s</sub> &lt; B<sub>C</sub> → <b>平坦衰落</b>：间隔小于 B<sub>C</sub> 的频率分量衰落是相关的，整个信号一起起伏，频谱基本不失真。B<sub>s</sub> &gt; B<sub>C</sub> → <b>频率选择性衰落</b>：不同频率衰落不同；在时域就是 rms 时延扩展占了符号时长的相当一部分，产生符号间干扰（ISI）。</li>
+        <li><b>(a) 时间维度：快还是慢</b>：比较多普勒扩展 \(B_D=f_m\)（p.35）和 B<sub>s</sub>，等价于比较相干时间 \(T_C\approx1/B_D\)（p.36）和符号时长 T<sub>s</sub>。B<sub>D</sub> ≪ B<sub>s</sub>（T<sub>C</sub> ≫ T<sub>s</sub>）→ <b>慢衰落</b>：一个符号内信道的幅度和相位基本不变。B<sub>D</sub> 接近或大于 B<sub>s</sub>（T<sub>C</sub> 比 T<sub>s</sub> 短）→ <b>快衰落</b>：一个符号还没发完，信道就变了（p.37）。</li>
+        <li><b>(a) 本题判断</b>：
+\[\begin{aligned}\frac{B_s}{B_C}&=\frac{50\text{ kHz}}{200\text{ kHz}}=0.25\lt1\ \Rightarrow\ \text{flat}\\ \frac{B_D}{B_s}&=\frac{100\text{ Hz}}{50\text{ kHz}}=0.002\ll1\ \Rightarrow\ \text{slow}\end{aligned}\]
+时域核对：\(T_s=1/R_s=20\ \mu\)s，\(T_C\approx1/f_m=1/100=10\) ms，是 T<sub>s</sub> 的 500 倍 ✓。结论：<b>平坦慢衰落</b>。</li>
+        <li><b>(b) LCR</b>：电平通过率（level crossing rate）= 每秒向下穿过门限的平均次数（p.40）：
+\[L_Z=\frac{300}{10\text{ s}}=30\text{ s}^{-1}\]</li>
+        <li><b>(b) 深衰落时间比例</b>：讲义 p.42：T 秒内有 \(L_ZT\) 次衰落，每次平均持续 \(\bar\tau\)，总衰落时间 \(\sum\tau_i=L_ZT\bar\tau\)。除以 T：
+\[\begin{aligned}\frac{\sum\tau_i}{T}&=L_Z\bar\tau=30\times0.5\times10^{-3}\\&=0.015=1.5\%\end{aligned}\]
+核对：10 s 里一共 300 × 0.5 ms = 0.15 s 处在深衰落中，0.15 / 10 = 1.5% ✓。</li>
+        <li><b>(b) 每秒错误符号数</b>：\(T_s=1/(50\times10^3)=20\ \mu\)s。每次深衰落连续错 \(\bar\tau/T_s=\bar\tau R_s\) 个符号（p.46），每秒有 L<sub>Z</sub> 次深衰落：
+\[\begin{aligned}\frac{\bar\tau}{T_s}&=\frac{0.5\text{ ms}}{20\ \mu\text{s}}=25\\ N_{err}&=L_Z\times25=30\times25=750\text{ s}^{-1}\end{aligned}\]
+自检：每秒发 50 000 个符号，其中 1.5% 落在深衰落里：0.015 × 50 000 = 750 ✓。</li>
+        <li><b>(c) 两式相乘消掉 f<sub>m</sub></b>：f<sub>m</sub> 和 \(\sqrt{2\pi}\rho\) 一乘一除正好约掉：
+\[\begin{aligned}L_Z\bar\tau_Z&=\sqrt{2\pi}f_m\rho e^{-\rho^2}\cdot\frac{e^{\rho^2}-1}{\sqrt{2\pi}f_m\rho}\\&=e^{-\rho^2}(e^{\rho^2}-1)=1-e^{-\rho^2}\end{aligned}\]
+这就是瑞利衰落下低于门限的概率 \(P(z\lt Z_{min})\)（p.43）。令它等于 (b) 的 0.015：
+\[\rho^2=\ln\frac1{1-0.015}=\ln\frac1{0.985}=0.0151\]</li>
+        <li><b>(c) 换成 dB</b>：\(\rho=Z_{min}/Z_{rms}\) 是幅度比，ρ² 才是功率比：
+\[\begin{aligned}10\log_{10}\rho^2&=10\log_{10}0.0151=-18.2\text{ dB}\\ \rho&=\sqrt{0.0151}=0.123\end{aligned}\]
+门限比 rms 功率低约 <b>18.2 dB</b>。回代：\(1-e^{-0.0151}=0.0150\) ✓。</li>
       </ol>
       <div class="ans">(a) 平坦（B_s &lt; B_C）、慢（B_D ≪ B_s）衰落；(b) LCR = 30 次/s，深衰落占 1.5% 的时间，每秒约 750 个错误符号；(c) 门限比 rms 功率低约 18.2 dB</div>
       <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
@@ -1179,11 +1408,26 @@
     <div class="sol sol-en" lang="en">
       <p class="idea"><b>Approach:</b> (a) The frequency dimension compares signal bandwidth with coherence bandwidth, the time dimension compares Doppler spread with signal bandwidth; answer both. (b) LCR is "deep fades per second"; times the duration of each gives the fraction of time in deep fades. (c) Multiply the two given formulas: f<sub>m</sub> cancels and only ρ remains.</p>
       <ol class="steps">
-        <li>(a) Frequency: signal bandwidth B<sub>s</sub> below the coherence bandwidth B<sub>C</sub> → flat fading (the whole signal fades together); B<sub>s</sub> above B<sub>C</sub> → frequency-selective fading (different frequencies fade differently, ISI). Time: Doppler spread B<sub>D</sub> (≈ f<sub>m</sub>) much smaller than B<sub>s</sub> (equivalently coherence time T<sub>C</sub> much longer than the symbol duration T<sub>s</sub>) → slow fading; B<sub>D</sub> close to or above B<sub>s</sub> → fast fading.</li>
-        <li>Here B<sub>s</sub> ≈ 50 kHz &lt; B<sub>C</sub> = 200 kHz → flat; B<sub>D</sub> = 100 Hz ≪ 50 kHz (T<sub>C</sub> ≈ 1/f<sub>m</sub> = 10 ms ≫ T<sub>s</sub> = 20 µs) → slow. Conclusion: <b>flat, slow fading</b>.</li>
-        <li>(b) LCR = 300 fades / 10 s = 30 per second.<div class="calc">fraction of time in deep fades = LCR × AFD = 30 × 0.5 ms = 0.015 (1.5%)</div></li>
-        <li>T<sub>s</sub> = 1/50k = 20 µs, so each deep fade covers 0.5 ms / 20 µs = 25 symbols.<div class="calc">symbol errors per second = 30 × 25 = 750 (also 1.5% × 50 000)</div></li>
-        <li>(c) Multiply: \(L_Z\bar\tau_Z=e^{-\rho^2}(e^{\rho^2}-1)=1-e^{-\rho^2}=0.015\), so \(\rho^2=\ln\frac{1}{0.985}=0.0151\). ρ² is the ratio of threshold power to rms power:<div class="calc">10 log₁₀(0.0151) = −18.2 dB: the threshold is about 18.2 dB below the rms power (ρ = 0.123)</div></li>
+        <li><b>(a) Frequency dimension: flat or selective</b>: compare the signal bandwidth B<sub>s</sub> with the coherence bandwidth B<sub>C</sub> (Ch 2 p.31–33). B<sub>s</sub> &lt; B<sub>C</sub> → <b>flat fading</b>: frequency components closer than B<sub>C</sub> fade in a correlated way, so the whole signal rises and falls together and the spectrum is hardly distorted. B<sub>s</sub> &gt; B<sub>C</sub> → <b>frequency-selective fading</b>: different frequencies fade differently; in the time domain the rms delay spread is a significant fraction of the symbol duration, which causes inter-symbol interference (ISI).</li>
+        <li><b>(a) Time dimension: fast or slow</b>: compare the Doppler spread \(B_D=f_m\) (p.35) with B<sub>s</sub>, or equivalently the coherence time \(T_C\approx1/B_D\) (p.36) with the symbol duration T<sub>s</sub>. B<sub>D</sub> ≪ B<sub>s</sub> (T<sub>C</sub> ≫ T<sub>s</sub>) → <b>slow fading</b>: the channel amplitude and phase stay almost constant during a symbol. B<sub>D</sub> close to or above B<sub>s</sub> (T<sub>C</sub> shorter than T<sub>s</sub>) → <b>fast fading</b>: the channel changes before a symbol is finished (p.37).</li>
+        <li><b>(a) This system</b>:
+\[\begin{aligned}\frac{B_s}{B_C}&=\frac{50\text{ kHz}}{200\text{ kHz}}=0.25\lt1\ \Rightarrow\ \text{flat}\\ \frac{B_D}{B_s}&=\frac{100\text{ Hz}}{50\text{ kHz}}=0.002\ll1\ \Rightarrow\ \text{slow}\end{aligned}\]
+Time-domain check: \(T_s=1/R_s=20\ \mu\)s and \(T_C\approx1/f_m=1/100=10\) ms, 500 times T<sub>s</sub> ✓. Conclusion: <b>flat, slow fading</b>.</li>
+        <li><b>(b) LCR</b>: the level crossing rate is the average number of downward crossings of the threshold per second (p.40):
+\[L_Z=\frac{300}{10\text{ s}}=30\text{ s}^{-1}\]</li>
+        <li><b>(b) Fraction of time in deep fades</b>: p.42: in T seconds there are \(L_ZT\) fades, each lasting \(\bar\tau\) on average, so the total fade time is \(\sum\tau_i=L_ZT\bar\tau\). Divide by T:
+\[\begin{aligned}\frac{\sum\tau_i}{T}&=L_Z\bar\tau=30\times0.5\times10^{-3}\\&=0.015=1.5\%\end{aligned}\]
+Check: in 10 s a total of 300 × 0.5 ms = 0.15 s is spent in deep fades, and 0.15 / 10 = 1.5% ✓.</li>
+        <li><b>(b) Symbol errors per second</b>: \(T_s=1/(50\times10^3)=20\ \mu\)s. Each deep fade wipes out \(\bar\tau/T_s=\bar\tau R_s\) consecutive symbols (p.46), and there are L<sub>Z</sub> deep fades per second:
+\[\begin{aligned}\frac{\bar\tau}{T_s}&=\frac{0.5\text{ ms}}{20\ \mu\text{s}}=25\\ N_{err}&=L_Z\times25=30\times25=750\text{ s}^{-1}\end{aligned}\]
+Check: 50 000 symbols are sent per second and 1.5% of them fall in deep fades: 0.015 × 50 000 = 750 ✓.</li>
+        <li><b>(c) Multiply the two formulas to cancel f<sub>m</sub></b>: f<sub>m</sub> and \(\sqrt{2\pi}\rho\) appear once in the numerator and once in the denominator:
+\[\begin{aligned}L_Z\bar\tau_Z&=\sqrt{2\pi}f_m\rho e^{-\rho^2}\cdot\frac{e^{\rho^2}-1}{\sqrt{2\pi}f_m\rho}\\&=e^{-\rho^2}(e^{\rho^2}-1)=1-e^{-\rho^2}\end{aligned}\]
+This is the Rayleigh probability of being below the threshold, \(P(z\lt Z_{min})\) (p.43). Set it equal to the 0.015 of (b):
+\[\rho^2=\ln\frac1{1-0.015}=\ln\frac1{0.985}=0.0151\]</li>
+        <li><b>(c) Convert to dB</b>: \(\rho=Z_{min}/Z_{rms}\) is an amplitude ratio; ρ² is the power ratio:
+\[\begin{aligned}10\log_{10}\rho^2&=10\log_{10}0.0151=-18.2\text{ dB}\\ \rho&=\sqrt{0.0151}=0.123\end{aligned}\]
+The threshold is about <b>18.2 dB</b> below the rms power. Back-substitution: \(1-e^{-0.0151}=0.0150\) ✓.</li>
       </ol>
       <div class="ans">(a) flat (B<sub>s</sub> &lt; B<sub>C</sub>), slow (B<sub>D</sub> ≪ B<sub>s</sub>) fading; (b) LCR = 30 per second, 1.5% of the time in deep fades, about 750 symbol errors per second; (c) the threshold is about 18.2 dB below the rms power</div>
       <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
@@ -1283,11 +1527,23 @@
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>三个比值只差在分母；干扰当高斯噪声时，香农公式里用 SINR；(c) 公式题目给了，\(\bar\gamma\ln\frac{1}{1-\varepsilon}\) 其实就是瑞利中断公式反解出的最小 SNR。</p>
       <ol class="steps">
-        <li>(a) SNR = 2 / 0.05 = 40（16.0 dB）；SIR = 2 / 0.5 = 4（6.0 dB）；SINR = 2 /(0.5 + 0.05) = 3.64（5.6 dB）。</li>
-        <li>干扰当高斯噪声，香农公式用 SINR：<div class="calc">C = 10 MHz × log₂(1 + 3.64) = 10 × 2.213 = 22.1 Mbps</div></li>
-        <li>(b) 干扰消除后只剩噪声，用 SNR：<div class="calc">C = 10 MHz × log₂(1 + 40) = 10 × 5.358 = 53.6 Mbps（约 2.4 倍）</div></li>
-        <li>(c) γ̄ = 20 dB = 100，\(\ln\frac{1}{0.99}=0.01005\)，最小 SNR \(\gamma_{\min}=100\times0.01005=1.005\)（约 0 dB）。<div class="calc">C_ε = 10 MHz × log₂(1 + 1.005) = 10 × 1.004 = 10.0 Mbps</div></li>
-        <li>同样 20 dB 的 AWGN 信道：C = 10 MHz × log₂(101) = 66.6 Mbps。瑞利信道要保证 99% 的时间不中断，只能按约 0 dB 的最小 SNR 设计，容量只有 AWGN 的约 1/6.6；γ<sub>min</sub> 比 γ̄ 低约 20 dB，正好是 1% 中断对应的衰落余量。</li>
+        <li><b>(a) 三个比值（线性）</b>：分子都是信号功率，只差在分母：
+\[\begin{aligned}\mathrm{SNR}&=\frac SN=\frac{2}{0.05}=40\\ \mathrm{SIR}&=\frac SI=\frac{2}{0.5}=4\\ \mathrm{SINR}&=\frac{S}{I+N}=\frac{2}{0.5+0.05}=\frac{2}{0.55}=3.64\end{aligned}\]
+都是 mW / mW，没有单位。</li>
+        <li><b>(a) 换成 dB</b>：\(10\log_{10}40=16.0\) dB，\(10\log_{10}4=6.0\) dB，\(10\log_{10}3.64=5.6\) dB。自检：SINR 的分母最大，所以最小：5.6 dB &lt; 6.0 dB &lt; 16.0 dB ✓。</li>
+        <li><b>(a) 容量</b>：干扰当作高斯噪声，相当于总"噪声"是 I + N，所以香农公式（讲义第 2 章 p.48）里用 SINR：
+\[\begin{aligned}\log_2(1+3.64)&=\frac{\log_{10}4.64}{0.301}=\frac{0.666}{0.301}=2.213\\C&=10\times10^6\times2.213=22.1\text{ Mbps}\end{aligned}\]</li>
+        <li><b>(b) 消除干扰</b>：只剩噪声，用 SNR = 40：
+\[\begin{aligned}\log_2(1+40)&=\frac{\log_{10}41}{0.301}=\frac{1.613}{0.301}=5.358\\C&=10\times10^6\times5.358=53.6\text{ Mbps}\end{aligned}\]
+是原来的 53.6 / 22.1 = 2.42 倍。</li>
+        <li><b>(c) 最小 SNR</b>：\(\bar\gamma=10^{20/10}=100\)。题目公式里的 \(\bar\gamma\ln\frac1{1-\varepsilon}\) 就是由瑞利 CDF \(1-e^{-\gamma_{min}/\bar\gamma}=\varepsilon\) 反解出的 γ<sub>min</sub>（讲义 p.50–51）：
+\[\begin{aligned}\ln\frac1{1-0.01}&=\ln\frac1{0.99}=0.01005\\ \gamma_{min}&=100\times0.01005=1.005\end{aligned}\]
+即 \(10\log_{10}1.005=0.02\) dB，约 0 dB。</li>
+        <li><b>(c) 中断容量</b>：
+\[\begin{aligned}C_\varepsilon&=10\times10^6\times\log_2(1+1.005)\\&=10\times10^6\times\frac{\log_{10}2.005}{0.301}\\&=10\times10^6\times\frac{0.3021}{0.301}=10\times10^6\times1.004\\&=10.0\text{ Mbps}\end{aligned}\]</li>
+        <li><b>(c) 和 AWGN 比较</b>：同样 20 dB 的 AWGN 信道，SNR 一直是 100：
+\[\begin{aligned}C_{AWGN}&=10\times10^6\times\frac{\log_{10}101}{0.301}\\&=10\times10^6\times6.658=66.6\text{ Mbps}\end{aligned}\]
+\(66.6/10.0=6.6\) 倍。原因：瑞利信道要保证 99% 的时间不中断，只能按最小 SNR（约 0 dB）来定速率。自检：\(\bar\gamma_{dB}-\gamma_{min,dB}=20-0.02=19.98\) dB，正好是讲义 p.51 里 ε = 1% 对应的 20 dB 衰落余量 ✓（和模拟 B · Q1 (b) 一样）。</li>
       </ol>
       <div class="ans">(a) SNR 16.0 dB、SIR 6.0 dB、SINR 5.6 dB，C ≈ 22.1 Mbps；(b) C ≈ 53.6 Mbps；(c) C<sub>ε</sub> ≈ 10.0 Mbps，远低于 AWGN 的 66.6 Mbps</div>
       <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
@@ -1350,11 +1606,23 @@
     <div class="sol sol-en" lang="en">
       <p class="idea"><b>Approach:</b> The three ratios differ only in the denominator; with interference treated as Gaussian noise, Shannon's formula uses the SINR; in (c) the formula is given, and \(\bar\gamma\ln\frac{1}{1-\varepsilon}\) is just the minimum SNR obtained by inverting the Rayleigh outage formula.</p>
       <ol class="steps">
-        <li>(a) SNR = 2 / 0.05 = 40 (16.0 dB); SIR = 2 / 0.5 = 4 (6.0 dB); SINR = 2 / (0.5 + 0.05) = 3.64 (5.6 dB).</li>
-        <li>Interference treated as Gaussian noise, so Shannon uses the SINR:<div class="calc">C = 10 MHz × log₂(1 + 3.64) = 10 × 2.213 = 22.1 Mbps</div></li>
-        <li>(b) After cancellation only noise remains, so use the SNR:<div class="calc">C = 10 MHz × log₂(1 + 40) = 10 × 5.358 = 53.6 Mbps (about 2.4 times)</div></li>
-        <li>(c) γ̄ = 20 dB = 100 and \(\ln\frac{1}{0.99}=0.01005\), so the minimum SNR is \(\gamma_{\min}=100\times0.01005=1.005\) (about 0 dB).<div class="calc">C<sub>ε</sub> = 10 MHz × log₂(1 + 1.005) = 10 × 1.004 = 10.0 Mbps</div></li>
-        <li>An AWGN channel with the same 20 dB: C = 10 MHz × log₂(101) = 66.6 Mbps. To stay out of outage 99% of the time the Rayleigh link must be designed for a minimum SNR of about 0 dB, so its capacity is only about 1/6.6 of the AWGN value; γ<sub>min</sub> is about 20 dB below γ̄, exactly the fade margin for 1% outage.</li>
+        <li><b>(a) The three ratios (linear)</b>: all have the signal power on top and differ only in the denominator:
+\[\begin{aligned}\mathrm{SNR}&=\frac SN=\frac{2}{0.05}=40\\ \mathrm{SIR}&=\frac SI=\frac{2}{0.5}=4\\ \mathrm{SINR}&=\frac{S}{I+N}=\frac{2}{0.5+0.05}=\frac{2}{0.55}=3.64\end{aligned}\]
+All are mW / mW, so they have no unit.</li>
+        <li><b>(a) Convert to dB</b>: \(10\log_{10}40=16.0\) dB, \(10\log_{10}4=6.0\) dB, \(10\log_{10}3.64=5.6\) dB. Check: the SINR has the largest denominator, so it is the smallest: 5.6 dB &lt; 6.0 dB &lt; 16.0 dB ✓.</li>
+        <li><b>(a) Capacity</b>: with the interference treated as Gaussian noise, the total "noise" is I + N, so Shannon's formula (Ch 2 p.48) uses the SINR:
+\[\begin{aligned}\log_2(1+3.64)&=\frac{\log_{10}4.64}{0.301}=\frac{0.666}{0.301}=2.213\\C&=10\times10^6\times2.213=22.1\text{ Mbps}\end{aligned}\]</li>
+        <li><b>(b) Interference removed</b>: only the noise remains, so use SNR = 40:
+\[\begin{aligned}\log_2(1+40)&=\frac{\log_{10}41}{0.301}=\frac{1.613}{0.301}=5.358\\C&=10\times10^6\times5.358=53.6\text{ Mbps}\end{aligned}\]
+That is 53.6 / 22.1 = 2.42 times the value in (a).</li>
+        <li><b>(c) Minimum SNR</b>: \(\bar\gamma=10^{20/10}=100\). The term \(\bar\gamma\ln\frac1{1-\varepsilon}\) in the given formula is γ<sub>min</sub> obtained by inverting the Rayleigh CDF \(1-e^{-\gamma_{min}/\bar\gamma}=\varepsilon\) (p.50–51):
+\[\begin{aligned}\ln\frac1{1-0.01}&=\ln\frac1{0.99}=0.01005\\ \gamma_{min}&=100\times0.01005=1.005\end{aligned}\]
+i.e. \(10\log_{10}1.005=0.02\) dB, about 0 dB.</li>
+        <li><b>(c) Outage capacity</b>:
+\[\begin{aligned}C_\varepsilon&=10\times10^6\times\log_2(1+1.005)\\&=10\times10^6\times\frac{\log_{10}2.005}{0.301}\\&=10\times10^6\times\frac{0.3021}{0.301}=10\times10^6\times1.004\\&=10.0\text{ Mbps}\end{aligned}\]</li>
+        <li><b>(c) Comparison with AWGN</b>: an AWGN channel with the same 20 dB always has SNR 100:
+\[\begin{aligned}C_{AWGN}&=10\times10^6\times\frac{\log_{10}101}{0.301}\\&=10\times10^6\times6.658=66.6\text{ Mbps}\end{aligned}\]
+\(66.6/10.0=6.6\) times more. Reason: to stay out of outage 99% of the time, the Rayleigh link must set its rate by the minimum SNR (about 0 dB). Check: \(\bar\gamma_{dB}-\gamma_{min,dB}=20-0.02=19.98\) dB, exactly the 20 dB fade margin for ε = 1% on p.51 ✓ (same as Mock B Q1 (b)).</li>
       </ol>
       <div class="ans">(a) SNR 16.0 dB, SIR 6.0 dB, SINR 5.6 dB, C ≈ 22.1 Mbps; (b) C ≈ 53.6 Mbps; (c) C<sub>ε</sub> ≈ 10.0 Mbps, far below the 66.6 Mbps of the AWGN channel</div>
       <div class="official"><b>Official answer:</b> none (self-written mock question); all numbers checked by src/p2build/verify_mock.py</div>
@@ -1458,10 +1726,21 @@
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>自由空间公式 \(P_r=P_tG_tG_r\big(\frac{\lambda}{4\pi d}\big)^2\) 取 dB 计算；距离和频率都以平方出现，各加倍一次就各少 6 dB；(c) 用简化模型算一遍，和自由空间比，差几十 dB。</p>
       <ol class="steps">
-        <li>(a) \(\lambda=c/f=3\times10^8/9\times10^8=0.333\) m，\(P_t\) = 1 W = 30 dBm。<div class="calc">P_r = 30 + 20 log₁₀(0.333 / (4π × 1000)) = 30 + 20 log₁₀(2.65×10⁻⁵) = 30 − 91.5 = −61.5 dBm</div>路径损耗 = 30 − (−61.5) = 91.5 dB（也可以用 Part A 的 32.44 + 20 log₁₀900 + 20 log₁₀1 = 91.5 dB 核对）。</li>
-        <li>(b) \(P_r\propto d^{-2}\)：距离加倍，少 20 log₁₀2 = 6.0 dB（−67.5 dBm）。\(P_r\propto\lambda^2\propto f^{-2}\)：频率再加倍，再少 6.0 dB（−73.6 dBm）。</li>
-        <li>(c) 简化模型：<div class="calc">P_r = 30 + (−31.5) − 10 × 3.5 × log₁₀1000 = 30 − 31.5 − 105 = −106.5 dBm</div></li>
-        <li>和自由空间的 −61.5 dBm 差了约 45 dB（3 万多倍）。城区有楼房遮挡、地面反射，功率随距离衰减得快得多（γ = 3.5 而不是 2）；用自由空间会严重高估接收功率，覆盖范围、中断概率全都算错。题目说 simplified path loss model，就一定要用它。</li>
+        <li><b>(a) 波长和发射功率</b>：
+\[\begin{aligned}\lambda&=\frac cf=\frac{3\times10^8}{9\times10^8}=0.333\text{ m}\\P_t&=1\text{ W}=10\log_{10}\frac{1000\text{ mW}}{1\text{ mW}}=30\text{ dBm}\end{aligned}\]</li>
+        <li><b>(a) 自由空间增益</b>：Friis 公式（讲义第 2 章 p.4）\(P_r=P_tG_tG_r\big(\frac{\lambda}{4\pi d}\big)^2\)，G<sub>t</sub> = G<sub>r</sub> = 1。平方在 dB 里变成 20 log：
+\[\begin{aligned}\frac{\lambda}{4\pi d}&=\frac{0.333}{4\pi\times1000}=\frac{0.333}{12566}\\&=2.65\times10^{-5}\\20\log_{10}\frac{\lambda}{4\pi d}&=20\log_{10}(2.65\times10^{-5})\\&=-91.5\text{ dB}\end{aligned}\]</li>
+        <li><b>(a) 接收功率和路径损耗</b>：
+\[\begin{aligned}P_r&=30-91.5=-61.5\text{ dBm}\\ PL&=P_t-P_r=30-(-61.5)=91.5\text{ dB}\end{aligned}\]
+自检（Part A 的公式，f 用 MHz、d 用 km）：
+\[\begin{aligned}PL&=32.44+20\log_{10}900+20\log_{10}1\\&=32.44+59.08+0=91.5\text{ dB}\ \checkmark\end{aligned}\]</li>
+        <li><b>(b) 距离加倍</b>：\(P_r\propto d^{-2}\)，d 变成 2d，功率变成 1/4：
+\[\Delta=10\log_{10}4=20\log_{10}2=6.02\text{ dB}\]
+\(P_r(2\text{ km})=-61.53-6.02=-67.5\) dBm。</li>
+        <li><b>(b) 频率再加倍</b>：\(P_r\propto\lambda^2\propto f^{-2}\)：f 加倍 → λ 减半 → 功率再变成 1/4，再少 6.02 dB：\(P_r=-67.55-6.02=-73.6\) dBm。原因：增益为 1 的天线有效面积 \(\propto\lambda^2\)，频率越高，接收天线"接住"的功率越少。</li>
+        <li><b>(c) 简化模型</b>：\(P_r=P_t+K_{dB}-10\gamma\log_{10}(d/d_0)\)（p.8），\(\log_{10}(1000/1)=3\)：
+\[\begin{aligned}P_r&=30+(-31.5)-10\times3.5\times3\\&=30-31.5-105=-106.5\text{ dBm}\end{aligned}\]</li>
+        <li><b>(c) 比较与解释</b>：两者相差 \(-61.5-(-106.5)=45\) dB，即 \(10^{4.5}\approx3\times10^4\) 倍。自检：两个模型在 1 m 处几乎一样（自由空间 \(20\log_{10}(\lambda/4\pi)=-31.5\) dB = K<sub>dB</sub>），之后每 10 倍距离相差 35 − 20 = 15 dB，1 m → 1 km 是 3 个 10 倍：3 × 15 = 45 dB ✓。原因：城区有楼房遮挡和多次反射，功率随距离衰减得快得多（γ = 3.5，不是 2）；用自由空间会把接收功率高估约 45 dB，覆盖范围和中断概率全都算错。</li>
       </ol>
       <div class="ans">(a) P_r ≈ −61.5 dBm，路径损耗 ≈ 91.5 dB；(b) 各少 6 dB（−67.5 dBm，再到 −73.6 dBm）；(c) −106.5 dBm，比自由空间低约 45 dB，用自由空间会严重高估</div>
       <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
@@ -1514,10 +1793,21 @@
     <div class="sol sol-en" lang="en">
       <p class="idea"><b>Approach:</b> Use the free-space formula \(P_r=P_tG_tG_r\big(\frac{\lambda}{4\pi d}\big)^2\) in dB; distance and frequency both appear squared, so each doubling costs 6 dB; in (c) compute with the simplified model and compare: the difference is tens of dB.</p>
       <ol class="steps">
-        <li>(a) \(\lambda=c/f=3\times10^8/9\times10^8=0.333\) m, \(P_t\) = 1 W = 30 dBm.<div class="calc">P<sub>r</sub> = 30 + 20 log₁₀(0.333 / (4π × 1000)) = 30 + 20 log₁₀(2.65×10⁻⁵) = 30 − 91.5 = −61.5 dBm</div>Path loss = 30 − (−61.5) = 91.5 dB (check with Part A's 32.44 + 20 log₁₀900 + 20 log₁₀1 = 91.5 dB).</li>
-        <li>(b) \(P_r\propto d^{-2}\): doubling the distance costs 20 log₁₀2 = 6.0 dB (−67.5 dBm). \(P_r\propto\lambda^2\propto f^{-2}\): doubling the frequency costs another 6.0 dB (−73.6 dBm).</li>
-        <li>(c) Simplified model:<div class="calc">P<sub>r</sub> = 30 + (−31.5) − 10 × 3.5 × log₁₀1000 = 30 − 31.5 − 105 = −106.5 dBm</div></li>
-        <li>That is about 45 dB (over 30 000 times) below the free-space −61.5 dBm. In a city, buildings block and reflect the signal and the power falls much faster with distance (γ = 3.5 instead of 2); the free-space model would grossly overestimate the received power and get the coverage and outage completely wrong. When a question says "simplified path loss model", use it.</li>
+        <li><b>(a) Wavelength and transmit power</b>:
+\[\begin{aligned}\lambda&=\frac cf=\frac{3\times10^8}{9\times10^8}=0.333\text{ m}\\P_t&=1\text{ W}=10\log_{10}\frac{1000\text{ mW}}{1\text{ mW}}=30\text{ dBm}\end{aligned}\]</li>
+        <li><b>(a) Free-space gain</b>: Friis formula (Ch 2 p.4) \(P_r=P_tG_tG_r\big(\frac{\lambda}{4\pi d}\big)^2\) with G<sub>t</sub> = G<sub>r</sub> = 1. The square becomes 20 log in dB:
+\[\begin{aligned}\frac{\lambda}{4\pi d}&=\frac{0.333}{4\pi\times1000}=\frac{0.333}{12566}\\&=2.65\times10^{-5}\\20\log_{10}\frac{\lambda}{4\pi d}&=20\log_{10}(2.65\times10^{-5})\\&=-91.5\text{ dB}\end{aligned}\]</li>
+        <li><b>(a) Received power and path loss</b>:
+\[\begin{aligned}P_r&=30-91.5=-61.5\text{ dBm}\\ PL&=P_t-P_r=30-(-61.5)=91.5\text{ dB}\end{aligned}\]
+Check with the Part A formula (f in MHz, d in km):
+\[\begin{aligned}PL&=32.44+20\log_{10}900+20\log_{10}1\\&=32.44+59.08+0=91.5\text{ dB}\ \checkmark\end{aligned}\]</li>
+        <li><b>(b) Double the distance</b>: \(P_r\propto d^{-2}\), so d → 2d makes the power 1/4:
+\[\Delta=10\log_{10}4=20\log_{10}2=6.02\text{ dB}\]
+\(P_r(2\text{ km})=-61.53-6.02=-67.5\) dBm.</li>
+        <li><b>(b) Then double the frequency</b>: \(P_r\propto\lambda^2\propto f^{-2}\): doubling f halves λ and makes the power 1/4 again, another 6.02 dB down: \(P_r=-67.55-6.02=-73.6\) dBm. Reason: the effective area of a unity-gain antenna is proportional to λ², so at a higher frequency the receiving antenna "catches" less power.</li>
+        <li><b>(c) Simplified model</b>: \(P_r=P_t+K_{dB}-10\gamma\log_{10}(d/d_0)\) (p.8) with \(\log_{10}(1000/1)=3\):
+\[\begin{aligned}P_r&=30+(-31.5)-10\times3.5\times3\\&=30-31.5-105=-106.5\text{ dBm}\end{aligned}\]</li>
+        <li><b>(c) Comparison and explanation</b>: the two differ by \(-61.5-(-106.5)=45\) dB, a factor of \(10^{4.5}\approx3\times10^4\). Check: the two models almost agree at 1 m (free space gives \(20\log_{10}(\lambda/4\pi)=-31.5\) dB = K<sub>dB</sub>), and after that they drift apart by 35 − 20 = 15 dB per decade of distance; 1 m → 1 km is 3 decades, 3 × 15 = 45 dB ✓. Reason: in a city, buildings block the path and cause many reflections, so the power falls much faster with distance (γ = 3.5 instead of 2). The free-space model would overestimate the received power by about 45 dB and get the coverage and outage completely wrong.</li>
       </ol>
       <div class="ans">(a) P<sub>r</sub> ≈ −61.5 dBm, path loss ≈ 91.5 dB; (b) 6 dB each (−67.5 dBm, then −73.6 dBm); (c) −106.5 dBm, about 45 dB below free space, so free space would grossly overestimate</div>
       <div class="official"><b>Official answer:</b> none (self-written practice question); all numbers checked by src/p2build/verify_mock.py</div>
@@ -1611,10 +1901,17 @@
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>先由 λ 算临界距离；d 大于它时直接代双径公式（注意里面没有 λ）；(c) 看每个量在公式里的幂次，换成 dB。</p>
       <ol class="steps">
-        <li>(a) \(\lambda=0.333\) m：<div class="calc">d_c = 4 × 30 × 1.5 / 0.333 = 540 m</div></li>
-        <li>(b) 5 km 远大于 540 m，可以用双径公式：<div class="calc">P_r = 10 × (30 × 1.5)² / 5000⁴ = 10 × 2025 / 6.25×10¹⁴ = 3.24×10⁻¹¹ W = −74.9 dBm</div></li>
-        <li>同距离的自由空间：\(P_r=10\times\big(\frac{0.333}{4\pi\times5000}\big)^2=2.81\times10^{-10}\) W = −65.5 dBm。双径低了约 9.4 dB：远处地面反射和直射几乎反相抵消，所以比自由空间衰减得快。</li>
-        <li>(c)(i) \(P_r\propto d^{-4}\)：距离加倍，少 40 log₁₀2 = 12 dB（自由空间只少 6 dB）。(ii) 公式里没有 λ：频率加倍，<b>不变</b>（自由空间会少 6 dB）。(iii) \(P_r\propto h_t^2\)：天线高度加倍，多 20 log₁₀2 = 6 dB。</li>
+        <li><b>(a) 临界距离</b>：\(\lambda=c/f=3\times10^8/9\times10^8=0.333\) m，代讲义第 2 章 p.5 的公式：
+\[d_c=\frac{4h_th_r}{\lambda}=\frac{4\times30\times1.5}{0.333}=\frac{180}{0.333}=540\text{ m}\]</li>
+        <li><b>(b) 双径接收功率</b>：先确认能用 d⁻⁴ 公式：5000 m ≫ d<sub>c</sub> = 540 m ✓。G<sub>t</sub> = G<sub>r</sub> = 1：
+\[\begin{aligned}(h_th_r)^2&=(30\times1.5)^2=45^2=2025\text{ m}^4\\d^4&=5000^4=6.25\times10^{14}\text{ m}^4\\P_r&=\frac{10\times2025}{6.25\times10^{14}}=3.24\times10^{-11}\text{ W}\\&=10\log_{10}\frac{3.24\times10^{-11}}{10^{-3}}\text{ dBm}\\&=-74.9\text{ dBm}\end{aligned}\]
+换 dBm 时除以 1 mW = 10⁻³ W。</li>
+        <li><b>(b) 和自由空间比</b>：同样 5 km：
+\[\begin{aligned}\frac{\lambda}{4\pi d}&=\frac{0.333}{4\pi\times5000}=5.31\times10^{-6}\\P_r&=10\times(5.31\times10^{-6})^2=2.81\times10^{-10}\text{ W}\\&=-65.5\text{ dBm}\end{aligned}\]
+双径低了 −65.5 − (−74.9) = 9.4 dB：远处地面反射波和直射波几乎反相，大部分互相抵消。自检：两者之比 \(\big(\frac{4\pi h_th_r}{\lambda d}\big)^2=\big(\frac{565.5}{1667}\big)^2=0.115\)，\(10\log_{10}0.115=-9.4\) dB ✓。</li>
+        <li><b>(c)(i) 距离加倍</b>：\(P_r\propto d^{-4}\)，功率变成 \(1/2^4=1/16\)：\(10\log_{10}16=40\log_{10}2=12.0\) dB，<b>少 12 dB</b>（5 km → 10 km：−74.9 → −86.9 dBm）。自由空间只少 6 dB。</li>
+        <li><b>(c)(ii) 频率加倍</b>：公式 \(P_tG_tG_r(h_th_r)^2/d^4\) 里没有 λ，所以接收功率<b>不变</b>（0 dB），而自由空间会少 6 dB。注意 \(d_c=4h_th_r/\lambda\) 随频率加倍变成 1080 m，5 km 仍在 d<sub>c</sub> 之外，公式仍然适用。</li>
+        <li><b>(c)(iii) 基站天线加高一倍</b>：\(P_r\propto h_t^2\)，功率变成 4 倍：\(10\log_{10}4=20\log_{10}2=6.0\) dB，<b>多 6 dB</b>。d<sub>c</sub> 也变成 1080 m，仍远小于 5 km。这是基站天线要架高的原因之一。</li>
       </ol>
       <div class="ans">(a) d_c = 540 m；(b) −74.9 dBm，比自由空间（−65.5 dBm）低约 9.4 dB；(c) 距离加倍 −12 dB，频率加倍不变，天线高度加倍 +6 dB</div>
       <div class="official"><b>官方答案：</b>无（自编模拟题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
@@ -1671,10 +1968,17 @@
     <div class="sol sol-en" lang="en">
       <p class="idea"><b>Approach:</b> Find the critical distance from λ; beyond it, use the two-ray formula directly (note that it contains no λ); for (c), read off the power of each quantity in the formula and convert to dB.</p>
       <ol class="steps">
-        <li>(a) \(\lambda=0.333\) m:<div class="calc">d<sub>c</sub> = 4 × 30 × 1.5 / 0.333 = 540 m</div></li>
-        <li>(b) 5 km is far beyond 540 m, so the two-ray formula applies:<div class="calc">P<sub>r</sub> = 10 × (30 × 1.5)² / 5000⁴ = 10 × 2025 / 6.25×10¹⁴ = 3.24×10⁻¹¹ W = −74.9 dBm</div></li>
-        <li>Free space at the same distance: \(P_r=10\times\big(\frac{0.333}{4\pi\times5000}\big)^2=2.81\times10^{-10}\) W = −65.5 dBm. The two-ray value is about 9.4 dB lower: far away the ground reflection nearly cancels the direct wave, so the power falls faster than in free space.</li>
-        <li>(c)(i) \(P_r\propto d^{-4}\): doubling the distance costs 40 log₁₀2 = 12 dB (free space only 6 dB). (ii) There is no λ in the formula: doubling the frequency changes <b>nothing</b> (free space would lose 6 dB). (iii) \(P_r\propto h_t^2\): doubling the antenna height gains 20 log₁₀2 = 6 dB.</li>
+        <li><b>(a) Critical distance</b>: \(\lambda=c/f=3\times10^8/9\times10^8=0.333\) m; use the formula on Ch 2 p.5:
+\[d_c=\frac{4h_th_r}{\lambda}=\frac{4\times30\times1.5}{0.333}=\frac{180}{0.333}=540\text{ m}\]</li>
+        <li><b>(b) Two-ray received power</b>: first confirm the d⁻⁴ formula applies: 5000 m ≫ d<sub>c</sub> = 540 m ✓. With G<sub>t</sub> = G<sub>r</sub> = 1:
+\[\begin{aligned}(h_th_r)^2&=(30\times1.5)^2=45^2=2025\text{ m}^4\\d^4&=5000^4=6.25\times10^{14}\text{ m}^4\\P_r&=\frac{10\times2025}{6.25\times10^{14}}=3.24\times10^{-11}\text{ W}\\&=10\log_{10}\frac{3.24\times10^{-11}}{10^{-3}}\text{ dBm}\\&=-74.9\text{ dBm}\end{aligned}\]
+To convert to dBm, divide by 1 mW = 10⁻³ W.</li>
+        <li><b>(b) Compare with free space</b>: at the same 5 km:
+\[\begin{aligned}\frac{\lambda}{4\pi d}&=\frac{0.333}{4\pi\times5000}=5.31\times10^{-6}\\P_r&=10\times(5.31\times10^{-6})^2=2.81\times10^{-10}\text{ W}\\&=-65.5\text{ dBm}\end{aligned}\]
+The two-ray value is −65.5 − (−74.9) = 9.4 dB lower: far away the ground-reflected wave is almost in antiphase with the direct wave, so most of it cancels. Check: the ratio of the two is \(\big(\frac{4\pi h_th_r}{\lambda d}\big)^2=\big(\frac{565.5}{1667}\big)^2=0.115\), and \(10\log_{10}0.115=-9.4\) dB ✓.</li>
+        <li><b>(c)(i) Double the distance</b>: \(P_r\propto d^{-4}\), so the power becomes \(1/2^4=1/16\): \(10\log_{10}16=40\log_{10}2=12.0\) dB, <b>12 dB down</b> (5 km → 10 km: −74.9 → −86.9 dBm). Free space would lose only 6 dB.</li>
+        <li><b>(c)(ii) Double the frequency</b>: the formula \(P_tG_tG_r(h_th_r)^2/d^4\) contains no λ, so the received power is <b>unchanged</b> (0 dB), whereas free space would lose 6 dB. Note that \(d_c=4h_th_r/\lambda\) doubles to 1080 m with the frequency; 5 km is still beyond d<sub>c</sub>, so the formula still applies.</li>
+        <li><b>(c)(iii) Double the base station antenna height</b>: \(P_r\propto h_t^2\), so the power becomes 4 times: \(10\log_{10}4=20\log_{10}2=6.0\) dB, <b>6 dB up</b>. d<sub>c</sub> also becomes 1080 m, still well below 5 km. This is one reason base station antennas are mounted high.</li>
       </ol>
       <div class="ans">(a) d<sub>c</sub> = 540 m; (b) −74.9 dBm, about 9.4 dB below free space (−65.5 dBm); (c) doubling distance −12 dB, doubling frequency no change, doubling antenna height +6 dB</div>
       <div class="official"><b>Official answer:</b> none (self-written practice question); all numbers checked by src/p2build/verify_mock.py</div>
@@ -1782,12 +2086,24 @@
     <div class="sol sol-zh">
       <p class="idea"><b>思路：</b>每一问只看一种效应，用它自己的公式：路径损耗给平均值；阴影在 dB 上是高斯，用 Q；瑞利的 SNR 是指数分布，用 1 − e<sup>−γ₀/γ̄</sup>；莱斯只看 K；平坦/选择性比 σ 和 T<sub>s</sub>；快/慢比 T<sub>C</sub> 和 T<sub>s</sub>。</p>
       <ol class="steps">
-        <li>(a) 路径损耗：<div class="calc">P_r = 30 + (−40) − 10 × 3 × log₁₀1000 = 30 − 40 − 90 = −100 dBm</div>平均 SNR = −100 − (−120) = 20 dB（线性 100）。</li>
-        <li>(b) 阴影：接收功率（dB）服从高斯，均值 −100 dBm、σ = 8 dB。余量 = −100 − (−110) = 10 dB：<div class="calc">P_out = Q(10 / 8) = Q(1.25) = 0.106</div></li>
-        <li>(c) 瑞利：瞬时 SNR 服从指数分布，γ₀/γ̄ = 10/100 = 0.1（先换线性值）：<div class="calc">P_out = 1 − e^(−0.1) = 0.0952</div></li>
-        <li>(d) 莱斯因子 K = 直射功率 / 散射功率 = 4，即 10 log₁₀4 = 6.0 dB。有了直射径，信号不容易掉进深坑，中断概率比 (c) 的 9.5% <b>小</b>。K = 0 时退化成瑞利，K → ∞ 时接近 AWGN（SNR 一直是 20 dB，不会中断）。</li>
-        <li>(e) \(T_s=1/10\text{k}=100\) µs，\(\sigma/T_s=2/100=0.02\lt0.1\) → <b>平坦衰落</b>。</li>
-        <li>(f) v = 54/3.6 = 15 m/s，\(f_m=vf_c/c=15\times2\times10^9/3\times10^8=100\) Hz，\(T_C\approx1/f_m=10\) ms ≫ \(T_s\) = 100 µs → <b>慢衰落</b>。综合 (e)(f)：平坦慢衰落。</li>
+        <li><b>(a) 平均接收功率和 SNR</b>：\(P_t=1\) W = 30 dBm，\(\log_{10}(1000/1)=3\)，用简化模型（讲义第 2 章 p.8）：
+\[\begin{aligned}P_r&=P_t+K_{dB}-10\gamma\log_{10}\frac d{d_0}\\&=30-40-10\times3\times3=-100\text{ dBm}\end{aligned}\]
+平均 SNR：dBm − dBm = dB，\(\bar\gamma=-100-(-120)=20\) dB，线性 \(10^{20/10}=100\)。</li>
+        <li><b>(b) 阴影中断</b>：阴影使接收功率（dB）服从高斯 \(\mathcal N(-100,\ 8^2)\)。余量 \(x=-100-(-110)=10\) dB（p.14–15）：
+\[P_{out}=Q\Big(\frac x\sigma\Big)=Q\Big(\frac{10}{8}\Big)=Q(1.25)=0.106\]
+Q 表：Q(1.25) = 0.1056，约 10.6%。</li>
+        <li><b>(c) 瑞利中断</b>：瑞利衰落下瞬时 SNR 服从指数分布，\(P_{out}=1-e^{-\gamma_0/\bar\gamma}\)（p.26、p.51）。门限先换线性：\(\gamma_0=10^{10/10}=10\)：
+\[\begin{aligned}\gamma_0/\bar\gamma&=10/100=0.1\\P_{out}&=1-e^{-0.1}=1-0.905=0.0952\end{aligned}\]
+约 9.5%。自检：x 小时 \(1-e^{-x}\approx x=0.1\)，实际值略小一点 ✓。</li>
+        <li><b>(d) 莱斯 K 因子</b>：按定义（p.28），K = 直射（LOS）功率 / 散射功率 \(=s^2/2\sigma^2=4\)：
+\[K_{dB}=10\log_{10}4=6.02\text{ dB}\]</li>
+        <li><b>(d) 中断怎么变</b>：<b>变小</b>（低于 (c) 的 9.5%）。原因：强直射径让包络很少接近 0，深衰落变少，SNR 掉到 10 dB 以下的概率下降。两个极端（p.28）：K = 0 时退化成瑞利，中断就是 9.5%；K → ∞ 时接近 AWGN，SNR 一直是 20 dB &gt; 10 dB，中断 → 0。</li>
+        <li><b>(e) 平坦还是选择性</b>：\(T_s=1/R_s=1/(10\times10^3)=100\ \mu\)s，经验法则（p.33）：
+\[\frac{\sigma_{T_m}}{T_s}=\frac{2\ \mu\text{s}}{100\ \mu\text{s}}=0.02\lt0.1\]
+→ <b>平坦衰落</b>：时延扩展只占符号的 2%，几乎没有 ISI。</li>
+        <li><b>(f) 快还是慢</b>：v = 54/3.6 = 15 m/s（p.34、p.36）：
+\[\begin{aligned}f_m&=\frac{vf_c}{c}=\frac{15\times2\times10^9}{3\times10^8}=100\text{ Hz}\\T_C&\approx\frac1{f_m}=\frac1{100}=10\text{ ms}\end{aligned}\]
+\(T_s/T_C=100\ \mu\text{s}/10\text{ ms}=0.01\ll1\)，一个符号内信道几乎不变 → <b>慢衰落</b>（p.37）。综合 (e)(f)：平坦慢衰落。</li>
       </ol>
       <div class="ans">(a) −100 dBm，20 dB；(b) ≈ 10.6%；(c) ≈ 9.5%；(d) K = 6.0 dB，中断概率比 9.5% 小；(e) 平坦（0.02 &lt; 0.1）；(f) 慢（T_C ≈ 10 ms ≫ 100 µs）</div>
       <div class="official"><b>官方答案：</b>无（自编练习题）。所有数字已用 src/p2build/verify_mock.py 验算。</div>
@@ -1834,12 +2150,24 @@
     <div class="sol sol-en" lang="en">
       <p class="idea"><b>Approach:</b> Each part isolates one effect and uses its own formula: path loss gives the mean; shadowing is Gaussian in dB, so use Q; Rayleigh SNR is exponential, so use 1 − e<sup>−γ₀/γ̄</sup>; Rician needs only K; flat/selective compares σ with T<sub>s</sub>; fast/slow compares T<sub>C</sub> with T<sub>s</sub>.</p>
       <ol class="steps">
-        <li>(a) Path loss:<div class="calc">P<sub>r</sub> = 30 + (−40) − 10 × 3 × log₁₀1000 = 30 − 40 − 90 = −100 dBm</div>Average SNR = −100 − (−120) = 20 dB (100 linear).</li>
-        <li>(b) Shadowing: the received power in dB is Gaussian with mean −100 dBm and σ = 8 dB. Margin = −100 − (−110) = 10 dB:<div class="calc">P<sub>out</sub> = Q(10 / 8) = Q(1.25) = 0.106</div></li>
-        <li>(c) Rayleigh: the instantaneous SNR is exponential; γ₀/γ̄ = 10/100 = 0.1 (convert to linear first):<div class="calc">P<sub>out</sub> = 1 − e<sup>−0.1</sup> = 0.0952</div></li>
-        <li>(d) Rician factor K = direct power / scattered power = 4, i.e. 10 log₁₀4 = 6.0 dB. With a line-of-sight path the signal is less likely to fall into deep fades, so the outage probability is <b>lower</b> than the 9.5% of (c). K = 0 reduces to Rayleigh; K → ∞ approaches AWGN (the SNR stays at 20 dB and there is no outage).</li>
-        <li>(e) \(T_s=1/10\text{k}=100\) µs and \(\sigma/T_s=2/100=0.02\lt0.1\) → <b>flat fading</b>.</li>
-        <li>(f) v = 54/3.6 = 15 m/s, \(f_m=vf_c/c=15\times2\times10^9/3\times10^8=100\) Hz, \(T_C\approx1/f_m=10\) ms ≫ \(T_s\) = 100 µs → <b>slow fading</b>. Together with (e): flat, slow fading.</li>
+        <li><b>(a) Average received power and SNR</b>: \(P_t=1\) W = 30 dBm and \(\log_{10}(1000/1)=3\); use the simplified model (Ch 2 p.8):
+\[\begin{aligned}P_r&=P_t+K_{dB}-10\gamma\log_{10}\frac d{d_0}\\&=30-40-10\times3\times3=-100\text{ dBm}\end{aligned}\]
+Average SNR: dBm − dBm = dB, \(\bar\gamma=-100-(-120)=20\) dB, linear \(10^{20/10}=100\).</li>
+        <li><b>(b) Shadowing outage</b>: shadowing makes the received power in dB Gaussian, \(\mathcal N(-100,\ 8^2)\). Margin \(x=-100-(-110)=10\) dB (p.14–15):
+\[P_{out}=Q\Big(\frac x\sigma\Big)=Q\Big(\frac{10}{8}\Big)=Q(1.25)=0.106\]
+Q table: Q(1.25) = 0.1056, about 10.6%.</li>
+        <li><b>(c) Rayleigh outage</b>: in Rayleigh fading the instantaneous SNR is exponential, \(P_{out}=1-e^{-\gamma_0/\bar\gamma}\) (p.26, p.51). Convert the threshold to linear first: \(\gamma_0=10^{10/10}=10\):
+\[\begin{aligned}\gamma_0/\bar\gamma&=10/100=0.1\\P_{out}&=1-e^{-0.1}=1-0.905=0.0952\end{aligned}\]
+About 9.5%. Check: for small x, \(1-e^{-x}\approx x=0.1\), and the exact value is slightly smaller ✓.</li>
+        <li><b>(d) Rician K factor</b>: by definition (p.28), K = LOS power / scattered power \(=s^2/2\sigma^2=4\):
+\[K_{dB}=10\log_{10}4=6.02\text{ dB}\]</li>
+        <li><b>(d) How the outage changes</b>: it becomes <b>smaller</b> (below the 9.5% of (c)). Reason: a strong LOS path keeps the envelope away from 0, so deep fades are rarer and the SNR falls below 10 dB less often. The two limits (p.28): K = 0 reduces to Rayleigh, outage 9.5%; K → ∞ approaches AWGN, the SNR stays at 20 dB &gt; 10 dB and the outage → 0.</li>
+        <li><b>(e) Flat or selective</b>: \(T_s=1/R_s=1/(10\times10^3)=100\ \mu\)s; rule of thumb (p.33):
+\[\frac{\sigma_{T_m}}{T_s}=\frac{2\ \mu\text{s}}{100\ \mu\text{s}}=0.02\lt0.1\]
+→ <b>flat fading</b>: the delay spread is only 2% of a symbol, so there is almost no ISI.</li>
+        <li><b>(f) Fast or slow</b>: v = 54/3.6 = 15 m/s (p.34, p.36):
+\[\begin{aligned}f_m&=\frac{vf_c}{c}=\frac{15\times2\times10^9}{3\times10^8}=100\text{ Hz}\\T_C&\approx\frac1{f_m}=\frac1{100}=10\text{ ms}\end{aligned}\]
+\(T_s/T_C=100\ \mu\text{s}/10\text{ ms}=0.01\ll1\): the channel hardly changes during a symbol → <b>slow fading</b> (p.37). Together with (e): flat, slow fading.</li>
       </ol>
       <div class="ans">(a) −100 dBm, 20 dB; (b) ≈ 10.6%; (c) ≈ 9.5%; (d) K = 6.0 dB, outage below 9.5%; (e) flat (0.02 &lt; 0.1); (f) slow (T<sub>C</sub> ≈ 10 ms ≫ 100 µs)</div>
       <div class="official"><b>Official answer:</b> none (self-written practice question); all numbers checked by src/p2build/verify_mock.py</div>

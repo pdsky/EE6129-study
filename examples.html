@@ -223,14 +223,24 @@ body.hide-zh .xpl .zhsub{display:none}
     <button class="reveal">显示解法</button>
     <div class="sol">
       <ol class="steps">
-        <li>每家运营商分到 25 ÷ 2 = 12.5MHz，信道数 <span class="calc">12.5×10⁶ ÷ 30×10³ = 416</span></li>
-        <li>扣掉控制信道：每个小区 3 条，一簇 7 个小区 → <span class="calc">416 − 3×7 = 395</span> 条业务信道</li>
-        <li>每小区信道数 <span class="calc">395 ÷ 7 ≈ 56</span></li>
-        <li>查 Erlang B 表（M = 56，GoS 2%）→ <b>A = 45.9 Erlang/小区</b>，折合 <span class="calc">45.9 ÷ 4 = 11.5 Er/km²</span></li>
-        <li>频谱效率 <span class="calc">η<sub>m</sub> = 45.9 ÷ (12.5MHz × 4km²) = 0.92 Er/MHz/km²</span></li>
-        <li>每小时呼叫数 = A × 3600 ÷ h：<span class="calc">45.9 × 3600/100 = 1652.4 次/小时/小区</span>，除以面积得 413.1 次/小时/km²</li>
-        <li>用户数 = 呼叫数 ÷ 每人呼叫次数：<span class="calc">1652.4 ÷ 1.2 = 1377 用户/小区</span></li>
-        <li>（p.45 顺带）FDMA 多址效率 <span class="calc">η<sub>a</sub> = 395 × 30kHz ÷ 12.5MHz = 0.948</span></li>
+        <li><b>分带宽、算总信道数</b>：两家运营商平分 25 MHz，每家 B<sub>w</sub> = 25 ÷ 2 = 12.5 MHz。信道数 = 带宽 ÷ 信道间隔（channel spacing），AMPS 的信道间隔 B<sub>c</sub> = 30 kHz，先统一成 Hz：
+          <div class="calc">B<sub>w</sub>/B<sub>c</sub> = 12.5×10⁶ Hz ÷ 30×10³ Hz = 416.67 → 416 条</div>
+          信道不能是小数，<b>向下取整</b>（讲义 p.44）。</li>
+        <li><b>扣控制信道</b>：这 416 条要分给一簇 7 个小区，每个小区各留 3 条控制信道（control channel，用于呼叫建立和寻呼），所以整簇扣掉
+          <div class="calc">3 × 7 = 21 条；416 − 21 = 395 条业务信道（voice channels）</div></li>
+        <li><b>分到每个小区</b>：7 个小区平分，<span class="calc">M = 395 ÷ 7 = 56.43 → 56 条/小区</span>，同样向下取整。</li>
+        <li><b>查 Erlang B 表</b>：在 M = 56 行、GoS = 0.02 列读出 <b>A = 45.9 Erlang/小区</b>（公式精确值 45.88，与表一致）。这是一个小区在 2% 阻塞率下最多能承载的话务量（traffic）。按面积折算 <span class="calc">45.9 Er ÷ 4 km² = 11.5 Er/km²</span>。</li>
+        <li><b>频谱效率 η<sub>m</sub></b>：按话务量的定义（spectral efficiency，p.41），η<sub>m</sub> = 每小区话务量 ÷ (带宽 × 小区面积)：
+          <div class="calc">η<sub>m</sub> = A / (B<sub>w</sub> × A<sub>c</sub>) = 45.9 ÷ (12.5 MHz × 4 km²) = 45.9 ÷ 50 = 0.918 ≈ 0.92 Er/MHz/km²</div>
+          分母只用一个小区的面积，因为总话务量和总面积都要乘同一个小区数，上下约掉。验算：2000 km² 共 500 个小区，500 × 45.9 = 22,950 Er，22,950 ÷ (12.5 × 2000) = 0.918 ✓。</li>
+        <li><b>每小时呼叫数</b>：话务量 A = 每小时呼叫数 × 平均通话时长 h，h 要换成小时（100 s = 100/3600 h），所以
+          <div class="calc">呼叫数 = A ÷ h = 45.9 × 3600/100 = 1652.4 次/小时/小区<br>1652.4 ÷ 4 km² = 413.1 次/小时/km²</div></li>
+        <li><b>用户数</b>：每个用户每小时打 1.2 次：
+          <div class="calc">用户数 = 1652.4 ÷ 1.2 = 1377 用户/小区</div>
+          换一条路验算：每用户话务量 A<sub>u</sub> = 1.2 × 100/3600 = 0.0333 Er，45.9 ÷ 0.0333 = 45.9 × 30 = 1377 ✓。</li>
+        <li><b>（p.45 顺带）多址效率 η<sub>a</sub></b>：FDMA 的多址频谱效率（multiple access spectral efficiency）= 业务信道占的带宽 ÷ 总带宽，单位统一成 kHz：
+          <div class="calc">η<sub>a</sub> = B<sub>c</sub>N<sub>t</sub>/B<sub>w</sub> = 395 × 30 kHz ÷ 12,500 kHz = 11,850 ÷ 12,500 = 0.948</div>
+          剩下约 5% 的带宽给了 21 条控制信道和取整丢掉的零头。</li>
       </ol>
       <div class="ans"><b>η<sub>m</sub> = 0.92 Er/MHz/km²</b>　·　1652 次/小时/小区　·　<b>1377 用户/小区</b>　·　η<sub>a</sub> = 0.948</div>
       <div class="mem">背数字链：<b>25 → 12.5 → 416 → 395 → 56 → 45.9</b>。通话 100 秒时，每小时呼叫数 = A × 36。</div>
@@ -301,11 +311,18 @@ body.hide-zh .xpl .zhsub{display:none}
     <button class="reveal">显示解法</button>
     <div class="sol">
       <ol class="steps">
-        <li>每个时隙长 40 ÷ 6 = 6.67ms，但其中只有 13/16.2 装的是语音，其余是开销</li>
-        <li>有效时隙 <span class="calc">T<sub>s</sub> = (13/16.2) × (40/6) = 5.35ms</span></li>
-        <li>时间利用率 <span class="calc">T<sub>s</sub>M<sub>t</sub>/T<sub>f</sub> = 5.35 × 6 ÷ 40 = 0.8025</span></li>
-        <li>这是窄带 TDMA（总带宽再分成 30kHz 子带），频率利用率 <span class="calc">B<sub>u</sub>N<sub>u</sub>/B<sub>w</sub> = 30 × 395 ÷ 12500 = 0.948</span></li>
-        <li>两者相乘 <span class="calc">η<sub>a</sub> = 0.8025 × 0.948 = 0.76</span></li>
+        <li><b>每个时隙多长</b>：一帧 T<sub>f</sub> = 40 ms 分成 M<sub>t</sub> = 6 个时隙（time slot）：<span class="calc">T<sub>f</sub>/M<sub>t</sub> = 40 ÷ 6 = 6.667 ms</span></li>
+        <li><b>扣开销得 T<sub>s</sub></b>：T<sub>s</sub> 只算装纯信息的时间（p.45）。每个时隙的总速率 16.2 kbps 里只有 13 kbps 是语音，其余 3.2 kbps 是同步、保护、控制等开销；速率相同，时间和比特数成正比，所以
+          <div class="calc">语音比例 = 13/16.2 = 0.8025<br>T<sub>s</sub> = 0.8025 × 6.667 ms = 5.35 ms</div></li>
+        <li><b>时间因子</b>：
+          <div class="calc">T<sub>s</sub>M<sub>t</sub>/T<sub>f</sub> = 5.35 × 6 ÷ 40 = 32.1 ÷ 40 = 0.8025</div>
+          40/6 和 6/40 约掉，时间因子其实就是 13/16.2，所以讲义 p.47 直接写 13/16.2。</li>
+        <li><b>频率因子</b>：北美 TDMA 是窄带 TDMA（narrowband TDMA，p.46）：12.5 MHz 先切成 30 kHz 子带，每个子带内再分时隙，所以还要乘频率利用率。单位统一成 kHz（12.5 MHz = 12,500 kHz）：
+          <div class="calc">B<sub>u</sub>N<sub>u</sub>/B<sub>w</sub> = 30 × 395 ÷ 12,500 = 11,850 ÷ 12,500 = 0.948</div>
+          这就是例 1（p.45）的 FDMA 效率。</li>
+        <li><b>相乘并自检</b>：
+          <div class="calc">η<sub>a</sub> = (T<sub>s</sub>M<sub>t</sub>/T<sub>f</sub>)(B<sub>u</sub>N<sub>u</sub>/B<sub>w</sub>) = 0.8025 × 0.948 = 0.761 ≈ 0.76</div>
+          检查：0.76 在 0 和 1 之间，而且比两个因子都小（打了两次折）✓；约 24% 的时频资源花在开销和控制上。</li>
       </ol>
       <div class="ans"><b>η<sub>a</sub> ≈ 0.76</b></div>
       <div class="mem">η<sub>a</sub> = <b>时间利用率 × 频率利用率 = 0.80 × 0.95 ≈ 0.76</b>。其中 0.948 就是例 1 里的 FDMA 效率，两题可以一起记。</div>
@@ -370,13 +387,24 @@ body.hide-zh .xpl .zhsub{display:none}
     <div class="sol">
       <p style="font-size:.88rem;margin:.2em 0 .6em">思路：先按<b>标准条件</b>（P<sub>T</sub> = 10W、G<sub>T</sub> = 6dBd、G<sub>R</sub> = 0dBd、h<sub>T</sub> = 30m、h<sub>R</sub> = 3m）算出一条基准直线 P<sub>R</sub> = P<sub>0</sub> + γ log d，再用 p.63 的修正表逐项修正。CCIR 城区：P<sub>0</sub> = −71.04dBm，γ = −35.4。</p>
       <ol class="steps">
-        <li>基准线 <span class="calc">−71.04 − 35.4 × log2 = −71.04 − 10.66 = −81.70 dBm</span></li>
-        <li>发射功率修正 <span class="calc">10 log(5/10) = −3.01</span></li>
-        <li>基站高度修正（截距）<span class="calc">14 log(25/30) = −1.11</span></li>
-        <li>基站高度修正（斜率）<span class="calc">6.5 log(25/30) × log2 = −0.15</span></li>
-        <li>终端高度修正 <span class="calc">2.25 × (2 − 3) = −2.25</span></li>
-        <li>天线增益修正 <span class="calc">G<sub>T</sub>: 10 − 6 = +4；G<sub>R</sub>: 0 − 0 = 0</span></li>
-        <li>全部相加 <span class="calc">−81.70 − 3.01 − 1.11 − 0.15 − 2.25 + 4 = −84.22 dBm</span></li>
+        <li><b>标准线</b>：标准条件下 P<sub>R</sub> = P<sub>0</sub> + γ log d（d 用 km，p.59–60）。d = 2 km，log 2 = 0.301：
+          <div class="calc">−71.04 + (−35.4) × 0.301 = −71.04 − 10.66 = −81.70 dBm</div>
+          这是"标准设备放在 2 km 处"收到的功率，下面五项修正（p.62–64 修正表）都在它上面加减。</li>
+        <li><b>发射功率修正</b>：dB 里乘除变加减，修正量看和标准 10 W 的<b>比值</b>：
+          <div class="calc">10 log(P<sub>T</sub>′/10) = 10 log(5/10) = 10 × (−0.301) = −3.01 dB</div>
+          功率减半 = −3 dB。</li>
+        <li><b>基站高度修正（截距）</b>：CCIR 公式（p.55）的 L 里有 −14 log h<sub>T</sub>，而 P<sub>R</sub> 里是 −L，所以 P<sub>R</sub> 修正 +14 log(h<sub>T</sub>′/30)：
+          <div class="calc">log(25/30) = log 0.8333 = −0.0792<br>14 × (−0.0792) = −1.11 dB</div></li>
+        <li><b>基站高度修正（斜率）</b>：L 里还有 (45 − 6.5 log h<sub>T</sub>) log d，h<sub>T</sub> 也改变了直线的斜率，所以这一项要<b>再乘 log d</b>：
+          <div class="calc">6.5 log(h<sub>T</sub>′/30) × log d = 6.5 × (−0.0792) × 0.301 = −0.15 dB</div></li>
+        <li><b>终端高度修正</b>：A(h<sub>R</sub>) = (log f − 0.7)h<sub>R</sub> − (1.6 log f − 0.8)，后一项和 h<sub>R</sub> 无关，相减时消掉；前一项对 h<sub>R</sub> 是<b>线性</b>的，f = 900 MHz 时系数 log 900 − 0.7 = 2.954 − 0.7 = 2.25：
+          <div class="calc">2.25 × (h<sub>R</sub>′ − 3) = 2.25 × (2 − 3) = −2.25 dB</div>
+          这一项不取对数，直接乘高度差。</li>
+        <li><b>天线增益修正</b>：题目和标准都用 dBd，直接相减，不用换成 dBi（不加 2.14）：
+          <div class="calc">G<sub>T</sub>：10 − 6 = +4 dB；G<sub>R</sub>：0 − 0 = 0 dB</div></li>
+        <li><b>全部相加并自检</b>：
+          <div class="calc">P<sub>R</sub> = −81.70 − 3.01 − 1.11 − 0.15 − 2.25 + 4 = −84.22 dBm</div>
+          检查：净修正 −2.52 dB。功率减半、两根天线都更低，应该比标准线弱，发射天线多 4 dB 只抵掉一部分，方向对 ✓。换成线性：10<sup>−84.22/10</sup> mW ≈ 3.8 × 10⁻⁹ mW（3.8 pW），是手机接收功率的正常量级。</li>
       </ol>
       <div class="ans"><b>P<sub>R</sub> = −84.22 dBm</b></div>
       <div class="tw"><table style="min-width:420px">
@@ -452,11 +480,14 @@ body.hide-zh .xpl .zhsub{display:none}
     <button class="reveal">显示解法</button>
     <div class="sol">
       <ol class="steps">
-        <li>先减控制 <span class="calc">30 − 2 = 28MHz</span></li>
-        <li>FDD 上下行各一半 <span class="calc">28 ÷ 2 = 14MHz/链路</span></li>
-        <li>每条链路的单工信道 <span class="calc">14000 ÷ 25 = 560</span></li>
-        <li>一个双工信道 = 上行一个单工 + 下行一个单工 → 系统共 <b>560 个双工信道</b></li>
-        <li>每小区 <span class="calc">560 ÷ 7 = 80</span></li>
+        <li><b>减控制</b>：2 MHz 给控制信道，不能用来通话，先扣掉：<span class="calc">30 − 2 = 28 MHz</span> 给语音。</li>
+        <li><b>FDD 对半分</b>：FDD（frequency division duplex）上行和下行用两段分开的频带，各占一半：<span class="calc">28 ÷ 2 = 14 MHz/链路</span>（讲义 p.82："assume each link has 14 MHz"）。</li>
+        <li><b>除单工信道宽</b>：单位统一成 kHz，每条链路能放
+          <div class="calc">14 MHz ÷ 25 kHz = 14,000 ÷ 25 = 560 条单工信道（simplex channel）</div></li>
+        <li><b>配成双工</b>：一次通话要上行一条 + 下行一条，两条单工配成一个双工信道（duplex channel），所以系统共 <b>560 个双工信道</b>。验算：一个双工信道共占 2 × 25 = 50 kHz，<span class="calc">28,000 ÷ 50 = 560</span> ✓。</li>
+        <li><b>分到每个小区</b>：UFCA 下一簇 7 个小区平分（每小区 S/N，p.81）：
+          <div class="calc">560 ÷ 7 = 80 个双工信道/小区</div>
+          检查：80 × 7 = 560，正好分完 ✓。</li>
       </ol>
       <div class="ans">系统 <b>560</b> 个双工信道　·　每小区 <b>80</b> 个</div>
       <div class="mem">四步顺序：<b>减控制 → 对半分 → 除信道宽 → 除 N</b>。</div>
@@ -509,9 +540,12 @@ body.hide-zh .xpl .zhsub{display:none}
     <button class="reveal">显示解法</button>
     <div class="sol">
       <ol class="steps">
-        <li>简化假设：第一层 6 个干扰源都在距离 D 处，<span class="calc">S/I = Q<sup>n</sup>/6，Q = √(3N)</span></li>
-        <li>n = 4 时开方消掉：<span class="calc">S/I = (3N)² / 6</span></li>
-        <li>逐个代入有效 N：
+        <li><b>写 SIR 公式</b>：简化假设（p.88）：只算第一层 6 个同频干扰源（co-channel interferer），手机在小区边缘、离自己基站 R，6 个干扰基站都离它 D：
+          <div class="calc">S/I = R<sup>−n</sup> / (6D<sup>−n</sup>) = Q<sup>n</sup>/6，Q = D/R = √(3N)</div>
+          Q 叫复用比（co-channel reuse ratio）。</li>
+        <li><b>代 n = 4</b>：Q⁴ = (√(3N))⁴ = (3N)²，根号正好消掉：<span class="calc">S/I = (3N)²/6</span></li>
+        <li><b>门槛换成线性值</b>：<span class="calc">10 dB → 10<sup>10/10</sup> = 10；18 dB → 10<sup>1.8</sup> = 63.1</span>。比较时 dB 和线性值不能混用。</li>
+        <li><b>逐个代入合法 N</b>：N 只能取 i² + ij + j²，即 1, 3, 4, 7, 9, 12, 13 …（六边形要能拼成簇）。以 N = 7 为例：3 × 7 = 21，21² = 441，441 ÷ 6 = 73.5，10 log 73.5 = 18.66 dB。
           <div class="tw"><table style="min-width:360px">
             <thead><tr><th class="num">N</th><th class="num">(3N)²/6</th><th class="num">SIR</th></tr></thead>
             <tbody>
@@ -523,8 +557,10 @@ body.hide-zh .xpl .zhsub{display:none}
               <tr><td class="num">12</td><td class="num">216</td><td class="num">23.34 dB</td></tr>
               <tr><td class="num">13</td><td class="num">253.5</td><td class="num">24.04 dB</td></tr>
             </tbody>
-          </table></div>
-        </li>
+          </table></div></li>
+        <li><b>(a) 所需簇尺寸</b>（required cluster size）：要 SIR ≥ 10 dB。N = 1 只有 1.76 dB ✗，N = 3 有 11.30 dB ✓，所以 <b>N = 3</b>。反解验算：(3N)²/6 ≥ 10 → 3N ≥ √60 = 7.746 → N ≥ 2.58 → 下一个合法值是 3 ✓。</li>
+        <li><b>(b) 最优簇尺寸</b>（optimum cluster size）：讲义 p.89 说语音质量要 SIR &gt; 18 dB。N = 4 只有 13.80 dB ✗，N = 7 有 18.66 dB ✓，所以 <b>N = 7</b>。反解：3N ≥ √(6 × 63.1) = 19.46 → N ≥ 6.49 → 取 7（5、6 不是合法 N）✓。
+          检查：n = 4 时 S/I ∝ N²，N 变 4 倍 SIR 加 10 log 16 = 12.04 dB；表中 N = 3 → 12 正好从 11.30 到 23.34 dB ✓。</li>
       </ol>
       <div class="ans">所需簇尺寸 <b>N = 3</b>（SIR ≥ 10dB）　·　最优簇尺寸 <b>N = 7</b>（语音质量要求 SIR &gt; 18dB）</div>
       <div class="mem"><b>n = 4 时 S/I = (3N)²/6，不用开根号。</b>N = 7 → 21² = 441 → ÷6 = 73.5 → 10 log 73.5 = 20 − 1.34 ≈ 18.66dB。</div>
@@ -585,11 +621,15 @@ body.hide-zh .xpl .zhsub{display:none}
     <button class="reveal">显示解法</button>
     <div class="sol">
       <ol class="steps">
-        <li><span class="calc">Q = √21 = 4.583</span>，先把要用的四次方算好：<span class="calc">(Q−1)⁴ = 164.7，Q⁴ = 441，(Q+1)⁴ = 971.3</span></li>
-        <li><b>情况 1</b>：2 个干扰源在 D−R，2 个在 D，2 个在 D+R
-          <div class="calc">S/I = 1 / [2/164.7 + 2/441 + 2/971.3] = 1/0.01874 = 53.4 → 17.27 dB</div></li>
-        <li><b>情况 2（保守）</b>：6 个干扰源全部按最近距离 D−R 计算
-          <div class="calc">S/I = (Q−1)⁴ / 6 = 164.7/6 = 27.5 → 14.39 dB</div></li>
+        <li><b>求 Q</b>：N = 7，<span class="calc">Q = √(3N) = √21 = 4.5826</span>。后面要算四次方，误差会放大，中间多留几位小数。</li>
+        <li><b>三个距离的四次方</b>：距离都除以 R（D/R = Q），计算器用 x⁴ = (x²)²：
+          <div class="calc">(Q − 1)⁴ = 3.5826⁴：3.5826² = 12.835，12.835² = 164.7<br>Q⁴ = (3N)² = 21² = 441<br>(Q + 1)⁴ = 5.5826⁴：5.5826² = 31.165，31.165² = 971.3</div></li>
+        <li><b>情况 1</b>：手机在小区边缘，6 个干扰源分三组：2 个近（D − R）、2 个在 D、2 个远（D + R）（p.91）。分子分母同除 R<sup>−n</sup>：
+          <div class="calc">S/I = 1 / [2(Q−1)⁻⁴ + 2Q⁻⁴ + 2(Q+1)⁻⁴]<br>= 1 / (2/164.7 + 2/441 + 2/971.3)<br>= 1 / (0.01214 + 0.00454 + 0.00206)<br>= 1/0.01874 = 53.4 → 10 log 53.4 = 17.27 dB</div>
+          要先把干扰功率加起来再取倒数，不能把 dB 相加。</li>
+        <li><b>情况 2（保守）</b>：6 个干扰源全按最近距离 D − R 算（conservative）：
+          <div class="calc">S/I = 1 / [6(Q−1)⁻⁴] = (Q−1)⁴/6 = 164.7 ÷ 6 = 27.5 → 10 log 27.5 = 14.39 dB</div></li>
+        <li><b>对比自检</b>：越悲观 SIR 越低：18.66 dB（6 个都在 D，p.89）&gt; 17.27 dB &gt; 14.39 dB ✓。情况 1 里最近的 2 个干扰源占总干扰的 0.01214 ÷ 0.01874 = 65%：n = 4 时距离近一点，干扰就大很多。两种最坏情况都低于 18 dB，这就是后面要用扇区化（p.145）的原因。</li>
       </ol>
       <div class="ans">情况 1：<b>17.27 dB</b>　·　情况 2：<b>14.39 dB</b></div>
       <div class="mem">三种口径越悲观越低：<b>18.66</b>（全在 D）&gt; <b>17.27</b>（D−R、D、D+R 各两个）&gt; <b>14.39</b>（全在 D−R）。</div>
@@ -615,7 +655,6 @@ body.hide-zh .xpl .zhsub{display:none}
 <li><b>换 dB</b>：10 log<sub>10</sub>。</li>
 </ol>
 <div class="calc">Q − 1 = 3.5826：3.5826² = 12.835，12.835² = 164.7<br>Q⁴ = 21² = 441<br>Q + 1 = 5.5826：5.5826² = 31.165，31.165² = 971.3<br>情况 1：2/164.7 + 2/441 + 2/971.3 = 0.01214 + 0.00454 + 0.00206 = 0.01874<br>S/I = 1 ÷ 0.01874 = 53.4 → 10 log 53.4 = 17.27 dB<br>情况 2：S/I = 164.7 ÷ 6 = 27.5 → 10 log 27.5 = 14.39 dB</div>
-<p>（解法里写的 164.9、971.8 是四舍五入带来的小差别，最后的 dB 值不变。）</p>
 <p><b>三种口径对比</b>：越悲观 SIR 越低。</p>
 <div class="tw"><table class="mini"><thead><tr><th>假设</th><th>S/I</th><th>dB</th></tr></thead><tbody>
 <tr><td>6 个都在 D（p.88–89）</td><td>73.5</td><td>18.66</td></tr>
@@ -647,8 +686,12 @@ body.hide-zh .xpl .zhsub{display:none}
     <button class="reveal">显示解法</button>
     <div class="sol">
       <ol class="steps">
-        <li>均匀固定分配（UFCA）：每小区分到 1/7 <span class="calc">210 ÷ 7 = 30</span></li>
-        <li>每小区通常留 1 条作控制信道 <span class="calc">30 − 1 = 29</span></li>
+        <li><b>确定 N</b>：题目没给簇尺寸，讲义按 7 小区复用来解（p.93 "1/7"）。考试时先写一句 "Assume N = 7"。</li>
+        <li><b>UFCA 平分</b>：均匀固定信道分配（uniform fixed channel assignment，p.92）让一簇里每个小区分到一样多的信道 S/N（p.81）：
+          <div class="calc">210 ÷ 7 = 30 条/小区</div></li>
+        <li><b>扣控制信道</b>：每个小区通常留 1 条做控制信道（呼叫建立、寻呼），没有它手机无法接入：
+          <div class="calc">30 − 1 = 29 条可用于通话</div></li>
+        <li><b>自检</b>：30 × 7 = 210，正好分完、没有余数 ✓。</li>
       </ol>
       <div class="ans">每小区 <b>30</b> 条，可用于通话的 <b>29</b> 条</div>
       <div class="mem">UFCA = <b>总数 ÷ N，再减控制</b>。</div>
@@ -711,8 +754,9 @@ body.hide-zh .xpl .zhsub{display:none}
     <button class="reveal">显示解法</button>
     <div class="sol">
       <ol class="steps">
-        <li>每用户话务量 <span class="calc">A<sub>u</sub> = λ/μ = 1.2 × 100/3600 = 0.033 Erlang</span></li>
-        <li>讲义给出的表值：
+        <li><b>每用户话务量</b>：A<sub>u</sub> = λ/μ = 呼叫率 × 平均通话时长（p.118）。取忙时上限 λ = 1.2 次/小时，1/μ = 100 s = 100/3600 h：
+          <div class="calc">A<sub>u</sub> = 1.2 × 100/3600 = 0.0333 Erlang（精确值 1/30）</div></li>
+        <li><b>查 Erlang B 表</b>：讲义给出的表值如下，本题用 M = 50、GoS 2% → A = 40.3 Er：
           <div class="tw"><table style="min-width:340px">
             <thead><tr><th>GoS</th><th class="num">M = 10</th><th class="num">M = 20</th><th class="num">M = 50</th></tr></thead>
             <tbody>
@@ -720,8 +764,13 @@ body.hide-zh .xpl .zhsub{display:none}
               <tr><td>2%</td><td class="num">5.08</td><td class="num">13.2</td><td class="num"><b>40.3</b></td></tr>
             </tbody>
           </table></div></li>
-        <li>用户数 <span class="calc">40.3 ÷ (1/30) = 40.3 × 30 = 1209 ≈ 1210</span>（用 1/30 的精确值；如果拿四舍五入后的 0.033 去除，会得到 1221）</li>
-        <li>干线增益 = 用户数 ÷ 信道数 <span class="calc">1210 ÷ 50 = 24.2</span></li>
+        <li><b>用户数</b>：小区能承载的总话务 ÷ 每人的话务：
+          <div class="calc">U = A / A<sub>u</sub> = 40.3 ÷ (1/30) = 40.3 × 30 = 1209 ≈ 1210 个用户</div>
+          要用 1/30 的精确值；如果拿四舍五入后的 0.033 去除，会得到 1221，和讲义的 1210 对不上。</li>
+        <li><b>干线增益</b>：定义（trunking gain，p.122）= 用户数 ÷ 信道数：
+          <div class="calc">1210 ÷ 50 = 24.2 用户/信道</div>
+          每条信道平均服务 24 人，因为不会所有人同时通话。</li>
+        <li><b>用表值验证 p.122 的规律</b>：同样 GoS 2%，M = 10 时 5.08 × 30 = 152 人，增益 152 ÷ 10 = 15.2，比 24.2 小（M 越大增益越大）✓；同样 M = 50，GoS 5% 时 44.3 × 30 = 1329 人，增益 26.6，比 24.2 大（GoS 越宽松增益越大）✓。</li>
       </ol>
       <div class="ans">约 <b>1210 个用户</b>　·　干线增益 <b>24.2</b></div>
       <div class="mem"><b>A<sub>u</sub> = 次数 × 秒 ÷ 3600</b>。50 条信道约能服务 1200 人，相当于每条信道服务 24 人。M 越大、GoS 越宽松，干线增益越大。</div>
@@ -779,9 +828,17 @@ body.hide-zh .xpl .zhsub{display:none}
     <button class="reveal">显示解法</button>
     <div class="sol">
       <ol class="steps">
-        <li>一组 10 条：查表 <span class="calc">A = 4.46 Er → 效率 4.46/10 = 44.6%</span></li>
-        <li>两组各 5 条：查表每组 1.36 Er <span class="calc">→ 共 2.72 Er → 效率 2.72/10 = 27.2%</span></li>
-        <li>比较 <span class="calc">4.46 ÷ 2.72 = 1.64</span>，即集中后多承载约 60%</li>
+        <li><b>一组 10 条：查表</b>：Erlang B 表 M = 10、GoS = 0.01 → <span class="calc">A = 4.46 Er</span>（公式 4.461）。</li>
+        <li><b>一组 10 条：干线效率</b>：干线效率（trunking efficiency，p.124）= 承载的话务 ÷ 信道数，单位 Er/信道：
+          <div class="calc">η<sub>t</sub> = 4.46 ÷ 10 = 0.446 = 44.6%</div></li>
+        <li><b>两组各 5 条：查表</b>：M = 5、GoS = 0.01 → 每组 1.36 Er（公式 1.361）。两组互不借用，话务直接相加：
+          <div class="calc">2 × 1.36 = 2.72 Er</div></li>
+        <li><b>两组各 5 条：干线效率</b>：分母仍是总共 2 × 5 = 10 条：
+          <div class="calc">η<sub>t</sub> = 2.72 ÷ 10 = 0.272 = 27.2%</div></li>
+        <li><b>比较</b>：
+          <div class="calc">4.46 ÷ 2.72 = 1.64 → 集中多承载 64%（讲义说约 60%）</div>
+          反过来说，拆开后少承载 (4.46 − 2.72) ÷ 4.46 = 39%。问"多多少"以小的为基准，问"少多少"以大的为基准。自检：效率之比 0.446 ÷ 0.272 = 1.64，和话务之比相同（总信道数一样）✓。</li>
+        <li><b>评述</b>：10 条合在一起时，任何一个呼叫都能用 10 条里的任一条空闲信道；拆成两组后，一组占满就阻塞，另一组的空闲信道帮不上忙，所以大池子更划算。代价方面讲义 p.123 补一句：两组（例如两个扇区）的 SIR 可能更好，因为每组只受到一部分同频干扰。</li>
       </ol>
       <div class="ans">集中：<b>4.46 Er（44.6%）</b>　·　分散：<b>2.72 Er（27.2%）</b>　·　集中多承载约 <b>60%</b></div>
       <div class="mem"><b>一大锅比两小锅多 60%。</b>这是后面扇区化和运营商对比两道题的原理。</div>
@@ -831,8 +888,10 @@ body.hide-zh .xpl .zhsub{display:none}
     <button class="reveal">显示解法</button>
     <div class="sol">
       <ol class="steps">
-        <li>每用户话务量 <span class="calc">A<sub>u</sub> = 3 × 5/60 = 0.25 Erlang</span></li>
-        <li>每家都用同一套三步：查表得 A → 除以 A<sub>u</sub> 得每小区用户 → 乘小区数
+        <li><b>每用户话务量</b>：A<sub>u</sub> = 每小时呼叫数 × 每次时长，5 分钟换成小时：
+          <div class="calc">A<sub>u</sub> = 3 × 5/60 = 0.25 Erlang</div></li>
+        <li><b>查 Erlang B 表</b>（GoS = 0.02）：M = 20 → 13 Er，M = 60 → 50 Er，M = 100 → 90 Er（讲义 p.131 取的整数）。</li>
+        <li><b>每小区用户 → 总用户 → 渗透率</b>：三家用同一套三步：每小区用户 U = A ÷ A<sub>u</sub>（÷ 0.25 就是 × 4），再 × 小区数，再 ÷ 总人口 1,200,000 得市场渗透率（market penetration）：
           <div class="tw"><table style="min-width:460px">
             <thead><tr><th>运营商</th><th class="num">M</th><th class="num">A</th><th class="num">用户/小区</th><th class="num">总用户</th><th class="num">渗透率</th></tr></thead>
             <tbody>
@@ -840,8 +899,12 @@ body.hide-zh .xpl .zhsub{display:none}
               <tr><td>Mobi</td><td class="num">60</td><td class="num">50</td><td class="num">200</td><td class="num">20,000</td><td class="num">1.67%</td></tr>
               <tr><td>Hubba</td><td class="num">100</td><td class="num">90</td><td class="num">360</td><td class="num">21,600</td><td class="num">1.80%</td></tr>
             </tbody>
-          </table></div></li>
-        <li>合计 <span class="calc">61,360 ÷ 1,200,000 = 5.11%</span></li>
+          </table></div>
+          例如 Singa：13 ÷ 0.25 = 52 人/小区，52 × 380 = 19,760 人，19,760 ÷ 1,200,000 = 1.65%。</li>
+        <li><b>合计</b>：
+          <div class="calc">19,760 + 20,000 + 21,600 = 61,360 人<br>61,360 ÷ 1,200,000 = 5.11%</div>
+          自检：1.65% + 1.67% + 1.80% = 5.12%，和 5.11% 只差四舍五入 ✓。</li>
+        <li><b>为什么 Hubba 最多</b>：比干线效率 A/M：Singa 13/20 = 0.65，Mobi 50/60 = 0.83，Hubba 90/100 = 0.90。Singa 总信道最多（380 × 20 = 7600 条，另两家各 6000 条），但每小区只有 20 条，效率最低，按表值用户反而最少。这和 p.123"一大锅比两小锅强"是同一个道理。（按公式精确值 Singa ≈ 20,036 人（1.67%），会排到 Mobi 19,858 人前面，Hubba 仍然第一，见下方核对框。）</li>
       </ol>
       <div class="ans">Singa <b>19,760（1.65%）</b>　·　Mobi <b>20,000（1.67%）</b>　·　Hubba <b>21,600（1.80%）</b>　·　合计 <b>5.11%</b></div>
       <div class="mem">总信道数 Singa 7600 最多，Mobi 和 Hubba 都是 6000，但 <b>Hubba 用户最多</b>，因为它的信道集中在少数小区里。这和上一题「一大锅比两小锅强」是同一个道理。</div>
@@ -912,13 +975,19 @@ body.hide-zh .xpl .zhsub{display:none}
     <button class="reveal">显示解法</button>
     <div class="sol">
       <ol class="steps">
-        <li>小区数 <span class="calc">1300 ÷ 41.5 ≈ 31</span></li>
-        <li>每小区信道数 <span class="calc">40000kHz ÷ (60 × 7) ≈ 95</span></li>
-        <li>查表（M = 95，GoS 2%）<span class="calc">A = 84 Erlang/小区</span></li>
-        <li>最大话务量 <span class="calc">31 × 84 = 2604 Erlang</span></li>
-        <li>用户数 <span class="calc">2604 ÷ 0.03 = 86,800</span></li>
-        <li>唯一信道数 = 一簇的信道数 <span class="calc">95 × 7 = 665</span>，每信道用户 <span class="calc">86800 ÷ 665 ≈ 130</span></li>
-        <li>理论最大同时服务数 <span class="calc">95 × 31 = 2945</span>，只占用户总数的 3.4%</li>
+        <li><b>① 小区数</b>：总面积 ÷ 每小区面积：<span class="calc">1300 ÷ 41.5 = 31.3 → 31 个小区</span>（小区取整数，讲义 p.134 取 31）。</li>
+        <li><b>② 每小区信道数</b>：每簇 40 MHz = 40,000 kHz，按 60 kHz 一条全双工信道切，再分给 7 个小区：
+          <div class="calc">M = 40,000 ÷ (60 × 7) = 95.2 → 95 条/小区</div>
+          60 kHz 已经是全双工（上下行合计）的宽度，不要再乘 2；信道数向下取整。</li>
+        <li><b>③ 每小区话务量</b>：查 Erlang B 表 M = 95、GoS = 0.02 → <span class="calc">A = 84 Erlang/小区</span>（讲义表值；公式精确值 83.1）。</li>
+        <li><b>④ 最大话务量</b>：全系统 = 每小区话务 × 小区数：<span class="calc">31 × 84 = 2604 Erlang</span></li>
+        <li><b>⑤ 可服务用户数</b>：总话务 ÷ 每用户话务：<span class="calc">2604 ÷ 0.03 = 86,800 用户</span></li>
+        <li><b>⑥ 每个唯一信道的用户数</b>：唯一信道（unique channel）= 一簇里互不相同的信道 = 95 × 7 = 665 条，全系统只是把这 665 条反复复用：
+          <div class="calc">86,800 ÷ 665 = 130.5 ≈ 130 用户/信道</div>
+          验算：全区物理信道 95 × 31 = 2945 条，每条 86,800 ÷ 2945 = 29.47 人；每个唯一信道被复用 31 ÷ 7 = 4.429 次，29.47 × 4.429 = 130.5 ✓。</li>
+        <li><b>⑦ 理论最大同时服务数</b>：一条信道同一时刻只能给一个人用，所以等于全区信道数：
+          <div class="calc">95 × 31 = 2945 人；2945 ÷ 86,800 = 3.4%</div>
+          同时最多只有 3.4% 的用户在通话，系统却能服务 86,800 人，因为每人平均只占 0.03 Er（忙时 3% 的时间在通话）。检查：3.4% = A<sub>u</sub> ÷ 干线效率 = 0.03 ÷ (84/95) = 0.03 ÷ 0.884 ✓。</li>
       </ol>
       <div class="ans"><b>31</b> 个小区　·　<b>95</b> 信道/小区　·　<b>84</b> Er/小区　·　<b>2604</b> Er　·　<b>86,800</b> 用户　·　<b>130</b> 用户/信道　·　<b>2945</b>（3.4%）</div>
       <div class="mem">七问按顺序是一条链：<b>面积比 → 带宽比 → 查表 → 乘小区数 → 除 A<sub>u</sub> → 除 665 → 乘 31</b>。</div>
@@ -981,9 +1050,15 @@ body.hide-zh .xpl .zhsub{display:none}
     <button class="reveal">显示解法</button>
     <div class="sol">
       <ol class="steps">
-        <li>小区边缘的接收功率要相等：<span class="calc">P<sub>t1</sub> R⁻⁴ = P<sub>t2</sub> (R/2)⁻⁴</span></li>
-        <li>整理 <span class="calc">P<sub>t2</sub> = P<sub>t1</sub> / 2⁴ = P<sub>t1</sub>/16</span></li>
-        <li>换成 dB <span class="calc">10 log 16 = 12.04 dB</span></li>
+        <li><b>列等式</b>：要保持相同的 SIR，微小区边缘（距离 R/2）收到的功率要和原小区边缘（距离 R）一样。接收功率 ∝ P<sub>t</sub> × 距离<sup>−n</sup>（p.136），n = 4：
+          <div class="calc">P<sub>t1</sub> R⁻⁴ = P<sub>t2</sub> (R/2)⁻⁴</div>
+          为什么这样 SIR 就不变：所有小区一起缩小一半，D 和 R 同时减半，Q = D/R 不变；功率再按同一比例降低，信号和干扰同比例变小。</li>
+        <li><b>化简</b>：(R/2)⁻⁴ = 2⁴R⁻⁴ = 16R⁻⁴，两边约掉 R⁻⁴：
+          <div class="calc">P<sub>t1</sub> = 16 P<sub>t2</sub> → P<sub>t2</sub> = P<sub>t1</sub>/16</div></li>
+        <li><b>换成 dB</b>：
+          <div class="calc">10 log 16 = 4 × 10 log 2 = 4 × 3.01 = 12.04 dB ≈ 12 dB</div>
+          即微小区发射功率要降低 12 dB。通式：半径变为 R/k，功率降低 10n log k dB。</li>
+        <li><b>代回检查</b>：微小区边缘收到 (P<sub>t1</sub>/16) × (R/2)⁻⁴ = (P<sub>t1</sub>/16) × 16R⁻⁴ = P<sub>t1</sub>R⁻⁴，和原小区边缘一样 ✓。</li>
       </ol>
       <div class="ans">发射功率降为 <b>1/16</b>，即降低 <b>12dB</b></div>
       <div class="mem"><b>半径除以 k，功率除以 kⁿ。</b>2⁴ = 16，每个 2 倍是 3dB，4 个就是 12dB。</div>
@@ -1042,10 +1117,15 @@ body.hide-zh .xpl .zhsub{display:none}
     <button class="reveal">显示解法</button>
     <div class="sol">
       <ol class="steps">
-        <li>正方形从 A 向上下左右各延伸 1.5km，从图上估计约含 <b>4 个大小区</b></li>
-        <li>不用微小区 <span class="calc">4 × 60 = 240 条</span></li>
-        <li>半径减半，面积变为 1/4，微小区数最多 <span class="calc">(R ÷ R/2)² × 4 = 16</span>，从图上估计约 15 个</li>
-        <li>使用微小区 <span class="calc">15 × 60 = 900 条</span></li>
+        <li><b>定范围</b>：3 km × 3 km 正方形以 A 为中心，所以从 A 向上下左右各延伸 1.5 km（p.141），面积 9 km²。</li>
+        <li><b>(a) 数大小区</b>：大小区半径 R = 1 km，从图上数，正方形里约有 <b>4 个大小区</b>（4 个基站）。讲义说这只能估计，因为边上的小区只有一部分在正方形里。</li>
+        <li><b>(a) 信道数</b>：每个基站 60 条信道，与小区大小无关（regardless of cell size）：
+          <div class="calc">4 × 60 = 240 条</div></li>
+        <li><b>(b) 数微小区</b>：半径减半 → 面积变为 (1/2)² = 1/4 → 同样面积能放 4 倍的小区：
+          <div class="calc">最多 (R ÷ R/2)² × 4 = 2² × 4 = 16 个；从图上估计约 15 个</div></li>
+        <li><b>(b) 信道数</b>：微小区也是每站 60 条：
+          <div class="calc">15 × 60 = 900 条（若取 16 个：16 × 60 = 960 条）</div></li>
+        <li><b>比较自检</b>：<span class="calc">900 ÷ 240 = 3.75 ≈ 4 倍</span>，和面积比 (R ÷ R/2)² = 4 一致 ✓。容量提升的来源是单位面积里的基站（信道）变多（p.136）。</li>
       </ol>
       <div class="ans">(a) <b>240</b> 条　·　(b) <b>900</b> 条，约 <b>4 倍</b></div>
       <div class="mem"><b>半径 ÷ 2 → 面积 ÷ 4 → 基站 × 4 → 信道 × 4。</b></div>
@@ -1100,12 +1180,16 @@ body.hide-zh .xpl .zhsub{display:none}
     <button class="reveal">显示解法</button>
     <div class="sol">
       <ol class="steps">
-        <li>预先算好 <span class="calc">Q = 4.583，Q⁴ = 441，(Q + 0.7)⁴ = 5.283⁴ = 778.9</span></li>
-        <li><b>3 扇区</b>剩 2 个干扰源，距离分别为 D 和 D + 0.7R
-          <div class="calc">S/I = 1 / [Q⁻⁴ + (Q+0.7)⁻⁴] = 1 / (1/441 + 1/778.9) = 281.6 → 24.5 dB</div></li>
-        <li><b>6 扇区</b>只剩 1 个干扰源，距离 D + 0.7R
-          <div class="calc">S/I = (Q + 0.7)⁴ = 778.9 → 28.9 dB</div></li>
-        <li>全向约 18dB，120° 扇区化后达到 24.5dB，相当于 N = 12 时的水平。可以把簇尺寸从 12 缩小到 7，容量提高 <span class="calc">12/7 = 1.714 倍</span></li>
+        <li><b>预先算好四次方</b>：N = 7，Q = √21 = 4.5826，Q⁴ = (3N)² = 21² = 441；Q + 0.7 = 5.2826，用 x⁴ = (x²)²：
+          <div class="calc">5.2826² = 27.906，27.906² = 778.7</div></li>
+        <li><b>3 扇区（120°）</b>：定向天线只朝 120° 范围发射，第一层 6 个干扰源只剩 2 个能照到本扇区，最坏情况距离是 D 和 D + 0.7R（p.145）。分子分母同除 R<sup>−n</sup>：
+          <div class="calc">S/I = 1 / [Q⁻⁴ + (Q+0.7)⁻⁴]<br>= 1 / (1/441 + 1/778.7)<br>= 1 / (0.002268 + 0.001284)<br>= 1/0.003552 = 281.6 → 10 log 281.6 = 24.5 dB</div>
+          这里没有"÷ 6"：有几个干扰源，分母就加几项。</li>
+        <li><b>6 扇区（60°）</b>：只剩 1 个干扰源，距离 D + 0.7R：
+          <div class="calc">S/I = 1/(Q+0.7)⁻⁴ = (Q+0.7)⁴ = 778.7 → 10 log 778.7 = 28.9 dB</div></li>
+        <li><b>对比自检</b>：干扰源 6 → 2 → 1，SIR 18.66 dB（全向，p.89）→ 24.5 dB → 28.9 dB，逐级升高 ✓。</li>
+        <li><b>容量变化</b>：120° 扇区化后的 SIR（p.144 写约 23 dB，按公式 24.5 dB）相当于全向 N = 12 的 23.34 dB（p.89 表）。原来要 N = 12 才能达到的 SIR，现在 N = 7 就够了；每小区信道数 = S/N，所以容量提高
+          <div class="calc">12/7 = 1.714 倍</div></li>
       </ol>
       <div class="ans">3 扇区 <b>24.5 dB</b>　·　6 扇区 <b>28.9 dB</b>　·　120° 扇区化容量约 <b>×1.714</b></div>
       <div class="mem"><b>3 扇区留 2 个干扰源（Q 和 Q + 0.7），6 扇区只留 1 个（Q + 0.7）。</b>全向时是 6 个干扰源 → 3 扇区 2 个 → 6 扇区 1 个。</div>
@@ -1166,11 +1250,21 @@ body.hide-zh .xpl .zhsub{display:none}
     <button class="reveal">显示解法</button>
     <div class="sol">
       <ol class="steps">
-        <li>通话 2 分钟，每小时呼叫数 = <span class="calc">A × 60/2 = A × 30</span></li>
-        <li><b>不分扇区</b>：M = 57，查表 <span class="calc">A = 44.2 Er → 44.2 × 30 = 1326 次/小时</span></li>
-        <li><b>120° 扇区</b>：每扇区 <span class="calc">57/3 = 19</span> 条，查表 A = 11.2 Er → 336 次/小时，3 个扇区共 <span class="calc">1008 次/小时</span></li>
-        <li>下降 <span class="calc">1 − 1008/1326 = 24%</span></li>
-        <li><b>60° 扇区</b>：每扇区 9.5 条，干线效率进一步下降约 44%，切换次数增加，但 SIR 继续提升</li>
+        <li><b>话务量 → 呼叫数</b>：A = 每小时呼叫数 × h，h = 2 min = 2/60 h，所以
+          <div class="calc">每小时呼叫数 = A ÷ h = A × 60/2 = A × 30</div>
+          每用户每小时打 1 次，所以呼叫数也就是能服务的用户数。</li>
+        <li><b>(a) 不分扇区</b>：M = 57，查 Erlang B 表 GoS = 0.01 列：
+          <div class="calc">A = 44.2 Er → 44.2 × 30 = 1326 次/小时</div></li>
+        <li><b>(b) 120°：信道分组</b>：每根定向天线只用本小区 1/3 的信道（p.149）：<span class="calc">57 ÷ 3 = 19 条/扇区</span>。各扇区的信道不能互借，相当于把一个大池子拆成 3 个小池子。</li>
+        <li><b>(b) 120°：查表并相加</b>：M = 19、GoS = 0.01：
+          <div class="calc">A = 11.2 Er/扇区 → 11.2 × 30 = 336 次/小时/扇区<br>3 个扇区：3 × 336 = 1008 次/小时/小区</div></li>
+        <li><b>(b) 下降比例</b>：
+          <div class="calc">1 − 1008/1326 = 1 − 0.760 = 0.24 → 下降 24%</div>
+          验算：用话务量比也一样，1 − (3 × 11.2)/44.2 = 1 − 33.6/44.2 = 24% ✓。</li>
+        <li><b>(c) 60° 扇区</b>：每扇区 57 ÷ 6 = 9.5 条，不是整数，讲义没写怎么算。用 M = 9（3.78 Er）和 M = 10（4.46 Er）线性插值（p.127）取中点：
+          <div class="calc">A(9.5) = 3.78 + 0.5 × (4.46 − 3.78) = 4.12 Er/扇区<br>6 × 4.12 = 24.72 Er → 24.72 × 30 = 741.6 ≈ 742 次/小时<br>下降 1 − 24.72/44.2 = 0.44 → 44%</div>
+          这就是讲义 p.149 的 "degrades by 44%"。</li>
+        <li><b>评述</b>：干线效率 A/M 从 44.2/57 = 0.78（不分扇区）降到 33.6/57 = 0.59（120°）、24.72/57 = 0.43（60°）；但 SIR 升高（60° 只剩 1 个干扰源，约 29 dB，p.145），切换次数增加。两个方向都要写。</li>
       </ol>
       <div class="ans">不分扇区 <b>1326</b>　·　120° <b>1008（−24%）</b>　·　60° 约 <b>−44%</b></div>
       <div class="mem"><b>通话 2 分钟时，Erlang × 30 = 每小时呼叫数。</b>这题和 p.123 是同一个结论：3 个 19 信道的小组，不如 1 个 57 信道的大组。</div>

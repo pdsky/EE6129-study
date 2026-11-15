@@ -232,10 +232,32 @@ The sum of squared coordinates \(s_1^2+s_2^2=\frac T2A_i^2\) equals the signal e
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>发 0 时 \(y\sim\mathcal N(0,\sigma_0^2)\)，发 1 时 \(y\sim\mathcal N(1,\sigma_1^2)\)。ML：哪个似然大判哪个。</li>
-        <li>判 1 当 \(\dfrac{1}{\sigma_1}e^{-(y-1)^2/2\sigma_1^2}>\dfrac{1}{\sigma_0}e^{-y^2/2\sigma_0^2}\)，取对数：<div class="calc">g(y) = y²/(2σ₀²) − (y − 1)²/(2σ₁²) + ln(σ₀/σ₁) &gt; 0</div></li>
-        <li>g(y) = 0 是关于 y 的二次方程，取在 0 与 1 之间的根作为门限 ỹ：y &gt; ỹ 判 1，y &lt; ỹ 判 0。方差相等时 ỹ = 0.5；σ₁ &gt; σ₀ 时 ỹ 往 0 那边移。</li>
-        <li>(b) 两种错误：发 0、噪声把 y 推过 ỹ，概率 \(Q(\tilde y/\sigma_0)\)；发 1、y 掉到 ỹ 以下，概率 \(Q((1-\tilde y)/\sigma_1)\)。等概各乘 ½。</li>
+        <li><b>写两个似然（likelihood）</b>：\(y_n=x_n+w_n\)，给定 x 时 y 的 PDF 就是噪声 PDF 平移到 x：
+\[\begin{aligned}f(y\mid0)&=\tfrac{1}{\sqrt{2\pi}\,\sigma_0}\,e^{-y^2/2\sigma_0^2}\\ f(y\mid1)&=\tfrac{1}{\sqrt{2\pi}\,\sigma_1}\,e^{-(y-1)^2/2\sigma_1^2}\end{aligned}\]
+即发 0 时 \(y\sim\mathcal N(0,\sigma_0^2)\)，发 1 时 \(y\sim\mathcal N(1,\sigma_1^2)\)。ML 检测选似然大的那个（讲义第 3 章 p.18–19）；两个先验（prior）都是 ½，所以 ML 和 MAP 的判决相同，误码率最小。</li>
+        <li><b>比较似然，取对数</b>：判 1 当 \(f(y\mid1)\gt f(y\mid0)\)。\(\sqrt{2\pi}\) 两边约掉，1/σ 约不掉（σ₀ ≠ σ₁）：
+\[\frac{1}{\sigma_1}e^{-\frac{(y-1)^2}{2\sigma_1^2}}\gt\frac{1}{\sigma_0}e^{-\frac{y^2}{2\sigma_0^2}}\]
+ln 是增函数，取对数不改变不等号方向：\(-\ln\sigma_1-\frac{(y-1)^2}{2\sigma_1^2}\gt-\ln\sigma_0-\frac{y^2}{2\sigma_0^2}\)，全部移到左边：
+\[g(y)=\frac{y^2}{2\sigma_0^2}-\frac{(y-1)^2}{2\sigma_1^2}+\ln\frac{\sigma_0}{\sigma_1}\gt0\]</li>
+        <li><b>整理成二次式</b>：两边乘 \(2\sigma_0^2\sigma_1^2\)（正数，不等号不变），并用 \(2\ln\frac{\sigma_0}{\sigma_1}=-\ln\frac{\sigma_1^2}{\sigma_0^2}\)：
+\[\begin{aligned}&\sigma_1^2y^2-\sigma_0^2(y-1)^2-\sigma_0^2\sigma_1^2\ln\tfrac{\sigma_1^2}{\sigma_0^2}\gt0\\ \Rightarrow\;&(\sigma_1^2-\sigma_0^2)\,y^2+2\sigma_0^2\,y\\&\quad-\sigma_0^2\Big(1+\sigma_1^2\ln\tfrac{\sigma_1^2}{\sigma_0^2}\Big)\gt0\end{aligned}\]
+记成 \(ay^2+by+c\gt0\)：\(a=\sigma_1^2-\sigma_0^2\gt0\)，\(b=2\sigma_0^2\)，\(c=-\sigma_0^2\big(1+\sigma_1^2\ln\frac{\sigma_1^2}{\sigma_0^2}\big)\lt0\)（σ₁² &gt; σ₀²，所以 ln 项为正）。</li>
+        <li><b>(a) 求门限，写判决规则</b>：a &gt; 0，抛物线开口向上，两根之外 g &gt; 0（判 1）。两根之积 c/a &lt; 0，所以一正一负，门限 ỹ 取正根：
+\[\begin{aligned}\tilde y&=\frac{-b+\sqrt{b^2-4ac}}{2a}\\&=\frac{-\sigma_0^2+\sqrt{\sigma_0^4-ac}}{\sigma_1^2-\sigma_0^2}\\ -ac&=(\sigma_1^2-\sigma_0^2)\,\sigma_0^2\Big(1+\sigma_1^2\ln\tfrac{\sigma_1^2}{\sigma_0^2}\Big)\end{aligned}\]
+判决规则：\(y_n\gt\tilde y\) 时 \(\hat x_n=1\)，\(y_n\lt\tilde y\) 时 \(\hat x_n=0\)。负根以下 g 也 &gt; 0（y 极负时也判 1），但发 0 时 y 落到那里的概率只有约 2 × 10⁻⁴（见第 5 步的数值例），标准答案忽略。</li>
+        <li><b>(a) 自检</b>：① 方差相等（σ₀ = σ₁ = σ）：a = 0，ln 项为 0，只剩 \(2\sigma^2y-\sigma^2\gt0\)，即 y &gt; 0.5，回到中点（最小距离判决，讲义 p.20）✓。② 数值例 σ₀² = 0.1，σ₁² = 0.4：
+<div class="calc">g(y) = y²/0.2 − (y − 1)²/0.8 + ln(√0.1/√0.4)<br>= 5y² − 1.25(y² − 2y + 1) + ln 0.5<br>= 3.75y² + 2.5y − 1.25 − 0.6931<br>= 3.75y² + 2.5y − 1.9431<br>b² − 4ac = 2.5² + 4 × 3.75 × 1.9431 = 35.397，√35.397 = 5.9496<br>ỹ = (−2.5 + 5.9496)/7.5 = 0.460<br>另一根 = (−2.5 − 5.9496)/7.5 = −1.127</div>
+代回两条 PDF：f(0.460 | 0) = f(0.460 | 1) = 0.438，在门限处相等 ✓。ỹ = 0.46 &lt; 0.5：发 1 的噪声更大，门限往 0 让 ✓。</li>
+        <li><b>(b) 两种错误分别换成 Q 函数</b>：由全概率，\(P_e=P(x=0)\,P(y\gt\tilde y\mid0)+P(x=1)\,P(y\lt\tilde y\mid1)\)。发 0 判成 1：区间 ỹ 到 ∞，换元 u = y/σ₀：
+\[\begin{aligned}P(y\gt\tilde y\mid0)&=\int_{\tilde y}^{\infty}\tfrac{1}{\sqrt{2\pi}\,\sigma_0}e^{-y^2/2\sigma_0^2}dy\\&=\int_{\tilde y/\sigma_0}^{\infty}\tfrac{1}{\sqrt{2\pi}}e^{-u^2/2}du\\&=Q\Big(\tfrac{\tilde y}{\sigma_0}\Big)\end{aligned}\]
+发 1 判成 0：区间 −∞ 到 ỹ，换元 u = (y − 1)/σ₁，上限变成 (ỹ − 1)/σ₁ &lt; 0；高斯对称，P(u &lt; −a) = Q(a)：
+\[P(y\lt\tilde y\mid1)=P\Big(u\lt\tfrac{\tilde y-1}{\sigma_1}\Big)=Q\Big(\tfrac{1-\tilde y}{\sigma_1}\Big)\]
+（和讲义第 2 章 p.15 求中断概率是同一种换元。）</li>
+        <li><b>(b) 合起来，数值自检</b>：两个先验都是 ½：
+\[P_e=\tfrac12\Big[Q\Big(\tfrac{1-\tilde y}{\sigma_1}\Big)+Q\Big(\tfrac{\tilde y}{\sigma_0}\Big)\Big]\]
+两项用各自的 σ。数值例（σ₀ = √0.1 = 0.3162，σ₁ = √0.4 = 0.6325，ỹ = 0.460）：
+<div class="calc">ỹ/σ₀ = 0.460/0.3162 = 1.455 → Q(1.455) = 0.0728<br>(1 − ỹ)/σ₁ = 0.540/0.6325 = 0.854 → Q(0.854) = 0.1966<br>P<sub>e</sub> = ½(0.0728 + 0.1966) = 0.135</div>
+对比：门限取中点 0.5 时 P<sub>e</sub> = ½[Q(1.581) + Q(0.791)] = ½(0.0569 + 0.2145) = 0.136，比 ML 门限大 ✓（ML 门限就是让 P<sub>e</sub> 最小的那个）。</li>
       </ol>
       <div class="ans">x̂ₙ = 1 当 yₙ &gt; ỹ，否则 0；Pe = ½[Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀)]</div>
       <div class="official"><b>官方答案：</b>同上 ✓</div>
@@ -297,10 +319,32 @@ The sum of squared coordinates \(s_1^2+s_2^2=\frac T2A_i^2\) equals the signal e
     <!-- EN:p3q2 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>Sending 0: \(y\sim\mathcal N(0,\sigma_0^2)\); sending 1: \(y\sim\mathcal N(1,\sigma_1^2)\). ML: choose the hypothesis with the larger likelihood.</li>
-        <li>Decide 1 when \(\dfrac{1}{\sigma_1}e^{-(y-1)^2/2\sigma_1^2}>\dfrac{1}{\sigma_0}e^{-y^2/2\sigma_0^2}\); taking logarithms:<div class="calc">g(y) = y²/(2σ₀²) − (y − 1)²/(2σ₁²) + ln(σ₀/σ₁) &gt; 0</div></li>
-        <li>g(y) = 0 is a quadratic in y; the root between 0 and 1 is the threshold ỹ: decide 1 if y &gt; ỹ, 0 if y &lt; ỹ. With equal variances ỹ = 0.5; with σ₁ &gt; σ₀ the threshold moves towards 0.</li>
-        <li>(b) Two error events: sending 0 and the noise pushes y above ỹ, probability \(Q(\tilde y/\sigma_0)\); sending 1 and y falls below ỹ, probability \(Q((1-\tilde y)/\sigma_1)\). Equal priors, weight ½ each.</li>
+        <li><b>Write the two likelihoods</b>: \(y_n=x_n+w_n\), so given x the PDF of y is the noise PDF shifted to x:
+\[\begin{aligned}f(y\mid0)&=\tfrac{1}{\sqrt{2\pi}\,\sigma_0}\,e^{-y^2/2\sigma_0^2}\\ f(y\mid1)&=\tfrac{1}{\sqrt{2\pi}\,\sigma_1}\,e^{-(y-1)^2/2\sigma_1^2}\end{aligned}\]
+i.e. \(y\sim\mathcal N(0,\sigma_0^2)\) if 0 is sent and \(y\sim\mathcal N(1,\sigma_1^2)\) if 1 is sent. The ML detector chooses the larger likelihood (lecture Ch 3 p.18–19); both priors are ½, so ML makes the same decisions as MAP and minimises the error probability.</li>
+        <li><b>Compare the likelihoods and take logs</b>: decide 1 when \(f(y\mid1)\gt f(y\mid0)\). The \(\sqrt{2\pi}\) cancels on both sides, but 1/σ does not (σ₀ ≠ σ₁):
+\[\frac{1}{\sigma_1}e^{-\frac{(y-1)^2}{2\sigma_1^2}}\gt\frac{1}{\sigma_0}e^{-\frac{y^2}{2\sigma_0^2}}\]
+ln is increasing, so taking logs keeps the direction of the inequality: \(-\ln\sigma_1-\frac{(y-1)^2}{2\sigma_1^2}\gt-\ln\sigma_0-\frac{y^2}{2\sigma_0^2}\). Moving everything to the left:
+\[g(y)=\frac{y^2}{2\sigma_0^2}-\frac{(y-1)^2}{2\sigma_1^2}+\ln\frac{\sigma_0}{\sigma_1}\gt0\]</li>
+        <li><b>Rewrite as a quadratic</b>: multiply both sides by \(2\sigma_0^2\sigma_1^2\) (positive, so the inequality is unchanged) and use \(2\ln\frac{\sigma_0}{\sigma_1}=-\ln\frac{\sigma_1^2}{\sigma_0^2}\):
+\[\begin{aligned}&\sigma_1^2y^2-\sigma_0^2(y-1)^2-\sigma_0^2\sigma_1^2\ln\tfrac{\sigma_1^2}{\sigma_0^2}\gt0\\ \Rightarrow\;&(\sigma_1^2-\sigma_0^2)\,y^2+2\sigma_0^2\,y\\&\quad-\sigma_0^2\Big(1+\sigma_1^2\ln\tfrac{\sigma_1^2}{\sigma_0^2}\Big)\gt0\end{aligned}\]
+Write it as \(ay^2+by+c\gt0\) with \(a=\sigma_1^2-\sigma_0^2\gt0\), \(b=2\sigma_0^2\), \(c=-\sigma_0^2\big(1+\sigma_1^2\ln\frac{\sigma_1^2}{\sigma_0^2}\big)\lt0\) (σ₁² &gt; σ₀², so the ln term is positive).</li>
+        <li><b>(a) Threshold and decision rule</b>: a &gt; 0, so the parabola opens upwards and g &gt; 0 (decide 1) outside the two roots. The product of the roots is c/a &lt; 0, so one root is positive and one negative; the threshold ỹ is the positive root:
+\[\begin{aligned}\tilde y&=\frac{-b+\sqrt{b^2-4ac}}{2a}\\&=\frac{-\sigma_0^2+\sqrt{\sigma_0^4-ac}}{\sigma_1^2-\sigma_0^2}\\ -ac&=(\sigma_1^2-\sigma_0^2)\,\sigma_0^2\Big(1+\sigma_1^2\ln\tfrac{\sigma_1^2}{\sigma_0^2}\Big)\end{aligned}\]
+Decision rule: \(\hat x_n=1\) if \(y_n\gt\tilde y\), \(\hat x_n=0\) if \(y_n\lt\tilde y\). Below the negative root g is also &gt; 0 (a very negative y is also decided as 1), but when 0 is sent y lands there with probability only about 2 × 10⁻⁴ (see the example in step 5), so the standard answer ignores it.</li>
+        <li><b>(a) Self-check</b>: ① Equal variances (σ₀ = σ₁ = σ): a = 0 and the ln term is 0, leaving \(2\sigma^2y-\sigma^2\gt0\), i.e. y &gt; 0.5, back to the midpoint (minimum-distance rule, lecture p.20) ✓. ② Numerical example σ₀² = 0.1, σ₁² = 0.4:
+<div class="calc">g(y) = y²/0.2 − (y − 1)²/0.8 + ln(√0.1/√0.4)<br>= 5y² − 1.25(y² − 2y + 1) + ln 0.5<br>= 3.75y² + 2.5y − 1.25 − 0.6931<br>= 3.75y² + 2.5y − 1.9431<br>b² − 4ac = 2.5² + 4 × 3.75 × 1.9431 = 35.397, √35.397 = 5.9496<br>ỹ = (−2.5 + 5.9496)/7.5 = 0.460<br>other root = (−2.5 − 5.9496)/7.5 = −1.127</div>
+Substituting back into the two PDFs: f(0.460 | 0) = f(0.460 | 1) = 0.438, equal at the threshold ✓. ỹ = 0.46 &lt; 0.5: the noise is larger when 1 is sent, so the threshold moves towards 0 ✓.</li>
+        <li><b>(b) Turn each error event into a Q function</b>: by total probability, \(P_e=P(x=0)\,P(y\gt\tilde y\mid0)+P(x=1)\,P(y\lt\tilde y\mid1)\). 0 sent, 1 decided: the range is ỹ to ∞; substitute u = y/σ₀:
+\[\begin{aligned}P(y\gt\tilde y\mid0)&=\int_{\tilde y}^{\infty}\tfrac{1}{\sqrt{2\pi}\,\sigma_0}e^{-y^2/2\sigma_0^2}dy\\&=\int_{\tilde y/\sigma_0}^{\infty}\tfrac{1}{\sqrt{2\pi}}e^{-u^2/2}du\\&=Q\Big(\tfrac{\tilde y}{\sigma_0}\Big)\end{aligned}\]
+1 sent, 0 decided: the range is −∞ to ỹ; substitute u = (y − 1)/σ₁, so the upper limit becomes (ỹ − 1)/σ₁ &lt; 0; by Gaussian symmetry P(u &lt; −a) = Q(a):
+\[P(y\lt\tilde y\mid1)=P\Big(u\lt\tfrac{\tilde y-1}{\sigma_1}\Big)=Q\Big(\tfrac{1-\tilde y}{\sigma_1}\Big)\]
+(The same substitution as for the outage probability in lecture Ch 2 p.15.)</li>
+        <li><b>(b) Combine and check numerically</b>: both priors are ½:
+\[P_e=\tfrac12\Big[Q\Big(\tfrac{1-\tilde y}{\sigma_1}\Big)+Q\Big(\tfrac{\tilde y}{\sigma_0}\Big)\Big]\]
+Each term uses its own σ. Numerical example (σ₀ = √0.1 = 0.3162, σ₁ = √0.4 = 0.6325, ỹ = 0.460):
+<div class="calc">ỹ/σ₀ = 0.460/0.3162 = 1.455 → Q(1.455) = 0.0728<br>(1 − ỹ)/σ₁ = 0.540/0.6325 = 0.854 → Q(0.854) = 0.1966<br>P<sub>e</sub> = ½(0.0728 + 0.1966) = 0.135</div>
+For comparison, with the midpoint 0.5 as the threshold P<sub>e</sub> = ½[Q(1.581) + Q(0.791)] = ½(0.0569 + 0.2145) = 0.136, larger than with the ML threshold ✓ (the ML threshold is the one that minimises P<sub>e</sub>).</li>
       </ol>
       <div class="ans">x̂<sub>n</sub> = 1 if y<sub>n</sub> &gt; ỹ, otherwise 0; P<sub>e</sub> = ½[Q((1 − ỹ)/σ₁) + Q(ỹ/σ₀)]</div>
       <div class="official"><b>Official answer:</b> same as above ✓</div>
@@ -396,9 +440,19 @@ The sum of squared coordinates \(s_1^2+s_2^2=\frac T2A_i^2\) equals the signal e
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>平台公式里起作用的是"回声长度 / 符号长度"。BPSK 一个符号就是一个比特，所以公式写 \(T_b\)；换成 QPSK 要用<b>符号</b>时长 \(T_s\)。</li>
-        <li>\((3\,\mu s/T_s)^2=10^{-3}\) → \(3/T_s=0.0316\) → \(T_s=94.9\) µs。</li>
-        <li>QPSK 每符号 2 bit：\(R_b=2/T_s=2/94.9\,\mu s=21.08\) kbps。（同样条件下 BPSK 只有 10.54 kbps。）</li>
+        <li><b>写已知、定目标</b>：σ<sub>Tm</sub> = 3 µs = 3 × 10⁻⁶ s（rms 时延扩展，delay spread），误码平台要求 P<sub>floor</sub> ≤ 10⁻³，调制 QPSK：M = 4，每符号 log₂4 = 2 bit。要求的是平台不超过 10⁻³ 时的最高数据速率 R<sub>b</sub>。</li>
+        <li><b>公式里的 T<sub>b</sub> 换成符号时长 T<sub>s</sub></b>：误码平台来自码间干扰（ISI），严重程度只看"回声长度 σ<sub>Tm</sub> 占一个<b>符号</b>多长"，和一个符号装几个比特无关。BPSK 一个符号 = 1 bit，T<sub>s</sub> = T<sub>b</sub>，所以题目写成 T<sub>b</sub>；QPSK 要用
+\[P_{floor}\approx\Big(\frac{\sigma_{T_m}}{T_s}\Big)^2\]
+这个公式讲义正文没有，由题目给出（讲义第 3 章 p.35 的是多普勒平台 0.5(πf<sub>D</sub>T<sub>b</sub>)²）。</li>
+        <li><b>开根号</b>：两边都是正数，平方 ≤ 10⁻³ 等价于比值 ≤ √10⁻³：
+\[\begin{aligned}\Big(\frac{\sigma_{T_m}}{T_s}\Big)^2\le10^{-3}\;&\Rightarrow\;\frac{\sigma_{T_m}}{T_s}\le\sqrt{10^{-3}}\\&=10^{-1.5}=0.03162\end{aligned}\]</li>
+        <li><b>解最短符号时长</b>：
+\[T_s\ge\frac{\sigma_{T_m}}{0.03162}=\frac{3\ \mu\text{s}}{0.03162}=94.87\ \mu\text{s}\]
+方向：T<sub>s</sub> 越长，回声占比越小，平台越低，所以 94.87 µs 是符号时长的下限，对应速率的上限。</li>
+        <li><b>换成比特速率</b>：符号速率（symbol rate）R<sub>s</sub> = 1/T<sub>s</sub>，QPSK 每符号 log₂4 = 2 bit：
+\[\begin{aligned}R_s&=\frac{1}{94.87\ \mu\text{s}}=10.54\ \text{ksymbol/s}\\ R_b&=2R_s=2\times10.54=21.08\ \text{kbps}\end{aligned}\]
+所以 R<sub>b</sub> ≤ 21.08 kbps。同样条件下 BPSK 每符号 1 bit，只有 10.54 kbps。</li>
+        <li><b>自检</b>：代回 (σ<sub>Tm</sub>/T<sub>s</sub>)² = (3/94.87)² = 0.03162² = 1.000 × 10⁻³，正好等于平台要求 ✓。σ<sub>Tm</sub>/T<sub>s</sub> = 0.032 &lt; 0.1，也满足平坦衰落判据（Practice 1 第 3 题）✓。</li>
       </ol>
       <div class="ans">R ≈ 21.08 kbps</div>
       <div class="official"><b>官方答案：</b>21.08 kbps ✓</div>
@@ -454,9 +508,19 @@ The sum of squared coordinates \(s_1^2+s_2^2=\frac T2A_i^2\) equals the signal e
     <!-- EN:p3q3 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>What matters in the floor formula is "echo length / symbol length". For BPSK a symbol is one bit, so the formula uses \(T_b\); for QPSK use the <b>symbol</b> duration \(T_s\).</li>
-        <li>\((3\,\mu s/T_s)^2=10^{-3}\) → \(3/T_s=0.0316\) → \(T_s=94.9\) µs.</li>
-        <li>QPSK carries 2 bits per symbol: \(R_b=2/T_s=2/94.9\,\mu s=21.08\) kbps. (Under the same conditions BPSK gives only 10.54 kbps.)</li>
+        <li><b>List the data and the goal</b>: σ<sub>Tm</sub> = 3 µs = 3 × 10⁻⁶ s (rms delay spread), floor target P<sub>floor</sub> ≤ 10⁻³, modulation QPSK: M = 4, log₂4 = 2 bits per symbol. We want the highest data rate R<sub>b</sub> for which the floor does not exceed 10⁻³.</li>
+        <li><b>Replace T<sub>b</sub> in the formula by the symbol duration T<sub>s</sub></b>: the error floor comes from intersymbol interference (ISI), whose severity depends only on "how long the echo σ<sub>Tm</sub> is compared with one <b>symbol</b>", not on how many bits a symbol carries. For BPSK one symbol = 1 bit and T<sub>s</sub> = T<sub>b</sub>, which is why the question writes T<sub>b</sub>; for QPSK use
+\[P_{floor}\approx\Big(\frac{\sigma_{T_m}}{T_s}\Big)^2\]
+This formula is not in the main slides; the question gives it (lecture Ch 3 p.35 has the Doppler floor 0.5(πf<sub>D</sub>T<sub>b</sub>)²).</li>
+        <li><b>Take the square root</b>: both sides are positive, so "square ≤ 10⁻³" is the same as "ratio ≤ √10⁻³":
+\[\begin{aligned}\Big(\frac{\sigma_{T_m}}{T_s}\Big)^2\le10^{-3}\;&\Rightarrow\;\frac{\sigma_{T_m}}{T_s}\le\sqrt{10^{-3}}\\&=10^{-1.5}=0.03162\end{aligned}\]</li>
+        <li><b>Solve for the shortest symbol duration</b>:
+\[T_s\ge\frac{\sigma_{T_m}}{0.03162}=\frac{3\ \mu\text{s}}{0.03162}=94.87\ \mu\text{s}\]
+Direction: a longer T<sub>s</sub> makes the echo a smaller fraction of the symbol and lowers the floor, so 94.87 µs is a lower limit on the symbol duration and gives an upper limit on the rate.</li>
+        <li><b>Convert to a bit rate</b>: the symbol rate is R<sub>s</sub> = 1/T<sub>s</sub>, and QPSK carries log₂4 = 2 bits per symbol:
+\[\begin{aligned}R_s&=\frac{1}{94.87\ \mu\text{s}}=10.54\ \text{ksymbol/s}\\ R_b&=2R_s=2\times10.54=21.08\ \text{kbps}\end{aligned}\]
+So R<sub>b</sub> ≤ 21.08 kbps. Under the same conditions BPSK carries 1 bit per symbol and gives only 10.54 kbps.</li>
+        <li><b>Self-check</b>: substituting back, (σ<sub>Tm</sub>/T<sub>s</sub>)² = (3/94.87)² = 0.03162² = 1.000 × 10⁻³, exactly the floor target ✓. σ<sub>Tm</sub>/T<sub>s</sub> = 0.032 &lt; 0.1, so the flat-fading rule (Practice 1 Q3) is also satisfied ✓.</li>
       </ol>
       <div class="ans">R ≈ 21.08 kbps</div>
       <div class="official"><b>Official answer:</b> 21.08 kbps ✓</div>

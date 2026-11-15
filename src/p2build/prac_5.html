@@ -33,10 +33,20 @@
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>先假设三个都分到功率：\(\sum_{i=1}^{3}\big(\tfrac1{\gamma_0}-\tfrac1{\gamma_i}\big)=1\Rightarrow\dfrac3{\gamma_0}=1+\dfrac1{80}+\dfrac1{40}+\dfrac1{40}=1.0625\)。</li>
-        <li>\(\gamma_0=3/1.0625=2.82\)。三个 SNR（80、40、40）都大于 2.82，假设成立，不用去掉任何子信道。</li>
-        <li>功率：\(P_1/P=1/2.82-1/80=0.342\)，\(P_2/P=P_3/P=1/2.82-1/40=0.329\)。</li>
-        <li>容量：\(C=B\sum\log_2(\gamma_i/\gamma_0)=10\text{ MHz}\times[\log_2(28.33)+2\log_2(14.17)]=10\times(4.82+7.65)\)。</li>
+        <li><b>选方法</b>：发射端知道信道（informed transmitter），按讲义第 5 章 p.40 用注水法（water-filling，第 2 章 p.54）。题目给的 80、40、40 是"全部功率 P 都给这个子信道时"的 SNR \(\gamma_i\)。公式：
+\[\begin{aligned}\frac{P_i}{P}&=\frac1{\gamma_0}-\frac1{\gamma_i}\quad(\gamma_i\ge\gamma_0)\\ \sum_i\frac{P_i}{P}&=1,\qquad C=B\sum_i\log_2\frac{\gamma_i}{\gamma_0}\end{aligned}\]
+\(\gamma_0\) 是截止门限（cut-off）：SNR 低于它的子信道不分功率。</li>
+        <li><b>假设三个都分到功率，求 γ₀</b>：把功率约束 \(\sum_{i=1}^{3}\big(\tfrac1{\gamma_0}-\tfrac1{\gamma_i}\big)=1\) 展开：
+\[\begin{aligned}\frac3{\gamma_0}&=1+\frac1{80}+\frac1{40}+\frac1{40}\\&=1+0.0125+0.025+0.025=1.0625\\ \gamma_0&=\frac{3}{1.0625}=2.82\end{aligned}\]</li>
+        <li><b>验截止条件</b>：最弱的 \(\gamma_i=40\gt\gamma_0=2.82\)，三个子信道的功率都为正，假设成立，不用去掉任何子信道。（对比讲义第 2 章 p.56 的例子：\(\gamma_3=0.087\lt\gamma_0\)，那个子信道要去掉再重算。）</li>
+        <li><b>功率分配</b>：\(1/\gamma_0=1.0625/3=0.3542\)：
+\[\begin{aligned}\frac{P_1}{P}&=0.3542-\tfrac1{80}\\&=0.3542-0.0125=0.342\\ \frac{P_2}{P}=\frac{P_3}{P}&=0.3542-\tfrac1{40}\\&=0.3542-0.025=0.329\end{aligned}\]
+验算：0.342 + 0.329 + 0.329 = 1.000 ✓。好的子信道多分一点，但差别很小，因为三个 SNR 都远高于 \(\gamma_0\)。</li>
+        <li><b>每个子信道的 log₂</b>：为什么是 \(\gamma_i/\gamma_0\)：分到功率后 \(1+\gamma_i\frac{P_i}{P}=1+\gamma_i\big(\frac1{\gamma_0}-\frac1{\gamma_i}\big)=\frac{\gamma_i}{\gamma_0}\)。用 \(\log_2x=\log_{10}x/0.301\)：
+\[\begin{aligned}\log_2\tfrac{80}{2.82}&=\log_2 28.33=\tfrac{1.452}{0.301}=4.824\\ \log_2\tfrac{40}{2.82}&=\log_2 14.17=\tfrac{1.151}{0.301}=3.824\end{aligned}\]</li>
+        <li><b>总容量</b>：MIMO 的三个子信道是空间上的特征信道（eigen-channel，由 SVD 得到），每个都占满 10 MHz，所以每一项都乘整个 B（不是 B/3）：
+\[\begin{aligned}C&=B\,(4.824+2\times3.824)\\&=10\text{ MHz}\times12.47\text{ bit/s/Hz}\\&=124.7\text{ Mbps}\approx125\text{ Mbps}\end{aligned}\]
+自检：直接用 \(\log_2(1+\gamma_iP_i/P)\)：\(1+80\times0.3417=28.33\)，\(1+40\times0.3292=14.17\)，和上一步一致 ✓。</li>
       </ol>
       <div class="ans">C ≈ 124.7 Mbps ≈ 125 Mbps</div>
       <div class="official"><b>官方答案：</b>125 Mbps ✓</div>
@@ -87,10 +97,20 @@
     <!-- EN:p5q1 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>Assume all three sub-channels get power: \(\sum_{i=1}^{3}\big(\tfrac1{\gamma_0}-\tfrac1{\gamma_i}\big)=1\Rightarrow\dfrac3{\gamma_0}=1+\dfrac1{80}+\dfrac1{40}+\dfrac1{40}=1.0625\).</li>
-        <li>\(\gamma_0=3/1.0625=2.82\). All three SNRs (80, 40, 40) exceed 2.82, so the assumption holds and no sub-channel is dropped.</li>
-        <li>Powers: \(P_1/P=1/2.82-1/80=0.342\), \(P_2/P=P_3/P=1/2.82-1/40=0.329\).</li>
-        <li>Capacity: \(C=B\sum\log_2(\gamma_i/\gamma_0)=10\text{ MHz}\times[\log_2(28.33)+2\log_2(14.17)]=10\times(4.82+7.65)\).</li>
+        <li><b>Choose the method</b>: the transmitter knows the channel (informed transmitter), so by Ch 5 p.40 we use water-filling (Ch 2 p.54). The given 80, 40, 40 are the SNRs \(\gamma_i\) a sub-channel would have if it received all the power P. Formulas:
+\[\begin{aligned}\frac{P_i}{P}&=\frac1{\gamma_0}-\frac1{\gamma_i}\quad(\gamma_i\ge\gamma_0)\\ \sum_i\frac{P_i}{P}&=1,\qquad C=B\sum_i\log_2\frac{\gamma_i}{\gamma_0}\end{aligned}\]
+\(\gamma_0\) is the cut-off: a sub-channel whose SNR is below it gets no power.</li>
+        <li><b>Assume all three get power and find γ₀</b>: expand the power constraint \(\sum_{i=1}^{3}\big(\tfrac1{\gamma_0}-\tfrac1{\gamma_i}\big)=1\):
+\[\begin{aligned}\frac3{\gamma_0}&=1+\frac1{80}+\frac1{40}+\frac1{40}\\&=1+0.0125+0.025+0.025=1.0625\\ \gamma_0&=\frac{3}{1.0625}=2.82\end{aligned}\]</li>
+        <li><b>Check the cut-off</b>: the weakest \(\gamma_i=40\gt\gamma_0=2.82\), so all three powers are positive; the assumption holds and no sub-channel is dropped. (Compare the example on Ch 2 p.56: there \(\gamma_3=0.087\lt\gamma_0\), so that sub-channel is dropped and γ₀ recomputed.)</li>
+        <li><b>Power allocation</b>: \(1/\gamma_0=1.0625/3=0.3542\):
+\[\begin{aligned}\frac{P_1}{P}&=0.3542-\tfrac1{80}\\&=0.3542-0.0125=0.342\\ \frac{P_2}{P}=\frac{P_3}{P}&=0.3542-\tfrac1{40}\\&=0.3542-0.025=0.329\end{aligned}\]
+Check: 0.342 + 0.329 + 0.329 = 1.000 ✓. The better sub-channel gets a little more, but the difference is small because all three SNRs are far above \(\gamma_0\).</li>
+        <li><b>log₂ of each sub-channel</b>: why \(\gamma_i/\gamma_0\): after allocation \(1+\gamma_i\frac{P_i}{P}=1+\gamma_i\big(\frac1{\gamma_0}-\frac1{\gamma_i}\big)=\frac{\gamma_i}{\gamma_0}\). With \(\log_2x=\log_{10}x/0.301\):
+\[\begin{aligned}\log_2\tfrac{80}{2.82}&=\log_2 28.33=\tfrac{1.452}{0.301}=4.824\\ \log_2\tfrac{40}{2.82}&=\log_2 14.17=\tfrac{1.151}{0.301}=3.824\end{aligned}\]</li>
+        <li><b>Total capacity</b>: the three MIMO sub-channels are spatial eigen-channels (from the SVD) and each uses the full 10 MHz, so every term is multiplied by the whole B (not B/3):
+\[\begin{aligned}C&=B\,(4.824+2\times3.824)\\&=10\text{ MHz}\times12.47\text{ bit/s/Hz}\\&=124.7\text{ Mbps}\approx125\text{ Mbps}\end{aligned}\]
+Check with \(\log_2(1+\gamma_iP_i/P)\) directly: \(1+80\times0.3417=28.33\), \(1+40\times0.3292=14.17\), the same as in the previous step ✓.</li>
       </ol>
       <div class="ans">C ≈ 124.7 Mbps ≈ 125 Mbps</div>
       <div class="official"><b>Official answer:</b> 125 Mbps ✓</div>
@@ -173,11 +193,30 @@
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>两个时隙收到：\(y_1=h_Au_1+h_Bu_2+w_1\)，\(y_2=-h_Au_2^*+h_Bu_1^*+w_2\)。</li>
-        <li>对 \(y_2\) 取共轭，让未知量都以 \(u_1,u_2\)（不带共轭）出现：\(y_2^*=h_B^*u_1-h_A^*u_2+w_2^*\)。</li>
-        <li>写成矩阵：\(\begin{bmatrix}y_1\\y_2^*\end{bmatrix}=\underbrace{\begin{bmatrix}h_A&h_B\\h_B^*&-h_A^*\end{bmatrix}}_{\mathbf F}\begin{bmatrix}u_1\\u_2\end{bmatrix}+\begin{bmatrix}w_1\\w_2^*\end{bmatrix}\)，且 \(\mathbf F^H\mathbf F=(|h_A|^2+|h_B|^2)\mathbf I\)。</li>
-        <li>左乘 \(\mathbf F^H\)，两个符号完全分开：<div class="calc">z₁ = h_A* y₁ + h_B y₂* = (|h_A|² + |h_B|²)u₁ + h_A* w₁ + h_B w₂*</div><div class="calc">z₂ = h_B* y₁ − h_A y₂* = (|h_A|² + |h_B|²)u₂ + h_B* w₁ − h_A w₂*</div></li>
-        <li>噪声项方差 \((|h_A|^2+|h_B|^2)N_0\)。除以 \(\|\mathbf h\|=\sqrt{|h_A|^2+|h_B|^2}\) 归一化，噪声方差回到 \(N_0\)。</li>
+        <li><b>写出两个时隙的接收信号</b>：单根接收天线收到 \(y=h_Ax_A+h_Bx_B+w\)。代入发射表，两个时隙的信道相同（\(h_A(1)=h_A(2)=h_A\)，B 也一样）：
+\[\begin{aligned}y_1&=h_Au_1+h_Bu_2+w_1\\ y_2&=-h_Au_2^*+h_Bu_1^*+w_2\end{aligned}\]
+信道在两个时隙内不变，是 Alamouti 能把两个符号分开的前提。</li>
+        <li><b>对 y₂ 取共轭</b>：用 \((ab)^*=a^*b^*\)、\((u^*)^*=u\)：
+\[y_2^*=h_B^*u_1-h_A^*u_2+w_2^*\]
+目的：让两个式子都是 \(u_1,u_2\)（不带共轭）的线性组合，才能写成一个矩阵方程。\(w_2^*\) 和 \(w_2\) 统计特性相同，方差仍是 \(N_0\)。</li>
+        <li><b>写成矩阵并验正交</b>：
+\[\tilde{\mathbf y}=\begin{bmatrix}y_1\\y_2^*\end{bmatrix}=\mathbf F\begin{bmatrix}u_1\\u_2\end{bmatrix}+\begin{bmatrix}w_1\\w_2^*\end{bmatrix}\]
+\[\begin{aligned}\mathbf F&=\begin{bmatrix}h_A&h_B\\h_B^*&-h_A^*\end{bmatrix}\\ \mathbf F^H&=\begin{bmatrix}h_A^*&h_B\\h_B^*&-h_A\end{bmatrix}\end{aligned}\]
+逐元素相乘：
+\[\begin{aligned}(\mathbf F^H\mathbf F)_{11}&=h_A^*h_A+h_Bh_B^*=|h_A|^2+|h_B|^2\\ (\mathbf F^H\mathbf F)_{12}&=h_A^*h_B-h_Bh_A^*=0\end{aligned}\]
+(2,1) 元同理为 0，(2,2) 元也是 \(|h_A|^2+|h_B|^2\)，所以 \(\mathbf F^H\mathbf F=\|\mathbf h\|^2\mathbf I\)（正交，讲义第 5 章 p.23）。</li>
+        <li><b>匹配滤波：左乘 F<sup>H</sup></b>：\(\mathbf z=\mathbf F^H\tilde{\mathbf y}\)。第一行代入 \(y_1\)、\(y_2^*\)：
+\[\begin{aligned}z_1&=h_A^*y_1+h_By_2^*\\&=h_A^*(h_Au_1+h_Bu_2+w_1)\\&\quad+h_B(h_B^*u_1-h_A^*u_2+w_2^*)\\&=(|h_A|^2+|h_B|^2)\,u_1\\&\quad+\underbrace{(h_A^*h_B-h_Bh_A^*)}_{=0}\,u_2\\&\quad+h_A^*w_1+h_Bw_2^*\end{aligned}\]
+第二行同理：
+\[\begin{aligned}z_2&=h_B^*y_1-h_Ay_2^*\\&=(|h_A|^2+|h_B|^2)\,u_2\\&\quad+h_B^*w_1-h_Aw_2^*\end{aligned}\]
+\(u_2\) 在 \(z_1\) 里正好抵消（\(u_1\) 在 \(z_2\) 里也是），两个符号完全分开，这就是 \(\mathbf F\) 正交的作用。</li>
+        <li><b>噪声的方差和相关性</b>：记 \(n_1=h_A^*w_1+h_Bw_2^*\)，\(n_2=h_B^*w_1-h_Aw_2^*\)。复数 c 乘噪声，方差乘 \(|c|^2\)；\(w_1,w_2\) 独立、方差各 \(N_0\)：
+\[\mathrm{Var}(n_1)=\mathrm{Var}(n_2)=(|h_A|^2+|h_B|^2)N_0\]
+互相关 \(E[n_1n_2^*]=h_A^*h_BN_0-h_Bh_A^*N_0\)，等于 0：两路噪声不相关（高斯 ⇒ 独立），所以 \(u_1\)、\(u_2\) 可以分别单独判决。</li>
+        <li><b>归一化，得判决变量</b>：两边除以 \(\|\mathbf h\|=\sqrt{|h_A|^2+|h_B|^2}\)：
+\[\begin{aligned}\tilde z_1&=\|\mathbf h\|\,u_1+\tilde w_1\\ \tilde z_2&=\|\mathbf h\|\,u_2+\tilde w_2\\ \tilde w_{1,2}&=n_{1,2}/\|\mathbf h\|\sim\mathcal N(0,N_0)\end{aligned}\]
+噪声方差 \(\|\mathbf h\|^2N_0/\|\mathbf h\|^2=N_0\)。判决：把 \(\tilde z_n/\|\mathbf h\|\) 判到最近的星座点。讲义 p.25 的 \(\hat{\mathbf s}=\mathbf F^H\tilde{\mathbf y}/\|\mathbf h\|^2\) 是同一个量，只是多除了一个 \(\|\mathbf h\|\)。</li>
+        <li><b>自检</b>：每个符号的 SNR \(=\|\mathbf h\|^2E|u|^2/N_0\)（讲义 p.26），其中 \(\|\mathbf h\|^2=|h_A|^2+|h_B|^2\) 是两个独立衰落增益之和 ⇒ 二阶分集。令 \(h_B=0\)：\(z_1=h_A^*y_1=|h_A|^2u_1+h_A^*w_1\)，退化成单天线的匹配滤波 ✓。</li>
       </ol>
       <div class="ans">z₁ = ‖h‖u₁ + w̃₁，z₂ = ‖h‖u₂ + w̃₂，‖h‖² = |h_A|² + |h_B|²，w̃₁, w̃₂ ~ N(0, N₀)</div>
       <div class="official"><b>官方答案：</b>z₁ = ‖h₁‖u₁ + w̃₁，z₂ = ‖h₂‖u₂ + w̃₂（两个范数其实是同一个 ‖h‖）✓</div>
@@ -224,11 +263,30 @@
     <!-- EN:p5q2 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>Received in the two slots: \(y_1=h_Au_1+h_Bu_2+w_1\), \(y_2=-h_Au_2^*+h_Bu_1^*+w_2\).</li>
-        <li>Conjugate \(y_2\) so that the unknowns appear as \(u_1,u_2\) without conjugates: \(y_2^*=h_B^*u_1-h_A^*u_2+w_2^*\).</li>
-        <li>In matrix form: \(\begin{bmatrix}y_1\\y_2^*\end{bmatrix}=\underbrace{\begin{bmatrix}h_A&h_B\\h_B^*&-h_A^*\end{bmatrix}}_{\mathbf F}\begin{bmatrix}u_1\\u_2\end{bmatrix}+\begin{bmatrix}w_1\\w_2^*\end{bmatrix}\), with \(\mathbf F^H\mathbf F=(|h_A|^2+|h_B|^2)\mathbf I\).</li>
-        <li>Pre-multiply by \(\mathbf F^H\); the two symbols separate completely:<div class="calc">z₁ = h<sub>A</sub>* y₁ + h<sub>B</sub> y₂* = (|h<sub>A</sub>|² + |h<sub>B</sub>|²)u₁ + h<sub>A</sub>* w₁ + h<sub>B</sub> w₂*</div><div class="calc">z₂ = h<sub>B</sub>* y₁ − h<sub>A</sub> y₂* = (|h<sub>A</sub>|² + |h<sub>B</sub>|²)u₂ + h<sub>B</sub>* w₁ − h<sub>A</sub> w₂*</div></li>
-        <li>The noise variance is \((|h_A|^2+|h_B|^2)N_0\). Dividing by \(\|\mathbf h\|=\sqrt{|h_A|^2+|h_B|^2}\) brings it back to \(N_0\).</li>
+        <li><b>Received signals in the two slots</b>: the single receive antenna gets \(y=h_Ax_A+h_Bx_B+w\). Insert the transmit table; the channel is the same in both slots (\(h_A(1)=h_A(2)=h_A\), likewise for B):
+\[\begin{aligned}y_1&=h_Au_1+h_Bu_2+w_1\\ y_2&=-h_Au_2^*+h_Bu_1^*+w_2\end{aligned}\]
+A channel that stays constant over the two slots is what lets Alamouti separate the two symbols.</li>
+        <li><b>Conjugate y₂</b>: with \((ab)^*=a^*b^*\) and \((u^*)^*=u\):
+\[y_2^*=h_B^*u_1-h_A^*u_2+w_2^*\]
+Purpose: both equations become linear in \(u_1,u_2\) (no conjugates), so they can be written as one matrix equation. \(w_2^*\) has the same statistics as \(w_2\); its variance is still \(N_0\).</li>
+        <li><b>Matrix form and orthogonality check</b>:
+\[\tilde{\mathbf y}=\begin{bmatrix}y_1\\y_2^*\end{bmatrix}=\mathbf F\begin{bmatrix}u_1\\u_2\end{bmatrix}+\begin{bmatrix}w_1\\w_2^*\end{bmatrix}\]
+\[\begin{aligned}\mathbf F&=\begin{bmatrix}h_A&h_B\\h_B^*&-h_A^*\end{bmatrix}\\ \mathbf F^H&=\begin{bmatrix}h_A^*&h_B\\h_B^*&-h_A\end{bmatrix}\end{aligned}\]
+Element by element:
+\[\begin{aligned}(\mathbf F^H\mathbf F)_{11}&=h_A^*h_A+h_Bh_B^*=|h_A|^2+|h_B|^2\\ (\mathbf F^H\mathbf F)_{12}&=h_A^*h_B-h_Bh_A^*=0\end{aligned}\]
+The (2,1) element is also 0 and the (2,2) element is also \(|h_A|^2+|h_B|^2\), so \(\mathbf F^H\mathbf F=\|\mathbf h\|^2\mathbf I\) (orthogonal, Ch 5 p.23).</li>
+        <li><b>Matched filter: pre-multiply by F<sup>H</sup></b>: \(\mathbf z=\mathbf F^H\tilde{\mathbf y}\). First row, inserting \(y_1\) and \(y_2^*\):
+\[\begin{aligned}z_1&=h_A^*y_1+h_By_2^*\\&=h_A^*(h_Au_1+h_Bu_2+w_1)\\&\quad+h_B(h_B^*u_1-h_A^*u_2+w_2^*)\\&=(|h_A|^2+|h_B|^2)\,u_1\\&\quad+\underbrace{(h_A^*h_B-h_Bh_A^*)}_{=0}\,u_2\\&\quad+h_A^*w_1+h_Bw_2^*\end{aligned}\]
+Second row in the same way:
+\[\begin{aligned}z_2&=h_B^*y_1-h_Ay_2^*\\&=(|h_A|^2+|h_B|^2)\,u_2\\&\quad+h_B^*w_1-h_Aw_2^*\end{aligned}\]
+\(u_2\) cancels exactly in \(z_1\) (and \(u_1\) in \(z_2\)), so the two symbols are fully separated; this is what the orthogonality of \(\mathbf F\) buys.</li>
+        <li><b>Noise variance and correlation</b>: let \(n_1=h_A^*w_1+h_Bw_2^*\) and \(n_2=h_B^*w_1-h_Aw_2^*\). Multiplying noise by a complex c scales its variance by \(|c|^2\); \(w_1,w_2\) are independent with variance \(N_0\) each:
+\[\mathrm{Var}(n_1)=\mathrm{Var}(n_2)=(|h_A|^2+|h_B|^2)N_0\]
+Cross-correlation \(E[n_1n_2^*]=h_A^*h_BN_0-h_Bh_A^*N_0\), which is 0: the two noises are uncorrelated (Gaussian ⇒ independent), so \(u_1\) and \(u_2\) can be detected separately.</li>
+        <li><b>Normalise to get the decision variables</b>: divide both sides by \(\|\mathbf h\|=\sqrt{|h_A|^2+|h_B|^2}\):
+\[\begin{aligned}\tilde z_1&=\|\mathbf h\|\,u_1+\tilde w_1\\ \tilde z_2&=\|\mathbf h\|\,u_2+\tilde w_2\\ \tilde w_{1,2}&=n_{1,2}/\|\mathbf h\|\sim\mathcal N(0,N_0)\end{aligned}\]
+The noise variance is \(\|\mathbf h\|^2N_0/\|\mathbf h\|^2=N_0\). Decision: map \(\tilde z_n/\|\mathbf h\|\) to the nearest constellation point. The \(\hat{\mathbf s}=\mathbf F^H\tilde{\mathbf y}/\|\mathbf h\|^2\) on Ch 5 p.25 is the same quantity, just divided by one more \(\|\mathbf h\|\).</li>
+        <li><b>Check</b>: the SNR of each symbol is \(\|\mathbf h\|^2E|u|^2/N_0\) (Ch 5 p.26), where \(\|\mathbf h\|^2=|h_A|^2+|h_B|^2\) is a sum of two independently fading gains ⇒ diversity order 2. Set \(h_B=0\): \(z_1=h_A^*y_1=|h_A|^2u_1+h_A^*w_1\), the ordinary single-antenna matched filter ✓.</li>
       </ol>
       <div class="ans">z₁ = ‖h‖u₁ + w̃₁, z₂ = ‖h‖u₂ + w̃₂, ‖h‖² = |h<sub>A</sub>|² + |h<sub>B</sub>|², w̃₁, w̃₂ ~ N(0, N₀)</div>
       <div class="official"><b>Official answer:</b> z₁ = ‖h₁‖u₁ + w̃₁, z₂ = ‖h₂‖u₂ + w̃₂ (the two norms are in fact the same ‖h‖) ✓</div>
@@ -313,10 +371,17 @@
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>γ = 10 dB = 10。\(10^{-d}\le10^{-3}\) → d ≥ 3。</li>
-        <li>N = 8、M = 4，逐个试 r：<div class="tw"><table class="mini"><thead><tr><th>r</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead><tbody><tr><td>d = (8−r)(4−r)</td><td>32</td><td>21</td><td>12</td><td>5</td><td>0</td></tr></tbody></table></div>满足 d ≥ 3 的最大 r 是 3。</li>
-        <li>复用增益的定义 \(r=R/\log_2\mathrm{SNR}\)，所以 \(R=r\log_2\gamma=3\times\log_210=3\times3.32=9.97\) bit/s/Hz。</li>
-        <li>(b) r = 3 → d = 5 → \(P_e=10^{-5}\)。</li>
+        <li><b>dB 换成线性</b>：\(\gamma=10^{10/10}=10\)。公式 \(P_e=\gamma^{-d}\) 里必须用线性值。</li>
+        <li><b>由误码要求求最小 d</b>：
+\[P_e=10^{-d}\le10^{-3}\;\Rightarrow\;-d\le-3\;\Rightarrow\;d\ge3\]
+一般情况：
+\[d\ge\frac{\log_{10}(1/P_e^{\text{目标}})}{\log_{10}\gamma}=\frac31=3\]</li>
+        <li><b>列折中表</b>：N = 8，M = 4，复用增益 r 只能取 0 … min(N, M) = 4（讲义第 4 章 p.33）：<div class="tw"><table class="mini"><thead><tr><th>r</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead><tbody><tr><td>(8−r)(4−r)</td><td>8×4</td><td>7×3</td><td>6×2</td><td>5×1</td><td>4×0</td></tr><tr><td>d</td><td>32</td><td>21</td><td>12</td><td>5</td><td>0</td></tr><tr><td>d ≥ 3？</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td></tr></tbody></table></div>r 每加 1，d 就下降：多发一路数据流，就少一些抗衰落的能力。</li>
+        <li><b>(a) 选最大的 r</b>：r = 3 时 d = 5 ≥ 3 ✓；r = 4 时 d = 0 &lt; 3 ✗。所以 r = 3。</li>
+        <li><b>(a) 算速率</b>：由复用增益（multiplexing gain）的定义 \(r=R/\log_2\mathrm{SNR}\)（讲义 p.32），\(R=r\log_2\gamma\)。\(\log_2 10=1/0.301=3.32\)（因为 \(\log_{10}10=1\)）：
+\[R=3\times3.32=9.96\ \text{bit/s/Hz}\]
+精确值 3 × 3.3219 = 9.966，官方按 3.32 算得 9.96。自检：上限 \(r_{\max}\log_2\gamma=4\times3.32=13.3\) bit/s/Hz，9.96 在上限之下 ✓。</li>
+        <li><b>(b) 误码率</b>：r = 3 → \(d(3)=(8-3)(4-3)=5\) → \(P_e=\gamma^{-5}=10^{-5}\)。自检：\(10^{-5}\le10^{-3}\) ✓。比要求好两个数量级，因为 r 只能取整数，d 从 5 直接跳到 0，没有正好 d = 3 的点。</li>
       </ol>
       <div class="ans">(a) ≈ 9.96 bit/s/Hz；(b) Pe = 10⁻⁵</div>
       <div class="official"><b>官方答案：</b>9.96 bits/s/Hz；10⁻⁵ ✓</div>
@@ -370,10 +435,17 @@
     <!-- EN:p5q3 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>γ = 10 dB = 10. \(10^{-d}\le10^{-3}\) → d ≥ 3.</li>
-        <li>N = 8, M = 4, try each r:<div class="tw"><table class="mini"><thead><tr><th>r</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead><tbody><tr><td>d = (8−r)(4−r)</td><td>32</td><td>21</td><td>12</td><td>5</td><td>0</td></tr></tbody></table></div>The largest r with d ≥ 3 is 3.</li>
-        <li>By definition of the multiplexing gain \(r=R/\log_2\mathrm{SNR}\), so \(R=r\log_2\gamma=3\times\log_210=3\times3.32=9.97\) bit/s/Hz.</li>
-        <li>(b) r = 3 → d = 5 → \(P_e=10^{-5}\).</li>
+        <li><b>Convert dB to linear</b>: \(\gamma=10^{10/10}=10\). The formula \(P_e=\gamma^{-d}\) needs the linear value.</li>
+        <li><b>Minimum d from the error target</b>:
+\[P_e=10^{-d}\le10^{-3}\;\Rightarrow\;-d\le-3\;\Rightarrow\;d\ge3\]
+In general:
+\[d\ge\frac{\log_{10}(1/P_e^{\text{target}})}{\log_{10}\gamma}=\frac31=3\]</li>
+        <li><b>Trade-off table</b>: N = 8, M = 4; the multiplexing gain r can only be 0 … min(N, M) = 4 (Ch 4 p.33):<div class="tw"><table class="mini"><thead><tr><th>r</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th></tr></thead><tbody><tr><td>(8−r)(4−r)</td><td>8×4</td><td>7×3</td><td>6×2</td><td>5×1</td><td>4×0</td></tr><tr><td>d</td><td>32</td><td>21</td><td>12</td><td>5</td><td>0</td></tr><tr><td>d ≥ 3?</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td><td>✗</td></tr></tbody></table></div>Each extra unit of r lowers d: one more data stream means less protection against fading.</li>
+        <li><b>(a) Largest r</b>: r = 3 gives d = 5 ≥ 3 ✓; r = 4 gives d = 0 &lt; 3 ✗. So r = 3.</li>
+        <li><b>(a) Rate</b>: from the definition of the multiplexing gain \(r=R/\log_2\mathrm{SNR}\) (Ch 4 p.32), \(R=r\log_2\gamma\). \(\log_2 10=1/0.301=3.32\) (since \(\log_{10}10=1\)):
+\[R=3\times3.32=9.96\ \text{bit/s/Hz}\]
+The exact value is 3 × 3.3219 = 9.966; the official answer uses 3.32 and gets 9.96. Check: the upper limit \(r_{\max}\log_2\gamma=4\times3.32=13.3\) bit/s/Hz, and 9.96 is below it ✓.</li>
+        <li><b>(b) Error probability</b>: r = 3 → \(d(3)=(8-3)(4-3)=5\) → \(P_e=\gamma^{-5}=10^{-5}\). Check: \(10^{-5}\le10^{-3}\) ✓. It beats the target by two orders of magnitude because r must be an integer: d jumps from 5 straight to 0, there is no point with exactly d = 3.</li>
       </ol>
       <div class="ans">(a) ≈ 9.96 bit/s/Hz; (b) P<sub>e</sub> = 10⁻⁵</div>
       <div class="official"><b>Official answer:</b> 9.96 bits/s/Hz; 10⁻⁵ ✓</div>

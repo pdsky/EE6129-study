@@ -638,9 +638,9 @@ XPL = {
 <h4><span class="st">详细解析</span>(b) 三小问</h4>
 <ol>
 <li><b>(i)</b> 每小区 1071/7 = 153 条信道，查 Erlang C 表 5% 列，在 150 和 155 之间插值。按公式算出的表值约为 A(150) ≈ 129.5、A(155) ≈ 134.1（以考场附录为准）：
-<div class="calc">A(153) ≈ 129.5 + (153 − 150)/(155 − 150) × (134.1 − 129.5) = 129.5 + 2.76 ≈ 132.2 Erlang/小区</div></li>
+<div class="calc">A(153) ≈ 129.5 + (153 − 150)/(155 − 150) × (134.1 − 129.5) = 129.5 + 2.76 = 132.26 ≈ 132.3 Erlang/小区（用附录表值 129.490、134.137 插值是 132.28）</div></li>
 <li><b>(ii)</b>
-<div class="calc">每小区用户 = 132.2 / 0.03 ≈ 4408；每 km² = 4408 / 6 ≈ 735 用户/km²</div></li>
+<div class="calc">每小区用户 = 132.28 / 0.03 ≈ 4409；每 km² = 4409 / 6 ≈ 735 用户/km²</div></li>
 <li><b>(iii)</b>
 <div class="calc">H = A<sub>u</sub>/λ<sub>u</sub> = 0.03/1.2 小时 = 0.025 h = 0.025 × 3600 = 90 s</div></li>
 </ol>
@@ -667,14 +667,14 @@ XPL = {
 <li>记号：题目的 ρ = λ/μ（就是话务量 A）；讲义 p.105 把 ρ = λ/(mμ) 叫利用率。按题目的定义写，稳定条件就是 ρ/m &lt; 1。</li>
 </ul>
 <h4><span class="st">考试</span>英文写法</h4>
-<div class="tmpl" lang="en"><p>(b)(i) Channels per cell = 1071/7 = 153. From the Erlang C table with a delay probability of 5%, interpolating between M = 150 (A ≈ 129.5 E) and M = 155 (A ≈ 134.1 E): A ≈ 129.5 + (3/5)(4.6) ≈ 132.2 Erlangs per cell.</p>
-<p>(ii) Users per cell = 132.2/0.03 ≈ 4408. Users per km² = 4408/6 ≈ 735 users/km².</p>
+<div class="tmpl" lang="en"><p>(b)(i) Channels per cell = 1071/7 = 153. From the Erlang C table with a delay probability of 5%, interpolating between M = 150 (A ≈ 129.5 E) and M = 155 (A ≈ 134.1 E): A ≈ 129.5 + (3/5)(4.6) ≈ 132.3 Erlangs per cell.</p>
+<p>(ii) Users per cell = 132.28/0.03 ≈ 4409. Users per km² = 4409/6 ≈ 735 users/km².</p>
 <p>(iii) H = A<sub>u</sub>/λ = 0.03/1.2 h = 0.025 h = 90 s.</p>
 <p>(c)(i) [Sketch: states 0, 1, 2, …, m − 1, m, m + 1, … in a row. Each forward transition k → k + 1 has rate λ. Each backward transition k → k − 1 has rate kμ for k ≤ m (μ, 2μ, …, mμ) and mμ for k &gt; m.]</p>
 <p>(ii) For k ≤ m: kμP<sub>k</sub> = λP<sub>k−1</sub>, so P<sub>k</sub> = (ρ/k)P<sub>k−1</sub>. Applying this recursively, P<sub>k</sub> = P₀ρ<sup>k</sup>/k!.</p>
 <p>For k ≥ m: mμP<sub>k</sub> = λP<sub>k−1</sub>, so P<sub>k</sub> = (ρ/m)P<sub>k−1</sub>. Starting from P<sub>m</sub> = P₀ρ<sup>m</sup>/m!, P<sub>k</sub> = P₀(ρ<sup>m</sup>/m!)(ρ/m)<sup>k−m</sup> = P₀ρ<sup>k</sup>/(m!·m<sup>k−m</sup>).</p>
 <p>Both expressions agree at k = m. P₀ is obtained from ΣP<sub>k</sub> = 1, which requires ρ/m &lt; 1.</p></div>
-<div class="ans">一句话：153 条查 Erlang C 表 5% 插值约 132.2 E，÷0.03 ÷6 ≈ 735 用户/km²，H = 0.025 h = 90 s；M/M/m 由 λP<sub>k−1</sub> = μ<sub>k</sub>P<sub>k</sub> 递推，k ≤ m 时 P₀ρ<sup>k</sup>/k!，k ≥ m 时 P₀ρ<sup>k</sup>/(m!m<sup>k−m</sup>)。</div>
+<div class="ans">一句话：153 条查 Erlang C 表 5% 插值约 132.3 E，÷0.03 ÷6 ≈ 735 用户/km²，H = 0.025 h = 90 s；M/M/m 由 λP<sub>k−1</sub> = μ<sub>k</sub>P<sub>k</sub> 递推，k ≤ m 时 P₀ρ<sup>k</sup>/k!，k ≥ m 时 P₀ρ<sup>k</sup>/(m!m<sup>k−m</sup>)。</div>
 '''},
 
 'y2526s2-q4a': {'title': '知识讲解 + 详细解析：硬切换与软切换', 'zh': '''
