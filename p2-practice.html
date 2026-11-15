@@ -155,7 +155,7 @@ ol.steps>li::before{content:counter(s);position:absolute;left:0;top:8px;width:22
 .dsteps{margin-top:10px}
 .score{font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--muted)}
 mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%}
-@media (max-width:640px){mjx-container:not([display="true"]){display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+@media (max-width:640px){mjx-container:not([display="true"]){display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle;scrollbar-width:none}mjx-container:not([display="true"])::-webkit-scrollbar{display:none}}
 footer{margin-top:40px;font-size:.78rem;color:var(--muted);max-width:72ch}
 @media (max-width:640px){h1{font-size:1.9rem}.ex{padding:15px}}
 
@@ -1333,9 +1333,24 @@ window.MathJax = {
     <button class="reveal" type="button">显示解答</button>
     <div class="sol sol-zh">
       <ol class="steps">
-        <li>拆开：\(A_i\cos(2\pi t/T+\phi_j)=(A_i\cos\phi_j)\cos(2\pi t/T)+(-A_i\sin\phi_j)\sin(2\pi t/T)\)。所有信号都在 cos 和 sin 这两个方向上。</li>
-        <li>正交：\(\int_0^T\cos(2\pi t/T)\sin(2\pi t/T)dt=\tfrac12\int_0^T\sin(4\pi t/T)dt=0\)。</li>
-        <li>归一：\(\int_0^T\cos^2(2\pi t/T)dt=T/2\)，所以乘 \(\sqrt{2/T}\) 使能量为 1。</li>
+        <li><b>拆开（找方向）</b>：用和角公式 \(\cos(a+b)=\cos a\cos b-\sin a\sin b\)：
+\[\begin{aligned}A_i\cos\!\Big(\tfrac{2\pi t}{T}+\phi_j\Big)&=\underbrace{A_i\cos\phi_j}_{\text{常数}}\cos\tfrac{2\pi t}{T}\\&\quad+\underbrace{(-A_i\sin\phi_j)}_{\text{常数}}\sin\tfrac{2\pi t}{T}\end{aligned}\]
+\(A_i\)、\(\phi_j\) 不随 t 变，只是两个系数；随 t 变的只有 \(\cos\frac{2\pi t}{T}\) 和 \(\sin\frac{2\pi t}{T}\)。所以不管 \(A_i\)、\(\phi_j\) 取什么值，所有信号都是这两个波形的组合，它们就是基函数的候选。</li>
+        <li><b>验正交</b>：用 \(\sin a\cos a=\tfrac12\sin 2a\)：
+\[\begin{aligned}\int_0^T\cos\tfrac{2\pi t}{T}\sin\tfrac{2\pi t}{T}\,dt&=\tfrac12\int_0^T\sin\tfrac{4\pi t}{T}\,dt\\&=\tfrac12\Big[-\tfrac{T}{4\pi}\cos\tfrac{4\pi t}{T}\Big]_0^T\\&=-\tfrac{T}{8\pi}(\cos4\pi-\cos0)=0\end{aligned}\]
+\(\sin\frac{4\pi t}{T}\) 在 0 到 T 上正好走完 2 个整周期，正负面积抵消，所以两者正交。</li>
+        <li><b>求能量</b>：用降幂公式 \(\cos^2a=\tfrac{1+\cos2a}{2}\)：
+\[\begin{aligned}E_c=\int_0^T\cos^2\tfrac{2\pi t}{T}\,dt&=\int_0^T\frac{1+\cos\frac{4\pi t}{T}}{2}\,dt\\&=\frac T2+\frac12\Big[\frac{T}{4\pi}\sin\frac{4\pi t}{T}\Big]_0^T=\frac T2\end{aligned}\]
+\(\sin^2\) 同理（\(\sin^2a=\tfrac{1-\cos2a}{2}\)），能量也是 \(T/2\)。直观理解：cos² 在 0 和 1 之间摆动，平均值是 ½，所以能量 = ½ × 时长 T。</li>
+        <li><b>归一化</b>：设基函数为 \(c\cos\frac{2\pi t}{T}\)，要求它的能量等于 1：
+\[\int_0^T\Big(c\cos\tfrac{2\pi t}{T}\Big)^2dt=c^2\cdot\frac T2=1\;\Rightarrow\;c=\sqrt{\frac2T}\]
+也就是除以 \(\sqrt{E_c}=\sqrt{T/2}\)。得到
+\[\begin{aligned}\psi_1(t)&=\sqrt{\tfrac2T}\cos\tfrac{2\pi t}{T}\\ \psi_2(t)&=\sqrt{\tfrac2T}\sin\tfrac{2\pi t}{T}\end{aligned}\qquad 0\le t\le T\]
+验算：\(\int_0^T\psi_1^2\,dt=\frac2T\cdot\frac T2=1\) ✓。乘一个常数不会破坏第 2 步的正交性。</li>
+        <li><b>坐标和自检</b>：
+\[\begin{aligned}s_{ij}(t)&=\underbrace{\sqrt{\tfrac T2}A_i\cos\phi_j}_{s_1}\,\psi_1(t)\\&\quad+\underbrace{\Big(-\sqrt{\tfrac T2}A_i\sin\phi_j\Big)}_{s_2}\,\psi_2(t)\end{aligned}\]
+坐标平方和 \(s_1^2+s_2^2=\frac T2A_i^2\)，正好等于直接算的信号能量 \(\int_0^T s_{ij}^2\,dt=\frac T2A_i^2\) ✓。</li>
+        <li><b>(b) 维数</b>：所有信号都只需要 \(\psi_1\)、\(\psi_2\) 两个基函数，所以维数 D = 2。\(A_i\)、\(\phi_j\) 取再多的值，也只是平面上多几个点（星座点），不会增加维数。</li>
       </ol>
       <div class="ans">(a) { √(2/T)·cos(2πt/T), √(2/T)·sin(2πt/T) }；(b) 维数 2</div>
       <div class="official"><b>官方答案：</b>同上 ✓</div>
@@ -1394,9 +1409,24 @@ window.MathJax = {
     <!-- EN:p3q1 -->
     <div class="sol sol-en" lang="en">
       <ol class="steps">
-        <li>Expand: \(A_i\cos(2\pi t/T+\phi_j)=(A_i\cos\phi_j)\cos(2\pi t/T)+(-A_i\sin\phi_j)\sin(2\pi t/T)\). Every signal lies along the cos and sin directions.</li>
-        <li>Orthogonal: \(\int_0^T\cos(2\pi t/T)\sin(2\pi t/T)dt=\tfrac12\int_0^T\sin(4\pi t/T)dt=0\).</li>
-        <li>Normalise: \(\int_0^T\cos^2(2\pi t/T)dt=T/2\), so multiply by \(\sqrt{2/T}\) to get unit energy.</li>
+        <li><b>Expand (find the directions)</b>: with the angle-sum identity \(\cos(a+b)=\cos a\cos b-\sin a\sin b\),
+\[\begin{aligned}A_i\cos\!\Big(\tfrac{2\pi t}{T}+\phi_j\Big)&=\underbrace{A_i\cos\phi_j}_{\text{constant}}\cos\tfrac{2\pi t}{T}\\&\quad+\underbrace{(-A_i\sin\phi_j)}_{\text{constant}}\sin\tfrac{2\pi t}{T}\end{aligned}\]
+\(A_i\) and \(\phi_j\) do not change with t, so they are just two coefficients; only \(\cos\frac{2\pi t}{T}\) and \(\sin\frac{2\pi t}{T}\) depend on t. Whatever values \(A_i\) and \(\phi_j\) take, every signal is a combination of these two waveforms, so they are the candidate basis functions.</li>
+        <li><b>Check orthogonality</b>: with \(\sin a\cos a=\tfrac12\sin 2a\),
+\[\begin{aligned}\int_0^T\cos\tfrac{2\pi t}{T}\sin\tfrac{2\pi t}{T}\,dt&=\tfrac12\int_0^T\sin\tfrac{4\pi t}{T}\,dt\\&=\tfrac12\Big[-\tfrac{T}{4\pi}\cos\tfrac{4\pi t}{T}\Big]_0^T\\&=-\tfrac{T}{8\pi}(\cos4\pi-\cos0)=0\end{aligned}\]
+\(\sin\frac{4\pi t}{T}\) completes exactly two full periods between 0 and T, so the positive and negative areas cancel and the two functions are orthogonal.</li>
+        <li><b>Find the energy</b>: with \(\cos^2a=\tfrac{1+\cos2a}{2}\),
+\[\begin{aligned}E_c=\int_0^T\cos^2\tfrac{2\pi t}{T}\,dt&=\int_0^T\frac{1+\cos\frac{4\pi t}{T}}{2}\,dt\\&=\frac T2+\frac12\Big[\frac{T}{4\pi}\sin\frac{4\pi t}{T}\Big]_0^T=\frac T2\end{aligned}\]
+The same holds for \(\sin^2\) (\(\sin^2a=\tfrac{1-\cos2a}{2}\)), so its energy is also \(T/2\). Intuitively, cos² swings between 0 and 1 with an average of ½, so the energy is ½ × the duration T.</li>
+        <li><b>Normalise</b>: let the basis function be \(c\cos\frac{2\pi t}{T}\) and require unit energy:
+\[\int_0^T\Big(c\cos\tfrac{2\pi t}{T}\Big)^2dt=c^2\cdot\frac T2=1\;\Rightarrow\;c=\sqrt{\frac2T}\]
+i.e. divide by \(\sqrt{E_c}=\sqrt{T/2}\). This gives
+\[\begin{aligned}\psi_1(t)&=\sqrt{\tfrac2T}\cos\tfrac{2\pi t}{T}\\ \psi_2(t)&=\sqrt{\tfrac2T}\sin\tfrac{2\pi t}{T}\end{aligned}\qquad 0\le t\le T\]
+Check: \(\int_0^T\psi_1^2\,dt=\frac2T\cdot\frac T2=1\) ✓. Multiplying by a constant does not affect the orthogonality from step 2.</li>
+        <li><b>Coordinates and self-check</b>:
+\[\begin{aligned}s_{ij}(t)&=\underbrace{\sqrt{\tfrac T2}A_i\cos\phi_j}_{s_1}\,\psi_1(t)\\&\quad+\underbrace{\Big(-\sqrt{\tfrac T2}A_i\sin\phi_j\Big)}_{s_2}\,\psi_2(t)\end{aligned}\]
+The sum of squared coordinates \(s_1^2+s_2^2=\frac T2A_i^2\) equals the signal energy computed directly, \(\int_0^T s_{ij}^2\,dt=\frac T2A_i^2\) ✓.</li>
+        <li><b>(b) Dimension</b>: every signal needs only the two basis functions \(\psi_1\) and \(\psi_2\), so the dimension is D = 2. More values of \(A_i\) and \(\phi_j\) only add more points (constellation points) in the same plane; they do not add dimensions.</li>
       </ol>
       <div class="ans">(a) { √(2/T)·cos(2πt/T), √(2/T)·sin(2πt/T) }; (b) dimension 2</div>
       <div class="official"><b>Official answer:</b> same as above ✓</div>

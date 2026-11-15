@@ -187,9 +187,24 @@ EN['p2q3'] = dict(
 # ================================================================ Practice 3
 EN['p3q1'] = dict(
  steps=[
-  r'''Expand: \(A_i\cos(2\pi t/T+\phi_j)=(A_i\cos\phi_j)\cos(2\pi t/T)+(-A_i\sin\phi_j)\sin(2\pi t/T)\). Every signal lies along the cos and sin directions.''',
-  r'''Orthogonal: \(\int_0^T\cos(2\pi t/T)\sin(2\pi t/T)dt=\tfrac12\int_0^T\sin(4\pi t/T)dt=0\).''',
-  r'''Normalise: \(\int_0^T\cos^2(2\pi t/T)dt=T/2\), so multiply by \(\sqrt{2/T}\) to get unit energy.'''],
+  r'''<b>Expand (find the directions)</b>: with the angle-sum identity \(\cos(a+b)=\cos a\cos b-\sin a\sin b\),
+\[\begin{aligned}A_i\cos\!\Big(\tfrac{2\pi t}{T}+\phi_j\Big)&=\underbrace{A_i\cos\phi_j}_{\text{constant}}\cos\tfrac{2\pi t}{T}\\&\quad+\underbrace{(-A_i\sin\phi_j)}_{\text{constant}}\sin\tfrac{2\pi t}{T}\end{aligned}\]
+\(A_i\) and \(\phi_j\) do not change with t, so they are just two coefficients; only \(\cos\frac{2\pi t}{T}\) and \(\sin\frac{2\pi t}{T}\) depend on t. Whatever values \(A_i\) and \(\phi_j\) take, every signal is a combination of these two waveforms, so they are the candidate basis functions.''',
+  r'''<b>Check orthogonality</b>: with \(\sin a\cos a=\tfrac12\sin 2a\),
+\[\begin{aligned}\int_0^T\cos\tfrac{2\pi t}{T}\sin\tfrac{2\pi t}{T}\,dt&=\tfrac12\int_0^T\sin\tfrac{4\pi t}{T}\,dt\\&=\tfrac12\Big[-\tfrac{T}{4\pi}\cos\tfrac{4\pi t}{T}\Big]_0^T\\&=-\tfrac{T}{8\pi}(\cos4\pi-\cos0)=0\end{aligned}\]
+\(\sin\frac{4\pi t}{T}\) completes exactly two full periods between 0 and T, so the positive and negative areas cancel and the two functions are orthogonal.''',
+  r'''<b>Find the energy</b>: with \(\cos^2a=\tfrac{1+\cos2a}{2}\),
+\[\begin{aligned}E_c=\int_0^T\cos^2\tfrac{2\pi t}{T}\,dt&=\int_0^T\frac{1+\cos\frac{4\pi t}{T}}{2}\,dt\\&=\frac T2+\frac12\Big[\frac{T}{4\pi}\sin\frac{4\pi t}{T}\Big]_0^T=\frac T2\end{aligned}\]
+The same holds for \(\sin^2\) (\(\sin^2a=\tfrac{1-\cos2a}{2}\)), so its energy is also \(T/2\). Intuitively, cos² swings between 0 and 1 with an average of ½, so the energy is ½ × the duration T.''',
+  r'''<b>Normalise</b>: let the basis function be \(c\cos\frac{2\pi t}{T}\) and require unit energy:
+\[\int_0^T\Big(c\cos\tfrac{2\pi t}{T}\Big)^2dt=c^2\cdot\frac T2=1\;\Rightarrow\;c=\sqrt{\frac2T}\]
+i.e. divide by \(\sqrt{E_c}=\sqrt{T/2}\). This gives
+\[\begin{aligned}\psi_1(t)&=\sqrt{\tfrac2T}\cos\tfrac{2\pi t}{T}\\ \psi_2(t)&=\sqrt{\tfrac2T}\sin\tfrac{2\pi t}{T}\end{aligned}\qquad 0\le t\le T\]
+Check: \(\int_0^T\psi_1^2\,dt=\frac2T\cdot\frac T2=1\) ✓. Multiplying by a constant does not affect the orthogonality from step 2.''',
+  r'''<b>Coordinates and self-check</b>:
+\[\begin{aligned}s_{ij}(t)&=\underbrace{\sqrt{\tfrac T2}A_i\cos\phi_j}_{s_1}\,\psi_1(t)\\&\quad+\underbrace{\Big(-\sqrt{\tfrac T2}A_i\sin\phi_j\Big)}_{s_2}\,\psi_2(t)\end{aligned}\]
+The sum of squared coordinates \(s_1^2+s_2^2=\frac T2A_i^2\) equals the signal energy computed directly, \(\int_0^T s_{ij}^2\,dt=\frac T2A_i^2\) ✓.''',
+  r'''<b>(b) Dimension</b>: every signal needs only the two basis functions \(\psi_1\) and \(\psi_2\), so the dimension is D = 2. More values of \(A_i\) and \(\phi_j\) only add more points (constellation points) in the same plane; they do not add dimensions.'''],
  ans='(a) { √(2/T)·cos(2πt/T), √(2/T)·sin(2πt/T) }; (b) dimension 2', official='same as above ✓',
  kp=[
   ('What it tests', '''Signal space: orthonormal basis and dimension (Ch 3 p.4–11).'''),

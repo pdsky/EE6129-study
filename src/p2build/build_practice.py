@@ -161,7 +161,7 @@ ol.steps>li::before{content:counter(s);position:absolute;left:0;top:8px;width:22
 .dsteps{margin-top:10px}
 .score{font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--muted)}
 mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%}
-@media (max-width:640px){mjx-container:not([display="true"]){display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle}}
+@media (max-width:640px){mjx-container:not([display="true"]){display:inline-block;max-width:100%;overflow-x:auto;overflow-y:hidden;vertical-align:middle;scrollbar-width:none}mjx-container:not([display="true"])::-webkit-scrollbar{display:none}}
 footer{margin-top:40px;font-size:.78rem;color:var(--muted);max-width:72ch}
 @media (max-width:640px){h1{font-size:1.9rem}.ex{padding:15px}}
 '''
