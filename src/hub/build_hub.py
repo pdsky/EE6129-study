@@ -24,8 +24,11 @@ def art_url(key):
     v = IDS.get(key, {}).get('new')
     return f'https://claude.ai/artifact/{v}' if v else ''
 
-if len(sys.argv) == 3:
-    HUB_URL = {'learn': sys.argv[1], 'practice': sys.argv[2]}
+# URLs from the command line only when this file is the script being run (build_en.py imports it with its own
+# argv, e.g. `build_en.py build practice`, which once made the 中文版 links point to "practice" / "build").
+_argv = sys.argv[1:] if pathlib.Path(sys.argv[0]).name == 'build_hub.py' else []
+if len(_argv) == 2 and all(a.startswith('https://claude.ai/artifact/') for a in _argv):
+    HUB_URL = {'learn': _argv[0], 'practice': _argv[1]}
 else:
     HUB_URL = {'learn': art_url('hub-learn'), 'practice': art_url('hub-practice')}
 
