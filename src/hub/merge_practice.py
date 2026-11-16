@@ -44,7 +44,11 @@ L = {
             drill='随机练习（数字随机生成）', sw='Part 2 作业（SW）：题目、英文答案、中文讲解', sheet='Part A 考前速记页',
             hw1='HW1（Part A 作业）：讲解和参考答案', quiz='B·C 随机小测（每次 10 题）', overview='历年真题：出题规律和四份卷对照',
             open='点开查看', loading='正在载入…', toc='目录', counts='练习 {p} 题 · 真题 {e} 题',
-            other='中英对照版', to_learn='← 去学习', ch='第 {n} 章'),
+            other='中英对照版', to_learn='← 去学习', ch='第 {n} 章',
+            star=dict(star='设为重点', starred='重点', only='只看重点', ok='☁ 已同步', local='只存在本机',
+                      wait='暂时连不上云端，先存在本机', ro='无法保存到云端，只存在本机',
+                      note='只显示你标为重点的 {n} 道题。再点顶部「只看重点」恢复全部题目。',
+                      empty='还没有重点题：在每道题右上角点「☆ 设为重点」。')),
  'en': dict(title='EE6129 Practice (EN + 中文)', brand='Practice', exam='Self-test (hide solutions)', zhq='Show 中文 question',
             sol='Solution', mastered='Mastered', learn='Notes →',
             src={'p2': 'Part 2 practice', 'exm': 'Lecture example', 'ex': 'Past final exam', 'bc': 'B·C quiz'},
@@ -54,7 +58,11 @@ L = {
             sheet='Part A one-page summary', hw1='HW1 (Part A homework): explanations and model answers',
             quiz='B·C random quiz (10 questions)', overview='Past finals: what is asked, four papers side by side',
             open='open', loading='Loading…', toc='Contents', counts='{p} practice · {e} past-exam',
-            other='中文版', to_learn='← Learn', ch='Ch. {n}'),
+            other='中文版', to_learn='← Learn', ch='Ch. {n}',
+            star=dict(star='Mark as key', starred='Key', only='Key only', ok='☁ Synced', local='Saved on this device only',
+                      wait="Can't reach the cloud yet; saved on this device", ro="Can't save to the cloud; saved on this device",
+                      note='Showing only your {n} key questions. Click "Key only" again to show everything.',
+                      empty='No key questions yet: click "☆ Mark as key" at the top right of any question.')),
 }
 
 
@@ -265,6 +273,24 @@ details.mp-embed iframe{display:block;width:100%;border:0;border-top:1px solid v
 [class^="src-"],[class*=" src-"]{background:none!important;margin:0;padding:0;min-height:0!important}
 @media (max-width:980px){.mp-layout{grid-template-columns:minmax(0,1fr)}.mp-rail{display:none}.mp-jump{display:block}}
 @media (max-width:560px){.mp-top{position:static}html{scroll-padding-top:8px}.mp-item,[id]{scroll-margin-top:8px}.mp-brand{font-size:1.1rem}.mp-intro{padding:14px}}
+/* ---- key-question stars (重点) ---- */
+:root{--mp-star:#c98a00;--mp-star-soft:#fff3d1;--mp-star-ink:#6b4900}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--mp-star:#f0b93a;--mp-star-soft:#33280c;--mp-star-ink:#ffd77a}}
+:root[data-theme="dark"]{--mp-star:#f0b93a;--mp-star-soft:#33280c;--mp-star-ink:#ffd77a}
+.mp-ih{display:flex;align-items:center;gap:8px;margin:0 0 4px}
+.mp-ih .mp-tag{margin:0}
+.mp-star{margin-left:auto;font:inherit;font-size:.78rem;line-height:1.3;border:1px solid var(--mp-border);background:var(--mp-surface);color:var(--mp-muted);border-radius:999px;padding:3px 11px;cursor:pointer;white-space:nowrap}
+.mp-star:hover{border-color:var(--mp-star);color:var(--mp-star-ink)}
+.mp-star .s{color:var(--mp-star);font-size:.95rem}
+.mp-star[aria-pressed="true"]{background:var(--mp-star-soft);border-color:var(--mp-star);color:var(--mp-star-ink);font-weight:600}
+.mp-item.starred{border-left:4px solid var(--mp-star);padding-left:10px}
+.mp-starf{font:inherit;font-size:.8rem;border:1px solid var(--mp-border);background:var(--mp-surface);color:var(--mp-muted);border-radius:999px;padding:4px 12px;cursor:pointer;white-space:nowrap}
+.mp-starf b{font-family:'IBM Plex Mono',monospace;font-weight:600}
+.mp-starf[aria-pressed="true"]{background:var(--mp-star);border-color:var(--mp-star);color:#1d1400;font-weight:600}
+.mp-sync{font-size:.72rem;color:var(--mp-muted);white-space:nowrap}
+.mp-starnote{margin:14px 0 0;padding:10px 14px;border:1px solid var(--mp-star);border-radius:10px;background:var(--mp-star-soft);color:var(--mp-star-ink);font-size:.9rem}
+.mp-rail .sc{color:var(--mp-star);font-family:'IBM Plex Mono',monospace;font-size:.7rem;font-weight:700;white-space:nowrap}
+body.star-only .mp-item:not(.starred),body.star-only .mp-ch:not(.has-star),body.star-only .mp-part:not(.has-star),body.star-only details.mp-embed,body.star-only .mp-intro,body.star-only .mp-rail li:not(.has-star),body.star-only .mp-rail .pt:not(.has-star){display:none!important}
 '''
 
 JS = r'''
@@ -357,6 +383,79 @@ JS = r'''
 })();
 '''
 
+STAR_JS = r'''
+(function(){
+  /* 重点 stars: kept in the viewer's own private db subtree (synced across devices),
+     with localStorage as a cache and as the fallback when db is not available. */
+  var T=STAR_T, KEY='ee6129-stars', B=document.body;
+  var items=[].slice.call(document.querySelectorAll('.mp-item[data-star]')), byKey={};
+  items.forEach(function(it){ byKey[it.dataset.star]=it; });
+  var on={};
+  try{ JSON.parse(localStorage.getItem(KEY)||'[]').forEach(function(k){ if(byKey[k]) on[k]=true; }); }catch(e){}
+  function saveLocal(){ try{ localStorage.setItem(KEY,JSON.stringify(Object.keys(on))); }catch(e){} }
+  var fb=document.getElementById('mpStarOnly'), nEl=document.getElementById('mpStarN'), syncEl=document.getElementById('mpSync'), note=document.getElementById('mpStarNote');
+  var secs=[].slice.call(document.querySelectorAll('.mp-ch')), parts=[].slice.call(document.querySelectorAll('.mp-part'));
+  var lis=[].slice.call(document.querySelectorAll('.mp-rail li')), pts=[].slice.call(document.querySelectorAll('.mp-rail .pt'));
+  function setSync(t){ syncEl.textContent=t||''; syncEl.hidden=!t; }
+  function paint(){
+    var n=0;
+    items.forEach(function(it){ var v=!!on[it.dataset.star]; if(v) n++; it.classList.toggle('starred',v);
+      var b=it.querySelector('.mp-star'); b.setAttribute('aria-pressed',String(v));
+      b.querySelector('.s').textContent=v?'★':'☆'; b.querySelector('.l').textContent=v?T.starred:T.star; });
+    nEl.textContent=n;
+    secs.forEach(function(c){ var k=c.querySelectorAll('.mp-item.starred').length; c.classList.toggle('has-star',k>0); c.dataset.nstar=k; });
+    parts.forEach(function(p){ var has=false, el=p.nextElementSibling;
+      while(el && !el.classList.contains('mp-part')){ if(el.classList.contains('has-star')){ has=true; break; } el=el.nextElementSibling; }
+      p.classList.toggle('has-star',has); });
+    lis.forEach(function(li){ var a=li.querySelector('a'), sec=a&&document.getElementById(a.getAttribute('href').slice(1));
+      var k=sec&&sec.dataset.nstar?+sec.dataset.nstar:0, sc=a&&a.querySelector('.sc');
+      li.classList.toggle('has-star',k>0);
+      if(k){ if(!sc){ sc=document.createElement('span'); sc.className='sc'; a.appendChild(sc); } sc.textContent=' ★'+k; } else if(sc){ sc.remove(); } });
+    pts.forEach(function(pt){ var ol=pt.nextElementSibling; pt.classList.toggle('has-star',!!(ol&&ol.querySelector('li.has-star'))); });
+    var only=B.classList.contains('star-only');
+    note.hidden=!only; if(only) note.textContent=n?T.note.replace('{n}',n):T.empty;
+  }
+  /* ---- cloud: one document per question, data/users/<id>/star:<kind>:<qid> = {on, t} ---- */
+  var col=null, pend={}, busy={}, retried={}, ro=false, first=true, timer=null;
+  function push(k){ if(!col||ro) return; pend[k]=!!on[k]; flush(k); }
+  function flush(k){
+    if(busy[k]||!(k in pend)||!col) return;
+    var v=pend[k]; delete pend[k]; busy[k]=true;
+    var ref; try{ ref=col.doc('star:'+k); }catch(e){ busy[k]=false; return; }
+    ref.set({on:v,t:Date.now()}).then(function(){ busy[k]=false; retried[k]=0; flush(k); }, function(e){
+      busy[k]=false; var c=e&&e.code;
+      if(c==='unavailable'&&!retried[k]){ retried[k]=1; if(!(k in pend)) pend[k]=v; setTimeout(function(){ flush(k); },400+Math.random()*900); return; }
+      if(c==='invalid_argument'||c==='revoked'||c==='not_granted'||c==='capability_disabled'){ ro=true; setSync(T.ro); } else { setSync(T.wait); }
+    });
+  }
+  function apply(snap){
+    var remote={}, seen=0;
+    snap.docs.forEach(function(d){ if(d.id.indexOf('star:')!==0) return; seen++; var k=d.id.slice(5), b=d.data(); if(b&&b.on&&byKey[k]) remote[k]=true; });
+    var cache=snap.metadata&&snap.metadata.fromCache;
+    if(first&&cache&&seen===0) return;                 /* an empty cached copy says nothing yet */
+    if(first&&!cache){ first=false; clearTimeout(timer); if(!ro) setSync(T.ok);
+      if(seen===0){ var loc=Object.keys(on); if(loc.length){ loc.forEach(push); return; } } }  /* first use: upload this device's stars */
+    Object.keys(byKey).forEach(function(k){ if(busy[k]||(k in pend)){ if(on[k]) remote[k]=true; else delete remote[k]; } });
+    on=remote; saveLocal(); paint();
+  }
+  items.forEach(function(it){ it.querySelector('.mp-star').addEventListener('click',function(){
+    var k=it.dataset.star; if(on[k]) delete on[k]; else on[k]=true; saveLocal(); paint(); push(k); }); });
+  fb.addEventListener('click',function(){ var v=!B.classList.contains('star-only'); B.classList.toggle('star-only',v);
+    fb.setAttribute('aria-pressed',String(v)); paint(); window.scrollTo(0,0); });
+  paint();
+  if(!window.claude||typeof window.claude.use!=='function'){ setSync(T.local); return; }
+  Promise.all([window.claude.use('db'),window.claude.use('user')]).then(function(r){
+    var db=r[0], user=r[1]; if(!db||!user){ setSync(T.local); return; }
+    return user.id().then(function(uid){
+      if(!uid){ setSync(T.local); return; }
+      try{ col=db.collection('data/users/'+uid); }catch(e){ col=null; setSync(T.local); return; }
+      timer=setTimeout(function(){ if(first) setSync(T.wait); },10000);
+      col.onSnapshot(apply,function(e){ clearTimeout(timer); col=null; setSync(e&&e.code==='revoked'?T.local:T.wait); });
+    });
+  }).catch(function(){ setSync(T.local); });
+})();
+'''
+
 INTRO = {
  'zh': '''<h1>EE6129 期末复习 · 练习</h1>
 <p>所有练习都在这一页：Part 2 的 7 份 Practice 和自编模拟题、Part A 讲义例题、Part B·C 练习题，以及四份历年期末卷的每一小题，<b>按章节排在一起</b>。每章先放练习 / 例题，再放这一章考过的真题（橙色「历年真题」标签）。左边是目录（手机上在顶部下拉框）。</p>
@@ -403,14 +502,17 @@ def build(pages, lang, out, urls):
 
     def item(kind, qid):
         used[kind].add(qid)
-        tag = f'<span class="mp-tag{" mp-x" if kind == "ex" else ""}">{T["src"][kind]}</span>'
+        tag = (f'<div class="mp-ih"><span class="mp-tag{" mp-x" if kind == "ex" else ""}">{T["src"][kind]}</span>'
+               f'<button type="button" class="mp-star" aria-pressed="false"><span class="s">☆</span> '
+               f'<span class="l">{T["star"]["star"]}</span></button></div>')
+        sk = f' data-star="{kind}:{qid}"'
         if kind == 'p2':
-            return f'<div class="mp-item src-p2">{tag}{it_p2[qid]}</div>'
+            return f'<div class="mp-item src-p2"{sk}>{tag}{it_p2[qid]}</div>'
         if kind == 'exm':
-            return f'<div class="mp-item src-exm">{tag}{it_exm[qid]}</div>'
+            return f'<div class="mp-item src-exm"{sk}>{tag}{it_exm[qid]}</div>'
         if kind == 'ex':
-            return f'<div class="mp-item src-ex">{tag}{it_ex[qid]}</div>'
-        return f'<div class="mp-item src-bc" id="bcq-{qid}">{tag}<div class="bcq" data-q="{qid}"></div></div>'
+            return f'<div class="mp-item src-ex"{sk}>{tag}{it_ex[qid]}</div>'
+        return f'<div class="mp-item src-bc" id="bcq-{qid}"{sk}>{tag}<div class="bcq" data-q="{qid}"></div></div>'
 
     body, rail, opts = [], [], []
     for page, learnkey, plan, cls in PARTS:
@@ -480,7 +582,8 @@ def build(pages, lang, out, urls):
               'hw1': 'hw1', 'hwsw': 'hwsw', 'overview': 'ex-overview', 'sheet': 'exm-sheet', 'drill': 'p2-drill', 'quiz': 'bc-quiz'}
     embedp = {'hw1': strip_skeleton(pages['hw1']), 'hwsw': strip_skeleton(pages['homework-sw'])}
     data = (f'var ROUTE={json.dumps(route)};\nvar LEGACY={json.dumps(legacy)};\nvar LEARN={json.dumps(urls.get("learn", ""))};\n'
-            'var EMBED={' + ','.join(f'"{k}":{embed(v)}' for k, v in embedp.items()) + '};\n')
+            'var EMBED={' + ','.join(f'"{k}":{embed(v)}' for k, v in embedp.items()) + '};\n'
+            f'var STAR_T={json.dumps(T["star"], ensure_ascii=False)};\n')
 
     lang_seg = ('' if lang == 'en' else
                 f'<span class="mp-seg" id="mpLang"><span>{T["sol"]}</span><button type="button" data-lang="en" aria-pressed="true">EN</button>'
@@ -508,11 +611,13 @@ def build(pages, lang, out, urls):
             + f'<header class="mp-top" id="mp-top"><div class="mp-row"><div class="mp-brand">EE6129 · <b>{T["brand"]}</b></div>'
             f'<label class="mp-tg"><input type="checkbox" id="mpExam"> {T["exam"]}</label>'
             f'<label class="mp-tg"><input type="checkbox" id="mpZh" checked> {T["zhq"]}</label>{lang_seg}'
-            f'<span class="mp-count" id="mpCount" data-l="{T["mastered"]}"></span><span class="mp-sp"></span>{sw}'
+            f'<span class="mp-count" id="mpCount" data-l="{T["mastered"]}"></span>'
+            f'<button type="button" class="mp-starf" id="mpStarOnly" aria-pressed="false">★ {T["star"]["only"]} <b id="mpStarN">0</b></button>'
+            f'<span class="mp-sync" id="mpSync" hidden></span><span class="mp-sp"></span>{sw}'
             f'<select class="mp-jump" id="mpJump" aria-label="{T["toc"]}">{"".join(opts)}</select></div></header>\n'
             f'<div class="mp-layout"><nav class="mp-rail" aria-label="{T["toc"]}">{"".join(rail)}</nav>\n'
-            f'<main class="mp-main"><div class="mp-intro">{INTRO[lang]}</div>{overview_html}\n' + '\n'.join(body) + '</main></div>\n'
-            + f'<script>\n{data}</script>\n<script>{bcjs}</script>\n<script>{drill_js}</script>\n<script>{JS}</script>\n' + extra_tail)
+            f'<main class="mp-main"><div class="mp-starnote" id="mpStarNote" hidden></div><div class="mp-intro">{INTRO[lang]}</div>{overview_html}\n' + '\n'.join(body) + '</main></div>\n'
+            + f'<script>\n{data}</script>\n<script>{bcjs}</script>\n<script>{drill_js}</script>\n<script>{JS}</script>\n<script>{STAR_JS}</script>\n' + extra_tail)
     if lang == 'en':
         html = html.replace('<span class="mp-tag', '<span class="mp-tag', 1)
     out.write_text(html, encoding='utf-8')
