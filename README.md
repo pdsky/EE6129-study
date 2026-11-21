@@ -5,6 +5,9 @@ NTU EE6129 Wireless & Mobile Radio Systems（Part 1 + Part 2）的中文自学�
 | 文件 | 内容 |
 |---|---|
 | `index.html` | 入口目录 |
+| `hub-learn.html` | **期末总入口 · 学习**：考试指南、考试重点图和全部讲解（Part 2、第 1b–2 章题型总结、Part A/B/C）合在一页，按标签切换 |
+| `hub-practice.html` | **期末总入口 · 练习**：全部练习、例题、B·C 题和四份历年真题按章节排在一页，每题有逐步解答和「知识讲解 + 详细解析」，可标「★ 重点」 |
+| `hub-learn-en.html`、`hub-practice-en.html` | 上面两页的中英对照版（英文在上、中文在下） |
 | `partA.html` | Part A 蜂窝移动通信系统（多址接入、1G–4G、频率复用、话务工程、切换…）— 讲解长文，共11章，章末附历年真题 |
 | `partB.html` | Part B 无线系统（802.11 WLAN、DCF/PCF、自组网、无线传感器网络、LTE、物联网）— 讲解长文，开篇 + 7 章，标讲义页码，带例题和真题 |
 | `partC.html` | Part C 卫星通信（轨道与覆盖几何、GEO/MEO/LEO、链路损耗、容量分配、路由与切换）— 讲解长文，开篇 + 6 章，标讲义页码，带例题和真题 |
@@ -18,6 +21,23 @@ NTU EE6129 Wireless & Mobile Radio Systems（Part 1 + Part 2）的中文自学�
 | `bc-practice.html` | Part B 无线系统 + Part C 卫星通信题库：62 道选择、计算、简答题，带随机小测 |
 
 静态 HTML，不依赖后端。公式用的衬线字体（Fraunces / Literata / IBM Plex Mono）从 Google Fonts 加载，首次打开需要联网；断网时会自动退回系统自带的中英文字体，内容和交互都不受影响。
+
+## 在 Windows 上使用
+
+仓库是私有的，先在浏览器里登录 GitHub 账号 pdsky，然后任选一种：
+
+- **下载 ZIP（最简单）**：打开 https://github.com/pdsky/EE6129-study → 绿色 **Code** 按钮 → **Download ZIP** → 解压 → 双击 `index.html`（或直接双击 `hub-learn.html` / `hub-practice.html`）。有更新时重新下载一次。
+- **git（方便以后更新）**：装好 Git for Windows 后，在 PowerShell 里
+
+  ```powershell
+  git clone https://github.com/pdsky/EE6129-study.git
+  cd EE6129-study
+  start index.html
+  ```
+
+  以后更新只要在这个文件夹里 `git pull`。
+
+公式（MathJax）和字体从网上加载，打开时要联网。本地打开时「★ 重点」只存在这台电脑的浏览器里，和 claude.ai 上那份网页的重点标记不互通。
 
 ## 在 Linux 上使用
 
