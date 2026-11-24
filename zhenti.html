@@ -169,6 +169,29 @@ figure.fig figcaption{font-size:13px;color:var(--ink-faint);margin-top:4px;}
 .var{margin-top:12px;}
 .var .lbl{color:var(--ink-soft);}
 
+/* 本题重点 side card: inline bar on narrow screens, sticky right column on wide screens */
+.q{position:relative;}
+.kp{margin:16px 0 6px;}
+.kp details{background:var(--gold-soft);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;}
+.kp summary{cursor:pointer;list-style:none;display:flex;align-items:baseline;gap:8px;padding:9px 14px;}
+.kp summary::-webkit-details-marker{display:none;}
+.kp summary::after{content:"展开";margin-left:auto;font-family:var(--f-mono);font-size:11px;color:var(--ink-faint);}
+.kp details[open] summary::after{content:"收起";}
+.kp-tag{font-family:var(--f-mono);font-size:12.5px;font-weight:700;letter-spacing:.12em;color:var(--gold);}
+.kp-sub{font-family:var(--f-mono);font-size:11.5px;color:var(--ink-faint);}
+.kp-body{padding:0 14px 12px;font-size:14px;line-height:1.65;}
+ol.kp-list{list-style:none;counter-reset:kp;padding:0;margin:0;}
+ol.kp-list > li{counter-increment:kp;position:relative;padding-left:25px;margin-bottom:11px;}
+ol.kp-list > li::before{content:counter(kp);position:absolute;left:0;top:2px;width:17px;height:17px;border-radius:50%;background:var(--gold);color:var(--card);font-family:var(--f-mono);font-size:10.5px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+ol.kp-list > li > b:first-child{display:block;color:var(--ink);}
+.kp-chain{margin:4px 0 0;padding:8px 10px;border-radius:7px;background:var(--card);font-family:var(--f-mono);font-size:12.5px;line-height:1.6;}
+@media (min-width:1400px){
+  .shell{max-width:1420px;}
+  .main{margin-right:300px;}
+  .q .kp{position:absolute;top:0;bottom:0;left:calc(100% + 26px);width:274px;margin:0;}
+  .q .kp details{position:sticky;top:20px;max-height:calc(100vh - 40px);overflow-y:auto;}
+}
+
 /* self-test mode */
 .reveal-btn{display:none;margin:10px 0 2px;cursor:pointer;background:var(--accent);color:var(--card);border:0;border-radius:8px;padding:7px 14px;font-size:14px;}
 .reveal-btn:hover{filter:brightness(1.08);}
@@ -1063,6 +1086,24 @@ body.quiz .q:not(.end-shown) .q-end{display:none;}
       </tbody>
     </table></div>
   </div>
+
+  <aside class="kp" aria-label="本题重点">
+    <details open>
+      <summary><span class="kp-tag">本题重点</span><span class="kp-sub">2023-24 Q3(a)</span></summary>
+      <div class="kp-body">
+        <ol class="kp-list">
+          <li><b>认表：用 B 表，不是 C 表</b>题目写了 <i lang="en">blocked calls cleared</i>、<i lang="en">1% blocking probability</i> → <b>Erlang B</b>（满了就丢）。看到 queued、delayed、probability of delay 才用 C 表（排队）。这句理由要写进假设。</li>
+          <li><b>查表：57 行 × 1% 列</b>399/7 = 57 条/小区，读出 <b>A ≈ 44.2 E</b>。34.3 是 46 行的值，是看串行了。自检：44.2/57 ≈ 0.78 才合理。per cluster 写 399、per cell 写 57，两个都要写。</li>
+          <li><b>取整：一律向下</b>信道除不尽向下取（如 400/7 → 57）。用户数 44.2/0.0225 = 1964.4 → <b>1964</b>，多 1 个人阻塞就超过 1%。</li>
+          <li><b>供给 ≠ 需求</b>(i) supported：查表，小区最多能接多少。(ii) generated：m × A<sub>u</sub>，用户实际要多少。(iii) 令两者相等，再求 R。题目给了用户数时要比大小（2024-25 Q3(b)）。</li>
+          <li><b>单位和面积</b>A<sub>u</sub> = λH，H 要换成小时：0.9 × 90/3600 = <b>0.0225 E</b>。面积用题目给的 2.598R²，不是 πR²。</li>
+          <li><b>(iv) T<sub>g</sub> = 用户数 / 信道数</b>1964/57 ≈ <b>34.5</b> 用户/信道。单位是"人/信道"，不是话务量。</li>
+          <li><b>(v) 扇区化：每扇区单独查表</b>57/3 = 19 条 → 11.23 E，× 3 = 33.7 E。不能拿 57 条整体查。信道池切小后效率下降：R → 0.89 km，T<sub>g</sub> → 26.3。好处只有 SIR。</li>
+        </ol>
+        <p class="kp-chain"><b>背这条链：</b>57 条 → 44.2 E → 1964 人 → 2.73 km² → R ≈ 1.025 km → T<sub>g</sub> ≈ 34.5</p>
+      </div>
+    </details>
+  </aside>
 
   <section class="sub">
     <h4 class="sub-h"><span class="sub-no">(i)</span>每簇信道数与 GOS 支持的话务量</h4>
@@ -5409,9 +5450,16 @@ Soft handover (make before break)
 (function(){
   var KEY='ee6129-zhenti-quiz';
   var btn=document.getElementById('quiz-toggle');
+  var wide=window.matchMedia?window.matchMedia('(min-width:1400px)'):null;
+  function syncKp(){
+    var open=!document.body.classList.contains('quiz')&&(!wide||wide.matches);
+    document.querySelectorAll('.kp details').forEach(function(d){d.open=open;});
+  }
+  if(wide){if(wide.addEventListener){wide.addEventListener('change',syncKp);}else if(wide.addListener){wide.addListener(syncKp);}}
   function setQuiz(on){
     document.body.classList.toggle('quiz',on);
     btn.setAttribute('aria-pressed',on?'true':'false');
+    syncKp();
     if(!on){
       document.querySelectorAll('.sub.shown').forEach(function(s){s.classList.remove('shown');});
       document.querySelectorAll('.q.end-shown').forEach(function(q){q.classList.remove('end-shown');});
@@ -5437,7 +5485,7 @@ Soft handover (make before break)
   });
   btn.addEventListener('click',function(){setQuiz(!document.body.classList.contains('quiz'));});
   var saved=null;try{saved=localStorage.getItem(KEY);}catch(e){}
-  if(saved==='1')setQuiz(true);
+  if(saved==='1')setQuiz(true);else syncKp();
 
   var links={};
   document.querySelectorAll('.rail a').forEach(function(a){links[a.getAttribute('href').slice(1)]=a;});
