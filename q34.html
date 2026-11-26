@@ -1,0 +1,996 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Q3·Q4 复习台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Noto+Sans+SC:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout: sticky top bar (hex-cluster mark + view tabs) over one 1120px column; each view is a section switched by the URL hash */
+:root{
+  --bg:#F1F5F5; --panel:#FFFFFF; --ink:#11252B; --ink-2:#465C63; --ink-3:#768A90;
+  --line:#D2DDDF; --line-2:#E5ECED; --code:#E8EFF0;
+  --accent:#0A6E7F; --accent-ink:#065766; --accent-soft:#DAEEF1;
+  --amber:#9A5800; --amber-soft:#FAE9D0;
+  --good:#257636; --good-soft:#DFF1E3; --bad:#B02525; --bad-soft:#F7E0E0;
+  --on-accent:#FFFFFF;
+  --f-display:"Space Grotesk","Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Consolas,"Courier New",monospace;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0C1518; --panel:#132026; --ink:#E1EAEC; --ink-2:#A2B3B8; --ink-3:#71858B;
+    --line:#26383E; --line-2:#1B2B30; --code:#0E1B1F;
+    --accent:#47C3D5; --accent-ink:#7FD6E2; --accent-soft:#113139;
+    --amber:#EFA746; --amber-soft:#382811;
+    --good:#6FD283; --good-soft:#14301B; --bad:#FF8B8B; --bad-soft:#3A1818;
+    --on-accent:#0C1518;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0C1518; --panel:#132026; --ink:#E1EAEC; --ink-2:#A2B3B8; --ink-3:#71858B;
+  --line:#26383E; --line-2:#1B2B30; --code:#0E1B1F;
+  --accent:#47C3D5; --accent-ink:#7FD6E2; --accent-soft:#113139;
+  --amber:#EFA746; --amber-soft:#382811;
+  --good:#6FD283; --good-soft:#14301B; --bad:#FF8B8B; --bad-soft:#3A1818;
+  --on-accent:#0C1518;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.7}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--panel)}
+a{color:var(--accent-ink)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.3;margin:0;font-weight:700}
+h1{font-size:clamp(22px,3.6vw,31px);letter-spacing:-.01em}
+h2{font-size:19px}
+h3{font-size:15.5px}
+p{margin:0}
+sub,sup{line-height:0}
+code,.m{font-family:var(--f-mono);font-size:.92em}
+
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--panel);border-bottom:1px solid var(--line)}
+.top-in{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px 0;display:flex;flex-direction:column;gap:4px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand svg{flex:none}
+.brand-name{font-family:var(--f-display);font-weight:700;font-size:16.5px;white-space:nowrap}
+.brand-sub{font-size:12.5px;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tabs{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-inline:-6px}
+.tabs::-webkit-scrollbar{display:none}
+.tabs a{flex:none;padding:7px 11px 9px;color:var(--ink-2);text-decoration:none;font-weight:500;font-size:14px;border-bottom:2px solid transparent}
+.tabs a:hover{color:var(--ink)}
+.tabs a[aria-current="page"]{color:var(--accent-ink);border-bottom-color:var(--accent)}
+.hexmark .c{fill:var(--accent)} .hexmark .o{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1}
+
+main{max-width:1120px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 80px}
+.view{display:flex;flex-direction:column;gap:34px}
+.lead{display:flex;flex-direction:column;gap:8px;max-width:72ch}
+.lead p{color:var(--ink-2)}
+.eyebrow{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3)}
+.sec{display:flex;flex-direction:column;gap:14px;min-width:0}
+.sec-head{display:flex;flex-direction:column;gap:2px}
+.sec-head p{color:var(--ink-3);font-size:13.5px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--r)}
+
+/* map: papers */
+.papers{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,245px),1fr));gap:12px}
+.paper{padding:14px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.paper-name{font-family:var(--f-mono);font-weight:600;font-size:14px}
+.qgroup{display:flex;flex-direction:column;gap:6px}
+.qgroup-h{display:flex;justify-content:space-between;gap:8px;font-family:var(--f-mono);font-size:11.5px;color:var(--ink-3)}
+.qgroup-h b{color:var(--ink);font-weight:600}
+.split{display:flex;height:5px;border-radius:3px;overflow:hidden;background:var(--amber)}
+.split i{display:block;background:var(--accent)}
+.qchip{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:baseline;padding:6px 9px;border-radius:7px;border:1px solid var(--line-2);background:var(--bg);color:var(--ink);text-decoration:none;font-size:13px;line-height:1.45}
+.qchip:hover{border-color:var(--accent)}
+.qchip .no{font-family:var(--f-mono);font-weight:600;font-size:11.5px}
+.qchip.calc .no{color:var(--accent-ink)}
+.qchip.concept .no{color:var(--amber)}
+.qchip .mk{font-family:var(--f-mono);font-size:11px;color:var(--ink-3)}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+/* map: frequency */
+.freq{padding:4px 14px}
+.frow{display:grid;grid-template-columns:minmax(0,1fr) auto 38px;gap:12px;align-items:center;padding:7px 0;border-bottom:1px solid var(--line-2)}
+.frow:last-child{border-bottom:0}
+.frow .fl{font-size:14px}
+.frow.sub .fl{padding-left:16px;font-size:13px;color:var(--ink-2)}
+.frow.sub .fl::before{content:"└ ";color:var(--ink-3)}
+.frow.head{font-family:var(--f-mono);font-size:11px;color:var(--ink-3)}
+.hexes{display:flex;gap:3px}
+.hexes polygon{stroke-width:1.2}
+.hexes .on.calc{fill:var(--accent);stroke:var(--accent)}
+.hexes .on.concept{fill:var(--amber);stroke:var(--amber)}
+.hexes .off{fill:none;stroke:var(--line)}
+.fc{font-family:var(--f-mono);font-size:12.5px;text-align:right;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.fc b{color:var(--ink)}
+
+/* map: rules, chain, predict */
+.rules{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:10px}
+.rules li{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;font-size:14px;color:var(--ink-2)}
+.rules li b{color:var(--ink);display:block;margin-bottom:2px}
+.rules a{font-family:var(--f-mono);font-size:12px}
+.chain{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,165px),1fr));gap:8px;counter-reset:st}
+.chain li{counter-increment:st;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:11px 12px;display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-2);min-width:0}
+.chain li::before{content:"第 " counter(st) " 步";font-family:var(--f-mono);font-size:11px;color:var(--accent-ink)}
+.chain li b{color:var(--ink);font-size:14.5px}
+.chain .f{font-size:12.5px}
+.branches{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:10px}
+.branch{padding:12px 14px;display:flex;flex-direction:column;gap:6px;font-size:13.5px;color:var(--ink-2)}
+.branch b{color:var(--ink)}
+.predict{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:12px}
+.pcard{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.pcard ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:5px;font-size:14px;color:var(--ink-2)}
+.pcard ul b{color:var(--ink)}
+.lv{font-family:var(--f-mono);font-size:11px;padding:0 6px;border-radius:4px;margin-left:4px;white-space:nowrap}
+.lv.hi{background:var(--accent-soft);color:var(--accent-ink)}
+.lv.md{background:var(--amber-soft);color:var(--amber)}
+.untested{padding:14px 16px;display:flex;flex-direction:column;gap:8px;font-size:13.5px;color:var(--ink-2)}
+.untested ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:4px}
+
+/* formulas */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:12px;align-items:start}
+.fcard{padding:14px 16px;display:flex;flex-direction:column;gap:9px;min-width:0}
+.when{font-size:12.5px;color:var(--ink-2)}
+.when b{color:var(--accent-ink);font-weight:600}
+.f{font-family:var(--f-mono);font-size:13px;background:var(--code);border-radius:6px;padding:8px 10px;overflow-x:auto;white-space:pre-wrap;line-height:1.65;color:var(--ink)}
+.warn{font-size:13px;color:var(--ink-2)}
+.warn b{color:var(--amber)}
+.srcs{display:flex;flex-wrap:wrap;gap:4px}
+.src{font-family:var(--f-mono);font-size:11px;padding:1px 6px;border:1px solid var(--line);border-radius:4px;color:var(--ink-3);text-decoration:none}
+.src:hover{border-color:var(--accent);color:var(--accent-ink)}
+.ntable{overflow-x:auto}
+.ntable table{min-width:100%}
+
+/* shared table */
+table{border-collapse:collapse;font-family:var(--f-mono);font-size:12.5px;font-variant-numeric:tabular-nums}
+th,td{padding:5px 8px;border-bottom:1px solid var(--line-2);text-align:right;white-space:nowrap}
+th{color:var(--ink-3);font-weight:500}
+th:first-child,td:first-child{text-align:left}
+td.ok{color:var(--good);font-weight:600}
+td.no{color:var(--ink-3)}
+tr.pick td{background:var(--accent-soft)}
+
+/* papers */
+.toolbar{display:flex;flex-direction:column;gap:8px}
+.filters{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.flabel{font-size:12px;color:var(--ink-3);min-width:3em}
+.fbtn{padding:4px 11px;border-radius:999px;border:1px solid var(--line);background:var(--panel);color:var(--ink-2);font:inherit;font-size:13px;cursor:pointer}
+.fbtn:hover{border-color:var(--accent)}
+.fbtn[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+.progress{font-family:var(--f-mono);font-size:12.5px;color:var(--ink-2)}
+.progress b.ok{color:var(--good)} .progress b.meh{color:var(--amber)} .progress b.no{color:var(--bad)}
+.qlist{display:flex;flex-direction:column;gap:14px}
+.qcard{padding:16px 18px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:110px;min-width:0}
+.qcard.flash{box-shadow:0 0 0 2px var(--accent)}
+.qmeta{display:flex;flex-wrap:wrap;gap:5px;align-items:center;font-family:var(--f-mono);font-size:11.5px}
+.pill{padding:1px 7px;border-radius:5px;border:1px solid var(--line);color:var(--ink-2);white-space:nowrap}
+.pill.paper{background:var(--ink);color:var(--panel);border-color:var(--ink);font-weight:600}
+.pill.calc{color:var(--accent-ink);border-color:var(--accent);background:var(--accent-soft)}
+.pill.concept{color:var(--amber);border-color:var(--amber);background:var(--amber-soft)}
+.orig{font-size:14px;line-height:1.65;background:var(--bg);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;overflow-x:auto}
+.orig p{margin:0}
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.btn{padding:6px 12px;border-radius:7px;border:1px solid var(--accent);background:var(--panel);color:var(--accent-ink);font:inherit;font-size:13.5px;font-weight:500;cursor:pointer;text-decoration:none;line-height:1.4}
+.btn:hover{background:var(--accent-soft)}
+.btn.solid{background:var(--accent);color:var(--on-accent)}
+.btn.solid:hover{filter:brightness(1.08)}
+.btn.ghost{border-color:var(--line);color:var(--ink-2)}
+.rate{display:flex;gap:4px;margin-left:auto}
+.rate button{padding:4px 9px;border-radius:6px;border:1px solid var(--line);background:var(--panel);color:var(--ink-2);font:inherit;font-size:12.5px;cursor:pointer}
+.rate button[data-r="ok"][aria-pressed="true"]{background:var(--good-soft);color:var(--good);border-color:var(--good)}
+.rate button[data-r="meh"][aria-pressed="true"]{background:var(--amber-soft);color:var(--amber);border-color:var(--amber)}
+.rate button[data-r="no"][aria-pressed="true"]{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.reveal{display:flex;flex-direction:column;gap:12px;border-top:1px dashed var(--line);padding-top:12px}
+.one{font-weight:500;font-size:14px}
+.subs{display:flex;flex-direction:column;gap:10px}
+.subrow{display:grid;grid-template-columns:4.6em minmax(0,1fr);gap:10px}
+.subrow .lbl{font-family:var(--f-mono);font-size:12.5px;font-weight:600;color:var(--accent-ink);padding-top:2px}
+.subrow .zh{font-size:14px}
+.en{margin-top:6px;font-size:13.5px;color:var(--ink-2);background:var(--bg);padding:10px 12px;border-radius:8px;display:flex;flex-direction:column;gap:6px;overflow-x:auto}
+.en p{margin:0}
+.empty{padding:20px;text-align:center;color:var(--ink-3)}
+
+/* drill */
+.tpls{display:flex;flex-wrap:wrap;gap:6px}
+.prob{padding:16px 18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.prob-h{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;justify-content:space-between}
+.stmt{font-size:14.5px;line-height:1.85}
+.stmt .n{font-family:var(--f-mono);font-weight:600;color:var(--accent-ink)}
+.stmt ol{margin:6px 0 0;padding-left:22px}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,235px),1fr));gap:10px 14px}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field label{font-size:13px;color:var(--ink-2)}
+.inrow{display:flex;align-items:center;gap:6px}
+.inrow input,.inrow select,.tool input,.tool select{flex:1;min-width:0;width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:7px;background:var(--bg);color:var(--ink);font-family:var(--f-mono);font-size:14px}
+.inrow input:focus,.tool input:focus,.tool select:focus,.inrow select:focus{border-color:var(--accent);outline:none;box-shadow:0 0 0 2px var(--accent-soft)}
+.unit{font-size:12px;color:var(--ink-3);white-space:nowrap}
+.mark{width:1.4em;text-align:center;font-weight:700;font-family:var(--f-mono)}
+.mark.ok{color:var(--good)} .mark.no{color:var(--bad)}
+.refv{font-family:var(--f-mono);font-size:12px;color:var(--ink-3)}
+.refv b{color:var(--good)}
+.steps{border-top:1px dashed var(--line);padding-top:12px;display:flex;flex-direction:column;gap:8px}
+.steps ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.steps .n{font-family:var(--f-mono);font-weight:600}
+.steps .tip{font-size:13px;color:var(--ink-2)}
+.score{font-family:var(--f-mono);font-size:12.5px;color:var(--ink-3)}
+
+/* concepts */
+.cgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,350px),1fr));gap:12px;align-items:start}
+.ccard{padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.ccard .prompt{font-size:13.5px;color:var(--ink-2);font-style:italic}
+.points{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.kw{font-family:var(--f-mono);font-size:12px;color:var(--ink-2);background:var(--bg);border-radius:6px;padding:7px 9px}
+.ccard .actions .rate{margin-left:auto}
+
+/* tools */
+.tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:12px;align-items:start}
+.tool{padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.tool-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.tool-row label{display:flex;flex-direction:column;gap:3px;font-size:12.5px;color:var(--ink-2)}
+.out{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.out b{font-family:var(--f-mono);font-size:22px;color:var(--accent-ink);font-variant-numeric:tabular-nums}
+.out span{font-size:12.5px;color:var(--ink-3)}
+.divider{border-top:1px dashed var(--line)}
+.tbl-wrap{overflow-x:auto}
+.tool.wide{grid-column:1/-1}
+
+@media (max-width:560px){
+  .subrow{grid-template-columns:1fr;gap:2px}
+  .rate{margin-left:0}
+  .qcard,.prob{padding:14px}
+}
+@media (prefers-reduced-motion:no-preference){
+  .qcard.flash{transition:box-shadow .3s}
+}
+</style>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">
+      <svg class="hexmark" width="30" height="30" viewBox="0 0 30 30" aria-hidden="true">
+        <defs><polygon id="hx" points="0,-4.6 3.98,-2.3 3.98,2.3 0,4.6 -3.98,2.3 -3.98,-2.3"/></defs>
+        <use href="#hx" class="o" transform="translate(23.66 15)"/>
+        <use href="#hx" class="o" transform="translate(19.33 22.5)"/>
+        <use href="#hx" class="o" transform="translate(10.67 22.5)"/>
+        <use href="#hx" class="o" transform="translate(6.34 15)"/>
+        <use href="#hx" class="o" transform="translate(10.67 7.5)"/>
+        <use href="#hx" class="o" transform="translate(19.33 7.5)"/>
+        <use href="#hx" class="c" transform="translate(15 15)"/>
+      </svg>
+      <span class="brand-name">EE6129 · Q3/Q4 复习台</span>
+      <span class="brand-sub">四套卷 19 个题块，考前一天版</span>
+    </div>
+    <nav class="tabs" aria-label="视图">
+      <a href="#map">规律</a>
+      <a href="#formulas">公式</a>
+      <a href="#papers">真题</a>
+      <a href="#drill">变式练习</a>
+      <a href="#concepts">Q4 概念背诵</a>
+      <a href="#tools">计算器</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ MAP ============ -->
+<section class="view" data-view="map" id="v-map">
+  <div class="lead">
+    <span class="eyebrow">2023-24 S2 · 2024-25 S2 · 2025-26 S1 · 2025-26 S2</span>
+    <h1>Q3 年年是蜂窝计算，Q4 年年有物联网</h1>
+    <p>Q1、Q2 是衰落、分集、MIMO、均衡、OFDM 各章轮流出，确实没有固定套路。Q3、Q4 不一样：四套卷的出法几乎一样。先看这一页的规律，再去「真题」逐题过，用「变式练习」换数字刷计算，最后在「Q4 概念背诵」把描述题背熟。</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head"><h2>四套卷的 Q3 / Q4 长什么样</h2><p>点任意题块跳到原题和答案。每组上面的色条是分值构成。</p></div>
+    <div class="legend"><span><i style="background:var(--accent)"></i>计算 / 推导</span><span><i style="background:var(--amber)"></i>概念描述</span></div>
+    <div class="papers" id="paperGrid"></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head"><h2>考点出现频率</h2><p>每个六边形代表一套卷（从左到右按年份），填色表示那套卷考过。</p></div>
+    <div class="panel freq" id="freq"></div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head"><h2>出题规律</h2></div>
+    <ul class="rules">
+      <li><b>Q3 = Part A 蜂窝计算，约 25 分</b>四套卷的第一步都是「数信道，每小区信道 = S/N」，然后查话务表，再反推用户数、密度、半径或小区数。题目只是从这条链上截一段。</li>
+      <li><b>查哪张表看关键词</b>2023-24、2024-25 用 Erlang B（blocked calls cleared、blocking probability）。2025-26 两套都是 Erlang C（probability of delay），而且信道数不在表上，要线性插值。两张表都要会。</li>
+      <li><b>A<sub>u</sub> = λH 每套都出现</b>要么用它求用户数，要么反过来问平均通话时长 H = A<sub>u</sub>/λ（2025-26 两套都问了秒数）。H 一定先换成小时。</li>
+      <li><b>SIR 选簇、扇区化隔年出现</b>Q<sup>n</sup>/6、Q = √(3N)、120° 公式。凡是扇区化都要写评论：SIR 变好，但每扇区信道少、中继效率下降、切换变多；只有配合缩小 N 才能增容。</li>
+      <li><b>Q3 末尾常挂 4–5 分概念</b>考过多址 FDMA/TDMA/CDMA 和 FCA/DCA。最近一套换成了 M/M/m 状态转移图和 P<sub>k</sub> 推导（12 分左右）。</li>
+      <li><b>Q4 以描述为主，物联网每套必考</b>通信网络层四子层考了 3 次，雾计算 2 次，五个难点 1 次。另配 1–3 个「系统流程」题：HLR/VLR、硬/软切换、802.11 入网、卫星四种切换、传感网架构。</li>
+      <li><b>Q4 也可能夹 9–12 分计算</b>2023-24 考了 SIR 推导和求 n，2024-25 考了 Erlang B 中继效率。近两年 Q4 全是概念，但不能赌。</li>
+      <li><b>评论题的固定说法</b>「信道池越大，中继效率越高」「分裂不改 SIR、不改每小区信道，只改面积」「扇区化用容量换 SIR」。这三句几乎每套都能用上。</li>
+    </ul>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head"><h2>Q3 的主线：一条链走到底</h2><p>每年都从链的某一步开始，往后问到底。</p></div>
+    <ol class="chain">
+      <li><b>拆带宽</b><span>FDD 先对半分，再按每条链路扣控制、保护带</span><span class="f m">20 − 2 = 18 MHz</span></li>
+      <li><b>数信道 S</b><span>载波数 × 每帧时隙；或 带宽 ÷ 信道带宽</span><span class="f m">18M/200k × 8 = 720</span></li>
+      <li><b>每小区 M = S/N</b><span>向下取整；N 题目给，或由 SIR 选</span><span class="f m">720/9 = 80</span></li>
+      <li><b>查表得 A</b><span>B 表或 C 表（插值），M 行 × GOS 列</span><span class="f m">B(80, 1%) = 65.4 E</span></li>
+      <li><b>用户数 = A/A<sub>u</sub></b><span>A<sub>u</sub> = λH，H 换小时，向下取整</span><span class="f m">44.2/0.0225 = 1964</span></li>
+      <li><b>面积 → R / 小区数</b><span>面积 = 用户 ÷ 密度；R = √(面积/2.598)；小区数向上取整</span><span class="f m">R = √(2.73/2.598)</span></li>
+    </ol>
+    <div class="branches">
+      <div class="panel branch"><b>选簇分支（插在第 3 步前）</b><span>SIR(dB) → 线性值 → Q<sup>n</sup>/6 ≥ SIR → Q → N ≥ Q²/3 → 取合法 N，并验算前一个合法值不够。</span><span class="srcs"><a class="src" href="#y2324s2-q4c">23-24 Q4(c)</a><a class="src" href="#y2425s2-q3">24-25 Q3(a)</a></span></div>
+      <div class="panel branch"><b>扩容分支（第 6 步之后）</b><span>需求 &gt; 容量时：小区分裂（N、M 不变，R 变小）或扇区化（干扰 6 → 2，N 可变小，每扇区 M/3 单独查表再 ×3）。</span><span class="srcs"><a class="src" href="#y2324s2-q3a">23-24 Q3(a)(v)</a><a class="src" href="#y2425s2-q3">24-25 Q3(c)(d)</a></span></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head"><h2>这次可能怎么考</h2><p>按四套卷推的，不是押题。标「高」的四套卷里出现 ≥ 3 次。</p></div>
+    <div class="predict">
+      <div class="panel pcard">
+        <h3>Q3（约 25 分）</h3>
+        <ul>
+          <li><b>数信道 + 每小区信道</b><span class="lv hi">高</span>：可能带 FDD/TDMA 拆带宽，或频谱效率、系统容量。</li>
+          <li><b>查表</b><span class="lv hi">高</span>：B 和 C 都要会，C 要会插值。先看题目是 blocking 还是 delay。</li>
+          <li><b>反推</b><span class="lv hi">高</span>：用户数 → 密度 / 半径 / 小区数，或求通话时长（秒）。</li>
+          <li><b>改进方案</b><span class="lv md">中</span>：扇区化、小区分裂或换 N 对比，多半带 comment。</li>
+          <li><b>末尾小题</b><span class="lv md">中</span>：多址、FCA/DCA、切换的描述，或 M/M/m 推导。</li>
+        </ul>
+      </div>
+      <div class="panel pcard">
+        <h3>Q4（约 25 分）</h3>
+        <ul>
+          <li><b>物联网</b><span class="lv hi">高</span>：通信网络层四子层（3 次）&gt; 雾计算（2 次）&gt; 两个栈 / 五个难点。</li>
+          <li><b>系统流程题 1–3 个</b><span class="lv hi">高</span>：HLR/VLR、硬/软切换、802.11 扫描认证关联、卫星四种切换、传感网架构。</li>
+          <li><b>夹一道 Part A 计算</b><span class="lv md">中</span>：SIR 推导 / 求 n，或 Erlang B 中继效率与 N 对比。</li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel untested">
+      <b>课件里有、但四套卷都没考过的，考前过一眼标题</b>
+      <ul>
+        <li>Part A：切换裕量 Δ 和优先切换（保护信道、排队）、功率控制、蜂窝系统组成与呼叫流程、FDD/TDD。<a href="https://pdsky.github.io/EE6129-study/partA.html" target="_blank" rel="noopener">Part A 讲解 ↗</a></li>
+        <li>Part B：DCF/PCF 与 IFS、二进制指数退避、RTS/CTS 与隐藏节点、超帧、MANET 路由、LTE 架构与 QoS。<a href="https://pdsky.github.io/EE6129-study/partB.html" target="_blank" rel="noopener">Part B 讲解 ↗</a></li>
+        <li>Part C：GEO/LEO/MEO 对比、三种通信配置、固定分配 vs 按需分配、SS/TDMA。<a href="https://pdsky.github.io/EE6129-study/partC.html" target="_blank" rel="noopener">Part C 讲解 ↗</a></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FORMULAS ============ -->
+<section class="view" data-view="formulas" id="v-formulas" hidden>
+  <div class="lead">
+    <span class="eyebrow">Q3 / Q4 计算部分全部公式</span>
+    <h1>看到什么词，用哪条公式</h1>
+    <p>课件说考试有附录公式，但附录不会告诉你什么时候用哪条。每张卡片先写「触发词」，再写公式和易错点，最后是考过它的题。</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head"><h2>一、数信道</h2></div>
+    <div class="fgrid">
+      <div class="panel fcard">
+        <h3>带宽 → 双工信道数</h3>
+        <p class="when"><b>触发词：</b>FDD、each link uses … for control、carrier 200 kHz、timeslots per frame、guard band</p>
+        <div class="f">每方向业务带宽 = 总带宽/2 − 每链路控制
+载波数 = 业务带宽 ÷ 载波带宽（向下取整）
+TDMA：双工信道 = 载波数 × 每帧时隙数
+FDMA：双工信道 = (总带宽 − 保护带) ÷ 全双工信道带宽</div>
+        <p class="warn"><b>易错：</b>先对半分再扣控制（每条链路各扣）。按一个方向数出来的已经是双工信道，不用再 ×2。「full-duplex channel bandwidth 30 kHz」已经是一对，直接用总带宽除。</p>
+        <div class="srcs"><a class="src" href="#y2425s2-q3">24-25 Q3(a)：720</a><a class="src" href="#y2526s1-q3a">25-26 S1 Q3(a)：832</a></div>
+      </div>
+      <div class="panel fcard">
+        <h3>每小区信道、系统容量</h3>
+        <p class="when"><b>触发词：</b>channels per cell、cluster replicated、system capacity、number of cells</p>
+        <div class="f">每小区 M = S/N（向下取整）
+簇面积 = N × 小区面积
+复制次数 = 系统面积 ÷ 簇面积
+系统容量 C = S × 复制次数 = M × 小区总数
+小区数 = 总面积 ÷ 2.598R²（向上取整）</div>
+        <p class="warn"><b>易错：</b>有控制信道时先扣掉再 ÷N。小区数覆盖面积要向上取整，用户数、信道数向下取整。</p>
+        <div class="srcs"><a class="src" href="#y2526s2-q3a">25-26 S2 Q3(a)：53 550</a><a class="src" href="#y2526s1-q3a">25-26 S1 Q3(a)</a></div>
+      </div>
+      <div class="panel fcard">
+        <h3>频谱效率</h3>
+        <p class="when"><b>触发词：</b>spectral efficiency in channels/MHz/km²</p>
+        <div class="f">η = (总带宽/B<sub>c</sub>) ÷ (总带宽 × A<sub>cell</sub> × N)
+  = 1 / (B<sub>c</sub> × A<sub>cell</sub> × N)
+例：1/(0.03 MHz × 10.39 km² × 9) = 0.356</div>
+        <p class="warn"><b>易错：</b>B<sub>c</sub> 用 MHz（30 kHz = 0.03 MHz），面积用 km²。</p>
+        <div class="srcs"><a class="src" href="#y2526s1-q3a">25-26 S1 Q3(a)(iv)</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head"><h2>二、SIR 与选簇</h2></div>
+    <div class="fgrid">
+      <div class="panel fcard" id="legalN">
+        <h3>合法簇大小：为什么只有 1, 3, 4, 7, 9, 12 …</h3>
+        <p class="when"><b>触发词：</b>cluster size、算出 N ≥ 8.25 这种非整数</p>
+        <div class="f">N = i² + ij + j²   （i, j 是非负整数）
+从一个小区走 i 格，左转 60°，再走 j 格，
+就到最近的同频小区。</div>
+        <div class="ntable"><table id="nTable"></table></div>
+        <p class="warn"><b>为什么不能取 8：</b>没有任何整数 i、j 能让 i² + ij + j² = 8，六边形铺不出 8 个一簇的图案。所以算出 N ≥ 8.25 时，取不小于它的最小合法值 9。</p>
+        <p class="warn"><b>为什么还要验算两个：</b>算 N = 9 的 SIR 证明它够（18.7 dB ≥ 18 ✓），再算前一个合法值 N = 7 证明它不够（16.7 dB ✗）。这样才说明 9 是「最小」的。</p>
+        <div class="srcs"><a class="src" href="#y2425s2-q3">24-25 Q3(a)</a></div>
+      </div>
+      <div class="panel fcard">
+        <h3>四种 SIR 公式</h3>
+        <p class="when"><b>触发词：</b>first tier、equidistant、edge of the cell → 简化式；worst case → 最坏式；120°/60° sector</p>
+        <div class="f">Q = D/R = √(3N)
+全向简化（6 个干扰都在 D）：SIR = Q<sup>n</sup>/6
+全向最坏（手机在角上）：
+  SIR = 1 / [2(Q−1)<sup>−n</sup> + 2Q<sup>−n</sup> + 2(Q+1)<sup>−n</sup>]
+120° 扇区（剩 2 个干扰）：
+  SIR = 1 / [Q<sup>−n</sup> + (Q+0.7)<sup>−n</sup>]
+60° 扇区（剩 1 个干扰）：SIR = (Q+0.7)<sup>n</sup></div>
+        <p class="warn"><b>来源：</b>接收功率 ∝ d<sup>−n</sup>。信号来自自己的基站（距离 R），干扰来自 6 个同频基站（距离 D）：SIR = R<sup>−n</sup>/(6D<sup>−n</sup>) = (D/R)<sup>n</sup>/6。</p>
+        <div class="srcs"><a class="src" href="#y2324s2-q4c">23-24 Q4(c)</a><a class="src" href="#y2425s2-q3">24-25 Q3(a)(d)</a></div>
+      </div>
+      <div class="panel fcard">
+        <h3>反解：求 N、求 n、dB 公式</h3>
+        <p class="when"><b>触发词：</b>minimum SIR … determine cluster size；derive path loss exponent；derive SIR = 1.76 + 20 log N</p>
+        <div class="f">求 N：Q ≥ (6·SIR)<sup>1/n</sup>，N ≥ Q²/3
+      即 N ≥ (6·SIR)<sup>2/n</sup> / 3
+求 n：n = log(6·SIR) / log Q
+n = 4 时：SIR = (3N)²/6 = 1.5N²
+      SIR<sub>dB</sub> = 1.76 + 20 log<sub>10</sub>N</div>
+        <p class="warn"><b>易错：</b>SIR 先从 dB 换成线性：18 dB → 10<sup>1.8</sup> = 63.1。题目给的 n 是多少就用多少（3.7 不是 4）。</p>
+        <div class="srcs"><a class="src" href="#y2324s2-q4c">23-24 Q4(c)：n ≈ 4.2</a><a class="src" href="#y2425s2-q3">24-25 Q3(a)：N = 9</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head"><h2>三、话务与查表</h2></div>
+    <div class="fgrid">
+      <div class="panel fcard">
+        <h3>选表：B 还是 C</h3>
+        <p class="when"><b>B 表触发词：</b>blocked calls cleared、blocking probability、GOS、call blocking</p>
+        <p class="when"><b>C 表触发词：</b>queued、delayed、probability of delaying a call、Erlang C system</p>
+        <div class="f">查表：信道数 M 那一行 × 概率那一列 → A（Erlang）
+M 不在表上（C 表常见，5 行一档）就线性插值：
+A ≈ A<sub>lo</sub> + (M − M<sub>lo</sub>)/(M<sub>hi</sub> − M<sub>lo</sub>) × (A<sub>hi</sub> − A<sub>lo</sub>)</div>
+        <p class="warn"><b>易错：</b>行列看串（34.3 是 B 表 46 行，不是 57 行）。自检：A/M 一般在 0.6–0.9 之间。</p>
+        <div class="srcs"><a class="src" href="#y2324s2-q3a">B：23-24</a><a class="src" href="#y2425s2-q3">B：24-25</a><a class="src" href="#y2526s1-q3b">C：25-26 S1</a><a class="src" href="#y2526s2-q3bc">C：25-26 S2</a></div>
+      </div>
+      <div class="panel fcard">
+        <h3>每用户话务、用户数、密度、半径</h3>
+        <p class="when"><b>触发词：</b>calls per hour、holding time、traffic per user、users per km²、cell radius</p>
+        <div class="f">A<sub>u</sub> = λH（H 用小时）     H = A<sub>u</sub>/λ
+用户数 m = A / A<sub>u</sub>（向下取整）
+密度 = m / 小区面积
+面积 = m / 密度，R = √(面积 / 2.598)
+需求 = 面积 × 密度 × A<sub>u</sub>  vs  容量 = 查表 A</div>
+        <p class="warn"><b>易错：</b>90 s = 0.025 h；15 min × 2 次/h = 0.5 E。供给（查表）和需求（m × A<sub>u</sub>）分清楚。</p>
+        <div class="srcs"><a class="src" href="#y2324s2-q3a">23-24 Q3(a)</a><a class="src" href="#y2526s1-q3b">25-26 S1：72 s</a><a class="src" href="#y2526s2-q3bc">25-26 S2：90 s</a></div>
+      </div>
+      <div class="panel fcard">
+        <h3>承载话务、中继效率、集群增益</h3>
+        <p class="when"><b>触发词：</b>carried load、trunking efficiency、trunking gain</p>
+        <div class="f">承载话务 = A(1 − P<sub>B</sub>)
+中继效率 η = A / M（也可用承载话务 / M）
+集群增益 T<sub>g</sub> = 用户数 / 信道数（23-24 的定义）</div>
+        <p class="warn"><b>评论必写：</b>信道池越大，η 越高。N 变小 → 每小区信道多 → η 升、容量升，但同频小区更近，SIR 下降。</p>
+        <div class="srcs"><a class="src" href="#y2425s2-q4c">24-25 Q4(c)</a><a class="src" href="#y2324s2-q3a">23-24 Q3(a)(iv)</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-head"><h2>四、扩容与排队模型</h2></div>
+    <div class="fgrid">
+      <div class="panel fcard">
+        <h3>小区分裂</h3>
+        <p class="when"><b>触发词：</b>cell splitting、new cell radius</p>
+        <div class="f">D、R 同比缩小 → Q 不变 → SIR、N、每小区信道都不变
+每小区面积 ≤ 容量 A ÷ (密度 × A<sub>u</sub>)
+R<sub>new</sub> = R × √(容量 / 需求)</div>
+        <p class="warn"><b>易错：</b>分裂后每小区信道不变，变多的是全系统信道（小区多了）。R 是上限，写「R ≤ 0.647 km」。</p>
+        <div class="srcs"><a class="src" href="#y2425s2-q3">24-25 Q3(c)：0.65 km</a></div>
+      </div>
+      <div class="panel fcard">
+        <h3>扇区化</h3>
+        <p class="when"><b>触发词：</b>120° sector、3-sector directional antenna</p>
+        <div class="f">干扰：6 → 2（120°）→ 1（60°）
+每扇区信道 = M / 3，单独查表，再 × 3
+N 不变：容量下降（中继效率降），只换来 SIR
+N 变小：用更好的 SIR 换更小的簇，才增容</div>
+        <p class="warn"><b>易错：</b>不能拿整个小区的信道数查表。半个载波时两扇区共用一个载波（各 4 个时隙）。</p>
+        <div class="srcs"><a class="src" href="#y2324s2-q3a">23-24 Q3(a)(v)</a><a class="src" href="#y2425s2-q3">24-25 Q3(d)：67 个</a></div>
+      </div>
+      <div class="panel fcard">
+        <h3>M/M/m 状态概率</h3>
+        <p class="when"><b>触发词：</b>state transition diagram、derive P<sub>k</sub></p>
+        <div class="f">向右：λ；向左：kμ（k ≤ m），mμ（k ≥ m）
+平衡：λP<sub>k−1</sub> = μ<sub>k</sub>P<sub>k</sub>，ρ = λ/μ
+k ≤ m：P<sub>k</sub> = P<sub>0</sub> ρ<sup>k</sup> / k!
+k ≥ m：P<sub>k</sub> = P<sub>0</sub> ρ<sup>k</sup> / (m! · m<sup>k−m</sup>)</div>
+        <p class="warn"><b>易错：</b>两式在 k = m 处相等，写一句验证。稳定条件 ρ/m &lt; 1。k ≥ m 部分求和就是 Erlang C。</p>
+        <div class="srcs"><a class="src" href="#y2526s2-q3bc">25-26 S2 Q3(c)</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PAPERS ============ -->
+<section class="view" data-view="papers" id="v-papers" hidden>
+  <div class="lead">
+    <span class="eyebrow">往年 Q3 / Q4 全部 19 个题块</span>
+    <h1>先自己做，再看答案</h1>
+    <p>每题先看原题写出思路，再点「看答案」。「英文答卷」是可以直接照着写的英文版本。做完给自己标「会了 / 模糊 / 不会」，只存在你这台设备的浏览器里。</p>
+  </div>
+  <div class="toolbar">
+    <div class="filters" id="fPart"><span class="flabel">题号</span></div>
+    <div class="filters" id="fType"><span class="flabel">类型</span></div>
+    <div class="filters" id="fPaper"><span class="flabel">试卷</span></div>
+    <div class="filters" id="fRate"><span class="flabel">进度</span></div>
+    <p class="progress" id="progress"></p>
+  </div>
+  <div class="qlist" id="qlist"></div>
+</section>
+
+<!-- ============ DRILL ============ -->
+<section class="view" data-view="drill" id="v-drill" hidden>
+  <div class="lead">
+    <span class="eyebrow">按真题题型随机出数</span>
+    <h1>换个数字再做一遍</h1>
+    <p>每种题型都照着某道真题出，数字随机。先在纸上算，填进去点「检查」。查表的值用精确 Erlang 公式算，和查表会差一点，误差在 ±2% 内都算对。</p>
+  </div>
+  <div class="tpls" id="tpls"></div>
+  <div class="panel prob" id="prob"></div>
+</section>
+
+<!-- ============ CONCEPTS ============ -->
+<section class="view" data-view="concepts" id="v-concepts" hidden>
+  <div class="lead">
+    <span class="eyebrow">Q4 和 Q3 末尾的描述题</span>
+    <h1>先说出要点，再翻开对答案</h1>
+    <p>每张卡片上是考过的问法。先自己说出几个要点，再点「翻开要点」。英文关键词是答卷上最好写出来的原词。</p>
+  </div>
+  <div class="filters" id="cFilter"></div>
+  <div class="cgrid" id="cgrid"></div>
+</section>
+
+<!-- ============ TOOLS ============ -->
+<section class="view" data-view="tools" id="v-tools" hidden>
+  <div class="lead">
+    <span class="eyebrow">对答案用，考试时还是查表</span>
+    <h1>计算器</h1>
+    <p>Erlang B / C 用精确公式算，和课本附录表一般相差不到 0.1 E。选簇表会把每个合法 N 的四种 SIR 都列出来。</p>
+  </div>
+  <div class="tools">
+    <div class="panel tool">
+      <h3>Erlang B（阻塞即清除）</h3>
+      <div class="tool-row">
+        <label for="ebM">信道数 M<input id="ebM" type="number" min="1" max="400" value="57"></label>
+        <label for="ebG">阻塞率 %<input id="ebG" type="number" min="0.01" max="50" step="0.1" value="1"></label>
+      </div>
+      <div class="out"><b id="ebA">–</b><span>Erlang：1% 阻塞下能承载的话务 A</span></div>
+      <div class="divider"></div>
+      <div class="tool-row">
+        <label for="ebA2">话务 A（E）<input id="ebA2" type="number" min="0" step="0.1" value="155.9"></label>
+        <label for="ebM2">信道数 M<input id="ebM2" type="number" min="1" max="400" value="80"></label>
+      </div>
+      <div class="out"><b id="ebP">–</b><span>阻塞率 P<sub>B</sub></span></div>
+    </div>
+    <div class="panel tool">
+      <h3>Erlang C（排队等待）</h3>
+      <div class="tool-row">
+        <label for="ecM">信道数 M<input id="ecM" type="number" min="1" max="400" value="153"></label>
+        <label for="ecP">等待概率 %<input id="ecP" type="number" min="0.01" max="99" step="0.5" value="5"></label>
+      </div>
+      <div class="out"><b id="ecA">–</b><span id="ecNote">Erlang</span></div>
+      <div class="divider"></div>
+      <div class="tool-row">
+        <label for="ecA2">话务 A（E）<input id="ecA2" type="number" min="0" step="0.1" value="93.4"></label>
+        <label for="ecM2">信道数 M<input id="ecM2" type="number" min="1" max="400" value="111"></label>
+      </div>
+      <div class="out"><b id="ecPd">–</b><span>等待概率 P(delay)</span></div>
+    </div>
+    <div class="panel tool wide">
+      <h3>选簇表：每个合法 N 的四种 SIR</h3>
+      <div class="tool-row">
+        <label for="sirT">SIR 要求（dB）<input id="sirT" type="number" step="0.5" value="18"></label>
+        <label for="sirN">路径损耗指数 n<input id="sirN" type="number" step="0.1" min="2" max="6" value="3.7"></label>
+        <label for="sirMode">按哪种天线选<select id="sirMode"><option value="simp">全向（简化 Q^n/6）</option><option value="worst">全向（最坏）</option><option value="s120">120° 扇区</option><option value="s60">60° 扇区</option></select></label>
+      </div>
+      <p class="out"><b id="sirPick">–</b><span id="sirPickNote"></span></p>
+      <div class="tbl-wrap"><table id="sirTable"></table></div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+"use strict";
+var QS=[{"id": "y2324s2-q3a", "paper": "2023-24 S2", "qno": "Q3(a)", "marks": 20, "src": "Part A · Ch8 话务/Erlang B + 扇区化", "title": "Erlang B 反推小区半径、集群增益与 120° 扇区化的代价", "type": "calc", "short": "Erlang B 反推半径 + 120° 扇区", "topics": ["Erlang B", "反推半径", "集群增益", "扇区化"], "labels": ["(i)", "(ii)", "(iii)", "(iv)", "(v)"], "q": ["<p>3. (a) A heavily populated small island has a user density of 720 users per km<sup>2<\/sup> for the service area. The operator A decides to select a cellular system that has a cluster size N<sub>c<\/sub> = 7 and a total of 399 duplex traffic channels. The system uses a fixed channel assignment, blocked calls cleared scheme and omni-directional antennas at the base station (BS). During the busy hour, on the average, a user generates 0.9 call with a holding time of 90 seconds. The expected Grade of Service (GOS) is given by 1% blocking probability. The service area will be covered by hexagonal cells with radius R. Note: The area of each hexagonal cell is A<sub>ce<\/sub> = (3√3/2)R<sup>2<\/sup>. State and justify any necessary assumptions.<\/p>", "<p>(i) Determine the number of channels per cluster and the offered traffic supported by the GOS.<\/p>", "<p>(ii) Determine the number of users m and the offered traffic generated by users in each cell.<\/p>", "<p>(iii) Determine the cell radius R, when the offered traffic generated by users is equal to the offered traffic supported for the given GOS for each cell.<\/p>", "<p>(iv) Determine the trunking gain T<sub>g<\/sub> of the system.<\/p>", "<p>(v) Suppose the operator A decides to improve the hexagonal cellular design further where one uses the 120-degree sector being deployed in each cell for the BS. For this new design, calculate the new value of R and T<sub>g<\/sub>. State your observation and comment on the changes to the results from the operator's perspective.<\/p><p>(20 Marks)<\/p>"], "ans": ["答：每簇 399 条，每小区 57 条；GOS = 1% 时每小区支持的提供话务量 A ≈ 44.2 E。", "答：A<sub>u<\/sub> = 0.0225 E；每小区 m ≈ 1965 用户，产生的话务量 ≈ 44.2 E。", "答：每小区面积约 2.73 km²，R ≈ 1.03 km。", "答：T<sub>g<\/sub> ≈ 34.5 用户/信道。", "答：扇区化后 R ≈ 0.89 km，T<sub>g<\/sub> ≈ 26.3（原来 1.03 km、34.5）。N 不变时扇区化降低集群效率、要多约 31% 基站，好处只是 SIR；要配合缩小 N 才能增容。"], "en": ["<p>Assumptions: uniform fixed channel assignment (equal channels per cell); all 399 channels are traffic channels; blocked calls are cleared, so the Erlang B model applies (Poisson arrivals, large user population); users are uniformly distributed and the design is for the busy hour.<\/p><p>Channels per cluster = 399, so channels per cell = 399/7 = <b>57<\/b>. From the Erlang B table with M = 57 and GOS = 1%, the offered traffic supported is <b>A ≈ 44.2 Erlangs per cell<\/b>.<\/p>", "<p>Traffic per user A<sub>u<\/sub> = λH = 0.9 × 90/3600 = <b>0.0225 E<\/b>. Number of users per cell m = A/A<sub>u<\/sub> = 44.22/0.0225 ≈ <b>1965<\/b>, and the offered traffic generated by these users is 1965 × 0.0225 ≈ <b>44.2 E per cell<\/b>.<\/p>", "<p>Cell area = m/ρ = 1965/720 = 2.73 km² = (3√3/2)R², so R = √(2.73/2.598) ≈ <b>1.03 km<\/b>.<\/p>", "<p>Trunking gain T<sub>g<\/sub> = number of users served / number of channels = 1965/57 ≈ <b>34.5 users per channel<\/b> (trunking efficiency A/M = 44.22/57 ≈ 0.78).<\/p>", "<p>With 120° sectoring each sector has 57/3 = 19 channels. From the Erlang B table, A ≈ 11.2 E per sector, i.e. 33.7 E per cell. Users per cell = 33.7/0.0225 ≈ 1497, cell area = 1497/720 = 2.08 km², <b>R ≈ 0.89 km<\/b>, and <b>T<sub>g<\/sub> = 1497/57 ≈ 26.3<\/b>.<\/p><p>Observation: the traffic carried per cell falls by about 24% because the channels are split into three smaller trunk groups, so the trunking efficiency drops (0.78 to 0.59). The cell radius must be reduced from 1.03 km to 0.89 km, so about 31% more base stations are needed. From the operator's perspective, sectoring with the same cluster size only improves the SIR (interferers reduced from 6 to 2) at the cost of capacity, coverage and more handoffs; it increases capacity only if the improved SIR is used to reduce the cluster size.<\/p>"], "one": "<b>一句话：<\/b>57 条/小区 → 查表 44.2 E → 1965 人 → 2.73 km² → R ≈ 1.03 km，T<sub>g<\/sub> ≈ 34.5；扇区化把信道池切成 3 份，降到 33.7 E、R ≈ 0.89 km、T<sub>g<\/sub> ≈ 26.3，换来的只是 SIR。"}, {"id": "y2324s2-q3b", "paper": "2023-24 S2", "qno": "Q3(b)", "marks": 5, "src": "Part A · Ch1 多址", "title": "三种基本多址方式 FDMA / TDMA / CDMA 及代表系统", "type": "concept", "short": "FDMA / TDMA / CDMA", "topics": ["多址"], "labels": ["(b)"], "q": ["<p>(b) Multiple access schemes are important features in mobile cellular systems as they allow many users to share the limited spectrum simultaneously. There are three basic multiple access schemes used in the 1G-3G mobile cellular systems.<\/p>", "<p>Briefly describe each of the multiple access schemes and give an example of an existing mobile cellular system for each scheme.<\/p><p>(5 Marks)<\/p>"], "ans": ["答：FDMA 分频率（AMPS）；TDMA 分时隙（GSM、IS-136）；CDMA 同时同频靠扩频码区分（IS-95、WCDMA）。"], "en": ["<p><b>FDMA (Frequency Division Multiple Access):<\/b> the available spectrum is divided into frequency channels of equal bandwidth, and each user is assigned its own channel for the whole duration of the call, so different users transmit on different frequencies. Example: the 1G analogue system AMPS (30 kHz channels).<\/p><p><b>TDMA (Time Division Multiple Access):<\/b> one carrier frequency is divided cyclically into time slots of equal duration, and several users share the carrier by transmitting only in their own time slot. Example: the 2G system GSM (200 kHz carriers with 8 time slots per frame, i.e. combined FDMA/TDMA); IS-54/IS-136 in North America.<\/p><p><b>CDMA (Code Division Multiple Access):<\/b> all users transmit at the same time over the same wideband spectrum; each user is assigned a different (nearly orthogonal) spreading code, and the receiver separates its own signal by correlating with that code, while other users appear as low-level noise. Examples: the 2G system IS-95 and the 3G systems WCDMA and cdma2000.<\/p>"], "one": "<b>一句话：<\/b>FDMA 分频率（AMPS），TDMA 分时隙（GSM、IS-136），CDMA 同时同频靠码区分（IS-95、WCDMA）。"}, {"id": "y2324s2-q4ab", "paper": "2023-24 S2", "qno": "Q4(a)(b)", "marks": 13, "src": "Part B · Ch7 物联网（IoT）", "title": "简化 IoT 架构的两个并行栈，以及为什么要引入雾计算", "type": "concept", "short": "IoT 两个栈 + 雾计算必要性", "topics": ["IoT 架构", "雾计算"], "labels": ["(a)", "(b)"], "q": ["<p>4. (a) For Internet of Things (IoT), the simplified IoT architecture consists of two parallel stacks, i.e., the Management and Compute Stack and Core IoT Functional Stack. Briefly describe the major components in each of the two stacks.<\/p><p>(7 Marks)<\/p>", "<p>(b) Discuss the necessity to introduce Fog Computing into the simplified IoT architecture.<\/p><p>(6 Marks)<\/p>"], "ans": ["答：核心功能栈 = Things 层 / 通信网络层（接入网、网关与回传、网络传输、IoT 网络管理四子层）/ 应用与分析层；数据管理与计算栈 = 边缘（mist）/ 雾 / 云。", "答：集中云处理面临带宽有限、时延大、回传不可靠、数据量过大四个问题；雾计算在网络边缘就近处理，降低时延、卸载核心网、上传前精简数据、敏感数据留在本地，并有上下文感知，和云互补。"], "en": ["<p>The simplified IoT architecture consists of two parallel three-layer stacks.<\/p><p><b>Core IoT Functional Stack.<\/b> (1) \"Things\" layer: sensors, actuators and other smart objects; they must fit the constraints of the deployment environment (power source, mobility, reporting frequency, data volume, range, density) while still providing the required information. (2) Communications network layer, divided into four sublayers: the access network sublayer (the last mile, typically wireless such as IEEE 802.11ah, 802.15.4g and LoRa); the gateways and backhaul sublayer (smart objects in an area are organised around a common gateway, which forwards the data over a longer-range medium to a headend station); the network transport sublayer (open, standard network and transport protocols such as IP, UDP and TCP); and the IoT network management sublayer (application protocols such as HTTP and WebSocket that let headend applications exchange data with the sensors). (3) Application and analytics layer: applications process the collected data, make intelligent decisions and, in turn, instruct the things or other systems to adapt their behaviour or parameters.<\/p><p><b>Data Management and Compute Stack.<\/b> It defines where the data is processed: at the edge (mist) inside the sensors and devices themselves for basic filtering and simple decisions; in the fog, on network devices such as gateways and routers close to the endpoints, for real-time processing; and in the cloud (data centre) for centralised storage, historical data and large-scale analytics. These layers complement each other.<\/p>", "<p>If all data were sent to the cloud for centralised processing: the available bandwidth in last-mile IoT networks is very limited; the latency is high, so real-time response is lost; the backhaul from the gateway is often unreliable (3G/LTE or satellite); and the volume of data is too large to transport and to analyse in real time.<\/p><p>Fog computing solves these problems by distributing data management as close to the edge of the IP network as possible. Analysing data near where it is collected minimises latency, offloads large amounts of traffic from the core network and keeps sensitive data inside the local network. Because a fog node is geographically close to the sensors it has contextual awareness and can react to events quickly, providing a distributed edge control loop in real time without waiting for the cloud. It also reduces the data (pre-processing) before sending it upstream, so the cloud only needs to handle a subset of the data. Fog complements, rather than replaces, the cloud.<\/p>"], "one": "<b>一句话：<\/b>核心功能栈 = Things / 通信网络（接入、网关回传、传输、管理四子层）/ 应用分析，计算栈 = 边缘 / 雾 / 云；雾计算是为了解决带宽、时延、回传不可靠和数据量过大四个问题。"}, {"id": "y2324s2-q4c", "paper": "2023-24 S2", "qno": "Q4(c)", "marks": 12, "src": "Part A · Ch7 同频干扰", "title": "推导 SIR = 1.76 + 20 log N，反求路径损耗指数，最坏情况与 120° 扇区", "type": "calc", "short": "推导 1.76+20logN、求 n、最坏/120°", "topics": ["SIR 选簇", "扇区化"], "labels": ["推导", "(i)", "(ii)", "(iii)", "(iv)"], "q": ["<p>(c) Derive and establish the following relationship between Signal-to-Interference Ratio SIR<sub>dB<\/sub> and cluster size N<sub>c<\/sub>. SIR<sub>dB<\/sub> = 1.76 + 20 log<sub>10<\/sub>(N<sub>c<\/sub>)<\/p>", "<p>(i) Consider the Simplified SIR analysis where SIR = (1/6)Q<sup>n<\/sup> and Q is the co-channel reuse factor and there are six co-channel interferers in the first tier. You may assume a path loss exponent of n = 4 in your initial evaluation. Determine the SIR<sub>dB<\/sub> for N<sub>c<\/sub>=7 and comment on your results.<\/p>", "<p>(ii) If the required minimum SNR<sub>dB<\/sub> is to be least 20 dB, derive the corresponding value of the path loss exponent n for this case.<\/p>", "<p>(iii) Using the new value of n from part (ii), determine Co-Channel interference SIR for the worst case omnidirectional as shown below. SIR = 1 / [2(Q − 1)<sup>−n<\/sup> + 2Q<sup>−n<\/sup> + 2(Q + 1)<sup>−n<\/sup>]<\/p>", "<p>(iv) Using the new value of n from part (ii), determine the SIR when using co-channel interference SIR with 120° sectoring. State and comment on your results when compared to part (iii).<\/p><p>(12 Marks)<\/p>"], "ans": ["答：S/I = Q⁴/6 = (3N<sub>c<\/sub>)²/6 = 1.5N<sub>c<\/sub>²，所以 SIR<sub>dB<\/sub> = 1.76 + 20 log₁₀N<sub>c<\/sub>。", "答：SIR<sub>dB<\/sub> = 18.66 dB，略高于 18 dB，但简化模型偏乐观。", "答：n ≈ 4.2。", "答：SIR ≈ 70.4，即 18.5 dB，低于 20 dB 的要求。", "答：SIR ≈ 386，即 25.9 dB，比最坏全向高约 7.4 dB，满足 20 dB 且有约 5.9 dB 余量。"], "en": ["<p>Assume only the six first-tier co-channel interferers, the mobile at the cell edge (distance R from its own base station) and all interferers at distance D. With received power proportional to d<sup>−n<\/sup>, S/I = R<sup>−n<\/sup>/(6D<sup>−n<\/sup>) = Q<sup>n<\/sup>/6, where Q = D/R = √(3N<sub>c<\/sub>). With n = 4, S/I = (3N<sub>c<\/sub>)²/6 = 1.5N<sub>c<\/sub>², so <b>SIR<sub>dB<\/sub> = 10 log₁₀1.5 + 20 log₁₀N<sub>c<\/sub> = 1.76 + 20 log₁₀N<sub>c<\/sub><\/b>.<\/p>", "<p>For N<sub>c<\/sub> = 7: SIR<sub>dB<\/sub> = 1.76 + 20 log₁₀7 = <b>18.66 dB<\/b>. This just exceeds the 18 dB needed for good voice quality, which is why N<sub>c<\/sub> = 7 is widely used; however, the simplified model is optimistic because it places all six interferers at distance D (the worst case with n = 4 gives only 17.27 dB).<\/p>", "<p>(Here SNR means SIR.) For SIR ≥ 20 dB = 100: Q<sup>n<\/sup>/6 ≥ 100, i.e. Q<sup>n<\/sup> ≥ 600 with Q = √21 = 4.583, so <b>n = log₁₀600 / log₁₀4.583 ≈ 4.2<\/b>.<\/p>", "<p>With n = 4.2 and Q = 4.583: SIR = 1/[2(3.583)<sup>−4.2<\/sup> + 2(4.583)<sup>−4.2<\/sup> + 2(5.583)<sup>−4.2<\/sup>] = 1/(0.00941 + 0.00334 + 0.00146) = 1/0.0142 ≈ 70.4, i.e. <b>18.5 dB<\/b>, which is below the 20 dB requirement, because two interferers are only D − R away from the mobile at the cell corner.<\/p>", "<p>With 120° sectoring only two interferers remain: SIR = 1/[Q<sup>−n<\/sup> + (Q + 0.7)<sup>−n<\/sup>] = 1/[(4.583)<sup>−4.2<\/sup> + (5.283)<sup>−4.2<\/sup>] ≈ 386, i.e. <b>25.9 dB<\/b>. This is about 7.4 dB better than the worst-case omnidirectional result and meets the 20 dB requirement with margin, because the directional antennas reduce the number of interferers from six to two. The cost is fewer channels per sector, lower trunking efficiency and more handoffs; the extra SIR margin can be used to reduce the cluster size and increase capacity.<\/p>"], "one": "<b>一句话：<\/b>S/I = Q<sup>n<\/sup>/6、Q² = 3N、n = 4 → 1.5N² → 1.76 + 20 log N；N = 7 得 18.66 dB；要 20 dB 需 n ≈ 4.2；最坏全向 18.5 dB，120° 扇区 25.9 dB。"}, {"id": "y2425s2-q3", "paper": "2024-25 S2", "qno": "Q3", "marks": 25, "src": "Part A · 选簇 + Erlang B + 第九章 小区分裂与扇区化", "title": "FDD-TDMA 蜂窝综合题：数信道 → 由 SIR 选簇 → Erlang B → 小区分裂 → 三扇区", "type": "calc", "short": "FDD-TDMA 数信道→选簇→分裂→扇区", "topics": ["数信道", "SIR 选簇", "Erlang B", "小区分裂", "扇区化"], "labels": ["(a)", "(b)", "(c)", "(d)"], "q": ["<p>3. A particular city deploys a frequency division duplexing-time division multiple access (FDD-TDMA) cellular network. The cellular network has a total of 60 cells with a cell radius of 1,000 meters. An omni-directional antenna is used in the system. A total of 40 MHz bandwidth is allocated to the system. Each link (uplink or downlink) uses 2 MHz of bandwidth for control and signalling transmission. The carrier frequency is 200 KHz and each frame has 8 timeslots. The minimum acceptable signal-to-interference ratio (SIR) is 18 dB for the downlink. There is a potential subscriber density of 2,000 subscribers/km<sup>2<\/sup> in the system and the traffic loads are uniformly distributed over the city and covered by the cellular network. On average, each user generates about 0.03 Erlangs of traffic. The path-loss exponent is assumed to be 3.7.<\/p> <p>Assume that the co-channel cells in the first tier create significant interference and all the interfering base stations are equidistant from the desired mobile unit which is located at the edge of the cell. You may use any suitable assumptions and approximation to answer the following questions.<\/p> <p>Note: A hexagonal-shaped cell is assumed in the analysis and the area of the hexagonal cell with the cell radius R is given by A<sub>ce<\/sub> = (3√3/2)R<sup>2<\/sup>.<\/p>", "<p>(a) Determine the number of duplex channels per cell. (6 Marks)<\/p>", "<p>(b) Can the system support 1% call blocking probability? (6 Marks)<\/p>", "<p>(c) Show that the cell splitting technique can be used to get 1% call blocking probability. Determine the new cell radius. (4 Marks)<\/p>", "<p>(d) If a 3-sector directional antenna is used, how many cells are required in order to have a 1% call blocking probability? Assume that a single carrier can be shared between two sectors. (9 Marks)<\/p>"], "ans": ["答：系统共 720 条双工信道；SIR 要求 N ≥ 8.25，取 N = 9；每小区 80 条双工信道。", "答：不能。每小区话务需求 155.9 E，而 80 条信道在 1% 阻塞下只能承载约 65.4 E（实际阻塞率约 49%）。", "答：分裂后 Q、N 和每小区 80 条都不变，只要每小区话务 ≤ 65.4 E 即可达到 1% 阻塞；新半径 R ≈ 0.65 km（严格上限 0.6475 km），全城约需 144 个小区。", "答：三扇区后 N 可降到 4，每扇区 60 条（7.5 个载波，靠两扇区共用一个载波），每扇区承载 46.95 E、每小区 140.8 E；全城需要约 67 个小区。"], "en": ["<p>Assumptions: hexagonal cells, uniform traffic, six equidistant first-tier interferers with the mobile at the cell edge, and each carrier has a bandwidth of 200 kHz.<\/p><p>FDD: 40 MHz is split into 20 MHz per direction; removing 2 MHz for control leaves 18 MHz. Number of carriers = 18 MHz / 200 kHz = 90, so the system has 90 × 8 = 720 duplex channels. SIR requirement: Q<sup>n<\/sup>/6 ≥ 10<sup>1.8<\/sup> = 63.1, so Q<sup>3.7<\/sup> ≥ 378.6, Q ≥ 4.98 and N = Q²/3 ≥ 8.25. The smallest valid cluster size is <b>N = 9<\/b> (SIR = 18.7 dB; N = 7 gives only 16.7 dB). Channels per cell = 720/9 = <b>80<\/b>.<\/p>", "<p>Cell area = (3√3/2)(1)² = 2.598 km²; subscribers per cell = 2.598 × 2000 = 5196; offered traffic = 5196 × 0.03 = 155.9 E. From the Erlang B table, 80 channels at 1% blocking support only about 65.4 E. Since 155.9 E is much larger than 65.4 E, <b>the system cannot support 1% blocking<\/b> (the blocking would be about 49%).<\/p>", "<p>With cell splitting the cluster size and the 80 channels per cell are unchanged (the SIR depends only on Q = D/R), but each smaller cell serves fewer users. Requiring the traffic per cell to be at most 65.4 E: area ≤ 65.4/(2000 × 0.03) = 1.09 km², so R = √(1.09/2.598) ≈ 0.65 km. Hence cell splitting achieves 1% blocking with a <b>new cell radius of about 650 m<\/b> (about 144 cells for the whole city).<\/p>", "<p>With 3-sector antennas only two first-tier interferers remain: SIR = 1/[Q<sup>−n<\/sup> + (Q + 0.7)<sup>−n<\/sup>]. N = 3 gives 16.0 dB (not enough) and N = 4 gives 18.2 dB, so <b>N = 4<\/b> is used. Channels per cell = 720/4 = 180, i.e. 60 per sector (22.5 carriers per cell; sharing a carrier between two sectors gives 7.5 carriers = 60 channels per sector). From the Erlang B table, A ≈ 46.9 E per sector, i.e. 140.8 E per cell. Total area = 60 × 2.598 = 155.9 km² and total traffic = 155.9 × 2000 × 0.03 = 9353 E, so the number of cells required = 9353/140.8 = 66.4, i.e. <b>67 cells<\/b>.<\/p>"], "one": "<b>一句话：<\/b>720 条信道、SIR 选 N = 9 → 每小区 80 条只能承载 65.4 E，远低于需求 155.9 E；分裂到 R ≈ 0.65 km 即可；三扇区让 N 降到 4，每扇区 60 条，全城约 67 个小区。"}, {"id": "y2425s2-q4a", "paper": "2024-25 S2", "qno": "Q4(a)", "marks": 8, "src": "Part A · 第二章 蜂窝概念（p.11 六大组成）", "title": "蜂窝网的数据库：基本功能，HLR 与 VLR 的区别", "type": "concept", "short": "数据库：HLR vs VLR", "topics": ["HLR/VLR"], "labels": ["(a)"], "q": ["<p>4. (a) For every cellular network, a database unit is one of the six basic components. What are the basic functions of the database unit? Describe the differences between the home location register (HLR) and the visitor location register (VLR) in the database units. (8 Marks)<\/p>"], "ans": ["答：数据库保存用户签约信息和位置信息，供 MSC 在呼叫建立、寻呼、鉴权、漫游和切换时查询；HLR 是永久、集中的\"户口\"（全部签约资料 + 当前所在 VLR），VLR 是各服务区临时的\"暂住登记\"（只存当前在本区用户的副本）。"], "en": ["<p><b>Basic functions of the database unit:<\/b> the databases store subscriber information (identity, subscribed services, authentication and billing data) and location information of the mobile users. The MSC/MTSO queries them during call set-up, paging of the called user, authentication, roaming and handoff.<\/p><p><b>HLR:<\/b> a permanent, centralised database in the subscriber's home network. It holds the master record of every subscriber of the operator, including the subscription profile, authentication parameters and the identity of the VLR/MSC area where the subscriber is currently located.<\/p><p><b>VLR:<\/b> a temporary, distributed database associated with each MSC service area. It stores a copy of the data of all subscribers currently in that area, both local and visiting (roaming) users, with their current location area. The record is downloaded from the HLR when the user enters the area and deleted when the user leaves, so local calls and paging do not need to query the HLR each time.<\/p><p><b>Differences:<\/b> the HLR is permanent, centralised and holds complete subscription data; the VLR is temporary, located in each service area and holds only the users currently present. When a user moves to a new area, the new VLR registers the user with the HLR, and the HLR updates the location and tells the old VLR to delete its record.<\/p>"], "one": "<b>一句话：<\/b>数据库存\"用户是谁、能用什么、现在在哪\"，供 MSC 接续、寻呼、鉴权和漫游查询；HLR 是永久集中的户口，VLR 是各服务区临时的暂住登记。"}, {"id": "y2425s2-q4b", "paper": "2024-25 S2", "qno": "Q4(b)", "marks": 8, "src": "Part B · 第七章 物联网（IoT 功能栈）", "title": "核心 IoT 功能栈：通信网络层的四个子层", "type": "concept", "short": "IoT 通信网络层四子层", "topics": ["IoT 架构"], "labels": ["(b)"], "q": ["<p>(b) Internet of Things (IoT) networks are built around the concept of \"things\" or smart objects performing functions and delivering new connected services. For the core functional IoT stack, the communication network layer is structured with four sublayers. List down each of these sublayers and briefly describe the each of the features. (8 Marks)<\/p>"], "ans": ["答：四个子层自下而上为 Access network（最后一公里无线接入）、Gateways and backhaul（区域汇聚、长距离回传）、Network transport（IP + UDP/TCP）、IoT network management（HTTP、WebSocket 等应用协议）。"], "en": ["<p>The communications network layer of the Core IoT Functional Stack connects the smart objects to external systems and is divided into four sublayers:<\/p><p><b>1. Access network sublayer:<\/b> the last mile of the IoT network, typically wireless technologies such as IEEE 802.11ah, 802.15.4g and LoRa. Technologies are classified by range (PAN, HAN, NAN, FAN, LAN, WAN), and each supports particular topologies (e.g. star or mesh).<\/p><p><b>2. Gateways and backhaul sublayer:<\/b> smart objects in a given area are organised around a common gateway, which performs the inter-medium communication and forwards the data over a longer-range backhaul (e.g. cellular or fibre) to a headend central station. The objects may be static or mobile within a limited area, while the gateway is usually static.<\/p><p><b>3. Network transport sublayer:<\/b> open, standards-based network and transport protocols, mainly IP with UDP or TCP, connect the variety of devices and media. They must be scalable to thousands or millions of sensors and secure. IP can run over low-power, low-bandwidth and lossy networks; TCP lets the network control reliable delivery, while UDP leaves the control to the application.<\/p><p><b>4. IoT network management sublayer:<\/b> application protocols that let the headend applications exchange data with the sensors, e.g. HTTP over TCP (the sensor acts as a client of the IoT application) and WebSocket, a lightweight web-derived protocol that provides a simple bidirectional connection in low-memory, low-power, low-bandwidth and high-loss environments.<\/p>"], "one": "<b>一句话：<\/b>数据从传感器往上走四道关：接入网（最后一公里无线）→ 网关与回传（汇聚、长距离送回中心）→ 网络传输（IP、UDP/TCP）→ 网络管理（HTTP、WebSocket）。"}, {"id": "y2425s2-q4c", "paper": "2024-25 S2", "qno": "Q4(c)", "marks": 9, "src": "Part A · 第八章 话务工程（Erlang B）", "title": "Erlang B：承载话务、中继效率、用户数，N = 9 与 N = 7 对比", "type": "calc", "short": "Erlang B 中继效率，N=9 对比 N=7", "topics": ["Erlang B", "中继效率"], "labels": ["(i)", "(ii)", "(iii)"], "q": ["<p>(c) For a cellular system, suppose you selected the cluster size of N<sub>c<\/sub> = 9, with a total number of available channels of 504. Assume that the average users place 2 calls of 15 minutes duration per hour for the given cellular system.<\/p>", "<p>(i) Determine the carrier load per cell and the trunking efficiency for a 2% Grade of Service (GOS)?<\/p>", "<p>(ii) Calculate the number of users that can be accommodated for this cell at that given GOS.<\/p>", "<p>(iii) Compute the carried load and trunking efficiency if the cluster size is changed to N<sub>c<\/sub>=7. Comment on your results.<\/p><p>(9 Marks)<\/p>"], "ans": ["答：每小区 56 条，查表 A ≈ 45.9 E，承载话务 C ≈ 45.0 E；中继效率 η ≈ 0.82（按承载话务约 0.80）。", "答：A<sub>u<\/sub> = 0.5 E，每小区可容纳 91 个用户。", "答：N = 7 时每小区 72 条，A ≈ 61.0 E，承载话务 ≈ 59.8 E，中继效率 ≈ 0.85（按承载 0.83），约 122 个用户；容量和效率都提高，但 SIR 下降（20.8 → 18.7 dB）。"], "en": ["<p>Channels per cell = 504/9 = 56. From the Erlang B table with M = 56 and GOS = 2%, the offered traffic is A ≈ 45.9 E per cell, so the carried load is A(1 − P<sub>B<\/sub>) = 45.9 × 0.98 ≈ <b>45.0 E<\/b>. Trunking efficiency = 45.9/56 ≈ <b>0.82<\/b> (or 45.0/56 ≈ 0.80 using the carried load).<\/p>", "<p>Traffic per user A<sub>u<\/sub> = 2 × 15/60 = 0.5 E. Number of users = 45.9/0.5 = 91.8, so <b>91 users<\/b> can be accommodated per cell (rounded down to keep the blocking at or below 2%).<\/p>", "<p>For N<sub>c<\/sub> = 7: channels per cell = 504/7 = 72, A ≈ 61.0 E, carried load = 61.0 × 0.98 ≈ <b>59.8 E<\/b>, trunking efficiency = 61.0/72 ≈ <b>0.85<\/b> (0.83 using the carried load), and about 122 users per cell.<\/p><p>Comment: a smaller cluster gives more channels per cell (+29%), and the traffic capacity increases even more (+33%) because a larger trunk group has a higher trunking efficiency. However, co-channel cells are closer, so the co-channel interference increases (SIR falls from about 20.8 dB to 18.7 dB for n = 4), reducing the margin above the required SIR.<\/p>"], "one": "<b>一句话：<\/b>56 条/小区查表 45.9 E，承载 45.0 E，η ≈ 0.82，91 人；换 N = 7 后 72 条、61.0 E、η ≈ 0.85、122 人：信道池越大越高效，代价是 SIR 下降。"}, {"id": "y2526s1-q3a", "paper": "2025-26 S1", "qno": "Q3(a)", "marks": 12, "src": "Part A · 第四章 双工与频谱效率 + 小区规划", "title": "六边形蜂窝规划：小区数、信道数、小区容量、频谱效率", "type": "calc", "short": "FDMA 数信道、小区数、频谱效率", "topics": ["数信道", "频谱效率"], "labels": ["(i)", "(ii)", "(iii)", "(iv)"], "q": ["<p>3. (a) A metropolis city with a total area of 1500 km<sup>2<\/sup> is covered by a hexagonal cellular system with a cluster size of 9. Suppose that each cell has a radius R of 2 km and the cellular system is allocated 25 MHz of spectrum, with a full-duplex channel bandwidth of 30 kHz and a total 40 kHz guard bands. The system uses frequency division multiple access (FDMA) with 18 control channels. Determine:<\/p>", "<p>(i) the number of cells in the service area;<\/p>", "<p>(ii) the number of channels without frequency reuse;<\/p>", "<p>(iii) The cell capacity; and<\/p>", "<p>(iv) The system spectral efficiency in the units of channels/ MHz / km<sup>2<\/sup>.<\/p>"], "ans": ["答：每个小区 10.39 km²，服务区约需 145 个小区（1500/10.39 = 144.3，向上取整）。", "答：不复用时系统共有 832 条全双工信道。", "答：每个小区约 90 条话务信道（若连控制信道一起算，约 92 条）。", "答：系统频谱效率 η ≈ 0.356 channels/MHz/km²。"], "en": ["<p>Area of one hexagonal cell = (3√3/2)R² = 2.598 × 2² = 10.39 km². Number of cells = 1500/10.39 = 144.3, so about <b>145 cells<\/b> are needed to cover the area.<\/p>", "<p>Usable spectrum = 25 MHz − 40 kHz = 24 960 kHz. Number of full-duplex channels without frequency reuse = 24 960/30 = <b>832 channels<\/b>.<\/p>", "<p>Traffic channels = 832 − 18 control channels = 814. With a cluster size of 9, cell capacity = 814/9 = 90.4, i.e. <b>90 traffic channels per cell<\/b> (about 92 channels per cell if the control channels are included).<\/p>", "<p>Spectral efficiency η = (B<sub>w<\/sub>/B<sub>c<\/sub>)/(B<sub>w<\/sub>A<sub>c<\/sub>N) = 1/(B<sub>c<\/sub>A<sub>c<\/sub>N) = 1/(0.03 MHz × 10.39 km² × 9) ≈ <b>0.356 channels/MHz/km²<\/b>.<\/p>"], "one": "<b>一句话：<\/b>面积 10.39 km² → 145 个小区；(25 000 − 40)/30 = 832 条；扣 18 条控制信道再 ÷9 → 90 条/小区；η = 1/(B<sub>c<\/sub>A<sub>c<\/sub>N) ≈ 0.356 channels/MHz/km²。"}, {"id": "y2526s1-q3b", "paper": "2025-26 S1", "qno": "Q3(b)", "marks": 9, "src": "Part A · 第八章 话务工程（Erlang C）", "title": "Erlang C 查表 + 插值：每小区话务量、用户密度、平均通话时长", "type": "calc", "short": "Erlang C 插值：话务、密度、时长", "topics": ["Erlang C", "用户密度"], "labels": ["(i)", "(ii)", "(iii)"], "q": ["<p>(b) A cellular system has a cluster size of 9. In the system, there are 1001 radio channels for traffic. The area of each cell is 4 km<sup>2<\/sup>. The entire service area of the system is 3500 km<sup>2<\/sup>. Given that the traffic load per user is 0.03 Erlangs and the average number of calls per hour per user is 1.5. For an Erlang C system with a blocking probability of 5%, determine the following:<\/p>", "<p>(i) The traffic load per cell;<\/p>", "<p>(ii) The number of users per km<sup>2<\/sup>; and<\/p>", "<p>(iii) The average call duration of a call.<\/p>"], "ans": ["答：每小区信道 111 条，每小区话务量约 93.4 Erlang。", "答：每小区约 3115 个用户，用户密度约 779 用户/km²。", "答：平均通话时长 H = 0.02 小时 = 72 s。"], "en": ["<p>Channels per cell = 1001/9 = 111.2, i.e. 111 channels. From the Erlang C table with a delay probability of 5%, interpolating between M = 110 (A ≈ 92.5 E) and M = 115 (A ≈ 97.1 E): A ≈ 92.5 + (1/5)(97.1 − 92.5) ≈ <b>93.4 Erlangs per cell<\/b>.<\/p>", "<p>Users per cell = A/A<sub>u<\/sub> = 93.44/0.03 ≈ 3115 users. Cell area = 4 km², so the user density ≈ 3115/4 ≈ <b>779 users/km²<\/b>.<\/p>", "<p>A<sub>u<\/sub> = λH, so H = A<sub>u<\/sub>/λ = 0.03/1.5 = 0.02 h = <b>72 s<\/b>. (Check: 1.5 × 72/3600 = 0.03 Erlang.)<\/p>"], "one": "<b>一句话：<\/b>1001/9 → 111 条，查 Erlang C 表 5% 并在 110 和 115 之间插值得约 93.4 E/小区；÷0.03 ÷4 得约 779 用户/km²；H = 0.03/1.5 小时 = 72 秒。"}, {"id": "y2526s1-q3c", "paper": "2025-26 S1", "qno": "Q3(c)", "marks": 4, "src": "Part A · 第七章 同频干扰与信道分配", "title": "固定信道分配（FCA）与动态信道分配（DCA）", "type": "concept", "short": "FCA vs DCA", "topics": ["信道分配"], "labels": ["(c)"], "q": ["<p>(c) Briefly describe the concept of fixed and dynamic channel assignment for a cellular system.<\/p>"], "ans": ["答：FCA 是每个小区预先固定分好一组信道，简单但不灵活，全忙时即使邻区空闲也阻塞；DCA 是信道放在公共池，呼叫到来时按算法分配，只要不违反复用距离，灵活、阻塞低，但需要集中控制、计算复杂。"], "en": ["<p><b>Fixed channel assignment (FCA):<\/b> each cell (base station) is allocated a predetermined set of channels. A call in a cell can only use the unused channels of that cell; if all of them are busy, the call is blocked even if there are free channels in neighbouring cells. The channels may be allocated equally to all cells in a cluster (uniform FCA) or according to the traffic load of each cell (non-uniform FCA). FCA is simple to implement but cannot adapt to changes in traffic.<\/p><p><b>Dynamic channel assignment (DCA):<\/b> channels are not allocated to cells permanently but are kept in a common pool. When a new call arrives, any base station can use any channel, chosen by an algorithm based on, e.g., the predicted future blocking, the reuse distance and other cost functions, as long as the interference constraint is not violated (the same channel cannot be reused within the reuse distance D). Channel borrowing is one example. DCA gives more flexibility and lower blocking, at the cost of centralised control and more computation.<\/p>"], "one": "<b>一句话：<\/b>FCA = 信道事先锁在小区里，简单但不灵活；DCA = 信道放公共池按需分，受复用距离约束，灵活但复杂。"}, {"id": "y2526s1-q4a", "paper": "2025-26 S1", "qno": "Q4(a)", "marks": 8, "src": "Part B · 第三章 802.11 入网（扫描、认证、关联）", "title": "节点接入 AP：扫描 → 认证 → 关联，以及认证的作用", "type": "concept", "short": "802.11 扫描→认证→关联", "topics": ["WLAN"], "labels": ["(a)"], "q": ["<p>4. (a) An Access Point (AP) is a portal of a Wireless Local Area Network (WLAN), which can be used to connect to the Internet. When a user tries to connect to an AP, there will be a connection establishment procedure. Describe the connection establishment process and explain the function of the authentication process.<\/p>"], "ans": ["答：扫描（被动等 Beacon / 主动发 Probe Request、收 Probe Response）→ 认证（双方证明知道约定的密码）→ 关联（交换能力信息，向分布系统登记位置）→ 才能收发数据。认证的作用：确认双方身份合法，只让授权设备接入，防止非法用户占用资源或窃取数据。"], "en": ["<p>The connection establishment between a node and an AP has three steps.<\/p><p><b>1. Scanning (synchronization):<\/b> to join an existing BSS, the node first obtains synchronization information from the AP. In passive scanning, the node simply waits to receive a Beacon frame that the AP broadcasts periodically. In active scanning, the node transmits Probe Request frames and waits for a Probe Response from the AP.<\/p><p><b>2. Authentication:<\/b> once the node has found an AP, the node and the AP exchange information in which each side proves the knowledge of a given (shared) password. The function of authentication is to verify that the node is a legitimate user (and that the AP is a legitimate AP), so that unauthorised devices are prevented from accessing the network and its resources.<\/p><p><b>3. Association:<\/b> after the node is authenticated, it starts the association process, in which the node and the AP exchange information about the node and BSS capabilities, and the distribution system (the set of APs) is informed of the current position of the node, so that frames for the node can be delivered through the correct AP.<\/p><p>Only after the association is completed can the node transmit and receive data frames.<\/p>"], "one": "<b>一句话：<\/b>\"扫 → 认 → 联 → 传\"：扫描找到 AP，认证互证密码挡住非法设备，关联登记能力和位置，之后才能收发数据。"}, {"id": "y2526s1-q4bc", "paper": "2025-26 S1", "qno": "Q4(b)(c)", "marks": 17, "src": "Part B · 第七章 物联网 IoT + 雾计算", "title": "IoT 的五个难点与雾计算的关键特征", "type": "concept", "short": "IoT 五个难点 + 雾计算特征", "topics": ["IoT 难点", "雾计算"], "labels": ["(b)", "(c)"], "q": ["<p>(b) The Internet of Things (IoT) is the technique that connects all unconnected objects. Discuss five of the potential difficulties and briefly describe each of them in the context of the development of IoT.<\/p>", "<p>(c) An outstanding technique that processes data generated by IoT sensors is fog computing. Discuss the key features of fog computing.<\/p>"], "ans": ["答：可扩展性、安全、隐私、大数据与分析、互操作性，每个配一两句解释（见上）。", "答：雾计算在靠近终端的雾节点上就近处理数据，关键特征是上下文位置感知与低时延、地理分布、部署在大量 IoT 终端附近、雾节点与终端无线连接、面向实时交互（雾节点预处理，上层只处理数据子集）；带来低时延、减轻核心网负担、数据留本地、边缘实时控制等好处。"], "en": ["<p>1. <b>Scalability:<\/b> IoT may grow to include millions of devices. How the overall system (addressing, access and management) can support such a huge number of devices is a critical issue; IPv6 can provide enough addresses at the network layer.<\/p><p>2. <b>Security:<\/b> as more \"things\" are connected with other things and people, the threat surface is greatly expanded. If a device is hacked, its connectivity becomes a major concern, because a compromised device can serve as a launching point to attack other devices and systems.<\/p><p>3. <b>Privacy:<\/b> much of the data gathered by sensors is specific to individuals and their activities and may contain sensitive information and credentials. How the data are protected, and whether and with whom they are shared, is a critical issue.<\/p><p>4. <b>Big data and analytics:<\/b> the large number of sensors produces a deluge of data. The data provide useful insights only if they are processed efficiently; the challenge is to evaluate massive amounts of data arriving from different sources in various forms in a timely manner.<\/p><p>5. <b>Interoperability:<\/b> many protocols and architectures, some proprietary and some open, are competing for market share and standardisation. Devices and networks using different protocols and implementations cannot easily work together.<\/p>", "<p>Fog computing distributes data processing to fog nodes at the edge of the network, close to where IoT data are generated. Its key features are:<\/p><p>1. <b>Contextual location awareness and low latency:<\/b> the fog node sits as close to the IoT endpoints as possible, so it knows the context of the sensors it manages and can react to events much faster than a remote cloud.<\/p><p>2. <b>Geographic distribution:<\/b> the services and applications served by fog nodes require widely distributed deployments.<\/p><p>3. <b>Deployment near IoT endpoints:<\/b> fog nodes are typically deployed where there is a large number of IoT endpoints.<\/p><p>4. <b>Wireless communication between the fog node and the IoT endpoints:<\/b> since a fog node must handle many endpoints, wireless access is the easiest way to achieve large scalability.<\/p><p>5. <b>Use for real-time interactions:<\/b> data are pre-processed at the fog nodes, so upper-layer applications only need to perform batch processing on a subset of the data.<\/p><p>As a result, fog computing reduces latency, offloads traffic from the core network and the backhaul, keeps sensitive data inside the local network, reduces the amount of data to be sent, and provides a distributed edge control loop for real-time monitoring and control.<\/p>"], "one": "<b>一句话：<\/b>IoT 五难是规模、安全、隐私、大数据、互通；雾计算把处理放到靠近终端的雾节点，特征是低时延/位置感知、地理分布、靠近终端、无线接入、实时交互。"}, {"id": "y2526s2-q3a", "paper": "2025-26 S2", "qno": "Q3(a)", "marks": 6, "src": "Part A · Ch6 频率复用", "title": "频率复用：每小区信道、簇面积、簇复制次数、系统容量", "type": "calc", "short": "每小区信道、簇面积、系统容量", "topics": ["数信道", "系统容量"], "labels": ["(i)", "(ii)", "(iii)"], "q": ["<p>3. (a) A new operator B is designing the cellular network for a city in South China which has a total of 1071 radio channels available for handling the traffic. Suppose the area of each cell is 6 km<sup>2<\/sup> and the total area of the entire system is 2100 km<sup>2<\/sup>. Let the cluster size of the design be 7. Determine the following results.<\/p>", "<p>(i) Number of channels per cell and the total coverage area of each cluster.<\/p>", "<p>(ii) Number of times to replicate this cluster to cover the entire system.<\/p>", "<p>(iii) System capacity for this network.<\/p>"], "ans": ["答：每小区 153 条信道；每个簇覆盖 42 km²。", "答：簇要复制 50 次（全网共 350 个小区）。", "答：系统容量 T = 53 550 条信道。"], "en": ["<p>Number of channels per cell = S/N = 1071/7 = <b>153 channels<\/b>. Coverage area of each cluster = N × A<sub>cell<\/sub> = 7 × 6 km² = <b>42 km²<\/b>.<\/p>", "<p>Number of times the cluster is replicated = A<sub>sys<\/sub>/A<sub>cluster<\/sub> = 2100/42 = <b>50<\/b> (i.e. 50 × 7 = 350 cells in total).<\/p>", "<p>System capacity T = (channels per cluster) × (number of clusters) = 1071 × 50 = <b>53 550 channels<\/b> (= 153 × 350). The same set of 1071 channels is reused 50 times through frequency reuse.<\/p>"], "one": "<b>一句话：<\/b>1071 ÷ 7 = 153 条/小区，簇 7 × 6 = 42 km²，2100 ÷ 42 = 50 个簇，容量 1071 × 50 = 53 550 条：容量来自\"同一组信道用了 50 次\"。"}, {"id": "y2526s2-q3bc", "paper": "2025-26 S2", "qno": "Q3(b)(c)", "marks": 19, "src": "Part A · Ch8 话务工程（Erlang C、M/M/m）", "title": "Erlang C 查表插值，再推 M/M/m 的状态概率 P<sub>k<\/sub>", "type": "calc", "short": "Erlang C 插值 + M/M/m 推 Pk", "topics": ["Erlang C", "M/M/m"], "labels": ["(b)(i)", "(b)(ii)", "(b)(iii)", "(c)(i)", "(c)(ii)"], "q": ["<p>(b) For the cluster size of 7 in the cellular network in Part 3(a), the operator obtained the survey results that it has traffic load per user of 0.03 Erlangs and an average number of 1.2 calls per hour per user for an Erlang C system, with a probability of delaying a call being 5%. Determine the following results.<\/p>", "<p>(i) Traffic load per cell.<\/p>", "<p>(ii) The number of users per km<sup>2<\/sup> that can be supported by the cellular system.<\/p>", "<p>(iii) The mean duration of a call in seconds.<\/p>", "<p>(c) The traffic performance of cellular network can be modeled using a simple Markovian queueing model such as M/M/m with m servers representing each channel in the cell.<\/p>", "<p>(i) Draw the state transition diagram for the M/M/m model with the various arrival rates λ<sub>k<\/sub> and service rates μ<sub>k<\/sub> given by the following recursive equations, λ<sub>k<\/sub> = λ for k = 0, 1, 2, …; μ<sub>k<\/sub> = kμ for k = 1, 2, … m−1; μ<sub>k<\/sub> = mμ for k = m, m+1, m+2, … k μ P<sub>k<\/sub> = λ P<sub>k−1<\/sub> for k ≤ m; m μ P<sub>k<\/sub> = λ P<sub>k<\/sub> for k ≥ m where P<sub>k<\/sub> represents the state probability of the system state being at k and system utilization ρ = λ/μ.<\/p>", "<p>(ii) Derive the probability P<sub>k<\/sub> in terms of m, ρ, and the probability of state zero P<sub>0<\/sub> for the two cases where k ≤ m and k ≥ m, respectively.<\/p>"], "ans": ["答：每小区话务量 A ≈ 132.2 E（附录小数略有出入时约 132.3 E）。", "答：约 735 用户/km²（每小区约 4408 个用户）。", "答：平均通话时长 H = 90 s。", "答：见图。向右全是 λ；向左从 μ、2μ 一路增到 mμ，之后封顶 mμ。", "答：P<sub>k<\/sub> = P₀ρ<sup>k<\/sup>/k!（k ≤ m）；P<sub>k<\/sub> = P₀ρ<sup>k<\/sup>/(m! · m<sup>k−m<\/sup>)（k ≥ m），其中 ρ = λ/μ。"], "en": ["<p>Channels per cell = 1071/7 = 153. From the Erlang C table with a delay probability of 5%, interpolating between 150 channels (A ≈ 129.46 E) and 155 channels (A ≈ 134.10 E): A ≈ 129.46 + (3/5)(134.10 − 129.46) ≈ <b>132.2 Erlangs per cell<\/b>.<\/p>", "<p>Users per cell = A/A<sub>u<\/sub> = 132.24/0.03 ≈ 4408. Users per km² = 4408/6 ≈ <b>735 users/km²<\/b>.<\/p>", "<p>A<sub>u<\/sub> = λ<sub>u<\/sub>H, so H = A<sub>u<\/sub>/λ<sub>u<\/sub> = 0.03/1.2 h = 0.025 h = 0.025 × 3600 s = <b>90 s<\/b>.<\/p>", "<p>[Sketch: states 0, 1, 2, …, m − 1, m, m + 1, … in a row. Each forward transition k → k + 1 has rate λ. Each backward transition k → k − 1 has rate kμ for k ≤ m (μ, 2μ, …, mμ) and mμ for k &gt; m.]<\/p><p>State k is the number of calls in the system (in service plus waiting). Arrivals are Poisson with constant rate λ; when k ≤ m all k calls are being served, so the departure rate is kμ, and when k ≥ m only m channels are busy, so the departure rate is limited to mμ.<\/p>", "<p>In steady state, the flow between neighbouring states balances: λP<sub>k−1<\/sub> = μ<sub>k<\/sub>P<sub>k<\/sub> (the given equation λP<sub>k<\/sub> for k ≥ m should read λP<sub>k−1<\/sub>).<\/p><p>For k ≤ m: kμP<sub>k<\/sub> = λP<sub>k−1<\/sub>, so P<sub>k<\/sub> = (ρ/k)P<sub>k−1<\/sub>. Applying this recursively, <b>P<sub>k<\/sub> = P₀ρ<sup>k<\/sup>/k!<\/b>.<\/p><p>For k ≥ m: mμP<sub>k<\/sub> = λP<sub>k−1<\/sub>, so P<sub>k<\/sub> = (ρ/m)P<sub>k−1<\/sub>. Starting from P<sub>m<\/sub> = P₀ρ<sup>m<\/sup>/m!, P<sub>k<\/sub> = P₀(ρ<sup>m<\/sup>/m!)(ρ/m)<sup>k−m<\/sup> = <b>P₀ρ<sup>k<\/sup>/(m!·m<sup>k−m<\/sup>)<\/b>.<\/p><p>Both expressions agree at k = m. P₀ is obtained from ΣP<sub>k<\/sub> = 1, which requires ρ/m &lt; 1.<\/p>"], "one": "<b>一句话：<\/b>(b) 153 条查 Erlang C 表 5% 列插值 ≈ 132.2 E，÷ 0.03 ÷ 6 ≈ 735 用户/km²，H = 0.03/1.2 h = 90 s；(c) 由 λP<sub>k−1<\/sub> = μ<sub>k<\/sub>P<sub>k<\/sub> 递推，k ≤ m 时 P₀ρ<sup>k<\/sup>/k!，k ≥ m 时 P₀ρ<sup>k<\/sup>/(m!m<sup>k−m<\/sup>)，k ≥ m 部分求和就是 Erlang C。"}, {"id": "y2526s2-q4a", "paper": "2025-26 S2", "qno": "Q4(a)", "marks": 4, "src": "Part A · Ch10 切换", "title": "地面蜂窝的两种切换：硬切换与软切换，各用在哪类系统", "type": "concept", "short": "硬切换 vs 软切换", "topics": ["切换"], "labels": ["(a)"], "q": ["<p>4. (a) For terrestrial cellular systems there are two types of handovers. Describe the basic mechanisms of these two handovers and identify the types of cellular systems that deploy each of these two handovers respectively.<\/p>"], "ans": ["答：硬切换先断后连，简单但有短暂中断，用于 FDMA/TDMA 系统（GSM、IS-136）；软切换先连后断，新旧链路同时用、有分集、不中断，用于 CDMA 系统（IS-95、WCDMA、cdma2000）。"], "en": ["<p><b>Hard handover (\"break before make\"):<\/b> the current channel with the old base station is released before the new channel with the new base station is set up, so the mobile is connected to only one base station at a time. It is simple to implement, but there is a short interruption of communication and the call may be dropped. Hard handover is used in FDMA/TDMA-based systems such as GSM and IS-136.<\/p><p><b>Soft handover (\"make before break\"):<\/b> a new channel with the new base station is set up in parallel with the current channel with the old base station, and both channels are used simultaneously before the old one is released. The availability of diversity improves the link at the cell boundary, and there is no interruption of communication during the handover. Soft handover is used in CDMA-based systems such as IS-95, WCDMA and cdma2000.<\/p>"], "one": "<b>一句话：<\/b>\"硬\"是断了再接（FDMA/TDMA：GSM、IS-136），\"软\"是接上再断（CDMA：IS-95、WCDMA、cdma2000），能不能软切换取决于相邻小区是不是同频。"}, {"id": "y2526s2-q4b", "paper": "2025-26 S2", "qno": "Q4(b)", "marks": 8, "src": "Part C · Ch6 卫星网络（切换）", "title": "MEO/LEO 卫星当基站时的四种切换", "type": "concept", "short": "LEO/MEO 卫星四种切换", "topics": ["卫星"], "labels": ["(b)"], "q": ["<p>(b) In a satellite system with Medium Earth Orbit (MEO) or Low Earth Orbit (LEO) satellites, there could also be handovers in the system if the satellite acts as a base station. Briefly describe the 4 different types of handovers that can occur in this type of satellite system.<\/p>"], "ans": ["答：星内切换（同一卫星换波束）、星间切换（换卫星，用户移动或卫星飞走）、网关切换（卫星离开当前网关）、系统间切换（卫星与地面蜂窝之间的垂直切换）。"], "en": ["<p>In MEO/LEO systems the satellites move relative to the earth, so if a satellite acts as a base station, handovers are caused not only by the movement of the users but also by the movement of the satellites. Four types of handover can occur:<\/p><p>1. <b>Intra-satellite handover:<\/b> caused by the movement of a mobile user within the coverage of one satellite from one sector (spot beam) to another. The user is switched to another beam/channel of the same satellite.<\/p><p>2. <b>Inter-satellite handover:<\/b> caused by the movement of a user from the coverage of one satellite to that of another, or by the satellite moving away. The connection is handed over to the next satellite. This is frequent in LEO systems because each satellite is visible for only a short time.<\/p><p>3. <b>Gateway handover:<\/b> caused by the movement of the satellite away from the current ground gateway, so the satellite link has to be switched to another gateway, even if the user does not move.<\/p><p>4. <b>Inter-system handover:<\/b> a handover between the satellite system and a terrestrial cellular system, based on signal strength and QoS performance. This is a vertical handover between two different types of network.<\/p>"], "one": "<b>一句话：<\/b>卫星当基站就是\"人动星也动\"：同星换波束、换卫星、换网关、卫星与地面网互切，四种从小到大。"}, {"id": "y2526s2-q4c", "paper": "2025-26 S2", "qno": "Q4(c)", "marks": 5, "src": "Part B · Ch5 无线传感器网络", "title": "传感器网络的通信架构：节点多跳 → sink → 任务管理节点", "type": "concept", "short": "传感网通信架构", "topics": ["传感网"], "labels": ["(c)"], "q": ["<p>(c) A sensor network is composed of many sensor nodes which are densely distributed to sense the environment. Briefly describe the communication architecture in the sensor networks to support the network operations. Describe briefly the communication architecture and show how the sensor nodes can relay the information back to the manager of the sensor network.<\/p>"], "ans": ["答：节点采集数据 → 多跳、无基础设施地接力转发到 sink → sink 经 Internet 或卫星 → 任务管理节点，管理者在那里取数据、下发任务。"], "en": ["<p>The sensor nodes are scattered in a sensor field. Each sensor node has the capability to collect data and to route data back to the sink. Since the nodes have limited power and short transmission range, data are routed back to the sink through a <b>multi-hop, infrastructureless<\/b> architecture: each node forwards its data to a neighbouring node, which relays it hop by hop towards the sink.<\/p><p>The sink then communicates with the <b>task manager node<\/b> via the Internet or a satellite link. The manager (user) obtains the sensed information at the task manager node and can also send tasks/queries back to the sensor nodes in the reverse direction.<\/p><p>[Sketch: sensor node A → B → C → … → Sink → Internet/Satellite → Task manager node → User.]<\/p><p>The design of this architecture is influenced by reliability (fault tolerance), scalability, production cost, operating environment, network topology, hardware constraints, transmission media and power consumption. Each node uses a protocol stack of physical, data link, network, transport and application layers, together with power, mobility and task management planes.<\/p>"], "one": "<b>一句话：<\/b>信息回传就一条线：节点 A → B → C → … → sink → Internet/卫星 → task manager → 用户，靠的是多跳、无基础设施的接力。"}, {"id": "y2526s2-q4d", "paper": "2025-26 S2", "qno": "Q4(d)", "marks": 8, "src": "Part B · Ch7 物联网", "title": "IoT 核心功能栈：通信网络层的四个子层", "type": "concept", "short": "IoT 通信网络层四子层", "topics": ["IoT 架构"], "labels": ["(d)"], "q": ["<p>(d) In the core Internet of Things (IoT) functional stack, the communication network layer is structured with four sublayers. Describe the features of each of the sublayers.<\/p>"], "ans": ["答：接入网子层（最后一公里无线：802.11ah、802.15.4g、LoRa）、网关与回传子层（汇聚后长距离送到头端）、网络传输子层（IP + UDP/TCP，开放、可扩展、安全）、IoT 网络管理子层（HTTP、WebSocket 等应用协议）。"], "en": ["<p>The communications network layer of the core IoT functional stack has four sublayers:<\/p><p>1. <b>Access network sublayer:<\/b> the last mile of the IoT network, typically made up of wireless technologies such as IEEE 802.11ah, 802.15.4g and LoRa. The choice of technology depends on the communication range (PAN, HAN, NAN, FAN, LAN, MAN, WAN), the number of objects and throughput per collection cell, cost and power consumption. Topologies can be point-to-point or point-to-multipoint (star, clustered star, mesh).<\/p><p>2. <b>Gateways and backhaul network sublayer:<\/b> multiple smart objects in a given area are organised around a common gateway, which is in charge of the inter-medium communication and forwards the collected information through a longer-range medium (backhaul) to a headend central station. The smart objects may be static or mobile within a limited area, while the gateway is usually static.<\/p><p>3. <b>Network transport sublayer:<\/b> network and transport layer protocols such as IP and UDP/TCP are implemented to support the variety of devices and media. The protocol must be open and standards-based, scalable to thousands or millions of sensors, and secure. IP meets these requirements, even over low-power, lossy, low-bandwidth networks; TCP or UDP is chosen depending on whether the network or the application controls the delivery.<\/p><p>4. <b>IoT network management sublayer:<\/b> additional application protocols allow the headend applications to exchange data with the sensors, for example HTTP over TCP (the sensor acting as a client) and WebSocket, a lightweight web-derived protocol that provides a simple bidirectional connection in low-memory, low-power, low-bandwidth and high-loss environments.<\/p>"], "one": "<b>一句话：<\/b>接入（最后一公里无线）→ 网关汇聚回传 → IP + UDP/TCP 传输 → HTTP/WebSocket 管理：数据从智能物体走到头端应用，就经过这四个子层。"}];
+var PAPERS=[{k:'y2324s2',name:'2023-24 S2'},{k:'y2425s2',name:'2024-25 S2'},{k:'y2526s1',name:'2025-26 S1'},{k:'y2526s2',name:'2025-26 S2'}];
+var byId={};QS.forEach(function(q){byId[q.id]=q;});
+var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var store={get:function(k,d){try{var v=localStorage.getItem('q34:'+k);return v?JSON.parse(v):d;}catch(e){return d;}},set:function(k,v){try{localStorage.setItem('q34:'+k,JSON.stringify(v));}catch(e){}}};
+function $(s){return document.querySelector(s);}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function paperOf(id){for(var i=0;i<PAPERS.length;i++)if(id.indexOf(PAPERS[i].k)===0)return PAPERS[i];return null;}
+function fmt(x,d){if(!isFinite(x))return '–';var s=Number(x).toFixed(d==null?2:d);if(s.indexOf('.')>=0)s=s.replace(/0+$/,'').replace(/\.$/,'');return s;}
+function fx(x,d){return Number(x).toFixed(d==null?2:d);}
+
+/* ---------- math ---------- */
+function erlB(M,A){var b=1;for(var k=1;k<=M;k++)b=A*b/(k+A*b);return b;}
+function capB(M,g){var lo=0,hi=M*2+20;for(var i=0;i<90;i++){var m=(lo+hi)/2;if(erlB(M,m)<=g)lo=m;else hi=m;}return lo;}
+function erlC(M,A){if(A>=M)return 1;var b=erlB(M,A);return M*b/(M-A*(1-b));}
+function capC(M,p){var lo=0,hi=M-1e-9;for(var i=0;i<90;i++){var m=(lo+hi)/2;if(erlC(M,m)<=p)lo=m;else hi=m;}return lo;}
+var LEGAL=(function(){var s={};for(var i=0;i<8;i++)for(var j=0;j<8;j++){var n=i*i+i*j+j*j;if(n>0&&n<=49&&!s[n])s[n]=[i,j];}return Object.keys(s).map(Number).sort(function(a,b){return a-b;}).map(function(n){return {n:n,ij:s[n]};});})();
+var LEGALN=LEGAL.map(function(o){return o.n;});
+function db(x){return 10*Math.log10(x);}
+function Qof(N){return Math.sqrt(3*N);}
+var SIRF={
+  simp:function(N,n){return Math.pow(Qof(N),n)/6;},
+  worst:function(N,n){var Q=Qof(N);return 1/(2*Math.pow(Q-1,-n)+2*Math.pow(Q,-n)+2*Math.pow(Q+1,-n));},
+  s120:function(N,n){var Q=Qof(N);return 1/(Math.pow(Q,-n)+Math.pow(Q+0.7,-n));},
+  s60:function(N,n){return Math.pow(Qof(N)+0.7,n);}
+};
+var SIRNAME={simp:'全向简化',worst:'全向最坏',s120:'120° 扇区',s60:'60° 扇区'};
+function rnd(a,b){return a+Math.floor(Math.random()*(b-a+1));}
+function pick(a){return a[Math.floor(Math.random()*a.length)];}
+function gcd(a,b){return b?gcd(b,a%b):a;}
+
+/* ---------- router ---------- */
+var VIEWS=['map','formulas','papers','drill','concepts','tools'];
+function route(){
+  var h=(location.hash||'').slice(1),target=null;
+  if(byId[h]){target=h;h='papers';}
+  if(h==='legalN'){target='legalN';h='formulas';}
+  if(VIEWS.indexOf(h)<0)h='map';
+  document.querySelectorAll('.view').forEach(function(v){v.hidden=v.getAttribute('data-view')!==h;});
+  document.querySelectorAll('.tabs a').forEach(function(a){a.setAttribute('aria-current',a.getAttribute('href')==='#'+h?'page':'false');});
+  if(target){
+    if(byId[target])showCard(target);
+    var el=document.getElementById(byId[target]?'card-'+target:target);
+    if(el){el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});el.classList.add('flash');setTimeout(function(){el.classList.remove('flash');},1800);}
+  } else window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+
+/* ---------- map ---------- */
+function hexSvg(on,kind,title){return '<svg width="15" height="17" viewBox="0 0 15 17" role="img" aria-label="'+esc(title)+'"><title>'+esc(title)+'</title><polygon class="'+(on?'on '+kind:'off')+'" points="7.5,1 14,4.75 14,12.25 7.5,16 1,12.25 1,4.75"/></svg>';}
+function renderMap(){
+  $('#paperGrid').innerHTML=PAPERS.map(function(p){
+    var qs=QS.filter(function(q){return q.id.indexOf(p.k)===0;});
+    function grp(n){
+      var list=qs.filter(function(q){return q.qno.indexOf('Q'+n)===0;});
+      var tot=0,calc=0;list.forEach(function(q){tot+=q.marks;if(q.type==='calc')calc+=q.marks;});
+      return '<div class="qgroup"><div class="qgroup-h"><span><b>Q'+n+'</b> · '+tot+' 分</span><span>计算 '+calc+' · 概念 '+(tot-calc)+'</span></div>'+
+        '<div class="split" role="img" aria-label="计算 '+calc+' 分，概念 '+(tot-calc)+' 分"><i style="width:'+(tot?calc/tot*100:0)+'%"></i></div>'+
+        list.map(function(q){return '<a class="qchip '+q.type+'" href="#'+q.id+'"><span class="no">'+esc(q.qno)+'</span><span>'+esc(q.short)+'</span><span class="mk">'+q.marks+'</span></a>';}).join('')+'</div>';
+    }
+    return '<article class="panel paper"><span class="paper-name">'+p.name+'</span>'+grp(3)+grp(4)+'</article>';
+  }).join('');
+  var T=[
+    {t:'数信道 → 每小区信道 S/N',k:'calc',ids:['y2324s2-q3a','y2425s2-q3','y2425s2-q4c','y2526s1-q3a','y2526s1-q3b','y2526s2-q3a']},
+    {t:'查表求话务 A',k:'calc',ids:['y2324s2-q3a','y2425s2-q3','y2425s2-q4c','y2526s1-q3b','y2526s2-q3bc']},
+    {t:'Erlang B（阻塞即清除）',k:'calc',sub:1,ids:['y2324s2-q3a','y2425s2-q3','y2425s2-q4c']},
+    {t:'Erlang C + 线性插值',k:'calc',sub:1,ids:['y2526s1-q3b','y2526s2-q3bc']},
+    {t:'A_u = λH 换算 / 求通话时长',k:'calc',ids:['y2324s2-q3a','y2425s2-q4c','y2526s1-q3b','y2526s2-q3bc']},
+    {t:'用户数 → 密度 / 半径 / 小区数',k:'calc',ids:['y2324s2-q3a','y2425s2-q3','y2425s2-q4c','y2526s1-q3a','y2526s1-q3b','y2526s2-q3bc']},
+    {t:'SIR 与选簇 N',k:'calc',ids:['y2324s2-q4c','y2425s2-q3']},
+    {t:'扇区化（含评论）',k:'calc',ids:['y2324s2-q3a','y2324s2-q4c','y2425s2-q3']},
+    {t:'中继效率 / 集群增益',k:'calc',ids:['y2324s2-q3a','y2425s2-q4c']},
+    {t:'复用容量 / 频谱效率',k:'calc',ids:['y2526s1-q3a','y2526s2-q3a']},
+    {t:'小区分裂',k:'calc',ids:['y2425s2-q3']},
+    {t:'M/M/m 状态概率推导',k:'calc',ids:['y2526s2-q3bc']},
+    {t:'物联网 IoT',k:'concept',ids:['y2324s2-q4ab','y2425s2-q4b','y2526s1-q4bc','y2526s2-q4d']},
+    {t:'通信网络层四子层 / 两个栈',k:'concept',sub:1,ids:['y2324s2-q4ab','y2425s2-q4b','y2526s2-q4d']},
+    {t:'雾计算',k:'concept',sub:1,ids:['y2324s2-q4ab','y2526s1-q4bc']},
+    {t:'蜂窝系统概念（多址、FCA/DCA、HLR/VLR、切换）',k:'concept',ids:['y2324s2-q3b','y2425s2-q4a','y2526s1-q3c','y2526s2-q4a']},
+    {t:'WLAN 入网 / 传感网 / 卫星切换',k:'concept',ids:['y2526s1-q4a','y2526s2-q4b','y2526s2-q4c']}
+  ];
+  var head='<div class="frow head"><span>考点</span><span>23-24 → 25-26 S2</span><span class="fc">套数</span></div>';
+  $('#freq').innerHTML=head+T.map(function(r){
+    var c=0,h=PAPERS.map(function(p){var on=r.ids.some(function(id){return id.indexOf(p.k)===0;});if(on)c++;return hexSvg(on,r.k,p.name+(on?' 考过':' 没考'));}).join('');
+    return '<div class="frow'+(r.sub?' sub':'')+'"><span class="fl">'+esc(r.t)+'</span><span class="hexes">'+h+'</span><span class="fc"><b>'+c+'</b>/4</span></div>';
+  }).join('');
+  var nt='<thead><tr><th>N</th><th>(i, j)</th><th>Q = √3N</th></tr></thead><tbody>'+LEGAL.filter(function(o){return o.n<=21;}).map(function(o){return '<tr><td>'+o.n+'</td><td>('+o.ij[0]+', '+o.ij[1]+')</td><td>'+fx(Qof(o.n),3)+'</td></tr>';}).join('')+'</tbody>';
+  $('#nTable').innerHTML=nt;
+}
+
+/* ---------- papers ---------- */
+var F={part:'all',type:'all',paper:'all',rate:'all'};
+var RATE=store.get('rate',{});
+function buildFilters(){
+  var groups=[['#fPart','part',[['all','全部'],['Q3','Q3'],['Q4','Q4']]],['#fType','type',[['all','全部'],['calc','计算 / 推导'],['concept','概念描述']]],
+    ['#fPaper','paper',[['all','全部']].concat(PAPERS.map(function(p){return [p.k,p.name];}))],['#fRate','rate',[['all','全部'],['todo','没标「会了」的'],['no','标了「不会」的']]]];
+  groups.forEach(function(g){
+    var box=$(g[0]);
+    g[2].forEach(function(o){var b=document.createElement('button');b.type='button';b.className='fbtn';b.textContent=o[1];b.setAttribute('aria-pressed',F[g[1]]===o[0]?'true':'false');
+      b.addEventListener('click',function(){F[g[1]]=o[0];box.querySelectorAll('.fbtn').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});applyFilters();});box.appendChild(b);});
+  });
+}
+function cardMatch(q){
+  if(F.part!=='all'&&q.qno.indexOf(F.part)!==0)return false;
+  if(F.type!=='all'&&q.type!==F.type)return false;
+  if(F.paper!=='all'&&q.id.indexOf(F.paper)!==0)return false;
+  if(F.rate==='todo'&&RATE[q.id]==='ok')return false;
+  if(F.rate==='no'&&RATE[q.id]!=='no')return false;
+  return true;
+}
+function renderQList(){
+  $('#qlist').innerHTML=QS.map(function(q){
+    var p=paperOf(q.id);
+    var subs=q.ans.map(function(a,i){return '<div class="subrow"><span class="lbl">'+esc(q.labels[i])+'</span><div><div class="zh">'+a+'</div><div class="en" lang="en" hidden>'+q.en[i]+'</div></div></div>';}).join('');
+    return '<article class="panel qcard" id="card-'+q.id+'" data-id="'+q.id+'">'+
+      '<div class="qmeta"><span class="pill paper">'+p.name+'</span><span class="pill">'+esc(q.qno)+'</span><span class="pill">'+q.marks+' 分</span><span class="pill '+q.type+'">'+(q.type==='calc'?'计算':'概念')+'</span>'+q.topics.map(function(t){return '<span class="pill">'+esc(t)+'</span>';}).join('')+'</div>'+
+      '<h3>'+q.title+'</h3>'+
+      '<div class="orig" lang="en">'+q.q.map(function(x){return '<div>'+x+'</div>';}).join('')+'</div>'+
+      '<div class="actions"><button type="button" class="btn solid" data-act="ans" aria-expanded="false">看答案</button><button type="button" class="btn" data-act="en" aria-expanded="false">英文答卷</button>'+
+      '<a class="btn ghost" href="https://pdsky.github.io/EE6129-study/zhenti.html#'+q.id+'" target="_blank" rel="noopener">完整详解 ↗</a>'+
+      '<div class="rate" role="group" aria-label="掌握程度">'+[['ok','会了'],['meh','模糊'],['no','不会']].map(function(r){return '<button type="button" data-r="'+r[0]+'" aria-pressed="'+(RATE[q.id]===r[0]?'true':'false')+'">'+r[1]+'</button>';}).join('')+'</div></div>'+
+      '<div class="reveal" hidden><p class="one">'+q.one+'</p><div class="subs">'+subs+'</div></div>'+
+      '</article>';
+  }).join('')+'<p class="empty" id="qempty" hidden>这个筛选下没有题。</p>';
+  $('#qlist').addEventListener('click',function(e){
+    var b=e.target.closest('button');if(!b)return;var card=b.closest('.qcard');if(!card)return;var id=card.getAttribute('data-id');
+    var act=b.getAttribute('data-act'),rev=card.querySelector('.reveal');
+    if(act==='ans'){var open=rev.hidden;rev.hidden=!open;b.setAttribute('aria-expanded',open?'true':'false');b.textContent=open?'收起答案':'看答案';
+      if(!open){card.querySelectorAll('.en').forEach(function(x){x.hidden=true;});var eb=card.querySelector('[data-act="en"]');eb.setAttribute('aria-expanded','false');eb.textContent='英文答卷';}}
+    else if(act==='en'){var ens=card.querySelectorAll('.en'),show=ens[0].hidden;ens.forEach(function(x){x.hidden=!show;});if(show){rev.hidden=false;var ab=card.querySelector('[data-act="ans"]');ab.setAttribute('aria-expanded','true');ab.textContent='收起答案';}
+      b.setAttribute('aria-expanded',show?'true':'false');b.textContent=show?'隐藏英文':'英文答卷';}
+    else if(b.hasAttribute('data-r')){var r=b.getAttribute('data-r');RATE[id]=RATE[id]===r?undefined:r;if(!RATE[id])delete RATE[id];store.set('rate',RATE);
+      card.querySelectorAll('.rate button').forEach(function(x){x.setAttribute('aria-pressed',RATE[id]===x.getAttribute('data-r')?'true':'false');});updateProgress();}
+  });
+}
+function applyFilters(){var n=0;document.querySelectorAll('.qcard').forEach(function(c){var m=cardMatch(byId[c.getAttribute('data-id')]);c.hidden=!m;if(m)n++;});$('#qempty').hidden=n>0;updateProgress(n);}
+function updateProgress(shown){
+  var c={ok:0,meh:0,no:0};QS.forEach(function(q){if(RATE[q.id])c[RATE[q.id]]++;});
+  if(shown==null)shown=document.querySelectorAll('.qcard:not([hidden])').length;
+  $('#progress').innerHTML='显示 '+shown+' / '+QS.length+' 题 · <b class="ok">会了 '+c.ok+'</b> · <b class="meh">模糊 '+c.meh+'</b> · <b class="no">不会 '+c.no+'</b> · 未标 '+(QS.length-c.ok-c.meh-c.no);
+}
+function showCard(id){var c=document.getElementById('card-'+id);if(c&&c.hidden){F={part:'all',type:'all',paper:'all',rate:'all'};document.querySelectorAll('.toolbar .fbtn').forEach(function(b){b.setAttribute('aria-pressed',b.textContent==='全部'?'true':'false');});applyFilters();}}
+
+/* ---------- drills ---------- */
+function N_(x,d){return '<span class="n">'+(d==null?x:fmt(x,d))+'</span>';}
+var TPL=[
+ {key:'chan',name:'数信道 + 选簇',src:'y2425s2-q3',srcName:'24-25 Q3(a)',gen:function(){
+   var sys=pick([{w:0.2,s:8,d:'每个载波 200 kHz，每帧 8 个时隙'},{w:0.2,s:8,d:'每个载波 200 kHz，每帧 8 个时隙'},{w:0.03,s:3,d:'每个载波 30 kHz，每帧 3 个时隙'}]);
+   var B=pick([20,24,30,36,40,50]),c=pick([1,2]),sd=pick([14,15,16,17,18,20]),n=pick([3,3.5,3.7,4]);
+   var per=B/2-c,car=Math.floor(per/sys.w+1e-9),S=car*sys.s,sir=Math.pow(10,sd/10),Qm=Math.pow(6*sir,1/n),Nr=Qm*Qm/3;
+   var N=LEGALN.filter(function(x){return x>=Nr-1e-9;})[0],iN=LEGALN.indexOf(N),pN=iN>0?LEGALN[iN-1]:null,M=Math.floor(S/N);
+   return {text:'某 FDD-TDMA 蜂窝系统共分到 '+N_(B)+' MHz 带宽，每条链路（上行或下行）各用 '+N_(c)+' MHz 传控制信令。'+sys.d+'。下行最低 SIR 为 '+N_(sd)+' dB，路径损耗指数 n = '+N_(n)+'。第一层 6 个同频基站等距，手机在小区边缘。<ol><li>系统共有多少条双工信道？</li><li>最小合法簇大小 N？</li><li>每小区多少条双工信道？</li></ol>',
+     fields:[{k:'S',l:'双工信道总数',u:'条',ans:S,abs:0},{k:'N',l:'簇大小 N',u:'',ans:N,abs:0},{k:'M',l:'每小区信道',u:'条',ans:M,abs:0}],
+     steps:['FDD 对半分：每方向 '+B+'/2 = '+fmt(B/2)+' MHz；扣控制 '+c+' MHz，业务带宽 = '+N_(per,2)+' MHz。',
+       '载波数 = '+fmt(per)+' MHz ÷ '+fmt(sys.w*1000)+' kHz = '+(Math.abs(per/sys.w-car)>1e-6?fmt(per/sys.w,2)+'，向下取整 '+N_(car):N_(car))+'；双工信道 = '+car+' × '+sys.s+' = '+N_(S)+' 条。',
+       'SIR = '+sd+' dB → 10<sup>'+fmt(sd/10)+'</sup> = '+N_(sir,1)+'。',
+       'Q<sup>n</sup>/6 ≥ '+fmt(sir,1)+' → Q<sup>'+n+'</sup> ≥ '+fmt(6*sir,1)+' → Q ≥ '+N_(Qm,3)+' → N ≥ Q²/3 = '+N_(Nr,2)+'。',
+       '≥ '+fmt(Nr,2)+' 的最小合法簇大小是 '+N_(N)+'：SIR = '+fmt(db(SIRF.simp(N,n)),1)+' dB ✓'+(pN?'；前一个合法值 N = '+pN+' 只有 '+fmt(db(SIRF.simp(pN,n)),1)+' dB ✗':'')+'。',
+       '每小区 = '+S+' / '+N+' = '+(S%N?fmt(S/N,2)+'，向下取整 '+N_(M):N_(M))+' 条。']};}},
+ {key:'eb',name:'Erlang B 反推半径',src:'y2324s2-q3a',srcName:'23-24 Q3(a)',gen:function(){
+   var N=pick([4,7,9,12]),M=rnd(20,80),S=M*N,g=pick([0.01,0.02]),lam=pick([0.6,0.8,0.9,1,1.2,1.5]),H=pick([60,90,120,150,180]),rho=pick([300,500,720,900,1200]);
+   var A=capB(M,g),Au=lam*H/3600,u=Math.floor(A/Au+1e-9),area=u/rho,R=Math.sqrt(area/2.598),Tg=u/M;
+   return {text:'某系统簇大小 N = '+N_(N)+'，共 '+N_(S)+' 条双工话务信道，固定信道分配，blocked calls cleared，GOS = '+N_(g*100)+'% 阻塞。忙时每用户平均 '+N_(lam)+' 次呼叫，每次 '+N_(H)+' 秒。用户密度 '+N_(rho)+' 用户/km²，六边形小区面积 2.598R²。<ol><li>每小区信道数，以及 GOS 下能承载的话务 A；</li><li>每小区用户数；</li><li>令用户产生的话务等于可承载话务，求小区半径 R；</li><li>集群增益 T<sub>g</sub>（用户/信道）。</li></ol>',
+     fields:[{k:'M',l:'每小区信道',u:'条',ans:M,abs:0},{k:'A',l:'可承载话务 A',u:'E',ans:A,rel:0.02},{k:'u',l:'每小区用户数',u:'人',ans:u,rel:0.02},{k:'R',l:'小区半径 R',u:'km',ans:R,rel:0.02},{k:'Tg',l:'T_g',u:'人/信道',ans:Tg,rel:0.02}],
+     steps:['每小区 = '+S+' / '+N+' = '+N_(M)+' 条。blocked calls cleared → Erlang B 表。',
+       '查 B 表 '+M+' 行 × '+(g*100)+'% 列：A ≈ '+N_(A,2)+' E（A/M = '+fmt(A/M,2)+'，合理）。',
+       'A<sub>u</sub> = λH = '+lam+' × '+H+'/3600 = '+N_(Au,4)+' E。',
+       '用户数 = '+fmt(A,2)+' / '+fmt(Au,4)+' = '+fmt(A/Au,1)+'，向下取整 '+N_(u)+' 人。',
+       '面积 = '+u+' / '+rho+' = '+fmt(area,3)+' km²；R = √('+fmt(area,3)+' / 2.598) = '+N_(R,3)+' km。',
+       'T<sub>g</sub> = '+u+' / '+M+' = '+N_(Tg,1)+' 用户/信道。']};}},
+ {key:'ec',name:'Erlang C 插值',src:'y2526s2-q3bc',srcName:'25-26 S1/S2 Q3(b)',gen:function(){
+   var N=pick([7,9]),M;do{M=rnd(42,158);}while(M%5===0&&Math.random()<0.85);
+   var S=M*N+rnd(0,N-1),Au=pick([0.02,0.025,0.03,0.035]),lam=pick([1,1.2,1.5,2]),a=pick([2,3,4,5,6]),p=0.05;
+   var lo=Math.floor(M/5)*5,hi=lo+5,Alo=capC(lo,p),Ahi=capC(hi,p),Aex=capC(M,p),Ai=(M%5===0)?Aex:Alo+(M-lo)/5*(Ahi-Alo);
+   var users=Ai/Au,dens=users/a,Hs=Au/lam*3600;
+   return {text:'某蜂窝系统簇大小 '+N_(N)+'，共 '+N_(S)+' 条话务信道，每个小区面积 '+N_(a)+' km²。每用户话务 '+N_(Au)+' E，平均每小时 '+N_(lam)+' 次呼叫。Erlang C 系统，呼叫被延迟的概率为 5%。<ol><li>每小区话务量；</li><li>每 km² 能支持的用户数；</li><li>平均通话时长（秒）。</li></ol>',
+     fields:[{k:'M',l:'每小区信道',u:'条',ans:Math.floor(S/N),abs:0},{k:'A',l:'每小区话务 A',u:'E',ans:Ai,rel:0.015},{k:'d',l:'用户密度',u:'人/km²',ans:dens,rel:0.02},{k:'H',l:'平均通话时长',u:'s',ans:Hs,abs:0.6}],
+     steps:['每小区 = '+S+' / '+N+' = '+fmt(S/N,2)+'，取 '+N_(M)+' 条。题目说 delayed → Erlang C 表。',
+       M%5===0?'表上正好有 '+M+' 行：A ≈ '+N_(Aex,2)+' E。':'C 表 5% 列只有 '+lo+' 和 '+hi+' 行：A('+lo+') ≈ '+fmt(Alo,2)+'，A('+hi+') ≈ '+fmt(Ahi,2)+'。',
+       M%5===0?'不用插值。':'插值：A ≈ '+fmt(Alo,2)+' + ('+M+' − '+lo+')/5 × ('+fmt(Ahi,2)+' − '+fmt(Alo,2)+') = '+N_(Ai,2)+' E（精确值 '+fmt(Aex,2)+'）。',
+       '用户数 = '+fmt(Ai,2)+' / '+Au+' = '+fmt(users,0)+' 人；密度 = '+fmt(users,0)+' / '+a+' = '+N_(dens,0)+' 人/km²。',
+       'A<sub>u</sub> = λH → H = '+Au+' / '+lam+' = '+fmt(Au/lam,4)+' h = '+N_(Hs,1)+' s。']};}},
+ {key:'reuse',name:'频率复用与系统容量',src:'y2526s2-q3a',srcName:'25-26 S2 Q3(a)',gen:function(){
+   var N=pick([3,4,7,9,12]),k=rnd(20,160),S=k*N,a=pick([2,3,4,5,6,8]),r=rnd(10,60),sys=r*N*a;
+   return {text:'某运营商共有 '+N_(S)+' 条无线信道，每个小区面积 '+N_(a)+' km²，整个系统面积 '+N_(sys)+' km²，簇大小 '+N_(N)+'。<ol><li>每小区信道数、每个簇的覆盖面积；</li><li>簇要复制多少次才能覆盖全系统；</li><li>系统容量。</li></ol>',
+     fields:[{k:'k',l:'每小区信道',u:'条',ans:k,abs:0},{k:'ca',l:'簇面积',u:'km²',ans:N*a,abs:0.01},{k:'r',l:'复制次数',u:'次',ans:r,abs:0},{k:'C',l:'系统容量',u:'条',ans:S*r,abs:0}],
+     steps:['每小区 = '+S+' / '+N+' = '+N_(k)+' 条。','簇面积 = '+N+' × '+a+' = '+N_(N*a)+' km²。','复制次数 = '+sys+' / '+(N*a)+' = '+N_(r)+'（全网 '+(r*N)+' 个小区）。','容量 = '+S+' × '+r+' = '+N_(S*r)+' 条（= '+k+' × '+(r*N)+'）。同一组信道被复用了 '+r+' 次。']};}},
+ {key:'sir',name:'四种 SIR',src:'y2324s2-q4c',srcName:'23-24 Q4(c)',gen:function(){
+   var N=pick([3,4,7,9,12]),n=pick([3,3.5,4,4.2]),Q=Qof(N);
+   var v={simp:db(SIRF.simp(N,n)),worst:db(SIRF.worst(N,n)),s120:db(SIRF.s120(N,n)),s60:db(SIRF.s60(N,n))};
+   return {text:'簇大小 N = '+N_(N)+'，路径损耗指数 n = '+N_(n)+'。分别求以下四种情况的 SIR（dB）：<ol><li>全向，简化（6 个干扰都在 D）；</li><li>全向，最坏情况；</li><li>120° 扇区；</li><li>60° 扇区。</li></ol>',
+     fields:[{k:'a',l:'全向简化',u:'dB',ans:v.simp,abs:0.15},{k:'b',l:'全向最坏',u:'dB',ans:v.worst,abs:0.15},{k:'c',l:'120° 扇区',u:'dB',ans:v.s120,abs:0.15},{k:'d',l:'60° 扇区',u:'dB',ans:v.s60,abs:0.15}],
+     steps:['Q = √(3 × '+N+') = '+N_(Q,3)+'。',
+       '全向简化：Q<sup>n</sup>/6 = '+fmt(Math.pow(Q,n),1)+'/6 = '+fmt(SIRF.simp(N,n),1)+' → '+N_(v.simp,2)+' dB'+(n===4?'（n = 4 时也等于 1.76 + 20 log '+N+'）':'')+'。',
+       '全向最坏：1/[2('+fmt(Q-1,3)+')<sup>−'+n+'</sup> + 2('+fmt(Q,3)+')<sup>−'+n+'</sup> + 2('+fmt(Q+1,3)+')<sup>−'+n+'</sup>] = '+fmt(SIRF.worst(N,n),1)+' → '+N_(v.worst,2)+' dB。',
+       '120°：1/[('+fmt(Q,3)+')<sup>−'+n+'</sup> + ('+fmt(Q+0.7,3)+')<sup>−'+n+'</sup>] = '+fmt(SIRF.s120(N,n),1)+' → '+N_(v.s120,2)+' dB。',
+       '60°：('+fmt(Q+0.7,3)+')<sup>'+n+'</sup> = '+fmt(SIRF.s60(N,n),1)+' → '+N_(v.s60,2)+' dB。',
+       '<span class="tip">评论：最坏情况比简化式低约 '+fmt(v.simp-v.worst,1)+' dB；扇区把干扰从 6 个减到 2 个或 1 个，SIR 提高，代价是每扇区信道少、中继效率下降、切换增多。</span>']};}},
+ {key:'eta',name:'中继效率：N 对比',src:'y2425s2-q4c',srcName:'24-25 Q4(c)',gen:function(){
+   var pr=pick([[9,7],[7,4],[12,7],[7,3]]),L=pr[0]*pr[1]/gcd(pr[0],pr[1]),t,S;
+   do{t=rnd(1,40);S=L*t;}while(S/pr[0]<20||S/pr[1]>110);
+   var calls=pick([1,2,3]),dur=pick([3,5,10,15]),Au=calls*dur/60,g=0.02;
+   function one(N){var M=S/N,A=capB(M,g);return {M:M,A:A,eta:A/M,car:A*(1-g),u:Math.floor(A/Au+1e-9)};}
+   var a=one(pr[0]),b=one(pr[1]);
+   return {text:'某系统共 '+N_(S)+' 条信道，簇大小 N = '+N_(pr[0])+'。每用户每小时平均打 '+N_(calls)+' 次电话，每次 '+N_(dur)+' 分钟。GOS = 2%（Erlang B）。<ol><li>每小区承载话务和中继效率；</li><li>每小区能容纳多少用户；</li><li>簇大小改成 N = '+N_(pr[1])+' 后重算并评论。</li></ol>',
+     fields:[{k:'A1',l:'N='+pr[0]+'：查表 A',u:'E',ans:a.A,rel:0.02},{k:'e1',l:'N='+pr[0]+'：中继效率 A/M',u:'',ans:a.eta,abs:0.015},{k:'u1',l:'N='+pr[0]+'：用户数',u:'人',ans:a.u,rel:0.025},{k:'A2',l:'N='+pr[1]+'：查表 A',u:'E',ans:b.A,rel:0.02},{k:'e2',l:'N='+pr[1]+'：中继效率',u:'',ans:b.eta,abs:0.015},{k:'u2',l:'N='+pr[1]+'：用户数',u:'人',ans:b.u,rel:0.025}],
+     steps:['N = '+pr[0]+'：每小区 '+S+'/'+pr[0]+' = '+N_(a.M)+' 条；查 B 表 2%：A ≈ '+N_(a.A,2)+' E；承载 = A × 0.98 = '+fmt(a.car,2)+' E；η = '+fmt(a.A,2)+'/'+a.M+' = '+N_(a.eta,3)+'。',
+       'A<sub>u</sub> = '+calls+' × '+dur+'/60 = '+N_(Au,3)+' E；用户数 = '+fmt(a.A,2)+'/'+fmt(Au,3)+' = '+fmt(a.A/Au,1)+' → '+N_(a.u)+' 人。',
+       'N = '+pr[1]+'：每小区 '+N_(b.M)+' 条；A ≈ '+N_(b.A,2)+' E；承载 '+fmt(b.car,2)+' E；η = '+N_(b.eta,3)+'；用户 '+N_(b.u)+' 人。',
+       '<span class="tip">评论：N 变小，每小区信道多 '+fmt((b.M/a.M-1)*100,0)+'%，话务容量多 '+fmt((b.A/a.A-1)*100,0)+'%（信道池越大中继效率越高）。代价是同频小区更近，SIR 下降。</span>']};}},
+ {key:'split',name:'能否满足 + 小区分裂',src:'y2425s2-q3',srcName:'24-25 Q3(b)(c)',gen:function(){
+   var M,rho,Au,R,dem,cap,tries=0;
+   do{M=rnd(40,100);rho=pick([1000,1500,2000,2500]);Au=pick([0.02,0.025,0.03]);R=pick([1,1.2,1.5]);dem=2.598*R*R*rho*Au;cap=capB(M,0.01);tries++;}while(dem<cap*1.25&&tries<50);
+   var nc=pick([40,60,80]),city=nc*2.598*R*R,maxA=cap/(rho*Au),newR=Math.sqrt(maxA/2.598),cells=Math.ceil(city/maxA-1e-9);
+   return {text:'某城市用 '+N_(nc)+' 个六边形小区覆盖，半径 '+N_(R)+' km，全向天线，每小区 '+N_(M)+' 条信道。用户密度 '+N_(rho)+' /km²，每用户 '+N_(Au)+' E。要求 1% 阻塞（Erlang B）。<ol><li>每小区话务需求和可承载话务，能否满足 1%？</li><li>用小区分裂满足 1%，新半径 R 最大是多少？</li><li>全城需要多少个新小区？</li></ol>',
+     fields:[{k:'d',l:'每小区需求',u:'E',ans:dem,rel:0.01},{k:'c',l:'查表可承载 A',u:'E',ans:cap,rel:0.02},{k:'yn',l:'能否满足 1%',u:'',ans:'no',choice:[['','请选择'],['yes','能'],['no','不能']]},{k:'R',l:'新半径 R',u:'km',ans:newR,rel:0.02},{k:'n',l:'新小区数',u:'个',ans:cells,rel:0.03}],
+     steps:['面积 = 2.598 × '+R+'² = '+fmt(2.598*R*R,3)+' km²；需求 = '+fmt(2.598*R*R,3)+' × '+rho+' × '+Au+' = '+N_(dem,1)+' E。',
+       '查 B 表 '+M+' 行 × 1%：A ≈ '+N_(cap,2)+' E。需求远大于容量，所以<b>不能</b>（实际阻塞约 '+fmt(erlB(M,dem)*100,0)+'%）。',
+       '分裂后 Q、N、每小区 '+M+' 条都不变，只要每小区话务 ≤ '+fmt(cap,2)+' E。面积 ≤ '+fmt(cap,2)+' / ('+rho+' × '+Au+') = '+fmt(maxA,3)+' km²。',
+       'R ≤ √('+fmt(maxA,3)+' / 2.598) = '+N_(newR,3)+' km（= '+R+' × √('+fmt(cap,1)+'/'+fmt(dem,1)+')）。',
+       '全城面积 = '+nc+' × '+fmt(2.598*R*R,3)+' = '+fmt(city,1)+' km²；小区数 = '+fmt(city,1)+' / '+fmt(maxA,3)+' = '+fmt(city/maxA,1)+' → 向上取整 '+N_(cells)+' 个。']};}}
+];
+var cur=null,curTpl=null,score=store.get('score',{ok:0,tot:0});
+function renderTpls(){
+  $('#tpls').innerHTML=TPL.map(function(t,i){return '<button type="button" class="fbtn" data-i="'+i+'" aria-pressed="false">'+esc(t.name)+'</button>';}).join('');
+  $('#tpls').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;newProb(+b.getAttribute('data-i'));});
+}
+function newProb(i){
+  curTpl=i;cur=TPL[i].gen();
+  document.querySelectorAll('#tpls .fbtn').forEach(function(b){b.setAttribute('aria-pressed',+b.getAttribute('data-i')===i?'true':'false');});
+  var t=TPL[i];
+  $('#prob').innerHTML='<div class="prob-h"><h2>'+esc(t.name)+'</h2><a class="src" href="#'+t.src+'">原型：'+esc(t.srcName)+'</a></div>'+
+    '<div class="stmt">'+cur.text+'</div>'+
+    '<div class="fields">'+cur.fields.map(function(f,j){var id='df-'+i+'-'+f.k;
+      var input=f.choice?'<select id="'+id+'">'+f.choice.map(function(o){return '<option value="'+o[0]+'">'+o[1]+'</option>';}).join('')+'</select>':'<input id="'+id+'" type="text" inputmode="decimal" autocomplete="off">';
+      return '<div class="field"><label for="'+id+'">'+esc(f.l)+'</label><div class="inrow">'+input+'<span class="unit">'+esc(f.u)+'</span><span class="mark" id="mk-'+j+'" aria-live="polite"></span></div><span class="refv" id="rv-'+j+'" hidden></span></div>';}).join('')+'</div>'+
+    '<div class="actions"><button type="button" class="btn solid" id="dCheck">检查</button><button type="button" class="btn" id="dSteps" aria-expanded="false">看步骤和答案</button><button type="button" class="btn ghost" id="dNew">换一题</button><span class="score" id="dScore"></span></div>'+
+    '<div class="steps" id="dStepBox" hidden><ol>'+cur.steps.map(function(s){return '<li>'+s+'</li>';}).join('')+'</ol></div>';
+  $('#dCheck').addEventListener('click',check);
+  $('#dNew').addEventListener('click',function(){newProb(curTpl);});
+  $('#dSteps').addEventListener('click',function(){var box=$('#dStepBox'),open=box.hidden;box.hidden=!open;this.setAttribute('aria-expanded',open?'true':'false');this.textContent=open?'收起步骤':'看步骤和答案';
+    cur.fields.forEach(function(f,j){var rv=$('#rv-'+j);rv.hidden=!open;rv.innerHTML='答案：<b>'+(f.choice?(f.ans==='no'?'不能':'能'):fmt(f.ans,f.abs===0?0:(Math.abs(f.ans)>=100?1:(Math.abs(f.ans)>=1?2:3))))+'</b>';});});
+  showScore();
+}
+function parseNum(s){s=String(s).trim().replace(/,/g,'').replace(/[^0-9.\-eE]/g,'');return s===''?NaN:parseFloat(s);}
+function check(){
+  var good=0,any=0;
+  cur.fields.forEach(function(f,j){var el=document.getElementById('df-'+curTpl+'-'+f.k),mk=$('#mk-'+j),ok;
+    if(f.choice){if(!el.value){mk.textContent='';mk.className='mark';return;}ok=el.value===f.ans;}
+    else{var x=parseNum(el.value);if(isNaN(x)){mk.textContent='';mk.className='mark';return;}ok=f.abs!=null?Math.abs(x-f.ans)<=f.abs+1e-9:Math.abs(x-f.ans)<=Math.abs(f.ans)*f.rel+1e-9;}
+    any++;if(ok)good++;mk.textContent=ok?'✓':'✗';mk.className='mark '+(ok?'ok':'no');mk.setAttribute('aria-label',ok?'正确':'不对');});
+  if(any){score.tot+=any;score.ok+=good;store.set('score',score);}
+  showScore(any?('这次 '+good+'/'+any+' 对'):'先填数字再检查');
+}
+function showScore(msg){var el=$('#dScore');if(el)el.textContent=(msg?msg+' · ':'')+'累计 '+score.ok+'/'+score.tot;}
+
+/* ---------- concepts ---------- */
+var CONCEPTS=[
+ {id:'stack',t:'IoT 两个并行栈',src:['y2324s2-q4ab'],m:'7 分',p:'Briefly describe the major components in the Core IoT Functional Stack and the Data Management and Compute Stack.',
+  pts:['<b>核心功能栈三层：</b>① Things 层：传感器、执行器等智能物体，要适应供电、移动性、上报频率、数据量、距离、密度等部署约束。② 通信网络层：四个子层（接入网、网关与回传、网络传输、IoT 网络管理）。③ 应用与分析层：处理数据、做决策，反过来指挥物体调整行为。',
+       '<b>数据管理与计算栈：</b>数据在哪里处理。边缘 mist（设备本身，过滤、简单决策）→ 雾 fog（网关、路由器，实时处理）→ 云 cloud（数据中心，集中存储、历史数据、大规模分析）。三者互补。'],
+  kw:'Things layer · Communications network layer · Application and analytics layer · edge (mist) · fog · cloud'},
+ {id:'sub4',t:'通信网络层四子层',src:['y2425s2-q4b','y2526s2-q4d','y2324s2-q4ab'],m:'8 分 × 2 次',p:'For the core functional IoT stack, the communication network layer is structured with four sublayers. Describe each of them.',
+  pts:['<b>Access network：</b>最后一公里，以无线为主（IEEE 802.11ah、802.15.4g、LoRa）；按距离分 PAN/HAN/NAN/FAN/LAN/WAN；星型、网状等拓扑。',
+       '<b>Gateways and backhaul：</b>一片区域的物体围着一个公共网关，网关做跨介质转换，再经长距离回传（蜂窝、光纤）送到头端中心站。物体可以动，网关一般固定。',
+       '<b>Network transport：</b>开放、标准的 IP + UDP/TCP；要能扩展到百万级传感器、要安全。IP 能跑在低功耗、有损、窄带网络上；TCP 由网络保证可靠，UDP 交给应用。',
+       '<b>IoT network management：</b>应用层协议，让头端应用和传感器交换数据：HTTP（传感器做客户端）、WebSocket（轻量、双向，适合低内存、低功耗、高丢包）。'],
+  kw:'access network (last mile) → gateways & backhaul → network transport (IP, UDP/TCP) → IoT network management (HTTP, WebSocket)'},
+ {id:'fogwhy',t:'为什么要引入雾计算',src:['y2324s2-q4ab'],m:'6 分',p:'Discuss the necessity to introduce Fog Computing into the simplified IoT architecture.',
+  pts:['<b>全送云端的四个问题：</b>最后一公里带宽很有限；时延大，失去实时响应；网关的回传（3G/LTE、卫星）不可靠；数据量太大，传不动也来不及分析。',
+       '<b>雾计算怎么解决：</b>把处理放到尽量靠近 IP 网络边缘的地方（网关、路由器）。时延低；卸载核心网流量；敏感数据留在本地；上传前预处理，云只处理子集。',
+       '<b>额外好处：</b>雾节点离传感器近，有上下文感知，能就地快速反应，形成实时的分布式边缘控制环。雾是补充云，不是替代云。'],
+  kw:'limited bandwidth · high latency · unreliable backhaul · data volume · minimise latency · offload core network · contextual awareness'},
+ {id:'fogfeat',t:'雾计算的关键特征',src:['y2526s1-q4bc'],m:'约 8 分',p:'Discuss the key features of fog computing.',
+  pts:['<b>上下文位置感知 + 低时延：</b>雾节点尽量靠近 IoT 终端，了解它管的传感器，反应比远端云快得多。',
+       '<b>地理分布：</b>雾节点服务的应用需要大范围分布式部署。',
+       '<b>部署在大量 IoT 终端附近：</b>哪里终端多就放在哪里。',
+       '<b>雾节点与终端无线连接：</b>一个雾节点要接很多终端，无线最容易扩展。',
+       '<b>面向实时交互：</b>数据在雾节点预处理，上层应用只需批处理数据子集。'],
+  kw:'contextual location awareness & low latency · geographic distribution · deployment near IoT endpoints · wireless communication · real-time interactions'},
+ {id:'iotdiff',t:'IoT 的五个难点',src:['y2526s1-q4bc'],m:'约 9 分',p:'Discuss five of the potential difficulties in the development of IoT.',
+  pts:['<b>可扩展性 Scalability：</b>百万级设备的寻址、接入、管理怎么撑住；网络层地址可以用 IPv6 解决。',
+       '<b>安全 Security：</b>连接越多，攻击面越大；一个被黑的设备可以成为攻击其他设备和系统的跳板。',
+       '<b>隐私 Privacy：</b>传感数据和个人活动相关，含敏感信息和凭证；怎么保护、和谁共享。',
+       '<b>大数据与分析 Big data and analytics：</b>海量、多源、多格式的数据，要及时处理才有价值。',
+       '<b>互操作性 Interoperability：</b>私有和开放的协议、架构互相竞争，不同实现之间难以互通。'],
+  kw:'scalability · security · privacy · big data and analytics · interoperability'},
+ {id:'hlr',t:'数据库：HLR 与 VLR',src:['y2425s2-q4a'],m:'8 分',p:'What are the basic functions of the database unit? Describe the differences between HLR and VLR.',
+  pts:['<b>数据库功能：</b>存用户签约信息（身份、业务、鉴权、计费）和位置信息；MSC 在呼叫建立、寻呼、鉴权、漫游、切换时查询。',
+       '<b>HLR：</b>归属网络里永久、集中的数据库；存每个签约用户的主记录，以及他当前在哪个 VLR/MSC 区。',
+       '<b>VLR：</b>每个 MSC 服务区一个，临时、分布式；存当前在本区所有用户（本地和漫游）的副本和位置区。进来时从 HLR 下载，离开时删除，本地呼叫不用每次问 HLR。',
+       '<b>换区流程：</b>新 VLR 向 HLR 登记 → HLR 更新位置，通知旧 VLR 删除记录。'],
+  kw:'subscriber & location information · HLR: permanent, centralised, master record · VLR: temporary, per MSC area, copy of visiting users'},
+ {id:'ho',t:'硬切换与软切换',src:['y2526s2-q4a'],m:'4 分',p:'Describe the two types of handovers in terrestrial cellular systems and the systems that use each.',
+  pts:['<b>硬切换 break before make：</b>先释放旧基站的信道，再建立新基站的信道，同一时刻只连一个基站。简单，但有短暂中断、可能掉话。用于 FDMA/TDMA：GSM、IS-136。',
+       '<b>软切换 make before break：</b>先和新基站建好信道，新旧同时使用，再释放旧的。边界处有分集、不中断。用于 CDMA：IS-95、WCDMA、cdma2000。',
+       '<b>为什么 CDMA 能软切换：</b>相邻小区用同一频率，手机可以同时和两个基站通信。'],
+  kw:'hard: break before make (GSM, IS-136) · soft: make before break, diversity (IS-95, WCDMA, cdma2000)'},
+ {id:'sat',t:'LEO/MEO 卫星的四种切换',src:['y2526s2-q4b'],m:'8 分',p:'Briefly describe the 4 different types of handovers in a MEO/LEO satellite system where the satellite acts as a base station.',
+  pts:['<b>前提：</b>MEO/LEO 卫星相对地面在动，切换既可能因为用户移动，也可能因为卫星移动。',
+       '<b>星内切换 Intra-satellite：</b>用户在同一颗卫星覆盖内从一个波束（扇区）移到另一个，换同一颗卫星的另一个波束/信道。',
+       '<b>星间切换 Inter-satellite：</b>用户移到另一颗卫星覆盖区，或卫星飞走，换到下一颗卫星。LEO 很频繁。',
+       '<b>网关切换 Gateway：</b>卫星离开当前地面网关，链路换到另一个网关，用户不动也会发生。',
+       '<b>系统间切换 Inter-system：</b>卫星系统和地面蜂窝之间按信号强度、QoS 切换，是垂直切换。'],
+  kw:'intra-satellite (beam) · inter-satellite · gateway · inter-system (vertical)'},
+ {id:'wlan',t:'802.11 入网：扫描 → 认证 → 关联',src:['y2526s1-q4a'],m:'8 分',p:'Describe the connection establishment process between a node and an AP and explain the function of authentication.',
+  pts:['<b>扫描 / 同步 Scanning：</b>被动扫描等 AP 周期广播的 Beacon；主动扫描发 Probe Request，等 Probe Response。',
+       '<b>认证 Authentication：</b>节点和 AP 交换信息，互相证明知道约定的密码。作用：确认节点（和 AP）合法，挡住未授权设备，保护网络资源和数据。',
+       '<b>关联 Association：</b>交换节点和 BSS 的能力信息，并通知分布系统 DS 节点当前在哪个 AP 下，以便帧能经正确的 AP 送达。',
+       '<b>关联完成后</b>才能收发数据帧。口诀：扫 → 认 → 联 → 传。'],
+  kw:'passive scanning (Beacon) / active scanning (Probe Request/Response) · authentication (shared password) · association (capabilities, DS informed)'},
+ {id:'wsn',t:'传感网的通信架构',src:['y2526s2-q4c'],m:'5 分',p:'Describe the communication architecture in sensor networks and how sensor nodes relay information back to the manager.',
+  pts:['<b>节点：</b>散布在感知区，能采集数据并把数据路由回 sink。',
+       '<b>多跳接力：</b>节点功率小、距离短，数据经多跳、无基础设施的方式一跳一跳转发：A → B → C → … → sink。',
+       '<b>回到管理者：</b>sink 经 Internet 或卫星连到任务管理节点 task manager node，用户在那里取数据，也能反向下发任务和查询。',
+       '<b>设计因素：</b>容错、可扩展、成本、环境、拓扑、硬件、传输介质、功耗。协议栈是五层 + 功率、移动、任务三个管理平面。答题时画一张链路图。'],
+  kw:'sensor field · multi-hop, infrastructureless · sink · Internet / satellite · task manager node · user'},
+ {id:'ma',t:'三种多址方式',src:['y2324s2-q3b'],m:'5 分',p:'Briefly describe FDMA, TDMA and CDMA and give an example system for each.',
+  pts:['<b>FDMA：</b>频谱切成等宽频道，每个用户通话期间独占一个频道。例：1G 的 AMPS（30 kHz）。',
+       '<b>TDMA：</b>一个载波按时间切成时隙，几个用户轮流只在自己的时隙发送。例：GSM（200 kHz、8 时隙，实际是 FDMA/TDMA 结合）、IS-136。',
+       '<b>CDMA：</b>所有用户同时、同频、宽带发送，用不同的扩频码区分；接收端用自己的码相关解扩，其他用户像低电平噪声。例：IS-95、WCDMA、cdma2000。'],
+  kw:'FDMA: frequency channels (AMPS) · TDMA: time slots (GSM, IS-136) · CDMA: spreading codes (IS-95, WCDMA, cdma2000)'},
+ {id:'fca',t:'固定与动态信道分配',src:['y2526s1-q3c'],m:'4 分',p:'Briefly describe the concept of fixed and dynamic channel assignment.',
+  pts:['<b>FCA 固定分配：</b>每个小区预先分好一组信道，呼叫只能用本小区的空闲信道；全忙就阻塞，即使邻区有空。可以均匀分或按话务非均匀分。简单，但不能适应话务变化。',
+       '<b>DCA 动态分配：</b>信道放在公共池里，呼叫到来时按算法（预测阻塞、复用距离、代价函数）分配，只要不违反复用距离 D。借信道 channel borrowing 是一种。灵活、阻塞低，但要集中控制、计算量大。'],
+  kw:'FCA: predetermined set per cell, simple, inflexible · DCA: common pool, allocated per call subject to reuse distance, flexible, complex'}
+];
+var CR=store.get('crate',{}),CF='all';
+function renderConcepts(){
+  var fb=$('#cFilter');
+  [['all','全部 12 张'],['todo','还没标「会了」的']].forEach(function(o){var b=document.createElement('button');b.type='button';b.className='fbtn';b.textContent=o[1];b.setAttribute('aria-pressed',CF===o[0]?'true':'false');
+    b.addEventListener('click',function(){CF=o[0];fb.querySelectorAll('.fbtn').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});filterConcepts();});fb.appendChild(b);});
+  $('#cgrid').innerHTML=CONCEPTS.map(function(c){
+    return '<article class="panel ccard" data-c="'+c.id+'"><div class="qmeta"><span class="pill concept">'+esc(c.m)+'</span>'+c.src.map(function(s){var p=paperOf(s);return '<a class="src" href="#'+s+'">'+p.name+' '+esc(byId[s]?byId[s].qno:'')+'</a>';}).join('')+'</div>'+
+      '<h3>'+esc(c.t)+'</h3><p class="prompt" lang="en">'+esc(c.p)+'</p>'+
+      '<div class="actions"><button type="button" class="btn solid" data-act="flip" aria-expanded="false">翻开要点</button><div class="rate" role="group" aria-label="掌握程度">'+[['ok','会了'],['no','不会']].map(function(r){return '<button type="button" data-r="'+r[0]+'" aria-pressed="'+(CR[c.id]===r[0]?'true':'false')+'">'+r[1]+'</button>';}).join('')+'</div></div>'+
+      '<div class="cbody" hidden><ol class="points">'+c.pts.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ol><p class="kw" lang="en">'+esc(c.kw)+'</p></div></article>';
+  }).join('');
+  $('#cgrid').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var card=b.closest('.ccard'),id=card.getAttribute('data-c');
+    if(b.getAttribute('data-act')==='flip'){var body=card.querySelector('.cbody'),open=body.hidden;body.hidden=!open;b.setAttribute('aria-expanded',open?'true':'false');b.textContent=open?'合上':'翻开要点';}
+    else if(b.hasAttribute('data-r')){var r=b.getAttribute('data-r');CR[id]=CR[id]===r?undefined:r;if(!CR[id])delete CR[id];store.set('crate',CR);card.querySelectorAll('.rate button').forEach(function(x){x.setAttribute('aria-pressed',CR[id]===x.getAttribute('data-r')?'true':'false');});filterConcepts();}});
+}
+function filterConcepts(){document.querySelectorAll('.ccard').forEach(function(c){c.hidden=CF==='todo'&&CR[c.getAttribute('data-c')]==='ok';});}
+
+/* ---------- tools ---------- */
+function num(id){return parseFloat(document.getElementById(id).value);}
+function toolB(){var M=Math.round(num('ebM')),g=num('ebG')/100;$('#ebA').textContent=(M>0&&g>0&&g<1)?fx(capB(M,g),2):'–';
+  var A=num('ebA2'),M2=Math.round(num('ebM2'));$('#ebP').textContent=(M2>0&&A>=0)?fx(erlB(M2,A)*100,2)+'%':'–';
+  var s=$('#ebA').nextElementSibling;s.textContent='Erlang：'+fmt(num('ebG'),2)+'% 阻塞下能承载的话务 A';}
+function toolC(){var M=Math.round(num('ecM')),p=num('ecP')/100;$('#ecA').textContent=(M>0&&p>0&&p<1)?fx(capC(M,p),2):'–';
+  var note='Erlang：等待概率 '+fmt(num('ecP'),2)+'% 下的话务 A';
+  if(M>0&&M%5!==0&&p>0&&p<1){var lo=Math.floor(M/5)*5,hi=lo+5;if(lo>0){var al=capC(lo,p),ah=capC(hi,p);note+='；按 5 行一档插值 ≈ '+fx(al+(M-lo)/5*(ah-al),2);}}
+  $('#ecNote').textContent=note;
+  var A=num('ecA2'),M2=Math.round(num('ecM2'));$('#ecPd').textContent=(M2>0&&A>=0)?(A>=M2?'100%（A ≥ M，队列无限增长）':fx(erlC(M2,A)*100,2)+'%'):'–';}
+function toolSIR(){
+  var T=num('sirT'),n=num('sirN'),mode=$('#sirMode').value;if(!(n>0)){return;}
+  var rows=LEGAL.filter(function(o){return o.n<=21;}),need=Math.pow(10,T/10),pickN=null;
+  rows.forEach(function(o){if(pickN==null&&SIRF[mode](o.n,n)>=need)pickN=o.n;});
+  var keys=['simp','worst','s120','s60'];
+  $('#sirTable').innerHTML='<thead><tr><th>N</th><th>Q</th>'+keys.map(function(k){return '<th>'+SIRNAME[k]+' dB</th>';}).join('')+'</tr></thead><tbody>'+rows.map(function(o){
+    return '<tr class="'+(o.n===pickN?'pick':'')+'"><td>'+o.n+'</td><td>'+fx(Qof(o.n),3)+'</td>'+keys.map(function(k){var v=db(SIRF[k](o.n,n));return '<td class="'+(v>=T?'ok':'no')+'">'+fx(v,2)+'</td>';}).join('')+'</tr>';}).join('')+'</tbody>';
+  $('#sirPick').textContent=pickN?('N = '+pickN):'N > 21';
+  var idx=LEGALN.indexOf(pickN),prev=idx>0?LEGALN[idx-1]:null;
+  $('#sirPickNote').textContent=pickN?('按'+SIRNAME[mode]+'，满足 '+T+' dB 的最小合法簇。'+(prev?'前一个 N = '+prev+' 只有 '+fx(db(SIRF[mode](prev,n)),2)+' dB。':'')):'表里的 N 都不够。';
+}
+function bindTools(){
+  ['ebM','ebG','ebA2','ebM2'].forEach(function(id){document.getElementById(id).addEventListener('input',toolB);});
+  ['ecM','ecP','ecA2','ecM2'].forEach(function(id){document.getElementById(id).addEventListener('input',toolC);});
+  ['sirT','sirN','sirMode'].forEach(function(id){document.getElementById(id).addEventListener('input',toolSIR);});
+  toolB();toolC();toolSIR();
+}
+
+/* ---------- boot ---------- */
+renderMap();buildFilters();renderQList();applyFilters();renderTpls();newProb(0);renderConcepts();bindTools();route();
+})();
+</script>
+</body>
+</html>
