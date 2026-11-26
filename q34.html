@@ -242,6 +242,22 @@ tr.pick td{background:var(--accent-soft)}
 .tbl-wrap{overflow-x:auto}
 .tool.wide{grid-column:1/-1}
 
+/* combo */
+.maptbl{width:100%;font-family:var(--f-body);font-size:13.5px}
+.maptbl th,.maptbl td{text-align:left;white-space:normal;vertical-align:top;padding:7px 10px}
+.maptbl td:first-child a{font-family:var(--f-mono);font-weight:600;text-decoration:none}
+.maptbl td.mf{font-family:var(--f-mono);font-size:12.5px;color:var(--ink)}
+.maptbl td.mt{color:var(--ink-2);font-size:12.5px}
+.cq{font-size:14.5px}
+.cb{display:flex;flex-direction:column;gap:10px}
+.cb-l{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;color:var(--ink-3);margin-bottom:3px}
+.cb p{font-size:14px}
+.cb ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:4px;font-size:14px}
+.cb-ans{background:var(--accent-soft);color:var(--accent-ink);border-radius:7px;padding:7px 11px;font-weight:600}
+.cb-hook{background:var(--amber-soft);border-radius:7px;padding:8px 11px;color:var(--ink)}
+.cb-hook b{color:var(--amber)}
+.chainline{font-size:14.5px;line-height:1.85}
+
 @media (max-width:560px){
   .subrow{grid-template-columns:1fr;gap:2px}
   .rate{margin-left:0}
@@ -274,6 +290,8 @@ tr.pick td{background:var(--accent-soft)}
     <nav class="tabs" aria-label="视图">
       <a href="#map">规律</a>
       <a href="#formulas">公式</a>
+      <a href="#combo">Q3/Q4 串讲</a>
+      <a href="#combo12">Q1/Q2 串讲</a>
       <a href="#papers">真题</a>
       <a href="#drill">变式练习</a>
       <a href="#concepts">Q4 概念背诵</a>
@@ -289,7 +307,7 @@ tr.pick td{background:var(--accent-soft)}
   <div class="lead">
     <span class="eyebrow">2023-24 S2 · 2024-25 S2 · 2025-26 S1 · 2025-26 S2</span>
     <h1>Q3 年年是蜂窝计算，Q4 年年有物联网</h1>
-    <p>Q1、Q2 是衰落、分集、MIMO、均衡、OFDM 各章轮流出，确实没有固定套路。Q3、Q4 不一样：四套卷的出法几乎一样。先看这一页的规律，再去「真题」逐题过，用「变式练习」换数字刷计算，最后在「Q4 概念背诵」把描述题背熟。</p>
+    <p>Q1、Q2 其实也有固定的五个位置（衰落信道、分集、MIMO、ISI 与均衡、OFDM），只是每块的小问年年换，见「Q1/Q2 串讲」。Q3、Q4 更固定：四套卷的出法几乎一样。先看这一页的规律，用「一题串讲」把公式串起来记，再去「真题」逐题过，用「变式练习」换数字刷计算，最后在「Q4 概念背诵」把描述题背熟。</p>
   </div>
 
   <div class="sec">
@@ -307,10 +325,10 @@ tr.pick td{background:var(--accent-soft)}
     <div class="sec-head"><h2>出题规律</h2></div>
     <ul class="rules">
       <li><b>Q3 = Part A 蜂窝计算，约 25 分</b>四套卷的第一步都是「数信道，每小区信道 = S/N」，然后查话务表，再反推用户数、密度、半径或小区数。题目只是从这条链上截一段。</li>
-      <li><b>查哪张表看关键词</b>2023-24、2024-25 用 Erlang B（blocked calls cleared、blocking probability）。2025-26 两套都是 Erlang C（probability of delay），而且信道数不在表上，要线性插值。两张表都要会。</li>
+      <li><b>查哪张表看关键词</b>2023-24、2024-25 用 Erlang B（blocked calls cleared、blocking probability）。2025-26 两套都是 Erlang C（probability of delay），信道数 111、153 都超过 100，表上 5 行一档，要线性插值；100 以内表上逐行都有，直接读。两张表都要会。</li>
       <li><b>A<sub>u</sub> = λH 每套都出现</b>要么用它求用户数，要么反过来问平均通话时长 H = A<sub>u</sub>/λ（2025-26 两套都问了秒数）。H 一定先换成小时。</li>
       <li><b>SIR 选簇、扇区化隔年出现</b>Q<sup>n</sup>/6、Q = √(3N)、120° 公式。凡是扇区化都要写评论：SIR 变好，但每扇区信道少、中继效率下降、切换变多；只有配合缩小 N 才能增容。</li>
-      <li><b>Q3 末尾常挂 4–5 分概念</b>考过多址 FDMA/TDMA/CDMA 和 FCA/DCA。最近一套换成了 M/M/m 状态转移图和 P<sub>k</sub> 推导（12 分左右）。</li>
+      <li><b>Q3 末尾常挂 4–5 分概念</b>考过多址 FDMA/TDMA/CDMA 和 FCA/DCA。最近一套换成了 M/M/m 状态转移图和 P<sub>k</sub> 推导（(b)(c) 合计 19 分，(c) 约 10 分）。</li>
       <li><b>Q4 以描述为主，物联网每套必考</b>通信网络层四子层考了 3 次，雾计算 2 次，五个难点 1 次。另配 1–3 个「系统流程」题：HLR/VLR、硬/软切换、802.11 入网、卫星四种切换、传感网架构。</li>
       <li><b>Q4 也可能夹 9–12 分计算</b>2023-24 考了 SIR 推导和求 n，2024-25 考了 Erlang B 中继效率。近两年 Q4 全是概念，但不能赌。</li>
       <li><b>评论题的固定说法</b>「信道池越大，中继效率越高」「分裂不改 SIR、不改每小区信道，只改面积」「扇区化用容量换 SIR」。这三句几乎每套都能用上。</li>
@@ -459,7 +477,7 @@ n = 4 时：SIR = (3N)²/6 = 1.5N²
         <p class="when"><b>B 表触发词：</b>blocked calls cleared、blocking probability、GOS、call blocking</p>
         <p class="when"><b>C 表触发词：</b>queued、delayed、probability of delaying a call、Erlang C system</p>
         <div class="f">查表：信道数 M 那一行 × 概率那一列 → A（Erlang）
-M 不在表上（C 表常见，5 行一档）就线性插值：
+M 不在表上才线性插值（附录 C 表 100 以内逐行都有，100 以上 5 行一档）：
 A ≈ A<sub>lo</sub> + (M − M<sub>lo</sub>)/(M<sub>hi</sub> − M<sub>lo</sub>) × (A<sub>hi</sub> − A<sub>lo</sub>)</div>
         <p class="warn"><b>易错：</b>行列看串（34.3 是 B 表 46 行，不是 57 行）。自检：A/M 一般在 0.6–0.9 之间。</p>
         <div class="srcs"><a class="src" href="#y2324s2-q3a">B：23-24</a><a class="src" href="#y2425s2-q3">B：24-25</a><a class="src" href="#y2526s1-q3b">C：25-26 S1</a><a class="src" href="#y2526s2-q3bc">C：25-26 S2</a></div>
@@ -520,6 +538,80 @@ k ≥ m：P<sub>k</sub> = P<sub>0</sub> ρ<sup>k</sup> / (m! · m<sup>k−m</sup
         <div class="srcs"><a class="src" href="#y2526s2-q3bc">25-26 S2 Q3(c)</a></div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ============ COMBO ============ -->
+<section class="view" data-view="combo" id="v-combo" hidden>
+  <div class="lead">
+    <span class="eyebrow">一个场景，11 个小问，用上 Q3/Q4 全部计算公式</span>
+    <h1>一道题把公式串起来记</h1>
+    <p>题目用英文写，和考试一样，因为触发词决定用哪条公式。每个小问先自己算，再点「看讲解」：里面写了用哪条公式、为什么用它、怎么算、怎么记。数值都用脚本核对过。</p>
+  </div>
+  <div class="sec">
+    <div class="sec-head"><h2>题目</h2></div>
+    <div class="orig" lang="en">
+      <p>A city deploys an <b>FDD-TDMA</b> cellular network with <b>56 hexagonal cells</b> of radius <b>R = 1 km</b> and omni-directional antennas (A<sub>ce</sub> = 2.598R²). A total of <b>36 MHz</b> is allocated; <b>each link (uplink or downlink) uses 1.2 MHz</b> for control. Each carrier is <b>200 kHz</b> with <b>8 timeslots per frame</b>. The minimum downlink <b>SIR is 18 dB</b> and the path-loss exponent is <b>n = 4</b>. The co-channel cells in the <b>first tier</b> are <b>equidistant</b> from the mobile at the <b>edge of the cell</b>. User density is <b>1500 users/km²</b>. Each user generates <b>0.03 Erlang</b> and makes <b>1.2 calls per hour</b>. The system uses <b>blocked calls cleared</b> with <b>1% blocking</b>.</p>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-head"><h2>公式地图</h2><p>先记这张表：每个小问用哪条公式，看到什么词就用它。点小问跳到讲解。</p></div>
+    <div class="panel tbl-wrap"><table class="maptbl" id="comboMap"></table></div>
+  </div>
+  <div class="sec">
+    <div class="sec-head"><h2>逐问讲解</h2></div>
+    <div class="actions"><button type="button" class="btn" id="cbAll" aria-expanded="false">全部展开</button></div>
+    <div class="qlist" id="comboList"></div>
+  </div>
+  <div class="panel pcard">
+    <h3>一句话串起来</h3>
+    <p class="chainline">λH 算出每人话务 → 劈带宽数出 672 条 → Q<sup>n</sup>/6 选出 N = 7 → ÷N 得每小区 96 条 → 查 B 表 80.3 E → 用户 2676、需求 116.9 E，不够 → 两条路：分裂（R = 0.83 km，82 个小区）或扇区（N = 4，每扇区 56 条，51 个小区）→ 改成排队制就查 C 表（96 行直接读）。</p>
+  </div>
+</section>
+
+<!-- ============ COMBO12 ============ -->
+<section class="view" data-view="combo12" id="v-combo12" hidden>
+  <div class="lead">
+    <span class="eyebrow">Q1 / Q2：五个固定位置，一道题 22 个小问</span>
+    <h1>Q1、Q2 也有规律：五个位置年年都在</h1>
+    <p>四套卷的 Q1、Q2 都是同样五块：衰落信道、分集合并、MIMO、ISI 与均衡、OFDM。每块的小问年年换，但每块用到的公式就那几条。先看四套卷各考了什么，再用一道题把这些公式全部用一遍。数值都用脚本核对过。</p>
+  </div>
+  <div class="sec">
+    <div class="sec-head"><h2>四套卷的五个位置</h2><p>加粗的点在四套卷里出现了 2 次或以上。</p></div>
+    <div class="panel tbl-wrap"><table class="maptbl">
+      <thead><tr><th>位置</th><th>2023-24 S2</th><th>2024-25 S2</th><th>2025-26 S1</th><th>2025-26 S2</th></tr></thead>
+      <tbody>
+        <tr><td><b>Q1(a) 衰落信道</b><br>12–13 分</td><td>路径损耗 dB 直线、阴影中断、<b>衰落类型</b>、<b>衰落余量</b></td><td>路径损耗图、<b>LCR/AFD</b>、注水</td><td>AWGN 二进制检测</td><td><b>衰落类型</b>、<b>LCR/AFD</b>、<b>衰落余量</b></td></tr>
+        <tr><td><b>Q1(b)(i) 分集合并</b><br>约 6 分</td><td>SD <b>离散 SNR</b>、DPSK 误码</td><td>SD 中断概率求 M</td><td>MRC <b>离散 SNR</b>、<b>分集增益</b></td><td>阵列增益、<b>分集增益</b>求误码</td></tr>
+        <tr><td><b>Q1(b)(ii) MIMO</b><br>约 7 分</td><td>空间复用、<b>Alamouti</b></td><td>最大分集、DMT 求速率、<b>容量</b></td><td>SIMO 分集、<b>容量</b> = 并行信道之和</td><td>y = Hx + v、<b>Alamouti</b> 检测方差</td></tr>
+        <tr><td><b>Q2(a) ISI 与均衡</b><br>12–13 分</td><td>读抽头、判决、<b>残余 ISI 误码</b>、<b>噪声放大</b></td><td>迫零抽头、<b>残余 ISI 误码</b></td><td>求 L、<b>ISI 误码</b>、<b>噪声放大</b></td><td>Nyquist、<b>噪声放大</b>、<b>残余 ISI 误码</b></td></tr>
+        <tr><td><b>Q2(b) OFDM</b><br>12–13 分</td><td><b>由 B<sub>c</sub> 求 N</b>、<b>子信道增益</b>、<b>CP 功率损失</b></td><td>速率拆分、加 CP 的表达式、等容量功率</td><td><b>由 B<sub>c</sub> 求 N</b>、有效速率、相关器正交</td><td><b>子信道增益</b>、IDFT、<b>CP 功率损失</b></td></tr>
+      </tbody>
+    </table></div>
+    <ul class="rules">
+      <li><b>ISI 下的平均误码率四套全考</b>ISI 取 ± 两种情况，各算一个 Q 再取平均。这是 Q1/Q2 最稳的得分点。</li>
+      <li><b>其次是 2–3 次的点</b>噪声放大 σ²Σc² 考了 3 次；子信道增益（DFT）、CP 功率损失、由 B<sub>c</sub> 求 N、衰落类型、LCR/AFD、衰落余量、离散 SNR 求平均、P̄<sub>e</sub> ≈ γ̄<sup>−d</sup> 各 2 次。</li>
+      <li><b>MIMO 每年换问法，公式只有五条</b>N·M、min(N, M)、DMT 的 (N − r)(M − r)、容量 log<sub>2</sub>det{…}、Alamouti 的 XX<sup>H</sup> 和 σ²/‖h‖²。</li>
+    </ul>
+  </div>
+  <div class="sec">
+    <div class="sec-head"><h2>题目</h2><p>前面的结论后面接着用：Q1 判出频率选择性衰落，Q2 就用均衡和 OFDM 去对付它。</p></div>
+    <div class="orig" lang="en">
+      <p>A system has bandwidth <b>B = 1 MHz</b> (T<sub>s</sub> = 1/B = 1 µs) and sends <b>±1</b> symbols. Path loss: <b>K<sub>dB</sub> = −30 dB, γ = 3.5</b>, shadowing <b>σ<sub>ψ</sub> = 4 dB</b>. The channel has coherence bandwidth <b>B<sub>c</sub> = 500 kHz</b>, Doppler spread <b>B<sub>D</sub> = 200 Hz</b> and sampled impulse response <b>{1, 0.5}</b>, i.e. H(Z) = 1 + 0.5Z<sup>−1</sup>. The AWGN variance is <b>0.16</b>.</p>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sec-head"><h2>公式地图</h2><p>每个小问用哪条公式，看到什么词就用它。点小问跳到讲解。</p></div>
+    <div class="panel tbl-wrap"><table class="maptbl" id="combo12Map"></table></div>
+  </div>
+  <div class="sec">
+    <div class="sec-head"><h2>逐问讲解</h2></div>
+    <div class="actions"><button type="button" class="btn" id="cb12All" aria-expanded="false">全部展开</button></div>
+    <div class="qlist" id="combo12List"></div>
+  </div>
+  <div class="panel pcard">
+    <h3>一句话串起来</h3>
+    <p class="chainline">路径损耗取 dB 是直线 → 阴影用 Q(余量/σ) → B &gt; B<sub>c</sub> 判成频率选择性 → 分集用 SD/MRC 和 p<sup>M</sup> 抗衰落，MIMO 看 N·M、min(N, M)、DMT → ISI 取 ± 两个 Q 平均算误码 → 迫零用 1/H 展开，代价是噪声乘 Σc² → OFDM 用 N = B/(B<sub>c</sub>/2) 切成平坦子信道，H<sub>k</sub> 用 DFT 算，CP 多花 10 log(5/4) dB。</p>
   </div>
 </section>
 
@@ -648,7 +740,7 @@ function pick(a){return a[Math.floor(Math.random()*a.length)];}
 function gcd(a,b){return b?gcd(b,a%b):a;}
 
 /* ---------- router ---------- */
-var VIEWS=['map','formulas','papers','drill','concepts','tools'];
+var VIEWS=['map','formulas','combo','combo12','papers','drill','concepts','tools'];
 function route(){
   var h=(location.hash||'').slice(1),target=null;
   if(byId[h]){target=h;h='papers';}
@@ -786,16 +878,16 @@ var TPL=[
        '用户数 = '+fmt(A,2)+' / '+fmt(Au,4)+' = '+fmt(A/Au,1)+'，向下取整 '+N_(u)+' 人。',
        '面积 = '+u+' / '+rho+' = '+fmt(area,3)+' km²；R = √('+fmt(area,3)+' / 2.598) = '+N_(R,3)+' km。',
        'T<sub>g</sub> = '+u+' / '+M+' = '+N_(Tg,1)+' 用户/信道。']};}},
- {key:'ec',name:'Erlang C 插值',src:'y2526s2-q3bc',srcName:'25-26 S1/S2 Q3(b)',gen:function(){
-   var N=pick([7,9]),M;do{M=rnd(42,158);}while(M%5===0&&Math.random()<0.85);
+ {key:'ec',name:'Erlang C 查表 / 插值',src:'y2526s2-q3bc',srcName:'25-26 S1/S2 Q3(b)',gen:function(){
+   var N=pick([7,9]),M;do{M=rnd(60,158);}while(M>100&&M%5===0&&Math.random()<0.85);
    var S=M*N+rnd(0,N-1),Au=pick([0.02,0.025,0.03,0.035]),lam=pick([1,1.2,1.5,2]),a=pick([2,3,4,5,6]),p=0.05;
-   var lo=Math.floor(M/5)*5,hi=lo+5,Alo=capC(lo,p),Ahi=capC(hi,p),Aex=capC(M,p),Ai=(M%5===0)?Aex:Alo+(M-lo)/5*(Ahi-Alo);
+   var dir=(M<=100||M%5===0),lo=Math.floor(M/5)*5,hi=lo+5,Alo=capC(lo,p),Ahi=capC(hi,p),Aex=capC(M,p),Ai=dir?Aex:Alo+(M-lo)/5*(Ahi-Alo);
    var users=Ai/Au,dens=users/a,Hs=Au/lam*3600;
    return {text:'某蜂窝系统簇大小 '+N_(N)+'，共 '+N_(S)+' 条话务信道，每个小区面积 '+N_(a)+' km²。每用户话务 '+N_(Au)+' E，平均每小时 '+N_(lam)+' 次呼叫。Erlang C 系统，呼叫被延迟的概率为 5%。<ol><li>每小区话务量；</li><li>每 km² 能支持的用户数；</li><li>平均通话时长（秒）。</li></ol>',
      fields:[{k:'M',l:'每小区信道',u:'条',ans:Math.floor(S/N),abs:0},{k:'A',l:'每小区话务 A',u:'E',ans:Ai,rel:0.015},{k:'d',l:'用户密度',u:'人/km²',ans:dens,rel:0.02},{k:'H',l:'平均通话时长',u:'s',ans:Hs,abs:0.6}],
      steps:['每小区 = '+S+' / '+N+' = '+fmt(S/N,2)+'，取 '+N_(M)+' 条。题目说 delayed → Erlang C 表。',
-       M%5===0?'表上正好有 '+M+' 行：A ≈ '+N_(Aex,2)+' E。':'C 表 5% 列只有 '+lo+' 和 '+hi+' 行：A('+lo+') ≈ '+fmt(Alo,2)+'，A('+hi+') ≈ '+fmt(Ahi,2)+'。',
-       M%5===0?'不用插值。':'插值：A ≈ '+fmt(Alo,2)+' + ('+M+' − '+lo+')/5 × ('+fmt(Ahi,2)+' − '+fmt(Alo,2)+') = '+N_(Ai,2)+' E（精确值 '+fmt(Aex,2)+'）。',
+       dir?'表上有 '+M+' 行（附录 C 表 100 以内逐行都有，100 以上 5 行一档）：5% 列 A ≈ '+N_(Aex,2)+' E。':'附录 C 表 100 以上 5 行一档，5% 列只有 '+lo+' 和 '+hi+' 行：A('+lo+') ≈ '+fmt(Alo,2)+'，A('+hi+') ≈ '+fmt(Ahi,2)+'。',
+       dir?'直接读，不用插值。':'插值：A ≈ '+fmt(Alo,2)+' + ('+M+' − '+lo+')/5 × ('+fmt(Ahi,2)+' − '+fmt(Alo,2)+') = '+N_(Ai,2)+' E（精确值 '+fmt(Aex,2)+'）。',
        '用户数 = '+fmt(Ai,2)+' / '+Au+' = '+fmt(users,0)+' 人；密度 = '+fmt(users,0)+' / '+a+' = '+N_(dens,0)+' 人/km²。',
        'A<sub>u</sub> = λH → H = '+Au+' / '+lam+' = '+fmt(Au/lam,4)+' h = '+N_(Hs,1)+' s。']};}},
  {key:'reuse',name:'频率复用与系统容量',src:'y2526s2-q3a',srcName:'25-26 S2 Q3(a)',gen:function(){
@@ -967,7 +1059,7 @@ function toolB(){var M=Math.round(num('ebM')),g=num('ebG')/100;$('#ebA').textCon
   var s=$('#ebA').nextElementSibling;s.textContent='Erlang：'+fmt(num('ebG'),2)+'% 阻塞下能承载的话务 A';}
 function toolC(){var M=Math.round(num('ecM')),p=num('ecP')/100;$('#ecA').textContent=(M>0&&p>0&&p<1)?fx(capC(M,p),2):'–';
   var note='Erlang：等待概率 '+fmt(num('ecP'),2)+'% 下的话务 A';
-  if(M>0&&M%5!==0&&p>0&&p<1){var lo=Math.floor(M/5)*5,hi=lo+5;if(lo>0){var al=capC(lo,p),ah=capC(hi,p);note+='；按 5 行一档插值 ≈ '+fx(al+(M-lo)/5*(ah-al),2);}}
+  if(M>100&&M%5!==0&&p>0&&p<1){var lo=Math.floor(M/5)*5,hi=lo+5;var al=capC(lo,p),ah=capC(hi,p);note+='；附录表 100 以上 5 行一档，用 '+lo+'、'+hi+' 两行插值 ≈ '+fx(al+(M-lo)/5*(ah-al),2);}
   $('#ecNote').textContent=note;
   var A=num('ecA2'),M2=Math.round(num('ecM2'));$('#ecPd').textContent=(M2>0&&A>=0)?(A>=M2?'100%（A ≥ M，队列无限增长）':fx(erlC(M2,A)*100,2)+'%'):'–';}
 function toolSIR(){
@@ -988,8 +1080,207 @@ function bindTools(){
   toolB();toolC();toolSIR();
 }
 
+/* ---------- combo ---------- */
+var COMBO=[
+ {k:'a',q:'Find the mean call duration in seconds.',name:'每用户话务',trig:'calls per hour、Erlang per user',
+  f:'A<sub>u</sub> = λH　⇒　H = A<sub>u</sub> / λ',
+  why:'题目给了每用户话务（0.03 E）和每小时呼叫次数（1.2），问时长。三个量知道两个，求第三个。',
+  calc:['H = 0.03 / 1.2 = 0.025 h','0.025 × 3600 = 90 s'],ans:'H = 90 s',
+  hook:'话务 = 次数 × 时长，单位是「小时 / 小时」。1 Erlang 就是一条信道被占满一整个小时，所以 H 一定先换成小时。'},
+ {k:'b',q:'Find the total number of duplex channels.',name:'FDD 拆带宽 + TDMA 时隙',trig:'FDD、each link uses … for control、timeslots per frame',
+  f:'每方向业务带宽 = 总带宽/2 − 每链路控制\n载波数 = 业务带宽 ÷ 载波带宽\n双工信道 = 载波数 × 每帧时隙',
+  why:'FDD 表示上行、下行各占一半频谱；TDMA 表示每个载波再按时间分给 8 个用户。',
+  calc:['每方向 36/2 = 18 MHz，扣 1.2 MHz 控制，剩 16.8 MHz','载波数 = 16.8 MHz ÷ 200 kHz = 84','双工信道 = 84 × 8 = 672 条'],ans:'S = 672 条',
+  hook:'先劈两半，再各扣控制；车道数 × 每条车道轮流的人数。只按一个方向数载波，下行正好和它配对，算出来就是双工信道，不用再 ×2。'},
+ {k:'c',q:'Show that SIR<sub>dB</sub> = 1.76 + 20 log N for n = 4, and choose the minimum cluster size. Check it with the worst-case formula and comment.',name:'SIR = Q<sup>n</sup>/6、Q = √(3N)、合法 N、最坏情况',trig:'first tier、equidistant、edge of the cell；worst case',
+  f:'SIR = R<sup>−n</sup> / (6D<sup>−n</sup>) = Q<sup>n</sup>/6，Q = D/R = √(3N)\nn = 4：SIR = (3N)²/6 = 1.5N² ⇒ 1.76 + 20 log N\n合法 N = i² + ij + j²：1, 3, 4, 7, 9, 12, 13 …\n最坏：SIR = 1/[2(Q−1)<sup>−n</sup> + 2Q<sup>−n</sup> + 2(Q+1)<sup>−n</sup>]',
+  why:'「first tier、equidistant、edge of the cell」就是让你用 Q<sup>n</sup>/6：手机离自己的基站 R，6 个同频基站都按 D 算。看到 worst case 就换成 2-2-2 公式。',
+  calc:['推导：Q<sup>4</sup> = (3N)²，SIR = 9N²/6 = 1.5N²；10 log 1.5 = 1.76，10 log N² = 20 log N','18 dB → 10<sup>1.8</sup> = 63.1；Q⁴ ≥ 6 × 63.1 = 378.6 → Q ≥ 4.411 → N ≥ Q²/3 = 6.49','N = 7：1.76 + 20 log 7 = 18.66 dB ✓；N = 4：1.76 + 20 log 4 = 13.8 dB ✗，所以取 N = 7','最坏（Q = √21 = 4.583）：1/(0.01214 + 0.00454 + 0.00206) = 53.4 → 17.27 dB &lt; 18 dB'],
+  ans:'N = 7（简化式 18.66 dB；最坏情况 17.27 dB，略低于 18 dB）',
+  hook:'简化式是「自己 1 份，邻居 6 份」→ Q<sup>n</sup>/6；最坏是「2-2-2：减一、不变、加一」；n = 4 时 10 log 1.5 = 1.76。评论：简化式把 6 个干扰都放在 D，偏乐观。'},
+ {k:'d',q:'What path-loss exponent would give SIR = 20 dB with N = 7?',name:'反求 n',trig:'derive the path loss exponent',
+  f:'Q<sup>n</sup> = 6·SIR　⇒　n = log(6·SIR) / log Q',
+  why:'这次已知 SIR 和 N，未知数在指数上，只能两边取对数。',
+  calc:['20 dB → 100；Q<sup>n</sup> = 6 × 100 = 600','n = log 600 / log 4.583 = 2.778 / 0.661 = 4.2'],ans:'n ≈ 4.2',
+  hook:'指数里的未知数，取对数拿下来。答案和 2023-24 Q4(c)(ii) 一样。'},
+ {k:'e',q:'Find the channels per cell, the traffic supported, the trunking efficiency, the carried load, the maximum number of users per cell and the trunking gain.',name:'S/N、Erlang B、η、承载话务、用户数、T<sub>g</sub>',trig:'blocked calls cleared、blocking probability、trunking',
+  f:'M = S/N\n查 Erlang B：M 行 × GOS 列 → A\nη = A/M　承载 = A(1 − P<sub>B</sub>)\nm = A/A<sub>u</sub>（向下取整）　T<sub>g</sub> = m/M',
+  why:'「blocked calls cleared + 1% blocking」→ 满了就丢，用 Erlang B 表。',
+  calc:['M = 672 / 7 = 96 条','B 表 96 行 × 1% 列：A ≈ 80.3 E','η = 80.3 / 96 = 0.84；承载 = 80.3 × 0.99 = 79.5 E（被阻塞的 1% 不算）','m = 80.3 / 0.03 = 2676.9 → 2676 人；T<sub>g</sub> = 2676 / 96 = 27.9 人/信道'],
+  ans:'96 条 · A = 80.3 E · η = 0.84 · 承载 79.5 E · 2676 人 · T<sub>g</sub> = 27.9',
+  hook:'B = Blocked（满了就丢），C = queue（排队）。η 是信道利用率，信道池越大越高效，像大锅饭比小灶省。人数向下取整，多一个人阻塞就超过 1%。'},
+ {k:'f',q:'Can the system support 1% blocking?',name:'需求 vs 供给',trig:'can the system support … blocking',
+  f:'需求 = 小区面积 × 密度 × A<sub>u</sub>\n供给 = 查表 A',
+  why:'查表得到的是供给（信道最多能扛多少）；还要算用户实际产生的话务（需求），两者比较。',
+  calc:['面积 2.598 × 1² = 2.598 km²；用户 2.598 × 1500 = 3897 人','需求 = 3897 × 0.03 = 116.9 E','116.9 E &gt; 80.3 E，实际阻塞约 21%'],ans:'不能',
+  hook:'供给查表，需求乘法；比较时是同一个小区的需求和供给。'},
+ {k:'g',q:'Find the cluster area, the number of cluster replications, the system capacity and the spectral efficiency.',name:'簇面积、复制次数、容量、频谱效率',trig:'system capacity、replicate the cluster、channels/MHz/km²',
+  f:'簇面积 = N × A<sub>cell</sub>\n复制次数 = 系统面积 ÷ 簇面积\n容量 = S × 复制次数\n频谱效率 = 每小区信道 ÷ (总带宽 × A<sub>cell</sub>)',
+  why:'同一套 672 条信道在每个簇里各用一次，这就是频率复用带来的容量。',
+  calc:['簇面积 = 7 × 2.598 = 18.19 km²','全城 56 × 2.598 = 145.5 km²；复制 145.5 / 18.19 = 8 次','容量 = 672 × 8 = 5376 条（= 96 × 56）','频谱效率 = 96 / (36 × 2.598) = 1.03 channels/MHz/km²'],
+  ans:'18.19 km² · 8 次 · 5376 条 · 1.03 channels/MHz/km²',
+  hook:'一套信道复用几次就乘几。FDMA 题里频谱效率会化成 1/(B<sub>c</sub>·A·N)，见 2025-26 S1 Q3(a)。'},
+ {k:'h',q:'Use cell splitting to meet 1% blocking. Find the new cell radius and the number of cells.',name:'小区分裂',trig:'cell splitting、new cell radius',
+  f:'Q 不变 → SIR、N、每小区信道都不变\n面积上限 = 供给 ÷ (密度 × A<sub>u</sub>)\nR<sub>new</sub> = R × √(供给 / 需求)　小区数向上取整',
+  why:'分裂时 D 和 R 同比例缩小，Q = D/R 不变，只是每个小区里的人变少了。',
+  calc:['面积 ≤ 80.3 / (1500 × 0.03) = 80.3 / 45 = 1.785 km²','R ≤ √(1.785 / 2.598) = 0.829 km（快捷：1 × √(80.3/116.9)）','小区数 = 145.5 / 1.785 = 81.5 → 82 个'],
+  ans:'R ≤ 0.83 km · 82 个小区',
+  hook:'面积跟着话务走，半径要开根号。每小区信道不变，变多的是全系统信道（小区多了）。'},
+ {k:'i',q:'With 120° sectoring, choose a new N and find the number of cells required. Also find the SIR with 60° sectoring, and comment.',name:'扇区 SIR、每扇区查表 × 3',trig:'120° sector、3-sector directional antenna、60°',
+  f:'120°：SIR = 1/[Q<sup>−n</sup> + (Q+0.7)<sup>−n</sup>]（剩 2 个干扰）\n60°：SIR = (Q+0.7)<sup>n</sup>（剩 1 个干扰）\n每扇区 M/3 条，单独查表，再 × 3',
+  why:'定向天线挡掉了一部分干扰，SIR 变好，就可以换更小的簇。三个扇区各有自己的信道池，不能互相借，所以要分开查表。',
+  calc:['N = 3（Q = 3）：1/(0.01235 + 0.00534) = 56.6 → 17.5 dB ✗','N = 4（Q = 3.464）：1/(0.00694 + 0.00333) = 97.4 → 19.9 dB ✓，取 N = 4','每小区 672/4 = 168 条，每扇区 56 条 → B 表 43.3 E，× 3 = 129.9 E','全城话务 145.5 × 1500 × 0.03 = 6547 E；6547 / 129.9 = 50.4 → 51 个（原来 56 个已经够）','60°（N = 4）：4.164⁴ = 300.7 → 24.8 dB','对比：N 不变只加扇区，每扇区 32 条 → 22.0 × 3 = 66.1 E，比全向的 80.3 E 还少'],
+  ans:'N = 4 · 每扇区 56 条 · 51 个小区 · 60° 时 24.8 dB',
+  hook:'全向 6 个、120° 剩 2 个、60° 剩 1 个；扇区公式里的距离是 Q 和 Q + 0.7。切蛋糕会浪费：三个小池子不如一个大池子。评论：扇区化用容量换 SIR，要配合缩小 N 才能增容，还会多切换。'},
+ {k:'j',q:'If the system were Erlang C with 5% probability of delay, find the traffic per cell and the users per km².',name:'Erlang C 查表（必要时插值）',trig:'probability of delay、queued、Erlang C system',
+  f:'查 C 表：M 行 × 5% 列 → A\n表上找不到这一行（附录表 100 以上 5 行一档）才插值：\nA ≈ A<sub>lo</sub> + (M − M<sub>lo</sub>)/5 × (A<sub>hi</sub> − A<sub>lo</sub>)',
+  why:'delay 表示呼叫排队等，不是被丢，所以换 C 表。附录 C 表 100 以内每一行都有，96 直接读。真题的 111、153 超过 100，表上 5 行一档，才需要插值。',
+  calc:['C 表 96 行 × 5% 列（第 3 列）：A = 79.720 E，直接读','对照：就算用 95、100 两行插值，78.81 + (1/5)(83.37 − 78.81) = 79.72，结果一样','用户 = 79.72 / 0.03 = 2657 人；密度 = 2657 / 2.598 = 1023 人/km²'],
+  ans:'79.7 E · 1023 人/km²',
+  hook:'先找行：找得到就直接读；找不到（100 以上）才插值，差 1 格走 1/5。附录 C 表的列依次是 1%、2%、5%、7%、10%、20%、50%、70%。'},
+ {k:'k',q:'Write P<sub>k</sub> for an M/M/m model of a cell.',name:'M/M/m 状态概率',trig:'state transition diagram、derive P<sub>k</sub>',
+  f:'λP<sub>k−1</sub> = μ<sub>k</sub>P<sub>k</sub>，ρ = λ/μ\nk ≤ m：P<sub>k</sub> = P<sub>0</sub>ρ<sup>k</sup> / k!\nk ≥ m：P<sub>k</sub> = P<sub>0</sub>ρ<sup>k</sup> / (m!·m<sup>k−m</sup>)',
+  why:'状态 k 是系统里的呼叫数。k ≤ m 时 k 个呼叫都在服务；k ≥ m 时只有 m 条信道在服务，其余在排队。',
+  calc:['画状态图：向右全是 λ；向左是 μ、2μ、…、mμ，之后封顶 mμ','逐级递推得到两个式子，k = m 处两式相等','稳定条件 ρ/m &lt; 1；k ≥ m 的部分加起来就是 Erlang C'],
+  ans:'两段式 P<sub>k</sub>（见上）',
+  hook:'向右永远 λ，向左 kμ 封顶 mμ。'}
+];
+var COMBO12=[
+ {k:'1',g:'Q1(a) 衰落信道',q:'Write the path loss model in dB form, identify the slope and intercept, and find the path loss at d = 100 m.',name:'dB 形式的路径损耗',trig:'simplified path loss model、dB form、sketch',
+  f:'P<sub>r,dB</sub> = P<sub>t,dB</sub> + K<sub>dB</sub> − 10γ log<sub>10</sub>d + ψ<sub>dB</sub>\nP<sub>L,dB</sub> = −K<sub>dB</sub> + γ · 10 log<sub>10</sub>d',
+  why:'取 10 log 把乘法变成加法，对 10 log d 画出来就是一条直线。',
+  calc:['斜率 γ = 3.5（每十倍距离 35 dB），截距 −K<sub>dB</sub> = 30 dB','d = 100 m：30 + 35 × 2 = 100 dB'],ans:'100 dB',
+  hook:'乘法变加法，指数变斜率。考过：23-24 Q1(a)(i)、24-25 Q1(a)(i)。'},
+ {k:'2',g:'Q1(a) 衰落信道',q:'The mean received power is 8 dB above the minimum needed. Find the outage probability (σ<sub>ψ</sub> = 4 dB).',name:'阴影中断概率',trig:'shadowing、outage probability、variance of ψ<sub>dB</sub>',
+  f:'P<sub>out</sub> = Q((μ − P<sub>min</sub>)/σ)',
+  why:'ψ<sub>dB</sub> 是零均值高斯，接收功率的 dB 值也是高斯；低于门限就中断。',
+  calc:['Q(8/4) = Q(2) = 0.0228','反过来要求 1%：Q(2.33) = 0.01 → σ &lt; 8/2.33 = 3.44 dB'],ans:'P<sub>out</sub> = 0.0228',
+  hook:'余量 ÷ σ，放进 Q。考过：23-24 Q1(a)(ii)。'},
+ {k:'3',g:'Q1(a) 衰落信道',q:'Determine the fading type of the single-carrier signal.',name:'衰落类型',trig:'type of fading、coherence bandwidth、Doppler spread、delay spread',
+  f:'B<sub>s</sub> &lt; B<sub>c</sub>（或 σ<sub>τ</sub>/T<sub>s</sub> &lt; 0.1）→ 平坦；否则频率选择性\nB<sub>s</sub> ≫ B<sub>D</sub>（T<sub>s</sub> ≪ T<sub>c</sub> ≈ 1/B<sub>D</sub>）→ 慢；否则快',
+  why:'两个比较分别决定「平坦 / 选择性」和「快 / 慢」，组合成四种。',
+  calc:['B = 1 MHz &gt; B<sub>c</sub> = 500 kHz → 频率选择性','B ≫ B<sub>D</sub> = 200 Hz，T<sub>c</sub> ≈ 5 ms ≫ T<sub>s</sub> = 1 µs → 慢'],ans:'频率选择性慢衰落',
+  hook:'比 B<sub>c</sub> 定平坦还是选择性，比 B<sub>D</sub> 定快还是慢。考过：23-24 Q1(a)(iii)、25-26 S2 Q1(a)(i)。'},
+ {k:'4',g:'Q1(a) 衰落信道',q:'LCR = 50 per second and AFD = 20 µs. Find the consecutive symbol errors per fade and the symbol errors per second.',name:'LCR / AFD 数误符号',trig:'level crossing rate、average fade duration、consecutive symbol errors',
+  f:'每次连续错 = AFD / T<sub>s</sub>\n每秒错 = LCR × AFD / T<sub>s</sub>\n处于衰落的时间比例 = LCR × AFD',
+  why:'LCR 是每秒进入深衰落的次数，AFD 是每次持续多久。',
+  calc:['每次：20 µs / 1 µs = 20 个','每秒：50 × 20 = 1000 个','衰落时间比例：50 × 20 µs = 0.1%'],ans:'每次 20 个，每秒 1000 个',
+  hook:'次数 × 每次长度。考过：24-25 Q1(a)(ii)、25-26 S2 Q1(a)(ii)。'},
+ {k:'5',g:'Q1(a) 衰落信道',q:'Rayleigh channel with γ̄ = 20 dB and ε = 1%: find γ<sub>min</sub>, the outage capacity per Hz and the fade margin.',name:'中断容量与衰落余量',trig:'outage capacity、fade margin、C<sub>ε</sub>',
+  f:'C<sub>ε</sub>/B = log<sub>2</sub>[1 + γ̄ ln(1/(1 − ε))]\nγ<sub>min</sub> = γ̄ ln(1/(1 − ε))\nFM = 10 log[1/ln(1/(1 − ε))] ≈ 10 log(1/ε)',
+  why:'γ<sub>min</sub> 是 AWGN 信道达到同样容量所需的 SNR；衰落信道要多出来的那部分就是衰落余量。',
+  calc:['ln(1/0.99) = 0.01005；γ<sub>min</sub> = 100 × 0.01005 = 1.005（0.02 dB）','C<sub>ε</sub>/B = log<sub>2</sub> 2.005 ≈ 1.0 bit/s/Hz','FM = 20 − 0.02 ≈ 20 dB'],ans:'γ<sub>min</sub> = 1.005 · 1.0 bit/s/Hz · FM ≈ 20 dB',
+  hook:'FM ≈ 10 log(1/ε)：1% → 20 dB，0.5% → 23 dB，0.1% → 30 dB。考过：23-24 Q1(a)(iv)、25-26 S2 Q1(a)(iii)。'},
+ {k:'6',g:'Q1(a) 衰落信道',q:'Allocate P = 1 W over three sub-bands with SNRs 15, 8 and 0 dB using P<sub>i</sub> = P(1/γ<sub>0</sub> − 1/γ<sub>i</sub>).',name:'注水功率分配',trig:'sub-bands、threshold γ<sub>0</sub>、P<sub>i</sub> = P(1/γ<sub>0</sub> − 1/γ<sub>i</sub>)',
+  f:'P<sub>i</sub> = P(1/γ<sub>0</sub> − 1/γ<sub>i</sub>)，γ<sub>i</sub> ≥ γ<sub>0</sub>；否则 P<sub>i</sub> = 0\n由 ΣP<sub>i</sub> = P 解出 1/γ<sub>0</sub>',
+  why:'好子带多给、差子带少给，太差的直接不给。',
+  calc:['线性值：31.6、6.31、1','先假设三个都分：3/γ<sub>0</sub> = 1 + 0.032 + 0.158 + 1 → 1/γ<sub>0</sub> = 0.730，γ<sub>0</sub> = 1.37 &gt; 1，第 3 个剔除','只用两个重算：2/γ<sub>0</sub> = 1 + 0.032 + 0.158 → 1/γ<sub>0</sub> = 0.595（γ<sub>0</sub> = 1.68）','P<sub>1</sub> = 0.595 − 0.032 = 0.563 W，P<sub>2</sub> = 0.595 − 0.158 = 0.437 W，P<sub>3</sub> = 0'],ans:'0.563 W · 0.437 W · 0',
+  hook:'先全开算水位，低于水位的剔掉再算一遍。考过：24-25 Q1(a)(iii)。'},
+ {k:'7',g:'Q1(b) 分集合并',q:'Two branches, each with SNR 10 dB (prob. 0.3) or 13 dB (prob. 0.7). Find the average input SNR, the SD and MRC average output SNRs, the array gain, and the DPSK error probability with SD (P<sub>s</sub> = ½e<sup>−γ</sup>).',name:'SD / MRC 离散 SNR',trig:'selection diversity、MRC、discrete SNR distribution、array gain',
+  f:'平均 SNR = Σ p<sub>i</sub>γ<sub>i</sub>（先换成线性值）\nSD：输出取较大的一路，两路都差才差\nMRC：输出 = 各路 SNR 之和，阵列增益 = 支路数',
+  why:'SNR 是离散随机变量，平均就是加权求和；SD 和 MRC 只是输出的取法不同。',
+  calc:['10 dB = 10，13 dB = 19.95；平均输入 = 0.3 × 10 + 0.7 × 19.95 = 16.97（12.3 dB）','SD：两路都是 10 dB 的概率 0.09 → 平均输出 = 0.09 × 10 + 0.91 × 19.95 = 19.06（12.8 dB）','MRC：2 × 16.97 = 33.9（15.3 dB），阵列增益 2（3 dB）','DPSK + SD：0.09 × ½e<sup>−10</sup> + 0.91 × ½e<sup>−19.95</sup> = 2.0 × 10<sup>−6</sup>（无分集 6.8 × 10<sup>−6</sup>）'],
+  ans:'16.97 · 19.06 · 33.9 · 阵列增益 2 · 2.0 × 10<sup>−6</sup>',
+  hook:'SD 是都差才差，MRC 是 SNR 相加。考过：23-24 Q1(b)(i)、25-26 S1 Q1(b)(i)。'},
+ {k:'8',g:'Q1(b) 分集合并',q:'For BPSK with SD, outage occurs when P<sub>b</sub> = Q(√(2γ)) exceeds 1.35 × 10<sup>−3</sup>. Each branch has average SNR 20. How many branches give P<sub>out</sub> ≤ 1%?',name:'SD 中断概率求 M',trig:'outage probability、P<sub>out</sub> = (1 − e<sup>−γ/γ̄</sup>)<sup>M</sup>',
+  f:'P<sub>out</sub> = (1 − e<sup>−γ<sub>min</sub>/γ̄</sup>)<sup>M</sup>',
+  why:'各支路独立，所有支路都低于门限才算中断。',
+  calc:['Q(3) = 1.35 × 10<sup>−3</sup> → √(2γ) = 3 → γ<sub>min</sub> = 4.5','单支路：1 − e<sup>−4.5/20</sup> = 0.2015','0.2015<sup>M</sup> ≤ 0.01 → M ≥ ln 0.01 / ln 0.2015 = 2.87 → M = 3（M = 2 时是 0.041，不够）'],ans:'M = 3',
+  hook:'中断 = p<sup>M</sup>，取对数求 M，向上取整。考过：24-25 Q1(b)(i)。'},
+ {k:'9',g:'Q1(b) 分集合并',q:'With diversity order d = 2, estimate the average error probability at γ̄ = 16.97.',name:'分集增益',trig:'diversity gain、P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>、gain array',
+  f:'P̄<sub>e</sub> ≈ γ̄<sup>−d</sup>（γ̄ 是平均输入 SNR）\n阵列增益 = γ̄<sub>Σ</sub>/γ̄（dB 直接相减）',
+  why:'高 SNR 时误码率按 SNR 的 −d 次方下降，d 就是对数坐标下的斜率。',
+  calc:['16.97<sup>−2</sup> = 3.5 × 10<sup>−3</sup>','反过来：已知 P̄<sub>e</sub> 求 d = −log P̄<sub>e</sub> / log γ̄'],ans:'3.5 × 10<sup>−3</sup>',
+  hook:'d 是斜率；阵列增益是 dB 相减。考过：25-26 S1 Q1(b)(i)、25-26 S2 Q1(b)(i)。'},
+ {k:'10',g:'Q1(b) MIMO',q:'4 × 2 MIMO: find the maximum diversity and multiplexing gains. On the optimal trade-off with r = 1 and P<sub>e</sub> = 10<sup>−3</sup>, find the rate per Hz.',name:'分集、复用、DMT',trig:'maximum diversity gain、multiplexing gain、trade-off',
+  f:'d<sub>max</sub> = N × M，r<sub>max</sub> = min(N, M)\nd(r) = (N − r)(M − r)\nP<sub>e</sub> ≈ SNR<sup>−d</sup>，R = r log<sub>2</sub>SNR',
+  why:'多天线既能抗衰落（分集），也能并行传多路数据（复用），两者此消彼长。',
+  calc:['d<sub>max</sub> = 8，r<sub>max</sub> = 2','d(1) = 3 × 1 = 3；SNR<sup>−3</sup> = 10<sup>−3</sup> → SNR = 10','R = 1 × log<sub>2</sub>10 = 3.32 bit/s/Hz'],ans:'8 · 2 · 3.32 bit/s/Hz',
+  hook:'相乘给分集，取小给复用。考过：23-24 Q1(b)(ii)、24-25 Q1(b)(ii)。'},
+ {k:'11',g:'Q1(b) MIMO',q:'Show that the Alamouti code is orthogonal. With |h<sub>1</sub>|² + |h<sub>2</sub>|² = 2 and σ² = 0.2, find the mean and variance of the detected symbol.',name:'Alamouti',trig:'space-time block code、orthogonal、Alamouti、detected signal variance',
+  f:'X = (s<sub>1</sub>, −s<sub>2</sub>*; s<sub>2</sub>, s<sub>1</sub>*)，XX<sup>H</sup> = (|s<sub>1</sub>|² + |s<sub>2</sub>|²)I\nE[ŝ] = s，Var[ŝ] = σ²/‖h‖²',
+  why:'正交让接收端线性合并就能把 s<sub>1</sub>、s<sub>2</sub> 完全分开；两条路径增益相加，噪声被摊薄。',
+  calc:['非对角元素 s<sub>1</sub>s<sub>2</sub>* − s<sub>2</sub>*s<sub>1</sub> = 0 → 正交','E[ŝ] = s（无偏）','Var = 0.2 / 2 = 0.1；分集阶数 2'],ans:'正交 · 均值 s · 方差 0.1',
+  hook:'对角 = 正交；方差 σ²/(|h<sub>1</sub>|² + |h<sub>2</sub>|²)。考过：23-24 Q1(b)(iii)(iv)、25-26 S2 Q1(b)(iii)。'},
+ {k:'12',g:'Q1(b) MIMO',q:'Uninformed transmitter, N = 2, total power P = 2, σ² = 0.5, and the eigenvalues of HH<sup>H</sup> are 4 and 1. Find the capacity per Hz.',name:'MIMO 容量',trig:'uninformed transmitter、det{I + …}、parallel channels、eigenvalues',
+  f:'C = B log<sub>2</sub>det{I + (1/σ²)HPH<sup>H</sup>}\n发射端不知道信道：P = (P/N)I\n对角化后：C/B = Σ log<sub>2</sub>(1 + (P/(Nσ²))λ<sub>i</sub>)',
+  why:'发射端不知道信道就平均分功率；对角矩阵的行列式是连乘，取 log 变成求和。',
+  calc:['P/(Nσ²) = 2/(2 × 0.5) = 2','C/B = log<sub>2</sub>(1 + 8) + log<sub>2</sub>(1 + 2) = 3.17 + 1.58 = 4.75 bit/s/Hz','SISO 特例：log<sub>2</sub>(1 + P|h|²/σ²)'],ans:'4.75 bit/s/Hz',
+  hook:'连乘取 log = 求和 = 并行信道容量之和。考过：24-25 Q1(b)(iii)、25-26 S1 Q1(b)(iii)。'},
+ {k:'13',g:'Q2(a) ISI 与均衡',q:'Write r[n] for H(Z) = 1 + 0.5Z<sup>−1</sup>, find L, and state the Nyquist ISI criterion.',name:'离散 ISI 模型',trig:'discrete time representation、Z-transform、Nyquist criterion',
+  f:'r[n] = Σ<sub>i=1</sub><sup>L</sup> h[i] m[n − i + 1] + w[n]\nH(Z) 的系数就是各个抽头',
+  why:'h[1]m[n] 是想要的符号，i ≥ 2 的项都是前面符号漏进来的 ISI。',
+  calc:['h[1] = 1，h[2] = 0.5 → L = 2','r[n] = m[n] + 0.5m[n−1] + w[n]','Nyquist：等效脉冲在其他符号的采样时刻为 0，即 h[1] = 1、其余为 0'],ans:'L = 2',
+  hook:'Z<sup>−1</sup> 就是晚一个符号。四套卷都考了这个模型。'},
+ {k:'14',g:'Q2(a) ISI 与均衡',q:'Without equalization, find the average error probability with m̂ = sgn(r[n]) (σ² = 0.16).',name:'有 ISI 时的误码率',trig:'average probability of error、decision rule sgn、ISI',
+  f:'ISI 取 ± 两种，各算 Q 再平均：\nP<sub>e</sub> = ½Q((1 + a)/σ) + ½Q((1 − a)/σ)',
+  why:'前一个符号等概率是 ±1，ISI 一半时候帮忙、一半时候捣乱。',
+  calc:['σ = 0.4','前一个是 +1：Q(1.5/0.4) = Q(3.75) ≈ 0.0001','前一个是 −1：Q(0.5/0.4) = Q(1.25) = 0.1056','平均 0.053；没有 ISI 时只有 Q(1/0.4) = Q(2.5) = 0.0062'],ans:'P<sub>e</sub> ≈ 0.053',
+  hook:'ISI 一正一负，两个 Q 取平均。四套卷全考！'},
+ {k:'15',g:'Q2(a) ISI 与均衡',q:'Design a 3-tap zero-forcing equalizer.',name:'迫零均衡',trig:'zero-forcing、transversal filter、tap coefficients',
+  f:'C(Z) = 1/H(Z)，按 1/(1 + x) = 1 − x + x² − … 展开，取前几项',
+  why:'让 C·H = 1，把 ISI 逼成零。',
+  calc:['1/(1 + 0.5Z<sup>−1</sup>) = 1 − 0.5Z<sup>−1</sup> + 0.25Z<sup>−2</sup> − …','抽头 1、−0.5、0.25','乘回去：C·H = 1 + 0.125Z<sup>−3</sup>，残余 ISI 0.125'],ans:'抽头 1, −0.5, 0.25',
+  hook:'正负交替，每次乘 −h。考过：24-25 Q2(a)(ii)。'},
+ {k:'16',g:'Q2(a) ISI 与均衡',q:'Find the noise variance at the equalizer output.',name:'噪声放大',trig:'noise at the equalizer output、Σc<sub>j</sub>²、noise enhancement',
+  f:'σ′² = σ² Σ c<sub>j</sub>²',
+  why:'噪声也穿过均衡器；各时刻的噪声独立，方差按系数平方相加。',
+  calc:['0.16 × (1 + 0.25 + 0.0625) = 0.21','σ′ = 0.458 &gt; 0.4：噪声被放大了'],ans:'σ′² = 0.21',
+  hook:'噪声过滤波器：方差 × Σc²。考过：23-24、25-26 S1、25-26 S2。'},
+ {k:'17',g:'Q2(a) ISI 与均衡',q:'Find the error probability after zero forcing.',name:'残余 ISI 误码率',trig:'residual ISI、y[n] = m[n] + a·m[n−k] + w′',
+  f:'同第 14 问：ISI 取 ±，噪声换成 σ′',
+  why:'均衡后还剩一点 ISI，噪声也变大了，两个都要算进去。',
+  calc:['y = m[n] + 0.125m[n−3] + w′','Q(1.125/0.458) = Q(2.46) = 0.0070','Q(0.875/0.458) = Q(1.91) = 0.0281','平均 0.0175'],ans:'P<sub>e</sub> ≈ 0.0175',
+  hook:'比不均衡的 0.053 好，比无 ISI 的 0.0062 差：原因是残余 ISI 和噪声放大。'},
+ {k:'18',g:'Q2(b) OFDM',q:'Find N so that each sub-carrier bandwidth is half the coherence bandwidth.',name:'由 B<sub>c</sub> 求 N',trig:'number of sub-carriers、flat fading、coherence bandwidth',
+  f:'子载波带宽 = B/N ≤ B<sub>c</sub>（或题目要求的 B<sub>c</sub>/2）',
+  why:'每个子载波比 B<sub>c</sub> 窄，就只会遇到平坦衰落。',
+  calc:['B<sub>c</sub>/2 = 250 kHz','N = 1 MHz / 250 kHz = 4'],ans:'N = 4',
+  hook:'子带宽小于 B<sub>c</sub>；除不尽就向上取整（25-26 S1：500/30 → 17）。'},
+ {k:'19',g:'Q2(b) OFDM',q:'Find the sub-channel gains H<sub>k</sub>.',name:'子信道增益（DFT）',trig:'channel gain coefficients、sub-channels',
+  f:'H<sub>k</sub> = Σ<sub>i</sub> h<sub>i</sub> e<sup>−j2πik/N</sup>',
+  why:'每个子载波看到的增益，就是信道抽头的 N 点 DFT。',
+  calc:['H<sub>k</sub> = 1 + 0.5e<sup>−jπk/2</sup>','H<sub>0</sub> = 1.5，H<sub>1</sub> = 1 − 0.5j，H<sub>2</sub> = 0.5，H<sub>3</sub> = 1 + 0.5j','|H<sub>k</sub>|² = 2.25、1.25、0.25、1.25（有的答案把 H<sub>0</sub> 写成 H<sub>4</sub>）'],ans:'1.5 · 1 − 0.5j · 0.5 · 1 + 0.5j',
+  hook:'e<sup>−jπk/2</sup> 依次是 1、−j、−1、j。考过：23-24、25-26 S2。'},
+ {k:'20',g:'Q2(b) OFDM',q:'With QPSK, find the bit rates, the block duration, the cyclic prefix, the power loss and the effective rate.',name:'速率、CP、功率损失',trig:'bit rate per sub-carrier、guard interval、cyclic prefix、power loss',
+  f:'每块有用长度 NT<sub>s</sub>，T<sub>g</sub> ≥ 时延扩展\n功率损失 = 10 log((NT<sub>s</sub> + T<sub>g</sub>)/NT<sub>s</sub>)\n有效速率 = 每块比特 ÷ (NT<sub>s</sub> + T<sub>g</sub>)\n加 CP：nT − T<sub>g</sub> ≤ t &lt; (n+1)T',
+  why:'CP 挡住上一块的回波，但它不带新信息，时间和能量都是开销。',
+  calc:['1 Msym/s × 2 bit = 2 Mbit/s；每个子载波 0.5 Mbit/s','块长 4 × 1 µs = 4 µs；时延扩展 1 µs → T<sub>g</sub> = 1 µs → 5 µs','功率损失 10 log(5/4) = 0.97 dB','有效速率 8 bit / 5 µs = 1.6 Mbit/s'],ans:'2 Mbit/s · 4 → 5 µs · 0.97 dB · 1.6 Mbit/s',
+  hook:'总长 ÷ 有用长，取 dB。四套卷都考了 OFDM 的这几个量之一。'},
+ {k:'21',g:'Q2(b) OFDM',q:'Allocate power so that every sub-carrier has C<sub>k</sub> = ¼ log<sub>2</sub>(1 + P<sub>k</sub>|H<sub>k</sub>|²) = 0.5.',name:'等容量功率',trig:'same channel capacity per Hz、P<sub>k</sub>',
+  f:'P<sub>k</sub> = (2<sup>N·C</sup> − 1)/|H<sub>k</sub>|²',
+  why:'先乘 N 去掉 ¼，再取 2 的幂，最后除以 |H<sub>k</sub>|²。',
+  calc:['2<sup>4 × 0.5</sup> − 1 = 3','P<sub>k</sub> = 3/|H<sub>k</sub>|² = 1.33、2.4、12、2.4','总功率 18.1；最差的子载波一个占 66%'],ans:'总功率 ≈ 18.1',
+  hook:'等容量就是用功率去补偿信道，深衰落子载波很费功率，不如注水。考过：24-25 Q2(b)(iii)。'},
+ {k:'22',g:'Q2(b) OFDM',q:'Explain why OFDM modulation is an IDFT and why the n-th correlator outputs s<sub>n</sub>.',name:'IDFT 与正交',trig:'inverse DFT、correlator、orthogonal sub-carriers',
+  f:'x<sub>i</sub> = x(iT/N) ∝ Σ<sub>k</sub> s<sub>k</sub> e<sup>j2πki/N</sup> = IDFT\n∫<sub>0</sub><sup>T</sup> e<sup>j2π(k−n)t/T</sup>dt = T（k = n），0（k ≠ n）',
+  why:'子载波间隔 1/T，在一个块长里都走整数个周期，所以互相正交。',
+  calc:['采样得到的正是 N 点 IDFT → 发端用 IFFT，收端用 FFT','相关器只留下 k = n 那一项 → 输出 s<sub>n</sub>'],ans:'概念题',
+  hook:'整数个周期积分为 0。考过：25-26 S1 Q2(b)(iii)、25-26 S2 Q2(b)(ii)。'}
+];
+function renderComboSet(DATA,mapSel,listSel,allSel,pfx){
+  var hasG=DATA.some(function(c){return c.g;});
+  $(mapSel).innerHTML='<thead><tr><th>小问</th>'+(hasG?'<th>位置</th>':'')+'<th>公式</th><th>看到什么词</th></tr></thead><tbody>'+DATA.map(function(c){return '<tr><td><a href="#'+pfx+'-'+c.k+'" data-cb="'+c.k+'">('+c.k+')</a></td>'+(hasG?'<td class="mt">'+(c.g||'')+'</td>':'')+'<td class="mf">'+c.name+'</td><td class="mt" lang="en">'+c.trig+'</td></tr>';}).join('')+'</tbody>';
+  $(listSel).innerHTML=DATA.map(function(c){
+    return '<article class="panel qcard" id="'+pfx+'-'+c.k+'"><div class="qmeta"><span class="pill paper">('+c.k+')</span>'+(c.g?'<span class="pill">'+c.g+'</span>':'')+'<span class="pill calc">'+c.name+'</span></div>'+
+      '<p class="cq" lang="en">'+c.q+'</p>'+
+      '<div class="actions"><button type="button" class="btn solid" data-act="cb" aria-expanded="false">看讲解</button></div>'+
+      '<div class="reveal cb" hidden>'+
+        '<div><span class="cb-l">用到的公式</span><div class="f">'+c.f+'</div></div>'+
+        '<div><span class="cb-l">为什么用它</span><p>'+c.why+'</p></div>'+
+        '<div><span class="cb-l">计算</span><ol>'+c.calc.map(function(s){return '<li>'+s+'</li>';}).join('')+'</ol></div>'+
+        '<p class="cb-ans">答案：'+c.ans+'</p>'+
+        '<p class="cb-hook"><b>记忆钩子：</b>'+c.hook+'</p>'+
+      '</div></article>';
+  }).join('');
+  function setOpen(card,open){var rev=card.querySelector('.reveal'),b=card.querySelector('[data-act="cb"]');rev.hidden=!open;b.setAttribute('aria-expanded',open?'true':'false');b.textContent=open?'收起讲解':'看讲解';}
+  $(listSel).addEventListener('click',function(e){var b=e.target.closest('[data-act="cb"]');if(!b)return;var card=b.closest('.qcard');setOpen(card,card.querySelector('.reveal').hidden);});
+  $(mapSel).addEventListener('click',function(e){var a=e.target.closest('a[data-cb]');if(!a)return;e.preventDefault();var card=document.getElementById(pfx+'-'+a.getAttribute('data-cb'));setOpen(card,true);card.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'});card.classList.add('flash');setTimeout(function(){card.classList.remove('flash');},1800);});
+  $(allSel).addEventListener('click',function(){var open=this.getAttribute('aria-expanded')!=='true';document.querySelectorAll(listSel+' .qcard').forEach(function(c){setOpen(c,open);});this.setAttribute('aria-expanded',open?'true':'false');this.textContent=open?'全部收起':'全部展开';});
+}
+
 /* ---------- boot ---------- */
-renderMap();buildFilters();renderQList();applyFilters();renderTpls();newProb(0);renderConcepts();bindTools();route();
+renderMap();buildFilters();renderQList();applyFilters();renderTpls();newProb(0);renderConcepts();bindTools();renderComboSet(COMBO,'#comboMap','#comboList','#cbAll','cb');renderComboSet(COMBO12,'#combo12Map','#combo12List','#cb12All','cc');route();
 })();
 </script>
 </body>
